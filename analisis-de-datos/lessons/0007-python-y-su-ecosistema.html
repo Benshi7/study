@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python y su ecosistema</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0007 · Bloque 3: Python</div>
+
+<div class="kicker">Lección 0007</div>
+<h1>Python según la cátedra: el Kahoot conceptual</h1>
+<p class="lede">Son las preguntas reales del Kahoot de la clase de Python, con la respuesta que dio la cátedra. Vos programás todos los días: el riesgo acá no es no saber, es <strong>contestar con tu criterio en vez del de ellos</strong>.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Si te preguntan "¿cuál de estos es un IDE?" y las opciones son Jupyter Notebook, MS-Excel, Google Colab y PyCharm, ¿qué contestás? Decidilo antes de seguir leyendo.</p>
+</div>
+
+<h2>Las definiciones que usa el Kahoot</h2>
+<span class="sidenote">Fuente: <a href="../raw/KAHOOT-ALUMNOS.pdf">KAHOOT-ALUMNOS.pdf</a>, un PDF escaneado con las 14 preguntas y la explicación de cada respuesta.</span>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Concepto</th><th>Definición de la cátedra</th></tr>
+  <tr><td><strong>Python</strong></td><td>Lenguaje de programación <strong>de código abierto</strong>, fácil de aprender e <strong>interpretado</strong> ("se ejecuta directamente, sin necesidad de compilar")</td></tr>
+  <tr><td><strong>Ejecución</strong></td><td>Código Python → <strong>bytecode</strong> → <strong>máquina virtual de Python</strong> (línea por línea) → resultado</td></tr>
+  <tr><td><strong>Usos</strong></td><td>Análisis de datos, IA/ML, desarrollo web, bases de datos, automatización, desarrollo de software</td></tr>
+  <tr><td><strong>Librería</strong></td><td>Conjunto de <strong>módulos y funciones reutilizables</strong> que se importan con <code>import</code></td></tr>
+  <tr><td><strong>Pandas</strong></td><td>Librería para manipular estructuras de datos y tablas y hacer análisis. Estructuras: <strong>Series</strong> (1 dimensión) y <strong>DataFrame</strong> (2 dimensiones)</td></tr>
+  <tr><td><strong>Función</strong></td><td>Bloque de código que realiza una tarea; puede recibir datos (<strong>parámetros</strong>) y devolver un resultado con <code>return</code></td></tr>
+  <tr><td><strong>IDE</strong></td><td><strong>Entorno de desarrollo integrado</strong>: editor, ejecución, depuración y gestión del proyecto en un solo lugar</td></tr>
+  <tr><td><strong>Notebook</strong></td><td>Documento interactivo que combina <strong>texto, código ejecutable y resultados</strong>; se ejecuta por celdas</td></tr>
+  <tr><td><strong>Google Colab</strong></td><td>Entorno de <strong>notebooks en la nube</strong> de Google</td></tr>
+  <tr><td><strong>Variable</strong></td><td>Nombre que se usa para <strong>hacer referencia a un objeto en memoria</strong>. El <code>=</code> asigna: no es una igualdad matemática</td></tr>
+  <tr><td><strong><code>print()</code> / <code>input()</code></strong></td><td>Mostrar información en la consola / leer datos del teclado. <strong><code>input()</code> siempre devuelve texto</strong></td></tr>
+  <tr><td><strong><code>if</code></strong></td><td>La condición va seguida de <strong>dos puntos</strong> y el bloque va <strong>indentado</strong> (se recomiendan 4 espacios, sin llaves)</td></tr>
+</table>
+</div>
+
+<div class="box trap">
+  <span class="label">La trampa del IDE</span>
+  <p>En el Kahoot la respuesta correcta a "¿cuál es un IDE?" es <strong>PyCharm</strong>. Jupyter Notebook y Google Colab son <em>notebooks</em>, no IDEs. Sobre <strong>VS Code</strong>, la cátedra dice que es "un editor de código que puede transformarse en un IDE" mediante extensiones. Si aparece como opción junto a PyCharm, elegí PyCharm.</p>
+</div>
+
+<div class="box trap">
+  <span class="label">La trampa de "interpretado"</span>
+  <p>El slide dice "sin necesidad de compilar" y al mismo tiempo muestra el paso a <em>bytecode</em>. No te pongas técnico: para el choice, <strong>interpretado = se ejecuta sin compilar previamente</strong>.<span class="sidenote">Técnicamente CPython compila a bytecode y la VM lo interpreta. Para el examen vale la versión simple.</span></p>
+</div>
+
+<h3>If anidado vs <code>if/elif/else</code></h3>
+<p>Un <code>if</code> puede ir dentro de otro (<strong>if anidado</strong>): la condición interna solo se evalúa si se cumplió la externa. Muchas veces se puede escribir lo mismo de forma más simple con <code>if</code>, <code>elif</code> y <code>else</code>.</p>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0007-python-y-su-ecosistema"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Qué es Python?",
+   "options": ["Lenguaje de programación de código abierto", "Sistema operativo de código abierto gratuito", "Navegador web de código abierto gratuito", "Motor de base de datos relacional"], "answer": 0,
+   "why": "Pregunta 1 del Kahoot."},
+  {"q": "¿Qué significa que Python sea un lenguaje interpretado, según la cátedra?",
+   "options": ["Se ejecuta sin compilación previa", "Solo funciona dentro del navegador", "Requiere compilar a código máquina", "Traduce el código a Java"], "answer": 0,
+   "why": "\"Se ejecuta directamente, sin necesidad de compilar.\" El recorrido es código → bytecode → máquina virtual → resultado."},
+  {"q": "¿Qué son las librerías en Python?",
+   "options": ["Conjuntos de módulos y funciones reutilizables", "Carpetas donde se guardan los proyectos", "Editores de texto para escribir código", "Sistemas operativos compatibles con el lenguaje"], "answer": 0,
+   "why": "Pregunta 4 del Kahoot. Se usan con <code>import</code>, por ejemplo <code>import math</code>."},
+  {"q": "\"Pandas es una librería para manipular estructuras de datos, tablas, hacer análisis, etc.\"",
+   "options": ["Verdadero", "Falso"], "answer": 0,
+   "why": "Pregunta 5 del Kahoot. Sus estructuras son Series (1 dimensión) y DataFrame (2 dimensiones)."},
+  {"q": "¿Qué es un IDE?",
+   "options": ["Entorno de desarrollo integrado con editor y depurador", "Tipo especial de variable para almacenar datos grandes", "Librería de Python para crear interfaces gráficas simples", "Comando de Python que sirve para importar módulos"], "answer": 0,
+   "why": "Pregunta 7 del Kahoot: escribir, ejecutar, depurar y gestionar el proyecto desde una sola aplicación."},
+  {"q": "Según la cátedra, ¿cuál de estos es un IDE?",
+   "options": ["PyCharm", "Jupyter", "Colab", "Excel"], "answer": 0,
+   "why": "Pregunta 8 del Kahoot. Jupyter y Colab son notebooks. PyCharm es un IDE completo especializado en Python."},
+  {"q": "¿Qué es Google Colab?",
+   "options": ["Entorno de notebooks en la nube", "Librería de machine learning de Google", "Extensión de Google Sheets para fórmulas", "Extensión de Chrome para programar código"], "answer": 0,
+   "why": "Pregunta 10 del Kahoot."},
+  {"q": "¿Qué es un notebook (como Jupyter)?",
+   "options": ["Documento que combina texto, código y resultados", "Archivo de configuración interno de cada IDE", "Función de Python que sirve para notas", "Tipo de variable especial del lenguaje Python"], "answer": 0,
+   "why": "Pregunta 9 del Kahoot: un documento interactivo que se ejecuta por celdas."},
+  {"q": "\"Una variable es simplemente un nombre que se utiliza para hacer referencia a un objeto en memoria.\"",
+   "options": ["Verdadero", "Falso"], "answer": 0,
+   "why": "Pregunta 11 del Kahoot. El <code>=</code> asigna un valor; no es una igualdad matemática."},
+  {"q": "¿Qué función se usa para mostrar información en la consola o terminal?",
+   "options": ["print()", "input()", "show()", "create()"], "answer": 0,
+   "why": "Pregunta 12 del Kahoot. <code>input()</code> hace lo contrario: lee lo que escribe el usuario."},
+  {"q": "El usuario escribe <code>20</code>. ¿Qué imprime la última línea?<pre class=\"code\">edad = input(\"Edad: \")\nprint(type(edad))</pre>",
+   "options": ["<class 'str'>", "<class 'int'>", "<class 'float'>", "<class 'bool'>"], "answer": 0,
+   "why": "<code>input()</code> SIEMPRE devuelve texto. Para usarlo como número hay que convertirlo: <code>int(input(...))</code>."},
+  {"q": "¿Cuál es la sintaxis correcta de un <code>if</code> en Python?",
+   "options": ["if edad > 18:", "if edad > 18", "if (edad > 18)", "if edad > 18;"], "answer": 0,
+   "why": "Pregunta 14 del Kahoot: la condición termina con dos puntos y el bloque va indentado."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Contestás el Kahoot conceptual con las definiciones de la cátedra, incluidas las dos trampas: el IDE es PyCharm e <code>input()</code> devuelve texto.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/KAHOOT-ALUMNOS.pdf">KAHOOT-ALUMNOS.pdf</a>: recorrelo una vez. Cada pregunta tiene una lámina con la explicación de la respuesta. Resumen: <a href="../reference/python.html">Referencia · Python</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si alguna definición de la cátedra te parece discutible (y alguna lo es), traela al chat y vemos cómo responderla en el examen sin pelearte con la consigna.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0006-repaso-intercalado-bloque-1.html">← 0006 · Repaso bloque 1</a>
+  <a href="0008-que-imprime-1.html">0008 · ¿Qué imprime? (I) →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

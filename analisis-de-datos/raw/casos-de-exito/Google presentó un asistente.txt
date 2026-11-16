@@ -1,0 +1,9 @@
+https://www.youtube.com/watch?v=l9BTMWOupGM
+
+Este video presenta un avance en el Asistente de Google, diseñado para realizar llamadas telefónicas de manera autónoma y con un nivel de naturalidad casi indistinguible de la humana. Esta tecnología busca ayudar a los usuarios a gestionar reservas en negocios locales que no cuentan con sistemas de agendamiento en línea.
+
+El video ofrece dos demostraciones prácticas:
+
+Reserva en una peluquería (0:05 - 1:29): El asistente negocia con éxito un corte de cabello, adaptándose a las respuestas y alternativas ofrecidas por la recepcionista del salón.
+Reserva en un restaurante (1:35 - 2:40): Se muestra cómo el asistente maneja una situación más compleja donde la disponibilidad inicial no encaja con la solicitud del usuario, logrando finalmente concretar la reserva para una fecha alternativa.
+La principal innovación destacada es la capacidad del sistema para comprender el contexto, mantener una cadencia natural y gestionar imprevistos durante la conversación telefónica.

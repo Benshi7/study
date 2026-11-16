@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulacro del parcial · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<style>
+.q{font-size:38px;line-height:1.4;font-family:var(--font-display);font-weight:700;margin:6px 0 18px}
+.try{display:inline-block;font-family:var(--font-mono);font-size:20px;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:999px;border:2px dashed var(--accent);color:var(--accent)}
+.tag-t,.tag-p{display:inline-block;font-family:var(--font-mono);font-size:16px;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:999px;text-transform:uppercase}
+.tag-t{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border-strong)}
+.tag-p{background:var(--accent-tint);color:var(--accent);border:1px solid var(--accent)}
+</style>
+<!-- Simulacro sobre los modelos de parcial raw/Material_Examen/bd parcial 1a.jpg y 1b.jpg. Las respuestas son nuestras;
+     los resultados de la práctica se calcularon con SQLite sobre los datos del examen (assets/seeds/envios.js y scd.js). -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ah"/></marker>
+  <marker id="arA" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahA"/></marker>
+</defs></svg>
+
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · simulacro del 2.º parcial</p>
+    <h1 class="h1" style="font-size:112px;line-height:1">El parcial<br><span class="gradient-text">de ejemplo</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Cada pregunta, sola, para que la intentes. En la slide siguiente, la respuesta como la escribirías en la hoja.</p>
+    <p class="small">Sobre los modelos “bd parcial 1a” y “1b”, y después el parcial real del 12/06/2025. Las respuestas son nuestras; los resultados de la práctica se calcularon sobre los datos del examen.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ ESTRATEGIA ============ -->
+<section class="slide" data-title="Cómo es el parcial">
+  <p class="kicker">Antes de empezar</p>
+  <h2 class="h2">Cómo es el parcial, y cómo encararlo</h2>
+  <div class="three" style="grid-template-columns:repeat(3,1fr);margin-top:8px">
+    <div class="card card-accent"><div class="src">Formato</div><h4>Una hora, en papel</h4><p>Teoría y práctica, como el primero. La hoja la dan ellos.</p></div>
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">La regla que importa</div><h4>Se aprueban por separado</h4><p>Todo bien en teoría y nada en práctica es desaprobado. No dejes una parte en blanco.</p></div>
+    <div class="card card-accent"><div class="src">Este año</div><h4>Teoría en choice</h4><p>El modelo es de desarrollo, pero el profe dijo que la teoría va a ser <b>choice</b> y la práctica, <b>todo SQL</b>.</p></div>
+  </div>
+  <table class="t head" style="margin-top:22px;font-size:26px">
+    <thead><tr><th style="width:8%">#</th><th>Pregunta del modelo</th><th style="width:14%">Parte</th><th style="width:28%">Se repasa en</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Graficar los componentes genéricos de un DW</td><td><span class="tag-t">teoría</span></td><td>deck 1 · lección 0050</td></tr>
+      <tr><td>2</td><td>Explicar los índices agrupado, principal y secundario, con ejemplo</td><td><span class="tag-t">teoría</span></td><td>deck 2 · lección 0028</td></tr>
+      <tr><td>3</td><td>Para qué sirve EXISTS, con ejemplo</td><td><span class="tag-t">teoría</span></td><td>deck 3 · lección 0036</td></tr>
+      <tr><td>4</td><td>SCD: vista actual, indicador, clientes a una fecha</td><td><span class="tag-p">práctica</span></td><td>deck 4 · lección 0052</td></tr>
+      <tr><td>5</td><td>Dos consultas sobre proveedores y envíos</td><td><span class="tag-p">práctica</span></td><td>deck 3 · lecciones 0035–0036</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ PREGUNTA 1 ============ -->
+<section class="slide center" data-title="Pregunta 1">
+  <div><p class="kicker">Pregunta 1 · <span class="tag-t">teoría</span></p>
+  <p class="q" style="font-size:56px">“Grafique los componentes genéricos de un DW.”</p>
+  <span class="try">Intentalo en papel · 5 minutos</span>
+  <p class="small" style="margin-top:22px">Pista: son seis etapas de izquierda a derecha, y algo que las acompaña a todas.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 1">
+  <p class="kicker">Respuesta 1 · <span class="tag-t">teoría</span></p>
+  <h2 class="h2">Seis cajas y una barra: así se dibuja en la hoja</h2>
+  <svg class="dg" viewBox="0 0 1728 404" role="img" aria-labelledby="r1-title r1-desc" style="margin-top:4px">
+    <title id="r1-title">Componentes genéricos de un DW, versión para dibujar a mano</title>
+    <desc id="r1-desc">Fuentes, ETL con staging, ODS, MDM y DQ, Data Warehouse, modelos analíticos con data marts y cubos, presentación y negocio, con la metadata debajo acompañando todas las etapas.</desc>
+    <line x1="240" y1="168" x2="276" y2="168" class="ln" marker-end="url(#ar)"/>
+    <line x1="560" y1="168" x2="596" y2="168" class="ln" marker-end="url(#ar)"/>
+    <line x1="840" y1="168" x2="876" y2="168" class="ln" marker-end="url(#ar)"/>
+    <line x1="1160" y1="168" x2="1196" y2="168" class="ln" marker-end="url(#ar)"/>
+    <line x1="1440" y1="168" x2="1476" y2="168" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="40" width="240" height="256" rx="8" class="store"/><text x="120" y="80" class="nm-s" text-anchor="middle">1 · Fuentes</text><text x="120" y="136" class="tx2" text-anchor="middle">CRM</text><text x="120" y="172" class="tx2" text-anchor="middle">ERP</text><text x="120" y="208" class="tx2" text-anchor="middle">Externos</text>
+    <rect x="280" y="40" width="280" height="256" rx="8" class="zoneD"/><text x="420" y="80" class="nm-s" text-anchor="middle">2 · ETL</text><text x="420" y="136" class="tx2" text-anchor="middle">Staging</text><text x="420" y="172" class="tx2" text-anchor="middle">ODS · MDM · DQ</text><text x="420" y="208" class="tx2" text-anchor="middle">limpieza</text>
+    <rect x="600" y="40" width="240" height="256" rx="8" class="foc"/><text x="720" y="80" class="nm-s" text-anchor="middle">3 · DW</text><text x="720" y="136" class="tx2" text-anchor="middle">Ventas</text><text x="720" y="172" class="tx2" text-anchor="middle">Finanzas</text><text x="720" y="208" class="tx2" text-anchor="middle">Operaciones</text>
+    <rect x="880" y="40" width="280" height="256" rx="8" class="box"/><text x="1020" y="80" class="nm-s" text-anchor="middle">4 · Modelos</text><text x="1020" y="136" class="tx2" text-anchor="middle">Data marts</text><text x="1020" y="172" class="tx2" text-anchor="middle">Cubos OLAP</text><text x="1020" y="208" class="tx2" text-anchor="middle">Asociaciones</text>
+    <rect x="1200" y="40" width="240" height="256" rx="8" class="box"/><text x="1320" y="80" class="nm-s" text-anchor="middle">5 · Presentación</text><text x="1320" y="136" class="tx2" text-anchor="middle">Gráficos</text><text x="1320" y="172" class="tx2" text-anchor="middle">Tablas</text><text x="1320" y="208" class="tx2" text-anchor="middle">Semáforos</text>
+    <rect x="1480" y="40" width="248" height="256" rx="8" class="store"/><text x="1604" y="80" class="nm-s" text-anchor="middle">6 · Negocio</text><text x="1604" y="172" class="tx2" text-anchor="middle">usuarios</text>
+    <rect x="0" y="328" width="1728" height="64" rx="8" class="soft"/><text x="864" y="368" class="nm-s" text-anchor="middle" style="letter-spacing:.3em">METADATA</text>
+  </svg>
+  <div class="two" style="margin-top:6px">
+    <div class="card card-soft"><p><b>Qué mira el profe:</b> que estén las etapas <b>en orden</b>, el <b>ETL</b> con sus piezas, el <b>DW</b> en el centro y la <b>metadata</b> acompañando todo.</p></div>
+    <div class="card card-soft"><p><b>En choice:</b> “¿dónde están ODS, MDM y DQ?” → etapa de limpieza, dentro del ETL. “¿Qué acompaña a todas las etapas?” → la metadata.</p></div>
+  </div>
+</section>
+
+<!-- ============ PREGUNTA 2 ============ -->
+<section class="slide center" data-title="Pregunta 2">
+  <div><p class="kicker">Pregunta 2 · <span class="tag-t">teoría</span></p>
+  <p class="q" style="font-size:56px">“Explique cada tipo de índices: agrupados, principal y secundarios. Dé un ejemplo.”</p>
+  <span class="try">Intentalo en papel · 8 minutos</span>
+  <p class="small" style="margin-top:22px">Pista: para cada uno, sobre qué columna se crea, qué beneficio da y qué cuesta. Y cuál ordena físicamente.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 2">
+  <p class="kicker">Respuesta 2 · <span class="tag-t">teoría</span></p>
+  <h2 class="h2">Los tres índices, con un ejemplo sobre la misma tabla</h2>
+  <p class="sub" style="margin-bottom:10px">Un índice es una estructura que mapea valores de columnas a filas para evitar la búsqueda secuencial. Ejemplo: <code>CabeceraFact (NFact, Fecha, CodCli)</code>.</p>
+  <table class="t head" style="font-size:25px">
+    <thead><tr><th style="width:14%">Tipo</th><th style="width:30%">Qué es</th><th style="width:28%">Beneficio · costo</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td>Principal</td><td>Sobre la <b>clave primaria</b>. Uno solo por tabla.</td><td>Unicidad, búsqueda por clave, base de la integridad referencial</td><td>Sobre <code>NFact</code>: “la factura 4318”</td></tr>
+      <tr style="background:var(--accent-tint)"><td>Agrupado</td><td>Las filas se guardan <b>en el mismo orden que el índice</b>: <b>ordena físicamente</b>.</td><td>Búsqueda eficiente, ahorro de espacio · limita las modificaciones</td><td>Sobre <code>CodCli</code>: las facturas de un cliente, juntas</td></tr>
+      <tr><td>Secundario</td><td>Sobre columnas que <b>no son la PK</b>. Estructura aparte.</td><td>No toca el orden, flexible · más espacio; demasiados degradan</td><td>Sobre <code>Fecha</code>: “las facturas de enero”</td></tr>
+    </tbody>
+  </table>
+  <div class="ojo"><span class="lbl">Lo que más se toma</span><p>“¿Cuál ordena físicamente? Justifique.” → <b>el agrupado</b>, porque “las filas de la tabla se ordenan en el mismo orden que el índice” y quedan “físicamente almacenadas juntas en el disco”. Y el error que el profe marca siempre: <b>no acordarse para qué sirve cada uno</b>.</p></div>
+</section>
+
+<!-- ============ PREGUNTA 3 ============ -->
+<section class="slide center" data-title="Pregunta 3">
+  <div><p class="kicker">Pregunta 3 · <span class="tag-t">teoría</span></p>
+  <p class="q" style="font-size:56px">“Explique para qué sirve la instrucción EXISTS de SQL. Dé un ejemplo.”</p>
+  <span class="try">Intentalo en papel · 5 minutos</span>
+  <p class="small" style="margin-top:22px">Pista: qué comprueba, cuándo da verdadero y qué lo diferencia de IN.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 3">
+  <p class="kicker">Respuesta 3 · <span class="tag-t">teoría</span></p>
+  <h2 class="h2">EXISTS comprueba si una subconsulta devuelve filas</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <p style="font-size:29px;line-height:1.45;margin:0 0 14px">Comprueba la <b>existencia</b> de filas: es verdadero sólo si la subconsulta devuelve <b>al menos una</b>. Se usa sólo con <b>subconsultas</b>; <b>IN</b>, en cambio, acepta subconsultas y listas de valores.</p>
+      <p class="res">Ejemplo con las tablas del parcial</p>
+      <p style="font-size:27px;margin:0 0 10px">Proveedores que enviaron <b>algún componente rojo</b>:</p>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> P.PNOMBRE <span class="k">FROM</span> PROVEEDORES P
+<span class="k">WHERE EXISTS</span> (
+  <span class="k">SELECT</span> * <span class="k">FROM</span> ENVIOS E
+  <span class="k">JOIN</span> COMPONENTES C <span class="k">ON</span> C.C = E.C
+  <span class="k">WHERE</span> E.P = P.P <span class="k">AND</span> C.COLOR = 'ROJO');</pre>
+    </div>
+    <div>
+      <table class="t head mini">
+        <thead><tr><th>Proveedor</th><th>¿Existe un envío rojo suyo?</th></tr></thead>
+        <tbody>
+          <tr style="background:var(--accent-tint)"><td>CARLOS</td><td>sí → entra</td></tr>
+          <tr><td>JUAN</td><td>no → <b>queda afuera</b></td></tr>
+          <tr style="background:var(--accent-tint)"><td>JOSE</td><td>sí → entra</td></tr>
+          <tr style="background:var(--accent-tint)"><td>INMA</td><td>sí → entra</td></tr>
+          <tr style="background:var(--accent-tint)"><td>EVA</td><td>sí → entra</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:26px;margin-top:14px">Con <code>NOT EXISTS</code> queda sólo <b>JUAN</b>: el que <b>no</b> envió ninguno.</p>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>La subconsulta mira <b>la fila de afuera</b> (<code>E.P = P.P</code>): para cada proveedor pregunta “¿hay al menos uno?”. No importa qué devuelve, sólo <b>si devuelve algo</b>; por eso es costumbre poner <code>SELECT *</code>.</p></div>
+</section>
+
+<!-- ============ PREGUNTA 4 ============ -->
+<section class="slide" data-title="Pregunta 4">
+  <p class="kicker">Pregunta 4 · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Generar el SQL correspondiente de acuerdo con los datos dados”</h2>
+  <div style="display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:start;margin-top:4px">
+    <table class="t head mini" style="font-size:21px">
+      <thead><tr><th>Customer_G</th><th>Start_Dt</th><th>Officer_Id</th><th>Banking</th><th>CG_Type</th><th>End_Dt</th></tr></thead>
+      <tbody>
+        <tr><td>125269</td><td>1/5/2005</td><td>110</td><td>3</td><td>-1</td><td>1/11/2007</td></tr>
+        <tr><td>125269</td><td>2/11/2007</td><td>110</td><td>3</td><td>-1</td><td>2/11/2014</td></tr>
+        <tr><td>125269</td><td>3/11/2014</td><td>110</td><td>3</td><td>24</td><td>3/5/2015</td></tr>
+        <tr><td>125269</td><td>4/5/2015</td><td>110</td><td>3</td><td>24</td><td>1/12/2016</td></tr>
+        <tr><td>125269</td><td>2/12/2016</td><td>11</td><td>3</td><td>24</td><td>1/12/2021</td></tr>
+        <tr><td>125269</td><td>2/12/2021</td><td>-15</td><td>3</td><td>24</td><td>1/2/2022</td></tr>
+        <tr><td>125269</td><td>2/2/2022</td><td>11</td><td>3</td><td>24</td><td>1/2/2023</td></tr>
+        <tr><td>125269</td><td>2/2/2023</td><td>978</td><td>3</td><td>24</td><td>31/12/2100</td></tr>
+      </tbody>
+    </table>
+    <div>
+      <p class="res">CUSTOMER_GROUP (columnas resumidas)</p>
+      <p style="font-size:24px;margin:0 0 16px">Faltan en la tabla de la izquierda: SIC_Cd, CG_Begin_Dt, Telephone_Ind y Customer_Group_Assoc_Id. Más la tabla <b>CUSTOMER_NAME</b> (CG_Id, CG_Name).</p>
+      <ol style="font-size:28px;line-height:1.45;padding-left:30px;margin:0">
+        <li><b>a.</b> Una vista con la información <b>actual</b> completa, con campos <b>en castellano</b>.</li>
+        <li><b>b.</b> Un <b>indicador</b>: oficial &lt; 21 y banca &gt; 4 → “Externo”; el resto, “Propio”.</li>
+        <li><b>c.</b> Todos los clientes <b>al 31/01/2021</b>.</li>
+      </ol>
+    </div>
+  </div>
+  <p style="margin-top:14px"><span class="try">Intentá los tres en papel · 15 minutos</span></p>
+</section>
+
+<section class="slide" data-title="Respuesta 4a">
+  <p class="kicker">Respuesta 4a · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">La vista actual, en castellano</h2>
+  <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:start;margin-top:4px">
+    <pre class="code sm" style="margin:0;font-size:22px"><span class="k">CREATE VIEW</span> Clientes_Actual <span class="k">AS</span>
+<span class="k">SELECT</span> G.Customer_Group_Id       <span class="k">AS</span> Id_Cliente,
+       N.CG_Name                 <span class="k">AS</span> Nombre,  <span style="color:#a58a97">-- opcional (con el JOIN)</span>
+       G.Start_Dt                <span class="k">AS</span> Fecha_Inicio,
+       G.SIC_Cd                  <span class="k">AS</span> Cod_Actividad,
+       G.CG_Begin_Dt             <span class="k">AS</span> Fecha_Alta,
+       G.Officer_Id              <span class="k">AS</span> Id_Oficial,
+       G.Banking_Group_Id        <span class="k">AS</span> Id_Banca,
+       G.Telephone_Ind           <span class="k">AS</span> Ind_Telefono,
+       G.CG_Type_Cd              <span class="k">AS</span> Cod_Tipo,
+       G.Customer_Group_Assoc_Id <span class="k">AS</span> Id_Asociado
+<span class="k">FROM</span> CUSTOMER_GROUP G
+<span class="k">JOIN</span> CUSTOMER_NAME N <span class="k">ON</span> N.CG_Id = G.Customer_Group_Id
+<span class="k">WHERE</span> G.End_Dt = '2100-12-31';</pre>
+    <div>
+      <div class="card card-soft"><h4>Las tres decisiones</h4><ul>
+        <li><b>“Actual”</b> → <code>End_Dt = '2100-12-31'</code>: la foto vigente.</li>
+        <li><b>“Completa”</b> → todas las columnas, cada una con su <code>AS</code> en castellano.</li>
+        <li><b>El nombre es opcional</b>: el enunciado no lo pide. Está en CUSTOMER_NAME → <code>JOIN</code>. Sin el <code>JOIN</code> también es válido (la resolución del 12/06/2025 lo hace así): sólo columnas de CUSTOMER_GROUP.</li></ul></div>
+      <p class="res">Resultado sobre los datos del examen</p>
+      <p style="font-size:26px;margin:0">Una fila: 125269, Gomez, Juan Carlos, desde 2023-02-02, oficial <b>978</b>, banca 3.</p>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo</span><p><code>End_Dt</code> se puede omitir en la vista actual: siempre valdría 2100-12-31. En SQL las fechas van como <code>'AAAA-MM-DD'</code>, aunque la tabla del examen las muestre como día/mes/año.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 4b">
+  <p class="kicker">Respuesta 4b · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">El indicador: un CASE dentro de la vista</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <pre class="code sm" style="margin:0"><span class="k">CREATE VIEW</span> Clientes_Actual <span class="k">AS</span>
+<span class="k">SELECT</span> G.Customer_Group_Id <span class="k">AS</span> Id_Cliente,
+       <span style="color:#a58a97">-- … las mismas columnas de 4a …</span>
+       <span class="k">CASE WHEN</span> G.Officer_Id &lt; 21
+             <span class="k">AND</span> G.Banking_Group_Id &gt; 4
+            <span class="k">THEN</span> 'Externo'
+            <span class="k">ELSE</span> 'Propio'
+       <span class="k">END AS</span> Ind_Staff
+<span class="k">FROM</span> CUSTOMER_GROUP G
+<span class="k">JOIN</span> CUSTOMER_NAME N <span class="k">ON</span> N.CG_Id = G.Customer_Group_Id
+<span class="k">WHERE</span> G.End_Dt = '2100-12-31';</pre>
+    <div>
+      <div class="card card-soft"><h4>Cómo leer el enunciado</h4><ul>
+        <li>“<b>en la vista anterior</b>” → se agrega a la vista de 4a, no es una consulta aparte.</li>
+        <li>“oficial <b>y</b> banca” → <code>AND</code>: las dos condiciones.</li>
+        <li>“<b>al resto</b>” → <code>ELSE</code>.</li></ul></div>
+      <p class="res">Resultado sobre los datos del examen</p>
+      <p style="font-size:26px;margin:0">125269 → <b>Propio</b>: su oficial actual es 978, no es menor a 21.</p>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>El ejemplo del PPT de BI hace lo mismo con <code>branch = 1</code>. Para practicar con clientes de los dos lados, la lección 0052 tiene tres clientes más inventados: 9946 sale Externo.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 4c">
+  <p class="kicker">Respuesta 4c · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">Todos los clientes al 31 de enero de 2021</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> *
+<span class="k">FROM</span> CUSTOMER_GROUP
+<span class="k">WHERE</span> '2021-01-31'
+  <span class="k">BETWEEN</span> Start_Dt <span class="k">AND</span> End_Dt;</pre>
+      <div class="card card-soft" style="margin-top:16px"><h4>Por qué así</h4><ul>
+        <li>“<b>al</b> 31/01/2021” es <b>estado a una fecha</b>: la foto que cubre ese día.</li>
+        <li>“<b>todos</b> los clientes”: no se filtra por cliente.</li>
+        <li>Se consulta la <b>tabla</b> (o una vista histórica), nunca la vista actual.</li></ul></div>
+    </div>
+    <div>
+      <p class="res">Resultado sobre los datos del examen</p>
+<svg class="dg" viewBox="0 0 850 244" role="img" aria-labelledby="s4c-t s4c-d" style="margin-top:6px">
+        <title id="s4c-t">Tres fotos del cliente y el 31/01/2021</title>
+        <desc id="s4c-d">Tres fotos consecutivas de un cliente. El 31 de enero de 2021 cae en la del medio, que va del 2/12/2016 al 1/12/2021, con oficial 11.</desc>
+        <rect x="0" y="96" width="266" height="140" rx="8" class="box"/>
+        <text x="133" y="132" class="nm-s" text-anchor="middle">Foto 4</text>
+        <text x="133" y="168" class="sb" text-anchor="middle">desde 4/5/2015</text>
+        <text x="133" y="196" class="sb" text-anchor="middle">hasta 1/12/2016</text>
+        <text x="133" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial 110</text>
+        <rect x="292" y="96" width="266" height="140" rx="8" class="foc"/>
+        <text x="425" y="132" class="nm-s" text-anchor="middle">Foto 5</text>
+        <text x="425" y="168" class="sb" text-anchor="middle">desde 2/12/2016</text>
+        <text x="425" y="196" class="sb" text-anchor="middle">hasta 1/12/2021</text>
+        <text x="425" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial 11</text>
+        <rect x="584" y="96" width="266" height="140" rx="8" class="box"/>
+        <text x="717" y="132" class="nm-s" text-anchor="middle">Foto 6</text>
+        <text x="717" y="168" class="sb" text-anchor="middle">desde 2/12/2021</text>
+        <text x="717" y="196" class="sb" text-anchor="middle">hasta 1/2/2022</text>
+        <text x="717" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial -15</text>
+        <line x1="425" y1="44" x2="425" y2="92" class="lnA"/>
+        <text x="425" y="32" class="nm-s acc" text-anchor="middle">al 31/01/2021</text>
+        <circle cx="425" cy="96" r="6" class="acc"/>
+      </svg>
+      <p style="font-size:26px;margin-top:14px">Una sola foto cumple: la que va del <b>2/12/2016 al 1/12/2021</b>, con oficial 11.</p>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo</span><p>La tabla del examen está en <b>día/mes/año</b>: “1/12/2021” es el 1 de diciembre. Leído como mes/día, pensarías que el 31/01/2021 cae en otra foto.</p></div>
+</section>
+
+<!-- ============ PREGUNTA 5 ============ -->
+<section class="slide" data-title="Pregunta 5">
+  <p class="kicker">Pregunta 5 · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Dado el siguiente modelo, se pide resolver”</h2>
+  <svg class="dg" viewBox="0 0 1728 176" role="img" aria-labelledby="p5-title p5-desc" style="margin-top:4px">
+    <title id="p5-title">Tablas de la pregunta 5</title>
+    <desc id="p5-desc">ENVIOS con claves foráneas a PROVEEDORES, COMPONENTES y ARTICULOS.</desc>
+    <line x1="400" y1="88" x2="652" y2="88" class="ln"/>
+    <line x1="1076" y1="88" x2="1328" y2="88" class="ln"/>
+    <rect x="0" y="40" width="400" height="96" rx="8" class="box"/><text x="24" y="80" class="nm">PROVEEDORES</text><text x="24" y="116" class="sb">P · PNOMBRE · CATEGORIA · CIUDAD</text>
+    <rect x="656" y="40" width="420" height="96" rx="8" class="foc"/><text x="680" y="80" class="nm">ENVIOS · 24 filas</text><text x="680" y="116" class="sb">P · C · T · CANTIDAD</text>
+    <rect x="1332" y="40" width="396" height="96" rx="8" class="box"/><text x="1356" y="80" class="nm">COMPONENTES</text><text x="1356" y="116" class="sb">C · CNOMBRE · COLOR · PESO</text>
+    <text x="0" y="24" class="ey">LAS TABLAS DE SUMINISTROS · ADEMÁS ARTICULOS (T · TNOMBRE · CIUDAD)</text>
+  </svg>
+  <div class="two" style="margin-top:14px">
+    <div class="card card-accent"><div class="src">5a</div><p style="font-size:30px">“Seleccionar los nombres, ciudad y cantidad suministrada de los proveedores que hayan realizado algún envío con cantidad <b>mayor que la media</b> de los envíos realizados para el componente de color <b>ROJO</b>.”</p></div>
+    <div class="card card-accent"><div class="src">5b</div><p style="font-size:30px">“Seleccionar los nombres de los componentes y su código que suministren <b>ambos</b> artículos ‘T1’ y ‘T2’.”</p></div>
+  </div>
+  <p style="margin-top:16px"><span class="try">Intentá las dos en papel · 15 minutos</span></p>
+</section>
+
+<section class="slide" data-title="Respuesta 5a">
+  <p class="kicker">Respuesta 5a · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Mayor que la media de los rojos”: una subconsulta escalar</h2>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start;margin-top:4px">
+    <div>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> P.PNOMBRE, P.CIUDAD, E.CANTIDAD
+<span class="k">FROM</span> PROVEEDORES P
+<span class="k">JOIN</span> ENVIOS E <span class="k">ON</span> E.P = P.P
+<span class="k">WHERE</span> E.CANTIDAD &gt; (
+  <span class="k">SELECT AVG</span>(E2.CANTIDAD)
+  <span class="k">FROM</span> ENVIOS E2
+  <span class="k">JOIN</span> COMPONENTES C <span class="k">ON</span> C.C = E2.C
+  <span class="k">WHERE</span> C.COLOR = 'ROJO');   <span style="color:#a58a97">-- 400</span></pre>
+      <div class="card card-soft" style="margin-top:14px"><h4>Cómo se arma</h4><ul>
+        <li>La media de los rojos es <b>un solo número</b>: 9 envíos rojos promedian <b>400</b>.</li>
+        <li>No depende de la fila de afuera: se calcula <b>una vez</b>.</li>
+        <li>“Nombres, ciudad y cantidad” → <code>JOIN</code> con PROVEEDORES.</li></ul></div>
+    </div>
+    <div>
+      <p class="res">Resultado · 8 filas (una por envío &gt; 400)</p>
+      <table class="t head mini" style="font-size:22px">
+        <thead><tr><th>PNOMBRE</th><th>CIUDAD</th><th>CANTIDAD</th></tr></thead>
+        <tbody>
+          <tr><td>JUAN</td><td>MADRID</td><td>800</td></tr>
+          <tr><td>EVA</td><td>CACERES</td><td>800</td></tr>
+          <tr><td>CARLOS</td><td>SEVILLA</td><td>700</td></tr>
+          <tr><td>JUAN</td><td>MADRID</td><td>600</td></tr>
+          <tr><td>JUAN</td><td>MADRID</td><td>500</td></tr>
+          <tr><td>JOSE</td><td>SEVILLA</td><td>500</td></tr>
+          <tr><td>EVA</td><td>CACERES</td><td>500</td></tr>
+          <tr><td>EVA</td><td>CACERES</td><td>500</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="small" style="margin-top:10px">Ordenado por cantidad para leerlo mejor; el enunciado no pide orden. Con <code>WHERE C IN (SELECT C FROM COMPONENTES WHERE COLOR = 'ROJO')</code> en lugar del JOIN interno da lo mismo (lo comprobamos).</p>
+</section>
+
+<section class="slide" data-title="Respuesta 5b">
+  <p class="kicker">Respuesta 5b · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Ambos T1 y T2”: dos condiciones, dos subconsultas</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> CNOMBRE, C
+<span class="k">FROM</span> COMPONENTES
+<span class="k">WHERE</span> C <span class="k">IN</span> (<span class="k">SELECT</span> C <span class="k">FROM</span> ENVIOS <span class="k">WHERE</span> T = 'T1')
+  <span class="k">AND</span> C <span class="k">IN</span> (<span class="k">SELECT</span> C <span class="k">FROM</span> ENVIOS <span class="k">WHERE</span> T = 'T2');</pre>
+      <p class="res" style="margin-top:18px">Resultado</p>
+      <p style="font-size:34px;margin:0;font-weight:700;color:var(--accent)">C4B · C3</p>
+    </div>
+    <svg class="dg" viewBox="0 0 820 336" role="img" aria-labelledby="r5b-title r5b-desc">
+      <title id="r5b-title">Componentes enviados para T1 y para T2</title>
+      <desc id="r5b-desc">Para T1 se enviaron C1 y C3; para T2, C2, C3, C4, C5 y C6. El único en los dos conjuntos es C3.</desc>
+      <circle cx="300" cy="188" r="140" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+      <circle cx="520" cy="188" r="140" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+      <path d="M410,101 A140,140 0 0 1 410,275 A140,140 0 0 1 410,101 Z" class="foc"/>
+      <text x="300" y="24" class="ey" text-anchor="middle">ENVIADOS PARA T1</text>
+      <text x="520" y="24" class="ey" text-anchor="middle">ENVIADOS PARA T2</text>
+      <text x="240" y="198" class="nm-s" text-anchor="middle">C1</text>
+      <text x="410" y="198" class="nm" text-anchor="middle" style="fill:var(--accent)">C3</text>
+      <text x="580" y="154" class="nm-s" text-anchor="middle">C2 · C4</text>
+      <text x="580" y="234" class="nm-s" text-anchor="middle">C5 · C6</text>
+    </svg>
+  </div>
+  <div class="ojo"><span class="lbl">La trampa</span><p><code>WHERE T = 'T1' AND T = 'T2'</code> en una sola consulta devuelve <b>vacío</b> (lo probamos): ninguna fila de ENVIOS es de T1 y de T2 a la vez. “Ambos” se resuelve con <b>dos subconsultas</b>, una por artículo.</p></div>
+</section>
+
+<!-- ============ MODELO 2 · PARCIAL REAL 12/06/2025 ============ -->
+<!-- Fuente: raw/Material_Examen/Resolucion_2parcial_2025_1C.docx (enunciado + resolución de un alumno).
+     Mismas tablas que 1a/1b; los resultados se recalcularon con SQLite sobre assets/seeds (sólo el cliente 125269 es del examen). -->
+<section class="slide center tc" data-title="Modelo 2">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Segunda vuelta · parcial real</p>
+    <h1 class="h1" style="font-size:96px;line-height:1">El parcial del<br><span class="gradient-text">12/06/2025</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none"><b>Las mismas tablas</b> que el modelo anterior, <b>otras preguntas</b>. Así reciclan: misma tabla, la consigna dada vuelta.</p>
+    <p class="small">Circula una resolución de este parcial con <b>dos respuestas mal</b> (9d y 9e) y otra incompleta (10b). Acá van corregidas y verificadas.</p>
+  </div>
+</section>
+
+<section class="slide" data-title="Teoría del 12/06">
+  <p class="kicker">Preguntas 1 a 8 · <span class="tag-t">teoría</span></p>
+  <h2 class="h2">La teoría, en una línea por pregunta (para el choice)</h2>
+  <table class="t head" style="font-size:23px;margin-top:4px">
+    <thead><tr><th style="width:5%">#</th><th style="width:25%">Pregunta</th><th>La idea que tiene que estar</th><th style="width:17%">Se repasa en</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>OLTP vs OLAP</td><td><b>OLTP</b>: muchas transacciones chicas (insert/update), ms, normalizado, el día a día. <b>OLAP</b>: lee mucho para analizar, cubos, dimensiones y métricas, históricos.</td><td>deck 1 · 0049</td></tr>
+      <tr><td>2</td><td>CRM</td><td>Centraliza <b>todas las interacciones con el cliente</b>; visión única del cliente. Objetivo: captar y retener. Es una <b>fuente</b> del DW.</td><td>deck 1 · 0050</td></tr>
+      <tr><td>3</td><td>Componentes de un DW</td><td>Fuentes → ETL → DW → modelos → presentación → negocio, con la <b>metadata</b> debajo. Igual que la respuesta 1.</td><td>deck 1 · 0050</td></tr>
+      <tr><td>4</td><td>Kimball vs Inmon</td><td><b>Inmon</b>: top-down, DW central <b>normalizado (3FN)</b>, de ahí salen los data marts. <b>Kimball</b>: bottom-up, data marts dimensionales (estrella) que se van uniendo.</td><td>deck 1 · 0051</td></tr>
+      <tr><td>5</td><td>MDM, ODS, DQ</td><td><b>MDM</b>: gestión de datos maestros. <b>ODS</b>: almacén operacional intermedio. <b>DQ</b>: reglas de calidad. Los tres viven en el <b>ETL</b>.</td><td>deck 1 · 0050</td></tr>
+      <tr><td>6</td><td>LEFT JOIN</td><td>Todas las filas de la <b>izquierda</b>; de la derecha, las que coinciden, y <b>NULL</b> donde no hay.</td><td>deck 3 · 0034</td></tr>
+      <tr><td>7</td><td>Estructura de un SELECT</td><td><code>SELECT … FROM … WHERE … GROUP BY … HAVING … ORDER BY</code>, en ese orden.</td><td>deck 3 · 0032</td></tr>
+      <tr><td>8</td><td>DISTINCT</td><td>Elimina las filas <b>repetidas</b> del resultado; va pegado al SELECT y aplica a <b>toda la fila</b>, no a una columna.</td><td>deck 3 · 0032</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ PREGUNTA 9 (12/06) ============ -->
+<section class="slide" data-title="Pregunta 9 (12/06)">
+  <p class="kicker">Pregunta 9 · <span class="tag-p">práctica</span> · misma CUSTOMER_GROUP que la pregunta 4</p>
+  <h2 class="h2">“Generar el SQL correspondiente de acuerdo con los datos dados”</h2>
+  <div style="display:grid;grid-template-columns:.9fr 1.1fr;gap:32px;align-items:start;margin-top:4px">
+    <table class="t head mini" style="font-size:21px">
+      <thead><tr><th>Start_Dt</th><th>Officer_Id</th><th>End_Dt</th></tr></thead>
+      <tbody>
+        <tr><td>1/5/2005</td><td>110</td><td>1/11/2007</td></tr>
+        <tr><td>2/11/2007</td><td>110</td><td>2/11/2014</td></tr>
+        <tr><td>3/11/2014</td><td>110</td><td>3/5/2015</td></tr>
+        <tr><td>4/5/2015</td><td>110</td><td>1/12/2016</td></tr>
+        <tr><td>2/12/2016</td><td>11</td><td>1/12/2021</td></tr>
+        <tr><td>2/12/2021</td><td>-15</td><td>1/2/2022</td></tr>
+        <tr><td>2/2/2022</td><td>11</td><td>1/2/2023</td></tr>
+        <tr><td>2/2/2023</td><td>978</td><td>31/12/2100</td></tr>
+      </tbody>
+    </table>
+    <ol style="font-size:27px;line-height:1.45;padding-left:30px;margin:0">
+      <li><b>a.</b> Información <b>actual</b> del cliente 125269 <b>con su nombre</b>.</li>
+      <li><b>b.</b> Una vista <code>Vista_Clientes</code> con todos los campos <b>en castellano</b>.</li>
+      <li><b>c.</b> Un indicador <code>Ind_Propio_Externo</code> <b>en la vista anterior</b>: oficiales <b>mayores a 21</b> → “Propios”; el resto, “Externos”.</li>
+      <li><b>d.</b> Una vista <code>Vista_Clientes_Hist</code> en castellano que permita consultar <b>todos los clientes al 18 de octubre de 2019</b>.</li>
+      <li><b>e.</b> El nro. de oficial que tenía el <b>último día del año 2021</b>.</li>
+    </ol>
+  </div>
+  <p style="margin-top:14px"><span class="try">Intentá los cinco en papel · 20 minutos</span> <span class="small" style="margin-left:16px">Cliente 125269, todas las fotos. Fechas en día/mes/año.</span></p>
+</section>
+
+<section class="slide" data-title="Respuesta 9a-9b">
+  <p class="kicker">Respuesta 9a y 9b · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">Lo actual con nombre, y la vista en castellano</h2>
+  <div class="two" style="margin-top:4px;align-items:start">
+    <div>
+      <p class="res">9a</p>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> G.*, N.CG_Name
+<span class="k">FROM</span> CUSTOMER_GROUP G
+<span class="k">JOIN</span> CUSTOMER_NAME N <span class="k">ON</span> N.CG_Id = G.Customer_Group_Id
+<span class="k">WHERE</span> G.Customer_Group_Id = 125269
+  <span class="k">AND</span> G.End_Dt = '2100-12-31';</pre>
+      <p style="font-size:24px;margin:10px 0 0">→ una fila: Gomez, Juan Carlos, desde 2/2/2023, oficial <b>978</b>.</p>
+      <p class="small" style="margin-top:8px">La resolución que circula usa <code>TOP(1) … ORDER BY End_Dt DESC</code>: también da la foto vigente, pero sólo en SQL Server. <code>End_Dt = '2100-12-31'</code> es la forma del deck 4 y anda en cualquier motor.</p>
+    </div>
+    <div>
+      <p class="res">9b</p>
+      <pre class="code sm" style="margin:0;font-size:20px"><span class="k">CREATE VIEW</span> Vista_Clientes <span class="k">AS</span>
+<span class="k">SELECT</span> Customer_Group_Id       <span class="k">AS</span> Id_Cliente,
+       Start_Dt                <span class="k">AS</span> Fecha_Inicio,
+       SIC_Cd                  <span class="k">AS</span> Cod_Actividad,
+       CG_Begin_Dt             <span class="k">AS</span> Fecha_Alta,
+       Officer_Id              <span class="k">AS</span> Id_Oficial,
+       Banking_Group_Id        <span class="k">AS</span> Id_Banca,
+       Telephone_Ind           <span class="k">AS</span> Ind_Telefono,
+       CG_Type_Cd              <span class="k">AS</span> Cod_Tipo,
+       Customer_Group_Assoc_Id <span class="k">AS</span> Id_Asociado,
+       End_Dt                  <span class="k">AS</span> Fecha_Fin
+<span class="k">FROM</span> CUSTOMER_GROUP
+<span class="k">WHERE</span> End_Dt = '2100-12-31';</pre>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">¿Va el WHERE en 9b?</span><p>El enunciado no dice “actual”, pero la 9d pide aparte una vista <b>_Hist</b>: eso sugiere que <code>Vista_Clientes</code> es la foto vigente. Si dudás, ponelo y aclaralo con un comentario <code>-- vigente</code>: muestra que sabés la diferencia.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 9c">
+  <p class="kicker">Respuesta 9c · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">El indicador va <em>dentro</em> de la vista, no en un SELECT suelto</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <pre class="code sm" style="margin:0"><span class="k">ALTER VIEW</span> Vista_Clientes <span class="k">AS</span>
+<span class="k">SELECT</span> Customer_Group_Id <span class="k">AS</span> Id_Cliente,
+       <span style="color:#a58a97">-- … las mismas columnas de 9b …</span>
+       <span class="k">CASE WHEN</span> Officer_Id &gt; 21
+            <span class="k">THEN</span> 'Propios'
+            <span class="k">ELSE</span> 'Externos'
+       <span class="k">END AS</span> Ind_Propio_Externo
+<span class="k">FROM</span> CUSTOMER_GROUP
+<span class="k">WHERE</span> End_Dt = '2100-12-31';</pre>
+    <div>
+      <div class="card card-soft"><h4>Comparalo con la 4b</h4><ul>
+        <li>4b: oficial <b>&lt;</b> 21 <b>y</b> banca &gt; 4 → <b>Externo</b>.</li>
+        <li>9c: oficial <b>&gt;</b> 21 → <b>Propios</b>. Una sola condición, al revés.</li>
+        <li>Mismo molde: <code>CASE WHEN … THEN … ELSE … END AS</code>.</li></ul></div>
+      <p class="res">Resultado sobre los datos del examen</p>
+      <p style="font-size:26px;margin:0">125269 → <b>Propios</b> (oficial 978). En la historia, las fotos con 11 y -15 serían Externos.</p>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Lo que le falta a la resolución que circula</span><p>Hace <code>SELECT *, CASE … FROM Vista_Clientes</code>: calcula bien, pero <b>no queda en la vista</b>. “En la vista anterior” pide <code>ALTER VIEW</code> (o <code>DROP</code> + <code>CREATE</code>) con el CASE adentro.</p></div>
+</section>
+
+<section class="slide" data-title="Respuesta 9d-9e">
+  <p class="kicker">Respuesta 9d y 9e · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Al 18/10/2019” y “el último día de 2021”: la misma consulta</h2>
+  <div class="two" style="margin-top:4px;align-items:start">
+    <div>
+      <p class="res">9d · vista sin filtro, y la consulta encima</p>
+      <pre class="code sm" style="margin:0;font-size:21px"><span class="k">CREATE VIEW</span> Vista_Clientes_Hist <span class="k">AS</span>
+<span class="k">SELECT</span> <span style="color:#a58a97">-- las 10 columnas de 9b, en castellano</span>
+<span class="k">FROM</span> CUSTOMER_GROUP;   <span style="color:#a58a97">-- sin WHERE: toda la historia</span>
+
+<span class="k">SELECT</span> * <span class="k">FROM</span> Vista_Clientes_Hist
+<span class="k">WHERE</span> '2019-10-18'
+  <span class="k">BETWEEN</span> Fecha_Inicio <span class="k">AND</span> Fecha_Fin;</pre>
+      <p style="font-size:24px;margin:10px 0 0">→ la foto 2/12/2016–1/12/2021, oficial <b>11</b>.</p>
+      <p class="res" style="margin-top:16px">9e</p>
+      <pre class="code sm" style="margin:0;font-size:21px"><span class="k">SELECT</span> Officer_Id <span class="k">FROM</span> CUSTOMER_GROUP
+<span class="k">WHERE</span> Customer_Group_Id = 125269
+  <span class="k">AND</span> '2021-12-31' <span class="k">BETWEEN</span> Start_Dt <span class="k">AND</span> End_Dt;</pre>
+      <p style="font-size:24px;margin:10px 0 0">→ <b>-15</b> (foto 2/12/2021–1/2/2022).</p>
+    </div>
+    <div>
+<svg class="dg" viewBox="0 0 850 244" role="img" aria-labelledby="s9de-t s9de-d" style="margin-top:6px">
+        <title id="s9de-t">Cuatro fotos y dos fechas</title>
+        <desc id="s9de-d">Cuatro fotos consecutivas de un cliente. El 18/10/2019 cae en la segunda, con oficial 11. El 31/12/2021 cae en la tercera, con oficial -15.</desc>
+        <rect x="0" y="96" width="196" height="140" rx="8" class="box"/>
+        <text x="98" y="132" class="nm-s" text-anchor="middle">Foto 4</text>
+        <text x="98" y="168" class="sb" text-anchor="middle">desde 4/5/2015</text>
+        <text x="98" y="196" class="sb" text-anchor="middle">hasta 1/12/2016</text>
+        <text x="98" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial 110</text>
+        <rect x="218" y="96" width="196" height="140" rx="8" class="foc"/>
+        <text x="316" y="132" class="nm-s" text-anchor="middle">Foto 5</text>
+        <text x="316" y="168" class="sb" text-anchor="middle">desde 2/12/2016</text>
+        <text x="316" y="196" class="sb" text-anchor="middle">hasta 1/12/2021</text>
+        <text x="316" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial 11</text>
+        <rect x="436" y="96" width="196" height="140" rx="8" class="foc"/>
+        <text x="534" y="132" class="nm-s" text-anchor="middle">Foto 6</text>
+        <text x="534" y="168" class="sb" text-anchor="middle">desde 2/12/2021</text>
+        <text x="534" y="196" class="sb" text-anchor="middle">hasta 1/2/2022</text>
+        <text x="534" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial -15</text>
+        <rect x="654" y="96" width="196" height="140" rx="8" class="box"/>
+        <text x="752" y="132" class="nm-s" text-anchor="middle">Foto 7</text>
+        <text x="752" y="168" class="sb" text-anchor="middle">desde 2/2/2022</text>
+        <text x="752" y="196" class="sb" text-anchor="middle">hasta 1/2/2023</text>
+        <text x="752" y="224" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">oficial 11</text>
+        <line x1="316" y1="44" x2="316" y2="92" class="lnA"/>
+        <text x="316" y="32" class="nm-s acc" text-anchor="middle">18/10/2019 · 9d</text>
+        <circle cx="316" cy="96" r="6" class="acc"/>
+        <line x1="534" y1="44" x2="534" y2="92" class="lnA"/>
+        <text x="534" y="32" class="nm-s acc" text-anchor="middle">31/12/2021 · 9e</text>
+        <circle cx="534" cy="96" r="6" class="acc"/>
+      </svg>
+      <div class="crio" style="margin-top:14px"><span class="lbl">Mismo molde</span><p>“Al día X” siempre es <code>'X' BETWEEN inicio AND fin</code>, con la fecha <b>a la izquierda</b>.</p></div>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Dos errores de la resolución que circula</span><p><b>9d</b> filtra <code>Fecha_Fin &lt;= '2019-10-18'</code>: devuelve las 4 fotos <b>ya cerradas</b> (todas con 110), no la vigente ese día. <b>9e</b> responde <b>110</b>: el 1/12/2021 terminó la foto de 11 y el 2/12 arrancó la de <b>-15</b>. La consulta estaba bien, pero leyó mal la tabla.</p></div>
+</section>
+
+<!-- ============ PREGUNTA 10 (12/06) ============ -->
+<section class="slide" data-title="Pregunta 10 (12/06)">
+  <p class="kicker">Pregunta 10 · <span class="tag-p">práctica</span> · mismas tablas que la pregunta 5</p>
+  <h2 class="h2">“Dado el siguiente modelo, se pide resolver las consultas indicadas”</h2>
+  <p class="sub" style="margin-bottom:10px">PROVEEDORES (P, PNOMBRE…) · COMPONENTES (C, CNOMBRE, COLOR, <b>PESO</b>…) · ARTICULOS (T…) · ENVIOS (P, C, T, <b>CANTIDAD</b>)</p>
+  <div class="two" style="margin-top:14px">
+    <div class="card card-accent"><div class="src">10a</div><p style="font-size:30px">“Indicar el nombre del proveedor y el nombre del componente de aquellos que se suministraron un <b>peso total mayor a 20000</b>.”</p></div>
+    <div class="card card-accent"><div class="src">10b</div><p style="font-size:30px">“Seleccionar los nombres de los <b>proveedores</b> y su código que suministren componentes para <b>ambos</b> artículos ‘T1’ y ‘T2’.”</p></div>
+  </div>
+  <p class="small" style="margin-top:14px">10b es la 5b dada vuelta: allá eran <b>componentes</b>, acá <b>proveedores</b>.</p>
+  <p style="margin-top:12px"><span class="try">Intentá las dos en papel · 15 minutos</span></p>
+</section>
+
+<section class="slide" data-title="Respuesta 10a">
+  <p class="kicker">Respuesta 10a · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Peso total” = SUM(PESO × CANTIDAD), filtrado con HAVING</h2>
+  <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:start;margin-top:4px">
+    <div>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> P.PNOMBRE, C.CNOMBRE,
+       <span class="k">SUM</span>(C.PESO * E.CANTIDAD) <span class="k">AS</span> Peso_Total
+<span class="k">FROM</span> ENVIOS E
+<span class="k">JOIN</span> PROVEEDORES P <span class="k">ON</span> P.P = E.P
+<span class="k">JOIN</span> COMPONENTES C <span class="k">ON</span> C.C = E.C
+<span class="k">GROUP BY</span> P.P, P.PNOMBRE, C.C, C.CNOMBRE
+<span class="k">HAVING SUM</span>(C.PESO * E.CANTIDAD) &gt; 20000;</pre>
+      <div class="card card-soft" style="margin-top:14px"><h4>Cómo se arma</h4><ul>
+        <li>El peso está en COMPONENTES y la cantidad en ENVIOS → <b>se multiplican por fila</b> y se suman.</li>
+        <li>“Total mayor a” es sobre un agregado → <code>HAVING</code>, no <code>WHERE</code>.</li></ul></div>
+    </div>
+    <div>
+      <p class="res">Resultado · una sola fila</p>
+      <p style="font-size:34px;margin:0 0 12px;font-weight:700;color:var(--accent)">JUAN · C4B · 52700</p>
+      <p style="font-size:24px;margin:0">P2 envió 3100 unidades de C3 (peso 17). El siguiente es EVA con 14600: muy lejos.</p>
+      <div class="ojo" style="margin-top:14px"><span class="lbl">La trampa del nombre</span><p><b>C3 y C4 se llaman los dos “C4B”</b>. Si agrupás sólo por <code>CNOMBRE</code>, los mezclás (a EVA le suma 3400 + 11200). Agrupá por la <b>clave</b> <code>C.C</code>. Y en SQL Server <code>GROUP BY 1,2</code> y <code>HAVING Peso_Total</code> (con alias) <b>no andan</b>: repetí la expresión.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Respuesta 10b">
+  <p class="kicker">Respuesta 10b · <span class="tag-p">práctica</span></p>
+  <h2 class="h2">“Ambos T1 y T2”, ahora para proveedores</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <pre class="code sm" style="margin:0"><span class="k">SELECT</span> PNOMBRE, P
+<span class="k">FROM</span> PROVEEDORES
+<span class="k">WHERE</span> P <span class="k">IN</span> (<span class="k">SELECT</span> P <span class="k">FROM</span> ENVIOS <span class="k">WHERE</span> T = 'T1')
+  <span class="k">AND</span> P <span class="k">IN</span> (<span class="k">SELECT</span> P <span class="k">FROM</span> ENVIOS <span class="k">WHERE</span> T = 'T2');</pre>
+      <p class="res" style="margin-top:18px">Resultado</p>
+      <p style="font-size:34px;margin:0;font-weight:700;color:var(--accent)">JUAN · P2 &nbsp;&nbsp; JOSE · P3</p>
+    </div>
+    <svg class="dg" viewBox="0 0 820 336" role="img" aria-labelledby="r10b-title r10b-desc">
+      <title id="r10b-title">Proveedores que enviaron para T1 y para T2</title>
+      <desc id="r10b-desc">Para T1 enviaron P1, P2 y P3; para T2, P2, P3 y P5. En los dos conjuntos están P2 y P3.</desc>
+      <circle cx="300" cy="188" r="140" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+      <circle cx="520" cy="188" r="140" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+      <path d="M410,101 A140,140 0 0 1 410,275 A140,140 0 0 1 410,101 Z" class="foc"/>
+      <text x="300" y="24" class="ey" text-anchor="middle">ENVIARON PARA T1</text>
+      <text x="520" y="24" class="ey" text-anchor="middle">ENVIARON PARA T2</text>
+      <text x="240" y="198" class="nm-s" text-anchor="middle">P1</text>
+      <text x="410" y="178" class="nm" text-anchor="middle" style="fill:var(--accent)">P2</text>
+      <text x="410" y="222" class="nm" text-anchor="middle" style="fill:var(--accent)">P3</text>
+      <text x="580" y="198" class="nm-s" text-anchor="middle">P5</text>
+    </svg>
+  </div>
+  <div class="ojo"><span class="lbl">Dos trampas</span><p><code>WHERE T = 'T1' AND T = 'T2'</code> da <b>vacío</b>, como en la 5b. Y <code>WHERE T IN ('T1','T2')</code> es un <b>OR</b>: devuelve P1, P2, P3 y P5 (lo probamos). “Ambos” = <b>dos subconsultas</b> unidas con AND.</p></div>
+</section>
+
+<!-- ============ CIERRE ============ -->
+<section class="slide" data-title="Antes de entregar">
+  <p class="kicker">Cierre</p>
+  <h2 class="h2">Antes de entregar, revisá esto</h2>
+  <div class="two" style="margin-top:8px">
+    <div class="card card-accent"><h4>En la teoría</h4><ul>
+      <li>¿Cada índice tiene <b>para qué sirve</b> y un <b>ejemplo</b>?</li>
+      <li>¿Justificaste por qué el agrupado ordena físicamente?</li>
+      <li>¿El dibujo del DW tiene la <b>metadata</b>?</li>
+      <li>¿EXISTS tiene un ejemplo con subconsulta?</li>
+      <li>¿Inmon = top-down y 3FN; Kimball = bottom-up y estrella?</li>
+      <li>¿OLTP opera el día a día; OLAP analiza la historia?</li>
+      <li>¿LEFT JOIN pone NULL del lado derecho?</li></ul></div>
+    <div class="card card-accent"><h4>En la práctica</h4><ul>
+      <li>¿“Actual” es <code>End_Dt = '2100-12-31'</code>?</li>
+      <li>¿“Al día X” es <code>'X' BETWEEN inicio AND fin</code>, con X a la izquierda?</li>
+      <li>¿Los campos de la vista están <b>en castellano</b>?</li>
+      <li>¿El indicador está <b>dentro</b> de la vista y tiene <code>ELSE</code>?</li>
+      <li>¿“Total” sobre un agregado va en <code>HAVING</code>?</li>
+      <li>¿Agrupaste por la <b>clave</b>, no sólo por el nombre?</li>
+      <li>¿“Ambos” son <b>dos subconsultas</b> con AND?</li>
+      <li>¿Cada tabla tiene alias y cada JOIN su <code>ON</code>?</li></ul></div>
+  </div>
+  <div class="crio"><span class="lbl">Para seguir</span><p>Si algo no salió: deck 1 (componentes), deck 2 (índices), deck 3 (EXISTS y subconsultas), deck 4 (SCD). Con corrector: lecciones 0028, 0036, 0052 y la práctica de SUMINISTROS.</p></div>
+</section>
+
+<div class="deck-footer"><span class="dim2">Simulacro del parcial</span><span class="slide-number" data-current="1" data-total="25"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

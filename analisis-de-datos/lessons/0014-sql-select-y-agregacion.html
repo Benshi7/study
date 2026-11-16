@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SELECT y agregación</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0014 · Bloque 2: SQL</div>
+
+<div class="kicker">Lección 0014</div>
+<h1>SQL: sublenguajes, SELECT y agregación</h1>
+<p class="lede">Es la sección 6 de los slides. La cátedra dice: <em>"en esta materia nos enfocaremos principalmente en DML, específicamente en el comando SELECT"</em>.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la 0013: ¿en qué capa Medallion se eliminan los duplicados? ¿Qué operaciones caracterizan a OLTP?</p>
+</div>
+
+<h2>Qué es SQL y sus cuatro sublenguajes</h2>
+<p><strong>Structured Query Language</strong>: el lenguaje estándar de las bases relacionales. Es <strong>declarativo</strong>: describís <em>qué</em> querés, no <em>cómo</em> obtenerlo.</p>
+<div class="table-wrap">
+<table>
+  <tr><th>Sublenguaje</th><th>Comandos</th><th>Para qué</th></tr>
+  <tr><td><strong>DDL</strong> · Data Definition</td><td>CREATE · ALTER · DROP · TRUNCATE</td><td>Define la <strong>estructura</strong></td></tr>
+  <tr><td><strong>DML</strong> · Data Manipulation</td><td>SELECT · INSERT · UPDATE · DELETE</td><td>Manipula los <strong>datos</strong></td></tr>
+  <tr><td><strong>DCL</strong> · Data Control</td><td>GRANT · REVOKE</td><td>Controla <strong>accesos y permisos</strong></td></tr>
+  <tr><td><strong>TCL</strong> · Transaction Control</td><td>COMMIT · ROLLBACK · SAVEPOINT</td><td>Gestiona <strong>transacciones</strong></td></tr>
+</table>
+</div>
+<div class="box trap">
+  <span class="label">Trampa: TRUNCATE vs DELETE</span>
+  <p>Los dos "borran filas", pero para la cátedra <strong>TRUNCATE es DDL</strong> y <strong>DELETE es DML</strong>. Y SELECT está en <strong>DML</strong>, no en un sublenguaje aparte.</p>
+</div>
+
+<h2>Anatomía y orden lógico</h2>
+<pre class="diagram">SELECT nombre, ciudad        ← qué columnas (* = todas)
+FROM clientes                ← de qué tabla
+WHERE segmento = 'Enterprise'← filtra FILAS  (AND, OR, NOT, IN, LIKE, BETWEEN)
+GROUP BY ...                 ← agrupa para agregar
+HAVING ...                   ← filtra GRUPOS (después de agregar)
+ORDER BY nombre ASC          ← ordena (ASC / DESC)
+LIMIT 10                     ← limita filas (TOP 10 en SQL Server)
+
+Orden en que el motor lo EVALÚA:
+FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</pre>
+<!-- diagram:sql-orden -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 196" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="sql-orden-title sql-orden-desc" xmlns="http://www.w3.org/2000/svg"><title id="sql-orden-title">Orden de evaluación de SQL</title><desc id="sql-orden-desc">Las siete cláusulas en el orden en que el motor las evalúa: FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY y LIMIT; WHERE y HAVING destacadas.</desc><defs><marker id="sql-orden-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="sql-orden-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="sql-orden-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><text class="eyebrow" x="20" y="28" text-anchor="start">ORDEN EN QUE EL MOTOR EVALÚA LA CONSULTA</text><path class="edge" d="M108,72 L132,72" marker-end="url(#sql-orden-arrow)"/><path class="edge" d="M220,72 L244,72" marker-end="url(#sql-orden-arrow)"/><path class="edge" d="M332,72 L356,72" marker-end="url(#sql-orden-arrow)"/><path class="edge" d="M444,72 L468,72" marker-end="url(#sql-orden-arrow)"/><path class="edge" d="M556,72 L580,72" marker-end="url(#sql-orden-arrow)"/><path class="edge" d="M668,72 L692,72" marker-end="url(#sql-orden-arrow)"/><rect class="mask" x="20" y="48" width="88" height="48" rx="6"/><rect class="node" x="20" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="28" y="62" text-anchor="start">1</text><text class="name-mono" x="64" y="80" text-anchor="middle">FROM</text><text class="sub" x="64" y="116" text-anchor="middle">tabla(s)</text><rect class="mask" x="132" y="48" width="88" height="48" rx="6"/><rect class="focal" x="132" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="140" y="62" text-anchor="start">2</text><text class="name-mono" x="176" y="80" text-anchor="middle">WHERE</text><text class="sub-accent" x="176" y="116" text-anchor="middle">filtra FILAS</text><rect class="mask" x="244" y="48" width="88" height="48" rx="6"/><rect class="node" x="244" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="252" y="62" text-anchor="start">3</text><text class="name-mono" x="288" y="80" text-anchor="middle">GROUP BY</text><text class="sub" x="288" y="116" text-anchor="middle">agrupa</text><rect class="mask" x="356" y="48" width="88" height="48" rx="6"/><rect class="focal" x="356" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="364" y="62" text-anchor="start">4</text><text class="name-mono" x="400" y="80" text-anchor="middle">HAVING</text><text class="sub-accent" x="400" y="116" text-anchor="middle">filtra GRUPOS</text><rect class="mask" x="468" y="48" width="88" height="48" rx="6"/><rect class="node" x="468" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="476" y="62" text-anchor="start">5</text><text class="name-mono" x="512" y="80" text-anchor="middle">SELECT</text><text class="sub" x="512" y="116" text-anchor="middle">elige columnas</text><rect class="mask" x="580" y="48" width="88" height="48" rx="6"/><rect class="node" x="580" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="588" y="62" text-anchor="start">6</text><text class="name-mono" x="624" y="80" text-anchor="middle">ORDER BY</text><text class="sub" x="624" y="116" text-anchor="middle">ordena</text><rect class="mask" x="692" y="48" width="88" height="48" rx="6"/><rect class="node" x="692" y="48" width="88" height="48" rx="6"/><text class="eyebrow" x="700" y="62" text-anchor="start">7</text><text class="name-mono" x="736" y="80" text-anchor="middle">LIMIT</text><text class="sub" x="736" y="116" text-anchor="middle">recorta</text><text class="note" x="400" y="152" text-anchor="middle">WHERE no ve agregados ni alias del SELECT: todavía no existen.</text><text class="sub" x="400" y="176" text-anchor="middle">se escribe: SELECT … FROM … WHERE … GROUP BY … HAVING … ORDER BY … LIMIT</text></svg></div><figcaption>WHERE (filas) vs HAVING (grupos), según el orden de evaluación. <a href="../diagrams/sql-orden.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:sql-orden -->
+
+<div class="table-wrap">
+<table>
+  <tr><th>Operador</th><th>Significado</th></tr>
+  <tr><td><code>=</code> · <code>!=</code> o <code>&lt;&gt;</code> · <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code></td><td>Comparación</td></tr>
+  <tr><td><code>AND</code> · <code>OR</code> · <code>NOT</code></td><td>Lógicos</td></tr>
+  <tr><td><code>IN (a, b)</code> · <code>BETWEEN x AND y</code> (incluye los extremos) · <code>LIKE 'A%'</code></td><td>Especiales</td></tr>
+  <tr><td><code>IS NULL</code> · <code>IS NOT NULL</code></td><td>NULL <strong>no es cero ni cadena vacía</strong>: es ausencia de valor. <strong>Nunca</strong> <code>= NULL</code></td></tr>
+</table>
+</div>
+
+<h3>Agregación</h3>
+<ul>
+  <li><code>COUNT(*)</code> cuenta <strong>todas las filas</strong> · <code>COUNT(col)</code> cuenta los valores <strong>no nulos</strong> de esa columna (slide: 1.500 vs 1.420).</li>
+  <li><code>SUM</code>, <code>AVG</code>, <code>MAX</code>, <code>MIN</code> · <code>COUNT(DISTINCT col)</code> cuenta valores únicos.</li>
+  <li><code>DISTINCT</code> elimina duplicados del resultado · <code>AS</code> pone alias a columnas y tablas, y permite columnas calculadas (<code>monto * 1.21 AS monto_con_iva</code>).</li>
+</ul>
+<p><strong>Buenas prácticas del slide:</strong> evitá <code>SELECT *</code>, usá alias con nombres de negocio, filtrá lo antes posible (WHERE antes de agregar) y comentá tus queries (<code>--</code>).</p>
+<span class="sidenote">Fuente: <a href="../raw/unicaba_fundamentos_sql.pdf">unicaba_fundamentos_sql.pdf</a>, sección 6.</span>
+
+<h2>Práctica</h2>
+<p class="muted">Las preguntas con código usan estas tablas (resultados verificados en SQLite):</p>
+<pre class="code">clientes                           facturas
+id | nombre | pais | email         id | cliente_id | total
+1  | Ana    | AR   | ana@x.com     10 | 1          | 100
+2  | Beto   | BR   | NULL          11 | 1          | 50
+3  | Caro   | AR   | caro@x.com    12 | 2          | 80
+4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>
+
+<div class="quiz" data-quiz-id="0014-sql-select-y-agregacion"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿A qué sublenguaje pertenece SELECT?",
+   "options": ["DML", "DDL", "DCL", "TCL"], "answer": 0,
+   "why": "SELECT, INSERT, UPDATE y DELETE forman el DML (Data Manipulation Language)."},
+  {"q": "¿A qué sublenguaje pertenece TRUNCATE?",
+   "options": ["DDL", "DML", "DCL", "TCL"], "answer": 0,
+   "why": "Para la cátedra, TRUNCATE va con CREATE, ALTER y DROP (DDL). DELETE, en cambio, es DML."},
+  {"q": "GRANT y REVOKE pertenecen a…",
+   "options": ["DCL", "DDL", "DML", "TCL"], "answer": 0,
+   "why": "Data Control Language: controla accesos y permisos."},
+  {"q": "COMMIT, ROLLBACK y SAVEPOINT pertenecen a…",
+   "options": ["TCL", "DCL", "DDL", "DML"], "answer": 0,
+   "why": "Transaction Control Language: gestiona transacciones."},
+  {"q": "¿Qué significa que SQL sea un lenguaje declarativo?",
+   "options": ["Describís qué querés y no cómo obtenerlo", "Indicás paso a paso cada operación necesaria", "Solo sirve para declarar tablas y columnas", "Se ejecuta sin compilar, línea por línea"], "answer": 0,
+   "why": "Es la definición del slide. Ojo: \"sin compilar\" es la definición de lenguaje interpretado, no de declarativo."},
+  {"q": "<pre class=\"code\">clientes                           facturas\nid | nombre | pais | email         id | cliente_id | total\n1  | Ana    | AR   | ana@x.com     10 | 1          | 100\n2  | Beto   | BR   | NULL          11 | 1          | 50\n3  | Caro   | AR   | caro@x.com    12 | 2          | 80\n4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>¿Qué devuelve?<pre class=\"code\">SELECT COUNT(*), COUNT(email) FROM clientes;</pre>",
+   "options": ["4 y 3", "4 y 4", "3 y 3", "3 y 4"], "answer": 0,
+   "why": "COUNT(*) cuenta todas las filas; COUNT(email) no cuenta el NULL de Beto."},
+  {"q": "<pre class=\"code\">clientes                           facturas\nid | nombre | pais | email         id | cliente_id | total\n1  | Ana    | AR   | ana@x.com     10 | 1          | 100\n2  | Beto   | BR   | NULL          11 | 1          | 50\n3  | Caro   | AR   | caro@x.com    12 | 2          | 80\n4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>¿Cuántas filas devuelve?<pre class=\"code\">SELECT * FROM clientes WHERE email = NULL;</pre>",
+   "options": ["0", "1", "4", "Error"], "answer": 0,
+   "why": "Comparar con = NULL nunca es verdadero. Hay que usar <code>IS NULL</code>, que devolvería 1 fila (Beto)."},
+  {"q": "<pre class=\"code\">clientes                           facturas\nid | nombre | pais | email         id | cliente_id | total\n1  | Ana    | AR   | ana@x.com     10 | 1          | 100\n2  | Beto   | BR   | NULL          11 | 1          | 50\n3  | Caro   | AR   | caro@x.com    12 | 2          | 80\n4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>¿Qué devuelve?<pre class=\"code\">SELECT COUNT(DISTINCT pais) FROM clientes;</pre>",
+   "options": ["3", "4", "2", "1"], "answer": 0,
+   "why": "Los países distintos son AR, BR y CL; AR aparece dos veces."},
+  {"q": "<pre class=\"code\">clientes                           facturas\nid | nombre | pais | email         id | cliente_id | total\n1  | Ana    | AR   | ana@x.com     10 | 1          | 100\n2  | Beto   | BR   | NULL          11 | 1          | 50\n3  | Caro   | AR   | caro@x.com    12 | 2          | 80\n4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>¿Cuántas filas devuelve?<pre class=\"code\">SELECT pais, COUNT(*)\nFROM clientes\nGROUP BY pais\nHAVING COUNT(*) &gt; 1;</pre>",
+   "options": ["1", "2", "3", "0"], "answer": 0,
+   "why": "Solo AR tiene más de un cliente. HAVING filtra grupos después de agregar."},
+  {"q": "¿Cuál es la diferencia entre WHERE y HAVING?",
+   "options": ["WHERE filtra filas; HAVING filtra grupos", "WHERE filtra grupos; HAVING filtra filas", "Son equivalentes y se pueden intercambiar", "HAVING solo funciona sin GROUP BY"], "answer": 0,
+   "why": "WHERE actúa antes de agrupar; HAVING actúa sobre el resultado de la agregación."},
+  {"q": "<pre class=\"code\">clientes                           facturas\nid | nombre | pais | email         id | cliente_id | total\n1  | Ana    | AR   | ana@x.com     10 | 1          | 100\n2  | Beto   | BR   | NULL          11 | 1          | 50\n3  | Caro   | AR   | caro@x.com    12 | 2          | 80\n4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>¿Cuántas filas cuenta?<pre class=\"code\">SELECT COUNT(*) FROM facturas\nWHERE total BETWEEN 50 AND 100;</pre>",
+   "options": ["3", "2", "1", "4"], "answer": 0,
+   "why": "BETWEEN incluye los extremos: 100, 50 y 80."},
+  {"q": "<pre class=\"code\">clientes                           facturas\nid | nombre | pais | email         id | cliente_id | total\n1  | Ana    | AR   | ana@x.com     10 | 1          | 100\n2  | Beto   | BR   | NULL          11 | 1          | 50\n3  | Caro   | AR   | caro@x.com    12 | 2          | 80\n4  | Dani   | CL   | dani@x.com    13 | 3          | 20</pre>¿Qué devuelve?<pre class=\"code\">SELECT nombre FROM clientes\nORDER BY nombre DESC\nLIMIT 2;</pre>",
+   "options": ["Dani, Caro", "Ana, Beto", "Caro, Dani", "Beto, Ana"], "answer": 0,
+   "why": "DESC ordena de Z a A y LIMIT 2 se queda con las dos primeras filas."},
+  {"q": "¿En qué orden evalúa el motor estas cláusulas?",
+   "options": ["FROM, WHERE, GROUP BY, SELECT", "SELECT, FROM, WHERE, GROUP BY", "WHERE, FROM, SELECT, GROUP BY", "FROM, SELECT, WHERE, GROUP BY"], "answer": 0,
+   "why": "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT. Por eso WHERE no puede usar un alias definido en el SELECT."},
+  {"q": "¿Cuál de estas es una buena práctica según la cátedra?",
+   "options": ["Especificar columnas en lugar de SELECT *", "Usar alias técnicos como col1 y col2", "Filtrar recién después de agregar los datos", "Evitar los comentarios para acortar la query"], "answer": 0,
+   "why": "Las otras tres son exactamente lo contrario de lo que recomienda el slide."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Clasificás cualquier comando en DDL, DML, DCL o TCL (incluida la trampa de TRUNCATE) y predecís el resultado de consultas con NULL, COUNT, DISTINCT, GROUP BY y HAVING.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/unicaba_fundamentos_sql.pdf">unicaba_fundamentos_sql.pdf</a>, sección 6. Para practicar: <a href="https://sqlbolt.com">sqlbolt.com</a>, que recomiendan los slides. Resumen: <a href="../reference/sql.html">Referencia · SQL</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si querés, en el chat te tiro consultas más difíciles sobre estas tablas para que predigas el resultado.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0013-data-warehouse-y-medallion.html">← 0013 · Data Warehouse y Medallion</a>
+  <a href="0015-taller-sql-chinook.html">0015 · Taller SQL (Chinook) →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

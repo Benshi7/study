@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 9 — De la muestra a la población: Intervalos de Confianza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 7 · Inferencia</span>
+<h1>De la Muestra a la Población: Intervalos de Confianza</h1>
+<p class="subtitle">Este bloque ya te cayó en parciales. La app calcula el intervalo — lo que rinde en el multiple choice es entender QUÉ estás estimando y cómo se lee correctamente un intervalo.</p>
+
+<h2>El salto conceptual: describir vs. inferir</h2>
+<p>La estadística <strong>descriptiva</strong> resume los datos que tenés (una muestra). La <strong>inferencia</strong> usa esa muestra para estimar algo de una población entera que no podés medir. Ese "algo" es un <strong>parámetro</strong>.</p>
+<table>
+<tr><th>Estadístico (muestra)</th><th>Parámetro (población)</th></tr>
+<tr><td class="formula">x̄, s</td><td class="formula">μ, σ</td></tr>
+<tr><td>Lo calculás con tus datos</td><td>Es fijo pero desconocido — lo estimás</td></tr>
+</table>
+<div class="box">
+Clave que se olvida: <strong>μ es una constante</strong>, no una variable al azar. No "cae" en ningún lado — simplemente no lo conocés. Lo que varía de muestra en muestra es x̄, no μ.
+</div>
+
+<h2>La pieza que hace funcionar todo: la distribución muestral</h2>
+<p>Si tomaras muchas muestras de tamaño n y anotaras el promedio x̄ de cada una, esos promedios forman su propia distribución, centrada en μ, con dispersión:</p>
+<div class="box">
+<span class="formula">σ_x̄ = σ / √n</span> &nbsp;— el <strong>error estándar</strong> de la media
+</div>
+<p>Cuanto más grande es n, más se concentran los promedios alrededor de μ (menos error). Y por el <strong>Teorema Central del Límite</strong>, x̄ se distribuye aproximadamente Normal cuando <span class="formula">n ≥ 30</span>, <em>aunque la población original no sea Normal</em>.</p>
+<div class="warn">
+No confundas <span class="formula">σ</span> (dispersión de los datos individuales) con <span class="formula">σ_x̄ = σ/√n</span> (dispersión de los promedios). El error estándar es SIEMPRE menor o igual que σ. Usar σ donde va σ/√n es un error clásico.
+</div>
+
+<h2>Qué es un intervalo de confianza</h2>
+<p>Una estimación <strong>puntual</strong> (un solo número, x̄) casi seguro no da exacto. Una estimación <strong>por intervalo</strong> da un rango, con un nivel de confianza asociado:</p>
+<div class="box">
+<span class="formula">IC(μ) = x̄ ± E</span> &nbsp;&nbsp; donde E es el <strong>margen de error</strong>
+</div>
+
+<h2>¿Z o t de Student? La única decisión que tenés que tomar</h2>
+<table>
+<tr><th>Situación</th><th>Qué usás</th></tr>
+<tr><td>σ poblacional <strong>conocido</strong></td><td class="formula">Z · (σ/√n)</td></tr>
+<tr><td>σ <strong>desconocido</strong> (usás s de la muestra)</td><td class="formula">t · (s/√n), &nbsp;ν = n−1</td></tr>
+</table>
+<p>Con n &lt; 30 y σ desconocido se asume que la población es Normal (si no, el intervalo con t no está justificado). La <strong>t de Student</strong> es una familia de campanas (una por cada grado de libertad ν = n−1), más achatada y de colas más pesadas que la Z. Para el mismo nivel de confianza, <span class="formula">|t| &gt; |z|</span> siempre. A medida que n crece, t se parece cada vez más a Z.</p>
+<div class="warn">
+Si el enunciado dice "se desconoce el desvío poblacional" o te da un desvío calculado <strong>a partir de la muestra</strong> (s), corresponde <strong>t</strong> — aunque n sea grande. La pista no es el tamaño de la muestra, es si conocés σ de la población o no.
+</div>
+
+<h2>La trampa que MÁS cae: qué significa "95% de confianza"</h2>
+<div class="warn">
+"IC del 95% para μ es (10; 14)" <strong>NO</strong> significa "hay 95% de probabilidad de que μ esté entre 10 y 14". Una vez calculado el intervalo con datos concretos, μ está adentro o no está — no hay azar.
+</div>
+<p>El 95% es una propiedad del <strong>método</strong>: si repitieras el muestreo muchas veces y construyeras un intervalo cada vez, el 95% de esos intervalos contendría al verdadero μ (y el 5% no). La confianza es del procedimiento, no del intervalo particular que ya tenés en la mano.</p>
+
+<h2>Los dos manejos del ancho del intervalo</h2>
+<table>
+<tr><th>Si...</th><th>El intervalo...</th></tr>
+<tr><td>subís el nivel de confianza (90% → 99%)</td><td>se hace más <strong>ancho</strong> (más error)</td></tr>
+<tr><td>subís el tamaño de muestra n</td><td>se hace más <strong>angosto</strong> (menos error)</td></tr>
+</table>
+<p>Para reducir el error tenés dos vías: <strong>aumentar n</strong> o <strong>bajar el nivel de confianza</strong>.</p>
+
+<h2>Tercer caso: intervalo para una PROPORCIÓN</h2>
+<p>Cuando la variable no es un promedio sino un <strong>porcentaje</strong> (clientes satisfechos, consumidores, votos), estimás una proporción p. Siempre se usa Z:</p>
+<div class="box">
+<span class="formula">IC(p) = p̂ ± Z · √(p̂·q̂ / n)</span> &nbsp;&nbsp; con <span class="formula">p̂ = éxitos/n</span>, &nbsp;<span class="formula">q̂ = 1 − p̂</span>
+</div>
+<p>Ejemplo real de parcial: "de 250 clientes, 150 están satisfechos" → p̂ = 150/250 = 0,6. La pregunta pide estimar el % de TODOS los clientes con cierta confianza.</p>
+<div class="warn">
+<strong>Condiciones de validez.</strong> El IC con Z para p exige <span class="formula">n·p̂ ≥ 15</span> y <span class="formula">n·q̂ ≥ 15</span> (criterio de la cátedra para aproximar a la Normal). Y si no hay ninguna estimación previa de p para calcular el tamaño de muestra, se toma <span class="formula">p̂ = 0,5</span> (el caso más desfavorable: maximiza p̂·q̂).
+</div>
+
+<h2>Tamaño de muestra: ¿cuántos datos necesito?</h2>
+<p>El parcial te da estas fórmulas — tu trabajo es elegir la correcta y despejar:</p>
+<table>
+<tr><th>Para estimar...</th><th>n necesario</th></tr>
+<tr><td>una media (σ conocido)</td><td class="formula">n = (Z·σ / E)²</td></tr>
+<tr><td>una proporción</td><td class="formula">n = Z²·p̂·q̂ / E²</td></tr>
+</table>
+<p>El resultado se redondea <strong>siempre hacia arriba</strong> (si da 75,001 → 76). Y si preguntan "cuántos <em>más</em>", es <span class="formula">n_nuevo − n_actual</span>.</p>
+<div class="warn">
+<strong>La pregunta que más confunde: "reducir el error un 60%".</strong> No es multiplicar por 0,60 — es dejar el error en el 40% del original: <span class="formula">E_nuevo = 0,40 · E_viejo</span>. "Reducir a la mitad" ⇒ <span class="formula">E_nuevo = E/2</span>. Recalculás E, después n. Como n depende de <span class="formula">1/E²</span>, achicar E a la mitad <strong>cuadruplica</strong> n.
+</div>
+
+<h2>Confianza inversa: te dan el intervalo, buscás el nivel</h2>
+<p>Otro clásico: te dan un intervalo ya calculado y preguntan qué nivel de confianza se usó. Se despeja al revés:</p>
+<div class="box">
+<span class="formula">E = (extremo sup − extremo inf) / 2</span> &nbsp;→&nbsp; <span class="formula">Z = E·√n / σ</span> &nbsp;→&nbsp; de ese Z sale el nivel (1−α)
+</div>
+<div class="box">
+<strong>Bonus que también cae (Ej. 1d):</strong> "probabilidad de que el TOTAL de n entregas / salarios supere X". Es la <strong>distribución de la suma</strong> W = x₁+…+xₙ, con <span class="formula">μ_W = n·μ</span> y <span class="formula">σ_W = √n·σ</span>. No confundir con el promedio (que usa σ/√n).
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. "El IC del 95% para μ es (10; 14)." ¿Cuál es la lectura correcta?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', true)"> Si repitiéramos el muestreo, el 95% de los intervalos así contendrían a μ</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> Hay 95% de probabilidad de que μ esté entre 10 y 14</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> El 95% de los datos de la muestra caen entre 10 y 14</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> μ vale con certeza 12, el punto medio del intervalo</label>
+<div id="q1a" class="feedback correct">El 95% describe el método: si repitiéramos el muestreo muchas veces y construyéramos un intervalo en cada una, el 95% de esos intervalos contendría al verdadero μ. No es una probabilidad sobre este intervalo en particular ni una afirmación sobre los datos.</div>
+<div id="q1b" class="feedback wrong">Trampa clásica. Una vez calculado el intervalo, μ está o no está adentro — no hay probabilidad sobre ESE intervalo. El 95% es del método.</div>
+<div id="q1c" class="feedback wrong">Confundís el intervalo de confianza para μ con el rango de los datos. El IC estima el parámetro μ (la media poblacional), no dice dónde caen los datos individuales: con n grande el IC es muy angosto, pero los datos siguen dispersos alrededor de x̄ con desvío s.</div>
+<div id="q1d" class="feedback wrong">El punto medio es solo la estimación puntual x̄; no hay ninguna certeza de que μ valga exactamente eso.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Una muestra de n=15 tiene el desvío poblacional σ desconocido. Para el IC de μ, el valor crítico sale de:</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> La distribución Z, porque siempre se usa Z</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> La distribución t de Student, con ν = 15</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', true)"> La distribución t de Student, con ν = 14</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> La distribución Z, con ν = 14</label>
+<div id="q2a" class="feedback wrong">Z se usa solo cuando σ poblacional es conocido. Acá es desconocido → t.</div>
+<div id="q2b" class="feedback wrong">Casi: es t, pero los grados de libertad son ν = n − 1 = 14, no 15.</div>
+<div id="q2c" class="feedback correct">σ desconocido ⇒ t de Student, con grados de libertad ν = n − 1 = 14.</div>
+<div id="q2d" class="feedback wrong">La Z no tiene grados de libertad, y acá corresponde t porque σ es desconocido.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. Manteniendo n fijo, subís el nivel de confianza de 90% a 99%. El intervalo:</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> Se vuelve más angosto</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', false)"> No cambia</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> Se vuelve más angosto solo si σ es conocido</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', true)"> Se vuelve más ancho</label>
+<div id="q3a" class="feedback wrong">Al revés: más confianza exige un valor crítico mayor, así que el margen de error crece.</div>
+<div id="q3b" class="feedback wrong">Sí cambia: el valor crítico depende del nivel de confianza, y con él cambia el ancho.</div>
+<div id="q3c" class="feedback wrong">El efecto es el mismo con Z o con t: más confianza, intervalo más ancho.</div>
+<div id="q3d" class="feedback correct">Más confianza ⇒ valor crítico (Z o t) mayor ⇒ margen de error E mayor ⇒ intervalo más ancho. Más seguridad se paga con menos precisión.</div>
+</div>
+
+<div class="quiz">
+<p class="q">4. De 200 consumidores, 120 declaran consumir el producto. Para estimar el % de TODOS los consumidores, ¿qué intervalo corresponde?</p>
+<label><input type="radio" name="q4" onclick="showFeedback('q4a', true)"> IC para una proporción: p̂ ± Z·√(p̂·q̂/n)</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4b', false)"> IC para la media con Z (σ conocido)</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4c', false)"> IC para la media con t (σ desconocido)</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4d', false)"> No se puede estimar sin conocer el desvío</label>
+<div id="q4a" class="feedback correct">La pista es "120 de 200 declaran…" → p̂ = 0,6. Cuando el dato es una fracción/porcentaje, es IC para proporción (siempre con Z).</div>
+<div id="q4b" class="feedback wrong">No estás estimando un promedio de una variable numérica, sino la fracción que consume: es una proporción.</div>
+<div id="q4c" class="feedback wrong">La t es para medias con σ desconocido. Acá el dato es un conteo de "éxitos" (120 de 200) → proporción.</div>
+<div id="q4d" class="feedback wrong">En proporciones el "desvío" sale de la propia p̂: √(p̂·q̂/n). No necesitás un σ aparte.</div>
+</div>
+
+<div class="quiz">
+<p class="q">5. Con un margen de error actual E, te piden reducirlo a la MITAD manteniendo la confianza. ¿Qué pasa con el tamaño de muestra n?</p>
+<label><input type="radio" name="q5" onclick="showFeedback('q5a', false)"> Se reduce a la mitad</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5b', false)"> Se duplica</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5c', true)"> Se cuadruplica (×4)</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5d', false)"> No cambia, solo cambia Z</label>
+<div id="q5a" class="feedback wrong">Al revés: menos error exige MÁS datos, no menos.</div>
+<div id="q5b" class="feedback wrong">Casi, pero la relación no es lineal. n depende de 1/E².</div>
+<div id="q5c" class="feedback correct">n ∝ 1/E². Si E pasa a E/2, entonces 1/(E/2)² = 4/E² → n se multiplica por 4. Más precisión se paga caro en datos.</div>
+<div id="q5d" class="feedback wrong">Z depende del nivel de confianza, que acá se mantiene fijo. Lo que cambia es E, y con él n.</div>
+</div>
+
+<div class="ask">
+¿Querés que armemos un ejemplo numérico completo de IC, o el árbol de decisión Z/t/proporción/n en una sola imagen? Decime.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/confidence-interval.html" target="_blank">Math is Fun — Confidence Intervals</a>.
+<div class="nav-row">
+  <span>← <a href="0008-normal-y-estandarizacion.html">Lección 8 — Normal y estandarización</a></span>
+  <span><a href="0010-regresion-y-correlacion.html">Lección 10 — Regresión y correlación</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

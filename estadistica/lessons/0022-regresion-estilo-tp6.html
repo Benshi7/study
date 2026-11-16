@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 22 — Regresión y correlación al estilo TP6</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 8 · Regresión y correlación · Lección mecánica</span>
+<h1>Regresión y correlación al estilo TP6</h1>
+<p class="subtitle">Leer diagramas de dispersión, decidir el signo de r desde el contexto, pasar de r a r², interpretar la pendiente, predecir sin extrapolar y sacar a, b y r con la calculadora.</p>
+
+
+<h2>El problema</h2>
+<p>En el TP6 (y por lo tanto en el final) casi nunca te piden calcular r a mano. Te piden <strong>leer</strong> y <strong>decidir</strong>: mirar un gráfico o un valor de r o R², describir la asociación con las palabras correctas (<em>positiva, lineal, fuerte</em>…), decidir un signo por el contexto, predecir con la recta y no pasarte de rosca (extrapolar). Esta lección te entrena esas decisiones, con la calculadora en modo regresión para los números.</p>
+
+<h2>Cómo describir una asociación: tres palabras</h2>
+<div class="tw"><table>
+<tr><th>Qué miras</th><th>Pregunta</th><th>Etiqueta</th></tr>
+<tr><td>Dirección</td><td>Cuando x crece, ¿y tiende a crecer o a decrecer?</td><td><strong>Positiva</strong> (crece) · <strong>Negativa</strong> (decrece)</td></tr>
+<tr><td>Forma</td><td>¿Los puntos siguen una recta o una curva?</td><td><strong>Lineal</strong> · no lineal</td></tr>
+<tr><td>Fuerza</td><td>¿Qué tan pegados están a la recta?</td><td>Cátedra: |r| ≥ 0,7 ⇒ <strong>fuerte</strong>; |r| &lt; 0,7 ⇒ <strong>débil</strong></td></tr>
+</table></div>
+<div class="plots"><figure class="fig"><svg viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="Diagrama de dispersión: Positiva, lineal, fuerte">
+<title>Diagrama de dispersión: Positiva, lineal, fuerte</title>
+<polyline class="svg-axis" points="26,14 26,144 198,144"/>
+<circle class="svg-dot" cx="38.9" cy="128.6" r="3.2"/>
+<circle class="svg-dot" cx="56.9" cy="110.1" r="3.2"/>
+<circle class="svg-dot" cx="82.9" cy="97.2" r="3.2"/>
+<circle class="svg-dot" cx="85.6" cy="97.6" r="3.2"/>
+<circle class="svg-dot" cx="97.9" cy="93.0" r="3.2"/>
+<circle class="svg-dot" cx="100.1" cy="88.2" r="3.2"/>
+<circle class="svg-dot" cx="113.8" cy="77.8" r="3.2"/>
+<circle class="svg-dot" cx="117.9" cy="77.0" r="3.2"/>
+<circle class="svg-dot" cx="119.7" cy="65.7" r="3.2"/>
+<circle class="svg-dot" cx="151.2" cy="47.5" r="3.2"/>
+<circle class="svg-dot" cx="156.6" cy="68.3" r="3.2"/>
+<circle class="svg-dot" cx="162.7" cy="59.1" r="3.2"/>
+<circle class="svg-dot" cx="181.5" cy="36.0" r="3.2"/>
+<circle class="svg-dot" cx="181.7" cy="37.5" r="3.2"/>
+<text class="svg-t" x="112" y="162" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="79" text-anchor="middle">y</text>
+</svg><figcaption><strong>Positiva, lineal, fuerte</strong><br>r = 0,97</figcaption></figure><figure class="fig"><svg viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="Diagrama de dispersión: Positiva, lineal, débil">
+<title>Diagrama de dispersión: Positiva, lineal, débil</title>
+<polyline class="svg-axis" points="26,14 26,144 198,144"/>
+<circle class="svg-dot" cx="43.1" cy="90.4" r="3.2"/>
+<circle class="svg-dot" cx="48.8" cy="100.2" r="3.2"/>
+<circle class="svg-dot" cx="57.8" cy="84.0" r="3.2"/>
+<circle class="svg-dot" cx="63.7" cy="106.2" r="3.2"/>
+<circle class="svg-dot" cx="75.1" cy="87.5" r="3.2"/>
+<circle class="svg-dot" cx="77.2" cy="108.1" r="3.2"/>
+<circle class="svg-dot" cx="80.8" cy="70.9" r="3.2"/>
+<circle class="svg-dot" cx="101.6" cy="78.2" r="3.2"/>
+<circle class="svg-dot" cx="121.6" cy="69.2" r="3.2"/>
+<circle class="svg-dot" cx="127.5" cy="65.8" r="3.2"/>
+<circle class="svg-dot" cx="136.4" cy="92.7" r="3.2"/>
+<circle class="svg-dot" cx="138.2" cy="54.8" r="3.2"/>
+<circle class="svg-dot" cx="147.4" cy="25.5" r="3.2"/>
+<circle class="svg-dot" cx="160.6" cy="98.4" r="3.2"/>
+<text class="svg-t" x="112" y="162" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="79" text-anchor="middle">y</text>
+</svg><figcaption><strong>Positiva, lineal, débil</strong><br>r = 0,52</figcaption></figure><figure class="fig"><svg viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="Diagrama de dispersión: Negativa, lineal, fuerte">
+<title>Diagrama de dispersión: Negativa, lineal, fuerte</title>
+<polyline class="svg-axis" points="26,14 26,144 198,144"/>
+<circle class="svg-dot" cx="38.9" cy="35.7" r="3.2"/>
+<circle class="svg-dot" cx="56.9" cy="40.1" r="3.2"/>
+<circle class="svg-dot" cx="82.9" cy="60.2" r="3.2"/>
+<circle class="svg-dot" cx="85.6" cy="64.2" r="3.2"/>
+<circle class="svg-dot" cx="97.9" cy="75.2" r="3.2"/>
+<circle class="svg-dot" cx="100.1" cy="73.1" r="3.2"/>
+<circle class="svg-dot" cx="113.8" cy="80.1" r="3.2"/>
+<circle class="svg-dot" cx="117.9" cy="84.5" r="3.2"/>
+<circle class="svg-dot" cx="119.7" cy="75.5" r="3.2"/>
+<circle class="svg-dot" cx="151.2" cy="97.4" r="3.2"/>
+<circle class="svg-dot" cx="156.6" cy="125.0" r="3.2"/>
+<circle class="svg-dot" cx="162.7" cy="123.5" r="3.2"/>
+<circle class="svg-dot" cx="181.5" cy="124.2" r="3.2"/>
+<circle class="svg-dot" cx="181.7" cy="126.0" r="3.2"/>
+<text class="svg-t" x="112" y="162" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="79" text-anchor="middle">y</text>
+</svg><figcaption><strong>Negativa, lineal, fuerte</strong><br>r = −0,98</figcaption></figure><figure class="fig"><svg viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="Diagrama de dispersión: Negativa, lineal, débil">
+<title>Diagrama de dispersión: Negativa, lineal, débil</title>
+<polyline class="svg-axis" points="26,14 26,144 198,144"/>
+<circle class="svg-dot" cx="43.1" cy="50.8" r="3.2"/>
+<circle class="svg-dot" cx="48.8" cy="63.9" r="3.2"/>
+<circle class="svg-dot" cx="57.8" cy="52.9" r="3.2"/>
+<circle class="svg-dot" cx="63.7" cy="78.5" r="3.2"/>
+<circle class="svg-dot" cx="75.1" cy="66.3" r="3.2"/>
+<circle class="svg-dot" cx="77.2" cy="88.1" r="3.2"/>
+<circle class="svg-dot" cx="80.8" cy="53.0" r="3.2"/>
+<circle class="svg-dot" cx="101.6" cy="72.3" r="3.2"/>
+<circle class="svg-dot" cx="121.6" cy="74.7" r="3.2"/>
+<circle class="svg-dot" cx="127.5" cy="74.7" r="3.2"/>
+<circle class="svg-dot" cx="136.4" cy="106.7" r="3.2"/>
+<circle class="svg-dot" cx="138.2" cy="69.8" r="3.2"/>
+<circle class="svg-dot" cx="147.4" cy="45.8" r="3.2"/>
+<circle class="svg-dot" cx="160.6" cy="126.3" r="3.2"/>
+<text class="svg-t" x="112" y="162" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="79" text-anchor="middle">y</text>
+</svg><figcaption><strong>Negativa, lineal, débil</strong><br>r = −0,50</figcaption></figure><figure class="fig"><svg viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="Diagrama de dispersión: Sin asociación">
+<title>Diagrama de dispersión: Sin asociación</title>
+<polyline class="svg-axis" points="26,14 26,144 198,144"/>
+<circle class="svg-dot" cx="47.9" cy="53.0" r="3.2"/>
+<circle class="svg-dot" cx="49.2" cy="29.2" r="3.2"/>
+<circle class="svg-dot" cx="52.2" cy="102.6" r="3.2"/>
+<circle class="svg-dot" cx="59.3" cy="62.8" r="3.2"/>
+<circle class="svg-dot" cx="71.3" cy="57.6" r="3.2"/>
+<circle class="svg-dot" cx="95.2" cy="101.6" r="3.2"/>
+<circle class="svg-dot" cx="101.3" cy="133.4" r="3.2"/>
+<circle class="svg-dot" cx="101.6" cy="27.3" r="3.2"/>
+<circle class="svg-dot" cx="108.8" cy="101.0" r="3.2"/>
+<circle class="svg-dot" cx="114.6" cy="99.3" r="3.2"/>
+<circle class="svg-dot" cx="124.7" cy="36.2" r="3.2"/>
+<circle class="svg-dot" cx="125.4" cy="69.7" r="3.2"/>
+<circle class="svg-dot" cx="148.3" cy="82.1" r="3.2"/>
+<circle class="svg-dot" cx="158.6" cy="49.2" r="3.2"/>
+<text class="svg-t" x="112" y="162" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="79" text-anchor="middle">y</text>
+</svg><figcaption><strong>Sin asociación</strong><br>r = −0,08</figcaption></figure><figure class="fig"><svg viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="Diagrama de dispersión: Asociación no lineal (curva)">
+<title>Diagrama de dispersión: Asociación no lineal (curva)</title>
+<polyline class="svg-axis" points="26,14 26,144 198,144"/>
+<circle class="svg-dot" cx="41.6" cy="93.3" r="3.2"/>
+<circle class="svg-dot" cx="42.1" cy="99.8" r="3.2"/>
+<circle class="svg-dot" cx="42.9" cy="91.8" r="3.2"/>
+<circle class="svg-dot" cx="70.9" cy="52.7" r="3.2"/>
+<circle class="svg-dot" cx="78.8" cy="42.3" r="3.2"/>
+<circle class="svg-dot" cx="93.9" cy="30.9" r="3.2"/>
+<circle class="svg-dot" cx="97.8" cy="30.0" r="3.2"/>
+<circle class="svg-dot" cx="101.9" cy="23.7" r="3.2"/>
+<circle class="svg-dot" cx="114.4" cy="24.7" r="3.2"/>
+<circle class="svg-dot" cx="135.6" cy="34.5" r="3.2"/>
+<circle class="svg-dot" cx="159.2" cy="54.1" r="3.2"/>
+<circle class="svg-dot" cx="159.7" cy="53.1" r="3.2"/>
+<circle class="svg-dot" cx="185.4" cy="106.6" r="3.2"/>
+<circle class="svg-dot" cx="189.3" cy="109.4" r="3.2"/>
+<text class="svg-t" x="112" y="162" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="79" text-anchor="middle">y</text>
+</svg><figcaption><strong>Asociación no lineal (curva)</strong><br>r = −0,04</figcaption></figure></div>
+<div class="box">
+<strong>r mide solo la asociación LINEAL.</strong> En la curva (último gráfico) la relación es fortísima pero r ≈ 0: r cerca de cero significa “ninguna asociación <em>lineal</em>”, no “ninguna relación”. Por eso en el examen primero se mira el gráfico y recién después el número.
+</div>
+
+<h2>Las fórmulas y los umbrales de la cátedra</h2>
+<div class="tw"><table>
+<tr><th>Qué</th><th>Fórmula / regla</th><th>Notas</th></tr>
+<tr><td>Recta de regresión</td><td><span class="formula">ŷ = a + b·x</span></td><td>Mínimos cuadrados; pasa por (x̄; ȳ)</td></tr>
+<tr><td>Pendiente</td><td><span class="formula">b = S_xy / S_xx = r · (S_y / S_x)</span></td><td>Cambio esperado de y por cada unidad que aumenta x. El signo de b es el de r</td></tr>
+<tr><td>Ordenada</td><td><span class="formula">a = ȳ − b·x̄</span></td><td>Valor esperado de y cuando x = 0 (solo tiene sentido si x = 0 está en el rango)</td></tr>
+<tr><td>Correlación</td><td><span class="formula">r = S_xy / √(S_xx · S_yy)</span></td><td>−1 ≤ r ≤ 1; |r| ≥ 0,7 fuerte</td></tr>
+<tr><td>Determinación</td><td><span class="formula">r² = R²</span></td><td>0 ≤ R² ≤ 1: % de la variación de y explicado por la recta. Modelo aceptable: R² &gt; 0,5</td></tr>
+</table></div>
+<p>Con sumas: <span class="formula">S_xy = Σxy − n·x̄·ȳ</span>; <span class="formula">S_xx = Σx² − n·x̄²</span>; <span class="formula">S_yy = Σy² − n·ȳ²</span>.</p>
+
+<h2>Las cuatro decisiones del TP6</h2>
+<div class="example">
+<strong>1. De r a lo que explica la recta (ej. 2).</strong> Béisbol: r = 0,73 entre juegos ganados y asistencia promedio.
+<ol>
+<li>Dirección: r &gt; 0 ⇒ positiva. Fuerza: 0,73 ≥ 0,7 ⇒ bastante fuerte.</li>
+<li><span class="formula">r² = 0,73² = 0,5329</span> ⇒ <strong>53,29 %</strong> de la variación de la asistencia se explica por los juegos ganados. (No “73 %”: ese es r, no r².)</li>
+</ol>
+</div>
+<div class="example">
+<strong>2. Del R² al signo de r, por contexto (ej. 10).</strong> Autos usados: edad contra precio, con R² = 87,1 %.
+<ol>
+<li><span class="formula">|r| = √0,871 = 0,933</span>: fuerte (≥ 0,7). Pero R² <strong>no tiene signo</strong>: r puede ser +0,933 o −0,933.</li>
+<li>El signo sale del contexto: a más edad, <strong>menor</strong> precio ⇒ asociación negativa ⇒ <span class="formula">r = −0,933</span>.</li>
+<li><strong>Conclusión:</strong> relación lineal negativa y fuerte; a medida que la edad aumenta, el precio disminuye.</li>
+</ol>
+</div>
+<div class="example">
+<strong>3. Predecir con la recta (ej. 3 y 11).</strong>
+<ol>
+<li>Peso (libras) según altura (pulgadas): <span class="formula">ŷ = −172,63 + 4,842·x</span>. Para x = 70: <span class="formula">ŷ = −172,63 + 4,842 · 70 = −172,63 + 338,94 = 166,31</span> ⇒ <strong>166</strong> libras.</li>
+<li><strong>Pendiente:</strong> 4,842 ⇒ por cada pulgada más de altura, el peso promedio esperado aumenta 4,842 libras. <strong>Ordenada</strong> −172,63: peso para altura 0, sin sentido real (fuera del rango).</li>
+<li>Victorias contra carreras permitidas: <span class="formula">ŷ = 159,62 − 0,10·x</span>. Con 800 carreras: <span class="formula">159,62 − 80 = 79,62</span> ⇒ <strong>80</strong> victorias (por debajo de la media de 81,79: razonable con pendiente negativa y x alta).</li>
+</ol>
+</div>
+<div class="example">
+<strong>4. El signo desde el contexto, sin números (ej. 4, 5, 6, 9).</strong>
+<ul>
+<li>Horas de ejercicio por semana y altura: <strong>ninguna asociación</strong>.</li>
+<li>Longitud del fémur y del húmero: <strong>positiva</strong> (personas más altas tienen huesos más largos).</li>
+<li>Tamaño de la casa y electricidad consumida: pendiente <strong>positiva</strong> (casas más grandes consumen más).</li>
+<li>“y tiende a disminuir cuando x tiende a crecer”: asociación <strong>negativa</strong>.</li>
+</ul>
+</div>
+
+
+<h2>Ejemplo resuelto — TP6, ejercicio 12 (la recta desde los datos)</h2>
+<div class="example">
+<strong>Datos:</strong> x = 2, 4, 5, 6; y = 7, 11, 13, 20. ¿Recta de regresión?
+<div class="tw"><table>
+<tr><th class="n">x</th><th class="n">y</th><th class="n">x·y</th><th class="n">x²</th><th class="n">y²</th></tr>
+<tr><td class="n">2</td><td class="n">7</td><td class="n">14</td><td class="n">4</td><td class="n">49</td></tr>
+<tr><td class="n">4</td><td class="n">11</td><td class="n">44</td><td class="n">16</td><td class="n">121</td></tr>
+<tr><td class="n">5</td><td class="n">13</td><td class="n">65</td><td class="n">25</td><td class="n">169</td></tr>
+<tr><td class="n">6</td><td class="n">20</td><td class="n">120</td><td class="n">36</td><td class="n">400</td></tr>
+<tr class="tot"><td class="n">Σx = 17</td><td class="n">Σy = 51</td><td class="n">Σxy = 243</td><td class="n">Σx² = 81</td><td class="n">Σy² = 739</td></tr>
+</table></div>
+<ol>
+<li><span class="formula">x̄ = 17/4 = 4,25</span>; <span class="formula">ȳ = 51/4 = 12,75</span></li>
+<li><span class="formula">S_xy = 243 − 4 · 4,25 · 12,75 = 243 − 216,75 = 26,25</span></li>
+<li><span class="formula">S_xx = 81 − 4 · 18,0625 = 81 − 72,25 = 8,75</span>; <span class="formula">S_yy = 739 − 4 · 162,5625 = 88,75</span></li>
+<li><span class="formula">b = 26,25 / 8,75 = 3</span>; <span class="formula">a = 12,75 − 3 · 4,25 = 0</span> ⇒ <strong>ŷ = 3x</strong> (la opción “y = 3x”).</li>
+<li><span class="formula">r = 26,25 / √(8,75 · 88,75) = 26,25/27,867 = 0,9420</span>; <span class="formula">R² = 0,8873</span></li>
+<li><strong>Interpretación:</strong> asociación positiva, lineal y fuerte; por cada unidad que aumenta x, y aumenta 3; la recta explica el 88,7 % de la variación de y.</li>
+</ol>
+</div>
+
+<h2>Otro ejemplo, con la predicción y su límite (temperatura y ventas)</h2>
+<div class="example">
+<strong>Datos:</strong> x = temperatura (°C): 20, 22, 24, 27, 30, 33; y = ventas: 48, 53, 57, 66, 71, 80. Con la calculadora: a = −0,582; b = 2,426; r = 0,9977.
+<ol>
+<li><strong>Lectura:</strong> r ≈ 0,998 ⇒ correlación lineal positiva muy fuerte; <span class="formula">R² = 0,9954</span> ⇒ 99,5 % de la variación de las ventas se explica por la temperatura.</li>
+<li><strong>Pendiente:</strong> por cada 1 °C más, las ventas aumentan en promedio 2,43 unidades.</li>
+<li><strong>Predicción dentro del rango</strong> (20 ≤ 25 ≤ 33): <span class="formula">ŷ(25) = −0,582 + 2,426·25 = 60,07</span>.</li>
+<li><strong>Extrapolación:</strong> para 45 °C la recta da 108,6 y para 0 °C da −0,58 (ventas negativas: absurdo). La recta se ajustó entre 20 y 33 °C: fuera de ese rango no hay respaldo, y el riesgo crece cuanto más lejos.</li>
+</ol>
+</div>
+
+
+<div class="calc">
+<strong>Modo regresión lineal (y = a + bx)</strong>
+<ol>
+<li>Si dejaste Freq activada, apágala: <span class="key">SHIFT</span> <span class="key">MENU</span> <span class="key">▼</span> <span class="key">3</span> → <span class="key">2</span> (Off).</li>
+<li><span class="key">MENU</span> <span class="key">6</span> (Statistics) → <span class="key">2</span> (y = a + bx). Aparece el editor con columnas <span class="formula">x</span> e <span class="formula">y</span>.</li>
+<li>Carga x: 2 <span class="key">=</span> 4 <span class="key">=</span> 5 <span class="key">=</span> 6 <span class="key">=</span>. Con <span class="key">▲</span> / <span class="key">▶</span> pasa a <span class="formula">y</span>: 7 <span class="key">=</span> 11 <span class="key">=</span> 13 <span class="key">=</span> 20 <span class="key">=</span>.</li>
+<li><span class="key">OPTN</span> <span class="key">4</span> (Regression Calc) ⇒ <span class="out">a = 0</span>, <span class="out">b = 3</span>, <span class="out">r = 0,941979</span>.</li>
+<li><strong>Predecir ŷ</strong> (con los datos del ejercicio 12): <span class="key">AC</span>, escribe el valor de x (por ejemplo 5), <span class="key">OPTN</span> <span class="key">▼</span> <span class="key">4</span> → <span class="key">5</span> (ŷ) <span class="key">=</span> ⇒ <span class="out">15</span> (= 3·5). <strong>Estimar x̂</strong> desde un y: escribe y (por ejemplo 21), <span class="key">OPTN</span> <span class="key">▼</span> <span class="key">4</span> → <span class="key">4</span> (x̂) <span class="key">=</span> ⇒ <span class="out">7</span>.</li>
+<li><strong>R²:</strong> lee r con <span class="key">OPTN</span> <span class="key">▼</span> <span class="key">4</span> → <span class="key">3</span> y elévalo al cuadrado con <span class="key">x²</span> ⇒ 0,8873.</li>
+</ol>
+<p><strong>Qué significa:</strong> b = cuánto cambia y por unidad de x; a = y cuando x = 0 (si es razonable); r = fuerza y signo de la relación lineal; r² = proporción explicada. El signo de r es el de b. Cambiar de 1 variable a 2 variables o salir del modo <strong>borra</strong> los datos.</p>
+<p><strong>Ojo con x̂:</strong> la calculadora resuelve la misma recta ŷ = a + bx para x. No es la regresión de x sobre y.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>r vs. r²:</strong> r = 0,73 explica 53,29 %, no 73 %. Es la trampa de la opción “a” del ejercicio 2.</li>
+<li><strong>R² no trae signo:</strong> r = ±√R². El signo se decide por el contexto (o por el signo de la pendiente b).</li>
+<li><strong>|r| ≈ 0 no es “sin relación”:</strong> es “sin relación lineal”. Una curva puede tener r ≈ 0.</li>
+<li><strong>Umbral:</strong> |r| ≥ 0,7 fuerte; 0,73 ya es “bastante fuerte”. No uses 0,5 (ese es el umbral de R² para aceptar el modelo).</li>
+<li><strong>Extrapolar:</strong> predecir fuera del rango observado de x no tiene respaldo, aunque la calculadora devuelva un número.</li>
+<li><strong>Pendiente con unidades:</strong> “4,842 libras por pulgada”, no “4,842 de correlación”. No confundir b (unidades) con r (sin unidades).</li>
+<li><strong>Correlación no es causalidad:</strong> un r alto no prueba que x cause y.</li>
+<li><strong>Redondeo al final:</strong> 79,62 ⇒ 80; 166,31 ⇒ 166. Calcula con los coeficientes completos y redondea solo la respuesta.</li>
+</ul>
+</div>
+
+<h2>Practica: describe, decide y predice</h2>
+<div class="quiz" data-quiz>
+<p class="q">1. La relación entre la temperatura exterior y el consumo de gas de calefacción tiene r = −0,82. ¿Cuál es la interpretación correcta?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. Relación lineal positiva, fuerte. El 67,24 % de la variación del consumo se explica por la temperatura</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. Relación lineal negativa, fuerte. El 82 % de la variación del consumo se explica por la temperatura</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. Relación lineal negativa, débil. El 67,24 % de la variación del consumo se explica por la temperatura</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. Sin asociación</span></label>
+<label><input type="radio" name="q1" value="e"><span class="opt">e. Relación lineal negativa, fuerte. El 67,24 % de la variación del consumo se explica por la temperatura</span></label>
+<div class="feedback wrong" data-for="a">r es negativo: al subir la temperatura, el consumo baja. Con r negativo la asociación no puede ser positiva.</div>
+<div class="feedback wrong" data-for="b">El 82 % es |r|. El porcentaje explicado es r² = 0,6724 = 67,24 %.</div>
+<div class="feedback wrong" data-for="c">|r| = 0,82 supera el umbral 0,7 de la cátedra: es fuerte, no débil.</div>
+<div class="feedback wrong" data-for="d">r = −0,82 está lejos de 0: hay una asociación lineal negativa fuerte.</div>
+<div class="feedback correct" data-for="e">r &lt; 0 ⇒ negativa; |r| = 0,82 ≥ 0,7 ⇒ fuerte; r² = 0,6724 ⇒ 67,24 % explicado.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">2. Con autos usados, la regresión lineal entre la edad del auto y su precio tiene R² = 87,1 %. ¿Qué se concluye?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. Relación lineal negativa y fuerte (r ≈ −0,93): a mayor edad, menor precio</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. Relación lineal positiva y fuerte (r ≈ +0,93): a mayor edad, mayor precio</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. Relación lineal negativa y débil (r = −0,871)</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. Relación lineal positiva (r = 0,871)</span></label>
+<label><input type="radio" name="q2" value="e"><span class="opt">e. No se puede decir nada: R² no tiene signo</span></label>
+<div class="feedback correct" data-for="a">|r| = √0,871 = 0,933 ≥ 0,7 ⇒ fuerte; el signo viene del contexto: los autos más viejos valen menos ⇒ negativo.</div>
+<div class="feedback wrong" data-for="b">R² no tiene signo, pero el contexto sí lo define: un auto más viejo no vale más. El signo es negativo.</div>
+<div class="feedback wrong" data-for="c">r = −0,871 no es el dato: r = ±√0,871 = ±0,933. Y de todos modos, con |r| ≥ 0,7 es fuerte, no débil.</div>
+<div class="feedback wrong" data-for="d">0,871 es R² (= r²), no r. Además la asociación entre edad y precio es negativa.</div>
+<div class="feedback wrong" data-for="e">Sí se puede: el signo se decide por el contexto (edad ↑, precio ↓) y la fuerza por |r| = 0,933.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">3. La recta para estimar el peso (libras) a partir de la altura (pulgadas) es ŷ = −172,63 + 4,842·x. ¿Cuál es la mejor predicción para x = 70 pulgadas, redondeada al entero?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. 339</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. 70</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. 512</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. 166</span></label>
+<label><input type="radio" name="q3" value="e"><span class="opt">e. −173</span></label>
+<div class="feedback wrong" data-for="a">Es 4,842·70 = 338,94: te faltó sumar la ordenada a = −172,63.</div>
+<div class="feedback wrong" data-for="b">70 es el valor de x que ingresas, no la predicción de y.</div>
+<div class="feedback wrong" data-for="c">Sumaste 172,63 con el signo cambiado. La ordenada es −172,63.</div>
+<div class="feedback correct" data-for="d">ŷ = −172,63 + 4,842·70 = −172,63 + 338,94 = 166,31 ≈ 166.</div>
+<div class="feedback wrong" data-for="e">Es solo la ordenada a (−172,63): falta el término b·x.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">4. En una liga, ŷ = 159,62 − 0,10·x, donde y = victorias y x = carreras permitidas. ¿Qué significa la pendiente −0,10?</p>
+<label><input type="radio" name="q4" value="a"><span class="opt">a. El equipo gana 0,10 partidos si no permite ninguna carrera</span></label>
+<label><input type="radio" name="q4" value="b"><span class="opt">b. Por cada carrera más que permite el equipo, se espera 0,10 victorias menos</span></label>
+<label><input type="radio" name="q4" value="c"><span class="opt">c. La correlación entre carreras y victorias es −0,10</span></label>
+<label><input type="radio" name="q4" value="d"><span class="opt">d. Por cada victoria, el equipo permite 0,10 carreras menos</span></label>
+<label><input type="radio" name="q4" value="e"><span class="opt">e. El 10 % de los partidos se pierden por carreras permitidas</span></label>
+<div class="feedback wrong" data-for="a">Eso se parece a la ordenada a, que es el valor de y cuando x = 0; la pendiente es el cambio por unidad de x.</div>
+<div class="feedback correct" data-for="b">b es el cambio esperado de y por cada unidad de x: −0,10 victorias por carrera (1 victoria menos cada 10 carreras).</div>
+<div class="feedback wrong" data-for="c">b y r son distintos: b tiene unidades (victorias por carrera) y r no. Una pendiente de −0,10 no dice que r = −0,10.</div>
+<div class="feedback wrong" data-for="d">Invertiste los roles: x son las carreras (variable explicativa) e y las victorias.</div>
+<div class="feedback wrong" data-for="e">La pendiente no es un porcentaje de partidos: es victorias por cada carrera permitida.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">5. Determina el tipo de asociación aparente en el gráfico de dispersión:<br><svg viewBox="0 0 190 150" width="190" height="150" role="img" aria-label="Diagrama de dispersión: los puntos descienden pegados a una recta">
+<title>Diagrama de dispersión: los puntos descienden pegados a una recta</title>
+<polyline class="svg-axis" points="26,14 26,124 178,124"/>
+<circle class="svg-dot" cx="37.4" cy="32.4" r="3.2"/>
+<circle class="svg-dot" cx="53.3" cy="36.1" r="3.2"/>
+<circle class="svg-dot" cx="76.3" cy="53.1" r="3.2"/>
+<circle class="svg-dot" cx="78.7" cy="56.4" r="3.2"/>
+<circle class="svg-dot" cx="89.6" cy="65.7" r="3.2"/>
+<circle class="svg-dot" cx="91.5" cy="64.0" r="3.2"/>
+<circle class="svg-dot" cx="103.6" cy="69.9" r="3.2"/>
+<circle class="svg-dot" cx="107.2" cy="73.7" r="3.2"/>
+<circle class="svg-dot" cx="108.8" cy="66.0" r="3.2"/>
+<circle class="svg-dot" cx="136.7" cy="84.5" r="3.2"/>
+<circle class="svg-dot" cx="141.5" cy="107.9" r="3.2"/>
+<circle class="svg-dot" cx="146.8" cy="106.6" r="3.2"/>
+<circle class="svg-dot" cx="163.4" cy="107.3" r="3.2"/>
+<circle class="svg-dot" cx="163.6" cy="108.8" r="3.2"/>
+<text class="svg-t" x="102" y="142" text-anchor="middle">x</text>
+<text class="svg-t" x="10" y="69" text-anchor="middle">y</text>
+</svg></p>
+<label><input type="radio" name="q5" value="a"><span class="opt">a. Asociación positiva, lineal, muy fuerte</span></label>
+<label><input type="radio" name="q5" value="b"><span class="opt">b. Asociación negativa, lineal, débil</span></label>
+<label><input type="radio" name="q5" value="c"><span class="opt">c. Asociación negativa, lineal, muy fuerte</span></label>
+<label><input type="radio" name="q5" value="d"><span class="opt">d. Asociación negativa, no lineal</span></label>
+<label><input type="radio" name="q5" value="e"><span class="opt">e. Sin asociación</span></label>
+<div class="feedback wrong" data-for="a">Mira la dirección: y disminuye cuando x crece, no aumenta.</div>
+<div class="feedback wrong" data-for="b">La dirección es correcta, pero los puntos están muy pegados a la recta: la asociación es muy fuerte.</div>
+<div class="feedback correct" data-for="c">Los puntos bajan al avanzar x (negativa), siguen una recta (lineal) y están muy pegados a ella (muy fuerte).</div>
+<div class="feedback wrong" data-for="d">Los puntos siguen una línea recta, no una curva.</div>
+<div class="feedback wrong" data-for="e">Hay un patrón claro descendente: eso es asociación (fuerte).</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">6. Se ajustó ŷ = −0,58 + 2,43·x con temperaturas entre 20 y 33 °C. ¿Cuál de estas predicciones es la más confiable?</p>
+<label><input type="radio" name="q6" value="a"><span class="opt">a. x = 5 °C ⇒ ŷ ≈ 11,5</span></label>
+<label><input type="radio" name="q6" value="b"><span class="opt">b. x = 45 °C ⇒ ŷ ≈ 108,6</span></label>
+<label><input type="radio" name="q6" value="c"><span class="opt">c. x = 0 °C ⇒ ŷ ≈ −0,58</span></label>
+<label><input type="radio" name="q6" value="d"><span class="opt">d. x = 60 °C ⇒ ŷ ≈ 145,0</span></label>
+<label><input type="radio" name="q6" value="e"><span class="opt">e. x = 25 °C ⇒ ŷ ≈ 60,1</span></label>
+<div class="feedback wrong" data-for="a">5 °C está muy por debajo de lo observado: extrapolación, sin respaldo.</div>
+<div class="feedback wrong" data-for="b">45 °C está fuera del rango observado: extrapolar hacia arriba supone que la relación lineal sigue igual, algo que los datos no avalan.</div>
+<div class="feedback wrong" data-for="c">La recta predice ventas negativas: señal clara de que 0 °C está fuera del rango donde el modelo sirve.</div>
+<div class="feedback wrong" data-for="d">60 °C está lejísimo del rango observado. Cuanto más lejos, más riesgo.</div>
+<div class="feedback correct" data-for="e">25 °C está dentro del rango observado (20 a 33): es interpolación.</div>
+</div>
+
+<div class="ask">
+¿Quieres que te dé 6 gráficos de dispersión sin etiqueta para clasificarlos con las tres palabras (dirección, forma, fuerza) antes de ver r? Es literalmente el ejercicio 1 y 8 del TP6.
+</div>
+
+<footer>
+Ejemplos y frases del TP6 (ejercicios 1 a 12) y del resumen de regresión de la cátedra — UNICABA, FEP. Los diagramas de esta lección son ilustraciones propias.
+<div class="nav-row">
+  <span>← <a href="0021-ic-media-resueltos.html">Lección 21 — IC para la media</a></span>
+  <span><a href="0012-simulacro-final.html">Simulacro final</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

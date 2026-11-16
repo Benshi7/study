@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SQL Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="suite.css">
+<script>
+  try { const t = JSON.parse(localStorage.getItem("adi-suite:theme")); if (t) document.documentElement.setAttribute("data-theme", t); } catch (_) {}
+</script>
+<style>
+  body { background: var(--paper); color: var(--ink); font-family: var(--body); margin: 0; }
+  .cs { max-width: 1240px; margin: 0 auto; padding-block: 28px 80px; padding-inline: 16px; }
+  .cs-top a { color: var(--pink); }
+  .cs h1 { font-family: var(--display); font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 16px 0 6px; line-height: 1.1; }
+  .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .lede { color: var(--ink-soft); max-width: 70ch; }
+  .head-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin: 20px 0 8px; }
+  .panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; }
+  .panel h2 { font-family: var(--display); font-size: 1.05rem; margin: 0 0 8px; }
+  .panel pre { margin: 0; font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; overflow-x: auto; }
+  .order { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--mono); font-size: 0.78rem; }
+  .order span { padding: 4px 8px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+  .order span.hot { border-color: var(--pink); color: var(--pink-strong); background: var(--pink-soft); }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .jump a { font-family: var(--mono); font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--rule); color: var(--ink-soft); text-decoration: none; }
+  .jump a:hover { border-color: var(--pink); color: var(--pink); }
+  h2.sec { font-family: var(--display); font-size: 1.4rem; margin: 40px 0 12px; padding-top: 8px; border-top: 1px solid var(--rule); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; align-items: start; }
+  .card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; border-top: 3px solid var(--kc, var(--pink)); min-width: 0; }
+  .k-filtrar { --kc: var(--c-datos); } .k-ordenar { --kc: var(--c-org); } .k-agregar { --kc: var(--c-analisis); }
+  .k-join { --kc: var(--c-sql); } .k-sub { --kc: var(--c-python); } .k-ventana { --kc: var(--pink-strong); }
+  .card-h { display: flex; gap: 8px; align-items: baseline; }
+  .card-h h3 { margin: 0; font-size: 1rem; font-family: var(--display); }
+  .num { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  pre.sql { margin: 0; font-family: var(--mono); font-size: 0.8rem; line-height: 1.45; background: var(--surface); border-radius: 6px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+  .res-h { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .tw { overflow-x: auto; }
+  .res table { border-collapse: collapse; font-family: var(--mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+  .res th { text-align: left; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--rule); padding: 3px 12px 3px 0; }
+  .res td { padding: 3px 12px 3px 0; border-bottom: 1px dashed var(--rule); }
+  .res td.null { color: var(--pink); font-weight: 600; }
+  .res td.empty { color: var(--pink); font-style: italic; }
+  .note { margin: 0; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.4; }
+  .note code { font-family: var(--mono); font-size: 0.82em; }
+</style>
+</head>
+<body>
+<div class="cs">
+  <div class="cs-top" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a href="index.html">← Suite</a> · <a href="escritura.html">Simulacro de escritura</a> <button type="button" id="theme-btn" style="font:inherit;font-size:0.85rem;padding:6px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);cursor:pointer;margin-left:auto">Tema</button></div>
+  <p class="eyebrow" style="margin-top:20px">Cheatsheet · {{N}} consultas típicas</p>
+  <h1>SQL Cheatsheet</h1>
+  <p class="lede">Las consultas típicas de los ejemplos, sobre las tablas de siempre. Cada tarjeta tiene la <strong>query</strong>, el <strong>resultado</strong> y la <strong>clave</strong>. Los resultados salen de ejecutar cada consulta en SQLite al generar la página.</p>
+  <div class="head-grid">
+    <div class="panel">
+      <h2>Las tablas</h2>
+<pre>clientes                         facturas
+id | nombre | pais | email       id | cliente_id | total
+1  | Ana    | AR   | ana@x.com   10 | 1          | 100
+2  | Beto   | BR   | NULL        11 | 1          | 50
+3  | Caro   | AR   | caro@x.com  12 | 2          | 80
+4  | Dani   | CL   | dani@x.com  13 | 3          | 20</pre>
+    </div>
+    <div class="panel">
+      <h2>Orden en que se evalúa</h2>
+      <div class="order"><span>FROM / JOIN</span>→<span class="hot">WHERE</span>→<span>GROUP BY</span>→<span class="hot">HAVING</span>→<span>SELECT</span>→<span>ORDER BY</span>→<span>LIMIT</span></div>
+      <p class="note" style="margin-top:10px">WHERE filtra <strong>filas</strong> (no ve agregados ni alias). HAVING filtra <strong>grupos</strong>. La izquierda de un JOIN es la tabla del <strong>FROM</strong>.</p>
+      <p class="note">DDL: CREATE · ALTER · DROP · <strong>TRUNCATE</strong> · DML: <strong>SELECT</strong> · INSERT · UPDATE · DELETE · DCL: GRANT · REVOKE · TCL: COMMIT · ROLLBACK · SAVEPOINT</p>
+    </div>
+  </div>
+  <nav class="jump" aria-label="Secciones">
+    <a href="#filtrar">Filtrar</a><a href="#ordenar">Ordenar</a><a href="#agregar">Agregar</a><a href="#join">JOINs</a><a href="#sub">Subconsultas</a><a href="#ventana">Ventanas</a>
+  </nav>
+{{CARDS}}
+</div>
+<script>
+(() => {
+  const b = document.getElementById("theme-btn"); if (!b) return;
+  const cur = () => document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const paint = () => { b.textContent = cur() === "dark" ? "☀ Modo claro" : "☾ Modo oscuro"; };
+  b.addEventListener("click", () => { const n = cur() === "dark" ? "light" : "dark"; document.documentElement.setAttribute("data-theme", n); try { localStorage.setItem("adi-suite:theme", JSON.stringify(n)); } catch (_) {} paint(); });
+  paint();
+})();
+</script>
+</body>
+</html>

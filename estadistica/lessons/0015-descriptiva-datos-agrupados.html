@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 15 — Descriptiva con datos agrupados: la cuenta completa</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidades 1–3 · Descriptiva · Lección mecánica</span>
+<h1>Descriptiva con datos agrupados: la cuenta completa</h1>
+<p class="subtitle">Marca de clase, media, varianza, CV, moda, mediana y percentiles de una tabla de intervalos, con todos los números a la vista y la calculadora en modo Statistics.</p>
+
+
+<h2>El problema</h2>
+<p>En una tabla de intervalos ya no ves los datos sueltos: solo sabes <strong>cuántos</strong> cayeron en cada clase. Para calcular promedio y dispersión se hace una simplificación: <strong>todos los datos de la clase valen lo mismo que el punto medio</strong> (la marca de clase). Por eso todo lo que sale de una tabla agrupada es una <strong>aproximación</strong>, y por eso la calculadora necesita dos columnas: la marca (<span class="formula">x</span>) y cuántas veces se repite (<span class="formula">Freq</span>).</p>
+
+<h2>Las fórmulas de la cátedra</h2>
+<div class="tw"><table>
+<tr><th>Qué</th><th>Fórmula</th><th>Notas</th></tr>
+<tr><td>Marca de clase</td><td><span class="formula">Xm = (L_I + L_S) / 2</span></td><td>Punto medio del intervalo</td></tr>
+<tr><td>Media</td><td><span class="formula">x̄ = Σ f·Xm / n</span></td><td>n = Σ f (tamaño total, no la cantidad de filas)</td></tr>
+<tr><td>Varianza</td><td><span class="formula">S² = Σ f·(Xm − x̄)² / (n − 1)</span></td><td>Muestra → n − 1</td></tr>
+<tr><td>Desvío</td><td><span class="formula">S = √S²</span></td><td>Mismas unidades que los datos</td></tr>
+<tr><td>Coef. de variación</td><td><span class="formula">CV = S / x̄ · 100</span></td><td>En %</td></tr>
+<tr><td>Moda agrupada</td><td><span class="formula">Mo = L_I + Δ₁/(Δ₁+Δ₂) · i</span></td><td>Δ₁ = f_modal − f_anterior; Δ₂ = f_modal − f_siguiente; i = amplitud</td></tr>
+<tr><td>Percentil</td><td><span class="formula">Pk = L_I + (k·n/100 − F_a) / f · i</span></td><td>F_a = acumulada ANTERIOR a la clase; la mediana es P50</td></tr>
+</table></div>
+<div class="box">
+La hoja de fórmulas del parcial trae <strong>solo</strong> P<sub>k</sub>, M<sub>o</sub> y CV. La media y la varianza agrupadas <strong>no vienen</strong>: hay que saberlas (o sacarlas con la calculadora, ver más abajo).
+</div>
+
+<h3>Cómo se juzga el CV (convención de la cátedra)</h3>
+<div class="tw"><table>
+<tr><th>Resultado</th><th>Conclusión</th></tr>
+<tr><td>CV &lt; 20 %</td><td>Datos <strong>homogéneos</strong> (baja variabilidad relativa)</td></tr>
+<tr><td>CV &gt; 20 %</td><td>Datos <strong>no homogéneos</strong>: alta variabilidad</td></tr>
+<tr><td>CV &lt; 10 %</td><td>La <strong>media es representativa</strong> de los datos</td></tr>
+<tr><td>CV &gt; 10 %</td><td>La media <strong>no es representativa</strong> (conviene mirar Me o Mo)</td></tr>
+</table></div>
+<p>Asimetría (por la convención de la cátedra): <strong>Mo &gt; x̄ ⇒ negativa</strong>; <strong>Mo &lt; x̄ ⇒ positiva</strong>; Mo ≈ x̄ ⇒ simétrica.</p>
+
+
+<h2>Ejemplo resuelto 1 — TP1, ejercicio 7 (peso de 200 paquetes de pastillas)</h2>
+<div class="example">
+<strong>Datos:</strong> distribución del peso en gramos de una partida de 200 paquetes; amplitud i = 2.
+<div class="tw"><table>
+<tr><th>Peso (g)</th><th class="n">f</th><th class="n">F</th><th class="n">Xm</th><th class="n">Xm·f</th><th class="n">(Xm − x̄)²·f</th></tr>
+<tr><td>[30; 32)</td><td class="n">28</td><td class="n">28</td><td class="n">31</td><td class="n">868</td><td class="n">597,6432</td></tr>
+<tr><td>[32; 34)</td><td class="n">36</td><td class="n">64</td><td class="n">33</td><td class="n">1188</td><td class="n">247,1184</td></tr>
+<tr><td>[34; 36)</td><td class="n">43</td><td class="n">107</td><td class="n">35</td><td class="n">1505</td><td class="n">16,5292</td></tr>
+<tr><td>[36; 38)</td><td class="n">51</td><td class="n">158</td><td class="n">37</td><td class="n">1887</td><td class="n">97,1244</td></tr>
+<tr><td>[38; 40)</td><td class="n">27</td><td class="n">185</td><td class="n">39</td><td class="n">1053</td><td class="n">308,4588</td></tr>
+<tr><td>[40; 42)</td><td class="n">11</td><td class="n">196</td><td class="n">41</td><td class="n">451</td><td class="n">318,3884</td></tr>
+<tr><td>[42; 44)</td><td class="n">4</td><td class="n">200</td><td class="n">43</td><td class="n">172</td><td class="n">217,8576</td></tr>
+<tr class="tot"><td>Total</td><td class="n">200</td><td class="n"></td><td class="n"></td><td class="n">7124</td><td class="n">1803,12</td></tr>
+</table></div>
+<ol>
+<li><strong>Media:</strong> <span class="formula">x̄ = 7124 / 200 = 35,62 g</span></li>
+<li><strong>Cada desvío al cuadrado, ponderado:</strong> por ejemplo la primera fila: <span class="formula">(31 − 35,62)² · 28 = 21,3444 · 28 = 597,6432</span>. La suma de la columna da 1803,12.</li>
+<li><strong>Varianza:</strong> <span class="formula">S² = 1803,12 / 199 = 9,0609 g²</span></li>
+<li><strong>Desvío:</strong> <span class="formula">S = √9,0609 = 3,0101 g</span></li>
+<li><strong>CV:</strong> <span class="formula">CV = 3,0101 / 35,62 · 100 = 8,45 %</span>. Como 8,45 % &lt; 20 %, los datos son <strong>homogéneos</strong>; como 8,45 % &lt; 10 %, la media <strong>es representativa</strong>.</li>
+<li><strong>Moda:</strong> la clase con mayor f es [36; 38) con f = 51. <span class="formula">Δ₁ = 51 − 43 = 8</span>, <span class="formula">Δ₂ = 51 − 27 = 24</span>, entonces <span class="formula">Mo = 36 + 8/(8+24) · 2 = 36 + 0,25 · 2 = 36,5 g</span>.</li>
+<li><strong>Mediana:</strong> <span class="formula">n/2 = 100</span> (en tabla se usa n/2). Las acumuladas son 28, 64, 107: la posición 100 cae en [34; 36) con F<sub>a</sub> = 64 y f = 43. <span class="formula">Me = 34 + (100 − 64)/43 · 2 = 34 + 1,674 = 35,674 g</span>.</li>
+<li><strong>Percentil 20</strong> (“peso no superado por el 20 %”): <span class="formula">k·n/100 = 40</span> cae en [32; 34) con F<sub>a</sub> = 28, f = 36. <span class="formula">P20 = 32 + (40 − 28)/36 · 2 = 32,667 g</span>.</li>
+<li><strong>Percentil 90</strong> (“peso solo superado por el 10 %”): <span class="formula">k·n/100 = 180</span> cae en [38; 40) con F<sub>a</sub> = 158, f = 27. <span class="formula">P90 = 38 + (180 − 158)/27 · 2 = 39,630 g</span>.</li>
+<li><strong>Asimetría:</strong> Mo = 36,5 &gt; x̄ = 35,62 ⇒ <strong>negativa</strong>.</li>
+<li><strong>“¿Qué % pesa hasta 40 g?”</strong> es el camino inverso: F(40)/n = 185/200 = <strong>92,5 %</strong>. Si el valor cae <em>dentro</em> de una clase (38,15 g) se interpola: <span class="formula">(158 + (0,15/2)·27)/200 = 160,025/200 = 80,0 %</span>.</li>
+</ol>
+</div>
+
+
+<h2>Ejemplo resuelto 2 — TP1, ejercicio 9 (kilómetros de <em>todos</em> los camiones) y la cuestión n vs. n − 1</h2>
+<div class="example">
+<strong>Datos:</strong> la empresa informa los kilómetros recorridos por <strong>la totalidad</strong> de sus camiones.
+<div class="tw"><table>
+<tr><th>Km</th><th class="n">f</th><th class="n">Xm</th><th class="n">Xm·f</th><th class="n">(Xm − x̄)²·f</th></tr>
+<tr><td>[600; 800)</td><td class="n">6</td><td class="n">700</td><td class="n">4200</td><td class="n">614400</td></tr>
+<tr><td>[800; 1000)</td><td class="n">8</td><td class="n">900</td><td class="n">7200</td><td class="n">115200</td></tr>
+<tr><td>[1000; 1200)</td><td class="n">5</td><td class="n">1100</td><td class="n">5500</td><td class="n">32000</td></tr>
+<tr><td>[1200; 1400)</td><td class="n">3</td><td class="n">1300</td><td class="n">3900</td><td class="n">235200</td></tr>
+<tr><td>[1400; 1600)</td><td class="n">2</td><td class="n">1500</td><td class="n">3000</td><td class="n">460800</td></tr>
+<tr><td>[1600; 1800)</td><td class="n">1</td><td class="n">1700</td><td class="n">1700</td><td class="n">462400</td></tr>
+<tr class="tot"><td>Total</td><td class="n">25</td><td class="n"></td><td class="n">25500</td><td class="n">1920000</td></tr>
+</table></div>
+<ol>
+<li><span class="formula">x̄ = 25500 / 25 = 1020 km</span></li>
+<li>Es la <strong>población completa</strong> (la totalidad de los camiones), entonces se divide por n: <span class="formula">σ² = 1920000 / 25 = 76800</span> y <span class="formula">σ = 277,13 km</span>.</li>
+<li><span class="formula">CV = 277,13 / 1020 · 100 = 27,17 %</span>: mayor que 20 % (no homogéneo) y mayor que 10 % (<strong>la media no es representativa</strong>).</li>
+<li>Para comparar: con n − 1 saldría <span class="formula">S = √(1920000/24) = 282,84 km</span> y CV = 27,73 %. Distinto en el 2.º decimal, <strong>misma conclusión</strong>.</li>
+<li>“¿Qué % recorre más de 1200 km?”: acumulan las tres últimas clases, (3 + 2 + 1)/25 = <strong>24 %</strong>.</li>
+</ol>
+</div>
+<div class="box">
+<strong>Regla práctica para el desvío:</strong> si el enunciado habla de una <strong>muestra</strong> (“una partida de…”, “se eligieron…”) usa <strong>S con n − 1</strong>; si habla de <strong>la totalidad</strong> de los elementos usa <strong>σ con n</strong>. En el ejercicio 7 la clave de la cátedra usa n − 1 (S = 3,0101); en el ejercicio 9, n (277,13). Si dos opciones difieren solo en el 3.<sup>er</sup> decimal, mira qué dice el enunciado.
+</div>
+
+
+<h2>Datos sueltos: la posición de la mediana cambia</h2>
+<div class="example">
+<strong>TP1, ejercicio 6 — despidos mensuales (n = 12):</strong> 18-15-14-23-20-18-17-18-16-20-18-15.
+<ol>
+<li>Ordenados: 14, 15, 15, 16, 17, 18, 18, 18, 18, 20, 20, 23.</li>
+<li><strong>Mediana en lista cruda:</strong> posición <span class="formula">(n + 1)/2 = 6,5</span> ⇒ promedio del 6.º y el 7.º: (18 + 18)/2 = <strong>18</strong>.</li>
+<li><span class="formula">x̄ = 212/12 = 17,67</span>; <span class="formula">S = 2,53</span> (muestra, n − 1); <span class="formula">CV = 2,53/17,67·100 = 14,3 %</span>: &lt; 20 % ⇒ homogéneos.</li>
+</ol>
+</div>
+<div class="box">
+<strong>Lista cruda → posición (n + 1)/2. Tabla de intervalos → n/2.</strong> En una tabla agrupada la mediana es el punto que deja la mitad de las observaciones a cada lado, y se interpola dentro de la clase; no se cuenta “el dato número 100,5”.
+</div>
+
+
+<div class="calc">
+<strong>Datos agrupados (tabla Xm / f)</strong>
+<ol>
+<li>Activa la columna de frecuencias <em>antes</em> de cargar datos: <span class="key">SHIFT</span> <span class="key">MENU</span> <span class="key">▼</span> <span class="key">3</span> (Statistics) → <span class="key">1</span> <em>On</em>.</li>
+<li><span class="key">MENU</span> <span class="key">6</span> (Statistics) → <span class="key">1</span> (1-Variable). Aparecen las columnas <span class="formula">x</span> y <span class="formula">Freq</span>.</li>
+<li>En <span class="formula">x</span> carga las <strong>marcas</strong> 31 <span class="key">=</span> 33 <span class="key">=</span> … 43 <span class="key">=</span>. Con <span class="key">▶</span> pasa a <span class="formula">Freq</span> y carga 28 <span class="key">=</span> 36 <span class="key">=</span> … 4 <span class="key">=</span>.</li>
+<li><span class="key">AC</span> y luego <span class="key">OPTN</span> <span class="key">2</span> (1-Variable Calc). Recorre la lista con <span class="key">▼</span>.</li>
+</ol>
+<p><strong>Qué sale:</strong> <span class="out">x̄ = 35,62</span> · <span class="out">σx = 3,0026</span> (divide por n) · <span class="out">sx = 3,0101</span> (divide por n − 1) · <span class="out">n = 200</span> (= Σ Freq, no la cantidad de filas). El CV lo armas tú: <span class="key">sx</span> <span class="key">÷</span> <span class="key">x̄</span> <span class="key">×</span> 100 = 8,45. Los símbolos están en <span class="key">OPTN</span> <span class="key">▼</span> <span class="key">2</span> (Variable).</p>
+<p><strong>Lista cruda (sin tabla):</strong> deja Freq en <em>Off</em> y escribe cada dato en la columna <span class="formula">x</span>.</p>
+<p><strong>Qué NO te da:</strong> Mo, Me ni percentiles de tabla agrupada. Los Q1/Med/Q3 de la calculadora se calculan sobre los valores cargados (las marcas), no con la interpolación de la cátedra. Para eso usa las fórmulas.</p>
+<p>Cambiar el ajuste de Statistics o salir del modo <strong>borra</strong> el editor: activa Freq primero.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>σx vs. sx:</strong> la calculadora muestra los dos. Muestra → <span class="formula">sx</span>; población completa → <span class="formula">σx</span>. Siempre sx &gt; σx.</li>
+<li><strong>Usar los límites en lugar de la marca</strong> (carga 30, 32, … como x): la media sale desplazada media amplitud.</li>
+<li><strong>Mediana en tabla con (n+1)/2</strong> o sin restar F<sub>a</sub>: se calcula con n/2 y F<sub>a</sub> de la clase anterior.</li>
+<li><strong>Umbrales mezclados:</strong> 20 % es para homogeneidad; 10 % es para decir que la media es representativa. Un CV de 14 % es homogéneo <em>y</em> media no representativa a la vez.</li>
+<li><strong>Δ₂ es f_modal − f_siguiente</strong>, no f_siguiente a secas.</li>
+</ul>
+</div>
+
+<h2>Practica: calcula antes de mirar las opciones</h2>
+<div class="quiz" data-quiz>
+<p class="q">1. La clase [34; 36) tiene f = 43. ¿Qué cargas en la calculadora (columnas <em>x</em> y <em>Freq</em>) para esa fila?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. x = 34, Freq = 43</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. x = 36, Freq = 43</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. x = 35, Freq = 43</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. x = 43, Freq = 35</span></label>
+<label><input type="radio" name="q1" value="e"><span class="opt">e. x = 2, Freq = 43</span></label>
+<div class="feedback wrong" data-for="a">34 es el límite inferior: usarlo desplaza la media media amplitud hacia abajo. Se carga la marca de clase, no el límite.</div>
+<div class="feedback wrong" data-for="b">36 es el límite superior: sesgaría la media hacia arriba. Se carga la marca de clase.</div>
+<div class="feedback correct" data-for="c">La marca de clase (34 + 36)/2 = 35 representa a todos los datos de la clase y f = 43 es cuántas veces se repite.</div>
+<div class="feedback wrong" data-for="d">Invertiste las columnas: x es el valor (la marca) y Freq es la frecuencia.</div>
+<div class="feedback wrong" data-for="e">2 es la amplitud del intervalo (i), un dato que sirve para Mo y Pk pero no es el valor que representa la clase.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">2. En una tabla agrupada resulta x̄ = 50 y S = 4. ¿Cuál es el CV y qué se concluye con los criterios de la cátedra?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. CV = 8 %: datos homogéneos y media representativa</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. CV = 8 %: homogéneos, pero la media no es representativa</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. CV = 12,5 %: media no representativa</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. CV = 0,08 %: variabilidad casi nula</span></label>
+<label><input type="radio" name="q2" value="e"><span class="opt">e. CV = 8 %: la media no es representativa porque supera el 5 %</span></label>
+<div class="feedback correct" data-for="a">4/50·100 = 8 %. Es menor que 20 % (homogéneo) y menor que 10 % (la media representa bien a los datos).</div>
+<div class="feedback wrong" data-for="b">Confundes los umbrales: 8 % ya es menor que 10 %, entonces la media sí es representativa. 'No representativa' sería con CV mayor que 10 %.</div>
+<div class="feedback wrong" data-for="c">Dividiste x̄ entre S (50/4 = 12,5). El CV es S/x̄ = 4/50, expresado en %.</div>
+<div class="feedback wrong" data-for="d">Olvidaste multiplicar por 100: 4/50 = 0,08 es 8 %, no 0,08 %.</div>
+<div class="feedback wrong" data-for="e">El 5 % aparece en algunos apuntes como criterio más exigente, pero en TP y parciales la cátedra usa 10 % para la representatividad de la media.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">3. Tabla con n = 120 y amplitud 10: [10;20) f=12 · [20;30) f=30 · [30;40) f=45 · [40;50) f=20 · [50;60) f=13. ¿Cuánto vale la moda agrupada?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. 35,00</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. 36,25</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. 34,29</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. 36,00</span></label>
+<label><input type="radio" name="q3" value="e"><span class="opt">e. 33,75</span></label>
+<div class="feedback wrong" data-for="a">Es la marca de la clase modal. La moda agrupada se corre dentro de la clase hacia el lado que tiene más vecinos frecuentes (Δ₁ y Δ₂).</div>
+<div class="feedback wrong" data-for="b">Intercambiaste Δ₁ y Δ₂: el numerador es Δ₁ (diferencia con la clase ANTERIOR) = 15.</div>
+<div class="feedback wrong" data-for="c">Tomaste Δ₂ = f siguiente = 20 sin restarlo de la frecuencia modal. Δ₂ = 45 − 20 = 25.</div>
+<div class="feedback wrong" data-for="d">Dividiste Δ₁/Δ₂ y te faltó la suma: la fórmula es Δ₁/(Δ₁ + Δ₂).</div>
+<div class="feedback correct" data-for="e">Clase modal [30;40): Δ₁ = 45 − 30 = 15, Δ₂ = 45 − 20 = 25. Mo = 30 + 15/(15+25)·10 = 33,75.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">4. Con la misma tabla (n = 120; acumuladas 12, 42, 87, 107, 120), ¿cuánto vale la mediana?</p>
+<label><input type="radio" name="q4" value="a"><span class="opt">a. 34,11</span></label>
+<label><input type="radio" name="q4" value="b"><span class="opt">b. 34,00</span></label>
+<label><input type="radio" name="q4" value="c"><span class="opt">c. 35,00</span></label>
+<label><input type="radio" name="q4" value="d"><span class="opt">d. 33,75</span></label>
+<label><input type="radio" name="q4" value="e"><span class="opt">e. 43,33</span></label>
+<div class="feedback wrong" data-for="a">Usaste (n+1)/2 = 60,5, que es la posición para una lista de datos sueltos. En tabla agrupada se usa n/2 = 60.</div>
+<div class="feedback correct" data-for="b">n/2 = 60 cae en [30;40) con F_a = 42 y f = 45: Me = 30 + (60 − 42)/45·10 = 34,00.</div>
+<div class="feedback wrong" data-for="c">Es la marca de clase de la clase mediana. La mediana se interpola dentro de la clase.</div>
+<div class="feedback wrong" data-for="d">Ese es el valor de la moda, no de la mediana: son medidas distintas.</div>
+<div class="feedback wrong" data-for="e">Te faltó restar la acumulada anterior (F_a = 42): 60 − 42 = 18, no 60. El resultado quedaría fuera de la clase, señal de error.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">5. Cargas una muestra de 200 paquetes y la calculadora muestra x̄ = 35,62; σx = 3,0026; sx = 3,0101. ¿Qué desvío usas para el CV y cuánto da?</p>
+<label><input type="radio" name="q5" value="a"><span class="opt">a. σx = 3,0026 (divide por n): CV = 8,43 %</span></label>
+<label><input type="radio" name="q5" value="b"><span class="opt">b. x̄ ÷ sx × 100 = 1183 %</span></label>
+<label><input type="radio" name="q5" value="c"><span class="opt">c. s²x = 9,06 → CV = 25,4 %</span></label>
+<label><input type="radio" name="q5" value="d"><span class="opt">d. sx = 3,0101 (es una muestra, n − 1): CV = 8,45 %</span></label>
+<label><input type="radio" name="q5" value="e"><span class="opt">e. Da igual: σx y sx son lo mismo</span></label>
+<div class="feedback wrong" data-for="a">σx corresponde a una población completa. Para datos de una muestra la cátedra usa S con n − 1.</div>
+<div class="feedback wrong" data-for="b">Invertiste el cociente: el CV es desvío ÷ media.</div>
+<div class="feedback wrong" data-for="c">Usaste la varianza (9,06 g²) en lugar del desvío. El CV usa S, que está en las mismas unidades que x̄.</div>
+<div class="feedback correct" data-for="d">Son datos de una muestra: corresponde el desvío con n − 1 (sx). CV = 3,0101/35,62·100 = 8,45 %.</div>
+<div class="feedback wrong" data-for="e">No son lo mismo: sx divide por n − 1 y es siempre mayor. Con una 4.ª cifra decimal cambia la opción de múltiple choice.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">6. En la tabla del paquete de pastillas, ¿qué porcentaje de los paquetes pesa como máximo 38,15 g? (acumulada hasta 38 g = 158; clase [38; 40) con f = 27, i = 2)</p>
+<label><input type="radio" name="q6" value="a"><span class="opt">a. 79 %</span></label>
+<label><input type="radio" name="q6" value="b"><span class="opt">b. 92,5 %</span></label>
+<label><input type="radio" name="q6" value="c"><span class="opt">c. 80 %</span></label>
+<label><input type="radio" name="q6" value="d"><span class="opt">d. 13,5 %</span></label>
+<label><input type="radio" name="q6" value="e"><span class="opt">e. 20 %</span></label>
+<div class="feedback wrong" data-for="a">158/200 = 79 % es lo que acumulan hasta 38 g exactos. 38,15 ya entró 0,15 g dentro de la clase siguiente, hay que sumar esa fracción.</div>
+<div class="feedback wrong" data-for="b">92,5 % es el acumulado hasta 40 g (185/200), el final de la clase. 38,15 está recién al comienzo.</div>
+<div class="feedback correct" data-for="c">Se interpola dentro de la clase: 158 + (0,15/2)·27 = 160,025 paquetes → 160,025/200 ≈ 80 %.</div>
+<div class="feedback wrong" data-for="d">27/200 = 13,5 % es la frecuencia relativa de toda la clase [38; 40), no el porcentaje acumulado.</div>
+<div class="feedback wrong" data-for="e">20 % es el complemento (los que pesan MÁS de 38,15 g). La pregunta es por 'como máximo'.</div>
+</div>
+
+<div class="ask">
+¿Quieres otra tabla de intervalos para hacerla tú y que te corrija cada columna? Pásame los datos y la armamos paso a paso.
+</div>
+
+<footer>
+Ejemplos tomados de tu TP1 (ejercicios 6, 7 y 9) — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0014-que-distribucion-uso.html">Lección 14 — ¿Qué distribución uso?</a></span>
+  <span><a href="0016-va-discreta-esperanza-varianza.html">Lección 16 — VA discreta: E(X) y Var(X)</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

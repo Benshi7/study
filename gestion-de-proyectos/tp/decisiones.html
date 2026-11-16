@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisiones del equipo</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">TP · Decisiones</p>
+  <h1>Decisiones para votar</h1>
+  <p class="subtitle">Cada integrante vota en su navegador y el grupo cuenta los códigos. Sin servidor, sin cuentas.</p>
+</header>
+
+<div class="win">
+  <strong>Cómo funciona</strong>
+  <ol>
+    <li>Escribir el nombre y elegir una opción por decisión (el motivo es opcional).</li>
+    <li>Tocar <em>Copiar mis votos</em> y pegar el código en el grupo.</li>
+    <li>Para ver el resultado, pegar en <a href="#recuento">Recuento</a> los códigos que llegaron al grupo.</li>
+  </ol>
+  Si alguien vota de nuevo con el mismo nombre, cuenta el voto más reciente.
+</div>
+
+<!-- ============================================================================
+     EDIT HERE — decisions to vote on. Keep every `id` STABLE (votes refer to ids).
+     Fields: id, title, sections (TP section numbers), context, options[{id,label,pros,cons}],
+     deadline (optional "YYYY-MM-DD"). Options are proposals, not facts.
+     ============================================================================ -->
+<script>
+var DECISIONS = [
+  {
+    id: "segmento",
+    title: "¿Qué segmento de vecinos priorizamos?",
+    sections: [3, 4],
+    context: "El Canvas necesita uno o dos segmentos con un dolor concreto (Clase 1). Los tres salen de la visión del equipo. El elegido es el que se investiga en Design Thinking (sección 4).",
+    deadline: null,
+    options: [
+      { id: "hogares", label: "Hogares con chicos en edad escolar que hoy se enteran tarde de la inscripción o la vacunación",
+        pros: "Encaja con el perfil por hogar y la proactividad de la visión.",
+        cons: "Exige datos sensibles del hogar: revisar la Ley 25.326 (a verificar)." },
+      { id: "movilidad", label: "Personas con movilidad reducida que hoy no saben qué veredas de su recorrido están en obra",
+        pros: "Dolor muy concreto y fácil de explicar en una defensa.",
+        cons: "Depende de datos de obras en la vía pública: hay que confirmar si existen entre las 14 APIs y BA Data." },
+      { id: "reclamos", label: "Vecinos que hacen reclamos y hoy no ven qué pasó con ellos en el mapa",
+        pros: "Conecta con el loop de reclamos y con la vista de gestión que le sirve al GCBA.",
+        cons: "Depende de que las áreas de gobierno compartan el estado de los reclamos (a confirmar)." }
+    ]
+  },
+  {
+    id: "alcance-mvp",
+    title: "¿Qué entra en el alcance del proyecto y qué queda como fase futura?",
+    sections: [5, 6, 10],
+    context: "En cascada el alcance se fija antes de planificar (Clase 2): lo que entra determina el Gantt, los riesgos y el presupuesto. Las piezas salen de la visión del equipo.",
+    deadline: null,
+    options: [
+      { id: "nucleo", label: "Núcleo: identidad geográfica única + loop de reclamos",
+        pros: "Alcance chico, fácil de planificar y de presupuestar.",
+        cons: "Deja afuera la vista de gestión, que es lo que le interesa al GCBA como sponsor." },
+      { id: "nucleo-gestion", label: "Núcleo + vista de gestión para el GCBA",
+        pros: "Cubre a los dos lados del Canvas: el vecino y el GCBA.",
+        cons: "Más actividades y más integración con las áreas de gobierno." },
+      { id: "con-hogar", label: "Núcleo + vista de gestión + perfil por hogar y proactividad",
+        pros: "Refleja la visión completa de la experiencia del vecino.",
+        cons: "Suma datos sensibles (Ley 25.326, a verificar) y más riesgos." },
+      { id: "todo", label: "Todo lo anterior + capa consumida por Boti y DisfrutemosBA",
+        pros: "Muestra al Mapa como una identidad geográfica reutilizable.",
+        cons: "Probablemente requiera acuerdos con los equipos de esos productos (a confirmar) y un cronograma más largo." }
+    ]
+  },
+  {
+    id: "ingresos",
+    title: "¿Quién paga el proyecto y cómo se sostiene?",
+    sections: [3, 10],
+    context: "En un proyecto público quien usa el Mapa no es quien paga. La respuesta define el bloque Ingresos del Canvas y de dónde sale el presupuesto.",
+    deadline: null,
+    options: [
+      { id: "gcba", label: "El GCBA como único sponsor (presupuesto público)",
+        pros: "Simple y sin dependencia de terceros.",
+        cons: "El bloque Ingresos queda casi vacío y hay que justificarlo." },
+      { id: "privados", label: "Socios privados con publicidad o comisiones (las ideas de Banco Ciudad y Pase Cultural)",
+        pros: "Genera ingresos propios: publicidad y comisiones son flujos válidos (Clase 4, p27).",
+        cons: "Mezcla intereses comerciales con un servicio público y exige acuerdos." },
+      { id: "mixto", label: "Mixto: el GCBA financia el núcleo y los socios aportan ingresos complementarios",
+        pros: "Equilibra sostenibilidad y servicio público.",
+        cons: "Hay que explicar dos fuentes de dinero en el Canvas y en el presupuesto." }
+    ]
+  },
+  {
+    id: "interno-externo",
+    title: "¿Cómo separamos lo interno de lo externo en el Canvas? (postura provisional)",
+    sections: [3],
+    context: "Es una pregunta abierta para los profesores. Se vota una postura provisional para poder avanzar y se corrige con lo que respondan.",
+    deadline: null,
+    options: [
+      { id: "pertenencia", label: "Por pertenencia: interno = áreas del GCBA que producen datos y servicios; externo = vecinos, socios privados y otros organismos",
+        pros: "Es fácil de aplicar a cada bloque nombrando quién es quién.",
+        cons: "Deja a las áreas de gobierno que no participan del proyecto en un lugar ambiguo." },
+      { id: "control", label: "Por control: interno = lo que construye y decide el equipo del proyecto; externo = lo que depende de terceros (APIs, áreas, socios)",
+        pros: "Alinea el Canvas con los riesgos: lo externo es donde hay dependencias.",
+        cons: "Hace que el propio GCBA quede a veces de un lado y a veces del otro." },
+      { id: "esperar", label: "No separar por ahora: escribir el Canvas sin esa distinción hasta tener la respuesta de la cátedra",
+        pros: "No se construye nada sobre un criterio que puede estar mal.",
+        cons: "Deja un bloque sin cerrar si la respuesta llega tarde." }
+    ]
+  },
+  {
+    id: "emv-criterio",
+    title: "¿Cómo sumamos los EMV para la reserva de contingencia?",
+    sections: [9, 10],
+    context: "La diapositiva 32 de la Clase 5 resta las oportunidades a las amenazas (37.000 − 17.000 = 20.000); sumar todo daría 54.000. Cualquiera sea el criterio, hay que declararlo en el documento.",
+    deadline: null,
+    options: [
+      { id: "neto", label: "Neto: amenazas menos oportunidades, como en la diapositiva",
+        pros: "Coincide con el ejemplo de la cátedra.",
+        cons: "Reserva menos dinero si una oportunidad no se concreta." },
+      { id: "amenazas", label: "Solo amenazas; las oportunidades se listan aparte",
+        pros: "Más conservador: la reserva no depende de que las oportunidades salgan bien.",
+        cons: "No coincide con el criterio de la diapositiva y hay que justificarlo." },
+      { id: "ambos", label: "Neto en el presupuesto, mostrando también el total de amenazas",
+        pros: "Sigue a la cátedra y deja visible el caso conservador.",
+        cons: "Más números para explicar en la defensa." }
+    ]
+  },
+  {
+    id: "herramienta-gantt",
+    title: "¿En qué herramienta armamos el Gantt?",
+    sections: [6],
+    context: "Alcanza con herramientas gratuitas. Tiene que permitir marcar el camino crítico y exportarse al documento.",
+    deadline: null,
+    options: [
+      { id: "sheets", label: "Google Sheets (o Excel)",
+        pros: "Todos editan a la vez y se pega bien en el documento.",
+        cons: "El Gantt y el camino crítico se arman con fórmulas y formato a mano." },
+      { id: "ganttproject", label: "GanttProject",
+        pros: "Es gratuito y está pensado para diagramas de Gantt.",
+        cons: "Hay que instalarlo y pasarse el archivo; a verificar cómo muestra el camino crítico." },
+      { id: "otra", label: "Otra herramienta (proponerla en el grupo)",
+        pros: "Si alguien ya la domina, se gana tiempo.",
+        cons: "Todo el equipo tiene que poder abrirla y editarla." }
+    ]
+  },
+  {
+    id: "reparto",
+    title: "¿Cómo repartimos la escritura de las secciones?",
+    sections: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    context: "La consigna pide una sola historia: repartir y pegar al final rompe la cadena (ver el hilo conductor). Cualquier integrante tiene que poder defender cualquier sección.",
+    deadline: null,
+    options: [
+      { id: "cruzado", label: "Una persona por sección, con revisión cruzada por otra persona",
+        pros: "Responsabilidad clara y control de coherencia entre secciones.",
+        cons: "Cada persona conoce menos las secciones que no escribió." },
+      { id: "pares", label: "Por pares: cada dupla escribe un tramo de la cadena",
+        pros: "Se discute el contenido y hay dos personas que pueden defenderlo.",
+        cons: "Hay que coordinar horarios y definir quién integra el documento." },
+      { id: "conjunto", label: "Todo en conjunto en reuniones, con una persona que escribe",
+        pros: "Máxima coherencia y todos conocen todo.",
+        cons: "Es lo más lento y depende de juntar al equipo." }
+    ]
+  },
+  {
+    id: "doc-final",
+    title: "¿En qué formato y herramienta escribimos el documento final?",
+    sections: [1, 2],
+    context: "Un solo documento compartido evita versiones cruzadas. Tiene que permitir comentarios y exportarse a PDF o Word para la entrega.",
+    deadline: null,
+    options: [
+      { id: "gdocs", label: "Google Docs",
+        pros: "Edición simultánea y comentarios; se exporta a PDF y a Word.",
+        cons: "Requiere cuenta de Google y las tablas grandes pueden pedir ajustes de formato." },
+      { id: "word", label: "Word compartido (OneDrive u otra nube)",
+        pros: "El formato final es más controlable.",
+        cons: "La edición simultánea depende de la plataforma que se use." },
+      { id: "otra", label: "Otra herramienta (proponerla en el grupo)",
+        pros: "Si el equipo ya usa una, no hay que aprender nada nuevo.",
+        cons: "Hay que verificar que permita comentarios y exportar." }
+    ]
+  }
+];
+</script>
+
+<h2 id="votar">Votar</h2>
+
+<div class="voter-bar">
+  <label class="field" for="voter-name" style="margin:0">
+    <span>Mi nombre (así aparece en el recuento)</span>
+    <input type="text" id="voter-name" maxlength="60" autocomplete="name" placeholder="Nombre y apellido o apodo">
+  </label>
+  <div class="meter" id="meter" aria-live="polite">Votaste 0 de 0</div>
+</div>
+
+<div id="decisions"></div>
+<noscript><p class="errors">Esta página necesita JavaScript para mostrar las decisiones y contar los votos.</p></noscript>
+
+<div class="btn-row">
+  <button type="button" class="btn" id="copy-mine">Copiar mis votos</button>
+  <button type="button" class="btn danger" id="clear-mine">Borrar mis votos</button>
+</div>
+<label class="field" for="my-code">
+  <span>Mi código (si el botón no copia, seleccionarlo y copiarlo a mano)</span>
+  <textarea id="my-code" readonly rows="3" placeholder="Aparece cuando hay nombre y al menos un voto"></textarea>
+</label>
+
+<h2 id="recuento">Recuento</h2>
+<p>Pegar acá los códigos que fueron llegando al grupo (pueden venir mezclados con el texto del chat, uno o varios). Si una persona votó más de una vez, cuenta el voto con fecha más nueva.</p>
+
+<label class="field" for="paste">
+  <span>Códigos pegados</span>
+  <textarea id="paste" rows="6" placeholder="Votos de Ana (8 de 8 decisiones): TPV1.eyJ2Ijox…"></textarea>
+</label>
+<div class="field-row">
+  <label class="field" for="roster">
+    <span>Integrantes del equipo (opcional, separados por coma)</span>
+    <input type="text" id="roster" placeholder="Ana, Beto, Cami">
+  </label>
+  <label class="field" for="quorum">
+    <span>Votos mínimos para cerrar una decisión</span>
+    <input type="number" id="quorum" min="1" max="50" value="2">
+  </label>
+</div>
+<label style="display:block;margin:.4rem 0"><input type="checkbox" id="inc-mine" checked> Incluir mis votos guardados en este navegador</label>
+
+<div class="btn-row">
+  <button type="button" class="btn" id="count">Contar</button>
+  <button type="button" class="btn secondary" id="export">Exportar decisiones cerradas</button>
+</div>
+
+<div id="errors" aria-live="polite"></div>
+<div id="results" class="results"></div>
+
+<div id="export-box" hidden>
+  <h3>Para pegar en el documento del TP</h3>
+  <pre class="tpl" id="export-out"></pre>
+  <div class="btn-row"><button type="button" class="btn secondary" data-copy="#export-out">Copiar este texto</button></div>
+</div>
+
+<h2 id="proponer">Cómo proponer una decisión nueva</h2>
+<ol>
+  <li>Abrir <code>decisiones.html</code> con un editor de texto y buscar el bloque <code>EDIT HERE</code> arriba de la página.</li>
+  <li>Copiar una decisión existente y cambiar <code>id</code>, título, contexto y opciones. Cada <code>id</code> de decisión y de opción debe ser único.</li>
+  <li><strong>No cambiar los <code>id</code> de decisiones ya votadas</strong>: los votos guardados y los códigos ya enviados apuntan a esos ids. Para retirar una decisión, borrarla del bloque (sus votos viejos se ignoran y se avisa en el recuento).</li>
+  <li>Compartir el archivo actualizado. Cada persona tiene que reemplazar su copia; los votos anteriores se conservan en su navegador.</li>
+</ol>
+
+<nav class="nav">
+  <a href="avance.html">← Avance</a>
+  <a href="index.html">Inicio del TP →</a>
+</nav>
+</main>
+
+<script src="assets/tp-data.js"></script>
+<script src="assets/logic.js"></script>
+<script src="assets/tp-common.js"></script>
+<script>
+(function () {
+  var L = TPLogic, C = TPCommon;
+  var KEYS = { name: "tp-vote-name", votes: "tp-votes-v1", ts: "tp-votes-ts", paste: "tp-vote-paste", roster: "tp-vote-roster", quorum: "tp-vote-quorum", mine: "tp-vote-include-mine" };
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+
+  function load(key, fallback) {
+    var raw = C.store.get(key);
+    if (raw == null) return fallback;
+    try { return JSON.parse(raw); } catch (e) { return fallback; }
+  }
+  var votes = load(KEYS.votes, {});   // { decisionId: { option, reason } }
+  var stamp = Number(C.store.get(KEYS.ts)) || 0;
+
+  function validVotes() {
+    var out = {};
+    DECISIONS.forEach(function (d) {
+      var v = votes[d.id];
+      if (v && d.options.some(function (o) { return o.id === v.option; })) out[d.id] = { option: v.option, reason: v.reason || "" };
+    });
+    return out;
+  }
+  function myBallot() {
+    return { name: $("voter-name").value, ts: stamp, votes: validVotes() };
+  }
+  function save() {
+    stamp = Date.now();
+    C.store.set(KEYS.votes, JSON.stringify(votes));
+    C.store.set(KEYS.ts, String(stamp));
+    refreshMine();
+  }
+
+  /* ---- rendering the decisions ---- */
+  function renderDecisions() {
+    $("decisions").innerHTML = DECISIONS.map(function (d) {
+      var secs = d.sections && d.sections.length ? "Secciones " + (d.sections.length > 4 ? "1 a 10" : d.sections.join(", ")) : "";
+      var deadline = d.deadline ? "<span>Votar antes del " + esc(d.deadline) + "</span>" : "";
+      var opts = d.options.map(function (o) {
+        var checked = votes[d.id] && votes[d.id].option === o.id;
+        return '<label class="opt' + (checked ? " is-checked" : "") + '">' +
+          '<input type="radio" name="dec-' + esc(d.id) + '" value="' + esc(o.id) + '"' + (checked ? " checked" : "") + ">" +
+          '<span class="label">' + esc(o.label) + "</span>" +
+          '<span class="pc"><strong>A favor:</strong> ' + esc(o.pros || "—") + "<br><strong>En contra:</strong> " + esc(o.cons || "—") + "</span></label>";
+      }).join("");
+      var reason = (votes[d.id] && votes[d.id].reason) || "";
+      return '<article class="decision" id="dec-' + esc(d.id) + '" role="group" aria-labelledby="t-' + esc(d.id) + '" data-id="' + esc(d.id) + '">' +
+        '<h3 id="t-' + esc(d.id) + '">' + esc(d.title) + "</h3>" +
+        '<p class="meta-line"><span>' + esc(secs) + "</span>" + deadline + "</p>" +
+        '<p class="ctx">' + esc(d.context) + "</p>" + opts +
+        '<label class="field reason" for="r-' + esc(d.id) + '"><span>Motivo (opcional, una línea)</span>' +
+        '<input type="text" id="r-' + esc(d.id) + '" maxlength="140" value="' + esc(reason) + '"></label>' +
+        '<p><button type="button" class="btn secondary" data-clear="' + esc(d.id) + '">Quitar mi voto</button></p></article>';
+    }).join("");
+  }
+
+  function refreshMeter() {
+    var n = Object.keys(validVotes()).length;
+    $("meter").textContent = "Votaste " + n + " de " + DECISIONS.length;
+  }
+  function refreshMine() {
+    refreshMeter();
+    var b = myBallot();
+    var has = Object.keys(b.votes).length > 0 && L.normalizeName(b.name);
+    $("my-code").value = has ? L.encodeBallot(b) : "";
+  }
+
+  $("decisions").addEventListener("change", function (e) {
+    var card = e.target.closest(".decision");
+    if (!card) return;
+    var id = card.getAttribute("data-id");
+    if (e.target.type === "radio") {
+      votes[id] = { option: e.target.value, reason: votes[id] ? votes[id].reason : "" };
+      Array.prototype.forEach.call(card.querySelectorAll(".opt"), function (l) {
+        l.classList.toggle("is-checked", l.querySelector("input").checked);
+      });
+      save();
+    }
+  });
+  $("decisions").addEventListener("input", function (e) {
+    if (e.target.type !== "text") return;
+    var card = e.target.closest(".decision");
+    var id = card.getAttribute("data-id");
+    if (!votes[id]) { votes[id] = { option: "", reason: e.target.value }; }
+    else votes[id].reason = e.target.value;
+    save();
+  });
+  $("decisions").addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-clear]");
+    if (!btn) return;
+    var id = btn.getAttribute("data-clear");
+    delete votes[id];
+    renderDecisions();
+    highlightTarget();
+    save();
+  });
+
+  $("voter-name").value = C.store.get(KEYS.name) || "";
+  $("voter-name").addEventListener("input", function () {
+    C.store.set(KEYS.name, $("voter-name").value);
+    refreshMine();
+  });
+
+  $("copy-mine").addEventListener("click", function () {
+    var b = myBallot();
+    if (!L.normalizeName(b.name)) { C.say("Falta escribir tu nombre"); $("voter-name").focus(); return; }
+    var n = Object.keys(b.votes).length;
+    if (!n) { C.say("Todavía no votaste ninguna decisión"); return; }
+    var code = L.encodeBallot(b);
+    var text = "Votos de " + b.name.trim() + " (" + n + " de " + DECISIONS.length + " decisiones):\n" + code;
+    C.copyText(text).then(function (ok) {
+      C.say(ok ? "Votos copiados: pegarlos en el grupo" : "No se pudo copiar: usar el cuadro de código");
+    });
+  });
+  $("clear-mine").addEventListener("click", function () {
+    if (!window.confirm("¿Borrar todos tus votos guardados en este navegador?")) return;
+    votes = {};
+    C.store.remove(KEYS.votes);
+    renderDecisions();
+    save();
+  });
+
+  /* ---- recuento ---- */
+  $("paste").value = C.store.get(KEYS.paste) || "";
+  $("roster").value = C.store.get(KEYS.roster) || "";
+  if (C.store.get(KEYS.quorum)) $("quorum").value = C.store.get(KEYS.quorum);
+  if (C.store.get(KEYS.mine) === "0") $("inc-mine").checked = false;
+  $("paste").addEventListener("input", function () { C.store.set(KEYS.paste, $("paste").value); });
+  $("roster").addEventListener("input", function () { C.store.set(KEYS.roster, $("roster").value); });
+  $("quorum").addEventListener("input", function () { C.store.set(KEYS.quorum, $("quorum").value); });
+  $("inc-mine").addEventListener("change", function () { C.store.set(KEYS.mine, $("inc-mine").checked ? "1" : "0"); });
+
+  function compute() {
+    var decoded = L.decodeBallots($("paste").value);
+    var ballots = decoded.ballots.slice();
+    var mine = myBallot();
+    if ($("inc-mine").checked && L.normalizeName(mine.name) && Object.keys(mine.votes).length) ballots.push(mine);
+    var roster = $("roster").value.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+    var quorum = Math.max(1, parseInt($("quorum").value, 10) || 1);
+    var deduped = L.dedupeBallots(ballots);
+    return { decoded: decoded, ballots: deduped, raw: ballots.length, result: L.tally(DECISIONS, deduped, { roster: roster, quorum: quorum }) };
+  }
+
+  function optionLabel(d, id) {
+    var o = d.options.filter(function (x) { return x.id === id; })[0];
+    return o ? o.label : id;
+  }
+
+  function statusText(d, r, quorum) {
+    if (r.status === "sin-votos") return "Sin votos todavía.";
+    if (r.status === "empate") return "Empate entre: " + r.tie.map(function (id) { return optionLabel(d, id); }).join(" · ") + ".";
+    var base = "Va ganando: " + optionLabel(d, r.winner) + " (" + r.counts[r.winner] + " de " + r.total + (r.majority ? ", mayoría" : ", sin mayoría absoluta") + ").";
+    return r.quorumMet ? base + " Cerrada." : base + " Faltan votos para cerrar (mínimo " + quorum + ").";
+  }
+
+  function render() {
+    var out = compute();
+    var errs = [];
+    if (out.decoded.errors.length && $("paste").value.trim()) {
+      errs.push('<div class="errors"><strong>No se pudieron leer estas partes:</strong><ul>' + out.decoded.errors.map(function (e) {
+        return "<li>Línea " + e.line + ": " + esc(e.reason) + " <code>" + esc(e.snippet) + "</code></li>";
+      }).join("") + "</ul></div>");
+    }
+    if (out.result.ignored.length) {
+      errs.push('<div class="errors"><strong>Votos ignorados (la decisión o la opción ya no existe en esta versión de la página):</strong><ul>' + out.result.ignored.map(function (i) {
+        return "<li>" + esc(i.name) + " · " + esc(i.decision) + " → " + esc(i.option) + "</li>";
+      }).join("") + "</ul></div>");
+    }
+    $("errors").innerHTML = errs.join("");
+
+    if (!out.ballots.length) { $("results").innerHTML = '<p class="hint">Todavía no hay votos para contar: pegar códigos arriba o votar en esta página.</p>'; return out; }
+
+    var head = "<p><strong>" + out.ballots.length + "</strong> " + (out.ballots.length === 1 ? "persona votó" : "personas votaron") + ": " + out.result.participants.map(esc).join(", ") + ".";
+    if (out.raw > out.ballots.length) head += " (Se descartaron " + (out.raw - out.ballots.length) + " votos repetidos de la misma persona.)";
+    head += "</p>";
+    if (out.result.missingRoster.length) head += '<p class="status-line"><strong>Faltan votar:</strong> ' + out.result.missingRoster.map(esc).join(", ") + ".</p>";
+
+    var cards = DECISIONS.map(function (d, i) {
+      var r = out.result.decisions[i];
+      var bars = d.options.map(function (o) {
+        var n = r.counts[o.id];
+        var pct = r.total ? Math.round((n / r.total) * 100) : 0;
+        var who = r.voters[o.id].length ? '<span class="who">' + r.voters[o.id].map(esc).join(", ") + "</span>" : "";
+        return '<div class="bar' + (r.winner === o.id ? " is-winner" : "") + '"><span>' + esc(o.label) + "</span><strong>" + n + " · " + pct + "%</strong>" +
+          '<span class="track"><span class="fill" style="width:' + pct + '%"></span></span>' + who + "</div>";
+      }).join("");
+      var reasons = r.reasons.length ? '<ul class="reasons">' + r.reasons.map(function (x) {
+        return "<li><strong>" + esc(x.name) + "</strong> (" + esc(optionLabel(d, x.option)) + "): " + esc(x.reason) + "</li>";
+      }).join("") + "</ul>" : "";
+      var missing = r.missing.length && r.total ? '<p class="status-line">No votaron esta decisión: ' + r.missing.map(esc).join(", ") + ".</p>" : "";
+      return '<div class="result-card"><h4>' + esc(d.title) + "</h4>" + bars +
+        '<p class="status-line"><strong>' + esc(statusText(d, r, out.result.quorum)) + "</strong></p>" + missing + reasons + "</div>";
+    }).join("");
+    $("results").innerHTML = head + cards;
+    return out;
+  }
+
+  $("count").addEventListener("click", function () { render(); $("results").scrollIntoView({ behavior: "smooth", block: "start" }); });
+  $("export").addEventListener("click", function () {
+    var out = render();
+    if (!out.ballots.length) { C.say("No hay votos para exportar"); return; }
+    var md = L.exportClosed(DECISIONS, out.result);
+    $("export-out").textContent = md;
+    $("export-box").hidden = false;
+    C.copyText(md).then(function (ok) { C.say(ok ? "Decisiones cerradas copiadas" : "Texto listo abajo: copiarlo a mano"); });
+  });
+
+  /* ---- deep link: decisiones.html?d=<id> ---- */
+  function highlightTarget() {
+    var m = /[?&]d=([^&#]+)/.exec(location.search);
+    if (!m) return;
+    var card = document.getElementById("dec-" + decodeURIComponent(m[1]));
+    if (!card) return;
+    card.classList.add("is-target");
+    card.scrollIntoView({ block: "start" });
+  }
+
+  renderDecisions();
+  refreshMine();
+  highlightTarget();
+  if ($("paste").value.trim()) render();
+})();
+</script>
+</body>
+</html>

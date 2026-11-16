@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso de teoría · 2do parcial</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body data-repaso-key="parcial2-teoria">
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Repaso de teoría · 2do parcial · Jueves 12/11, 18:30</p>
+    <h1 class="masthead__title">Qué responder en cada pregunta teórica</h1>
+    <p class="masthead__standfirst">
+      Los puntos 1 a 7 de la foto <code>otroparcial_1</code>, más tres que se confunden en un
+      choice. Cada tarjeta trae <b>las palabras clave</b> y <b>una respuesta de dos o tres
+      líneas</b>, sacada de las lecciones 0028, 0041, 0049, 0050, 0053 y 0054.
+    </p>
+    <p class="masthead__meta">
+      <span>10 tarjetas</span>
+      <span>Si es choice, alcanza con distinguir cada par; si es desarrollo, con la sentencia</span>
+    </p>
+  </header>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Cómo se usa</span>
+    <p>
+      <b>Primera pasada:</b> apretá <b>Modo examen</b>, leé la pregunta y contestala en voz
+      alta o en papel. Recién después apagá el modo y comparate. Marcá <b>La sé</b> o
+      <b>Repasar</b>.
+    </p>
+    <p>
+      <b>Segunda pasada:</b> <b>Ocultar las que sé</b> y repetí hasta vaciar la lista.
+    </p>
+  </blockquote>
+
+  <div class="toolbar" data-toolbar>
+    <button class="toolbar__btn" data-toggle="exam-mode">Modo examen</button>
+    <button class="toolbar__btn" data-toggle="hide-known">Ocultar las que sé</button>
+    <button class="toolbar__btn" data-reset>Reiniciar</button>
+    <span class="toolbar__count" data-count></span>
+  </div>
+
+  <h2><span class="num">01</span>Los siete puntos del otro parcial</h2>
+
+  <!-- ===================== 1 · COMPONENTES DW ===================== -->
+  <article class="card" data-card="dw-componentes">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf card__conf--alta">Punto 1</span>
+    </div>
+    <p class="card__q">Grafique los componentes genéricos de un DW.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">fuentes</li>
+      <li class="chip chip--must">ETL</li>
+      <li class="chip chip--must">staging · ODS · MDM · DQ</li>
+      <li class="chip chip--must">Data Warehouse</li>
+      <li class="chip chip--must">data marts / cubos</li>
+      <li class="chip chip--must">presentación</li>
+      <li class="chip">metadata</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Seis etapas de izquierda a derecha, con la <b>metadata</b> como banda que las cruza:</p>
+<pre><code>FUENTES ──► ETL ──► DATA WAREHOUSE ──► MODELOS ANALÍTICOS ──► PRESENTACIÓN ──► USUARIOS
+(CRM, ERP,   (staging,   (por áreas:      (data marts,           (gráficos,        (explotación
+ externos)    ODS, MDM,   ventas,          cubos OLAP)            tablas,           y análisis)
+              DQ)         finanzas)                               semáforos)
+══════════════════════ METADATA (acompaña a todo) ═══════════════════════</code></pre>
+        <p>Las tareas de limpieza (staging, ODS, MDM, DQ) viven <b>dentro del ETL</b>.</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== 2 · ACID ===================== -->
+  <article class="card" data-card="acid">
+    <div class="card__head">
+      <span class="card__tag">Transacciones</span>
+      <span class="card__conf card__conf--alta">Punto 2</span>
+    </div>
+    <p class="card__q">Explique qué es una transacción y enumere las propiedades que debe cumplir (ACID).</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">una o más operaciones</li>
+      <li class="chip chip--must">todo o nada</li>
+      <li class="chip chip--must">de un estado consistente a otro</li>
+      <li class="chip chip--must">aislada de las simultáneas</li>
+      <li class="chip chip--must">persiste ante fallos</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Una <b>transacción</b> es una o más operaciones de acceso a la base (insertar,
+          eliminar, modificar o recuperar) que se ejecutan como una unidad.
+        </p>
+        <ul>
+          <li><b>Atomicidad:</b> o se ejecuta en su totalidad o no se ejecuta en absoluto.</li>
+          <li><b>Conservación de la consistencia:</b> su ejecución completa lleva la base de
+            un estado consistente a otro.</li>
+          <li><b>Aislamiento:</b> debe aparecer como si se ejecutara aislada; no interfiere
+            con otras transacciones simultáneas.</li>
+          <li><b>Durabilidad:</b> los cambios de una transacción confirmada persisten y no se
+            pierden por un fallo.</li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== 3 · OLTP vs OLAP ===================== -->
+  <article class="card" data-card="oltp-olap">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf card__conf--alta">Punto 3</span>
+    </div>
+    <p class="card__q">Explique qué es OLTP y OLAP, y compare uno con el otro.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">transacciones simples</li>
+      <li class="chip chip--must">análisis multidimensional</li>
+      <li class="chip chip--must">milisegundos</li>
+      <li class="chip chip--must">grandes volúmenes</li>
+      <li class="chip">vienen de un DW / data mart</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>OLTP</b> (procesamiento transaccional en línea): muchas transacciones simples
+            (insertar, actualizar, eliminar), respuesta en milisegundos, disponible 24x7. Los
+            datos se generan ahí. Ej.: banca en línea.</li>
+          <li><b>OLAP</b> (procesamiento analítico en línea): análisis multidimensional que
+            lee grandes volúmenes para sacar tendencias e informes. Los datos vienen de un
+            data mart o de un DW. Ej.: previsión de ventas.</li>
+        </ul>
+        <p><b>Diferencia en una línea:</b> OLTP <i>registra</i> la operación del día; OLAP
+          <i>analiza</i> el negocio.</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== 4 · KIMBALL vs INMON ===================== -->
+  <article class="card" data-card="kimball-inmon">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf card__conf--alta">Punto 4</span>
+    </div>
+    <p class="card__q">Compare las metodologías de Kimball vs Inmon.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">Inmon: top-down</li>
+      <li class="chip chip--must">DW central normalizado (3FN)</li>
+      <li class="chip chip--must">Kimball: bottom-up</li>
+      <li class="chip chip--must">data marts desnormalizados (estrella)</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>Inmon (top-down):</b> primero un <b>repositorio central único y
+            normalizado</b> (3FN) y de ahí salen los data marts. Toda la empresa comparte la
+            misma estructura. Conviene si se quiere visión global e integridad.</li>
+          <li><b>Kimball (bottom-up):</b> se parte de la necesidad de un departamento con
+            <b>data marts desnormalizados en estrella</b>, y juntos forman el DW. Cada
+            departamento es independiente. Conviene si se analiza por departamento.</li>
+        </ul>
+        <p><b>Truco:</b> mirá dónde queda el DW. En Inmon va <i>antes</i> de los data marts;
+          en Kimball, <i>después</i>.</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== 5 · MDM, ODS, DQ ===================== -->
+  <article class="card" data-card="mdm-ods-dq">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf card__conf--alta">Punto 5</span>
+    </div>
+    <p class="card__q">Explique MDM, ODS y DQ.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">MDM: datos maestros</li>
+      <li class="chip chip--must">ODS: área provisional</li>
+      <li class="chip chip--must">DQ: reglas de calidad</li>
+      <li class="chip">dentro del ETL</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Las tres son parte de la etapa de limpieza, dentro del ETL:</p>
+        <ul>
+          <li><b>MDM (Master Data Management):</b> procesos, políticas y tecnologías para
+            gestionar y mantener los datos de las <b>entidades de negocio centrales</b>
+            (clientes, productos).</li>
+          <li><b>ODS (Operational Data Store):</b> <b>área lógica provisional</b> antes del
+            DW, donde los datos se borran, se arreglan por redundancia y se revisan contra
+            las reglas del negocio.</li>
+          <li><b>DQ (Data Quality):</b> <b>reglas</b> que aseguran un mínimo de calidad en los
+            datos recibidos, para que los resultados sean fiables.</li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== 6 · ÍNDICES ===================== -->
+  <article class="card" data-card="indices">
+    <div class="card__head">
+      <span class="card__tag">Índices</span>
+      <span class="card__conf card__conf--alta">Punto 6</span>
+    </div>
+    <p class="card__q">Explique cada tipo de índice: agrupados, principal y secundarios.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">evitar búsqueda secuencial</li>
+      <li class="chip chip--must">principal: clave primaria, uno por tabla</li>
+      <li class="chip chip--must">agrupado: orden físico</li>
+      <li class="chip chip--must">secundario: no es clave, varios</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Un índice mapea valores de columnas a sus filas y <b>evita la búsqueda
+          secuencial</b>.</p>
+        <ul>
+          <li><b>Principal:</b> sobre la clave primaria; <b>uno solo por tabla</b>. Garantiza
+            unicidad y búsqueda eficiente. <i>Ej.: <code>CodCli</code>.</i></li>
+          <li><b>Agrupado:</b> las filas se <b>ordenan físicamente</b> como el índice. Muy
+            rápido por rango; reordenar cuesta. <i>Ej.: facturas por fecha.</i></li>
+          <li><b>Secundario:</b> sobre columnas que <b>no</b> son clave primaria; estructura
+            separada, no toca el orden físico, podés tener varios. Ocupa espacio y frena las
+            escrituras si abusás. <i>Ej.: apellido.</i></li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== 7 · UNION vs UNION ALL ===================== -->
+  <article class="card" data-card="union">
+    <div class="card__head">
+      <span class="card__tag">SQL</span>
+      <span class="card__conf card__conf--alta">Punto 7</span>
+    </div>
+    <p class="card__q">Explique la diferencia entre UNION y UNION ALL. Dé un ejemplo de cada uno.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">UNION elimina duplicados</li>
+      <li class="chip chip--must">UNION ALL los conserva</li>
+      <li class="chip chip--must">mismas columnas y tipos</li>
+      <li class="chip">UNION ALL es más rápido</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Las dos apilan los resultados de dos <code>SELECT</code> con la misma cantidad de
+          columnas y tipos compatibles. <b>UNION quita las filas repetidas</b>;
+          <b>UNION ALL las deja</b> (y es más rápido, porque no tiene que comparar).</p>
+<pre><code>SELECT CIUDAD FROM PROVEEDORES
+UNION                          -- 5 ciudades distintas
+SELECT CIUDAD FROM ARTICULOS;
+
+SELECT CIUDAD FROM PROVEEDORES
+UNION ALL                      -- 12 filas (5 + 7), con repetidas
+SELECT CIUDAD FROM ARTICULOS;</code></pre>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <h2><span class="num">02</span>Las tres que se confunden en un choice</h2>
+
+  <article class="card" data-card="dw-vs-mart">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf">Extra</span>
+    </div>
+    <p class="card__q">¿En qué se diferencian un Data Warehouse y un Data Mart?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">corporativo vs departamental</li>
+      <li class="chip chip--must">visión homogénea vs parcial</li>
+      <li class="chip">estratégico vs táctico</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>El <b>DW</b> es corporativo, centralizado y de visión homogénea; guarda detalle
+          histórico, es estratégico y se implementa en 9–18 meses. El <b>Data Mart</b> es
+          departamental, de visión parcial, más desnormalizado, táctico y de corta vida
+          (4 a 12 meses).</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="molap-rolap">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf">Extra</span>
+    </div>
+    <p class="card__q">Diferencie MOLAP, ROLAP y HOLAP.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">MOLAP: multidimensional, precalculado</li>
+      <li class="chip chip--must">ROLAP: base relacional, detalle</li>
+      <li class="chip chip--must">HOLAP: híbrido</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>MOLAP:</b> estructura multidimensional con agregaciones precalculadas. Más
+            rápido, pero con tamaño limitado (diez dimensiones o menos, volúmenes chicos).</li>
+          <li><b>ROLAP:</b> base relacional con datos detallados (estrella o copo de nieve).
+            Escala a muchas dimensiones y grandes volúmenes, pero las consultas son más
+            lentas.</li>
+          <li><b>HOLAP:</b> el detalle en lo relacional y los resúmenes en lo
+            multidimensional.</li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="scd">
+    <div class="card__head">
+      <span class="card__tag">Data Warehouse</span>
+      <span class="card__conf">Extra</span>
+    </div>
+    <p class="card__q">¿Qué es una Slow Change Dimension y qué diferencia hay entre el tipo 1 y el tipo 2?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">dimensiones que cambian poco a poco</li>
+      <li class="chip chip--must">tipo 1: sobrescribe</li>
+      <li class="chip chip--must">tipo 2: agrega fila con inicio y fin</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Se refiere a los datos de las <b>dimensiones</b>, que cambian de a poco y no son
+          incrementales. En el <b>tipo 1</b> el valor nuevo <b>sobrescribe</b> al viejo y se
+          pierde la historia. En el <b>tipo 2</b> se <b>agrega una fila</b> por cada cambio,
+          con fecha de inicio y de fin de vigencia; la vigente termina en
+          <code>2100-12-31</code>.</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">De dónde sale cada respuesta</span>
+    <p>
+      Lecciones <a href="../lessons/0028-indices.html">0028</a>,
+      <a href="../lessons/0041-transacciones-y-acid.html">0041</a>,
+      <a href="../lessons/0049-oltp-olap-y-data-warehouse.html">0049</a>,
+      <a href="../lessons/0050-componentes-de-un-dw.html">0050</a>,
+      <a href="../lessons/0052-slow-change-dimension.html">0052</a>,
+      <a href="../lessons/0053-repaso-unidad-9.html">0053</a> y
+      <a href="../lessons/0054-conjuntos-en-sql.html">0054</a>, que a su vez citan los PPTX de
+      la cátedra. Las preguntas 1 a 7 son las de <code>raw/Material_Examen/otroparcial_1.jpg</code>.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../lessons/0053-repaso-unidad-9.html">Repaso choice (lección 53)</a>
+    <a href="repaso-final.html">Repaso del 1er parcial</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/repaso.js"></script>
+</body>
+</html>

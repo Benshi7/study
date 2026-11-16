@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 4 · La estructura relacional</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 04 · Unidad 1 · Sistemas de Gestión de Base de Datos</p>
+    <h1 class="masthead__title">La estructura relacional: relación, tupla, atributo, dominio</h1>
+    <p class="masthead__standfirst">
+      Cuatro palabras y una advertencia: una relación <b>no</b> es una tabla,
+      y "cardinalidad" acá significa otra cosa que en el DER.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Elmasri &amp; Navathe, cap. 5</span>
+      <span>Clase 1, slides 10–13</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>El vocabulario, sobre un ejemplo</h2>
+
+  <figure class="full">
+    <img src="../assets/diagrams/anatomia-relacion.svg"
+         alt="La relación ESTUDIANTE dibujada como tabla de cuatro columnas — Legajo, Nombre, Año, Especialidad — con tres filas. Una llave superior marca el grado, cuatro atributos. Una llave izquierda marca la cardinalidad, tres tuplas. Una guía inferior señala el dominio de la columna Especialidad.">
+    <figcaption>
+      <b>Anatomía de la relación ESTUDIANTE.</b>
+      El grado se cuenta a lo ancho y es estable; la cardinalidad se cuenta a lo alto
+      y cambia con cada <code>INSERT</code>.
+    </figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Término</th><th>Qué es</th><th>Alias que vas a escuchar</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Relación</b></td><td>El conjunto de datos entero. Se dibuja como tabla.</td><td>tabla</td></tr>
+        <tr><td><b>Tupla</b></td><td>Una fila: un hecho completo del minimundo.</td><td>fila, registro</td></tr>
+        <tr><td><b>Atributo</b></td><td>Una columna: una propiedad, con su interpretación.</td><td>columna, campo</td></tr>
+        <tr><td><b>Dominio</b></td><td>El conjunto de valores <b>permitidos</b> para un atributo.</td><td>tipo de dato (impreciso)</td></tr>
+        <tr><td><b>Grado</b></td><td>Cuántos <b>atributos</b> tiene la relación.</td><td>aridad</td></tr>
+        <tr><td><b>Cardinalidad</b></td><td>Cuántas <b>tuplas</b> tiene la relación.</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    El <em class="term">dominio</em> es el que más se subestima. No es sólo "texto" o "entero":
+    es la restricción semántica. El dominio de <code>Año</code> no es <i>entero</i>, es
+    <i>entero entre 1 y 5</i>. Todo lo que no declares como dominio, después lo vas a tener
+    que defender con código.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Colisión de nombres, y es grave</span>
+    <p>
+      <b>"Cardinalidad" significa dos cosas distintas en esta materia.</b>
+    </p>
+    <ul>
+      <li>Acá, en el modelo relacional: el <b>número de tuplas</b> de una relación.
+          Es el tamaño de un conjunto.</li>
+      <li>En el DER: la <b>razón de cardinalidad</b> — ese <code>1</code> o esa
+          <code>N</code> sobre la línea de una relación
+          (<a href="0010-razon-de-cardinalidad.html">lección 10</a>).</li>
+    </ul>
+    <p>
+      Si en un parcial te preguntan "la cardinalidad de esta relación", mirá si te dieron
+      una <b>tabla con datos</b> (contá filas) o un <b>diagrama</b> (razón de cardinalidad).
+      No hay forma de saberlo por la palabra sola.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Por qué una relación no es una tabla</h2>
+
+  <p>
+    Elmasri lo dice sin rodeos: la definición formal de relación <q>implica ciertas
+    características que la hace diferente de un fichero o una tabla</q>. La tabla es el
+    <b>dibujo</b>; la relación es el objeto matemático. Y el objeto matemático es un
+    <em class="term">conjunto</em>.
+  </p>
+
+  <p>De ahí salen dos consecuencias que se preguntan:</p>
+
+  <ol>
+    <li>
+      <b>Las tuplas no tienen orden.</b> <q>Matemáticamente, los elementos de un conjunto no
+      guardan un orden entre ellos; por tanto, las tuplas en una relación tampoco la tienen.</q>
+      La misma relación mostrada en dos órdenes distintos es <b>la misma relación</b>.
+      Por eso, si querés un orden en SQL, tenés que pedirlo con <code>ORDER BY</code>:
+      sin esa cláusula, el motor no te debe nada.
+    </li>
+    <li>
+      <b>No hay tuplas repetidas.</b> Un conjunto no admite elementos duplicados. Esto es
+      lo que garantiza que siempre exista alguna forma de identificar una fila — y es la
+      base de la <a href="0005-claves-e-integridad.html">clave</a>, que es la lección que sigue.
+    </li>
+  </ol>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Dónde la teoría y la práctica se separan</span>
+    <p>
+      Una tabla real de SQL <b>sí</b> puede tener filas duplicadas si no le declaraste una
+      clave primaria, y <code>SELECT</code> devuelve duplicados salvo que pidas
+      <code>DISTINCT</code>. O sea: SQL trabaja con <i>multiconjuntos</i>, no con conjuntos
+      estrictos. La teoría dice conjunto; el motor te deja romperla. <b>Declarar la clave
+      primaria es lo que hace que tu tabla se porte como una relación de verdad.</b>
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Esquema y estado: la distinción que ordena todo</h2>
+
+  <p>
+    Hay dos cosas que se llaman parecido y conviene separar de una vez, porque vuelve en
+    cada unidad:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>Esquema de relación</th><th>Estado de relación</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Qué es</b></td>
+            <td>La <b>descripción</b>: el nombre y sus atributos con sus dominios.</td>
+            <td>El <b>contenido</b> en un momento dado: las tuplas que hay ahora.</td>
+        </tr>
+        <tr><td><b>Ejemplo</b></td>
+            <td><code>ESTUDIANTE(Legajo, Nombre, Año, Especialidad)</code></td>
+            <td>Las tres filas del dibujo de arriba.</td>
+        </tr>
+        <tr><td><b>Cambia…</b></td>
+            <td>casi nunca, y con un <code>ALTER TABLE</code>.</td>
+            <td>todo el tiempo, con cada <code>INSERT</code> o <code>DELETE</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Elmasri lo resume así: a medida que varía el estado del mundo real varía la relación,
+    <q>sin embargo, el esquema R es relativamente estático</q>.
+    Cuando diseñás una base, diseñás <b>esquemas</b>. El estado se llena solo, con el uso.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Grado y cardinalidad</span>
+    <p class="quiz__q">
+      La relación de arriba tiene 4 columnas y 3 filas. Insertás dos estudiantes más.
+      ¿Qué cambió?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La cardinalidad pasó de 3 a 5; el grado sigue en 4. Regla mnemotécnica: el grado lo fija el esquema y casi nunca cambia; la cardinalidad la fija el estado y cambia con cada operación.">La cardinalidad, ahora vale cinco</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Invertido. El grado cuenta ATRIBUTOS, o sea columnas, y sigue siendo 4 — no agregaste ninguna columna. Lo que agregaste fueron tuplas.">El grado, que ahora vale cinco</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí cambió algo: la cardinalidad, que es el número de tuplas. Lo que no cambió es el esquema, y por lo tanto el grado.">Nada de eso: sólo cambió el orden</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Conjunto</span>
+    <p class="quiz__q">
+      Corrés dos veces el mismo <code>SELECT</code> sin <code>ORDER BY</code> y las filas
+      salen en distinto orden. ¿El motor tiene un error?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Una relación es un conjunto y los conjuntos no tienen orden. Si no pediste ORDER BY, no pediste orden, y el motor es libre de devolverlas como le convenga. Depender de un orden accidental es un bug tuyo, no del motor.">No: el orden nunca estuvo garantizado</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No hay tal orden natural. Ni el de inserción ni el de la clave primaria están garantizados sin ORDER BY: la definición de relación no especifica ningún orden ni prefiere uno sobre otro.">Sí: debería respetar el orden natural</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Dominio</span>
+    <p class="quiz__q">
+      Declarás <code>Año</code> como <code>INTEGER</code>, y alguien carga un estudiante
+      de año <code>47</code>. ¿Qué falló?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El tipo de dato no es el dominio. INTEGER acepta 47 sin chistar; el dominio real era 'entero entre 1 y 5' y esa parte nunca se declaró. Todo dominio que no declarás termina siendo responsabilidad de la aplicación — o de nadie.">El dominio quedó sin declarar completo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La integridad referencial es sobre referencias entre tuplas de relaciones distintas (claves foráneas). Acá no hay ninguna referencia involucrada: es un valor fuera del conjunto permitido.">La integridad referencial no se cumplió</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El estado es el contenido, y efectivamente quedó con un dato inválido — pero ése es el síntoma. La causa es que el dominio se declaró de forma incompleta, y por eso el DBMS no pudo rechazarlo.">El estado de relación estaba vacío</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 5.1 "Conceptos del modelo relacional",
+      páginas 125 a 129 (páginas 151 a 155 del PDF en <code>raw/</code>).
+      Prestale atención a 5.1.2, "Características de las relaciones": es corta y es
+      exactamente el material de este apunte.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> ¿Querés que revisemos juntos qué dominios habría que declarar
+      en el TP1 de la farmacia? Es un ejercicio que rinde.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0003-tres-niveles.html">Anterior: 0003</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0005-claves-e-integridad.html">Siguiente: 0005 · Claves e integridad</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

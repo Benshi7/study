@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 22 · Segunda forma normal</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 22 · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Segunda forma normal: la dependencia parcial</h1>
+    <p class="masthead__standfirst">
+      Un atributo que necesita sólo media clave está en la tabla equivocada.
+      Ese es todo el paso.
+    </p>
+    <p class="masthead__meta">
+      <span>~8 minutos</span>
+      <span>Clase 3, slide 9</span>
+      <span>Elimina anomalías 5 y 6</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La definición de la cátedra</h2>
+
+  <blockquote class="callout">
+    "Una estructura de datos está en <b>Segunda Forma Normal</b> si está en Primera Forma
+    Normal y todos sus campos no clave dependen íntegramente de la clave primaria."
+  </blockquote>
+
+  <p>
+    La palabra que hace todo el trabajo es <b>íntegramente</b>. En el resumen de la slide 12
+    el profe lo dice de otra manera —<q>dependen funcionalmente de la totalidad de la clave
+    primaria</q>— y es lo mismo: la clave <b>entera</b>, no una parte.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Antes de revisar nada</span>
+    <p>
+      <b>Mirá la clave primaria.</b> Si es de un solo atributo, la tabla ya está en 2FN y
+      no hay nada que hacer — no existe "parte de la clave".
+      2FN sólo puede fallar en tablas con <b>clave compuesta</b>.
+    </p>
+    <p>
+      En nuestro modelo hay dos tablas. <code>CabeceraFact</code> tiene clave
+      <code>NFact</code>, simple: ya está en 2FN, salteala.
+      <code>RenglonFact</code> tiene clave <code>(NFact, CProd)</code>: ahí hay que mirar.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>El diagnóstico, atributo por atributo</h2>
+
+  <p>
+    Para cada atributo no clave de <code>RenglonFact</code>, la pregunta es una sola:
+    <b>¿necesito las dos partes de la clave para saber su valor, o me alcanza con una?</b>
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Atributo</th><th>La pregunta</th><th>Veredicto</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Canti</code></td>
+          <td>¿Cuántas unidades? Depende de <b>qué producto</b> y de <b>qué factura</b>.</td>
+          <td>Total ✓</td>
+        </tr>
+        <tr>
+          <td><code>Descri</code></td>
+          <td>¿Cómo se llama el producto 39? Es Kiwi <b>siempre</b>. La factura no aporta nada.</td>
+          <td><b>Parcial ✗</b></td>
+        </tr>
+        <tr>
+          <td><code>PUnit</code></td>
+          <td>Depende de si el precio es del producto o del renglón.</td>
+          <td>Lo decide el negocio</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    La slide 9 lo explica con la anomalía: las descripciones distintas
+    <q>se dan porque se almacena la Descripción del producto con los datos de la factura,
+    cuando en realidad este es un atributo <b>exclusivo del producto</b>, independientemente
+    de las facturas en las que se venda</q>.
+  </p>
+
+  <h2><span class="num">03</span>El paso, con los datos</h2>
+
+  <p>
+    <b>Regla operativa:</b> el atributo que depende de una parte de la clave se va a una
+    tabla nueva, y <b>esa parte de la clave se convierte en la clave primaria</b> de la
+    tabla nueva.
+  </p>
+
+  <h3>Antes</h3>
+
+  <div class="rel">
+    RenglonFact (<b>#NFact</b>, <b>#CProd</b>, Descri, Canti, PUnit)
+  </div>
+
+  <h3>Después</h3>
+
+  <div class="paso">
+    <div>
+      <h3>RenglonFact</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>NFact</th><th>CProd</th><th>Canti</th><th>PUnit</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">1</td><td class="pk">35</td><td>6</td><td>3</td></tr>
+            <tr><td class="pk">1</td><td class="pk">37</td><td>1</td><td>5</td></tr>
+            <tr><td class="pk">1</td><td class="pk">39</td><td>5</td><td>10</td></tr>
+            <tr><td class="pk">1</td><td class="pk">40</td><td>2</td><td>3</td></tr>
+            <tr><td class="pk">2</td><td class="pk">37</td><td>5</td><td>3</td></tr>
+            <tr><td class="pk">2</td><td class="pk">39</td><td>3</td><td>11</td></tr>
+            <tr><td class="pk">2</td><td class="pk">44</td><td>2</td><td>5</td></tr>
+            <tr><td class="pk">3</td><td class="pk">35</td><td>4</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>Prod</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>CProd</th><th>Descri</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">35</td><td>Peras</td></tr>
+            <tr><td class="pk">37</td><td>Uvas</td></tr>
+            <tr><td class="pk">39</td><td>Kiwi</td></tr>
+            <tr><td class="pk">40</td><td>Sandía</td></tr>
+            <tr><td class="pk">44</td><td>Tomates</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="rel">
+    CabeceraFact (<b>#NFact</b>, Fecha, CodCli, NomCli)<br>
+    RenglonFact (<b>#NFact</b>, <b>#CProd</b>, Canti, PUnit)<br>
+    Prod (<b>#CProd</b>, Descri)
+  </div>
+
+  <h2><span class="num">04</span>Qué se arregló</h2>
+
+  <p>
+    <code>Prod</code> tiene <b>cinco filas</b>, una por producto, y <code>CProd</code> es su
+    clave primaria. El producto 39 tiene exactamente <b>un</b> renglón, con exactamente
+    <b>una</b> descripción. "Kiwi" y "Kivi" al mismo tiempo ya no es representable:
+    anomalías 5 y 6, eliminadas.
+  </p>
+
+  <p>
+    Y fijate el efecto de arrastre: las ocho filas de <code>RenglonFact</code> guardaban
+    ocho copias de una descripción. Ahora guardan cero. La redundancia que causaba el
+    problema desapareció, y con ella la posibilidad del problema.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">El error de procedimiento más común</span>
+    <p>
+      Llevar <code>Descri</code> a una tabla nueva pero dejarla <b>también</b> en
+      <code>RenglonFact</code> "por las dudas". Eso no normaliza nada: seguís con dos
+      copias y con la anomalía intacta.
+    </p>
+    <p>
+      El atributo <b>se muda</b>, no se copia. Lo único que queda del otro lado es
+      <code>CProd</code>, que ya estaba y que ahora además funciona como clave foránea
+      hacia <code>Prod</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Lo que la cátedra no dice, y Elmasri sí</h2>
+
+  <p>
+    El profe habla de "campos no clave". Elmasri usa <b>atributo no primo</b>:
+  </p>
+
+  <blockquote class="callout">
+    "Un esquema de relación R está en 2FN si todo atributo no primo A en R es completa
+    y funcionalmente dependiente de la clave principal de R."
+  </blockquote>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">La diferencia importa en un caso</span>
+    <p>
+      <em class="term">Atributo primo</em> es el que forma parte de <b>alguna</b> clave
+      candidata — no sólo de la primaria. Un atributo primo <b>no se revisa</b> para 2FN.
+    </p>
+    <p>
+      En los ejercicios de la cátedra, donde hay una sola clave candidata por tabla,
+      "no clave" y "no primo" son lo mismo y la distinción no cambia nada.
+      Guardala por si en un final te dan una tabla con dos claves candidatas.
+    </p>
+  </div>
+
+  <h2><span class="num">06</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · El atajo</span>
+    <p class="quiz__q">
+      <code>CabeceraFact(#NFact, Fecha, CodCli, NomCli)</code>.
+      ¿Cuánto trabajo da revisar si está en 2FN?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Ninguno: la clave es NFact, un solo atributo. No hay 'parte de la clave' de la cual algo pueda depender parcialmente, así que está en 2FN por construcción. Ojo que esto NO dice nada sobre 3FN — y de hecho esa tabla la viola.">Ninguno: la clave es un solo campo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Hay que mirar NomCli, sí, pero no por 2FN. NomCli depende de CodCli, que no es clave: eso es una dependencia transitiva y la caza 3FN, en la próxima lección.">Hay que revisar NomCli con cuidado</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Detectar</span>
+    <p class="quiz__q">
+      <code>Inscripcion(#Legajo, #CodMateria, Nota, NombreMateria)</code>.
+      ¿Qué viola 2FN?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="NombreMateria depende sólo de CodMateria, que es media clave. La materia se llama igual sin importar quién se inscriba. Se muda a Materia(#CodMateria, NombreMateria).">NombreMateria, que sale de media clave</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Nota está bien: para saberla necesitás saber QUÉ alumno y QUÉ materia. Depende de la clave entera, que es exactamente lo que 2FN pide.">Nota, que depende de dos campos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí hay una violación. Fijate cuál de los dos atributos no clave necesita las dos partes de la clave y cuál se conforma con una sola.">Nada: la tabla ya cumple con 2FN</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · El arreglo</span>
+    <p class="quiz__q">
+      Al mudar <code>Descri</code> a <code>Prod</code>, ¿qué pasa con <code>CProd</code>
+      en <code>RenglonFact</code>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Se queda, y suma un rol: sigue siendo parte de la clave primaria del renglón, y ahora además es clave foránea hacia Prod. Un mismo atributo puede cumplir los dos papeles a la vez.">Se queda, y además pasa a ser foránea</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Si se fuera, RenglonFact no podría decir qué producto se vendió. CProd es indispensable: forma parte de la clave y es el enganche con Prod.">Se va, porque ahora vive en Prod</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Clase 3 — Normalización</b>, slide 9 (definición y diagnóstico) y slide 12 (resumen).
+      Las dos tablas de esta lección son las de la slide 9.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 10.3.5 "Segunda forma normal"
+      (pág. 304; en el PDF de <code>raw/</code>, página 330).
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> El test de 2FN se automatiza: tapá mentalmente una parte de
+      la clave y preguntate si todavía podés determinar el atributo. Si podés, es parcial.
+      Probalo con cualquier tabla y contame qué te dio.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0021-primera-forma-normal.html">Anterior: 0021</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0023-tercera-forma-normal.html">Siguiente: 0023 · 3FN</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

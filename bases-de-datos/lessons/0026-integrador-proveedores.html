@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 26 · Integrador: Ejercicio 1, Proveedores</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 26 · Unidad 3 · Integrador B</p>
+    <h1 class="masthead__title">Ejercicio 1: del DER al modelo relacional en 3FN</h1>
+    <p class="masthead__standfirst">
+      El otro camino. Acá no partís de una tabla sucia: partís de un DER limpio.
+      Y las reglas son distintas — aunque el destino sea el mismo.
+    </p>
+    <p class="masthead__meta">
+      <span>~14 minutos</span>
+      <span>Clase 3, slide 17</span>
+      <span>Resolución oficial en ERDPlus</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Los dos caminos, y por qué confunden</h2>
+
+  <p>
+    El profe dicta normalización con una tabla sucia y después te pide
+    <q>convertir el Modelo Conceptual presentado a continuación en un Modelo Relacional
+    expresado en 3FN</q>. Son <b>dos ejercicios distintos</b> que terminan en el mismo tipo
+    de resultado, y conviene tenerlos separados en la cabeza.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>Camino A · Normalizar</th><th>Camino B · Mapear</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Partís de</b></td><td>Una tabla con todo adentro.</td><td>Un DER ya hecho.</td></tr>
+        <tr><td><b>Herramienta</b></td><td>Dependencias funcionales.</td><td>Reglas de mapeo.</td></tr>
+        <tr><td><b>Método</b></td><td>Descomponer: 1FN → 2FN → 3FN.</td><td>Traducir elemento por elemento.</td></tr>
+        <tr><td><b>Ejemplo</b></td><td><a href="0025-integrador-ordenes.html">Lección 25</a>, órdenes.</td><td><b>Esta lección.</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La buena noticia</span>
+    <p>
+      Si el DER está bien hecho, <b>el mapeo da 3FN casi solo</b>. Y tiene sentido: un DER
+      bien hecho ya puso cada atributo colgando de la entidad a la que pertenece, que es
+      justo lo que 2FN y 3FN persiguen.
+    </p>
+    <p>
+      Igual <b>revisá al final</b>. Un DER con una entidad mal recortada produce una tabla
+      que viola 3FN, y ahí sí hay que normalizar a mano.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>El DER de partida</h2>
+
+  <p>Lo que muestra la slide 17, leído en texto:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Entidad</th><th>Atributos</th></tr></thead>
+      <tbody>
+        <tr><td><b>PROVEEDOR</b></td><td>CODIGO, NOMBRE, <b>TELEFONO</b> (óvalo doble = multivaluado), <b>DIRECCION</b> (compuesto: CALLE, NRO)</td></tr>
+        <tr><td><b>MATERIAL</b></td><td>CODIGO, NOMBRE</td></tr>
+        <tr><td><b>UNIDAD MEDIDA</b></td><td>CODIGO, DESCRIPCION</td></tr>
+        <tr><td><b>PEDIDO</b></td><td>NUMERO, FECHA</td></tr>
+        <tr><td><b>DEPARTAMENTO</b></td><td>CODIGO, NOMBRE</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Relación</th><th>Entre</th><th>Cardinalidad</th><th>Atributo propio</th></tr></thead>
+      <tbody>
+        <tr><td>AFECTADO</td><td>PROVEEDOR — PEDIDO</td><td><code>1 : N</code></td><td>—</td></tr>
+        <tr><td>REALIZA</td><td>DEPARTAMENTO — PEDIDO</td><td><code>1 : N</code></td><td>—</td></tr>
+        <tr><td>EXPRESA</td><td>UNIDAD MEDIDA — MATERIAL</td><td><code>1 : N</code></td><td>—</td></tr>
+        <tr><td>PROVEE</td><td>PROVEEDOR — MATERIAL</td><td><code>N : N</code></td><td>—</td></tr>
+        <tr><td>POSEE</td><td>PEDIDO — MATERIAL</td><td><code>N : N</code></td><td><b>CANTIDAD</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Practicá la lección 10 acá mismo</span>
+    <p>
+      En el diagrama, AFECTADO tiene el <code>1</code> pegado a PROVEEDOR y la
+      <code>N</code> pegada a PEDIDO. Leído cruzado, como vimos en la
+      <a href="0010-razon-de-cardinalidad.html">lección 10</a>: un pedido tiene
+      <b>1</b> proveedor, un proveedor tiene <b>N</b> pedidos.
+    </p>
+    <p>
+      Y eso decide dónde va la clave foránea. Si leés la cardinalidad al revés, la FK
+      termina en la tabla equivocada y el modelo entero queda mal. <b>Toda la lección 10
+      existe para este momento.</b>
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Las reglas de mapeo, aplicadas</h2>
+
+  <div class="move">
+    <span class="move__n">Regla 1</span>
+    <p class="move__t">Entidad fuerte → una tabla, con su clave primaria</p>
+  </div>
+
+  <div class="rel">
+    PROVEEDOR (<b>#Cod_Proveedor</b>, Nombre, …)<br>
+    MATERIAL (<b>#Cod_Material</b>, Nombre, …)<br>
+    UNIDAD_MEDIDA (<b>#Cod_Unidad_Medida</b>, Descripcion)<br>
+    PEDIDO (<b>#Nro_Pedido</b>, Fecha, …)<br>
+    DEPARTAMENTO (<b>#Cod_Departamento</b>, Nombre)
+  </div>
+
+  <div class="move">
+    <span class="move__n">Regla 2</span>
+    <p class="move__t">Atributo compuesto → se aplana en columnas simples</p>
+  </div>
+
+  <p>
+    <code>DIRECCION(CALLE, NRO)</code> <b>no</b> genera una tabla. El óvalo padre desaparece
+    y quedan sus hojas como columnas de PROVEEDOR:
+  </p>
+
+  <div class="rel">
+    PROVEEDOR (<b>#Cod_Proveedor</b>, Nombre, Direccion_Calle, Direccion_Nro)
+  </div>
+
+  <p>
+    Fijate el nombre que usa la resolución oficial: <code>Direccion_Calle</code>,
+    <code>Direccion_Nro</code>. Conserva el padre como prefijo. Copiá esa convención,
+    porque deja ver de dónde venían.
+  </p>
+
+  <div class="move">
+    <span class="move__n">Regla 3</span>
+    <p class="move__t">Atributo multivaluado → tabla propia</p>
+  </div>
+
+  <p>
+    <code>TELEFONO</code> es óvalo doble. Un proveedor tiene varios, así que no entra en
+    una columna — sería una violación de 1FN, exactamente la de la
+    <a href="0021-primera-forma-normal.html">lección 21</a>.
+  </p>
+
+  <div class="rel">
+    PROVEEDOR_TELEFONO (<b>#Cod_Proveedor</b>, <b>#Telefono</b>)
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La clave es compuesta, y el valor forma parte</span>
+    <p>
+      La clave primaria es <code>(Cod_Proveedor, Telefono)</code>: <b>las dos columnas</b>.
+      Con sólo <code>Cod_Proveedor</code> el proveedor tendría un teléfono y volvés al
+      punto de partida.
+    </p>
+    <p>
+      Es la misma forma que <code>PrecioProd</code> de la
+      <a href="0024-donde-vive-el-precio.html">lección 24</a>: la clave del dueño más
+      aquello que distingue una fila de otra.
+    </p>
+  </div>
+
+  <div class="move">
+    <span class="move__n">Regla 4</span>
+    <p class="move__t">Relación 1:N → la clave del lado "1" baja como FK al lado "N"</p>
+  </div>
+
+  <p>Tres relaciones caen acá, y ninguna genera tabla nueva:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Relación</th><th>Lado 1</th><th>Lado N</th><th>La FK va a…</th></tr></thead>
+      <tbody>
+        <tr><td>AFECTADO</td><td>PROVEEDOR</td><td>PEDIDO</td><td><code>PEDIDO.Cod_Proveedor</code></td></tr>
+        <tr><td>REALIZA</td><td>DEPARTAMENTO</td><td>PEDIDO</td><td><code>PEDIDO.Cod_Departamento</code></td></tr>
+        <tr><td>EXPRESA</td><td>UNIDAD_MEDIDA</td><td>MATERIAL</td><td><code>MATERIAL.Cod_Unidad_Medida</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rel">
+    PEDIDO (<b>#Nro_Pedido</b>, Fecha, <i>(FK)Cod_Proveedor</i>, <i>(FK)Cod_Departamento</i>)<br>
+    MATERIAL (<b>#Cod_Material</b>, Nombre, <i>(FK)Cod_Unidad_Medida</i>)
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Por qué la FK va del lado N, siempre</span>
+    <p>
+      Un pedido tiene <b>un</b> proveedor: cabe en una columna. Un proveedor tiene
+      <b>muchos</b> pedidos: no caben en una columna, harían falta varias, y eso es un grupo
+      repetitivo — violación de 1FN.
+    </p>
+    <p>
+      O sea: <b>la FK va del lado N porque del otro lado no entraría.</b> No es una
+      convención arbitraria, es la única opción que respeta 1FN.
+    </p>
+  </div>
+
+  <div class="move">
+    <span class="move__n">Regla 5</span>
+    <p class="move__t">Relación N:N → tabla asociativa</p>
+  </div>
+
+  <p>
+    Como dice la slide 13: <q>en el modelo normalizado las relaciones muchos a muchos
+    NO existen</q>. Cada N:N se convierte en tabla, con clave primaria = unión de las dos
+    claves, y los atributos del rombo adentro.
+  </p>
+
+  <div class="rel">
+    PROVEE (<b>#Cod_Proveedor</b>, <b>#Cod_Material</b>)<br>
+    PEDIDO_MATERIAL (<b>#Nro_Pedido</b>, <b>#Cod_Material</b>, Cantidad)
+  </div>
+
+  <p>
+    <code>Cantidad</code> colgaba del rombo POSEE, así que va en la asociativa. Es un dato
+    del vínculo: no es del pedido ni del material, es de la combinación de ambos.
+  </p>
+
+  <h2><span class="num">04</span>El modelo completo — resolución oficial</h2>
+
+  <div class="rel">
+    PROVEEDOR (<b>#Cod_Proveedor</b>, Nombre, Direccion_Calle, Direccion_Nro)<br>
+    PROVEEDOR_TELEFONO (<b>#Cod_Proveedor</b>, <b>#Telefono</b>)<br>
+    MATERIAL (<b>#Cod_Material</b>, Nombre, <i>(FK)Cod_Unidad_Medida</i>)<br>
+    UNIDAD_MEDIDA (<b>#Cod_Unidad_Medida</b>, Descripcion)<br>
+    PROVEE (<b>#Cod_Proveedor</b>, <b>#Cod_Material</b>)<br>
+    PEDIDO (<b>#Nro_Pedido</b>, Fecha, <i>(FK)Cod_Proveedor</i>, <i>(FK)Cod_Departamento</i>)<br>
+    PEDIDO_MATERIAL (<b>#Nro_Pedido</b>, <b>#Cod_Material</b>, Cantidad)<br>
+    DEPARTAMENTO (<b>#Cod_Departamento</b>, Nombre)
+  </div>
+
+  <p>
+    Ocho tablas: cinco entidades, dos asociativas y una de multivaluado.
+    Salen exactas del archivo <code>Clase3_Ej1_Proveedores_RS.erdplus</code>.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Hay dos versiones oficiales, y difieren en los nombres</span>
+    <p>
+      El mismo ejercicio aparece resuelto en la <b>Clase 2, slide 35</b>, y ahí las tablas
+      se llaman distinto: <code>ID_PROVEEDOR</code> en lugar de <code>Cod_Proveedor</code>,
+      y <code>MATERIAL_PROVEEDOR</code> en lugar de <code>PROVEE</code>.
+    </p>
+    <p>
+      <b>La estructura es idéntica en las dos.</b> Lo que cambia son los nombres, que no se
+      evalúan. Elegí una convención y sé consistente dentro de tu entrega — eso sí se nota.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>El control final: ¿está en 3FN?</h2>
+
+  <p>
+    No lo des por hecho porque salió de un DER. Revisá tabla por tabla — es rápido:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tabla</th><th>Clave</th><th>2FN</th><th>3FN</th></tr></thead>
+      <tbody>
+        <tr><td>PROVEEDOR</td><td>simple</td><td>automática</td><td>✓ todo depende del proveedor</td></tr>
+        <tr><td>PROVEEDOR_TELEFONO</td><td>compuesta</td><td>✓ no hay atributos no clave</td><td>✓</td></tr>
+        <tr><td>MATERIAL</td><td>simple</td><td>automática</td><td>✓ la FK no arrastra nada</td></tr>
+        <tr><td>UNIDAD_MEDIDA</td><td>simple</td><td>automática</td><td>✓</td></tr>
+        <tr><td>PROVEE</td><td>compuesta</td><td>✓ no hay atributos no clave</td><td>✓</td></tr>
+        <tr><td>PEDIDO</td><td>simple</td><td>automática</td><td>✓</td></tr>
+        <tr><td>PEDIDO_MATERIAL</td><td>compuesta</td><td>✓ Cantidad necesita las dos</td><td>✓</td></tr>
+        <tr><td>DEPARTAMENTO</td><td>simple</td><td>automática</td><td>✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Fijate qué barato salió: cinco tablas tienen clave simple, así que 2FN es automática.
+    De las tres compuestas, dos no tienen atributos no clave. <b>Sólo una tabla —
+    <code>PEDIDO_MATERIAL</code> — requirió pensar</b>, y pasó.
+  </p>
+
+  <h2><span class="num">06</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Compuesto vs multivaluado</span>
+    <p class="quiz__q">
+      <code>DIRECCION</code> genera columnas y <code>TELEFONO</code> genera una tabla.
+      ¿Por qué el trato distinto?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Una dirección es un valor con partes: calle y número, una sola vez. Entra en columnas. Los teléfonos son varios valores del mismo tipo: no entran en una columna sin violar 1FN, así que necesitan filas.">Uno es un valor, el otro son varios</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al revés: DIRECCION tiene dos partes y TELEFONO una sola. La cantidad de partes no decide nada. Lo que decide es cuántas VECES aparece el atributo en una misma ocurrencia.">La dirección tiene menos partes</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Dónde va la FK</span>
+    <p class="quiz__q">
+      En AFECTADO, <code>PROVEEDOR 1 : N PEDIDO</code>.
+      ¿Por qué la FK no va en PROVEEDOR?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Habría que guardar muchos números de pedido en la fila del proveedor, y eso es un grupo repetitivo: violación de 1FN. Del lado N sólo hay un valor por fila, que sí entra en una columna.">Serían muchos valores en una columna</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ninguna regla dice que la FK vaya donde nació la relación. Va donde CABE: del lado N, porque del lado 1 harían falta varias columnas para un solo atributo.">Porque la relación nace en el pedido</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las dos tablas tienen clave primaria, así que eso no distingue nada. La razón es de capacidad: del lado 1 no entraría un solo valor por fila.">Porque PEDIDO tiene clave primaria</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · La asociativa</span>
+    <p class="quiz__q">
+      ¿Podría <code>Cantidad</code> haber quedado en <code>PEDIDO</code> en lugar de en
+      <code>PEDIDO_MATERIAL</code>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="No: un pedido lleva varios materiales, cada uno con su propia cantidad. En PEDIDO habría una sola cantidad para todo el pedido, que no significa nada. Cantidad depende de la combinación pedido-material, y por eso vive en la asociativa.">No: hay una cantidad por material</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Pensá qué valor pondrías ahí. ¿La cantidad de qué? Un pedido de 3 tornillos y 5 tuercas no tiene 'una' cantidad. El dato pertenece al par pedido-material, no al pedido.">Sí: la cantidad es del pedido entero</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <h2><span class="num">07</span>Y el Ejercicio 2</h2>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Pendiente</span>
+    <p>
+      El segundo ejercicio del 10/09 — armar una base de datos — todavía no está resuelto,
+      y del PDF <code>Ejercicios para realizar en clase 2026-09-10.pdf</code> sólo se
+      puede extraer el título: el enunciado está como imagen. Así que
+      <b>no lo desarrollo acá para no inventarlo.</b>
+    </p>
+    <p>
+      Lo que sí se puede anticipar: "armar una base" suele significar pasar del modelo
+      relacional al <b>DDL</b> — los <code>CREATE TABLE</code> con sus claves y restricciones.
+      Eso es Unidad 5, y en este plan son las lecciones
+      <b>0030 y 0031</b>. El modelo de arriba es un punto de partida ideal: ocho tablas con
+      todas las formas de clave que vas a necesitar.
+    </p>
+    <p>
+      Cuando lo tengas, pasame el enunciado y lo resolvemos completo.
+    </p>
+  </div>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Resolución oficial del docente</b>:
+      <code>Ejercicios/Clase3_Ej1_Proveedores_RS.erdplus</code> en la carpeta de la materia.
+      Las ocho tablas, sus claves y sus foráneas salen de ese archivo.
+    </p>
+    <p>
+      <b>El DER de partida</b>: Clase 3, slide 17. <b>La otra versión oficial</b>:
+      Clase 2, slide 35.
+    </p>
+    <p>
+      Las reglas de mapeo se formalizan completas en la <b>lección 0016</b> de la Unidad 2,
+      que todavía no está escrita. Acá va lo que el ejercicio necesita.
+      <b>Elmasri, capítulo 7</b>, es la fuente para las siete reglas.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Con esto cerrás la Unidad 3. Si querés medirte de verdad,
+      agarrá el DER de la Farmacia (Clase 3, slide 16) y mapealo vos solo a relacional.
+      Pasámelo y te lo corrijo contra las mismas reglas.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0025-integrador-ordenes.html">Anterior: 0025</a>
+    <a href="../index.html">Índice</a>
+    <a href="../reference/0002-normalizacion.html">Referencia: normalización</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

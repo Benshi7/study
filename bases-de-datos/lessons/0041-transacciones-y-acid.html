@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 41 · Transacciones y ACID</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 41 · Unidad 6 · Administración de transacciones</p>
+    <h1 class="masthead__title">Transacciones, y las cuatro letras de ACID</h1>
+    <p class="masthead__standfirst">
+      Cuatro definiciones para saber de memoria. El docente ya las tomó en un parcial,
+      y son literalmente cuatro párrafos.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Unidad 4 — Conceptos, pp. 8–9</span>
+      <span>Prioridad para el parcial: alta</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Por qué esta lección lleva el número 41</span>
+    <p>
+      Las transacciones son <b>Unidad 6</b> en el programa, pero el docente las dictó al
+      final de la clase de índices, dentro del material de Unidad 4. Entran al parcial. El
+      número sigue el orden del temario, no el orden en que las vimos —
+      igual que la <a href="0010-razon-de-cardinalidad.html">0010</a>.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Qué es una transacción</h2>
+
+  <blockquote class="callout">
+    "Una transacción incluye <b>una o más operaciones de acceso a la base de datos</b>
+    (operaciones de inserción, eliminación, modificación o recuperación)."
+  </blockquote>
+
+  <p>
+    Dos cosas de esa definición que suelen pasarse por alto en una respuesta de desarrollo.
+    Primero, <b>"una o más"</b>: una sola sentencia ya es una transacción. Segundo, las
+    cuatro operaciones son <b>inserción, eliminación, modificación y recuperación</b> —
+    y la última es la que sorprende, porque leer también cuenta.
+  </p>
+
+  <h3>Dónde empieza y dónde termina</h3>
+
+  <blockquote class="callout">
+    "Una forma de definir los límites de una transacción es especificando explícitamente
+    las sentencias <b>begin transaction</b> y <b>end transaction</b>."
+  </blockquote>
+
+  <h3>La transacción de sólo lectura</h3>
+
+  <blockquote class="callout">
+    "Si las operaciones de bases de datos de una transacción <b>no actualizan</b> la base de
+    datos, sino que únicamente <b>recuperan</b> datos, se dice que la transacción es de
+    <b>sólo lectura</b>."
+  </blockquote>
+
+  <p>
+    Es la consecuencia directa de que "recuperación" figure entre las operaciones: una
+    transacción que sólo consulta sigue siendo una transacción, y tiene nombre propio.
+  </p>
+
+  <h2><span class="num">02</span>ACID — las cuatro propiedades</h2>
+
+  <blockquote class="callout">
+    "Las transacciones deben poseer varias propiedades, a menudo denominadas
+    <b>propiedades ACID</b>."
+  </blockquote>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Ojo con la C</span>
+    <p>
+      El material no la llama "consistencia" a secas, sino
+      <b>"conservación de la consistencia"</b>. Usá ese nombre: el verbo es parte de la
+      idea — la transacción <em>no crea</em> la consistencia, la <em>conserva</em>.
+    </p>
+  </div>
+
+  <p>
+    Lo que sigue son las cuatro definiciones <b>textuales</b>. Son lo que hay que poder
+    escribir en la hoja. Intentá recuperarlas antes de abrirlas:
+  </p>
+
+  <details class="reveal">
+    <summary>A — Atomicidad</summary>
+    <div class="reveal__body">
+      <p>
+        "Una transacción es una <b>unidad atómica de procesamiento</b>; o se ejecuta en su
+        <b>totalidad</b> o <b>no se ejecuta en absoluto</b>."
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>C — Conservación de la consistencia</summary>
+    <div class="reveal__body">
+      <p>
+        "Una transacción está conservando la consistencia si su ejecución completa lleva a
+        la base de datos <b>de un estado consistente a otro</b>."
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>I — Aislamiento</summary>
+    <div class="reveal__body">
+      <p>
+        "Una transacción debe aparecer <b>como si estuviera ejecutándose de forma aislada</b>
+        a las demás. Es decir, la ejecución de una transacción <b>no debe interferir</b> con
+        la ejecución de ninguna otra transacción simultánea."
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>D — Durabilidad</summary>
+    <div class="reveal__body">
+      <p>
+        "Los cambios aplicados a la base de datos por una transacción <b>confirmada</b>
+        deben <b>persistir</b> en la base de datos. Estos cambios <b>no deben perderse por
+        culpa de un fallo</b>."
+      </p>
+    </div>
+  </details>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cómo no confundir la C con la I</span>
+    <p>
+      Son las dos que se mezclan. La diferencia está en <b>contra qué protegen</b>:
+    </p>
+    <ul>
+      <li><b>Conservación de la consistencia</b> mira <em>una</em> transacción contra las
+          reglas de la base: al terminar, ningún dato quedó inválido.</li>
+      <li><b>Aislamiento</b> mira <em>varias</em> transacciones entre sí: ninguna se entera
+          de lo que las otras están haciendo al mismo tiempo.</li>
+    </ul>
+    <p>
+      Si en la definición aparece la palabra <b>simultánea</b>, es aislamiento.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Práctica</h2>
+
+  <p>
+    La práctica real de esta lección son los cuatro bloques de arriba, <b>escritos de
+    memoria en papel</b>. Los quizzes de abajo sirven para lo otro: discriminar entre las
+    propiedades que se parecen.
+  </p>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Reconocer</span>
+    <p class="quiz__q">
+      "O se ejecuta en su totalidad o no se ejecuta en absoluto."
+      ¿Qué propiedad es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Atomicidad: la transacción es una unidad atómica de procesamiento. El todo o nada es su firma. Si falla en el medio, se deshace lo hecho hasta ahí.">Atomicidad</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Aislamiento es sobre transacciones simultáneas que no deben interferir entre sí. Acá no hay ninguna otra transacción en juego: hay una sola, que se ejecuta entera o nada.">Aislamiento</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Durabilidad es sobre lo que pasa después de confirmar: los cambios persisten y no se pierden por un fallo. Acá todavía no llegamos a confirmar nada.">Durabilidad</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Discriminar</span>
+    <p class="quiz__q">
+      Dos transacciones corren al mismo tiempo y una lee datos que la otra está
+      modificando. ¿Qué propiedad se está violando?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Aislamiento. La palabra clave de su definición es simultánea: la ejecución de una transacción no debe interferir con ninguna otra transacción simultánea. Acá una se enteró de lo que hacía la otra.">El aislamiento de las transacciones</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La conservación de la consistencia mira una transacción sola contra las reglas de la base: que su ejecución completa lleve de un estado consistente a otro. El problema de acá es la interferencia entre dos.">La consistencia de la base de datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La durabilidad es sobre persistir los cambios de una transacción ya confirmada frente a un fallo. Nada de eso está en juego mientras las dos todavía corren.">La durabilidad de los datos guardados</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · La definición</span>
+    <p class="quiz__q">
+      Una transacción ejecuta únicamente sentencias que recuperan datos.
+      ¿Qué se puede decir?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es una transacción de sólo lectura. El material incluye la recuperación entre las operaciones de acceso, así que consultar también forma una transacción: simplemente no actualiza la base.">Es una transacción de sólo lectura</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí lo es. La definición dice una o más operaciones de inserción, eliminación, modificación o recuperación. La recuperación está en la lista, así que leer alcanza.">No llega a ser una transacción</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las propiedades ACID se exigen a toda transacción. Que no actualice no la exime: el aislamiento, por ejemplo, importa muchísimo justo cuando se está leyendo.">No necesita cumplir con ACID</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Unidad 4 — Conceptos</b>, páginas 8 y 9
+      (<code>raw/Material_Examen/unidad 4 conceptos.pdf</code>), equivalente a los slides
+      18 y 19 del deck <code>Clase Indices y Txn</code>. Las cuatro definiciones son
+      textuales de ahí, y son las que hay que reproducir.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — capítulo 17, "Introducción a los conceptos y
+      la teoría de procesamiento de transacciones". El material tomó de ahí las cuatro
+      definiciones, casi sin editarlas.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Escribime las cuatro definiciones de memoria y te las
+      corrijo palabra por palabra contra el material. Es el ejercicio que más paga para
+      esta lección.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0028-indices.html">Anterior: 0028 · Índices</a>
+    <a href="0042-problemas-de-concurrencia.html">Siguiente (opcional): 0042 · Problemas de concurrencia</a>
+    <a href="../reference/0003-indices-y-transacciones.html">Referencia: índices y ACID</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

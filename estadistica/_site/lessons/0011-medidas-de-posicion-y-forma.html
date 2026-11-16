@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 11 — Medidas de Posición y de Forma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidades 1–3 · Estadística Descriptiva</span>
+<h1>Medidas de Posición y de Forma</h1>
+<p class="subtitle">Cuartiles, percentiles y asimetría. La fórmula la resuelve la app — lo que cae en el multiple choice es leer bien el enunciado y no invertir el signo de la asimetría.</p>
+
+<h2>Posición: cuartiles y percentiles</h2>
+<p>Dividen la distribución ordenada en partes iguales para ubicar dónde cae un porcentaje de los datos.</p>
+<table>
+<tr><th>Medida</th><th>Divide en...</th><th>Equivalencia</th></tr>
+<tr><td>Cuartiles (Q1, Q2, Q3)</td><td>4 partes de 25%</td><td class="formula">Q1=P25 · Q2=P50=Me · Q3=P75</td></tr>
+<tr><td>Percentiles (P1…P99)</td><td>100 partes de 1%</td><td>P_k supera al k% de los datos</td></tr>
+</table>
+<div class="box">
+La idea que ata todo: <strong>es UNA sola fórmula</strong> (la del percentil P_k), la misma que la mediana, cambiando solo el valor de k. Mediana, cuartiles y percentiles se calculan igual — cambia la posición que buscás.
+</div>
+
+<h2>La trampa de lectura: ¿de qué lado está el porcentaje?</h2>
+<div class="warn">
+El percentil se define por lo que queda <strong>POR DEBAJO</strong>. Si el enunciado dice "el 30% obtiene MÁS que 7", entonces el 70% obtiene menos ⇒ el percentil de 7 es <span class="formula">P70</span>, no P30. Leé siempre de qué lado te dan el porcentaje antes de nombrar el percentil.
+</div>
+
+<h2>Dispersión robusta: rango intercuartílico y boxplot</h2>
+<div class="box">
+<span class="formula">RIC = Q3 − Q1</span> &nbsp;— la dispersión del 50% central
+</div>
+<p>El RIC no se deja arrastrar por valores extremos (a diferencia del desvío estándar). El <strong>diagrama de caja</strong> lo dibuja: la caja va de Q1 a Q3 (50% central), con la mediana adentro, y los "bigotes" son el 25% de cada extremo. Un lado más largo = datos más dispersos de ese lado.</p>
+<div class="box">
+<strong>Regla de oro:</strong> cuando una distribución es muy asimétrica, describila con <strong>mediana + RIC</strong>, no con media + desvío. La media y el desvío se distorsionan con la asimetría y los outliers; mediana y RIC aguantan.
+</div>
+
+<h2>Forma: asimetría (la trampa del signo)</h2>
+<p>La asimetría se decide comparando la <strong>Moda (Mo)</strong> con la <strong>Media (x̄)</strong>. Según la convención de la cátedra (Pearson clásico):</p>
+<table>
+<tr><th>Si...</th><th>Asimetría</th><th>Cola larga hacia...</th></tr>
+<tr><td class="formula">Mo &gt; x̄</td><td><strong>Negativa</strong></td><td>la izquierda</td></tr>
+<tr><td class="formula">Mo &lt; x̄</td><td><strong>Positiva</strong></td><td>la derecha</td></tr>
+<tr><td class="formula">Mo = x̄</td><td>Simétrica</td><td>—</td></tr>
+</table>
+<div class="warn">
+El error más común es memorizarlo al revés ("Mo &gt; x̄ → positiva"). NO. Según este material es <strong>Mo &gt; x̄ ⇒ NEGATIVA</strong>. Truco: la cola larga apunta al lado contrario de donde está la Moda, y el signo de la asimetría es el de la cola. Si dudás, dibujá: la cola marca el signo.
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. Si el 40% de los empleados gana MÁS de $500.000, ¿qué percentil corresponde a $500.000?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> P40</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> P50</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', true)"> P60</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> P100</label>
+<div id="q1a" class="feedback wrong">P40 sería si el 40% ganara MENOS. Acá el 40% gana más, así que hay que dar vuelta el porcentaje.</div>
+<div id="q1b" class="feedback wrong">P50 sería la mediana; acá el corte no está en la mitad.</div>
+<div id="q1c" class="feedback correct">Si el 40% gana más, el 60% gana menos o igual ⇒ $500.000 es el percentil 60. El percentil se define por lo que queda debajo.</div>
+<div id="q1d" class="feedback wrong">P100 sería el valor máximo; no aplica.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Una distribución tiene Mo = 42 y x̄ = 38. ¿Qué asimetría presenta (convención de la cátedra)?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> Positiva</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> Simetría perfecta</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> No se puede determinar</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', true)"> Negativa</label>
+<div id="q2a" class="feedback wrong">Ese es el error clásico de invertir el signo. Con Mo > x̄ la asimetría es negativa según este material.</div>
+<div id="q2b" class="feedback wrong">Simetría sería Mo = x̄. Acá difieren en 4 unidades.</div>
+<div id="q2c" class="feedback wrong">Sí se puede: comparás Mo con x̄ y listo.</div>
+<div id="q2d" class="feedback correct">Mo (42) > x̄ (38) ⇒ asimetría negativa. La cola larga queda a la izquierda.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. Una distribución es fuertemente asimétrica. ¿Qué par describe mejor centro y dispersión?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> Media aritmética y desvío estándar</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', true)"> Mediana y rango intercuartílico</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> Moda y varianza</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> Media geométrica y coeficiente de variación</label>
+<div id="q3a" class="feedback wrong">Media y desvío se distorsionan con la asimetría y los valores extremos — justo lo que hay que evitar acá.</div>
+<div id="q3b" class="feedback correct">Mediana y RIC son robustas ante outliers y asimetría; son las apropiadas para distribuciones muy asimétricas.</div>
+<div id="q3c" class="feedback wrong">La varianza sufre el mismo problema que el desvío frente a valores extremos.</div>
+<div id="q3d" class="feedback wrong">El CV se basa en media y desvío, así que arrastra la misma sensibilidad a la asimetría.</div>
+</div>
+
+<div class="ask">
+¿Querés ver el cálculo de un percentil con datos agrupados en intervalos, paso a paso? Decime y lo armamos.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/quartiles.html" target="_blank">Math is Fun — Quartiles</a> · <a href="https://www.mathsisfun.com/data/skewness.html" target="_blank">Skewness</a>.
+<div class="nav-row">
+  <span>← <a href="0010-regresion-y-correlacion.html">Lección 10 — Regresión y correlación</a></span>
+  <span>Siguiente → <a href="0013-tablas-de-contingencia.html">Lección 13 — Tablas de contingencia</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

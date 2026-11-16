@@ -1,0 +1,780 @@
+{
+  "diagramType": 2,
+  "data": {
+    "nodes": [
+      {
+        "id": "01d08e10-2f43-4c62-b856-007b2f78a212",
+        "type": "Table",
+        "position": {
+          "x": 2264.1281115908896,
+          "y": 544.5762596285654
+        },
+        "data": {
+          "label": "Empleado",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "5bd08e36-e1ef-4116-9d50-205d28363687",
+              "name": "id_empleado",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "e25a1135-bb08-428c-bc44-e2e9f6f2a20a",
+              "name": "emp_nombre",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "30",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "52bd2f0d-7730-4bda-b222-d96c0367922d",
+              "name": "calle",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "30"
+            },
+            {
+              "id": "79433f5e-7653-432c-87d4-1eacb93f7234",
+              "name": "nro",
+              "type": "INT",
+              "position": 0
+            },
+            {
+              "id": "fk_00d9d064-9c47-4154-a614-f307378407f2",
+              "name": "fk_Farmacia",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "3bc0f35e-dd21-4633-a84a-f16688acab25",
+                "sourceTableId": "332d5508-3150-410b-9535-9a4ceb12d51a",
+                "columns": [
+                  {
+                    "id": "fk_dffb9aee-2e06-43ab-a0cc-d1287fc353dc",
+                    "name": "id_farmacia",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "isSelected": false,
+          "isFactTable": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 151
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "c5951663-a19a-479c-918d-a8b7d7efe8fd",
+        "type": "Table",
+        "position": {
+          "x": 2591.031795558552,
+          "y": 550.865349902245
+        },
+        "data": {
+          "label": "Telefono",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "2c19e9d1-ddbd-4a96-a3dd-50cfb47c3c99",
+              "name": "telefono",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "30"
+            },
+            {
+              "id": "fk_5f305991-d4e3-4fd0-8377-707cb0e3f7bd",
+              "name": "fk_Empleado",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "301852b0-5d06-485c-9c4b-ef24e33b5aed",
+                "sourceTableId": "01d08e10-2f43-4c62-b856-007b2f78a212",
+                "columns": [
+                  {
+                    "id": "fk_5bd08e36-e1ef-4116-9d50-205d28363687",
+                    "name": "id_empleado",
+                    "type": "INT"
+                  }
+                ]
+              },
+              "position": 1
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "3dd3717d-87ee-4a1e-86d3-9d323f7c16bd",
+        "type": "Table",
+        "position": {
+          "x": 1877.34932225688,
+          "y": 648.1078094195049
+        },
+        "data": {
+          "label": "Propio",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "0745ca58-e6d5-4afd-bf05-e3e63e9a1c92",
+              "name": "fecha_ingreso",
+              "type": "CHAR(n)",
+              "position": 0,
+              "size": "8"
+            },
+            {
+              "id": "fk_ff9e8583-0aa4-497d-9df2-7072eeb97398",
+              "name": "fk_Empleado",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "d8c465df-d06f-4f0d-b0fe-8888b642b0f0",
+                "sourceTableId": "01d08e10-2f43-4c62-b856-007b2f78a212",
+                "columns": [
+                  {
+                    "id": "fk_5bd08e36-e1ef-4116-9d50-205d28363687",
+                    "name": "id_empleado",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 76
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "f4989529-e55d-4fab-bce4-b5418e0b3631",
+        "type": "Table",
+        "position": {
+          "x": 1873.3216275258408,
+          "y": 519.8065923844455
+        },
+        "data": {
+          "label": "Farmaceutico",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "e685f86f-b65a-4884-9779-c4374f5fdc76",
+              "name": "fecha_graduacion",
+              "type": "CHAR(n)",
+              "position": 0,
+              "size": "8",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "fk_174c877f-8a60-4035-8bff-f4366f1f2630",
+              "name": "fk_Empleado",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "13536ddf-0661-4435-a538-9c20bc5e10d1",
+                "sourceTableId": "01d08e10-2f43-4c62-b856-007b2f78a212",
+                "columns": [
+                  {
+                    "id": "fk_5bd08e36-e1ef-4116-9d50-205d28363687",
+                    "name": "id_empleado",
+                    "type": "INT"
+                  }
+                ]
+              },
+              "isPrimaryKey": false
+            },
+            {
+              "id": "fk_47a28648-2616-429f-a950-e0714d648d04",
+              "name": "fk_Ciudad",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "d7ab9735-da80-42cd-a6ec-ef476087b9b4",
+                "sourceTableId": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+                "columns": [
+                  {
+                    "id": "fk_0c98037e-144b-4f4e-9ccc-228daa8a22bd",
+                    "name": "id_ciudad",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 101
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+        "type": "Table",
+        "position": {
+          "x": 1874.9441134243034,
+          "y": 398.56508225014824
+        },
+        "data": {
+          "label": "Ciudad",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "0c98037e-144b-4f4e-9ccc-228daa8a22bd",
+              "name": "id_ciudad",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "5a15aab4-f34a-4fe7-87f4-fdebdc681dbc",
+              "name": "ciudad_nombre",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "50",
+              "isPrimaryKey": false
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 75
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "332d5508-3150-410b-9535-9a4ceb12d51a",
+        "type": "Table",
+        "position": {
+          "x": 1874.1075759048683,
+          "y": 269.6597586875616
+        },
+        "data": {
+          "label": "Farmacia",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "dffb9aee-2e06-43ab-a0cc-d1287fc353dc",
+              "name": "id_farmacia",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "5be25487-451d-46b5-9731-87a141b37873",
+              "name": "farmacia_nombre",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "50",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "fk_3409837b-3190-476d-8259-7b3b4af1ae7e",
+              "name": "fk_Ciudad",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "a09a7fa5-7ba4-42ba-86a1-ccbdb1315875",
+                "sourceTableId": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+                "columns": [
+                  {
+                    "id": "fk_0c98037e-144b-4f4e-9ccc-228daa8a22bd",
+                    "name": "id_ciudad",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 101
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "140da19a-19c0-4cc2-925e-d894516e3414",
+        "type": "Table",
+        "position": {
+          "x": 2271.12252294914,
+          "y": 245.42374043471233
+        },
+        "data": {
+          "label": "Stock",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "c41dd41b-b8d7-48e9-8cfd-9dfba97aa0f2",
+              "name": "cantidad",
+              "type": "INT",
+              "position": 0
+            },
+            {
+              "id": "fk_5fdd12b5-ee03-4638-aaa7-afe6815b579c",
+              "name": "fk_Farmacia",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "7df98b5c-4da8-4899-a744-c1dcada3d38e",
+                "sourceTableId": "332d5508-3150-410b-9535-9a4ceb12d51a",
+                "columns": [
+                  {
+                    "id": "fk_dffb9aee-2e06-43ab-a0cc-d1287fc353dc",
+                    "name": "id_farmacia",
+                    "type": "INT"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "fk_8e8935e5-95ae-44e4-8ef1-82992a3b3179",
+              "name": "fk_Presentacion",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "c3ca38ab-2bef-48db-9d46-0537133d457d",
+                "sourceTableId": "da6b991c-b83f-43ce-8969-5bfae2466c84",
+                "columns": [
+                  {
+                    "id": "fk_55ba8fa1-1de4-4b2e-9940-0f4bd703dbc6",
+                    "name": "id_presentacion",
+                    "type": "INT"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "fk_8e3b905f-8fb3-4aef-9237-04ed9670253d",
+              "name": "fk_Medicamentos",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "36f5d286-d966-4122-a151-701474ea3cfc",
+                "sourceTableId": "34163c9d-1ae4-45ef-a354-84396ad18372",
+                "columns": [
+                  {
+                    "id": "fk_891407ee-9225-4d00-996a-ef9973670811",
+                    "name": "id_medicamento",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 126
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "da6b991c-b83f-43ce-8969-5bfae2466c84",
+        "type": "Table",
+        "position": {
+          "x": 2595.932936109163,
+          "y": 221.85497991478363
+        },
+        "data": {
+          "label": "Presentacion",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "55ba8fa1-1de4-4b2e-9940-0f4bd703dbc6",
+              "name": "id_presentacion",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "e1ef9f5e-6946-4afa-b5a0-aca73902e432",
+              "name": "presentacion_desc",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "100",
+              "isPrimaryKey": false
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 75
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "34163c9d-1ae4-45ef-a354-84396ad18372",
+        "type": "Table",
+        "position": {
+          "x": 2594.4477918067123,
+          "y": 320.9292585151527
+        },
+        "data": {
+          "label": "Medicamentos",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "891407ee-9225-4d00-996a-ef9973670811",
+              "name": "id_medicamento",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "60f718be-06ee-4f30-8522-d4654e512397",
+              "name": "medicamento_nombre",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "50",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "fk_34a6a288-286c-4917-b9a2-35a3d2a5d889",
+              "name": "fk_Laboratorio",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "168252f0-a5cd-4c5a-8baf-ddb4777fe57b",
+                "sourceTableId": "ab05d1aa-f4ca-4102-aa69-475917ca4b09",
+                "columns": [
+                  {
+                    "id": "fk_5d5f0e0c-20ee-47df-8aaf-b39c3ccaf977",
+                    "name": "id_laboratorio",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 101
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "ab05d1aa-f4ca-4102-aa69-475917ca4b09",
+        "type": "Table",
+        "position": {
+          "x": 2593.6472659020396,
+          "y": 438.52221223710933
+        },
+        "data": {
+          "label": "Laboratorio",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "5d5f0e0c-20ee-47df-8aaf-b39c3ccaf977",
+              "name": "id_laboratorio",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "d13915c4-ad40-45c9-8b91-91f724108ffe",
+              "name": "laboratorio_nombre",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "50",
+              "isPrimaryKey": false
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 240,
+          "height": 75
+        },
+        "selected": false,
+        "dragging": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "01d08e10-2f43-4c62-b856-007b2f78a212->c5951663-a19a-479c-918d-a8b7d7efe8fd_301852b0-5d06-485c-9c4b-ef24e33b5aed",
+        "type": "Relational",
+        "source": "01d08e10-2f43-4c62-b856-007b2f78a212",
+        "targetHandle": "foreign-key-handle-301852b0-5d06-485c-9c4b-ef24e33b5aed",
+        "target": "c5951663-a19a-479c-918d-a8b7d7efe8fd",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "301852b0-5d06-485c-9c4b-ef24e33b5aed",
+            "sourceTableId": "01d08e10-2f43-4c62-b856-007b2f78a212",
+            "columns": [
+              {
+                "id": "fk_5bd08e36-e1ef-4116-9d50-205d28363687",
+                "name": "id_empleado",
+                "type": "INT"
+              }
+            ]
+          }
+        },
+        "selected": false
+      },
+      {
+        "id": "01d08e10-2f43-4c62-b856-007b2f78a212->3dd3717d-87ee-4a1e-86d3-9d323f7c16bd_d8c465df-d06f-4f0d-b0fe-8888b642b0f0",
+        "type": "Relational",
+        "source": "01d08e10-2f43-4c62-b856-007b2f78a212",
+        "targetHandle": "foreign-key-handle-d8c465df-d06f-4f0d-b0fe-8888b642b0f0",
+        "target": "3dd3717d-87ee-4a1e-86d3-9d323f7c16bd",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "d8c465df-d06f-4f0d-b0fe-8888b642b0f0",
+            "sourceTableId": "01d08e10-2f43-4c62-b856-007b2f78a212",
+            "columns": [
+              {
+                "id": "fk_5bd08e36-e1ef-4116-9d50-205d28363687",
+                "name": "id_empleado",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "01d08e10-2f43-4c62-b856-007b2f78a212->f4989529-e55d-4fab-bce4-b5418e0b3631_13536ddf-0661-4435-a538-9c20bc5e10d1",
+        "type": "Relational",
+        "source": "01d08e10-2f43-4c62-b856-007b2f78a212",
+        "targetHandle": "foreign-key-handle-13536ddf-0661-4435-a538-9c20bc5e10d1",
+        "target": "f4989529-e55d-4fab-bce4-b5418e0b3631",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "13536ddf-0661-4435-a538-9c20bc5e10d1",
+            "sourceTableId": "01d08e10-2f43-4c62-b856-007b2f78a212",
+            "columns": [
+              {
+                "id": "fk_5bd08e36-e1ef-4116-9d50-205d28363687",
+                "name": "id_empleado",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574->332d5508-3150-410b-9535-9a4ceb12d51a_a09a7fa5-7ba4-42ba-86a1-ccbdb1315875",
+        "type": "Relational",
+        "source": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+        "targetHandle": "foreign-key-handle-a09a7fa5-7ba4-42ba-86a1-ccbdb1315875",
+        "target": "332d5508-3150-410b-9535-9a4ceb12d51a",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "a09a7fa5-7ba4-42ba-86a1-ccbdb1315875",
+            "sourceTableId": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+            "columns": [
+              {
+                "id": "fk_0c98037e-144b-4f4e-9ccc-228daa8a22bd",
+                "name": "id_ciudad",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "332d5508-3150-410b-9535-9a4ceb12d51a->140da19a-19c0-4cc2-925e-d894516e3414_7df98b5c-4da8-4899-a744-c1dcada3d38e",
+        "type": "Relational",
+        "source": "332d5508-3150-410b-9535-9a4ceb12d51a",
+        "targetHandle": "foreign-key-handle-7df98b5c-4da8-4899-a744-c1dcada3d38e",
+        "target": "140da19a-19c0-4cc2-925e-d894516e3414",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "7df98b5c-4da8-4899-a744-c1dcada3d38e",
+            "sourceTableId": "332d5508-3150-410b-9535-9a4ceb12d51a",
+            "columns": [
+              {
+                "id": "fk_dffb9aee-2e06-43ab-a0cc-d1287fc353dc",
+                "name": "id_farmacia",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "da6b991c-b83f-43ce-8969-5bfae2466c84->140da19a-19c0-4cc2-925e-d894516e3414_c3ca38ab-2bef-48db-9d46-0537133d457d",
+        "type": "Relational",
+        "source": "da6b991c-b83f-43ce-8969-5bfae2466c84",
+        "targetHandle": "foreign-key-handle-c3ca38ab-2bef-48db-9d46-0537133d457d",
+        "target": "140da19a-19c0-4cc2-925e-d894516e3414",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "c3ca38ab-2bef-48db-9d46-0537133d457d",
+            "sourceTableId": "da6b991c-b83f-43ce-8969-5bfae2466c84",
+            "columns": [
+              {
+                "id": "fk_55ba8fa1-1de4-4b2e-9940-0f4bd703dbc6",
+                "name": "id_presentacion",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "34163c9d-1ae4-45ef-a354-84396ad18372->140da19a-19c0-4cc2-925e-d894516e3414_36f5d286-d966-4122-a151-701474ea3cfc",
+        "type": "Relational",
+        "source": "34163c9d-1ae4-45ef-a354-84396ad18372",
+        "targetHandle": "foreign-key-handle-36f5d286-d966-4122-a151-701474ea3cfc",
+        "target": "140da19a-19c0-4cc2-925e-d894516e3414",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "36f5d286-d966-4122-a151-701474ea3cfc",
+            "sourceTableId": "34163c9d-1ae4-45ef-a354-84396ad18372",
+            "columns": [
+              {
+                "id": "fk_891407ee-9225-4d00-996a-ef9973670811",
+                "name": "id_medicamento",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "ab05d1aa-f4ca-4102-aa69-475917ca4b09->34163c9d-1ae4-45ef-a354-84396ad18372_168252f0-a5cd-4c5a-8baf-ddb4777fe57b",
+        "type": "Relational",
+        "source": "ab05d1aa-f4ca-4102-aa69-475917ca4b09",
+        "targetHandle": "foreign-key-handle-168252f0-a5cd-4c5a-8baf-ddb4777fe57b",
+        "target": "34163c9d-1ae4-45ef-a354-84396ad18372",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "168252f0-a5cd-4c5a-8baf-ddb4777fe57b",
+            "sourceTableId": "ab05d1aa-f4ca-4102-aa69-475917ca4b09",
+            "columns": [
+              {
+                "id": "fk_5d5f0e0c-20ee-47df-8aaf-b39c3ccaf977",
+                "name": "id_laboratorio",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574->f4989529-e55d-4fab-bce4-b5418e0b3631_d7ab9735-da80-42cd-a6ec-ef476087b9b4",
+        "type": "Relational",
+        "source": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+        "targetHandle": "foreign-key-handle-d7ab9735-da80-42cd-a6ec-ef476087b9b4",
+        "target": "f4989529-e55d-4fab-bce4-b5418e0b3631",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "d7ab9735-da80-42cd-a6ec-ef476087b9b4",
+            "sourceTableId": "6c246ae7-2d2f-4d18-bb15-1a6d32f26574",
+            "columns": [
+              {
+                "id": "fk_0c98037e-144b-4f4e-9ccc-228daa8a22bd",
+                "name": "id_ciudad",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "332d5508-3150-410b-9535-9a4ceb12d51a->01d08e10-2f43-4c62-b856-007b2f78a212_3bc0f35e-dd21-4633-a84a-f16688acab25",
+        "type": "Relational",
+        "source": "332d5508-3150-410b-9535-9a4ceb12d51a",
+        "targetHandle": "foreign-key-handle-3bc0f35e-dd21-4633-a84a-f16688acab25",
+        "target": "01d08e10-2f43-4c62-b856-007b2f78a212",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "3bc0f35e-dd21-4633-a84a-f16688acab25",
+            "sourceTableId": "332d5508-3150-410b-9535-9a4ceb12d51a",
+            "columns": [
+              {
+                "id": "fk_dffb9aee-2e06-43ab-a0cc-d1287fc353dc",
+                "name": "id_farmacia",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "viewport": {
+      "x": -1088.3421857450332,
+      "y": -53.26501771440701,
+      "zoom": 0.7320428530135129
+    }
+  },
+  "name": "TP1_DER",
+  "folder": {
+    "name": "TP1",
+    "folderType": 2,
+    "parentFolder": {
+      "depth": 0,
+      "id": 385368,
+      "name": "Diagrams",
+      "folderType": 1
+    },
+    "depth": 1,
+    "id": 392395
+  },
+  "id": 557476,
+  "updatedAtTimestamp": 1788446170
+}

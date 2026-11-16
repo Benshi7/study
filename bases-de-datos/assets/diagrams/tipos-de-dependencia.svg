@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 296" width="720" height="296"
+     role="img" aria-labelledby="tipos-dependencia-title tipos-dependencia-desc">
+  <title id="tipos-dependencia-title">Los tres tipos de dependencia funcional</title>
+  <desc id="tipos-dependencia-desc">Tres paneles comparados. En el primero, la clave completa NFact más CProd determina Canti: dependencia total, correcta. En el segundo, sólo NFact — que es parte de la clave — determina Fecha: dependencia parcial, que rompe la segunda forma normal. En el tercero, NFact determina CodCli y CodCli determina NomCli: dependencia transitiva a través de un atributo que no es clave, que rompe la tercera forma normal.</desc>
+
+  <style>
+    .dp-paper  { fill: #fffef9; }
+    .dp-panel  { fill: none; stroke: rgba(26,26,23,0.14); stroke-width: 1; }
+    .dp-focal  { fill: none; stroke: #7a2e0e; stroke-width: 1; }
+    .dp-chip   { fill: rgba(26,26,23,0.05); stroke: #56544c; stroke-width: 1; }
+    .dp-key    { fill: rgba(26,26,23,0.05); stroke: #1a1a17; stroke-width: 1.2; }
+    .dp-name   { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dp-arr    { fill: none; stroke: #1a1a17; stroke-width: 1.2; }
+    .dp-arrA   { fill: none; stroke: #7a2e0e; stroke-width: 1.2; }
+    .dp-eyeb   { font: 600 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; fill: #56544c; }
+    .dp-eyebA  { font: 600 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; fill: #7a2e0e; }
+    .dp-verd   { fill: #56544c; font: 400 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dp-verdA  { fill: #7a2e0e; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+
+    @media (prefers-color-scheme: dark) {
+      .dp-paper { fill: #16161a; }
+      .dp-panel { stroke: rgba(232,228,217,0.16); }
+      .dp-focal { stroke: #e08a5c; }
+      .dp-chip  { fill: rgba(232,228,217,0.07); stroke: #a8a498; }
+      .dp-key   { fill: rgba(232,228,217,0.07); stroke: #e8e4d9; }
+      .dp-name  { fill: #e8e4d9; }
+      .dp-arr   { stroke: #e8e4d9; }
+      .dp-arrA  { stroke: #e08a5c; }
+      .dp-eyeb  { fill: #a8a498; }
+      .dp-eyebA { fill: #e08a5c; }
+      .dp-verd  { fill: #a8a498; }
+      .dp-verdA { fill: #e08a5c; }
+    }
+  </style>
+
+  <defs>
+    <marker id="dp-head" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1a17"/>
+    </marker>
+    <marker id="dp-head-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#7a2e0e"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="296" class="dp-paper"/>
+
+  <!-- ══════ Panel 1 — dependencia TOTAL ══════ -->
+  <text x="28" y="24" class="dp-eyeb">1 · TOTAL</text>
+  <rect x="28" y="36" width="200" height="184" rx="6" class="dp-panel"/>
+
+  <rect x="40"  y="72" width="84" height="28" rx="4" class="dp-key"/>
+  <text x="82"  y="90" class="dp-name" text-anchor="middle">NFact</text>
+  <rect x="132" y="72" width="84" height="28" rx="4" class="dp-key"/>
+  <text x="174" y="90" class="dp-name" text-anchor="middle">CProd</text>
+
+  <!-- Llave que junta los dos atributos de la clave, y una sola bajada al destino -->
+  <path d="M82 100 V116 H174 V100" class="dp-arr"/>
+  <line x1="128" y1="116" x2="128" y2="148" class="dp-arr" marker-end="url(#dp-head)"/>
+
+  <rect x="86" y="156" width="84" height="28" rx="4" class="dp-chip"/>
+  <text x="128" y="174" class="dp-name" text-anchor="middle">Canti</text>
+
+  <text x="128" y="248" class="dp-verd" text-anchor="middle">Necesita la clave ENTERA.</text>
+  <text x="128" y="266" class="dp-verd" text-anchor="middle">Así tiene que ser.</text>
+
+  <!-- ══════ Panel 2 — dependencia PARCIAL ══════ -->
+  <text x="260" y="24" class="dp-eyebA">2 · PARCIAL</text>
+  <rect x="260" y="36" width="200" height="184" rx="6" class="dp-focal"/>
+
+  <rect x="272" y="72" width="84" height="28" rx="4" class="dp-key"/>
+  <text x="314" y="90" class="dp-name" text-anchor="middle">NFact</text>
+  <rect x="364" y="72" width="84" height="28" rx="4" class="dp-key"/>
+  <text x="406" y="90" class="dp-name" text-anchor="middle">CProd</text>
+
+  <!-- Sale de UNA sola parte de la clave: ése es el defecto -->
+  <line x1="314" y1="100" x2="314" y2="148" class="dp-arrA" marker-end="url(#dp-head-a)"/>
+
+  <rect x="272" y="156" width="84" height="28" rx="4" class="dp-chip"/>
+  <text x="314" y="174" class="dp-name" text-anchor="middle">Fecha</text>
+
+  <text x="360" y="248" class="dp-verdA" text-anchor="middle">Le alcanza con PARTE</text>
+  <text x="360" y="266" class="dp-verdA" text-anchor="middle">de la clave. Rompe 2FN.</text>
+
+  <!-- ══════ Panel 3 — dependencia TRANSITIVA ══════ -->
+  <text x="492" y="24" class="dp-eyebA">3 · TRANSITIVA</text>
+  <rect x="492" y="36" width="200" height="184" rx="6" class="dp-focal"/>
+
+  <rect x="550" y="56" width="84" height="28" rx="4" class="dp-key"/>
+  <text x="592" y="74" class="dp-name" text-anchor="middle">NFact</text>
+
+  <line x1="592" y1="84" x2="592" y2="108" class="dp-arrA" marker-end="url(#dp-head-a)"/>
+
+  <rect x="550" y="116" width="84" height="28" rx="4" class="dp-chip"/>
+  <text x="592" y="134" class="dp-name" text-anchor="middle">CodCli</text>
+
+  <line x1="592" y1="144" x2="592" y2="168" class="dp-arrA" marker-end="url(#dp-head-a)"/>
+
+  <rect x="550" y="176" width="84" height="28" rx="4" class="dp-chip"/>
+  <text x="592" y="194" class="dp-name" text-anchor="middle">NomCli</text>
+
+  <text x="592" y="248" class="dp-verdA" text-anchor="middle">Pasa por CodCli, que no</text>
+  <text x="592" y="266" class="dp-verdA" text-anchor="middle">es clave. Rompe 3FN.</text>
+</svg>

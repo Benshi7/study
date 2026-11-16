@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 19 — Distribución muestral de la media y suma de variables (TCL)</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidades 6–7 · Suma de variables y distribución muestral · Lección mecánica</span>
+<h1>Distribución muestral de la media y suma de variables (TCL)</h1>
+<p class="subtitle">Promedio: μ y σ/√n. Suma: nμ y √n·σ. Cuándo es Normal (población normal o n ≥ 30) y cómo se calcula con la calculadora, con los ejemplos de la cátedra.</p>
+
+
+<h2>El problema</h2>
+<p>Hasta ahora preguntabas por <strong>un individuo</strong> (una lata, un empleado). Ahora te preguntan por el <strong>promedio</strong> de una muestra de n individuos (<span class="formula">x̄</span>) o por su <strong>total</strong> (<span class="formula">W = x₁ + … + xₙ</span>). Son variables nuevas, con su propia media y su propio desvío, y la clave es que <strong>el promedio fluctúa menos que un individuo</strong> y <strong>el total fluctúa más</strong>. Todo el ejercicio es: ¿qué parámetros tiene la variable nueva y por qué es Normal?</p>
+
+<h2>Las fórmulas de la cátedra</h2>
+<div class="tw"><table>
+<tr><th></th><th>Promedio x̄ de n datos</th><th>Suma W = x₁ + … + xₙ</th></tr>
+<tr><td>Media</td><td><span class="formula">μ_x̄ = μ</span></td><td><span class="formula">μ_W = n · μ</span></td></tr>
+<tr><td>Desvío</td><td><span class="formula">σ_x̄ = σ / √n</span> (error estándar)</td><td><span class="formula">σ_W = √n · σ</span></td></tr>
+<tr><td>Varianza</td><td><span class="formula">σ²/n</span></td><td><span class="formula">n · σ²</span></td></tr>
+<tr><td>Estandarizar</td><td><span class="formula">Z = (x̄ − μ) / (σ/√n)</span></td><td><span class="formula">Z = (W − nμ) / (√n·σ)</span></td></tr>
+</table></div>
+<div class="box">
+<strong>Con una constante:</strong> W = x₁ + … + xₙ + k ⇒ μ_W = nμ + k, pero <strong>σ_W no cambia</strong> (σ²(k) = 0). <strong>Con varias variables independientes:</strong> σ²_W = σ²₁ + σ²₂ + …, también para una <em>resta</em> (las varianzas siempre se suman). <strong>Con un factor:</strong> Y = k·X ⇒ μ_Y = kμ, σ_Y = |k|·σ.
+</div>
+
+<h2>¿Cuándo el promedio o la suma son Normales?</h2>
+<div class="tw"><table>
+<tr><th>La población (cada x) es…</th><th>n</th><th>x̄ o W es…</th></tr>
+<tr><td>Normal</td><td>cualquiera (2, 10, 50…)</td><td><strong>Normal exacta</strong> (suma de normales)</td></tr>
+<tr><td>No Normal (asimétrica, desconocida)</td><td>n ≥ 30</td><td><strong>Aproximadamente Normal</strong> (Teorema Central del Límite)</td></tr>
+<tr><td>No Normal</td><td>n &lt; 30</td><td><strong>No se puede asegurar</strong> normalidad: no se usa Z</td></tr>
+</table></div>
+<p>Dos cosas que el enunciado casi siempre te regala: la frase “se distribuye normalmente” (entonces n es irrelevante) o un n grande (365 días, 50 días, 32 empleados). Cuando la población <em>no</em> es normal, la normalidad vale <strong>solo</strong> para x̄ o W, no para un individuo suelto.</p>
+
+
+<h2>Ejemplo resuelto 1 — Ganancias de 32 empleados (promedio, TCL)</h2>
+<div class="example">
+<strong>Datos:</strong> ganancias anuales con distribución asimétrica negativa, μ = 15000, σ = 2000. Muestra de n = 32. ¿P(x̄ &lt; 15750)?
+<ol>
+<li><strong>Normalidad:</strong> la población no es normal, pero n = 32 ≥ 30 ⇒ por TCL x̄ ≈ Normal.</li>
+<li><strong>Parámetros:</strong> <span class="formula">μ_x̄ = 15000</span>; <span class="formula">σ_x̄ = 2000/√32 = 2000/5,6569 = 353,55</span>.</li>
+<li><strong>Estandarizar:</strong> <span class="formula">z = (15750 − 15000)/353,55 = 750/353,55 = 2,1213</span>.</li>
+<li><span class="formula">P(x̄ &lt; 15750) = Φ(2,12) = 0,98305</span></li>
+<li><strong>Interpretación:</strong> el 98,3 % de las muestras de 32 empleados tendrá una ganancia <em>promedio</em> menor que 15750. (No dice que el 98,3 % de los empleados gane menos de eso.)</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 2 — Cereal: suma de 10 paquetes y caja de cartón</h2>
+<div class="example">
+<strong>Datos:</strong> cada paquete ~ N(250; 20) gramos (el packaging pesa cero). W = x₁ + … + x₁₀.
+<ol>
+<li><strong>Normalidad:</strong> la población ya es normal ⇒ W es normal aunque n = 10 &lt; 30.</li>
+<li><span class="formula">μ_W = 10 · 250 = 2500 g</span>; <span class="formula">σ_W = √10 · 20 = 63,25 g</span>.</li>
+<li><span class="formula">P(W &gt; 2600): z = (2600 − 2500)/63,25 = 1,581</span>; <span class="formula">P = 1 − Φ(1,58) = 0,0569</span> (cátedra: 0,056907).</li>
+<li><strong>Si se agrega una caja de cartón de 300 g</strong> (constante): <span class="formula">W' = x₁ + … + x₁₀ + 300</span>. <span class="formula">μ_W' = 2500 + 300 = 2800 g</span>; <strong>σ_W' = 63,25 g</strong> (la constante no aporta varianza).</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 3 — La caja (2, 3, 4): de dónde sale σ/√n</h2>
+<div class="example">
+<strong>Datos:</strong> caja con bolillas 2, 3, 4. Se sacan 2 con reposición (n = 2) y se calcula el promedio. Hay 3 · 3 = 9 muestras posibles.
+<ol>
+<li><strong>Población:</strong> <span class="formula">μ = 3</span>; <span class="formula">σ = √[((2−3)² + 0 + (4−3)²)/3] = √(2/3) = 0,8165</span> (se divide por n porque es la población completa).</li>
+<li>Las 9 medias muestrales: 2; 2,5; 3; 2,5; 3; 3,5; 3; 3,5; 4. Su distribución:
+<div class="tw"><table>
+<tr><th>x̄</th><th class="n">Casos</th><th class="n">P(x̄)</th></tr>
+<tr><td>2,0</td><td class="n">1/9</td><td class="n">0,1111</td></tr>
+<tr><td>2,5</td><td class="n">2/9</td><td class="n">0,2222</td></tr>
+<tr><td>3,0</td><td class="n">3/9</td><td class="n">0,3333</td></tr>
+<tr><td>3,5</td><td class="n">2/9</td><td class="n">0,2222</td></tr>
+<tr><td>4,0</td><td class="n">1/9</td><td class="n">0,1111</td></tr>
+</table></div></li>
+<li><span class="formula">μ_x̄ = 3</span> (igual a μ). <span class="formula">σ_x̄ = 0,57735</span> (desvío de esas 9 medias).</li>
+<li><strong>Comprobación:</strong> <span class="formula">σ/√n = 0,8165/√2 = 0,57735</span> ✓. El promedio de 2 datos es √2 veces menos disperso que un dato.</li>
+</ol>
+</div>
+
+<h2>Más casos de la cátedra, resumidos</h2>
+<div class="tw"><table>
+<tr><th>Situación</th><th>Variable y modelo</th><th>μ</th><th>σ</th><th>Pedido → resultado</th></tr>
+<tr><td>Ventas diarias asimétricas, μ = 1300, σ = 400; 365 días</td><td>W = venta anual; TCL (n = 365)</td><td>474500</td><td>7642</td><td>P(W &lt; 460000): z = −1,897 → 0,0289</td></tr>
+<tr><td>Mismas ventas; 60 días</td><td>W = venta bimestral; TCL</td><td>78000</td><td>3098,4</td><td>Valor no superado con prob. 0,05: 78000 − 1,6449·3098,4 = 72903,6</td></tr>
+<tr><td>Pantalones defectuosos/día, μ = 5, σ = 2; 50 días</td><td>W = total; TCL (n = 50)</td><td>250</td><td>14,14</td><td>P(230 ≤ W ≤ 240) = 0,2398 − 0,0786 = 0,1611</td></tr>
+<tr><td>Paquetes de harina N(950; 47); lote de 20</td><td>W = peso del lote; Normal</td><td>19000</td><td>210,19</td><td>P(W &gt; 19640): z = 3,04 → 0,0012</td></tr>
+</table></div>
+
+
+<div class="calc">
+<strong>Paso 1: parámetros de la nueva variable (modo MENU 1, Calculate)</strong>
+<ol>
+<li>Promedio: <span class="key">2000</span> <span class="key">÷</span> <span class="key">√</span> <span class="key">32</span> <span class="key">=</span> ⇒ <span class="out">353,553</span> (σ_x̄).</li>
+<li>Suma: <span class="key">20</span> <span class="key">×</span> <span class="key">√</span> <span class="key">10</span> <span class="key">=</span> ⇒ <span class="out">63,246</span> (σ_W). Para guardarlo: <span class="key">SHIFT</span> <span class="key">RCL</span> <span class="key">(−)</span> (variable A) y luego recuperarlo con <span class="key">ALPHA</span> <span class="key">(−)</span>.</li>
+</ol>
+<strong>Paso 2: Normal CD con esos parámetros</strong>
+<ol>
+<li><span class="key">MENU</span> <span class="key">7</span> → <span class="key">2</span> (Normal CD). Ganancias: Lower = <span class="key">(−)</span> 1 <span class="key">×10ˣ</span> 99, Upper = 15750, <strong>σ = 353,553</strong>, μ = 15000 ⇒ <span class="out">p = 0,983053</span>.</li>
+<li>Cereal: Lower = 2600, Upper = 1 <span class="key">×10ˣ</span> 99, <strong>σ = 63,2456</strong>, μ = 2500 ⇒ <span class="out">p = 0,056923</span>.</li>
+<li>Percentil de la suma (Inverse Normal): <span class="key">MENU</span> <span class="key">7</span> → <span class="key">3</span>, Area = 0,05, σ = 3098,39, μ = 78000 ⇒ <span class="out">72903,6</span>.</li>
+</ol>
+<p><strong>Qué significa:</strong> la probabilidad que sale es sobre el <strong>promedio</strong> (o el total), no sobre un individuo. Si en el campo σ pones el σ de un individuo obtienes una probabilidad demasiado cercana a la de un solo dato: señal de alarma. Revisa los cuatro campos, porque la calculadora recuerda los del ejercicio anterior.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>σ en lugar de σ/√n</strong> (promedio): P(x̄ &lt; 15750) con σ = 2000 daría 0,646 (z = 0,375), no 0,983. Es el error clásico y mueve la opción de múltiple choice.</li>
+<li><strong>Promedio y suma no son lo mismo:</strong> promedio ⇒ σ/√n (achica); suma ⇒ σ·√n (agranda). Y μ_W = n·μ, no μ.</li>
+<li><strong>TCL ≠ siempre:</strong> con población no normal y n &lt; 30 no hay normalidad asegurada; con población normal vale para cualquier n.</li>
+<li><strong>Restas:</strong> las varianzas de variables independientes se <strong>suman</strong> aunque se resten los valores. (La diapositiva de la cátedra escribe “±” entre varianzas; en todos los ejercicios resueltos se suma.)</li>
+<li><strong>La constante no suma varianza</strong> (caja de cartón de 300 g), pero sí desplaza la media.</li>
+<li><strong>Un individuo no es Normal</strong> solo porque el promedio lo sea: el TCL habla de x̄ y de W.</li>
+</ul>
+</div>
+
+<h2>Practica: ¿individuo, promedio o suma?</h2>
+<div class="quiz" data-quiz>
+<p class="q">1. La población tiene μ = 113,9 y σ = 32,1. Para muestras de n = 64, ¿cuál es el desvío de la distribución muestral de x̄?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. 4,0</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. 32,1</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. 0,50</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. 256,8</span></label>
+<label><input type="radio" name="q1" value="e"><span class="opt">e. 128,8</span></label>
+<div class="feedback correct" data-for="a">σ_x̄ = σ/√n = 32,1/8 = 4,0 (y la media de x̄ es 113,9).</div>
+<div class="feedback wrong" data-for="b">Es el desvío de la población (de un individuo). El del promedio es menor: σ/√n.</div>
+<div class="feedback wrong" data-for="c">Dividiste por n en vez de por √n (32,1/64 = 0,50).</div>
+<div class="feedback wrong" data-for="d">Multiplicaste por √n (256,8): eso es el desvío de la SUMA de 64 datos, no del promedio.</div>
+<div class="feedback wrong" data-for="e">Elevaste σ al cuadrado antes de dividir. El error estándar es σ/√n = 32,1/8.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">2. Cada paquete de cereal ~ N(250; 20) g. Para la suma W de 10 paquetes, ¿cuál es σ_W?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. 6,32 g</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. 200 g</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. 4000 g</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. 20 g</span></label>
+<label><input type="radio" name="q2" value="e"><span class="opt">e. 63,25 g</span></label>
+<div class="feedback wrong" data-for="a">Dividiste por √n: eso es el desvío del PROMEDIO de los 10 paquetes, no de la suma.</div>
+<div class="feedback wrong" data-for="b">Multiplicaste σ por n (10 · 20). La suma crece con √n, no con n: las variaciones se compensan parcialmente.</div>
+<div class="feedback wrong" data-for="c">4000 es n·σ² (la varianza de la suma). La pregunta pide el desvío: la raíz, 63,25.</div>
+<div class="feedback wrong" data-for="d">Es el σ de un solo paquete.</div>
+<div class="feedback correct" data-for="e">σ_W = √n · σ = √10 · 20 = 63,25 g.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">3. Las ventas diarias de una empresa tienen distribución desconocida (asimétrica), μ = 1300 y σ = 400. Para la venta total de un año (365 días), ¿qué modelo se usa?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. No se puede: las ventas diarias no son normales</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. W ≈ N(474500; 400)</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. W ≈ N(474500; 7642), por el TCL (n = 365 ≥ 30)</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. W ≈ N(1300; 21)</span></label>
+<label><input type="radio" name="q3" value="e"><span class="opt">e. W ≈ N(474500; 146000)</span></label>
+<div class="feedback wrong" data-for="a">Las ventas diarias no, pero la SUMA de 365 sí es aproximadamente normal por el TCL (n ≥ 30).</div>
+<div class="feedback wrong" data-for="b">Te quedaste con σ de un día. El desvío de la suma es √n·σ = 7642.</div>
+<div class="feedback correct" data-for="c">La población no es normal, pero n ≥ 30: la suma es aproximadamente normal con μ_W = 365·1300 y σ_W = √365·400 = 7642.</div>
+<div class="feedback wrong" data-for="d">Eso (σ/√365 = 20,9) es el modelo del PROMEDIO diario, no de la venta total. Si W es la suma, la media es n·μ.</div>
+<div class="feedback wrong" data-for="e">Multiplicaste σ por n (365·400). El desvío de la suma usa √n.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">4. Una población claramente asimétrica tiene μ y σ conocidos. Se toma una muestra de n = 12. ¿Se puede usar la Normal para P(x̄ &gt; a)?</p>
+<label><input type="radio" name="q4" value="a"><span class="opt">a. Sí, por el TCL, con σ/√12</span></label>
+<label><input type="radio" name="q4" value="b"><span class="opt">b. Sí, el promedio siempre es normal</span></label>
+<label><input type="radio" name="q4" value="c"><span class="opt">c. Sí, con t de Student de 11 grados de libertad</span></label>
+<label><input type="radio" name="q4" value="d"><span class="opt">d. No: la población no es normal y n &lt; 30, no se garantiza normalidad</span></label>
+<label><input type="radio" name="q4" value="e"><span class="opt">e. Sí, usando la Binomial</span></label>
+<div class="feedback wrong" data-for="a">El TCL de la cátedra exige n ≥ 30 si la población no es normal; 12 no alcanza.</div>
+<div class="feedback wrong" data-for="b">Solo es normal si la población es normal (cualquier n) o si n es grande (≥ 30).</div>
+<div class="feedback wrong" data-for="c">La t se usa para estimar μ cuando σ es desconocida y la población es normal. Aquí el problema es la forma de x̄, no σ.</div>
+<div class="feedback correct" data-for="d">El TCL pide n ≥ 30 cuando la población no es normal. Con n = 12 no se puede asegurar la forma de x̄.</div>
+<div class="feedback wrong" data-for="e">No hay ensayos éxito/fracaso: es una variable cuantitativa continua; la Binomial no aplica.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">5. Ingresos y costos son independientes, con σ_I = 30 y σ_C = 40. ¿Cuál es el desvío de la ganancia G = I − C?</p>
+<label><input type="radio" name="q5" value="a"><span class="opt">a. 70</span></label>
+<label><input type="radio" name="q5" value="b"><span class="opt">b. 50</span></label>
+<label><input type="radio" name="q5" value="c"><span class="opt">c. 10</span></label>
+<label><input type="radio" name="q5" value="d"><span class="opt">d. 26,46</span></label>
+<label><input type="radio" name="q5" value="e"><span class="opt">e. 2500</span></label>
+<div class="feedback wrong" data-for="a">30 + 40 suma los desvíos. Se suman las VARIANZAS y luego se saca la raíz.</div>
+<div class="feedback correct" data-for="b">Las varianzas se suman aunque los valores se resten: σ²_G = 900 + 1600 = 2500 ⇒ σ_G = 50.</div>
+<div class="feedback wrong" data-for="c">40 − 30 resta los desvíos. Restar variables no resta varianzas: la incertidumbre se acumula.</div>
+<div class="feedback wrong" data-for="d">Restaste las varianzas (1600 − 900). Para variables independientes siempre se suman.</div>
+<div class="feedback wrong" data-for="e">2500 es la varianza de G. La pregunta pide el desvío: √2500 = 50.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">6. En el ejemplo de los 32 empleados se obtuvo P(x̄ &lt; 15750) = 0,983. ¿Cómo se interpreta?</p>
+<label><input type="radio" name="q6" value="a"><span class="opt">a. El 98,3 % de las muestras de 32 empleados tiene una ganancia media menor que 15750</span></label>
+<label><input type="radio" name="q6" value="b"><span class="opt">b. El 98,3 % de los empleados gana menos de 15750</span></label>
+<label><input type="radio" name="q6" value="c"><span class="opt">c. Con 98,3 % de probabilidad la media poblacional μ es menor que 15750</span></label>
+<label><input type="radio" name="q6" value="d"><span class="opt">d. El promedio de los 32 empleados es 15750 con 98,3 % de confianza</span></label>
+<label><input type="radio" name="q6" value="e"><span class="opt">e. La probabilidad de que un empleado cualquiera gane 15750 es 0,983</span></label>
+<div class="feedback correct" data-for="a">La probabilidad es sobre la variable x̄ (el promedio de la muestra), que varía de muestra en muestra.</div>
+<div class="feedback wrong" data-for="b">Eso sería una probabilidad sobre un individuo, y la población no es normal. Aquí la variable es el PROMEDIO de 32.</div>
+<div class="feedback wrong" data-for="c">μ = 15000 es un parámetro fijo, no una variable. Lo aleatorio es x̄.</div>
+<div class="feedback wrong" data-for="d">Eso mezcla con intervalos de confianza. Acá se calcula la probabilidad de un evento de x̄, no una confianza.</div>
+<div class="feedback wrong" data-for="e">El 0,983 es P(x̄ &lt; 15750), una probabilidad sobre el promedio de la muestra; no habla de un empleado ni de un valor exacto (en una variable continua un valor puntual tiene probabilidad 0).</div>
+</div>
+
+<div class="ask">
+¿Quieres que te dé tres enunciados mezclados (individuo / promedio / suma) y solo escribas la distribución con sus dos parámetros? Es lo que más suele fallar.
+</div>
+
+<footer>
+Ejemplos de la teoría de la cátedra (golosinas, pantalones, cereal, ganancias de 32 empleados, caja {2,3,4}) y del TP4 (ej. 14) — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0018-normal-con-numeros.html">Lección 18 — Normal con números</a></span>
+  <span><a href="0020-proporcion-muestral-e-ic-proporcion.html">Lección 20 — Proporción muestral e IC de proporción</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 50 · Componentes de un Data Warehouse</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 50 · Unidad 9 · Data warehouse</p>
+    <h1 class="masthead__title">Los componentes de un Data Warehouse</h1>
+    <p class="masthead__standfirst">
+      Desde los sistemas de origen hasta el usuario de negocio, pasando por el ETL. Es el dibujo
+      que pidió el modelo de parcial 1a: "Grafique los componentes genéricos de un DW".
+    </p>
+    <p class="masthead__meta">
+      <span>~20 minutos</span>
+      <span>Deck "Intro Datawarehouse", slides 20, 26–28, 36–43</span>
+      <span>Prioridad para el 2do parcial: alta (teoría choice, y pedido de dibujar en el modelo 1a)</span>
+    </p>
+  </div>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Dónde apareció</span>
+    <p>
+      Punto 1 del modelo <code>bd parcial 1a</code>: <i>"Grafique los componentes genéricos de un
+      DW"</i>. Si el 2do parcial es choice, la forma será "¿cuál de estos NO es un componente?" o
+      "¿qué hace el ODS?", pero la figura de abajo cubre las dos formas. Dibujala una vez a mano.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>El esquema simple: tres bloques</h2>
+
+  <p>El deck empieza con "DW — un esquema genérico y simple":</p>
+
+<pre><code>  FUENTES  ──►  ETL                    ──►  DW                 ◄──  FRONT END
+  (varios       Extracción                    Modelo de datos          Aplicaciones analíticas
+  servidores)   Limpieza                      Detalles /               Análisis ad-hoc
+                Integración                   Agregaciones             Gráficos · Tablas
+                Depuración                                             Semáforos · Alertas
+                Transformación                                         Queries ad-hoc
+                Carga</code></pre>
+
+  <p>
+    <b>ETL</b> son las siglas de <b>Extracción, Transformación y Carga</b>: el proceso que lleva
+    los datos de las fuentes al DW. El deck lista seis tareas dentro de él: extracción, limpieza,
+    integración, depuración, transformación y carga.
+  </p>
+
+  <h2><span class="num">02</span>Los componentes genéricos: seis etapas</h2>
+
+  <figure class="full">
+    <img src="../assets/diagrams/componentes-dw.svg"
+         alt="Seis etapas de izquierda a derecha: recopilación (CRM, ERP y datos externos), limpieza y homogeneización dentro del ETL (tablas staging, ODS, MDM y DQ), almacén de datos (Data Warehouse con ventas, finanzas y operaciones), modelos analíticos (data mart, cubo OLAP, asociaciones), presentación (gráficos, tablas, semáforos, informes) y explotación por el negocio. Debajo de todo, una banda de metadata.">
+    <figcaption>
+      <b>Seis etapas y una banda de metadata.</b> Las tareas de limpieza viven dentro del ETL.
+    </figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Etapa</th><th>Qué hay</th></tr></thead>
+      <tbody>
+        <tr><td><b>1 · Recopilación</b></td><td>Sistemas operacionales (CRM, ERP) y datos externos.</td></tr>
+        <tr><td><b>2 · Limpieza / homogeneización</b></td><td>Tablas <b>staging</b>, <b>ODS</b>, <b>MDM</b> y <b>DQ</b> (todo bajo el ETL).</td></tr>
+        <tr><td><b>3 · Almacén de datos</b></td><td>El DW, por áreas: ventas, finanzas, operaciones.</td></tr>
+        <tr><td><b>4 · Modelos analíticos</b></td><td>Data marts, cubos OLAP, asociaciones.</td></tr>
+        <tr><td><b>5 · Presentación</b></td><td>Gráficos, tablas, presentaciones, semáforos.</td></tr>
+        <tr><td><b>6 · Explotación / análisis</b></td><td>El negocio: los usuarios.</td></tr>
+        <tr><td><b>Metadata</b></td><td>Acompaña a todo: describe los datos y los procesos.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">03</span>MDM, ODS y DQ</h2>
+
+  <p>El slide 28 define tres de las siglas de la etapa 2:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Sigla</th><th>Significa</th><th>Qué hace, según el deck</th></tr></thead>
+      <tbody>
+        <tr><td><b>MDM</b></td><td>Master Data Management, gestión de datos maestros</td><td>Procesos, políticas, servicios y tecnologías para gestionar, generar y mantener los datos asociados a las <b>entidades de negocio centrales</b> de la empresa.</td></tr>
+        <tr><td><b>ODS</b></td><td>Operational Data Store, almacén operacional de datos</td><td>Base de datos que se usa comúnmente como <b>área lógica provisional</b> para un almacén de datos. Ahí los datos pueden ser <b>borrados, arreglados por redundancia y revisados</b> para cumplir las reglas empresariales.</td></tr>
+        <tr><td><b>DQ</b></td><td>Data Quality, calidad de los datos</td><td>Conjunto de <b>reglas</b> que aseguran un mínimo de calidad de los datos recibidos, para que los resultados sean fiables.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    El <b>staging</b> (tablas o área de construcción) es donde caen los datos tal como llegan de
+    las fuentes, antes de limpiarlos. Es la entrada del ETL.
+  </p>
+
+  <h2><span class="num">04</span>Data Warehouse contra Data Mart</h2>
+
+  <p>
+    Un <b>Data Mart</b> es un almacén más chico y focalizado, normalmente de un departamento.
+    El deck los compara en cuatro cuadros:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>Data Warehouse</th><th>Data Mart</th></tr></thead>
+      <tbody>
+        <tr><td><b>Alcance</b></td><td>Corporativo; visión homogénea. Neutral a las aplicaciones, centralizado y compartido; cruza toda la empresa.</td><td>Departamental; visión parcial. Requerido por una aplicación específica, orientado a procesos de negocio; múltiples BD con datos redundantes.</td></tr>
+        <tr><td><b>Perspectiva de los datos</b></td><td>Detallados e históricos, poca sumarización, <b>suavemente desnormalizado</b>.</td><td>Detalle (algo de historia), sumarizado, <b>fuertemente desnormalizado</b>.</td></tr>
+        <tr><td><b>Temas</b></td><td>Múltiples áreas temáticas.</td><td>Única o múltiples áreas temáticas parciales; snapshot de fuentes operacionales.</td></tr>
+        <tr><td><b>Fuentes de datos</b></td><td>Muchas: operacionales y datos externos.</td><td>Pocas: operacionales, datos externos, snapshot de BD OLTP.</td></tr>
+        <tr><td><b>Tiempo de implementación</b></td><td>9–18 meses para la 1.ª etapa (2 o 3 áreas temáticas); implementación en múltiples etapas.</td><td>4 a 12 meses.</td></tr>
+        <tr><td><b>Características</b></td><td>Flexible, extensible; durable / estratégico; <b>orientación a los datos</b>.</td><td>Restrictivo, no extensible; corta vida / táctico; <b>orientación al proyecto</b>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">05</span>De dónde vienen los datos: CRM y ERP</h2>
+
+  <p>
+    Las fuentes del esquema son sistemas operacionales. Dos que nombra el deck:
+  </p>
+
+  <ul>
+    <li><b>CRM</b> (Customer Relationship Management): software que contiene toda la información
+        de clientes, partners y stakeholders y la comparte con ventas, marketing, atención al
+        cliente. Centraliza en una sola base <b>todas las interacciones</b> con los clientes; su
+        objetivo es mejorar la satisfacción, la retención y el servicio.</li>
+    <li><b>ERP</b> (Enterprise Resource Planning): sistema de gestión de procesos organizacionales,
+        sobre todo <b>financieros</b> (cuentas a pagar, emisión de facturas, planificación).</li>
+  </ul>
+
+  <p>
+    La diferencia que busca el deck: el CRM mira al <b>cliente</b>; el ERP, los
+    <b>procesos de la empresa</b>. Ambos son OLTP: de ellos el ETL extrae para llenar el DW.
+  </p>
+
+  <h2><span class="num">06</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 4 · El ODS</span>
+    <p class="quiz__q">
+      Un área lógica provisional donde los datos se borran, se arreglan por redundancia y se
+      revisan contra las reglas del negocio antes de entrar al almacén. ¿Qué es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El ODS, almacén operacional de datos: el área provisional previa al DW, donde se limpian y revisan los datos.">El ODS</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="MDM gestiona los datos maestros: las entidades centrales de la empresa. No es el área provisional donde se arreglan los datos.">El MDM</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El cubo OLAP está del lado analítico, después del DW. No es un área previa de limpieza.">El cubo OLAP</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 4 · Data Mart</span>
+    <p class="quiz__q">
+      Un repositorio departamental, de visión parcial, de corta vida y orientado al proyecto.
+      ¿Qué es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Data Mart: departamental, visión parcial, restrictivo, corta vida / táctico y orientado al proyecto.">Un Data Mart</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El DW es corporativo, de visión homogénea, durable / estratégico y orientado a los datos: todo lo contrario.">Un Data Warehouse</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un sistema OLTP registra transacciones del día. No se describe por alcance departamental ni por tiempo de vida.">Un sistema OLTP</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 4 · Normalización</span>
+    <p class="quiz__q">
+      Entre DW y Data Mart, ¿cuál está fuertemente desnormalizado?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El Data Mart está fuertemente desnormalizado y sumarizado. El DW es suavemente desnormalizado y más detallado.">El Data Mart</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El DW está suavemente desnormalizado, con datos detallados e históricos y poca sumarización.">El Data Warehouse</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ninguno está en tercera forma normal estricta según el cuadro: los dos son desnormalizados, en distinto grado.">Ninguno: los dos están normalizados</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 4 · El dibujo</span>
+    <p class="quiz__q">
+      En los componentes genéricos del DW, ¿qué etapa va inmediatamente después del almacén de
+      datos?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Los modelos analíticos: data marts y cubos OLAP, alimentados desde el DW, antes de la presentación.">Los modelos analíticos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La limpieza y homogeneización es la etapa 2, previa al almacén: ocurre dentro del ETL.">La limpieza y homogeneización</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La recopilación es la etapa 1: las fuentes. Está al principio, no después del almacén.">La recopilación de fuentes</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Deck <code>raw/Intro Datawarehouse .pptx</code>: slides 20 y 26–28 (esquema genérico,
+      componentes y definiciones de MDM, ODS y DQ), 36–38 (Data Warehouse contra Data Mart, tres
+      cuadros-imagen) y 39–43 (CRM y ERP). Modelo de parcial
+      <code>raw/Material_Examen/bd parcial 1a.jpg</code>, punto 1.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Dibujá a mano los componentes genéricos de un DW, sin mirar, y
+      pasámelos. Te digo qué etapa o qué sigla falta.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0049-oltp-olap-y-data-warehouse.html">Anterior: 0049 · OLTP, OLAP y DW</a>
+    <a href="0051-modelo-estrella-y-copo-de-nieve.html">Siguiente: 0051 · Estrella y copo de nieve</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

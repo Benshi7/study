@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suite Base de Datos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="suite.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Inicio">
+      <span class="brand-mark" aria-hidden="true">BD</span>
+      <span class="brand-text"><strong>Base de Datos</strong><span>Suite del Segundo Parcial · UCBA 2026</span></span>
+    </a>
+    <span class="spacer"></span>
+    <span class="chip countdown-chip num" id="countdown-chip">2.º parcial</span>
+    <button class="icon-btn" id="theme-toggle" type="button" aria-label="Cambiar tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <span class="label" id="theme-label">Tema</span>
+    </button>
+  </header>
+
+  <nav class="rail" aria-label="Secciones">
+    <a href="#inicio" data-view="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</a>
+    <a href="#mapa" data-view="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.2 7.3l3.6 8.4M16.8 7.3l-3.6 8.4M7.5 6h9"/></svg>Mapa de ideas</a>
+    <a href="#fichas" data-view="fichas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v10"/></svg>Fichas</a>
+    <a href="#simulacro" data-view="simulacro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 4h6M12 4v3"/><circle cx="12" cy="14" r="7"/><path d="M12 14l3-2"/></svg>Simulacro</a>
+    <a href="#armar" data-view="armar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="5" rx="1.5"/><rect x="3" y="16" width="8" height="5" rx="1.5"/><path d="M11 6.5h2a1 1 0 0 1 1 1V10M13 12.5H12a1 1 0 0 0-1 1V16"/></svg>Constructor SQL</a>
+    <a href="#herramientas" data-view="herramientas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h10M4 12h16M4 17h7"/><circle cx="17" cy="7" r="2.5"/><circle cx="14" cy="17" r="2.5"/></svg>Herramientas</a>
+    <a href="#biblioteca" data-view="biblioteca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4v16H5zM10 4h4v16h-4zM15.5 4.5l3.6-.9 3.2 15.5-3.6.9z"/></svg>Biblioteca</a>
+    <div class="rail-foot">Todo se guarda solo en este navegador. <a href="../index.html">Índice clásico</a></div>
+  </nav>
+
+  <main class="content" id="main">
+
+    <!-- ============ INICIO ============ -->
+    <section class="view" id="v-inicio" data-view="inicio">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Segundo parcial · teoría choice en papel y práctica en SQL</p>
+          <h1>Todo lo que entra en el <em>segundo parcial</em>, en un solo lugar.</h1>
+          <p class="lede">SQL (DDL, DML, vistas), store procedures y triggers, más índices y transacciones. Las definiciones son las de los decks de la cátedra, porque la teoría es choice en papel y las opciones salen de ellas. La práctica es todo SQL.</p>
+        </div>
+        <div class="countdown" aria-live="polite">
+          <span class="eyebrow">Faltan</span>
+          <span class="big" id="countdown-big">—</span>
+          <span class="muted" id="countdown-sub">Fecha a confirmar</span>
+        </div>
+      </div>
+
+      <div class="grid-3" id="block-meters"></div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="row" style="justify-content: space-between;">
+            <h3>Plan hasta el parcial</h3>
+            <span class="chip neutral num" id="plan-count">0/0</span>
+          </div>
+          <ul class="checklist" id="plan"></ul>
+        </div>
+        <div class="panel">
+          <h3>Tus puntos débiles</h3>
+          <p class="muted" style="font-size: 0.9rem;">Los primeros salen de lo que practicamos en el chat. El resto aparece solo, a medida que fallás preguntas en el simulacro.</p>
+          <ul class="weak" id="weak"></ul>
+        </div>
+      </div>
+
+      <div class="panel plain">
+        <h3>Mapa de la materia</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Programa</th><th>Cronograma</th><th>¿Entra?</th><th>Acá</th></tr></thead>
+            <tbody>
+              <tr><td>Unidad 1 · Sistemas de gestión de bases de datos</td><td>Clase 1</td><td><span class="chip ok">Parcial 1 ✓</span></td><td>Lecciones 0001–0006</td></tr>
+              <tr><td>Unidad 2 · Modelos de datos (DER)</td><td>Clase 2</td><td><span class="chip ok">Parcial 1 ✓</span></td><td>Lecciones 0010, 0013, 0014</td></tr>
+              <tr><td>Unidad 3 · Diseño relacional y normalización</td><td>Clase 3</td><td><span class="chip ok">Parcial 1 ✓</span></td><td>Lecciones 0019–0026</td></tr>
+              <tr><td>Unidad 4 · Almacenamiento, índices y transacciones</td><td>Clase 4</td><td><span class="chip ok">Parcial 1 ✓</span></td><td>Lecciones 0027, 0028, 0041</td></tr>
+              <tr><td>Unidad 4/5 · DDL, store procedures y triggers</td><td>Decks DDL y SP</td><td><span class="chip">Parcial 2</span></td><td>Lecciones 0029, 0031, 0038</td></tr>
+              <tr><td>Unidad 5 · DML, consultas y vistas</td><td>Deck DML + TP5</td><td><span class="chip">Parcial 2</span></td><td>Lecciones 0032–0037, 0039, 0040</td></tr>
+              <tr><td>Unidad 9 · Data warehouse y Slow Change Dimension</td><td>Decks Intro DW y SCD + TP</td><td><span class="chip">Parcial 2</span></td><td>Lecciones 0049–0052</td></tr>
+              <tr><td>Unidades 6 a 8 · Concurrencia, optimización y seguridad</td><td>Sin deck todavía</td><td><span class="chip neutral">Después</span></td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="font-size: 0.88rem;">Pautas del docente: teoría y práctica se aprueban por separado y no se promedian. La teoría es donde más se cae la gente que ya trabaja con bases de datos.</p>
+      </div>
+    </section>
+
+    <!-- ============ MAPA ============ -->
+    <section class="view" id="v-mapa" data-view="mapa" hidden>
+      <div class="view-head">
+        <p class="eyebrow">Mapa de ideas</p>
+        <h2>Cómo se conecta todo</h2>
+        <p>Tocá un concepto para ver su definición, su trampa típica y con qué se conecta. Las conexiones entre bloques (por ejemplo, <em>multivaluado ↔ grupo repetitivo</em> o <em>clave foránea ↔ JOIN</em>) son las que más sirven para razonar un choice.</p>
+      </div>
+      <div class="row">
+        <div class="segmented" id="map-filter" role="group" aria-label="Filtrar por área"></div>
+        <span class="spacer" style="flex: 1;"></span>
+        <button class="btn" id="path-start" type="button">Recorrido: del dato a la decisión</button>
+      </div>
+      <div class="map-layout">
+        <div class="map-frame"><svg id="map-svg" viewBox="0 0 1120 1690" role="img" aria-label="Mapa conceptual de la materia"></svg></div>
+        <aside class="panel detail" id="map-detail" aria-live="polite"></aside>
+      </div>
+    </section>
+
+    <!-- ============ FICHAS ============ -->
+    <section class="view" id="v-fichas" data-view="fichas" hidden>
+      <div class="view-head">
+        <p class="eyebrow">Fichas · repetición espaciada</p>
+        <h2>Recordá antes de dar vuelta</h2>
+        <p>Pensá la respuesta, tocá la ficha para verla y sé honesto: "No la sabía" la manda a la caja 1, que vuelve primero. "La sabía" la sube de caja.</p>
+      </div>
+      <div class="row">
+        <div class="segmented" id="card-filter" role="group" aria-label="Filtrar fichas"></div>
+      </div>
+      <div class="boxes" id="card-boxes"></div>
+      <div class="flash-wrap">
+        <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Dar vuelta la ficha"></div>
+        <div class="row" id="card-actions">
+          <button class="btn ghost" type="button" id="card-flip">Dar vuelta</button>
+          <button class="btn ghost" type="button" id="card-miss" disabled>No la sabía</button>
+          <button class="btn" type="button" id="card-hit" disabled>La sabía</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SIMULACRO ============ -->
+    <section class="view" id="v-simulacro" data-view="simulacro" hidden>
+      <div class="view-head">
+        <p class="eyebrow">Simulacro de parcial</p>
+        <h2>Preguntas mezcladas de todas las lecciones</h2>
+        <p>Las preguntas salen de los quizzes de las lecciones y las opciones se mezclan en cada intento. La teoría del examen es choice en papel, así que este formato es el mismo; la práctica se entrena en el Constructor SQL. En <strong>modo examen</strong> ves las respuestas recién al final; en <strong>modo práctica</strong>, después de cada pregunta.</p>
+      </div>
+      <div id="sim-root"></div>
+    </section>
+
+    <!-- ============ CONSTRUCTOR SQL ============ -->
+    <section class="view" id="v-armar" data-view="armar" hidden>
+      <div class="view-head">
+        <p class="eyebrow">Constructor SQL</p>
+        <h2>Armá la consulta en vez de escribirla de cero</h2>
+        <p>Los 31 ejercicios de SUMINISTROS y los de Slow Change Dimension (consultas y vistas), con piezas para arrastrar: tablas, columnas, JOIN ya armados por las claves foráneas, operadores y patrones de subconsulta. Se corrige contra la solución, igual que en la práctica. El profe dijo que el parcial toma dos consultas de la dificultad de SUMINISTROS.</p>
+      </div>
+      <div id="bld-root"></div>
+    </section>
+
+    <!-- ============ HERRAMIENTAS ============ -->
+    <section class="view" id="v-herramientas" data-view="herramientas" hidden>
+      <div class="view-head">
+        <p class="eyebrow">Herramientas</p>
+        <h2>Para practicar lo que se confunde</h2>
+        <p>Clasificadores rápidos (formas normales, índices, ACID, restricciones), JOINs en un diagrama de Venn, el orden de evaluación de SQL y la traducción de frases del enunciado a herramientas SQL.</p>
+      </div>
+      <div class="tool-tabs" role="tablist" id="tool-tabs"></div>
+      <div id="tool-root"></div>
+    </section>
+
+    <!-- ============ BIBLIOTECA ============ -->
+    <section class="view" id="v-biblioteca" data-view="biblioteca" hidden>
+      <div class="view-head">
+        <p class="eyebrow">Biblioteca</p>
+        <h2>Lecciones, referencias y fuentes</h2>
+        <p>Las lecciones tienen un quiz cada una; las referencias son resúmenes para imprimir. Las fuentes son el material original de la cátedra.</p>
+      </div>
+      <div class="grid-2" id="library"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="data/bank.js"></script>
+<script src="data/content.js"></script>
+<script src="suite.js"></script>
+<script src="../assets/seeds/suministros.js"></script>
+<script src="../assets/seeds/scd.js"></script>
+<script src="../assets/sqlbox.js"></script>
+<script src="data/exercises.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>

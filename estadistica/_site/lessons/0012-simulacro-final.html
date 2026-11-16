@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulacro Final — Multiple Choice (todas las unidades)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Repaso Integral · Simulacro · Todas las unidades</span>
+<h1>Simulacro Final — Multiple Choice</h1>
+<p class="subtitle">22 preguntas drifteadas de tus TPs y parciales reales, con el formato del final (a-e). Elegí, después mirá el feedback. La idea es entrenar RECONOCER qué se pregunta y por qué la correcta lo es — no la aritmética (esa la hace la app).</p>
+
+<div class="box">
+Cómo usarlo: tapá el feedback, contestá de memoria, y solo después clickeá. Si fallás, no pases de largo — leé por qué. <strong>Convenciones de la cátedra clave</strong>: homogeneidad → CV&lt;20%; media representativa → CV&lt;10%; Mo&gt;x̄ ⇒ asimetría negativa; Poisson ⇒ escalar la tasa (λ=tasa×tiempo); R²=r².
+</div>
+
+<h2>Unidades 1–3 · Estadística descriptiva</h2>
+
+<div class="quiz">
+<p class="q">1. En una tabla de pesos, el 30% de los paquetes pesa MÁS de 38 g. ¿Qué percentil corresponde a 38 g?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> a. P30</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> b. P38</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> c. P50</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> d. P35</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1e', true)"> e. P70</label>
+<div id="q1a" class="feedback wrong">P30 sería si el 30% pesara MENOS. Acá el 30% pesa más → hay que dar vuelta el porcentaje.</div>
+<div id="q1b" class="feedback wrong">El percentil no es el valor de la variable (38), es la posición porcentual.</div>
+<div id="q1c" class="feedback wrong">P50 es la mediana; no hay razón para que el corte esté en la mitad.</div>
+<div id="q1d" class="feedback wrong">P35 no sale de ninguna conversión válida: si el 30% pesa más, el 70% pesa menos, y 38 g es P70.</div>
+<div id="q1e" class="feedback correct">El percentil se define por lo que queda POR DEBAJO. Si el 30% pesa más, el 70% pesa menos → P70.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Una distribución de sueldos tiene CV = 8,45%. Sobre su homogeneidad se puede afirmar:</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> a. Datos no homogéneos (CV &gt; 20%)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> b. No se puede evaluar sin la media</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> c. Homogéneos solo si la distribución es simétrica</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', true)"> d. Datos homogéneos (CV &lt; 20%)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2e', false)"> e. Heterogéneos, porque un CV &lt; 20% indica alta variabilidad</label>
+<div id="q2a" class="feedback wrong">8,45% es menor que 20%, no mayor.</div>
+<div id="q2b" class="feedback wrong">El CV ya es el cociente s/x̄; con el CV alcanza para decidir homogeneidad.</div>
+<div id="q2c" class="feedback wrong">La homogeneidad se juzga por el CV, no depende de la simetría.</div>
+<div id="q2d" class="feedback correct">Criterio de la cátedra: CV &lt; 20% ⇒ homogéneos. 8,45% está muy por debajo. (Ojo: para "¿la media es representativa?" el umbral es 10%.)</div>
+<div id="q2e" class="feedback wrong">Al revés: un CV chico indica poca variabilidad relativa, es decir, datos homogéneos.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. Una distribución tiene Moda = 36,5 y Media = 35,6. ¿Qué asimetría presenta (convención de la cátedra)?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> a. Positiva</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', true)"> b. Negativa</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> c. Simétrica</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> d. No se puede determinar</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3e', false)"> e. Asimétrica solo si la mediana también difiere de la media</label>
+<div id="q3a" class="feedback wrong">Error clásico de invertir el signo. Mo &gt; x̄ da NEGATIVA, no positiva.</div>
+<div id="q3b" class="feedback correct">Mo (36,5) &gt; x̄ (35,6) ⇒ asimetría negativa. La cola larga queda a la izquierda.</div>
+<div id="q3c" class="feedback wrong">Simetría sería Mo = x̄. Acá difieren.</div>
+<div id="q3d" class="feedback wrong">Alcanza con comparar Mo y x̄.</div>
+<div id="q3e" class="feedback wrong">Con la convención de la cátedra alcanza con comparar Mo y x̄; no hace falta la mediana.</div>
+</div>
+
+<div class="quiz">
+<p class="q">4. En una flota de camiones, CV = 27,17%. ¿La media aritmética es representativa del conjunto?</p>
+<label><input type="radio" name="q4" onclick="showFeedback('q4a', true)"> a. No, porque CV &gt; 10%</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4b', false)"> b. Sí, siempre lo es</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4c', false)"> c. Sí, porque CV &lt; 30%</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4d', false)"> d. Depende solo de la moda</label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4e', false)"> e. No se puede decidir sin conocer la desviación estándar</label>
+<div id="q4a" class="feedback correct">Para "¿es representativa la media?" la cátedra usa el umbral 10%: CV = 27,17% &gt; 10% ⇒ NO representativa. (No confundir con el umbral 20% de homogeneidad.)</div>
+<div id="q4b" class="feedback wrong">La representatividad de la media depende de la dispersión relativa (CV).</div>
+<div id="q4c" class="feedback wrong">No existe ese criterio del 30%; el umbral de representatividad es 10%.</div>
+<div id="q4d" class="feedback wrong">Se juzga por el CV (s/x̄), no por la moda.</div>
+<div id="q4e" class="feedback wrong">El CV = s/x̄ ya incorpora el desvío; con el CV alcanza para decidir.</div>
+</div>
+
+<h2>Unidad 4 · Probabilidad</h2>
+
+<div class="quiz">
+<p class="q">5. Dos sucesos con P(A)&gt;0 y P(B)&gt;0 son mutuamente excluyentes. Entonces:</p>
+<label><input type="radio" name="q5" onclick="showFeedback('q5a', false)"> a. Son independientes</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5b', false)"> b. P(A∩B) = P(A)·P(B)</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5c', false)"> c. P(A∪B) = P(A)·P(B)</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5d', false)"> d. Son complementarios siempre</label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5e', true)"> e. Son dependientes: si ocurre uno, el otro no puede ocurrir</label>
+<div id="q5a" class="feedback wrong">Trampa más común de la materia. Excluyentes NO es independientes — es lo contrario.</div>
+<div id="q5b" class="feedback wrong">Eso es la definición de independientes. Si fueran excluyentes, P(A∩B)=0 ≠ P(A)·P(B) (ambas &gt;0).</div>
+<div id="q5c" class="feedback wrong">La unión se suma (menos la intersección), no se multiplica.</div>
+<div id="q5d" class="feedback wrong">Complementarios exige además que A∪B sea todo el espacio muestral; ser excluyentes no alcanza.</div>
+<div id="q5e" class="feedback correct">Excluyentes ⇒ P(A∩B)=0. Saber que ocurrió A cambia (anula) la prob de B ⇒ son dependientes.</div>
+</div>
+
+<div class="quiz">
+<p class="q">6. En una tabla de contingencia, P(A)=0,72, P(U)=0,30 y P(A∩U)=0,12. ¿Cuál es P(A∪U)?</p>
+<label><input type="radio" name="q6" onclick="showFeedback('q6a', true)"> a. 0,90</label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6b', false)"> b. 1,02</label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6c', false)"> c. 0,84</label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6d', false)"> d. 0,22</label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6e', false)"> e. 0,42</label>
+<div id="q6a" class="feedback correct">Regla de la suma: P(A∪U) = P(A)+P(U)−P(A∩U) = 0,72+0,30−0,12 = 0,90.</div>
+<div id="q6b" class="feedback wrong">Sumaste sin restar la intersección. La probabilidad no puede dar más que 1.</div>
+<div id="q6c" class="feedback wrong">Restaste dos veces o algo así; revisá 0,72+0,30−0,12.</div>
+<div id="q6d" class="feedback wrong">0,22 no surge de la regla de la suma con estos datos.</div>
+<div id="q6e" class="feedback wrong">0,42 sale de sumar P(U) + P(A∩U), que no es la fórmula de la unión: P(A∪U) = P(A) + P(U) − P(A∩U).</div>
+</div>
+
+<div class="quiz">
+<p class="q">7. El 65% de las partes viene del proveedor A (2% malas) y 35% de B (5% malas). Si una parte es mala, ¿qué se necesita para hallar P(B/mala)?</p>
+<label><input type="radio" name="q7" onclick="showFeedback('q7a', false)"> a. Solo la regla del producto</label>
+<label><input type="radio" name="q7" onclick="showFeedback('q7b', false)"> b. La regla de la suma</label>
+<label><input type="radio" name="q7" onclick="showFeedback('q7c', true)"> c. Bayes: P(B/mala) = P(B∩mala) / P(mala), con P(mala) por probabilidad total</label>
+<label><input type="radio" name="q7" onclick="showFeedback('q7d', false)"> d. No se puede calcular</label>
+<label><input type="radio" name="q7" onclick="showFeedback('q7e', false)"> e. Solo la probabilidad total, P(mala)</label>
+<div id="q7a" class="feedback wrong">El producto da P(B∩mala), pero falta el denominador (todas las formas de ser mala).</div>
+<div id="q7b" class="feedback wrong">La suma es para uniones, no para invertir una condicional.</div>
+<div id="q7c" class="feedback correct">Es Bayes: te dan P(mala/B) y querés invertirla a P(B/mala). El denominador P(mala)=P(A)·0,02+P(B)·0,05 es la probabilidad total (suma de todos los caminos).</div>
+<div id="q7d" class="feedback wrong">Sí se puede: es el caso típico de Bayes.</div>
+<div id="q7e" class="feedback wrong">P(mala) es apenas el denominador; falta el numerador P(B∩mala) para aislar al proveedor B.</div>
+</div>
+
+<div class="quiz">
+<p class="q">8. La probabilidad de que un test dé negativo en una persona es 0,3. Si se testean 5 personas independientes, "al menos una da positivo" se calcula como:</p>
+<label><input type="radio" name="q8" onclick="showFeedback('q8a', false)"> a. P(exactamente una positiva)</label>
+<label><input type="radio" name="q8" onclick="showFeedback('q8b', true)"> b. 1 − P(ninguna positiva) = 1 − 0,3⁵</label>
+<label><input type="radio" name="q8" onclick="showFeedback('q8c', false)"> c. 5 × 0,7</label>
+<label><input type="radio" name="q8" onclick="showFeedback('q8d', false)"> d. 0,7⁵</label>
+<label><input type="radio" name="q8" onclick="showFeedback('q8e', false)"> e. 1 − 0,7⁵</label>
+<div id="q8a" class="feedback wrong">"Al menos una" incluye 1, 2, 3, 4 o 5 — no solo exactamente una.</div>
+<div id="q8b" class="feedback correct">"Al menos uno" = complemento de "ninguno". P(X≥1) = 1 − P(X=0). Con P(negativo)=0,3, ninguna positiva = 0,3⁵.</div>
+<div id="q8c" class="feedback wrong">Eso sería un valor esperado mal planteado, no una probabilidad.</div>
+<div id="q8d" class="feedback wrong">0,7⁵ sería "las cinco positivas", no "al menos una".</div>
+<div id="q8e" class="feedback wrong">Eso es "al menos una negativa" (1 − P(ninguna negativa)). Acá la P(negativo)=0,3, así que P(positivo)=0,7 y "ninguna positiva" es 0,3⁵.</div>
+</div>
+
+<h2>Unidad 4 · Distribuciones discretas</h2>
+
+<div class="quiz">
+<p class="q">9. Se sabe que en promedio pasan 15 autos por minuto por una esquina. ¿Probabilidad de que en 30 segundos pasen 7? ¿Qué distribución y parámetro?</p>
+<label><input type="radio" name="q9" onclick="showFeedback('q9a', false)"> a. Binomial con n=15</label>
+<label><input type="radio" name="q9" onclick="showFeedback('q9b', false)"> b. Poisson con λ = 15</label>
+<label><input type="radio" name="q9" onclick="showFeedback('q9c', true)"> c. Poisson con λ = 7,5 (escalando la tasa a 30 s)</label>
+<label><input type="radio" name="q9" onclick="showFeedback('q9d', false)"> d. Normal con μ = 15</label>
+<label><input type="radio" name="q9" onclick="showFeedback('q9e', false)"> e. Poisson con λ = 30</label>
+<div id="q9a" class="feedback wrong">No hay un n fijo de intentos ni p; es un conteo de eventos en el tiempo → Poisson.</div>
+<div id="q9b" class="feedback wrong">λ=15 sería para 1 minuto. El intervalo pedido es 30 s → λ=7,5.</div>
+<div id="q9c" class="feedback correct">Conteo en un intervalo continuo ⇒ Poisson. Y hay que ESCALAR la tasa al intervalo pedido: 15/min × 0,5 min = λ = 7,5.</div>
+<div id="q9d" class="feedback wrong">Para conteos discretos de eventos raros en el tiempo se usa Poisson, no Normal.</div>
+<div id="q9e" class="feedback wrong">Multiplicaste por 2 en vez de dividir: 30 segundos es medio minuto, entonces λ = 15·0,5 = 7,5.</div>
+</div>
+
+<div class="quiz">
+<p class="q">10. ¿Cuándo conviene Binomial y no Poisson?</p>
+<label><input type="radio" name="q10" onclick="showFeedback('q10a', false)"> a. Cuando solo se conoce una tasa promedio por unidad de tiempo/espacio</label>
+<label><input type="radio" name="q10" onclick="showFeedback('q10b', true)"> b. Cuando hay un número FIJO de intentos n y una probabilidad p de éxito por intento</label>
+<label><input type="radio" name="q10" onclick="showFeedback('q10c', false)"> c. Siempre que la variable sea continua</label>
+<label><input type="radio" name="q10" onclick="showFeedback('q10d', false)"> d. Cuando n es muy grande y p desconocido</label>
+<label><input type="radio" name="q10" onclick="showFeedback('q10e', false)"> e. Cuando se mide una magnitud continua con media y desvío</label>
+<div id="q10a" class="feedback wrong">Eso describe Poisson (tasa λ por intervalo), no Binomial.</div>
+<div id="q10b" class="feedback correct">Binomial = n intentos fijos, cada uno éxito/fracaso con p constante (ej. "de 20 clientes, cuántos…"). Poisson = tasa por intervalo, sin n fijo.</div>
+<div id="q10c" class="feedback wrong">Ambas son para variables discretas (conteos).</div>
+<div id="q10d" class="feedback wrong">Sin p no hay Binomial: la Binomial necesita n y p conocidos.</div>
+<div id="q10e" class="feedback wrong">Eso es una Normal, no una Binomial: las dos que se comparan acá son discretas.</div>
+</div>
+
+<div class="quiz">
+<p class="q">11. De 9 cheques rechazados, cada uno irrecuperable con p=0,2. "Más de la mitad sean irrecuperables" es:</p>
+<label><input type="radio" name="q11" onclick="showFeedback('q11a', false)"> a. P(X = 4,5)</label>
+<label><input type="radio" name="q11" onclick="showFeedback('q11b', false)"> b. P(X ≥ 4)</label>
+<label><input type="radio" name="q11" onclick="showFeedback('q11c', false)"> c. P(X ≤ 5)</label>
+<label><input type="radio" name="q11" onclick="showFeedback('q11d', true)"> d. P(X ≥ 5)</label>
+<label><input type="radio" name="q11" onclick="showFeedback('q11e', false)"> e. P(X &gt; 5)</label>
+<div id="q11a" class="feedback wrong">X es discreta, no puede valer 4,5. "Más de la mitad" de 9 es más de 4,5.</div>
+<div id="q11b" class="feedback wrong">X ≥ 4 incluiría 4, que NO es más de la mitad (4 &lt; 4,5).</div>
+<div id="q11c" class="feedback wrong">Eso sería "a lo sumo la mitad (y algo)", el sentido opuesto.</div>
+<div id="q11d" class="feedback correct">La mitad de 9 es 4,5. "Más de la mitad" ⇒ X &gt; 4,5 ⇒ como X es entera, X ≥ 5.</div>
+<div id="q11e" class="feedback wrong">X &gt; 5 deja afuera el 5. Con n=9, la mitad es 4,5, así que "más de la mitad" empieza en 5 inclusive: X ≥ 5.</div>
+</div>
+
+<div class="quiz">
+<p class="q">12. Se toma una muestra de 20 personas, cada una acepta un producto con p=0,6. ¿Cuántas se espera que lo acepten?</p>
+<label><input type="radio" name="q12" onclick="showFeedback('q12a', true)"> a. E(X) = n·p = 12</label>
+<label><input type="radio" name="q12" onclick="showFeedback('q12b', false)"> b. E(X) = p = 0,6</label>
+<label><input type="radio" name="q12" onclick="showFeedback('q12c', false)"> c. E(X) = n = 20</label>
+<label><input type="radio" name="q12" onclick="showFeedback('q12d', false)"> d. E(X) = n·p·q = 4,8</label>
+<label><input type="radio" name="q12" onclick="showFeedback('q12e', false)"> e. E(X) = √(n·p·q) ≈ 2,19</label>
+<div id="q12a" class="feedback correct">En una Binomial el valor esperado es E(X)=n·p = 20·0,6 = 12.</div>
+<div id="q12b" class="feedback wrong">p es la prob por intento, no el esperado sobre los 20.</div>
+<div id="q12c" class="feedback wrong">n es el total de intentos, no el número esperado de éxitos.</div>
+<div id="q12d" class="feedback wrong">n·p·q = 4,8 es la VARIANZA, no el valor esperado.</div>
+<div id="q12e" class="feedback wrong">Eso es el desvío σ, no la esperanza. La esperanza de la Binomial es n·p.</div>
+</div>
+
+<h2>Unidades 5–6 · Distribución normal y suma de variables</h2>
+
+<div class="quiz">
+<p class="q">13. X ~ N(5; 1,5) (tiempo de entrega). ¿P(X &gt; 5)?</p>
+<label><input type="radio" name="q13" onclick="showFeedback('q13a', false)"> a. 0</label>
+<label><input type="radio" name="q13" onclick="showFeedback('q13b', true)"> b. 0,50</label>
+<label><input type="radio" name="q13" onclick="showFeedback('q13c', false)"> c. 1</label>
+<label><input type="radio" name="q13" onclick="showFeedback('q13d', false)"> d. 0,15</label>
+<label><input type="radio" name="q13" onclick="showFeedback('q13e', false)"> e. No se puede resolver sin la tabla Z</label>
+<div id="q13a" class="feedback wrong">La probabilidad de superar la media no es nula.</div>
+<div id="q13b" class="feedback correct">La Normal es simétrica respecto de μ. La mitad del área queda por encima de la media ⇒ P(X&gt;μ)=0,5. Sin cuentas.</div>
+<div id="q13c" class="feedback wrong">1 sería toda el área; μ deja exactamente la mitad de cada lado.</div>
+<div id="q13d" class="feedback wrong">No hay razón para 0,15; por simetría es 0,5.</div>
+<div id="q13e" class="feedback wrong">No hace falta tabla: 5 es la media y la Normal es simétrica, así que queda 50% a cada lado.</div>
+</div>
+
+<div class="quiz">
+<p class="q">14. Un enunciado da P(X &lt; a) = 0,90 y pide el valor de a. ¿Qué tipo de cálculo es?</p>
+<label><input type="radio" name="q14" onclick="showFeedback('q14a', false)"> a. Probabilidad simple</label>
+<label><input type="radio" name="q14" onclick="showFeedback('q14b', false)"> b. Probabilidad "entre"</label>
+<label><input type="radio" name="q14" onclick="showFeedback('q14c', false)"> c. No se resuelve con Normal</label>
+<label><input type="radio" name="q14" onclick="showFeedback('q14d', false)"> d. Estandarización de un valor x dado (Z = (x−μ)/σ)</label>
+<label><input type="radio" name="q14" onclick="showFeedback('q14e', true)"> e. Fractil (percentil → valor de x)</label>
+<div id="q14a" class="feedback wrong">La probabilidad simple es al revés: dan x y piden la probabilidad. Acá dan la prob y piden x.</div>
+<div id="q14b" class="feedback wrong">"Entre" requiere dos valores de x; acá hay uno solo por hallar.</div>
+<div id="q14c" class="feedback wrong">Sí se resuelve: es justamente un fractil.</div>
+<div id="q14d" class="feedback wrong">Estandarizar parte de un x conocido y devuelve z. Acá el valor a es la incógnita: se busca z en la tabla y se despeja x = μ + z·σ.</div>
+<div id="q14e" class="feedback correct">Te dan la probabilidad (0,90) y buscás el valor de x: es el camino inverso ⇒ fractil. Se despeja x = μ + z·σ.</div>
+</div>
+
+<div class="quiz">
+<p class="q">15. La probabilidad de que el TOTAL de tiempo de 25 entregas sea menor a 130 días usa la distribución de la SUMA. Sus parámetros son:</p>
+<label><input type="radio" name="q15" onclick="showFeedback('q15a', false)"> a. μ_W = μ y σ_W = σ/√n</label>
+<label><input type="radio" name="q15" onclick="showFeedback('q15b', false)"> b. μ_W = μ/n y σ_W = σ</label>
+<label><input type="radio" name="q15" onclick="showFeedback('q15c', true)"> c. μ_W = n·μ y σ_W = √n·σ</label>
+<label><input type="radio" name="q15" onclick="showFeedback('q15d', false)"> d. μ_W = n·μ y σ_W = n·σ</label>
+<label><input type="radio" name="q15" onclick="showFeedback('q15e', false)"> e. μ_W = n·μ y σ_W = σ</label>
+<div id="q15a" class="feedback wrong">Eso es la distribución del PROMEDIO (x̄), no de la suma total.</div>
+<div id="q15b" class="feedback wrong">La media de la suma crece con n, no se divide.</div>
+<div id="q15c" class="feedback correct">Para la suma W = x₁+…+xₙ: μ_W = n·μ y σ_W = √n·σ. (El promedio en cambio usa σ/√n.)</div>
+<div id="q15d" class="feedback wrong">La media sí es n·μ, pero el desvío es √n·σ (la varianza es la que se multiplica por n).</div>
+<div id="q15e" class="feedback wrong">La desviación de la suma sí crece con n, pero como √n·σ; no queda igual a σ.</div>
+</div>
+
+<h2>Unidad 7 · Muestral e intervalos de confianza</h2>
+
+<div class="quiz">
+<p class="q">16. "IC del 95% para μ = (105.000 ; 135.000)". ¿Interpretación correcta?</p>
+<label><input type="radio" name="q16" onclick="showFeedback('q16a', true)"> a. Si repitiéramos el muestreo, el 95% de los intervalos así contendrían a μ</label>
+<label><input type="radio" name="q16" onclick="showFeedback('q16b', false)"> b. Hay 95% de probabilidad de que μ esté en ese intervalo</label>
+<label><input type="radio" name="q16" onclick="showFeedback('q16c', false)"> c. El 95% de los datos caen en ese intervalo</label>
+<label><input type="radio" name="q16" onclick="showFeedback('q16d', false)"> d. μ = 120.000 con certeza</label>
+<label><input type="radio" name="q16" onclick="showFeedback('q16e', false)"> e. Hay 5% de probabilidad de que μ esté fuera de ese intervalo</label>
+<div id="q16a" class="feedback correct">El 95% es una propiedad del MÉTODO sobre muestreo repetido, no del intervalo particular ya obtenido.</div>
+<div id="q16b" class="feedback wrong">Trampa clásica. Una vez calculado el intervalo, μ está o no está: no hay azar sobre ESE intervalo.</div>
+<div id="q16c" class="feedback wrong">Eso describiría la dispersión de los datos, no la estimación de μ.</div>
+<div id="q16d" class="feedback wrong">120.000 es solo el centro (x̄); no hay certeza de que μ valga eso.</div>
+<div id="q16e" class="feedback wrong">Mismo error que decir "hay 95% de probabilidad de que μ esté adentro", en versión espejo: sobre el intervalo ya calculado no hay probabilidad, μ está adentro o no está.</div>
+</div>
+
+<div class="quiz">
+<p class="q">17. Se estima μ con una muestra de n=5 y el desvío poblacional es DESCONOCIDO. El valor crítico sale de:</p>
+<label><input type="radio" name="q17" onclick="showFeedback('q17a', false)"> a. Z, porque siempre se usa Z</label>
+<label><input type="radio" name="q17" onclick="showFeedback('q17b', false)"> b. t de Student, con ν = 5</label>
+<label><input type="radio" name="q17" onclick="showFeedback('q17c', false)"> c. Z, con ν = 4</label>
+<label><input type="radio" name="q17" onclick="showFeedback('q17d', true)"> d. t de Student, con ν = 4</label>
+<label><input type="radio" name="q17" onclick="showFeedback('q17e', false)"> e. Z, con ν = 5</label>
+<div id="q17a" class="feedback wrong">Z es solo con σ poblacional conocido. Acá es desconocido ⇒ t.</div>
+<div id="q17b" class="feedback wrong">Es t, pero ν = n−1 = 4, no 5.</div>
+<div id="q17c" class="feedback wrong">La Z no tiene grados de libertad y acá corresponde t.</div>
+<div id="q17d" class="feedback correct">σ desconocido ⇒ t de Student, con grados de libertad ν = n−1 = 4.</div>
+<div id="q17e" class="feedback wrong">Z no tiene grados de libertad, y con σ desconocido corresponde t.</div>
+</div>
+
+<div class="quiz">
+<p class="q">18. De 250 clientes, 150 están satisfechos. Para estimar el % de TODOS los clientes con 95% de confianza, se usa:</p>
+<label><input type="radio" name="q18" onclick="showFeedback('q18a', false)"> a. IC para la media con t</label>
+<label><input type="radio" name="q18" onclick="showFeedback('q18b', false)"> b. IC para la media con Z</label>
+<label><input type="radio" name="q18" onclick="showFeedback('q18c', false)"> c. No se puede sin el desvío</label>
+<label><input type="radio" name="q18" onclick="showFeedback('q18d', false)"> d. IC para una proporción, pero con t porque n &lt; 30</label>
+<label><input type="radio" name="q18" onclick="showFeedback('q18e', true)"> e. IC para una proporción: p̂ ± Z·√(p̂·q̂/n), con p̂ = 0,6</label>
+<div id="q18a" class="feedback wrong">No hay una variable numérica promediada; hay un conteo de éxitos ⇒ proporción.</div>
+<div id="q18b" class="feedback wrong">La media con Z es para promediar una variable numérica con σ conocido, no para una proporción.</div>
+<div id="q18c" class="feedback wrong">El "desvío" de la proporción sale de la propia p̂: √(p̂·q̂/n).</div>
+<div id="q18d" class="feedback wrong">En proporciones siempre se usa Z (la t es solo para medias con σ desconocido), y además n = 250.</div>
+<div id="q18e" class="feedback correct">"150 de 250" ⇒ p̂ = 0,6. Estimar un porcentaje poblacional es IC para proporción (siempre con Z).</div>
+</div>
+
+<div class="quiz">
+<p class="q">19. Con la confianza fija, se quiere reducir el error de muestreo A LA MITAD. El tamaño de muestra n:</p>
+<label><input type="radio" name="q19" onclick="showFeedback('q19a', false)"> a. se reduce a la mitad</label>
+<label><input type="radio" name="q19" onclick="showFeedback('q19b', false)"> b. se duplica</label>
+<label><input type="radio" name="q19" onclick="showFeedback('q19c', false)"> c. no cambia</label>
+<label><input type="radio" name="q19" onclick="showFeedback('q19d', true)"> d. se cuadruplica (×4)</label>
+<label><input type="radio" name="q19" onclick="showFeedback('q19e', false)"> e. se triplica</label>
+<div id="q19a" class="feedback wrong">Menos error exige MÁS datos, no menos.</div>
+<div id="q19b" class="feedback wrong">La relación no es lineal: n depende de 1/E².</div>
+<div id="q19c" class="feedback wrong">Cambia E, y con él n; la confianza es lo que queda fijo.</div>
+<div id="q19d" class="feedback correct">n ∝ 1/E². Si E → E/2, entonces n se multiplica por 4. Y "reducir el error 60%" significa E_nuevo = 0,40·E.</div>
+<div id="q19e" class="feedback wrong">n es proporcional a 1/E²: la mitad del error multiplica n por 4, no por 3.</div>
+</div>
+
+<h2>Unidad 8 · Regresión y correlación</h2>
+
+<div class="quiz">
+<p class="q">20. Una regresión tiene r = 0,73. La interpretación correcta es:</p>
+<label><input type="radio" name="q20" onclick="showFeedback('q20a', false)"> a. Relación positiva; el 73% de la variación de Y se explica por X</label>
+<label><input type="radio" name="q20" onclick="showFeedback('q20b', true)"> b. Relación lineal positiva, bastante fuerte; el 53,29% de la variación de Y se explica por X</label>
+<label><input type="radio" name="q20" onclick="showFeedback('q20c', false)"> c. Relación débil; el 7,29% se explica</label>
+<label><input type="radio" name="q20" onclick="showFeedback('q20d', false)"> d. Sin asociación</label>
+<label><input type="radio" name="q20" onclick="showFeedback('q20e', false)"> e. Relación negativa fuerte; el 73% de la variación de Y se explica por X</label>
+<div id="q20a" class="feedback wrong">Trampa estrella: 73% es r, NO el % explicado. El % explicado es r² = 53,29%.</div>
+<div id="q20b" class="feedback correct">El % de variación explicada es R² = r² = 0,73² = 0,5329 = 53,29%. Y r=0,73 (≥0,7) es una relación fuerte y positiva.</div>
+<div id="q20c" class="feedback wrong">7,29% no sale de r=0,73. Además |r|≥0,7 es fuerte, no débil.</div>
+<div id="q20d" class="feedback wrong">r=0,73 es una asociación fuerte, lejos de cero.</div>
+<div id="q20e" class="feedback wrong">El signo de r es positivo, así que la relación es positiva; y R² = r² = 53,29%, no 73%.</div>
+</div>
+
+<div class="quiz">
+<p class="q">21. Un estudio halla r = 0,90 entre cantidad de bomberos en un incendio y daños materiales. Se concluye que:</p>
+<label><input type="radio" name="q21" onclick="showFeedback('q21a', true)"> a. Hay fuerte asociación, pero no causalidad (ambas dependen del tamaño del incendio)</label>
+<label><input type="radio" name="q21" onclick="showFeedback('q21b', false)"> b. Enviar más bomberos causa más daños</label>
+<label><input type="radio" name="q21" onclick="showFeedback('q21c', false)"> c. Conviene enviar menos bomberos</label>
+<label><input type="radio" name="q21" onclick="showFeedback('q21d', false)"> d. La relación es débil</label>
+<label><input type="radio" name="q21" onclick="showFeedback('q21e', false)"> e. No hay asociación, porque r no mide causalidad</label>
+<div id="q21a" class="feedback correct">Variable de confusión: el tamaño del incendio explica bomberos Y daños. Asociación fuerte sí, causa no.</div>
+<div id="q21b" class="feedback wrong">Correlación no implica causalidad — es el error que la pregunta busca.</div>
+<div id="q21c" class="feedback wrong">Actuar sobre una causa inexistente: mismo error de fondo.</div>
+<div id="q21d" class="feedback wrong">r=0,90 es muy fuerte.</div>
+<div id="q21e" class="feedback wrong">r = 0,90 sí indica una asociación lineal fuerte; lo que no se puede concluir es causalidad.</div>
+</div>
+
+<div class="quiz">
+<p class="q">22. La recta ŷ = −172,63 + 4,842·x predice peso (lb) según altura (pulgadas). ¿Mejor predicción para x = 70?</p>
+<label><input type="radio" name="q22" onclick="showFeedback('q22a', false)"> a. 70</label>
+<label><input type="radio" name="q22" onclick="showFeedback('q22b', false)"> b. el promedio de y</label>
+<label><input type="radio" name="q22" onclick="showFeedback('q22c', true)"> c. 166</label>
+<label><input type="radio" name="q22" onclick="showFeedback('q22d', false)"> d. 339</label>
+<label><input type="radio" name="q22" onclick="showFeedback('q22e', false)"> e. −172,63</label>
+<div id="q22a" class="feedback wrong">70 es el valor de x (la altura), no la predicción de y.</div>
+<div id="q22b" class="feedback wrong">El promedio de y sería la predicción solo si la pendiente fuera 0; acá hay recta.</div>
+<div id="q22c" class="feedback correct">Se reemplaza x en la recta: −172,63 + 4,842·70 = 166,3 ≈ 166. Predecir = meter x en la ecuación.</div>
+<div id="q22d" class="feedback wrong">339 sale de sumar mal (olvidar el término negativo o duplicar).</div>
+<div id="q22e" class="feedback wrong">Es la ordenada al origen: el valor de ŷ cuando x = 0, no cuando x = 70.</div>
+</div>
+
+<div class="ask">
+¿Fallaste varias de un bloque? Decime cuál y te armo 5 preguntas más de ESE tema, o repasamos el concepto con la lección correspondiente.
+</div>
+
+<footer>
+Preguntas drifteadas de tus TP1, TP2, TP3, TP6 y los parciales reales de la cátedra (UNICABA — FEP).
+<div class="nav-row">
+  <span>← <a href="index.html">Índice</a></span>
+  <span><a href="0009-intervalos-de-confianza.html">Repasar Intervalos de confianza</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var q = document.getElementById(id).parentNode;
+  q.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  document.getElementById(id).style.display = 'block';
+}
+</script>
+
+</body>
+</html>

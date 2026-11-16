@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint del 2do parcial · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<style>
+.fix{display:inline-block;font-family:var(--font-mono);font-size:15px;font-weight:700;letter-spacing:.1em;padding:3px 10px;border-radius:999px;text-transform:uppercase;background:var(--warn);color:var(--bg);vertical-align:middle;margin-right:6px}
+.bul{margin:0;padding-left:1.1em;font-size:27px;line-height:1.45}
+.bul li{margin-bottom:10px}
+.qa details{font-size:24px;margin-bottom:10px}
+.qa summary{cursor:pointer;font-weight:600}
+.qa details p{margin:6px 0 0 1.2em;color:var(--text-2)}
+.t td,.t th{vertical-align:top}
+.crio+.crio{margin-top:14px}
+</style>
+<!-- Reescritura del "Blueprint de Bases de Datos" (raw/Blueprint_de_Bases_de_Datos.pdf, NotebookLM).
+     Se mantuvo la estructura de 7 temas; lo marcado "Corregido" difiere del PDF.
+     Código verificado en SQLite 3.45 contra raw/Clase Extra DML_DDL_SCD_2026-11-03.txt. -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · repaso del 2.º parcial</p>
+    <h1 class="h1" style="font-size:104px;line-height:1">Blueprint<br><span class="gradient-text">del 2do parcial</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Los siete temas en una slide cada uno, con dos preguntas de repaso al final.</p>
+    <p class="small">Rehecho a partir del PDF que armó NotebookLM. Lo que estaba mal está marcado <span class="fix">Corregido</span>.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ ERRATAS ============ -->
+<section class="slide" data-title="Qué se corrigió">
+  <p class="kicker">Antes de empezar</p>
+  <h2 class="h2">Qué estaba mal en el PDF</h2>
+  <table class="t head" style="font-size:22px;margin-top:4px">
+    <thead><tr><th style="width:17%">Tema</th><th style="width:41%">El PDF decía</th><th>Lo correcto</th></tr></thead>
+    <tbody>
+      <tr><td>Conjuntos</td><td>Diferencia simétrica con cada <code>SELECT</code> entre paréntesis</td><td>SQLite no acepta paréntesis en un <code>UNION</code>: da error de sintaxis. Además mezclaba <code>Id_Art</code> e <code>Id</code></td></tr>
+      <tr><td>Conjuntos</td><td>EXCEPT se simula “idénticamente” con LEFT JOIN</td><td>Casi: EXCEPT quita duplicados; el LEFT JOIN no. Con claves únicas da lo mismo</td></tr>
+      <tr><td>CASE</td><td>Es obligatorio ponerle alias</td><td>El alias es opcional, pero en una vista conviene: sin él la columna se llama como la expresión</td></tr>
+      <tr><td>DDL</td><td>Teradata da error si declarás <code>NOT NULL</code> + <code>PRIMARY KEY</code></td><td>Lo de “no declarar las dos” sale del deck de la cátedra, pero lo de Teradata es inventado. SQLite lo acepta</td></tr>
+      <tr><td>Triggers</td><td>Trigger sin <code>BEGIN … END</code></td><td>Sin <code>BEGIN … END</code> es error de sintaxis en SQLite</td></tr>
+      <tr><td>Triggers</td><td>Trigger = <code>FOR EACH ROW</code></td><td>También existe <code>FOR EACH STATEMENT</code> (una vez por sentencia)</td></tr>
+      <tr><td>Kimball</td><td>“Empieza por construir áreas empresariales”</td><td>Empieza por <b>data marts en estrella</b>, uno por área; juntos forman el DW</td></tr>
+      <tr><td>Transacciones</td><td>Si la red cae antes del COMMIT, estaba “parcialmente confirmada”</td><td>Depende: si no terminó su última sentencia, estaba <b>activa</b>. En los dos casos pasa a <b>fallida</b> y se aborta</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 1 · SCD ============ -->
+<section class="slide" data-title="1 · SCD tipo 2">
+  <p class="kicker">1 · Slowly Changing Dimensions</p>
+  <h2 class="h2">Una fila por foto, con fecha de inicio y de fin</h2>
+  <div class="two" style="grid-template-columns:1fr 1.05fr;gap:40px">
+    <ul class="bul">
+      <li><b>Tipos:</b> 1 sobrescribe, 2 agrega una fila (guarda historial), 3 agrega una columna.</li>
+      <li><b>Vigente:</b> la foto actual tiene fecha fin <code>'2100-12-31'</code>.</li>
+      <li><b>Actual vs. a una fecha:</b> la actual filtra por fecha fin = 2100-12-31. A una fecha se usa <code>BETWEEN</code>, que incluye los extremos.</li>
+      <li><b>La PK:</b> tiene que ser <code>(cliente_id, fecha_inicio)</code>. Si es sólo <code>cliente_id</code>, la segunda foto choca con la primera.</li>
+    </ul>
+    <div>
+      <pre class="code sm"><span class="k">CREATE TABLE</span> CLIENTES (
+  cliente_Id            integer,
+  Fecha_Inicio_vigencia date,
+  Fecha_fin_Vigencia    date,
+  banco_Id              smallint,
+  Oficial_Id            smallint,
+  <span class="k">PRIMARY KEY</span> (cliente_Id, Fecha_Inicio_vigencia)
+);
+
+<span class="k">-- Estado al 06/03/2025</span>
+<span class="k">SELECT</span> cliente_id, Oficial_Id
+<span class="k">FROM</span>   VW_Clientes_Hist
+<span class="k">WHERE</span>  '2025-03-06' <span class="k">BETWEEN</span> Fecha_Inicio_vigencia
+                      <span class="k">AND</span> Fecha_fin_Vigencia;</pre>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. ¿Qué filtro usás para el estado al 31/12/2021? 2. ¿Por qué falla la PK sólo con <code>cliente_id</code>? <span class="dim2">— respuestas en la última slide</span></p></div>
+</section>
+
+<!-- ============ 1b · FOTO ANTERIOR ============ -->
+<section class="slide" data-title="1 · Foto anterior e indicadores">
+  <p class="kicker">1 · Slowly Changing Dimensions</p>
+  <h2 class="h2">La foto anterior y los indicadores con CASE</h2>
+  <div class="two" style="grid-template-columns:1fr 1.15fr;gap:40px">
+    <ul class="bul">
+      <li><b>Foto anterior:</b> su fecha fin es la fecha inicio de la actual menos un día. Se busca con un JOIN contra la foto vigente.</li>
+      <li><b>Cruzá por cliente:</b> si te olvidás <code>c.cliente_id = T.cliente_id</code>, mezclás fotos de clientes distintos.</li>
+      <li><b>CASE</b> es el IF de SQL: evalúa los <code>WHEN</code> en orden y cierra con <code>END</code>.</li>
+      <li><span class="fix">Corregido</span>El alias no es obligatorio. En una vista sí ponelo: sin él la columna se llama como la expresión entera.</li>
+    </ul>
+    <pre class="code sm"><span class="k">-- Foto inmediatamente anterior a la actual</span>
+<span class="k">SELECT</span> c.*
+<span class="k">FROM</span>   CLIENTES c
+<span class="k">INNER JOIN</span> (
+    <span class="k">SELECT</span> cliente_id,
+           date(Fecha_Inicio_vigencia, '-1 days')
+             <span class="k">AS</span> fecha_fin_vig_ant
+    <span class="k">FROM</span>   CLIENTES
+    <span class="k">WHERE</span>  Fecha_fin_Vigencia = '2100-12-31'
+) <span class="k">AS</span> T
+  <span class="k">ON</span>  c.cliente_id = T.cliente_id
+ <span class="k">AND</span> c.Fecha_fin_Vigencia = T.fecha_fin_vig_ant;
+
+<span class="k">-- Indicador</span>
+<span class="k">CASE WHEN</span> banco_id &lt; 200 <span class="k">THEN</span> 'AMBA'
+     <span class="k">ELSE</span> 'NO AMBA' <span class="k">END AS</span> Ind_region</pre>
+  </div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. Si la foto actual empieza el 2026-05-25, ¿qué fecha fin tiene la anterior? 2. ¿Qué palabra cierra un CASE?</p></div>
+</section>
+
+<!-- ============ 1c · LAS FOTOS EN EL TIEMPO ============ -->
+<section class="slide" data-title="1 · Las fotos en el tiempo">
+  <p class="kicker">1 · Slowly Changing Dimensions</p>
+  <h2 class="h2">Las tres consultas de SCD son el mismo dibujo</h2>
+  <svg class="dg" viewBox="0 0 1728 360" role="img" aria-labelledby="bp-scd-t bp-scd-d" style="margin-top:6px">
+    <title id="bp-scd-t">Las fotos de un cliente y las tres consultas</title>
+    <desc id="bp-scd-d">Cuatro fotos consecutivas del cliente 125269, de la 5 a la 8. La foto 5 contiene el 31/01/2021 y se encuentra con BETWEEN. La foto 7 es la anterior a la actual. La foto 8 es la actual, con End_Dt 2100-12-31. Una flecha va del Start_Dt de la actual, menos un día, al End_Dt de la foto anterior.</desc>
+    <defs><marker id="bp-scd-ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" style="fill:var(--text-2)"/></marker></defs>
+    <path d="M1348 260V292A12 12 0 0 1 1336 304H1232A12 12 0 0 1 1220 292V262" class="ln" marker-end="url(#bp-scd-ar)"/>
+    <line x1="234" y1="72" x2="234" y2="116" class="ln"/>
+    <line x1="1074" y1="72" x2="1074" y2="116" class="ln"/>
+    <line x1="1494" y1="72" x2="1494" y2="116" class="lnA"/>
+    <rect x="48" y="120" width="372" height="140" rx="8" class="store"/>
+    <text x="234" y="162" class="nm" text-anchor="middle">Foto 5</text>
+    <text x="234" y="204" class="sb" text-anchor="middle" style="font-size:22px">Start_Dt  2016-12-02</text>
+    <text x="234" y="236" class="sb" text-anchor="middle" style="font-size:22px">End_Dt    2021-12-01</text>
+    <rect x="468" y="120" width="372" height="140" rx="8" class="box"/>
+    <text x="654" y="162" class="nm" text-anchor="middle">Foto 6</text>
+    <text x="654" y="204" class="sb" text-anchor="middle" style="font-size:22px">Start_Dt  2021-12-02</text>
+    <text x="654" y="236" class="sb" text-anchor="middle" style="font-size:22px">End_Dt    2022-02-01</text>
+    <rect x="888" y="120" width="372" height="140" rx="8" class="store"/>
+    <text x="1074" y="162" class="nm" text-anchor="middle">Foto 7</text>
+    <text x="1074" y="204" class="sb" text-anchor="middle" style="font-size:22px">Start_Dt  2022-02-02</text>
+    <text x="1074" y="236" class="sb" text-anchor="middle" style="font-size:22px">End_Dt    2023-02-01</text>
+    <rect x="1308" y="120" width="372" height="140" rx="8" class="foc"/>
+    <text x="1494" y="162" class="nm" text-anchor="middle">Foto 8</text>
+    <text x="1494" y="204" class="sb" text-anchor="middle" style="font-size:22px">Start_Dt  2023-02-02</text>
+    <text x="1494" y="236" class="sb" text-anchor="middle" style="font-size:22px">End_Dt    2100-12-31</text>
+    <circle cx="234" cy="120" r="6" style="fill:var(--text-1)"/>
+    <circle cx="1074" cy="120" r="6" style="fill:var(--text-1)"/>
+    <circle cx="1494" cy="120" r="6" class="acc"/>
+    <text x="234" y="34" class="nm-s" text-anchor="middle">al 31/01/2021</text>
+    <text x="234" y="60" class="sb" text-anchor="middle">BETWEEN Start_Dt AND End_Dt</text>
+    <text x="1074" y="34" class="nm-s" text-anchor="middle">la anterior</text>
+    <text x="1074" y="60" class="sb" text-anchor="middle">la que cerró antes de la actual</text>
+    <text x="1494" y="34" class="nm-s acc" text-anchor="middle">la actual</text>
+    <text x="1494" y="60" class="sb" text-anchor="middle" style="fill:var(--accent)">End_Dt = '2100-12-31'</text>
+    <rect x="1000" y="312" width="568" height="40" rx="4" class="mask"/>
+    <text x="1284" y="340" class="tx" text-anchor="middle">Start_Dt de la actual − 1 día = End_Dt de la anterior</text>
+  </svg>
+  <div class="three" style="margin-top:10px">
+    <div class="card"><div class="src">A una fecha</div><p><code>WHERE 'X' BETWEEN Start_Dt AND End_Dt</code>: la foto que cubre ese día.</p></div>
+    <div class="card"><div class="src">Anterior</div><p>JOIN contra la vigente: <code>End_Dt = Start_Dt − 1 día</code>.</p></div>
+    <div class="card card-accent"><div class="src">Actual</div><p><code>WHERE End_Dt = '2100-12-31'</code>: la que no terminó.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">Ojo</span><p>La fecha del <code>BETWEEN</code> va <b>a la izquierda</b>. Y la fecha abierta es la que traiga la tabla del examen.</p></div>
+</section>
+
+<!-- ============ 2 · CONJUNTOS ============ -->
+<section class="slide" data-title="2 · Operaciones de conjuntos">
+  <p class="kicker">2 · Operaciones de conjuntos</p>
+  <h2 class="h2">Unión, intersección, resta y diferencia simétrica</h2>
+  <div class="two" style="grid-template-columns:1fr 1.1fr;gap:40px">
+    <svg class="dg" viewBox="0 0 804 576" role="img" aria-labelledby="bp-venn-t bp-venn-d">
+      <title id="bp-venn-t">Las cuatro operaciones de conjuntos</title>
+      <desc id="bp-venn-d">Cuatro diagramas de Venn con dos conjuntos, A y B. Unión: todo lo de A y de B, con UNION. Intersección: la región del medio, con INNER JOIN. Resta: sólo A, con LEFT JOIN más IS NULL. Diferencia simétrica: las dos regiones de los costados, con A menos B unido con B menos A.</desc>
+      <defs>
+        <mask id="v0a"><rect x="0" y="0" width="402" height="200" fill="#fff"/><circle cx="244" cy="96" r="72" fill="#000"/></mask>
+        <mask id="v0b"><rect x="0" y="0" width="402" height="200" fill="#fff"/><circle cx="160" cy="96" r="72" fill="#000"/></mask>
+        <clipPath id="v0c"><circle cx="160" cy="96" r="72"/></clipPath>
+      </defs>
+      <g mask="url(#v0a)" fill="var(--accent)" fill-opacity=".4"><circle cx="160" cy="96" r="72"/></g>
+      <g mask="url(#v0b)" fill="var(--accent)" fill-opacity=".4"><circle cx="244" cy="96" r="72"/></g>
+      <g clip-path="url(#v0c)" fill="var(--accent)" fill-opacity=".4"><circle cx="244" cy="96" r="72"/></g>
+      <g fill="none" stroke="var(--text-2)" stroke-width="2"><circle cx="160" cy="96" r="72"/><circle cx="244" cy="96" r="72"/></g>
+      <text x="84" y="36" class="nm-s" text-anchor="middle">A</text>
+      <text x="320" y="36" class="nm-s" text-anchor="middle">B</text>
+      <text x="201" y="212" class="nm-s" text-anchor="middle">Unión (A ∪ B)</text>
+      <text x="201" y="244" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">UNION</text>
+      <text x="201" y="270" class="lb" text-anchor="middle">UNION ALL deja los duplicados</text>
+      <defs>
+        <mask id="v1a"><rect x="402" y="0" width="402" height="200" fill="#fff"/><circle cx="646" cy="96" r="72" fill="#000"/></mask>
+        <mask id="v1b"><rect x="402" y="0" width="402" height="200" fill="#fff"/><circle cx="562" cy="96" r="72" fill="#000"/></mask>
+        <clipPath id="v1c"><circle cx="562" cy="96" r="72"/></clipPath>
+      </defs>
+      <g mask="url(#v1a)" fill="var(--surface-2)" fill-opacity="1"><circle cx="562" cy="96" r="72"/></g>
+      <g mask="url(#v1b)" fill="var(--surface-2)" fill-opacity="1"><circle cx="646" cy="96" r="72"/></g>
+      <g clip-path="url(#v1c)" fill="var(--accent)" fill-opacity=".4"><circle cx="646" cy="96" r="72"/></g>
+      <g fill="none" stroke="var(--text-2)" stroke-width="2"><circle cx="562" cy="96" r="72"/><circle cx="646" cy="96" r="72"/></g>
+      <text x="486" y="36" class="nm-s" text-anchor="middle">A</text>
+      <text x="722" y="36" class="nm-s" text-anchor="middle">B</text>
+      <text x="603" y="212" class="nm-s" text-anchor="middle">Intersección (A ∩ B)</text>
+      <text x="603" y="244" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">INNER JOIN</text>
+      <text x="603" y="270" class="lb" text-anchor="middle">lo que está en los dos</text>
+      <defs>
+        <mask id="v2a"><rect x="0" y="296" width="402" height="200" fill="#fff"/><circle cx="244" cy="392" r="72" fill="#000"/></mask>
+        <mask id="v2b"><rect x="0" y="296" width="402" height="200" fill="#fff"/><circle cx="160" cy="392" r="72" fill="#000"/></mask>
+        <clipPath id="v2c"><circle cx="160" cy="392" r="72"/></clipPath>
+      </defs>
+      <g mask="url(#v2a)" fill="var(--accent)" fill-opacity=".4"><circle cx="160" cy="392" r="72"/></g>
+      <g mask="url(#v2b)" fill="var(--surface-2)" fill-opacity="1"><circle cx="244" cy="392" r="72"/></g>
+      <g clip-path="url(#v2c)" fill="var(--surface-2)" fill-opacity="1"><circle cx="244" cy="392" r="72"/></g>
+      <g fill="none" stroke="var(--text-2)" stroke-width="2"><circle cx="160" cy="392" r="72"/><circle cx="244" cy="392" r="72"/></g>
+      <text x="84" y="332" class="nm-s" text-anchor="middle">A</text>
+      <text x="320" y="332" class="nm-s" text-anchor="middle">B</text>
+      <text x="201" y="508" class="nm-s" text-anchor="middle">Resta (A − B)</text>
+      <text x="201" y="540" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">LEFT JOIN + IS NULL</text>
+      <text x="201" y="566" class="lb" text-anchor="middle">EXCEPT quita duplicados</text>
+      <defs>
+        <mask id="v3a"><rect x="402" y="296" width="402" height="200" fill="#fff"/><circle cx="646" cy="392" r="72" fill="#000"/></mask>
+        <mask id="v3b"><rect x="402" y="296" width="402" height="200" fill="#fff"/><circle cx="562" cy="392" r="72" fill="#000"/></mask>
+        <clipPath id="v3c"><circle cx="562" cy="392" r="72"/></clipPath>
+      </defs>
+      <g mask="url(#v3a)" fill="var(--accent)" fill-opacity=".4"><circle cx="562" cy="392" r="72"/></g>
+      <g mask="url(#v3b)" fill="var(--accent)" fill-opacity=".4"><circle cx="646" cy="392" r="72"/></g>
+      <g clip-path="url(#v3c)" fill="var(--surface-2)" fill-opacity="1"><circle cx="646" cy="392" r="72"/></g>
+      <g fill="none" stroke="var(--text-2)" stroke-width="2"><circle cx="562" cy="392" r="72"/><circle cx="646" cy="392" r="72"/></g>
+      <text x="486" y="332" class="nm-s" text-anchor="middle">A</text>
+      <text x="722" y="332" class="nm-s" text-anchor="middle">B</text>
+      <text x="603" y="508" class="nm-s" text-anchor="middle">Diferencia simétrica</text>
+      <text x="603" y="540" class="sb" text-anchor="middle" style="fill:var(--text-1);font-weight:700">(A − B) UNION (B − A)</text>
+      <text x="603" y="566" class="lb" text-anchor="middle">en uno solo de los dos</text>
+    </svg>
+    <div>
+      <pre class="code sm"><span class="k">-- Diferencia simétrica (como la escribió el profe)</span>
+<span class="k">SELECT</span> aa.Id_Art
+<span class="k">FROM</span>   ARTICULOS_A aa
+<span class="k">LEFT OUTER JOIN</span> ARTICULOS_B ab
+       <span class="k">ON</span> aa.Id_Art = ab.Id_Art
+<span class="k">WHERE</span>  ab.Id_Art <span class="k">IS NULL</span>
+<span class="k">UNION</span>
+<span class="k">SELECT</span> ab.Id_Art
+<span class="k">FROM</span>   ARTICULOS_A aa
+<span class="k">RIGHT OUTER JOIN</span> ARTICULOS_B ab
+       <span class="k">ON</span> aa.Id_Art = ab.Id_Art
+<span class="k">WHERE</span>  aa.Id_Art <span class="k">IS NULL</span>;</pre>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Corregido</span><p>El PDF ponía cada SELECT <b>entre paréntesis</b>: en SQLite eso es error de sintaxis. Y usaba <code>Id_Art</code> e <code>Id</code> en la misma consulta. Además, el LEFT JOIN no es “idéntico” a EXCEPT: EXCEPT quita duplicados (con <code>Id_Art</code> único da lo mismo).</p></div>
+</section>
+
+<!-- ============ 3 · DDL ============ -->
+<section class="slide" data-title="3 · DDL">
+  <p class="kicker">3 · DDL</p>
+  <h2 class="h2">DDL define la estructura; DML mueve los datos</h2>
+  <div class="two" style="grid-template-columns:1fr 1.05fr;gap:40px">
+    <ul class="bul">
+      <li><b>DDL:</b> <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>. <b>DML:</b> <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>SELECT</code>.</li>
+      <li><b>Restricciones:</b> PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK (limita los valores que acepta una columna).</li>
+      <li><b>PK compuesta:</b> sólo a nivel de tabla, en una línea aparte. No se puede escribir junto a una columna.</li>
+      <li><span class="fix">Corregido</span>El deck de la cátedra dice no declarar <code>NOT NULL</code> y <code>PRIMARY KEY</code> juntos, porque la PK ya implica NOT NULL. Lo de “Teradata da error” lo inventó NotebookLM. SQLite lo acepta, pero en la hoja seguí al deck.</li>
+    </ul>
+    <pre class="code sm"><span class="k">CREATE TABLE</span> Curso (
+  codigo_curso int,
+  duracion     int,
+  <span class="k">CONSTRAINT</span> pk_curso
+    <span class="k">PRIMARY KEY</span> (codigo_curso),
+  <span class="k">CONSTRAINT</span> ck_curso_duracion
+    <span class="k">CHECK</span> (duracion &gt; 0)
+);
+
+<span class="k">ALTER TABLE</span> Curso <span class="k">DROP COLUMN</span> duracion;
+<span class="k">ALTER TABLE</span> Curso <span class="k">ADD COLUMN</span>
+  saldo decimal(18,4) <span class="k">NOT NULL DEFAULT</span> 0.0;</pre>
+  </div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. ¿Qué pasa si ponés <code>PRIMARY KEY (cod_curso, cod_cat)</code> junto a una columna? 2. ¿Para qué sirve CHECK?</p></div>
+</section>
+
+<!-- ============ 4 · SP Y TRIGGERS ============ -->
+<section class="slide" data-title="4 · SP y triggers">
+  <p class="kicker">4 · Stored procedures y triggers</p>
+  <h2 class="h2">El SP se llama a mano; el trigger se dispara solo</h2>
+  <div class="two" style="grid-template-columns:1fr 1.1fr;gap:40px">
+    <ul class="bul">
+      <li><b>Stored procedure:</b> instrucciones guardadas para un proceso (ej. un paso del ETL). Se ejecuta con <code>CALL</code> y recibe parámetros <code>IN</code>/<code>OUT</code>.</li>
+      <li><b>Trigger:</b> se ejecuta solo ante un <code>INSERT</code>, <code>UPDATE</code> o <code>DELETE</code>. Ve las filas con <code>NEW</code> y <code>OLD</code>.</li>
+      <li><span class="fix">Corregido</span>Puede ser <code>FOR EACH ROW</code> (una vez por fila) o <code>FOR EACH STATEMENT</code> (una vez por sentencia).</li>
+      <li><b>INSTEAD OF:</b> reemplaza la operación; se usa para hacer actualizable una vista.</li>
+    </ul>
+    <div>
+      <pre class="code sm"><span class="k">-- SP (sintaxis Teradata, del deck)</span>
+<span class="k">CALL</span> Desa_ETL_ADMIN.GET_LOAD_ID('Paquete_A', :Load_id);
+
+<span class="k">-- Trigger</span>
+<span class="k">CREATE TRIGGER</span> SueldoTotal1
+<span class="k">AFTER INSERT ON</span> EMPLEADO
+<span class="k">FOR EACH ROW WHEN</span> (<span class="k">NEW</span>.Dno <span class="k">IS NOT NULL</span>)
+<span class="k">BEGIN</span>
+  <span class="k">UPDATE</span> DEPARTAMENTO
+  <span class="k">SET</span>    SueldoTotal = SueldoTotal + <span class="k">NEW</span>.Sueldo
+  <span class="k">WHERE</span>  Dno = <span class="k">NEW</span>.Dno;
+<span class="k">END</span>;</pre>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Corregido</span><p>El PDF omitía <b>BEGIN … END</b>: así no compila. SQLite no tiene stored procedures, por eso el CALL no se puede probar ahí.</p></div>
+</section>
+
+<!-- ============ 5 · DW ============ -->
+<section class="slide" data-title="5 · Data Warehouse">
+  <p class="kicker">5 · Data Warehouse</p>
+  <h2 class="h2">Inmon arranca por el DW; Kimball, por los data marts</h2>
+  <div class="two" style="grid-template-columns:1fr 1fr;gap:40px">
+    <ul class="bul">
+      <li><b>Definición (Inmon):</b> datos orientados a temas, integrados, históricos (variantes en el tiempo) y no volátiles.</li>
+      <li><b>Inmon, top-down:</b> un DW central normalizado (3FN), y de él salen los data marts.</li>
+      <li><span class="fix">Corregido</span><b>Kimball, bottom-up:</b> data marts en estrella, uno por área. Juntos forman el DW.</li>
+      <li><b>DW vs. data mart:</b> el DW es corporativo; el data mart es de un área (ej. ventas) y suele estar desnormalizado y resumido.</li>
+      <li><b>OLTP vs. OLAP:</b> OLTP opera el día a día (CRM, ventas). OLAP analiza la historia (DW).</li>
+    </ul>
+    <svg class="dg" viewBox="0 0 760 360" role="img" aria-labelledby="ik-t ik-d">
+      <title id="ik-t">Inmon contra Kimball</title>
+      <desc id="ik-d">Inmon: fuentes, ETL, DW normalizado, data marts. Kimball: fuentes, ETL, data marts en estrella que juntos son el DW.</desc>
+      <text x="0" y="30" style="font:700 24px var(--font-display);fill:var(--text-1)">Inmon · top-down</text>
+      <g style="font:20px var(--font-body);fill:var(--text-1)">
+        <rect x="0" y="50" width="140" height="70" rx="10" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="70" y="91" text-anchor="middle">Fuentes</text>
+        <rect x="190" y="50" width="140" height="70" rx="10" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="260" y="91" text-anchor="middle">ETL</text>
+        <rect x="380" y="50" width="160" height="70" rx="10" style="fill:var(--accent-tint);stroke:var(--accent);stroke-width:2.5"/><text x="460" y="82" text-anchor="middle">DW</text><text x="460" y="106" text-anchor="middle" style="font-size:16px;fill:var(--text-2)">normalizado</text>
+        <rect x="590" y="50" width="160" height="70" rx="10" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="670" y="91" text-anchor="middle">Data marts</text>
+      </g>
+      <text x="0" y="210" style="font:700 24px var(--font-display);fill:var(--text-1)">Kimball · bottom-up</text>
+      <g style="font:20px var(--font-body);fill:var(--text-1)">
+        <rect x="0" y="230" width="140" height="70" rx="10" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="70" y="271" text-anchor="middle">Fuentes</text>
+        <rect x="190" y="230" width="140" height="70" rx="10" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="260" y="271" text-anchor="middle">ETL</text>
+        <rect x="380" y="230" width="370" height="110" rx="10" style="fill:var(--accent-tint);stroke:var(--accent);stroke-width:2.5"/>
+        <text x="565" y="258" text-anchor="middle" style="font-size:16px;fill:var(--text-2)">DW = la suma de los data marts</text>
+        <rect x="395" y="272" width="105" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="447" y="304" text-anchor="middle" style="font-size:17px">Ventas</text>
+        <rect x="512" y="272" width="105" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="564" y="304" text-anchor="middle" style="font-size:17px">Compras</text>
+        <rect x="629" y="272" width="105" height="52" rx="8" style="fill:var(--surface-2);stroke:var(--border-strong)"/><text x="681" y="304" text-anchor="middle" style="font-size:17px">RR.HH.</text>
+      </g>
+      <g class="ln" style="stroke:var(--text-3);stroke-width:2">
+        <line x1="142" y1="85" x2="186" y2="85" marker-end="url(#ar)"/><line x1="332" y1="85" x2="376" y2="85" marker-end="url(#ar)"/><line x1="542" y1="85" x2="586" y2="85" marker-end="url(#ar)"/>
+        <line x1="142" y1="265" x2="186" y2="265" marker-end="url(#ar)"/><line x1="332" y1="265" x2="376" y2="265" marker-end="url(#ar)"/>
+      </g>
+      <defs><marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" style="fill:var(--text-3)"/></marker></defs>
+    </svg>
+  </div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. Un gerente quiere datos resumidos sólo de su área: ¿qué consulta? 2. ¿Qué modelo usa Kimball?</p></div>
+</section>
+
+<!-- ============ 5b · ESTRELLA ============ -->
+<section class="slide" data-title="5 · Estrella y copo de nieve">
+  <p class="kicker">5 · Data Warehouse</p>
+  <h2 class="h2">Estrella y copo de nieve</h2>
+  <div class="two" style="gap:40px">
+    <div class="card card-accent"><div class="src">Estrella · desnormalizada</div>
+  <svg class="dg" viewBox="0 0 760 340" role="img" aria-labelledby="bp-star-t bp-star-d">
+    <title id="bp-star-t">Esquema en estrella</title>
+    <desc id="bp-star-d">La tabla de hechos en el centro, unida directamente a cuatro dimensiones: Sucursal, Producto, Fecha y Cliente.</desc>
+    <line x1="380" y1="100" x2="380" y2="148" class="ln"/>
+    <line x1="380" y1="212" x2="380" y2="260" class="ln"/>
+    <line x1="280" y1="180" x2="316" y2="180" class="ln"/>
+    <line x1="444" y1="180" x2="480" y2="180" class="ln"/>
+    <rect x="316" y="148" width="128" height="64" rx="8" class="foc"/>
+    <text x="380" y="188" class="nm-s" text-anchor="middle">Hechos</text>
+    <rect x="160" y="148" width="120" height="64" rx="8" class="box"/>
+    <text x="220" y="188" class="nm-s" text-anchor="middle">Sucursal</text>
+    <rect x="480" y="148" width="120" height="64" rx="8" class="box"/>
+    <text x="540" y="188" class="nm-s" text-anchor="middle">Producto</text>
+    <rect x="316" y="36" width="128" height="64" rx="8" class="box"/>
+    <text x="380" y="76" class="nm-s" text-anchor="middle">Fecha</text>
+    <rect x="316" y="260" width="128" height="64" rx="8" class="box"/>
+    <text x="380" y="300" class="nm-s" text-anchor="middle">Cliente</text>
+  </svg>
+      <p>Dimensiones con PK simple, sin partir. Menos JOINs, más redundancia.</p></div>
+    <div class="card card-accent"><div class="src">Copo de nieve · normalizada</div>
+  <svg class="dg" viewBox="0 0 760 340" role="img" aria-labelledby="bp-snow-t bp-snow-d">
+    <title id="bp-snow-t">Esquema copo de nieve</title>
+    <desc id="bp-snow-d">La misma estrella, pero Sucursal se normaliza y se une a País, y Producto se une a Categoría. Hay más tablas y más uniones.</desc>
+    <line x1="380" y1="100" x2="380" y2="148" class="ln"/>
+    <line x1="380" y1="212" x2="380" y2="260" class="ln"/>
+    <line x1="280" y1="180" x2="316" y2="180" class="ln"/>
+    <line x1="444" y1="180" x2="480" y2="180" class="ln"/>
+    <line x1="128" y1="180" x2="160" y2="180" class="lnD"/>
+    <line x1="600" y1="180" x2="632" y2="180" class="lnD"/>
+    <rect x="316" y="148" width="128" height="64" rx="8" class="foc"/>
+    <text x="380" y="188" class="nm-s" text-anchor="middle">Hechos</text>
+    <rect x="160" y="148" width="120" height="64" rx="8" class="box"/>
+    <text x="220" y="188" class="nm-s" text-anchor="middle">Sucursal</text>
+    <rect x="480" y="148" width="120" height="64" rx="8" class="box"/>
+    <text x="540" y="188" class="nm-s" text-anchor="middle">Producto</text>
+    <rect x="316" y="36" width="128" height="64" rx="8" class="box"/>
+    <text x="380" y="76" class="nm-s" text-anchor="middle">Fecha</text>
+    <rect x="316" y="260" width="128" height="64" rx="8" class="box"/>
+    <text x="380" y="300" class="nm-s" text-anchor="middle">Cliente</text>
+    <rect x="8" y="148" width="120" height="64" rx="8" class="soft"/>
+    <text x="68" y="188" class="nm-s" text-anchor="middle">País</text>
+    <rect x="632" y="148" width="120" height="64" rx="8" class="soft"/>
+    <text x="692" y="188" class="nm-s" text-anchor="middle">Categoría</text>
+  </svg>
+      <p>Dimensiones partidas en subtablas por FK. Menos espacio, más JOINs.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">Para el choice</span><p>Según el deck de la cátedra, la PK de la tabla de hechos es <b>compuesta</b> por las claves de las dimensiones. En la práctica a veces alcanza con una parte de ellas, pero en el parcial respondé lo del deck.</p></div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. ¿Qué clave tiene la tabla de hechos en una estrella? 2. Si parto “Sucursal” en Sucursal y País, ¿qué esquema queda?</p></div>
+</section>
+
+<!-- ============ 6 · TRANSACCIONES ============ -->
+<section class="slide" data-title="6 · Transacciones">
+  <p class="kicker">6 · Transacciones y concurrencia</p>
+  <h2 class="h2">Todo o nada, y lo que pasa cuando dos se cruzan</h2>
+  <div class="two" style="grid-template-columns:1fr 1fr;gap:40px">
+    <ul class="bul">
+      <li><b>Atomicidad:</b> se ejecuta toda o nada.</li>
+      <li><b>Estados:</b> activa → parcialmente confirmada → confirmada (COMMIT). Si algo falla: fallida → abortada (ROLLBACK).</li>
+      <li><b>Parcialmente confirmada</b> no es segura: terminó su última sentencia, pero si falla antes de grabar el log, se aborta.</li>
+      <li><b>Actualización perdida:</b> T1 y T2 leen X; T2 escribe encima de lo que escribió T1.</li>
+      <li><b>Lectura sucia:</b> T2 lee un dato que T1 cambió y todavía no confirmó.</li>
+    </ul>
+    <svg class="dg" viewBox="0 0 844 372" role="img" aria-labelledby="bp-tx-t bp-tx-d" style="align-self:start">
+    <title id="bp-tx-t">Lectura sucia entre dos transacciones</title>
+    <desc id="bp-tx-d">Dos carriles en el tiempo. T1 hace un UPDATE de Saldo a 500. T2 lee ese 500 antes de que T1 confirme. Después T1 falla y hace ROLLBACK, y T2 sigue con un 500 que ya no existe.</desc>
+    <defs>
+      <marker id="bp-tx-ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" style="fill:var(--accent)"/></marker>
+      <marker id="bp-tx-arB" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" style="fill:var(--bad)"/></marker>
+      <marker id="bp-tx-arT" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" style="fill:var(--text-3)"/></marker>
+    </defs>
+    <rect x="60" y="24" width="784" height="108" rx="8" class="zone"/>
+    <rect x="60" y="188" width="784" height="108" rx="8" class="zone"/>
+    <text x="8" y="88" class="nm">T1</text>
+    <text x="8" y="252" class="nm">T2</text>
+    <path d="M240 116V152Q240 160 248 160H312Q320 160 320 168V203" class="lnA" marker-end="url(#bp-tx-ar)"/>
+    <path d="M600 116V152Q600 160 608 160H700Q708 160 708 168V203" class="lnBad" marker-end="url(#bp-tx-arB)"/>
+    <rect x="84" y="40" width="176" height="76" rx="8" class="box"/>
+    <text x="172" y="72" class="nm-s" text-anchor="middle" style="font-size:22px">1 · UPDATE</text>
+    <text x="172" y="98" class="sb" text-anchor="middle">Saldo = 500</text>
+    <rect x="276" y="204" width="176" height="76" rx="8" class="box"/>
+    <text x="364" y="236" class="nm-s" text-anchor="middle" style="font-size:22px">2 · SELECT</text>
+    <text x="364" y="262" class="sb" text-anchor="middle">lee 500</text>
+    <rect x="468" y="40" width="176" height="76" rx="8" class="foc"/>
+    <text x="556" y="72" class="nm-s" text-anchor="middle" style="font-size:22px">3 · ROLLBACK</text>
+    <text x="556" y="98" class="sb" text-anchor="middle">falla la red</text>
+    <rect x="660" y="204" width="176" height="76" rx="8" class="bad"/>
+    <text x="748" y="236" class="nm-s" text-anchor="middle" style="font-size:22px">4 · sigue</text>
+    <text x="748" y="262" class="sb" text-anchor="middle">con ese 500</text>
+    <text x="336" y="182" class="lb" style="fill:var(--accent)">sin COMMIT</text>
+    <text x="692" y="182" class="lbBad" text-anchor="end">ya no existe</text>
+    <line x1="84" y1="334" x2="836" y2="334" class="ln" style="stroke:var(--text-3)" marker-end="url(#bp-tx-arT)"/>
+    <text x="836" y="362" class="lb" text-anchor="end">TIEMPO</text>
+  </svg>
+  </div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. Si la red cae antes del COMMIT, ¿en qué estado estaba y qué hace el motor? 2. ¿Cómo se llama leer un dato que T1 después abortó?</p></div>
+</section>
+
+<!-- ============ 7 · SEGURIDAD ============ -->
+<section class="slide" data-title="7 · Seguridad">
+  <p class="kicker">7 · Seguridad, roles y privilegios</p>
+  <h2 class="h2">GRANT da, REVOKE quita, y los roles agrupan</h2>
+  <div class="two" style="grid-template-columns:1fr 1.05fr;gap:40px">
+    <ul class="bul">
+      <li><b>Control discrecional:</b> el dueño del objeto decide quién accede, con GRANT y REVOKE. El DBA administra cuentas y roles.</li>
+      <li><b>Rol:</b> un grupo de privilegios. Se le dan permisos al rol y el rol a los usuarios, en vez de uno por uno.</li>
+      <li><b>WITH GRANT OPTION:</b> el que recibe el permiso puede pasarlo a otros. Sin esa cláusula, no puede.</li>
+      <li><b>Vistas:</b> para ocultar columnas o filas, se da acceso a una vista y no a la tabla.</li>
+    </ul>
+    <pre class="code sm"><span class="k">-- Lectura a un usuario</span>
+<span class="k">GRANT SELECT ON</span> esquema.tabla <span class="k">TO</span> Usuario1;
+
+<span class="k">-- Lectura, y puede pasarla</span>
+<span class="k">GRANT SELECT ON</span> esquema.tabla <span class="k">TO</span> Usuario2
+<span class="k">WITH GRANT OPTION</span>;
+
+<span class="k">-- Quitar la modificación a un rol</span>
+<span class="k">REVOKE UPDATE ON</span> tabla_ventas <span class="k">FROM</span> Rol_A;</pre>
+  </div>
+  <div class="crio"><span class="lbl">Repaso</span><p>1. Si le doy GRANT SELECT a Pedro, ¿puede dárselo a Juan? 2. ¿Qué objeto se usa para ocultar columnas?</p></div>
+</section>
+
+<!-- ============ RESPUESTAS ============ -->
+<section class="slide" data-title="Respuestas del repaso">
+  <p class="kicker">Repaso</p>
+  <h2 class="h2">Respuestas · tocá cada pregunta para verla</h2>
+  <div class="two qa" style="gap:36px">
+    <div>
+      <details><summary>1a · Estado al 31/12/2021</summary><p>Vista histórica, con <code>WHERE '2021-12-31' BETWEEN Fecha_Inicio_vigencia AND Fecha_fin_Vigencia</code>.</p></details>
+      <details><summary>1b · PK sólo con cliente_id</summary><p>Al insertar la segunda foto del mismo cliente da error de clave duplicada.</p></details>
+      <details><summary>1c · Fecha fin de la foto anterior</summary><p>2026-05-24: la fecha inicio de la actual menos un día.</p></details>
+      <details><summary>1d · Cierre del CASE</summary><p><code>END</code>.</p></details>
+      <details><summary>2a · INTERSECT con JOIN</summary><p>Con <code>INNER JOIN</code> por la clave.</p></details>
+      <details><summary>2b · A={1,2}, B={1,2,3}: A EXCEPT B</summary><p>Vacío: todo lo de A está en B.</p></details>
+      <details><summary>3a · PK compuesta junto a la columna</summary><p>Error de sintaxis: la PK compuesta va a nivel de tabla.</p></details>
+      <details><summary>3b · Para qué sirve CHECK</summary><p>Limita los valores que acepta una columna (ej. <code>duracion &gt; 0</code>).</p></details>
+    </div>
+    <div>
+      <details><summary>4a · Trigger para hacer actualizable una vista</summary><p><code>INSTEAD OF</code>.</p></details>
+      <details><summary>4b · Cuál recibe parámetros</summary><p>El stored procedure.</p></details>
+      <details><summary>5a · Datos resumidos de un área</summary><p>Un data mart.</p></details>
+      <details><summary>5b · Modelo de Kimball</summary><p>El dimensional: esquema en estrella.</p></details>
+      <details><summary>5c · PK de la tabla de hechos</summary><p>Compuesta por las claves de las dimensiones.</p></details>
+      <details><summary>5d · Sucursal partida en Sucursal y País</summary><p>Copo de nieve.</p></details>
+      <details><summary>6a · Cae la red antes del COMMIT <span class="fix">Corregido</span></summary><p>Activa, o parcialmente confirmada si ya terminó su última sentencia. En los dos casos pasa a fallida y el motor la aborta, deshaciendo los cambios con el log.</p></details>
+      <details><summary>6b · Leer un dato que después se abortó</summary><p>Lectura sucia.</p></details>
+      <details><summary>7a · ¿Pedro se lo puede dar a Juan?</summary><p>No, salvo que se lo hayan dado <code>WITH GRANT OPTION</code>.</p></details>
+      <details><summary>7b · Ocultar columnas</summary><p>Una vista.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUÉ FALTA ============ -->
+<section class="slide" data-title="Lo que el PDF no cubre">
+  <p class="kicker">Para cerrar</p>
+  <h2 class="h2">El PDF no cubre todo el parcial</h2>
+  <p class="lede" style="font-size:28px;max-width:none">NotebookLM cierra con “cubriste el 100%”. No es así: faltan temas que estuvieron en los parciales reales.</p>
+  <table class="t head" style="font-size:24px;margin-top:10px">
+    <thead><tr><th>Tema</th><th style="width:38%">Dónde repasarlo</th></tr></thead>
+    <tbody>
+      <tr><td>Vistas: crear la actual y la histórica, con campos en castellano</td><td>deck 4 · lecciones 0039 y 0052</td></tr>
+      <tr><td>GROUP BY, HAVING, EXISTS y subconsultas</td><td>deck 3 · lecciones 0035 y 0036</td></tr>
+      <tr><td>La anteúltima foto (cuando no hay una foto vigente)</td><td>lección 0052, sección 07</td></tr>
+      <tr><td>Índices: agrupado, principal y secundario</td><td>deck 2 · lección 0028</td></tr>
+      <tr><td>Componentes de un DW (metadata, ODS, staging), para graficar</td><td>deck 1 · lección 0050</td></tr>
+      <tr><td>Práctica con un modelo de parcial completo</td><td>deck 6 (simulacro)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="deck-footer"><span class="dim2">Blueprint del 2do parcial</span><span class="slide-number" data-current="1" data-total="13"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

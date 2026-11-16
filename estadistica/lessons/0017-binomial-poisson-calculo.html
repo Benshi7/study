@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 17 — Binomial y Poisson: el cálculo</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Binomial y Poisson · Lección mecánica</span>
+<h1>Binomial y Poisson: el cálculo</h1>
+<p class="subtitle">Traducir ‘al menos’, ‘más de’, ‘entre’ a una función de la calculadora, escalar la tasa de Poisson y calcular E y σ. Ejemplos del TP3.</p>
+
+
+<h2>El problema</h2>
+<p>Ya sabes <em>elegir</em> el modelo (lecciones 6 y 14). Falta lo que más puntos da: <strong>calcular la probabilidad correcta</strong>. En la Binomial y la Poisson la variable es discreta, así que “<em>menor que</em>” y “<em>menor o igual</em>” no son lo mismo (a diferencia de la Normal). La mayoría de los errores está en traducir el enunciado a una desigualdad y a la función correcta de la calculadora.</p>
+
+<h2>Las fórmulas de la cátedra</h2>
+<div class="tw"><table>
+<tr><th></th><th>Binomial  X ~ Bi(n; p)</th><th>Poisson  X ~ P(λ)</th></tr>
+<tr><td>Cuándo</td><td>n ensayos independientes, éxito/fracaso, p constante</td><td>Sucesos en un continuo (tiempo, área, longitud), tasa constante</td></tr>
+<tr><td>P(X = r)</td><td><span class="formula">nCr · pʳ · qⁿ⁻ʳ</span></td><td><span class="formula">e⁻λ · λʳ / r!</span></td></tr>
+<tr><td>Parámetros</td><td>n, p ; q = 1 − p</td><td>λ = b · t</td></tr>
+<tr><td>Esperanza</td><td><span class="formula">E(X) = n·p</span></td><td><span class="formula">E(X) = λ</span></td></tr>
+<tr><td>Varianza</td><td><span class="formula">Var(X) = n·p·q</span></td><td><span class="formula">Var(X) = λ</span></td></tr>
+<tr><td>Desvío</td><td><span class="formula">σ = √(n·p·q)</span></td><td><span class="formula">σ = √λ</span></td></tr>
+</table></div>
+
+<h2>Traducir el enunciado: la tabla maestra</h2>
+<p>La calculadora entrega <strong>PD</strong> = P(X = k) y <strong>CD</strong> = P(X ≤ k) (acumulada hasta k inclusive). Todo lo demás se arma con complementos:</p>
+<div class="tw"><table>
+<tr><th>El enunciado dice…</th><th>Se escribe</th><th>Con la calculadora</th></tr>
+<tr><td>“exactamente k”</td><td><span class="formula">P(X = k)</span></td><td>PD(k)</td></tr>
+<tr><td>“como máximo k”, “a lo sumo k”</td><td><span class="formula">P(X ≤ k)</span></td><td>CD(k)</td></tr>
+<tr><td>“menos de k”</td><td><span class="formula">P(X &lt; k) = P(X ≤ k − 1)</span></td><td>CD(k − 1)</td></tr>
+<tr><td>“al menos k”, “como mínimo k”, “por lo menos k”</td><td><span class="formula">P(X ≥ k)</span></td><td>1 − CD(k − 1)</td></tr>
+<tr><td>“más de k”</td><td><span class="formula">P(X &gt; k) = P(X ≥ k + 1)</span></td><td>1 − CD(k)</td></tr>
+<tr><td>“entre a y b” (inclusive)</td><td><span class="formula">P(a ≤ X ≤ b)</span></td><td>CD(b) − CD(a − 1)</td></tr>
+<tr><td>“alguno”, “al menos uno”</td><td><span class="formula">P(X ≥ 1)</span></td><td>1 − PD(0)</td></tr>
+<tr><td>“ninguno”</td><td><span class="formula">P(X = 0)</span></td><td>PD(0)</td></tr>
+<tr><td>“más de la mitad” con n = 9</td><td><span class="formula">P(X &gt; 4,5) = P(X ≥ 5)</span></td><td>1 − CD(4)</td></tr>
+<tr><td>“menos de la tercera parte” con n = 20</td><td><span class="formula">P(X &lt; 6,67) = P(X ≤ 6)</span></td><td>CD(6)</td></tr>
+</table></div>
+<p>Si la pregunta habla de lo contrario del éxito (“<em>no</em> compran”, “<em>no</em> son válidas”), redefine la variable con el p del complemento: Y ~ Bi(n; 1 − p).</p>
+
+<h2>Poisson: llevar la tasa a la ventana que piden</h2>
+<p><span class="formula">λ = b · t</span>: la tasa <strong>por unidad</strong> multiplicada por la <strong>cantidad de unidades</strong> de la ventana (misma unidad de tiempo). “1 cada 2,5 h” no es 2,5: es 1/2,5 = 0,4 por hora.</p>
+<div class="tw"><table>
+<tr><th>Enunciado</th><th>Tasa por unidad (b)</th><th>λ = b · t</th></tr>
+<tr><td>1 jugador cada 2,5 h; ventana 6 h</td><td>b = 1/2,5 = 0,4 por hora</td><td>0,4 · 6 = 2,4</td></tr>
+<tr><td>3 personas cada 5 min; ventana 15 min</td><td>b = 3/5 = 0,6 por minuto</td><td>0,6 · 15 = 9</td></tr>
+<tr><td>3 personas cada 5 min; ventana 30 min</td><td>b = 0,6 por minuto</td><td>0,6 · 30 = 18</td></tr>
+<tr><td>3 personas cada 5 min; ventana 3 min</td><td>b = 0,6 por minuto</td><td>0,6 · 3 = 1,8</td></tr>
+<tr><td>1 boleto cada 6 s; ventana 15 s</td><td>b = 1/6 por segundo</td><td>15/6 = 2,5</td></tr>
+<tr><td>15 autos por minuto; ventana 30 s</td><td>b = 15 por minuto</td><td>15 · 0,5 = 7,5</td></tr>
+<tr><td>1 paciente cada 15 min; ventana 1 h</td><td>b = 1/15 por minuto</td><td>60/15 = 4</td></tr>
+<tr><td>10 personas por hora; ventana 3 h</td><td>b = 10 por hora</td><td>10 · 3 = 30</td></tr>
+</table></div>
+
+
+<h2>Ejemplo resuelto 1 — TP3, ejercicio 6 (encuesta de mercado, Binomial)</h2>
+<div class="example">
+<strong>Datos:</strong> la aceptación de productos similares es del 60 %; se toma una muestra de 20 personas. X = cantidad que compra ~ Bi(20; 0,6).
+<ol>
+<li><strong>(a) Exactamente 10 compran.</strong> <span class="formula">P(X=10) = C(20,10) · 0,6¹⁰ · 0,4¹⁰ = 184756 · 0,0060466 · 0,000104858 = 0,11714</span></li>
+<li><strong>(b) A lo sumo 12.</strong> <span class="formula">P(X ≤ 12) = CD(12)</span> (sumar PD(0) hasta PD(12) a mano son 13 términos; para eso existe CD): <strong>0,58411</strong>.</li>
+<li><strong>(c) Más de 9 <em>no</em> compran.</strong> Redefine: Y = no compran ~ Bi(20; <strong>0,4</strong>). <span class="formula">P(Y > 9) = P(Y ≥ 10) = 1 − CD(9)</span> = 1 − 0,75534 = <strong>0,24466</strong>.</li>
+<li><strong>(d) ¿Cuántos no compran, en promedio?</strong> <span class="formula">E(Y) = n·p = 20 · 0,4 = 8</span> personas.</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 2 — TP3, ejercicio 8 (bingo, Poisson con “1 cada 2,5 horas”)</h2>
+<div class="example">
+<strong>Datos:</strong> sale el premio mayor en promedio una vez cada 2,5 horas. ¿Probabilidad de que salga <em>por lo menos 3 veces</em> en 6 horas?
+<ol>
+<li><strong>Modelo:</strong> eventos en un continuo (tiempo) ⇒ Poisson. Tasa b = 1/2,5 = 0,4 por hora ⇒ <span class="formula">λ = 0,4 · 6 = 2,4</span>.</li>
+<li><strong>Traducción:</strong> <span class="formula">P(X ≥ 3) = 1 − P(X ≤ 2) = 1 − [P(0) + P(1) + P(2)]</span> (el complemento tiene 3 términos; el directo tendría infinitos).</li>
+<li><span class="formula">P(0) = e⁻²·⁴ = 0,09072</span></li>
+<li><span class="formula">P(1) = e⁻²·⁴ · 2,4 = 0,21772</span></li>
+<li><span class="formula">P(2) = e⁻²·⁴ · 2,4² / 2 = 0,26127</span></li>
+<li><span class="formula">P(X ≥ 3) = 1 − 0,56971 = 0,43029</span>. Es decir, 43 %.</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 3 — TP3, ejercicio 12 (vendedor puerta a puerta, “entre” y “alguno”)</h2>
+<div class="example">
+<strong>Datos:</strong> p = 0,15 de vender en cada casa; ofrece en 18 casas. X ~ Bi(18; 0,15).
+<ol>
+<li><strong>(a) Por lo menos una venta:</strong> <span class="formula">P(X ≥ 1) = 1 − P(0) = 1 − 0,85¹⁸ = 1 − 0,05365 = 0,94635</span></li>
+<li><strong>(b) Entre 4 y 8 ventas (inclusive):</strong> <span class="formula">P(4 ≤ X ≤ 8) = CD(8) − CD(3) = 0,99949 − 0,72024 = 0,27925</span>. Se resta CD(<strong>3</strong>), no CD(4), para que el 4 quede adentro.</li>
+<li><strong>(c) Asimetría:</strong> p = 0,15 &lt; 0,5 ⇒ la masa se amontona a la izquierda, cola derecha larga ⇒ <strong>asimétrica positiva</strong>. (p &gt; 0,5 ⇒ negativa; p = 0,5 ⇒ simétrica.)</li>
+</ol>
+</div>
+
+
+<div class="calc">
+<strong>Binomial y Poisson</strong>
+<ol>
+<li><span class="key">MENU</span> <span class="key">7</span> (Distribution). Tipos: Binomial PD <span class="key">4</span> · Binomial CD <span class="key">▼</span> <span class="key">1</span> · Poisson PD <span class="key">▼</span> <span class="key">2</span> · Poisson CD <span class="key">▼</span> <span class="key">3</span> (confirma el nombre en pantalla).</li>
+<li>Método <span class="key">2</span> (<em>Variable</em>: un solo x).</li>
+<li><strong>Binomial:</strong> campos <span class="formula">x</span>, <span class="formula">N</span>, <span class="formula">p</span>. <strong>Poisson:</strong> campos <span class="formula">x</span>, <span class="formula">λ</span>. Escribe cada valor con <span class="key">=</span>; un <span class="key">=</span> final calcula.</li>
+</ol>
+<p><strong>Ejemplo (a):</strong> Binomial PD con x = 10, N = 20, p = 0,6 ⇒ <span class="out">p = 0,117142</span> = P(X = 10).<br>
+<strong>Ejemplo (b):</strong> Binomial CD con x = 12, N = 20, p = 0,6 ⇒ <span class="out">p = 0,584107</span> = P(X ≤ 12).<br>
+<strong>Ejemplo (c):</strong> Binomial CD con x = 9, N = 20, p = 0,4 ⇒ 0,755337; luego <span class="key">1</span> <span class="key">−</span> <span class="key">Ans</span> <span class="key">=</span> ⇒ <span class="out">0,244663</span> = P(Y ≥ 10).<br>
+<strong>Bingo:</strong> Poisson CD con x = 2, λ = 2,4 ⇒ 0,569709; <span class="key">1</span> <span class="key">−</span> <span class="key">Ans</span> ⇒ <span class="out">0,430291</span>.</p>
+<p><strong>Qué significa:</strong> PD = probabilidad de ese valor exacto; CD = probabilidad acumulada <em>hasta k inclusive</em> (control: CD con x = N da 1). Los campos <strong>recuerdan</strong> el cálculo anterior: reescribe siempre N y p (o λ). El modo <em>List</em> muestra solo 4 decimales y truncados: para respuestas precisas usa <em>Variable</em>.</p>
+<p>nCr, por si haces la fórmula: <span class="key">20</span> <span class="key">SHIFT</span> <span class="key">÷</span> <span class="key">10</span> <span class="key">=</span> ⇒ 184756.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>“Al menos k” = 1 − CD(k − 1)</strong>, no 1 − CD(k). Con CD(k) estarías calculando “más de k”: te pierdes el valor k.</li>
+<li><strong>“Menos de k” = CD(k − 1)</strong>, no CD(k): CD incluye el k.</li>
+<li><strong>“Entre a y b”</strong> inclusive: CD(b) − CD(<strong>a − 1</strong>).</li>
+<li><strong>No escalar λ:</strong> si la tasa es “15 por minuto” y piden 30 segundos, λ = 7,5. Usar λ = 15 es el distractor típico.</li>
+<li><strong>“1 cada X” no es λ = X:</strong> es b = 1/X por unidad. Bingo: λ = 2,4, no 15.</li>
+<li><strong>σ de Poisson = √λ</strong> (no λ). Si λ = 9, σ = 3.</li>
+<li><strong>“No compran” con p = 0,6:</strong> si la pregunta es sobre los que NO compran, la variable cambia (p = 0,4).</li>
+<li><strong>Fracciones de n:</strong> “más de la mitad de 9” es X &gt; 4,5, o sea X ≥ 5.</li>
+</ul>
+</div>
+
+<h2>Practica: traduce antes de calcular</h2>
+<div class="quiz" data-quiz>
+<p class="q">1. X ~ Bi(10; 0,3). Para calcular P(X ≥ 4) con la calculadora, ¿qué haces?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. CD(4) = 0,8497</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. CD(3) = 0,6496</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. 1 − CD(4) = 0,1503</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. PD(4) = 0,2001</span></label>
+<label><input type="radio" name="q1" value="e"><span class="opt">e. 1 − CD(3) = 0,3504</span></label>
+<div class="feedback wrong" data-for="a">CD(4) es P(X ≤ 4), el lado contrario (valores chicos). Pides los valores grandes, desde 4 hacia arriba.</div>
+<div class="feedback wrong" data-for="b">CD(3) = P(X ≤ 3): es justo el complemento. Falta restarlo de 1.</div>
+<div class="feedback wrong" data-for="c">Eso es P(X ≥ 5) = P(X &gt; 4): te saltaste el 4. Para ‘al menos 4’ el complemento es CD(3), no CD(4).</div>
+<div class="feedback wrong" data-for="d">PD(4) es P(X = 4), solo ese valor. ‘Al menos 4’ incluye 4, 5, 6… hasta 10.</div>
+<div class="feedback correct" data-for="e">‘Al menos 4’ deja afuera 0, 1, 2 y 3: P(X ≥ 4) = 1 − P(X ≤ 3) = 1 − CD(3).</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">2. En una caja llegan en promedio 3 clientes cada 5 minutos. ¿Cuál es la probabilidad de que NO llegue ninguno en los próximos 3 minutos?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. e<sup>−3</sup> = 0,0498</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. e<sup>−0,6</sup> = 0,5488</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. e<sup>−1,8</sup> = 0,1653</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. 1 − e<sup>−1,8</sup> = 0,8347</span></label>
+<label><input type="radio" name="q2" value="e"><span class="opt">e. e<sup>−9</sup> = 0,0001</span></label>
+<div class="feedback wrong" data-for="a">Usaste λ = 3 (la tasa del enunciado) sin llevarla a la ventana de 3 minutos. Siempre λ = tasa por unidad × tamaño de la ventana.</div>
+<div class="feedback wrong" data-for="b">λ = 0,6 es la tasa por minuto. Faltó multiplicar por los 3 minutos de la ventana.</div>
+<div class="feedback correct" data-for="c">b = 3/5 = 0,6 por minuto; en 3 minutos λ = 0,6·3 = 1,8; P(X = 0) = e<sup>−1,8</sup> = 0,1653.</div>
+<div class="feedback wrong" data-for="d">Eso es P(X ≥ 1), al menos uno: el complemento de lo que se pide.</div>
+<div class="feedback wrong" data-for="e">λ = 9 corresponde a una ventana de 15 minutos. Aquí la ventana es de 3 minutos.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">3. Un banco tiene 9 cheques rechazados y cada uno es irrecuperable con p = 0,2. ¿Cómo se escribe ‘más de la mitad son irrecuperables’ y cuánto da?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. P(X ≥ 4) = 1 − CD(3) = 0,08564</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. P(X ≥ 5) = 1 − CD(4) = 0,01958</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. P(X &gt; 5) = 1 − CD(5) = 0,00307</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. P(X ≤ 4) = CD(4) = 0,98042</span></label>
+<label><input type="radio" name="q3" value="e"><span class="opt">e. P(X = 4,5): no se puede calcular</span></label>
+<div class="feedback wrong" data-for="a">4 no es más de 4,5: pasaste el límite. X ≥ 4 incluye casos que no son ‘más de la mitad’.</div>
+<div class="feedback correct" data-for="b">Más de la mitad de 9 es X &gt; 4,5; como X es entera, X ≥ 5, y 1 − CD(4) = 0,01958.</div>
+<div class="feedback wrong" data-for="c">‘Más de 4,5’ ya empieza en 5. Con X &gt; 5 te perdés el 5.</div>
+<div class="feedback wrong" data-for="d">Eso es ‘menos de la mitad’ (hasta 4). Es el complemento de lo pedido.</div>
+<div class="feedback wrong" data-for="e">Hay que redondear a enteros hacia el lado correcto (X ≥ 5). Una variable discreta no toma el valor 4,5, pero el enunciado sí se puede traducir.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">4. Vendedor con p = 0,15 en 18 casas. ¿Cómo se calcula la probabilidad de lograr entre 4 y 8 ventas (inclusive)?</p>
+<label><input type="radio" name="q4" value="a"><span class="opt">a. CD(8) − CD(3) = 0,27925</span></label>
+<label><input type="radio" name="q4" value="b"><span class="opt">b. CD(8) − CD(4) = 0,12005</span></label>
+<label><input type="radio" name="q4" value="c"><span class="opt">c. CD(7) − CD(3) = 0,27705</span></label>
+<label><input type="radio" name="q4" value="d"><span class="opt">d. CD(8) − CD(2) = 0,51983</span></label>
+<label><input type="radio" name="q4" value="e"><span class="opt">e. PD(4) + PD(8) = 0,16141</span></label>
+<div class="feedback correct" data-for="a">Quedan los valores 4, 5, 6, 7 y 8: a lo acumulado hasta 8 se le quita lo acumulado hasta 3.</div>
+<div class="feedback wrong" data-for="b">Así se excluye el 4 (queda 5 a 8). El ‘entre’ es inclusivo: hay que restar CD(a − 1) = CD(3).</div>
+<div class="feedback wrong" data-for="c">Así se excluye el 8 (queda 4 a 7). El extremo superior b se incluye: va CD(8).</div>
+<div class="feedback wrong" data-for="d">Restaste de más: así entraría también el 3. Para empezar en 4 se resta CD(3).</div>
+<div class="feedback wrong" data-for="e">Eso suma solo dos valores sueltos. ‘Entre’ incluye todos los enteros del 4 al 8.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">5. El número de llamadas por minuto es Poisson con λ = 9 para la ventana pedida. ¿Cuál es su esperanza y su desvío?</p>
+<label><input type="radio" name="q5" value="a"><span class="opt">a. E = 9; σ = 9</span></label>
+<label><input type="radio" name="q5" value="b"><span class="opt">b. E = 3; σ = 9</span></label>
+<label><input type="radio" name="q5" value="c"><span class="opt">c. E = 9; σ = 81</span></label>
+<label><input type="radio" name="q5" value="d"><span class="opt">d. E = 9; σ = 3</span></label>
+<label><input type="radio" name="q5" value="e"><span class="opt">e. E = 4,5; σ = 3</span></label>
+<div class="feedback wrong" data-for="a">Var = λ = 9, pero el desvío es la raíz: σ = 3.</div>
+<div class="feedback wrong" data-for="b">Invertiste los papeles: la esperanza es λ = 9 y el desvío es √λ = 3.</div>
+<div class="feedback wrong" data-for="c">σ no es λ al cuadrado. Var = λ y σ = √λ.</div>
+<div class="feedback correct" data-for="d">En Poisson E = Var = λ = 9, de modo que σ = √9 = 3.</div>
+<div class="feedback wrong" data-for="e">No se divide λ por 2: E(X) = λ.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">6. Aceptan el producto el 60 % (n = 20). Para ‘más de 9 personas NO lo adquieren’, ¿qué planteo es correcto?</p>
+<label><input type="radio" name="q6" value="a"><span class="opt">a. X ~ Bi(20; 0,6): P(X ≥ 10) = 1 − CD(9) = 0,87248</span></label>
+<label><input type="radio" name="q6" value="b"><span class="opt">b. Y ~ Bi(20; 0,4): P(Y ≥ 9) = 1 − CD(8) = 0,40440</span></label>
+<label><input type="radio" name="q6" value="c"><span class="opt">c. Y ~ Bi(20; 0,4): P(Y &gt; 10) = 1 − CD(10) = 0,12752</span></label>
+<label><input type="radio" name="q6" value="d"><span class="opt">d. Y ~ Bi(20; 0,4): CD(9) = 0,75534</span></label>
+<label><input type="radio" name="q6" value="e"><span class="opt">e. Y ~ Bi(20; 0,4): P(Y ≥ 10) = 1 − CD(9) = 0,24466</span></label>
+<div class="feedback wrong" data-for="a">Con p = 0,6 se cuentan los que SÍ compran. La pregunta es por los que no compran: hay que cambiar a p = 0,4.</div>
+<div class="feedback wrong" data-for="b">‘Más de 9’ no incluye el 9: empieza en 10.</div>
+<div class="feedback wrong" data-for="c">‘Más de 9’ ya incluye al 10. Con Y &gt; 10 te perdés el valor 10.</div>
+<div class="feedback wrong" data-for="d">CD(9) es P(Y ≤ 9), el complemento de lo pedido: falta restarlo de 1.</div>
+<div class="feedback correct" data-for="e">Y = ‘no compran’ tiene p = 0,4; ‘más de 9’ es Y ≥ 10 y se calcula 1 − CD(9) con p = 0,4.</div>
+</div>
+
+<div class="ask">
+¿Quieres 5 enunciados salteados para que solo escribas (modelo, parámetros, desigualdad y función) sin calcular? Es el mejor entrenamiento para esto.
+</div>
+
+<footer>
+Ejemplos tomados de tu TP3 (ejercicios 6, 8, 12 y las tasas de los ejercicios 9, 15, 17, 18, 20) — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0016-va-discreta-esperanza-varianza.html">Lección 16 — VA discreta: E(X) y Var(X)</a></span>
+  <span><a href="0018-normal-con-numeros.html">Lección 18 — Normal con números</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

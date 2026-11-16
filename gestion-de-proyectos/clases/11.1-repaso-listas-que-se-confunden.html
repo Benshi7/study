@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Review lesson built from the mock exam of 14/11/2026 (18/30).
+     Failed ids: 9.1, 10.4, 12a.1, 10.14, 12b.6, M.9, 11.2, 8.9, 11.12, 12a.4, 10.9, 11.9. Content only from the cátedra slides as summarised in lessons 08 to 12b. -->
+<title>Clase 11.1 · Repaso: listas que se confunden</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Repaso · después del simulacro del 14/11 · Parcial del 18/11</p>
+  <h1>Listas que se confunden: de quién es cada una</h1>
+  <p class="subtitle">Solo lo que falló en el simulacro: las listas de memoria de las clases 10, 11 y 12, y a qué enfoque pertenece cada una.</p>
+  <p class="meta"><span>⏱ 15 minutos</span><span>Fuente: diapositivas de la cátedra (lecciones 8 a 12b)</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder decir, ante una lista suelta de tres o cuatro palabras, de qué enfoque es; recitar en orden los pasos de la Planning; y resolver sin dudar los ejemplos de slicing, Sailing Boat, Starfish y mudas.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> el <a href="simulacro-parcial-agil.html">simulacro</a>: 18 de 30. Flojo en la <a href="10-ceremonias-scrum.html">Clase 10</a> (1 de 4), la <a href="11-retrospectiva.html">Clase 11</a> (1 de 4) y la <a href="12a-lean-xp.html">12a</a> (2 de 4).</p>
+  <p><span class="to">Alimenta</span> el próximo intento del simulacro, con el botón «solo las que fallé».</p>
+</div>
+
+<p class="note"><strong>El patrón.</strong> Las clases 8 y 9 salieron bien (4 de 5 cada una). Casi todos los errores son del mismo tipo: una opción con una lista verdadera, pero de otro enfoque (PDCA frente a Starfish, bases de XP frente a pilares de Scrum). En opción múltiple los distractores son justamente eso. La solución es saber <em>de quién</em> es cada lista, no solo qué contiene.</p>
+
+<h2 id="mapa">Idea 1 · El mapa de las listas, por cantidad</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Son…</th><th>Lista</th><th>De quién</th></tr></thead>
+<tbody>
+<tr><td rowspan="6"><strong>3</strong></td><td>Transparencia, inspección, adaptación</td><td><strong>Pilares de Scrum</strong> (empirismo)</td></tr>
+<tr><td>Mostrar el proceso, limitar el trabajo en curso, optimizar el flujo</td><td><strong>Reglas de Kanban</strong></td></tr>
+<tr><td>¿Qué hice ayer? ¿Qué haré hoy? ¿Tengo impedimentos?</td><td><strong>Preguntas de la Daily</strong></td></tr>
+<tr><td>Tener objetivo, hablar de temas y no de personas, priorizar el respeto</td><td><strong>Reglas de la Retrospectiva</strong></td></tr>
+<tr><td>Start, stop, continue (keep)</td><td><strong>Starfish simplificada</strong></td></tr>
+<tr><td>To do, WIP, Done</td><td><strong>Columnas del tablero Kanban</strong></td></tr>
+<tr><td rowspan="3"><strong>4</strong></td><td>Individuos, software funcionando, colaboración con el cliente, respuesta al cambio</td><td><strong>Valores del Manifiesto</strong></td></tr>
+<tr><td>Plan, Do, Check, Act</td><td><strong>Ciclo de Deming (PDCA)</strong>: la base de <strong>Lean</strong></td></tr>
+<tr><td>Must, Should, Could, Won’t</td><td><strong>MoSCoW</strong>: priorizar el backlog</td></tr>
+<tr><td rowspan="2"><strong>5</strong></td><td>Comunicación, simplicidad, retroalimentación, respeto, coraje</td><td><strong>Bases de XP</strong></td></tr>
+<tr><td>Comenzar, seguir, dejar, hacer más, hacer menos</td><td><strong>Starfish completa</strong></td></tr>
+<tr><td rowspan="2"><strong>7</strong></td><td>Transporte, inventario, movimiento, espera, sobreprocesamiento, sobreproducción, defectos</td><td><strong>Mudas de Lean</strong></td></tr>
+<tr><td>Roles, pasos del flujo, flujo principal o alternativo, regla de negocio, datos de entrada, datos de salida, operaciones</td><td><strong>Técnicas de slicing</strong></td></tr>
+<tr><td><strong>12</strong></td><td>Principios · prácticas</td><td><strong>Manifiesto</strong> (principios) y <strong>XP</strong> (prácticas)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Dos atajos: <strong>Starfish</strong> son verbos de «hacer» (empezar, dejar, seguir); <strong>PDCA</strong> es un ciclo que vuelve a empezar. Y todo lo que suena a <em>actitud entre personas</em> (respeto, coraje) es XP; lo que suena a <em>mirar y corregir</em> (inspección, adaptación) es Scrum.</p>
+
+<h2 id="personas">Idea 2 · Quién es quién</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Persona</th><th>Se asocia con</th><th>Dato</th></tr></thead>
+<tbody>
+<tr><td>Jeff Sutherland y Ken Schwaber</td><td><strong>Scrum</strong></td><td>Firmantes del Manifiesto</td></tr>
+<tr><td>Kent Beck</td><td><strong>XP</strong></td><td>Chrysler, años 90; también firmó el Manifiesto</td></tr>
+<tr><td>Taiichi Ohno</td><td><strong>Lean y Kanban</strong></td><td>Toyota, Kaizen; no firmó nada en 2001</td></tr>
+<tr><td>Deming</td><td><strong>PDCA</strong></td><td>El ciclo en el que se basa Lean</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="planning">Idea 3 · La Planning, en orden</h2>
+<p>Cuatro pasos que responden cuatro preguntas. El orden es lógico: no se puede fijar un objetivo sin saber cuánto entra, ni partir en tareas lo que todavía no se eligió.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Paso</th><th>Qué pasa</th><th>Pregunta</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>El PO explica las historias candidatas</td><td>¿Qué?</td></tr>
+<tr><td>2</td><td>El equipo estima cuáles puede terminar</td><td>¿Cuánto?</td></tr>
+<tr><td>3</td><td>Se acuerda el objetivo del Sprint</td><td>¿Para qué?</td></tr>
+<tr><td>4</td><td>El equipo separa las historias en tareas (splitting)</td><td>¿Cómo?</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>DoR, en una línea.</strong> Es un <strong>contrato de equipo</strong>, <strong>se puede actualizar</strong> e indica si una historia <strong>puede entrar al Sprint</strong>. No viene de la guía Scrum (ni la menciona) y no es el objetivo del Sprint. Puerta de entrada: DoR. Puerta de salida: DoD.</p>
+
+<h2 id="slicing">Idea 4 · Slicing con Mercado Libre</h2>
+<p>La pregunta típica da el ejemplo y pide la técnica. Conviene buscar la palabra que delata:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Ejemplo de la cátedra</th><th>Técnica</th><th>Lo que delata</th></tr></thead>
+<tbody>
+<tr><td>Comprador, vendedor</td><td>Por roles</td><td>Son personas</td></tr>
+<tr><td>Buscar, carrito, envío o retiro, pagar</td><td>Por pasos del flujo</td><td>Es una secuencia</td></tr>
+<tr><td>Fondos insuficientes, tarjeta vencida</td><td>Por flujo principal o alternativo</td><td>Es lo que sale mal</td></tr>
+<tr><td>Envío gratis desde $30.000</td><td>Por regla de negocio</td><td>Es una condición</td></tr>
+<tr><td>Filtros para autos: km, transmisión, marca</td><td>Por datos de entrada</td><td>Lo carga el usuario</td></tr>
+<tr><td>Email de compra, aviso en pantalla</td><td>Por datos de salida</td><td>Lo devuelve el sistema</td></tr>
+<tr><td>Publicar, modificar, dar de baja</td><td>Por operaciones</td><td>Son verbos sobre un mismo objeto</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="retro">Idea 5 · Sailing Boat y Starfish</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Sailing Boat</th><th>FODA</th><th>Cómo recordarlo</th></tr></thead>
+<tbody>
+<tr><td>Viento</td><td>Fortalezas</td><td>Empuja al barco</td></tr>
+<tr><td>Sol</td><td>Oportunidades</td><td>Buen clima: viene de afuera y ayuda</td></tr>
+<tr><td>Ancla</td><td>Debilidades</td><td>Frena, y va a bordo</td></tr>
+<tr><td>Rocas</td><td>Amenazas (riesgos)</td><td>Están afuera y pueden hundirlo</td></tr>
+<tr><td>Isla</td><td>—</td><td>El objetivo</td></tr>
+</tbody>
+</table>
+</div>
+<p>Lo que va a bordo es interno (viento en las velas, ancla); lo que está en el paisaje es externo (sol, rocas). Starfish completa tiene cinco brazos; la simplificada se queda con tres: <strong>start, stop, continue</strong> (se pierden «hacer más» y «hacer menos»).</p>
+<p class="note"><strong>Preguntas con «NO».</strong> La de la Daily pedía cuál <em>no</em> es una de las tres preguntas. Antes de mirar las opciones conviene subrayar el «NO» y recitar la lista: ayer, hoy, impedimentos. La que sobra es la respuesta.</p>
+
+<h2 id="lean">Idea 6 · Lean: a qué afecta cada muda, y las herramientas</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Afecta a…</th><th>Mudas</th></tr></thead>
+<tbody>
+<tr><td>El operario</td><td>Movimiento · espera</td></tr>
+<tr><td>El producto</td><td>Transporte · defectos</td></tr>
+<tr><td>Las materias primas</td><td>Inventario</td></tr>
+<tr><td>El proceso o la herramienta</td><td>Sobreprocesamiento</td></tr>
+<tr><td>Los costos de producción</td><td>Sobreproducción</td></tr>
+</tbody>
+</table>
+</div>
+<p>Sobre<strong>producción</strong> → costos de <strong>producción</strong>; sobre<strong>procesamiento</strong> → <strong>proceso</strong>. La palabra está adentro.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Herramienta</th><th>Contra principal (cátedra)</th></tr></thead>
+<tbody>
+<tr><td>Trello</td><td>Con equipos grandes se complica el seguimiento</td></tr>
+<tr><td>Jira</td><td>Licencia cara a partir de 10 usuarios; interfaz difícil al principio</td></tr>
+<tr><td>Azure DevOps</td><td>Puesta a punto compleja; visualmente poco agradable</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Un puente más:</strong> la práctica «cliente in situ» de XP (el cliente es parte del equipo) es el valor <strong>«colaboración con el cliente sobre negociación contractual»</strong> llevado a la práctica.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: los cuatro pasos de la Planning, en orden.</summary>
+  <p>El PO explica las historias → el equipo estima cuáles puede terminar → se acuerda el objetivo del Sprint → el equipo separa las historias en tareas.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: de quién son «transparencia, inspección, adaptación», «comunicación, simplicidad, retroalimentación, respeto, coraje» y «Plan, Do, Check, Act».</summary>
+  <p>Pilares de Scrum; bases de XP; ciclo de Deming, la base de Lean.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: los cinco elementos de Sailing Boat con su FODA.</summary>
+  <p>Viento = fortalezas, sol = oportunidades, ancla = debilidades, rocas = amenazas, isla = objetivo.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: a qué afecta cada una de las siete mudas.</summary>
+  <p>Operario: movimiento y espera. Producto: transporte y defectos. Materias primas: inventario. Proceso o herramienta: sobreprocesamiento. Costos de producción: sobreproducción.</p>
+</details>
+
+<h2 id="practica-2-preguntas-nuevas">Práctica 2 · Preguntas nuevas</h2>
+<div class="quiz">
+  <p class="prompt">En la Sprint Planning, ¿qué pasa justo después de que el PO explica las historias candidatas?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: paso 2. Después vienen el objetivo del Sprint y la separación en tareas.">El equipo estima cuáles puede terminar</button>
+    <button data-why="No: el objetivo es el paso 3; primero hay que saber cuánto entra.">Se acuerda el objetivo del Sprint</button>
+    <button data-why="No: separar en tareas es el último paso.">El equipo separa las historias en tareas</button>
+    <button data-why="No: las tres preguntas son de la Daily.">Cada miembro responde las tres preguntas</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">«Comunicación, simplicidad, retroalimentación, respeto y coraje» son…</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: los cinco conceptos en los que se basa XP.">Las cinco bases de XP</button>
+    <button data-why="No: los pilares de Scrum son tres: transparencia, inspección y adaptación.">Los cinco pilares de Scrum</button>
+    <button data-why="No: los valores del Manifiesto son cuatro y tienen la forma «X sobre Y».">Los cinco valores del Manifiesto</button>
+    <button data-why="No: los brazos de Starfish son acciones: comenzar, seguir, dejar, hacer más, hacer menos.">Los cinco brazos de Starfish</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">«Buscar, carrito, envío o retiro, pagar» es el ejemplo de la cátedra para el slicing…</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: es una secuencia de pasos.">Por pasos del flujo</button>
+    <button data-why="No: operaciones son publicar, modificar, dar de baja.">Por operaciones</button>
+    <button data-why="No: datos de entrada son los filtros de autos.">Por datos de entrada</button>
+    <button data-why="No: roles son comprador y vendedor.">Por roles</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">«Fondos insuficientes, tarjeta vencida» es el ejemplo de la cátedra para el slicing…</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: son los caminos alternativos del pago.">Por flujo principal o alternativo</button>
+    <button data-why="No: la regla de negocio es el envío gratis desde $30.000.">Por regla de negocio</button>
+    <button data-why="No: datos de salida son el email de compra y el aviso en pantalla.">Por datos de salida</button>
+    <button data-why="No: pasos del flujo son buscar, carrito, envío, pagar.">Por pasos del flujo</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">En Sailing Boat, ¿qué representa el viento?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: el viento empuja al barco.">Las fortalezas</button>
+    <button data-why="No: las oportunidades son el sol.">Las oportunidades</button>
+    <button data-why="No: las debilidades son el ancla.">Las debilidades</button>
+    <button data-why="No: las amenazas son las rocas.">Las amenazas</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Qué dos brazos tiene la Starfish completa que no están en la versión simplificada?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: la simplificada conserva start, stop y continue.">Hacer más y hacer menos</button>
+    <button data-why="No: comenzar es «start» y dejar es «stop»: están en las dos.">Comenzar a hacer y dejar de hacer</button>
+    <button data-why="No: eso es parte del ciclo PDCA.">Planificar y verificar</button>
+    <button data-why="No: son elementos de Sailing Boat.">Viento y ancla</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Según la cátedra, ¿a qué afecta la muda de transporte?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: transporte y defectos son «del producto».">Al producto</button>
+    <button data-why="No: del operario son movimiento y espera.">Al operario</button>
+    <button data-why="No: eso es la sobreproducción.">A los costos de producción</button>
+    <button data-why="No: eso es el inventario.">A las materias primas</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Qué es PDCA y a qué enfoque le sirve de base?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: Plan, Do, Check, Act; Lean se basa en ese ciclo.">El ciclo de Deming; base de Lean</button>
+    <button data-why="No: Starfish es una dinámica de retrospectiva con cinco brazos.">Una versión de Starfish; base de Scrum</button>
+    <button data-why="No: las prácticas de XP son doce y PDCA no es una de ellas.">Una práctica de Kent Beck; base de XP</button>
+    <button data-why="No: priorizar el backlog se hace con MoSCoW.">Una técnica para priorizar; base de MoSCoW</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Cuál es la contra de Trello, según la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: funciona bien en equipos chicos y se complica al crecer.">Con equipos grandes se complica el seguimiento</button>
+    <button data-why="No: esa es la contra de Jira.">La licencia es cara desde 10 usuarios</button>
+    <button data-why="No: esa es la contra de Azure DevOps.">La puesta a punto es muy compleja</button>
+    <button data-why="No: al contrario, la versión gratuita alcanza.">La versión gratuita no alcanza para nada</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Una historia depende de una API que todavía no existe. ¿Qué acuerdo impide que entre al Sprint, y quién lo define?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: la DoR es un contrato de equipo, que se puede actualizar.">La DoR, un contrato del equipo</button>
+    <button data-why="No: la DoD define cuándo una historia está terminada.">La DoD, un checklist del equipo</button>
+    <button data-why="No: la guía Scrum no menciona la DoR.">La DoR, una regla de la guía</button>
+    <button data-why="No: el Sprint Goal es el objetivo del Sprint, no un filtro de entrada.">El Sprint Goal, que fija el PO</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<div class="ask">
+  <strong>¿Y ahora?</strong>
+  Volver al <a href="simulacro-parcial-agil.html">simulacro</a>, usar «solo las que fallé la última vez» y después un intento nuevo de 30. Pegar el resumen en el chat.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="11-retrospectiva.html">← Clase 11 · Daily, Review y Retro</a>
+  <a href="12a-lean-xp.html">Clase 12a · Lean y XP →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

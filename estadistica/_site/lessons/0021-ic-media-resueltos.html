@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 21 — Intervalos de confianza para la media: casos resueltos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+<style>
+  .tw { overflow-x: auto; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  td.c, th.c { text-align: center; }
+  tr.tot td { font-weight: 700; border-top: 2px solid var(--accent-dim); }
+  .example table, .calc table, .box table { background: transparent; }
+  .calc {
+    border-radius: 3px; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.95rem;
+    background: var(--paper-raised); border-left: 3px solid var(--formula);
+  }
+  .calc::before {
+    content: "\1F5A9  EN LA FX-991EX"; display: block; font-size: 0.68rem; letter-spacing: 0.12em;
+    font-weight: 700; margin-bottom: 0.5rem; color: var(--formula); font-family: var(--font-mono);
+  }
+  .key {
+    display: inline-block; border: 1px solid var(--accent-dim); border-bottom-width: 2px; border-radius: 4px;
+    padding: 0 0.4rem; margin: 0.1rem 0.1rem; font-size: 0.82rem; font-weight: 600; color: var(--accent);
+    background: var(--code-bg); line-height: 1.55; white-space: nowrap;
+  }
+  .out { color: var(--good); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .calc ol, .example ol, .box ol { margin: 0.4rem 0 0.4rem 1.2rem; padding: 0; }
+  .calc li, .example li, .box li { margin: 0.35rem 0; }
+  .fig { margin: 1.3rem 0; text-align: center; }
+  .fig svg { max-width: 100%; height: auto; }
+  .fig figcaption { font-size: 0.85rem; color: var(--ink-dim); margin-top: 0.3rem; }
+  .plots { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin: 1.3rem 0; }
+  .plots .fig { margin: 0; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 4px; padding: 0.6rem 0.4rem; }
+  .svg-axis { stroke: var(--ink-dim); stroke-width: 1.2; fill: none; }
+  .svg-curve { stroke: var(--formula); stroke-width: 2; fill: none; }
+  .svg-fill { fill: rgba(230, 195, 132, 0.38); stroke: none; }
+  .svg-mark { stroke: var(--accent-dim); stroke-width: 1; stroke-dasharray: 3 3; }
+  .svg-t { fill: var(--ink-dim); font-size: 11px; font-family: var(--font-body); }
+  .svg-tb { fill: var(--ink); font-size: 11.5px; font-family: var(--font-body); font-weight: 600; }
+  .svg-dot { fill: var(--accent); fill-opacity: 0.85; }
+  .svg-line { stroke: var(--formula); stroke-width: 1.6; fill: none; }
+  .quiz label span.opt { flex: 1; }
+</style>
+</head>
+<body>
+
+<span class="kicker">Unidad 7 · Intervalos de confianza · Lección mecánica</span>
+<h1>Intervalos de confianza para la media: casos resueltos</h1>
+<p class="subtitle">Z o t, margen de error, ancho del intervalo, efecto de n y de la confianza, el tamaño de muestra con el método iterativo y la interpretación correcta del nivel de confianza.</p>
+
+
+<h2>El problema</h2>
+<p>La media de la muestra (x̄) es solo <em>una</em> estimación de μ. Un intervalo de confianza le agrega un <strong>margen de error</strong> E para decir “μ está entre…” con cierta confianza. En el examen casi nunca se discute cómo se arma el intervalo: se pide <strong>elegir Z o t</strong>, hacer la cuenta, comparar anchos al cambiar n o la confianza, o <strong>despejar n</strong>. Y, siempre, interpretar bien el nivel de confianza.</p>
+
+<h2>Z o t: la decisión</h2>
+<div class="tw"><table>
+<tr><th>Qué da el enunciado</th><th>Usas</th><th>Notas</th></tr>
+<tr><td>σ <strong>poblacional conocido</strong> (“se sabe que σ = 10”)</td><td><strong>Z</strong></td><td>Aunque n sea chico, si la población es normal</td></tr>
+<tr><td>Solo datos de la muestra → <strong>s</strong> (σ desconocido)</td><td><strong>t</strong> con ν = n − 1</td><td>Se supone población normal o casi normal. Si dan s, es t aunque n sea grande</td></tr>
+<tr><td>Proporción</td><td><strong>Z</strong> siempre</td><td>Ver lección 20</td></tr>
+</table></div>
+
+<h2>Las fórmulas de la cátedra</h2>
+<div class="tw"><table>
+<tr><th></th><th>σ conocido (Z)</th><th>σ desconocido (t)</th></tr>
+<tr><td>Intervalo</td><td><span class="formula">x̄ ± Z · σ/√n</span></td><td><span class="formula">x̄ ± t(ν) · s/√n</span></td></tr>
+<tr><td>Margen de error</td><td><span class="formula">E = Z · σ/√n</span></td><td><span class="formula">E = t · s/√n</span></td></tr>
+<tr><td>Amplitud</td><td><span class="formula">2E</span></td><td><span class="formula">2E</span></td></tr>
+<tr><td>Tamaño de muestra</td><td><span class="formula">n = (Z·σ / E)²</span></td><td><span class="formula">n = (t·s / E)²  → proceso iterativo</span></td></tr>
+<tr><td>Valor crítico</td><td>Z de la Normal: 1,645 (90 %), 1,96 (95 %), 2,576 (99 %)</td><td>t con ν = n − 1 (no está en la calculadora: viene en la tabla)</td></tr>
+</table></div>
+<p><strong>Tabla t (por nivel de confianza; los valores del examen deben salir de la tabla que te den):</strong> “t<sub>19; 0,05</sub>” se nombra por el α total, o sea 95 % de confianza y 19 grados de libertad.</p>
+<div class="tw"><table>
+<tr><th>ν = n − 1</th><th class="n">90 %</th><th class="n">95 %</th><th class="n">99 %</th></tr>
+<tr><td>5</td><td class="n">2,015</td><td class="n">2,571</td><td class="n">4,032</td></tr>
+<tr><td>9</td><td class="n">1,833</td><td class="n">2,262</td><td class="n">3,250</td></tr>
+<tr><td>19</td><td class="n">1,729</td><td class="n">2,093</td><td class="n">2,861</td></tr>
+<tr><td>26</td><td class="n">1,706</td><td class="n">2,056</td><td class="n">2,779</td></tr>
+<tr><td>27</td><td class="n">1,703</td><td class="n">2,052</td><td class="n">2,771</td></tr>
+<tr><td>49</td><td class="n">1,677</td><td class="n">2,010</td><td class="n">2,680</td></tr>
+<tr><td>74</td><td class="n">1,666</td><td class="n">1,993</td><td class="n">2,644</td></tr>
+<tr><td>75</td><td class="n">1,665</td><td class="n">1,992</td><td class="n">2,643</td></tr>
+<tr><td>∞ (= Z)</td><td class="n">1,645</td><td class="n">1,960</td><td class="n">2,576</td></tr>
+</table></div>
+<p>Observa que para el mismo nivel, <strong>t es mayor que Z</strong> (más incertidumbre por estimar σ) y tiende a Z cuando ν crece.</p>
+
+
+<h2>Ejemplo resuelto 1 — σ conocido (TP5, ejercicio 1: duración de baterías)</h2>
+<div class="example">
+<strong>Datos:</strong> σ = 10 horas (conocido), n = 30, x̄ = 240 horas. IC al 90 % y al 95 % para la duración media de toda la producción.
+<ol>
+<li><span class="formula">σ/√n = 10/√30 = 10/5,4772 = 1,8257</span></li>
+<li><strong>90 %:</strong> <span class="formula">Z = 1,64485;  E = 1,64485 · 1,8257 = 3,003</span> ⇒ <span class="formula">IC = 240 ± 3,003 = (236,997; 243,003)</span></li>
+<li><strong>95 %:</strong> <span class="formula">Z = 1,95996;  E = 1,95996 · 1,8257 = 3,578</span> ⇒ <span class="formula">IC = (236,422; 243,578)</span></li>
+<li><strong>Amplitudes:</strong> 6,006 al 90 % y 7,157 al 95 %. <strong>A mayor confianza, intervalo más ancho</strong> (hay que “abrir más la red” para estar más seguro de atrapar μ).</li>
+<li><strong>Efecto de n:</strong> con n = 120 (cuatro veces más) el margen al 90 % sería 1,502: la mitad de 3,003. Para dividir E por 2 hay que multiplicar n por 4, porque E depende de 1/√n.</li>
+<li><strong>Interpretación:</strong> con 90 % de confianza, la duración media de las baterías está entre 237,0 y 243,0 horas.</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 2 — σ desconocido (TP5, ejercicio 3: presión arterial, n = 20)</h2>
+<div class="example">
+<strong>Datos:</strong> 20 mediciones (66-34-59-56-51-45-38-58-52-52-50-34-42-61-53-48-57-47-50-54) de una población normal. IC al 95 % y al 99 %.
+<ol>
+<li><strong>De los datos:</strong> <span class="formula">x̄ = 1007/20 = 50,35</span>; con la calculadora (sx, divisor n − 1): <span class="formula">s = 8,5734</span>.</li>
+<li><span class="formula">s/√n = 8,5734/√20 = 8,5734/4,4721 = 1,9171</span></li>
+<li><strong>t:</strong> σ desconocido ⇒ t con ν = 19. De la tabla: 95 % ⇒ <span class="formula">t = 2,093</span>; 99 % ⇒ <span class="formula">t = 2,861</span>.</li>
+<li><strong>95 %:</strong> <span class="formula">E = 2,093 · 1,9171 = 4,012</span> ⇒ <span class="formula">IC = (46,338; 54,362)</span></li>
+<li><strong>99 %:</strong> <span class="formula">E = 2,861 · 1,9171 = 5,485</span> ⇒ <span class="formula">IC = (44,865; 55,835)</span></li>
+<li><strong>Interpretación:</strong> con 95 % de confianza, la presión diastólica media está entre 46,34 y 54,36. El de 99 % es más ancho (10,97 contra 8,02): más seguridad a costa de menos precisión.</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 3 — El n para un E dado, con σ conocido (Bariloche)</h2>
+<div class="example">
+<strong>Datos:</strong> n = 100, x̄ = $3400, σ = $1250.
+<ol>
+<li><span class="formula">E (95 %) = 1,96 · 1250/√100 = 1,96 · 125 = 245</span> ⇒ <span class="formula">IC = (3155; 3645)</span></li>
+<li><strong>¿Cuántas personas para un error de $200?</strong> <span class="formula">n = (1,96 · 1250 / 200)² = 12,25² = 150,06</span> ⇒ <strong>151</strong> (hacia arriba).</li>
+<li><strong>¿Y si en cambio se reduce la confianza (n = 100)?</strong> <span class="formula">Z = E·√n/σ = 200 · 10/1250 = 1,6</span> ⇒ confianza = 2·Φ(1,6) − 1 = 0,8904 ⇒ <strong>≈ 89 %</strong>.</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 4 — El n con t: el método iterativo (“55 citas más”)</h2>
+<div class="example">
+<strong>Datos (TP5, ejercicio 9):</strong> 20 sesiones de entrenamiento: x̄ = 15,25, s = 7,38. IC al 90 % y ¿cuántas observaciones más para reducir el error a la mitad?
+<ol>
+<li><span class="formula">E = t₁₉ · s/√n = 1,7291 · 7,38/√20 = 2,8534</span> ⇒ <span class="formula">IC = (12,40; 18,10)</span> (cátedra: 12,4; 18,1).</li>
+<li><strong>Error buscado:</strong> <span class="formula">E' = 2,8534/2 = 1,4267</span>.</li>
+<li><strong>El problema:</strong> <span class="formula">n = (t·s/E')²</span> pero t depende de n (ν = n − 1). Se resuelve <strong>iterando</strong>: se propone un n (mayor que el actual), se saca t con ν = n − 1, se calcula el n que resulta, y se repite <strong>hasta que el n que entra sea igual al que sale</strong>.</li>
+</ol>
+<div class="tw"><table>
+<tr><th class="n">n propuesto</th><th class="n">ν</th><th class="n">t (tabla)</th><th class="n">(t·s/E')²</th><th class="n">n nuevo (↑)</th></tr>
+<tr><td class="n">50</td><td class="n">49</td><td class="n">1,6766</td><td class="n">75,21</td><td class="n">76</td></tr>
+<tr><td class="n">76</td><td class="n">75</td><td class="n">1,6654</td><td class="n">74,21</td><td class="n">75</td></tr>
+<tr><td class="n">75</td><td class="n">74</td><td class="n">1,6657</td><td class="n">74,24</td><td class="n">75</td></tr>
+</table></div>
+<ol start="4">
+<li>Con n = 75 entra 75 y sale 75: <strong>n = 75</strong>. Ya se tienen 20, entonces hacen falta <span class="formula">75 − 20 = 55</span> observaciones <strong>más</strong>.</li>
+</ol>
+</div>
+<div class="example">
+<strong>Otro caso (TP5, ejercicio 5):</strong> 6 estudiantes, velocidades 128-117-125-136-110-134: x̄ = 125, s = 10. IC al 95 %: t<sub>5</sub> = 2,571 ⇒ E = 2,571·10/√6 = 10,49 ⇒ (114,5; 135,5). ¿n para E = 4?
+<div class="tw"><table>
+<tr><th class="n">n propuesto</th><th class="n">ν</th><th class="n">t (tabla)</th><th class="n">(t·s/E)²</th><th class="n">n nuevo (↑)</th></tr>
+<tr><td class="n">20</td><td class="n">19</td><td class="n">2,093</td><td class="n">27,38</td><td class="n">28</td></tr>
+<tr><td class="n">28</td><td class="n">27</td><td class="n">2,052</td><td class="n">26,32</td><td class="n">27</td></tr>
+<tr><td class="n">27</td><td class="n">26</td><td class="n">2,056</td><td class="n">26,42</td><td class="n">27</td></tr>
+</table></div>
+Entra 27 y sale 27 ⇒ <strong>n = 27</strong> estudiantes. (Con Z = 1,96 saldrían 25: usar Z subestima n cuando σ es desconocido.)
+</div>
+
+<h2>Ejemplo resuelto 5 — Hallar el nivel de confianza de un intervalo dado</h2>
+<div class="example">
+<strong>Datos (TP5, ejercicio 6c):</strong> σ = 4,215, n = 6; con la muestra original, el IC es (12,142; 15,858). ¿Qué nivel de confianza tiene?
+<ol>
+<li><span class="formula">x̄ = (12,142 + 15,858)/2 = 14</span>; <span class="formula">E = (15,858 − 12,142)/2 = 1,858</span> (amplitud = 2E).</li>
+<li><span class="formula">σ/√n = 4,215/√6 = 1,7208</span>; de E = Z·σ/√n: <span class="formula">Z = 1,858/1,7208 = 1,080</span></li>
+<li>Confianza = área central entre −Z y Z = <span class="formula">2·Φ(1,080) − 1 = 0,7197</span> ⇒ <strong>≈ 72 %</strong>.</li>
+</ol>
+Mismo estilo, más corto: la media muestral es 5,74 y el error estándar 0,20 (ejercicios adicionales 2 y 3): E (95 %) = 1,96 · 0,20 = 0,392 ≈ 0,39 ⇒ IC = (5,34; 6,14).
+</div>
+
+<h2>Cómo se interpreta la confianza</h2>
+<div class="box">
+“Con 95 % de confianza, μ está entre 46,34 y 54,36” significa: el <strong>procedimiento</strong> captura a μ en el 95 % de las muestras (y falla en el 5 %). μ es un número fijo; lo que cambia de muestra en muestra es el intervalo. No significa que el 95 % de los <em>datos</em> estén ahí, ni que el 95 % de las <em>personas</em> tenga ese valor. Y un valor fuera del intervalo (por ejemplo μ = 2 cuando el IC es (2,49; 2,63)) no es plausible.
+</div>
+
+
+<div class="calc">
+<strong>IC para la media: la calculadora hace las cuentas, no las tablas</strong>
+<ol>
+<li><strong>x̄ y s de los datos:</strong> <span class="key">MENU</span> <span class="key">6</span> → <span class="key">1</span> (1-Variable) → carga los datos → <span class="key">AC</span>, <span class="key">OPTN</span> <span class="key">2</span> ⇒ <span class="out">x̄ = 50,35</span>, <span class="out">sx = 8,5734</span>, n = 20. Usa <strong>sx</strong> (divisor n − 1), no σx.</li>
+<li><strong>Z</strong> (σ conocido): <span class="key">MENU</span> <span class="key">7</span> → <span class="key">3</span> (Inverse Normal), Area = 0,975 (para 95 %), σ = 1, μ = 0 ⇒ <span class="out">1,95996</span>.</li>
+<li><strong>t:</strong> la fx-991EX <strong>no tiene</strong> distribución t. El valor sale de la tabla con ν = n − 1.</li>
+<li><strong>E (MENU 1):</strong> <span class="key">2.093</span> <span class="key">×</span> <span class="key">8.5734</span> <span class="key">÷</span> <span class="key">√</span> <span class="key">20</span> <span class="key">=</span> ⇒ <span class="out">4,01241</span>. Con Z: <span class="key">Ans</span> <span class="key">×</span> <span class="key">10</span> <span class="key">÷</span> <span class="key">√</span> <span class="key">30</span> para el ejemplo 1.</li>
+<li><strong>Intervalo:</strong> <span class="key">50.35</span> <span class="key">−</span> <span class="key">Ans</span> y <span class="key">50.35</span> <span class="key">+</span> <span class="key">Ans</span>.</li>
+<li><strong>n con t:</strong> <span class="key">(</span> <span class="key">2.0555</span> <span class="key">×</span> <span class="key">10</span> <span class="key">÷</span> <span class="key">4</span> <span class="key">)</span> <span class="key">x²</span> ⇒ 26,4 → 27 (con la t de la fila que corresponda a ν = n − 1).</li>
+</ol>
+<p><strong>Qué significa:</strong> E es el semi-ancho; el intervalo es (x̄ − E; x̄ + E) y su amplitud es 2E. Un n debe redondearse siempre hacia arriba.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>Z con σ desconocido:</strong> si te dan solo s, es t con ν = n − 1 (la cátedra lo pide aunque n sea grande).</li>
+<li><strong>ν = n − 1</strong>, no n, al entrar a la tabla (n = 20 ⇒ ν = 19, t = 2,093; con ν = 20 saldría 2,086).</li>
+<li><strong>Columna equivocada:</strong> 95 % de confianza es 2,093 (ν = 19), no 1,729 (que es el 90 %).</li>
+<li><strong>σ en vez de σ/√n:</strong> E = Z·σ/√n. Olvidar √n da márgenes enormes (19,6 en lugar de 3,58).</li>
+<li><strong>E no es la amplitud:</strong> amplitud = 2E. Si un enunciado da la amplitud (“no mayor a 2 %”), E es la mitad.</li>
+<li><strong>Efectos:</strong> más confianza ⇒ más ancho; más n ⇒ más angosto, pero E se reduce como 1/√n (para dividir por 2 hace falta n × 4).</li>
+<li><strong>n se redondea hacia arriba</strong> y “cuántos más” se obtiene restando el n actual (75 − 20 = 55).</li>
+<li><strong>Usar σx de la calculadora</strong> en lugar de sx cuando los datos son una muestra.</li>
+</ul>
+</div>
+
+<h2>Practica: Z o t, cuenta e interpretación</h2>
+<div class="quiz">
+<p class="q">1. Una muestra de n = 20 datos de una población normal da x̄ = 50,35 y s = 8,57 (σ desconocido). ¿Qué usas para el IC?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a')"><span class="opt">a. Z, porque la muestra es aleatoria</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b')"><span class="opt">b. t de Student con 19 grados de libertad</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c')"><span class="opt">c. t con 20 grados de libertad</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d')"><span class="opt">d. Z, porque la población es normal</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1e')"><span class="opt">e. Z con σ = s/√n</span></label>
+<div id="q1a" class="feedback wrong">La aleatoriedad no decide: Z se usa si se conoce σ poblacional. Con solo s corresponde t.</div>
+<div id="q1b" class="feedback correct">σ se estima con s ⇒ t con ν = n − 1 = 19.</div>
+<div id="q1c" class="feedback wrong">ν = n − 1 = 19, no 20. Con ν = 20 saldría t = 2,086 en lugar de 2,093 (al 95 %).</div>
+<div id="q1d" class="feedback wrong">Que la población sea normal es un supuesto para usar t; no habilita Z si σ es desconocido.</div>
+<div id="q1e" class="feedback wrong">Eso es el error estándar, no un valor para reemplazar a σ: sigue siendo una estimación y la fórmula correcta usa t.</div>
+</div>
+<div class="quiz">
+<p class="q">2. σ = 10 (conocido), n = 30, x̄ = 240, 95 % de confianza. ¿Cuál es el margen de error y el IC?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a')"><span class="opt">a. E = 3,00; IC = (237,00; 243,00)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b')"><span class="opt">b. E = 3,6; IC = (236,4; 243,6)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c')"><span class="opt">c. E = 7,16; IC = (232,84; 247,16)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d')"><span class="opt">d. E = 3,58; IC = (236,42; 243,58)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2e')"><span class="opt">e. E = 0,65; IC = (239,35; 240,65)</span></label>
+<div id="q2a" class="feedback wrong">Ese margen corresponde al 90 % (Z = 1,645). Al 95 % se usa 1,96.</div>
+<div id="q2b" class="feedback wrong">Es Z·σ (1,96·10) sin dividir por √n. Eso sería el margen para UN individuo, no para el promedio.</div>
+<div id="q2c" class="feedback wrong">7,16 es la amplitud (2E). El intervalo es x̄ ± E, no x̄ ± 2E.</div>
+<div id="q2d" class="feedback correct">E = 1,96·10/√30 = 3,58 ⇒ 240 ± 3,58.</div>
+<div id="q2e" class="feedback wrong">Dividiste por n (30) en lugar de por √n. El error estándar es σ/√n.</div>
+</div>
+<div class="quiz">
+<p class="q">3. Todo lo demás igual, el tamaño de muestra pasa de n = 30 a n = 120. ¿Qué ocurre con la amplitud del IC?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a')"><span class="opt">a. Se reduce a la mitad</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b')"><span class="opt">b. Se reduce a la cuarta parte</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c')"><span class="opt">c. Se duplica</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d')"><span class="opt">d. No cambia</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3e')"><span class="opt">e. Se reduce un 25 %</span></label>
+<div id="q3a" class="feedback correct">El margen es proporcional a 1/√n y √120/√30 = 2: la amplitud queda en la mitad.</div>
+<div id="q3b" class="feedback wrong">El n se cuadruplica, pero E depende de √n, no de n: se divide por √4 = 2.</div>
+<div id="q3c" class="feedback wrong">Más datos dan más precisión: el intervalo se achica, no se agranda.</div>
+<div id="q3d" class="feedback wrong">Cambia: el error estándar σ/√n disminuye al crecer n.</div>
+<div id="q3e" class="feedback wrong">No hay relación lineal: con n × 4 la amplitud se divide exactamente por 2 (se reduce 50 %).</div>
+</div>
+<div class="quiz">
+<p class="q">4. Con n = 20 y 95 % de confianza (σ desconocido), ¿qué valor crítico se toma de la tabla t?</p>
+<label><input type="radio" name="q4" onclick="showFeedback('q4a')"><span class="opt">a. 1,729</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4b')"><span class="opt">b. 2,086</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4c')"><span class="opt">c. 2,093 (ν = 19, columna del 95 %)</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4d')"><span class="opt">d. 1,96</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4e')"><span class="opt">e. 2,861</span></label>
+<div id="q4a" class="feedback wrong">Es el valor de ν = 19 para el 90 %. Revisa la columna del nivel pedido.</div>
+<div id="q4b" class="feedback wrong">Es el valor para ν = 20: usaste n en lugar de n − 1.</div>
+<div id="q4c" class="feedback correct">ν = n − 1 = 19 y 95 % de confianza ⇒ t = 2,093.</div>
+<div id="q4d" class="feedback wrong">Es el Z (el límite cuando ν → ∞). Con n = 20 la t es mayor que Z.</div>
+<div id="q4e" class="feedback wrong">Es el valor de ν = 19 al 99 %. Esa columna no es la del 95 %.</div>
+</div>
+<div class="quiz">
+<p class="q">5. Con s = 10 y un error buscado E = 4 al 95 %, el primer paso con n = 20 da (2,093·10/4)² = 27,38. ¿Cuál es el tamaño final y por qué?</p>
+<label><input type="radio" name="q5" onclick="showFeedback('q5a')"><span class="opt">a. 25, calculado directamente con Z = 1,96</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5b')"><span class="opt">b. 28, el primer resultado redondeado</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5c')"><span class="opt">c. 27,38, sin redondear</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5d')"><span class="opt">d. 6, porque ya se tenían 6 estudiantes</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5e')"><span class="opt">e. 27: el proceso se estabiliza (con ν = 26 vuelve a salir 27)</span></label>
+<div id="q5a" class="feedback wrong">Con σ desconocido, usar Z subestima n: t es mayor que Z y pide más observaciones.</div>
+<div id="q5b" class="feedback wrong">Un paso no alcanza: t cambia al cambiar n (ν = 27 en lugar de 19). Hay que iterar hasta que coincidan.</div>
+<div id="q5c" class="feedback wrong">El tamaño de muestra se redondea siempre hacia arriba: es una cantidad de personas.</div>
+<div id="q5d" class="feedback wrong">Con n = 6 el error es de 10,5; para llegar a E = 4 hacen falta muchos más.</div>
+<div id="q5e" class="feedback correct">28 → 26,3 → 27; con n = 27, t = 2,056 y (2,056·10/4)² = 26,4 ⇒ 27: el n que entra es el que sale.</div>
+</div>
+<div class="quiz">
+<p class="q">6. El IC al 95 % para la presión diastólica media es (46,34; 54,36). ¿Cuál es la interpretación correcta?</p>
+<label><input type="radio" name="q6" onclick="showFeedback('q6a')"><span class="opt">a. El 95 % de las mediciones están entre 46,34 y 54,36</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6b')"><span class="opt">b. El 95 % de las muestras tiene una media muestral entre 46,34 y 54,36</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6c')"><span class="opt">c. Con 95 % de probabilidad, la próxima persona medirá entre 46,34 y 54,36</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6d')"><span class="opt">d. Con 95 % de confianza, la media poblacional está entre 46,34 y 54,36; el método captura μ en el 95 % de las muestras</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6e')"><span class="opt">e. La media muestral vale 50,35 con 95 % de probabilidad</span></label>
+<div id="q6a" class="feedback wrong">El IC es sobre la media poblacional, no sobre el rango de los datos individuales (que son más dispersos).</div>
+<div id="q6b" class="feedback wrong">Es una confusión con la distribución muestral: lo que se acota es μ, y los extremos cambian con cada muestra.</div>
+<div id="q6c" class="feedback wrong">Eso sería un intervalo de predicción para un individuo, mucho más ancho. El IC es para la media.</div>
+<div id="q6d" class="feedback correct">El nivel de confianza se refiere al procedimiento: repetido muchas veces, el 95 % de los intervalos contiene a μ.</div>
+<div id="q6e" class="feedback wrong">x̄ = 50,35 es un dato conocido de la muestra, sin incertidumbre. La incertidumbre está en μ.</div>
+</div>
+
+<div class="ask">
+¿Quieres que te dé un enunciado de IC con distintos datos y tú me digas solo Z o t, ν, E y la interpretación, antes de calcular? Es lo que suele pedir el examen.
+</div>
+
+<footer>
+Ejemplos tomados de la teoría de la cátedra (Bariloche, consultas médicas) y del TP5 (ejercicios 1, 3, 5, 6, 9) y de los ejercicios adicionales — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0020-proporcion-muestral-e-ic-proporcion.html">Lección 20 — Proporción muestral e IC de proporción</a></span>
+  <span><a href="0022-regresion-estilo-tp6.html">Lección 22 — Regresión y correlación al estilo TP6</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

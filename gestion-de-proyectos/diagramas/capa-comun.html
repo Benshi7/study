@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Una capa geográfica común</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Diagram skin for diagram-design SVGs (profile "unicaba-cursada").
+   Shared by clases/*.html, slides/* and diagramas/*.html. Self-contained: it does not need course.css.
+   Light values = assets/course.css tokens; dark follows data-theme (theme.js) or the system. */
+:root {
+  --d-paper: #ffffff;
+  --d-paper-2: #f8f1f5;
+  --d-box: #ffffff;
+  --d-ink: #24171f;
+  --d-muted: #6a5764;
+  --d-soft: #8d7a87;
+  --d-rule: #e6d3df;
+  --d-accent: #b83a95;
+  --d-accent-ink: #9c2a7b;
+  --d-accent-tint: rgba(184, 58, 149, .08);
+  --d-link: #6b2fae;
+  --d-link-tint: rgba(107, 47, 174, .08);
+}
+:root[data-theme="dark"] {
+  --d-paper: #1a1218;
+  --d-paper-2: #241a22;
+  --d-box: #241a22;
+  --d-ink: #f2e9ef;
+  --d-muted: #b3a3ae;
+  --d-soft: #8f7d89;
+  --d-rule: #43303e;
+  --d-accent: #f08fcf;
+  --d-accent-ink: #f08fcf;
+  --d-accent-tint: rgba(240, 143, 207, .10);
+  --d-link: #b99af0;
+  --d-link-tint: rgba(185, 154, 240, .10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --d-paper: #1a1218;
+    --d-paper-2: #241a22;
+    --d-box: #241a22;
+    --d-ink: #f2e9ef;
+    --d-muted: #b3a3ae;
+    --d-soft: #8f7d89;
+    --d-rule: #43303e;
+    --d-accent: #f08fcf;
+    --d-accent-ink: #f08fcf;
+    --d-accent-tint: rgba(240, 143, 207, .10);
+    --d-link: #b99af0;
+    --d-link-tint: rgba(185, 154, 240, .10);
+  }
+}
+
+/* Figure wrapper used by lessons */
+figure.diagram { margin: 1.6rem 0; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .5rem; }
+
+/* SVG classes (all prefixed dg-) */
+.dg-bg { fill: var(--d-paper); }
+.dg-mask { fill: var(--d-paper); }
+.dg-zone { fill: var(--d-paper-2); stroke: var(--d-rule); stroke-width: 1; }
+.dg-rule { stroke: var(--d-rule); stroke-width: .8; fill: none; }
+
+.dg-box { fill: var(--d-box); stroke: var(--d-ink); stroke-width: 1; }
+.dg-store { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-focal { fill: var(--d-accent-tint); stroke: var(--d-accent); stroke-width: 1.2; }
+.dg-viol { fill: var(--d-link-tint); stroke: var(--d-link); stroke-width: 1; }
+.dg-ghost { fill: none; stroke: var(--d-muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.dg-dot { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-dot-focal { fill: var(--d-accent); stroke: var(--d-accent); stroke-width: 1; }
+
+.dg-line { stroke: var(--d-muted); stroke-width: 1.2; fill: none; }
+.dg-line-accent { stroke: var(--d-accent); stroke-width: 1.2; fill: none; }
+.dg-line-link { stroke: var(--d-link); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+.dg-ah { fill: var(--d-muted); }
+.dg-ah-accent { fill: var(--d-accent); }
+.dg-ah-link { fill: var(--d-link); }
+
+.dg-name { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-sub { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-row { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-tag { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-soft); letter-spacing: .08em; }
+.dg-lbl { font: 400 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-muted); letter-spacing: .04em; }
+.dg-lbl-accent { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-accent-ink); letter-spacing: .04em; }
+.dg-lbl-link { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-link); letter-spacing: .04em; }
+.dg-note { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-note-accent { font: 600 12px "Montserrat", system-ui, sans-serif; fill: var(--d-accent-ink); }
+
+/* Catedra slide screenshots (clases/img/*.jpg) shown next to the own diagrams. */
+figure.slide { margin: 1.4rem 0; }
+figure.slide img { display: block; width: 100%; max-width: 720px; height: auto; border: 1px solid var(--rule, #e6d3df); border-radius: 6px; }
+figure.slide figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .4rem; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--d-paper); color: var(--d-ink); font-family: "Montserrat", system-ui, sans-serif; margin: 0; }
+  .frame { max-width: 1100px; margin: 0 auto; padding: 2rem 16px 3rem; }
+  .eyebrow { font: 500 .66rem "Geist Mono", ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--d-muted); margin-bottom: .5rem; }
+  h1 { font-size: clamp(1.4rem, 2vw + .8rem, 1.9rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
+  .sub { color: var(--d-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+  svg { display: block; width: 100%; height: auto; min-width: 640px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Diagrama · Taller de Gestión de Proyectos Digitales</p>
+  <h1>Una capa geográfica común</h1>
+  <p class="sub">Fuentes, plataforma y accesos del proyecto.</p>
+  <div class="scroll">
+<svg viewBox="0 0 1040 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="capa-comun-title capa-comun-desc"><title id="capa-comun-title">Una capa geográfica común entre las fuentes y los accesos</title><desc id="capa-comun-desc">Las áreas del GCBA, USIG e Innovación y los vecinos alimentan una única capa geográfica común, con control de calidad; esa capa se consulta desde el Mapa Web, Boti y BAX.</desc><defs><marker id="capa-comun-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="capa-comun-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="capa-comun-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-tag" x="160" y="32" text-anchor="middle">FUENTES</text>
+<text class="dg-tag" x="520" y="32" text-anchor="middle">PLATAFORMA</text>
+<text class="dg-tag" x="880" y="32" text-anchor="middle">ACCESOS</text>
+<path class="dg-line" d="M280 92 H332 Q340 92 340 100 V162 Q340 170 348 170 H400" marker-end="url(#capa-comun-arrow)"/>
+<path class="dg-line" d="M280 212 H400" marker-end="url(#capa-comun-arrow)"/>
+<path class="dg-line-link" d="M280 332 H332 Q340 332 340 324 V262 Q340 254 348 254 H400" marker-end="url(#capa-comun-arrow-link)"/>
+<path class="dg-line-accent" d="M640 170 H692 Q700 170 700 162 V100 Q700 92 708 92 H760" marker-end="url(#capa-comun-arrow-accent)"/>
+<path class="dg-line-accent" d="M640 212 H760" marker-end="url(#capa-comun-arrow-accent)"/>
+<path class="dg-line-accent" d="M640 254 H692 Q700 254 700 262 V324 Q700 332 708 332 H760" marker-end="url(#capa-comun-arrow-accent)"/>
+<rect class="dg-mask" x="40" y="48" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="48" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="79" text-anchor="middle">Áreas del GCBA</text>
+<text class="dg-sub" x="160" y="97" text-anchor="middle">Transporte, Cultura,</text>
+<text class="dg-sub" x="160" y="115" text-anchor="middle">Espacio Público</text>
+<rect class="dg-mask" x="40" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="199" text-anchor="middle">USIG e Innovación</text>
+<text class="dg-sub" x="160" y="217" text-anchor="middle">infraestructura</text>
+<text class="dg-sub" x="160" y="235" text-anchor="middle">y estándares</text>
+<rect class="dg-mask" x="40" y="288" width="240" height="88" rx="6"/>
+<rect class="dg-viol" x="40" y="288" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="328" text-anchor="middle">Vecinos</text>
+<text class="dg-sub" x="160" y="346" text-anchor="middle">reportan y validan</text>
+<rect class="dg-mask" x="400" y="128" width="240" height="168" rx="6"/>
+<rect class="dg-focal" x="400" y="128" width="240" height="168" rx="6"/>
+<text class="dg-name" x="520" y="199" text-anchor="middle">Capa geográfica común</text>
+<text class="dg-sub" x="520" y="217" text-anchor="middle">un solo dato por lugar,</text>
+<text class="dg-sub" x="520" y="235" text-anchor="middle">con control de calidad</text>
+<rect class="dg-mask" x="760" y="48" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="760" y="48" width="240" height="88" rx="6"/>
+<text class="dg-name" x="880" y="88" text-anchor="middle">Mapa Web / Mobile</text>
+<text class="dg-sub" x="880" y="106" text-anchor="middle">consultar, reportar, seguir</text>
+<rect class="dg-mask" x="760" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="760" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="880" y="208" text-anchor="middle">Boti</text>
+<text class="dg-sub" x="880" y="226" text-anchor="middle">WhatsApp</text>
+<rect class="dg-mask" x="760" y="288" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="760" y="288" width="240" height="88" rx="6"/>
+<text class="dg-name" x="880" y="328" text-anchor="middle">BAX</text>
+<text class="dg-sub" x="880" y="346" text-anchor="middle">canal digital de la Ciudad</text>
+<line class="dg-rule" x1="40" y1="424" x2="1000" y2="424"/>
+<text class="dg-tag" x="40" y="452" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="440" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="452" text-anchor="start">lo que construye el proyecto</text>
+<path class="dg-line" d="M376 448 H400" marker-end="url(#capa-comun-arrow)"/>
+<text class="dg-note" x="408" y="452" text-anchor="start">dato oficial</text>
+<path class="dg-line-link" d="M520 448 H544" marker-end="url(#capa-comun-arrow-link)"/>
+<text class="dg-note" x="552" y="452" text-anchor="start">aporte ciudadano</text>
+<path class="dg-line-accent" d="M692 448 H716" marker-end="url(#capa-comun-arrow-accent)"/>
+<text class="dg-note" x="724" y="452" text-anchor="start">la misma capa, en cada canal</text></svg>
+  </div>
+</div>
+</body>
+</html>

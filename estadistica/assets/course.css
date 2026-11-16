@@ -1,0 +1,736 @@
+/* ============================================================================
+   course.css — shared stylesheet for every lesson, reference sheet and the
+   practice app of the Estadística site. Same family as bases-de-datos/assets/
+   course.css (same tokens, light default + automatic dark), extended with the
+   classes the estadística pages use. Every page links this file.
+   ========================================================================== */
+
+:root {
+  --ink:          #1a1a17;
+  --ink-soft:     #56544c;
+  --ink-faint:    #6a675c;   /* darker than bases-de-datos (#8a877c): it is used for text, needs >=4.5:1 */
+  --paper:        #fffef9;
+  --paper-sunk:   #f5f2e8;
+  --rule:         #ddd8c8;
+  --accent:       #7a2e0e;   /* oxide red — headings, marks */
+  --accent-soft:  #f0e2d8;
+  --good:         #2f6b3f;
+  --good-soft:    #e2efe4;
+  --bad:          #8c2c22;
+  --bad-soft:     #f6e2df;
+  --note:         #2a5578;
+  --note-soft:    #e3ecf4;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+           Georgia, "Times New Roman", serif;
+  --sans:  "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif;
+  --mono:  "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --measure: 38rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink:         #e8e4d9;
+    --ink-soft:    #a8a498;
+    --ink-faint:   #938f84;   /* lifted vs bases-de-datos (#77746a) for >=4.5:1 */
+    --paper:       #16161a;
+    --paper-sunk:  #1e1e23;
+    --rule:        #33323a;
+    --accent:      #e08a5c;
+    --accent-soft: #2c211c;
+    --good:        #7fc08e;
+    --good-soft:   #1c2a20;
+    --bad:         #e08a80;
+    --bad-soft:    #2c1d1b;
+    --note:        #8ab6dd;
+    --note-soft:   #1a2430;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.05rem/1.65 var(--serif);
+  font-kerning: normal;
+  font-variant-numeric: oldstyle-num;
+  padding: 3rem 1.5rem 6rem;
+}
+
+/* ---------- layout ------------------------------------------------------- */
+
+.sheet { max-width: var(--measure); margin: 0 auto; }
+
+/* A wide block that breaks the measure — diagrams, tables. */
+.full {
+  max-width: min(56rem, 100%);
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* ---------- masthead ----------------------------------------------------- */
+
+.masthead { margin-bottom: 3rem; }
+
+.masthead__kicker {
+  font: 600 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.6rem;
+}
+
+.masthead__title {
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.7rem;
+}
+
+.masthead__standfirst {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 1.4rem;
+  max-width: 34rem;
+}
+
+.masthead__meta {
+  font: 0.78rem/1.5 var(--sans);
+  color: var(--ink-faint);
+  border-top: 1px solid var(--rule);
+  padding-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+}
+
+/* ---------- headings ----------------------------------------------------- */
+
+h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 3.2rem 0 1rem;
+}
+
+h2 .num {
+  font: 600 0.68rem/1 var(--sans);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+}
+
+h3 {
+  font: 600 1.02rem/1.35 var(--sans);
+  letter-spacing: 0.005em;
+  margin: 2rem 0 0.6rem;
+}
+
+p { margin: 0 0 1.05rem; }
+
+a { color: var(--accent); text-underline-offset: 0.15em; text-decoration-thickness: 0.06em; }
+a:hover { text-decoration-thickness: 0.12em; }
+
+strong { font-weight: 600; }
+
+em.term {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+code, kbd, samp {
+  font: 0.86em/1.5 var(--mono);
+  background: var(--paper-sunk);
+  padding: 0.1em 0.34em;
+  border-radius: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+ul, ol { padding-left: 1.4rem; margin: 0 0 1.05rem; }
+li { margin-bottom: 0.4rem; }
+li > ul, li > ol { margin-top: 0.4rem; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 3rem 0;
+}
+
+/* ---------- callouts ----------------------------------------------------- */
+
+.callout {
+  border-left: 3px solid var(--rule);
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  margin: 1.6rem 0;
+  font-size: 0.97rem;
+}
+.callout > :last-child { margin-bottom: 0; }
+
+.callout__label {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.callout--trap  { border-color: var(--bad);  background: var(--bad-soft); }
+.callout--trap  .callout__label { color: var(--bad); }
+.callout--catedra { border-color: var(--note); background: var(--note-soft); }
+.callout--catedra .callout__label { color: var(--note); }
+.callout--key   { border-color: var(--accent); background: var(--accent-soft); }
+.callout--key   .callout__label { color: var(--accent); }
+
+.callout--trap, .callout--catedra, .callout--key {
+  padding: 0.85rem 1rem 0.85rem 1.1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ---------- figures ------------------------------------------------------ */
+
+figure {
+  margin: 2.2rem 0;
+}
+
+figure:not(.fig) svg { display: block; width: 100%; height: auto; }
+
+figcaption {
+  font: 0.82rem/1.5 var(--sans);
+  color: var(--ink-soft);
+  margin-top: 0.75rem;
+  padding-left: 0.1rem;
+}
+figcaption b { color: var(--ink); font-weight: 600; }
+
+/* Diagram tokens — inline SVGs use these so they follow the theme. */
+svg { --svg-ink: var(--ink); --svg-rule: var(--ink-soft); --svg-paper: var(--paper); }
+
+/* ---------- tables ------------------------------------------------------- */
+
+.tbl-wrap { overflow-x: auto; margin: 1.8rem 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font: 0.9rem/1.45 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.9rem 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+thead th {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1.5px solid var(--ink-soft);
+  white-space: nowrap;
+}
+
+tbody tr:last-child td { border-bottom: 1.5px solid var(--ink-soft); }
+
+/* ---------- retrieval practice: think-then-reveal ------------------------ */
+
+.reveal {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  margin: 1.8rem 0;
+  background: var(--paper-sunk);
+}
+
+.reveal > summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font: 600 0.92rem/1.45 var(--sans);
+  list-style: none;
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+.reveal > summary::-webkit-details-marker { display: none; }
+.reveal > summary::before {
+  content: "▸";
+  color: var(--accent);
+  font-size: 0.8em;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+.reveal[open] > summary::before { transform: rotate(90deg); }
+.reveal > summary:hover { color: var(--accent); }
+
+.reveal__body {
+  padding: 0 1rem 0.9rem 2.2rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.9rem;
+  font-size: 0.97rem;
+}
+.reveal__body > :last-child { margin-bottom: 0; }
+
+/* ---------- quiz (see quiz.js) ------------------------------------------- */
+
+.quiz {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 5px 5px 0;
+  padding: 1.1rem 1.2rem;
+  margin: 1.8rem 0;
+  background: var(--paper-sunk);
+}
+
+.quiz__label {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.quiz__q { font-weight: 600; margin: 0 0 0.9rem; font-size: 1rem; }
+.quiz__q code { font-weight: 400; }
+
+.quiz__options { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+.quiz__options li { margin: 0; }
+
+.quiz__opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 0.93rem/1.45 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.6rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.quiz__opt:hover:not(:disabled) { border-color: var(--accent); }
+.quiz__opt:disabled { cursor: default; }
+
+.quiz__opt.is-correct { border-color: var(--good); background: var(--good-soft); }
+.quiz__opt.is-wrong   { border-color: var(--bad);  background: var(--bad-soft); }
+.quiz__opt.is-missed  { border-color: var(--good); border-style: dashed; }
+
+.quiz__feedback {
+  margin: 0.9rem 0 0;
+  font: 0.92rem/1.55 var(--sans);
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--rule);
+}
+.quiz__feedback.is-correct { border-color: var(--good); }
+.quiz__feedback.is-wrong   { border-color: var(--bad); }
+.quiz__feedback b { font-weight: 600; }
+
+/* ---------- source / footer ---------------------------------------------- */
+
+.source {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  margin: 2.4rem 0;
+  font-size: 0.95rem;
+}
+.source__label {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: block;
+  margin-bottom: 0.45rem;
+}
+.source > :last-child { margin-bottom: 0; }
+
+.ask {
+  background: var(--accent-soft);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  margin: 2.4rem 0 0;
+  font: 0.95rem/1.6 var(--sans);
+}
+.ask > :last-child { margin-bottom: 0; }
+.ask b { color: var(--accent); }
+
+.nav {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font: 0.85rem/1.6 var(--sans);
+  color: var(--ink-faint);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+}
+.nav a { color: var(--ink-soft); text-decoration: none; }
+.nav a:hover { color: var(--accent); text-decoration: underline; }
+
+
+/* ============================================================================
+   Estadística extensions — everything below adapts the estadística markup
+   (no .sheet / .masthead wrappers: kicker, h1 and subtitle sit directly in
+   <body>) onto the tokens above.
+   ========================================================================== */
+
+/* ---------- legacy token aliases ----------------------------------------
+   Inline <style> blocks and practice.css were written against the old
+   "notebook" variable names. They are mapped onto the new tokens so every
+   page follows the light/dark switch without per-file colour literals. */
+:root {
+  --measure:      40rem;
+  --paper-raised: var(--paper-sunk);
+  --ink-dim:      var(--ink-soft);
+  --line:         var(--rule);
+  --accent-dim:   var(--accent);
+  --accent-dim:   color-mix(in srgb, var(--accent) 60%, var(--paper));
+  --good-bg:      var(--good-soft);
+  --bad-bg:       var(--bad-soft);
+  --code-bg:      var(--paper-sunk);
+  --formula:      var(--note);
+  --font-display: var(--serif);
+  --font-body:    var(--serif);
+  --font-mono:    var(--mono);
+}
+
+/* ---------- page frame -------------------------------------------------- */
+
+body {
+  max-width: calc(var(--measure) + 3rem);
+  margin: 0 auto;
+  font-variant-numeric: lining-nums;   /* statistics: digits must read as digits */
+}
+
+.kicker {
+  display: block;
+  font: 600 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.6rem;
+}
+
+h1 {
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.7rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 3rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--rule);
+  max-width: 36rem;
+}
+
+/* The numbered "§" mark keeps the notebook's section feel in the Tufte voice. */
+h2::before {
+  content: "§";
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 0.8em;
+  margin-right: 0.5em;
+}
+
+h3 { font-family: var(--sans); }
+
+em { font-style: italic; }
+em.term, .term { font-weight: 600; font-style: normal; }
+em.term { color: var(--accent); }
+
+a { text-underline-offset: 0.15em; }
+
+/* ---------- formulas / code --------------------------------------------- */
+
+.formula, .f, code, kbd, samp {
+  font: 0.86em/1.5 var(--mono);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  padding: 0.1em 0.34em;
+  border-radius: 3px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.f { white-space: nowrap; }
+/* A table cell carrying .formula keeps the mono face but not the inline chip. */
+td.formula, th.formula { background: none; border-radius: 0; padding: 0.55rem 0.9rem 0.55rem 0; font-size: 0.86rem; }
+
+pre {
+  font: 0.86rem/1.55 var(--mono);
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.9rem 1.1rem;
+  overflow-x: auto;
+}
+pre code { background: none; padding: 0; }
+
+/* ---------- boxes (notas, ejemplos, trampas, calculadora, preguntame) ----- */
+
+.box, .example, .warn, .calc, .ask {
+  border-left: 3px solid var(--rule);
+  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1rem 0.85rem 1.1rem;
+  margin: 1.6rem 0;
+  font-size: 0.97rem;
+  background: var(--paper-sunk);
+}
+.box > :first-child, .example > :first-child, .warn > :first-child, .calc > :first-child { margin-top: 0; }
+.box > :last-child,  .example > :last-child,  .warn > :last-child,  .calc > :last-child,
+.ask > :last-child { margin-bottom: 0; }
+
+.box::before, .example::before, .warn::before, .calc::before, .ask::before {
+  display: block;
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  color: var(--ink-soft);
+}
+
+.box     { border-left-color: var(--accent); background: var(--accent-soft); }
+.box::before     { content: "NOTA"; color: var(--accent); }
+
+.example { border-left-color: var(--good); }
+.example::before { content: "EJEMPLO"; color: var(--good); }
+
+.warn    { border-left-color: var(--bad); background: var(--bad-soft); }
+.warn::before    { content: "⚠ TRAMPA"; color: var(--bad); }
+
+.calc    { border-left-color: var(--note); background: var(--note-soft); }
+.calc::before    { content: "EN LA FX-991EX"; color: var(--note); }
+
+.ask {
+  border-left: 0;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  margin: 2.4rem 0 0;
+  font: 0.95rem/1.6 var(--sans);
+}
+.ask::before { content: "PREGUNTAME"; color: var(--accent); }
+
+.box ol, .example ol, .calc ol { margin: 0.4rem 0; padding-left: 1.3rem; }
+.box li, .example li, .calc li { margin: 0.35rem 0; }
+.box table, .example table, .calc table { background: transparent; }
+
+/* Calculator keystrokes: a quiet keycap, not a coloured pill. */
+.key {
+  display: inline-block;
+  font: 600 0.8rem/1.5 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink-faint);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 0.4rem;
+  margin: 0.1rem;
+  white-space: nowrap;
+}
+.out { color: var(--good); font-weight: 600; }
+.bad { color: var(--bad); font-weight: 600; }
+.warn-box {
+  border-left: 3px solid var(--bad); background: var(--bad-soft);
+  padding: 0.85rem 1rem; border-radius: 0 4px 4px 0;
+}
+
+/* ---------- tables --------------------------------------------------------
+   Header cells are NOT upper-cased: z / Z, p / P, n / N mean different things. */
+
+.tw { overflow-x: auto; margin: 1.8rem 0; }
+.tw > table { margin: 0; }
+table { margin: 1.6rem 0; }
+
+th {
+  font: 600 0.8rem/1.4 var(--sans);
+  color: var(--ink-soft);
+  border-bottom: 1.5px solid var(--ink-soft);
+}
+thead th { text-transform: none; letter-spacing: 0; font-size: 0.8rem; white-space: normal; }
+
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+td.c, th.c { text-align: center; }
+tr.tot td { font-weight: 600; border-top: 1.5px solid var(--ink-soft); }
+.compact td, .compact th { padding: 0.35rem 0.6rem 0.35rem 0; font-size: 0.85rem; }
+
+/* ---------- figures & SVG ---------------------------------------------- */
+
+.fig { margin: 1.8rem 0; text-align: center; }
+.fig svg { display: inline-block; max-width: 100%; height: auto; }
+.fig figcaption { text-align: center; }
+.plots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin: 1.8rem 0;
+}
+.plots .fig {
+  margin: 0; padding: 0.6rem 0.4rem;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 4px;
+}
+
+/* Diagram classes — every inline chart uses these, so light and dark both work. */
+.svg-axis  { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.svg-curve { stroke: var(--ink); stroke-width: 2; fill: none; }
+.svg-fill  { fill: var(--accent); fill-opacity: 0.36; stroke: none; }
+.svg-mark  { stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 3 3; }
+.svg-t     { fill: var(--ink-soft); font: 11px var(--sans); }
+.svg-tb    { fill: var(--ink); font: 600 11.5px var(--sans); }
+.svg-dot   { fill: var(--accent); fill-opacity: 0.85; }
+.svg-line  { stroke: var(--note); stroke-width: 1.6; fill: none; }
+
+.svg-ink    { fill: var(--ink); }
+.svg-accent { fill: var(--accent); }
+.svg-good   { fill: var(--good); }
+.svg-bad    { fill: var(--bad); }
+.svg-note   { fill: var(--note); }
+.svg-bg     { fill: var(--paper); }
+.svg-s-ink    { stroke: var(--ink); }
+.svg-s-accent { stroke: var(--accent); }
+.svg-s-good   { stroke: var(--good); }
+.svg-s-bad    { stroke: var(--bad); }
+.svg-s-note   { stroke: var(--note); }
+.svg-s-faint  { stroke: var(--ink-faint); }
+
+/* ---------- quiz (radio + feedback, driven by each page's showFeedback) ---- */
+
+.quiz {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 5px 5px 0;
+  padding: 1.1rem 1.2rem;
+  margin: 1.8rem 0;
+  background: var(--paper-sunk);
+}
+.quiz p.q { font: 600 1rem/1.5 var(--serif); margin: 0 0 0.9rem; color: var(--ink); }
+
+.quiz label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.45rem 0;
+  padding: 0.6rem 0.85rem;
+  font: 0.93rem/1.45 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+.quiz label:hover { border-color: var(--accent); }
+.quiz label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.quiz label span.opt { flex: 1; }
+.quiz input[type="radio"] { accent-color: var(--accent); margin-top: 0.2rem; cursor: pointer; }
+
+.feedback {
+  display: none;
+  margin-top: 0.9rem;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--rule);
+  border-radius: 0 4px 4px 0;
+  font: 0.92rem/1.55 var(--sans);
+  color: var(--ink);
+  animation: reveal 0.25s ease;
+}
+.feedback::before {
+  display: block;
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.3rem;
+}
+.feedback.correct { background: var(--good-soft); border-left-color: var(--good); }
+.feedback.wrong   { background: var(--bad-soft);  border-left-color: var(--bad); }
+.feedback.correct::before { content: "✓ CORRECTO";   color: var(--good); }
+.feedback.wrong::before   { content: "✗ INCORRECTO"; color: var(--bad); }
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .feedback { animation: none; } }
+
+/* ---------- source / footer / nav ---------------------------------------- */
+
+/* In estadística, .source is a one-line attribution, not a bordered box. */
+.source {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 1.2rem 0;
+  font: 0.85rem/1.55 var(--sans);
+  color: var(--ink-soft);
+}
+
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font: 0.85rem/1.6 var(--sans);
+  color: var(--ink-soft);
+}
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin-top: 1rem;
+  font: 0.85rem/1.6 var(--sans);
+}
+.nav-row a { color: var(--ink-soft); text-decoration: none; }
+.nav-row a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---------- layout helpers ------------------------------------------------ */
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 640px) {
+  body { padding: 2rem 1rem 4rem; font-size: 1rem; }
+  .two-col { grid-template-columns: 1fr; }
+  /* Bare tables scroll sideways instead of widening the page. */
+  table { display: block; overflow-x: auto; max-width: 100%; }
+}
+
+/* ---------- print -------------------------------------------------------- */
+
+@media print {
+  :root {
+    --ink: #000; --ink-soft: #444; --ink-faint: #666;
+    --paper: #fff; --paper-sunk: #f6f6f6; --rule: #ccc;
+    --accent: #000; --accent-soft: #f2f2f2;
+    --good: #000; --good-soft: #f2f2f2; --bad: #000; --bad-soft: #f2f2f2;
+    --note: #000; --note-soft: #f2f2f2;
+  }
+  body { padding: 0; max-width: none; font-size: 10.5pt; }
+  .sheet { max-width: none; }
+  h2, h3, figure, table, .callout, .quiz, .reveal, .box, .example, .warn, .calc, .card { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  .reveal[open] > summary::before, .reveal > summary::before { content: ""; }
+  .reveal:not([open]) .reveal__body { display: block; }
+  .quiz label { border-color: #999; }
+  .nav, .nav-row, .ask { display: none; }
+  a { color: #000; text-decoration: underline; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #666; }
+}

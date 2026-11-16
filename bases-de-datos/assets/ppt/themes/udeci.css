@@ -1,0 +1,49 @@
+/* theme: udeci — mismos tokens que assets/course.css (skin rosa), para que los decks y las lecciones se lean como un solo curso.
+   Sigue al modo oscuro del sistema salvo que se fije a mano con data-mode="light|dark" (assets/ppt/mode.js). */
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap");
+:root{
+  --bg:#ffffff;--bg-soft:#fff6fa;--surface:#ffffff;--surface-2:#fff6fa;
+  --border:#f1d6e3;--border-strong:#dcb3c6;
+  --text-1:#2b1422;--text-2:#5c4152;--text-3:#7a5b6c;
+  --accent:#c2185b;--accent-2:#8e1244;--accent-3:#2b1422;
+  --accent-ink:#ffffff;
+  --accent-tint:#fde8f1;
+  --good:#17784a;--warn:#a15c00;--bad:#bf2630;--note:#2a5578;
+  --grad:linear-gradient(135deg,#c2185b,#8e1244);
+  --grad-soft:linear-gradient(135deg,#fff6fa,#ffffff);
+  --radius:8px;--radius-sm:4px;--radius-lg:10px;
+  --shadow:none;--shadow-lg:none;
+  --font-sans:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --font-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --font-serif:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+  --letter-tight:-.02em;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-mode="light"]){
+    --bg:#140b11;--bg-soft:#1e1219;--surface:#140b11;--surface-2:#1e1219;
+    --border:#3a2331;--border-strong:#5a3a4c;
+    --text-1:#f8e9f1;--text-2:#d9bccb;--text-3:#c3a0b3;
+    --accent:#ff6fa9;--accent-2:#ff9cc4;--accent-3:#f8e9f1;
+    --accent-ink:#140b11;
+    --accent-tint:#3b1529;
+    --good:#6fd39c;--warn:#f0b35a;--bad:#ff8a8f;--note:#8ab6dd;
+    --grad:linear-gradient(135deg,#ff6fa9,#ff9cc4);
+    --grad-soft:linear-gradient(135deg,#1e1219,#140b11);
+    color-scheme:dark;
+  }
+}
+/* Elección manual (tecla L o el botón de la esquina): gana sobre el modo del sistema. */
+:root[data-mode="dark"]{
+    --bg:#140b11;--bg-soft:#1e1219;--surface:#140b11;--surface-2:#1e1219;
+    --border:#3a2331;--border-strong:#5a3a4c;
+    --text-1:#f8e9f1;--text-2:#d9bccb;--text-3:#c3a0b3;
+    --accent:#ff6fa9;--accent-2:#ff9cc4;--accent-3:#f8e9f1;
+    --accent-ink:#140b11;
+    --accent-tint:#3b1529;
+    --good:#6fd39c;--warn:#f0b35a;--bad:#ff8a8f;--note:#8ab6dd;
+    --grad:linear-gradient(135deg,#ff6fa9,#ff9cc4);
+    --grad-soft:linear-gradient(135deg,#1e1219,#140b11);
+    color-scheme:dark;
+  }

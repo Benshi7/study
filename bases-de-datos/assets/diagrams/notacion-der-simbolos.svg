@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" width="760" height="520"
+     role="img" aria-labelledby="nds-title nds-desc">
+  <title id="nds-title">Tabla de símbolos del DER en la notación de la cátedra</title>
+  <desc id="nds-desc">Doce celdas con los símbolos del diagrama entidad-relación. Entidad fuerte: rectángulo simple. Entidad débil: rectángulo doble. Relación: rombo. Relación identificativa: rombo doble. Atributo: elipse. Atributo clave: elipse con el nombre subrayado. Atributo multivaluado: elipse doble. Atributo derivado: elipse de línea punteada. Atributo compuesto: elipse madre con elipses hijas colgando. Cardinalidad: los números uno y ene escritos sobre las líneas a cada lado del rombo. Especialización total y exclusiva: triángulo ISA con círculo arriba y arco cruzando las patas. Pata de gallo: la pata de tres puntas toca a la entidad del lado de los muchos.</desc>
+
+  <style>
+    .n-paper { fill: #fffef9; }
+    .n-cell  { fill: none; stroke: rgba(26,26,23,0.12); stroke-width: 1; }
+    .n-sh    { fill: rgba(26,26,23,0.04); stroke: #1a1a17; stroke-width: 1.4; }
+    .n-shn   { fill: none; stroke: #1a1a17; stroke-width: 1.4; }
+    .n-dash  { fill: rgba(26,26,23,0.04); stroke: #1a1a17; stroke-width: 1.6; stroke-dasharray: 6 4; }
+    .n-line  { fill: none; stroke: #1a1a17; stroke-width: 1.3; }
+    .n-acc   { fill: none; stroke: #7a2e0e; stroke-width: 2.2; stroke-linecap: round; }
+    .n-accf  { fill: #fffef9; stroke: #7a2e0e; stroke-width: 2.2; }
+    .n-txt   { fill: #1a1a17; font: 600 10px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .n-card  { fill: #7a2e0e; font: 700 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .n-lab   { fill: #1a1a17; font: 700 10px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; text-anchor: middle; letter-spacing: 0.06em; }
+    .n-sub   { fill: #56544c; font: 400 9.5px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+
+    @media (prefers-color-scheme: dark) {
+      .n-paper { fill: #16161a; }
+      .n-cell  { stroke: rgba(232,228,217,0.14); }
+      .n-sh    { fill: rgba(232,228,217,0.05); stroke: #e8e4d9; }
+      .n-shn   { stroke: #e8e4d9; }
+      .n-dash  { fill: rgba(232,228,217,0.05); stroke: #e8e4d9; }
+      .n-line  { stroke: #e8e4d9; }
+      .n-acc   { stroke: #e08a5c; }
+      .n-accf  { fill: #16161a; stroke: #e08a5c; }
+      .n-txt   { fill: #e8e4d9; }
+      .n-card  { fill: #e08a5c; }
+      .n-lab   { fill: #e8e4d9; }
+      .n-sub   { fill: #a8a498; }
+    }
+  </style>
+
+  <rect class="n-paper" x="0" y="0" width="760" height="520"/>
+
+  <!-- ================= ROW 1 ================= -->
+  <!-- entidad fuerte -->
+  <g>
+    <rect class="n-cell" x="8" y="14" width="182" height="158" rx="3"/>
+    <rect class="n-sh" x="44" y="58" width="110" height="36" rx="1"/>
+    <text class="n-txt" x="99" y="81">Empleado</text>
+    <text class="n-lab" x="99" y="134">ENTIDAD FUERTE</text>
+    <text class="n-sub" x="99" y="150">Rectángulo simple</text>
+  </g>
+  <!-- entidad débil -->
+  <g>
+    <rect class="n-cell" x="198" y="14" width="182" height="158" rx="3"/>
+    <rect class="n-shn" x="228" y="52" width="122" height="48" rx="1"/>
+    <rect class="n-sh"  x="234" y="58" width="110" height="36" rx="1"/>
+    <text class="n-txt" x="289" y="81">Hijo</text>
+    <text class="n-lab" x="289" y="134">ENTIDAD DÉBIL</text>
+    <text class="n-sub" x="289" y="150">Rectángulo doble</text>
+  </g>
+  <!-- relación -->
+  <g>
+    <rect class="n-cell" x="388" y="14" width="182" height="158" rx="3"/>
+    <path class="n-sh" d="M479 48 L535 76 L479 104 L423 76 Z"/>
+    <text class="n-txt" x="479" y="80">Tiene</text>
+    <text class="n-lab" x="479" y="134">RELACIÓN</text>
+    <text class="n-sub" x="479" y="150">Rombo simple</text>
+  </g>
+  <!-- relación identificativa -->
+  <g>
+    <rect class="n-cell" x="578" y="14" width="174" height="158" rx="3"/>
+    <path class="n-shn" d="M665 42 L727 76 L665 110 L603 76 Z"/>
+    <path class="n-sh"  d="M665 51 L714 76 L665 101 L616 76 Z"/>
+    <text class="n-txt" x="665" y="80">Tiene por</text>
+    <text class="n-lab" x="665" y="134">REL. IDENTIFICATIVA</text>
+    <text class="n-sub" x="665" y="150">Rombo doble · va con la débil</text>
+  </g>
+
+  <!-- ================= ROW 2 ================= -->
+  <!-- atributo -->
+  <g>
+    <rect class="n-cell" x="8" y="180" width="182" height="158" rx="3"/>
+    <ellipse class="n-sh" cx="99" cy="238" rx="56" ry="22"/>
+    <text class="n-txt" x="99" y="242">Nombre</text>
+    <text class="n-lab" x="99" y="300">ATRIBUTO</text>
+    <text class="n-sub" x="99" y="316">Elipse simple</text>
+  </g>
+  <!-- clave -->
+  <g>
+    <rect class="n-cell" x="198" y="180" width="182" height="158" rx="3"/>
+    <ellipse class="n-sh" cx="289" cy="238" rx="56" ry="22"/>
+    <text class="n-txt" x="289" y="242" text-decoration="underline">CodigoTema</text>
+    <text class="n-lab" x="289" y="300">ATRIBUTO CLAVE</text>
+    <text class="n-sub" x="289" y="316">El nombre va subrayado</text>
+  </g>
+  <!-- multivaluado -->
+  <g>
+    <rect class="n-cell" x="388" y="180" width="182" height="158" rx="3"/>
+    <ellipse class="n-shn" cx="479" cy="238" rx="62" ry="27"/>
+    <ellipse class="n-sh"  cx="479" cy="238" rx="54" ry="20"/>
+    <text class="n-txt" x="479" y="242">Teléfono</text>
+    <text class="n-lab" x="479" y="300">MULTIVALUADO</text>
+    <text class="n-sub" x="479" y="316">Elipse DOBLE · después tabla propia</text>
+  </g>
+  <!-- derivado -->
+  <g>
+    <rect class="n-cell" x="578" y="180" width="174" height="158" rx="3"/>
+    <ellipse class="n-dash" cx="665" cy="238" rx="56" ry="22"/>
+    <text class="n-txt" x="665" y="242">Antigüedad</text>
+    <text class="n-lab" x="665" y="300">DERIVADO</text>
+    <text class="n-sub" x="665" y="316">Elipse PUNTEADA · no se guarda</text>
+  </g>
+
+  <!-- ================= ROW 3 ================= -->
+  <!-- compuesto -->
+  <g>
+    <rect class="n-cell" x="8" y="346" width="182" height="166" rx="3"/>
+    <ellipse class="n-sh" cx="99" cy="386" rx="50" ry="19"/>
+    <text class="n-txt" x="99" y="390">Dirección</text>
+    <path class="n-line" d="M78 401 L56 422"/>
+    <path class="n-line" d="M120 401 L142 422"/>
+    <ellipse class="n-sh" cx="54" cy="434" rx="34" ry="15"/>
+    <text class="n-txt" x="54" y="438">Calle</text>
+    <ellipse class="n-sh" cx="144" cy="434" rx="34" ry="15"/>
+    <text class="n-txt" x="144" y="438">Nro</text>
+    <text class="n-lab" x="99" y="478">COMPUESTO</text>
+    <text class="n-sub" x="99" y="494">Elipses hijas colgando · se aplana</text>
+  </g>
+  <!-- cardinalidad -->
+  <g>
+    <rect class="n-cell" x="198" y="346" width="182" height="166" rx="3"/>
+    <rect class="n-sh" x="209" y="408" width="44" height="26" rx="1"/>
+    <text class="n-txt" x="231" y="425">Lab.</text>
+    <path class="n-line" d="M253 421 L267 421"/>
+    <text class="n-card" x="260" y="412">1</text>
+    <path class="n-sh" d="M289 405 L311 421 L289 437 L267 421 Z"/>
+    <text class="n-txt" x="289" y="424" style="font-size:8px">Crea</text>
+    <path class="n-line" d="M311 421 L325 421"/>
+    <text class="n-card" x="318" y="412">N</text>
+    <rect class="n-sh" x="325" y="408" width="44" height="26" rx="1"/>
+    <text class="n-txt" x="347" y="425">Medic.</text>
+    <text class="n-lab" x="289" y="478">CARDINALIDAD</text>
+    <text class="n-sub" x="289" y="494">La N va del lado de los muchos</text>
+  </g>
+  <!-- ISA -->
+  <g>
+    <rect class="n-cell" x="388" y="346" width="182" height="166" rx="3"/>
+    <rect class="n-sh" x="449" y="366" width="60" height="22" rx="1"/>
+    <text class="n-txt" x="479" y="381">Empleado</text>
+    <path class="n-line" d="M479 388 L479 394"/>
+    <circle class="n-accf" cx="479" cy="400" r="6"/>
+    <path class="n-line" d="M479 406 L479 408"/>
+    <path class="n-shn" d="M461 408 L497 408 L479 436 Z"/>
+    <path class="n-line" d="M479 436 L432 456"/>
+    <path class="n-line" d="M479 436 L526 456"/>
+    <path class="n-acc" d="M443 444 Q479 470 515 444"/>
+    <text class="n-lab" x="479" y="478">ISA · TOTAL + EXCLUSIVA</text>
+    <text class="n-sub" x="479" y="494">Círculo = total · Arco = exclusiva</text>
+  </g>
+  <!-- pata de gallo -->
+  <g>
+    <rect class="n-cell" x="578" y="346" width="174" height="166" rx="3"/>
+    <rect class="n-sh" x="596" y="394" width="52" height="28" rx="6"/>
+    <text class="n-txt" x="622" y="412">Docente</text>
+    <path class="n-line" d="M648 408 L692 408"/>
+    <!-- one side: single stroke -->
+    <path class="n-acc" d="M660 400 L660 416"/>
+    <!-- many side: crow's foot touching Curso -->
+    <path class="n-acc" d="M692 408 L680 398 M692 408 L680 408 M692 408 L680 418"/>
+    <rect class="n-sh" x="692" y="394" width="46" height="28" rx="6"/>
+    <text class="n-txt" x="715" y="412">Curso</text>
+    <text class="n-lab" x="665" y="478">PATA DE GALLO</text>
+    <text class="n-sub" x="665" y="494">La pata toca la entidad de los MUCHOS</text>
+  </g>
+
+</svg>

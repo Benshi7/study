@@ -1,0 +1,7 @@
+__pycache__/
+.ipynb_checkpoints/
+db/
+export/
+.venv/
+entregable/
+TP_freMTPL2_entregable.zip

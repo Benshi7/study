@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unidad 1 · Simulacro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="suite.css">
+<script>
+  try { const t = JSON.parse(localStorage.getItem("adi-suite:theme")); if (t) document.documentElement.setAttribute("data-theme", t); } catch (_) {}
+</script>
+<style>
+  body { background: var(--paper); color: var(--ink); font-family: var(--body); margin: 0; }
+  .u1 { max-width: 760px; margin: 0 auto; padding-block: 28px 80px; padding-inline: 16px; }
+  .u1-top { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 0.9rem; }
+  .u1-top a { color: var(--pink); }
+  .u1 h1 { font-family: var(--display); font-size: clamp(1.7rem, 4vw, 2.4rem); margin: 18px 0 6px; text-wrap: balance; line-height: 1.1; }
+  .u1 .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .u1 .lede { color: var(--ink-soft); max-width: 62ch; }
+  .tips { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 18px; margin: 18px 0 8px; }
+  .tips ul { margin: 6px 0 0; padding-left: 20px; }
+  .tips li { margin: 4px 0; }
+  .q { border-top: 1px solid var(--rule); padding: 22px 0 8px; }
+  .q-head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .q-num { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; }
+  .tag { font-family: var(--mono); font-size: 0.68rem; padding: 2px 8px; border-radius: 999px; background: var(--pink-soft); color: var(--pink-strong); }
+  .q-text { font-size: 1.05rem; margin: 6px 0 12px; line-height: 1.45; }
+  .q-text p { margin: 6px 0; }
+  .q-assoc { font-size: 0.93rem; color: var(--ink-soft); background: var(--surface); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; }
+  .q-assoc p { margin: 4px 0; }
+  .opt { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px; margin: 6px 0; cursor: pointer; background: var(--paper); }
+  .opt:hover { border-color: var(--pink); }
+  .opt input { margin-top: 4px; accent-color: var(--pink); flex: none; }
+  .opt .letter { font-family: var(--mono); color: var(--muted); flex: none; }
+  .opt.ok { border-color: var(--ok); background: var(--ok-soft); }
+  .opt.bad { border-color: var(--bad); background: var(--bad-soft); }
+  .opt.missed { border-color: var(--ok); border-style: dashed; }
+  .opt.neutral { border-color: var(--warn); border-style: dashed; }
+  .graded .opt { cursor: default; }
+  .fb { margin: 10px 0 4px; padding: 10px 14px; border-left: 3px solid var(--pink); background: var(--surface); border-radius: 0 8px 8px 0; font-size: 0.95rem; }
+  .fb strong.pts { font-family: var(--mono); }
+  .bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+  .btn { font: inherit; font-weight: 700; padding: 12px 20px; border-radius: 8px; border: 1px solid var(--pink); cursor: pointer; background: var(--paper); color: var(--ink); }
+  .btn.primary { background: var(--pink); color: var(--on-pink); }
+  .result { margin-top: 28px; padding: 20px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); }
+  .result .big { font-family: var(--display); font-size: 3rem; font-weight: 800; color: var(--pink); line-height: 1; font-variant-numeric: tabular-nums; }
+  .legend { font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+  .progress { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); padding: 8px 0; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); border-bottom: 1px solid var(--rule); z-index: 2; }
+</style>
+</head>
+<body>
+<div class="u1">
+  <div class="u1-top" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a href="index.html">← Suite</a> · <a href="index.html#simulacro">Simulacro mezclado</a> · <a href="../reference/cuestionario-unidad-1.html">Clave comentada</a> <button type="button" id="theme-btn" style="font:inherit;font-size:0.85rem;padding:6px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);cursor:pointer;margin-left:auto">Tema</button></div>
+  <p class="eyebrow" style="margin-top:20px">Moodle · Unidad 1 · las 20 preguntas reales</p>
+  <h1>Unidad 1: simulacro formato Moodle</h1>
+  <p class="lede">Las preguntas del cuestionario de la cátedra, en su formato original: opción única, <strong>"seleccione todas las que correspondan"</strong>, verdadero o falso y asociación. Respondé todas y corregí al final.</p>
+  <div class="tips">
+    <strong>Para las de "seleccione todas"</strong>
+    <ul>
+      <li>Evaluá cada opción por separado, como un V/F contra el slide.</li>
+      <li>Los distractores de la cátedra suelen ser absurdos: hardware, diseño gráfico, "tamaño físico".</li>
+      <li>Ante la duda, no marques. El puntaje estima el estilo de Moodle: cada opción correcta suma su parte y cada incorrecta resta la suya.</li>
+    </ul>
+  </div>
+  <div class="progress" id="progress">0 de 20 respondidas</div>
+  <div id="quiz"></div>
+  <div class="bar" id="bar">
+    <button class="btn primary" id="grade" type="button">Corregir</button>
+    <button class="btn" id="reset" type="button">Empezar de nuevo</button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<script>
+(() => {
+  // type: single | multi | tf. key: indexes of correct options. doubt: options the key cannot confirm (neither add nor subtract).
+  const Q = [
+    { t: "single", q: "¿Cuál de las siguientes características es propia del concepto de Big Data?",
+      o: ["Una cantidad reducida de información.", "Un procesamiento de información convencional.", "Una variedad limitada de información.", "Un gran volumen, velocidad y variedad de información."],
+      key: [3], why: "Definición del slide: gran <strong>volumen, velocidad y variedad</strong> que requiere un procesamiento costeable e innovador." },
+    { t: "multi", q: "¿Cuáles son las características que denotan la importancia del Big Data? (Seleccione todas las que correspondan)",
+      o: ["Facilita una mayor velocidad y eficiencia en las operaciones de la empresa", "Proporciona respuestas a preguntas específicas.", "Identifica problemas de una forma más comprensible", "Ayuda a entender al consumidor.", "Permite identificar nuevas oportunidades", "Permite el análisis de información desorganizada"],
+      key: [0, 2, 3, 4], doubt: [1], why: "El slide lista: moverse rápido y con eficiencia (a), problemas más comprensibles (c), entender al consumidor (d) y nuevas oportunidades (e). La <strong>b es dudosa</strong>: el slide dice \"responde preguntas que <em>ni sabían que tenían</em>\", no \"específicas\". No suma ni resta. La f no está en el slide." },
+    { t: "multi", q: "¿En qué aspectos de la organización ofrece beneficios el Big Data? (Seleccione todas las que correspondan)",
+      o: ["Reducción de costos", "Mejora en la toma de decisiones.", "Innovación de productos y servicios.", "Generación de nuevas herramientas para trabajar más", "Ventaja competitiva en la oferta de servicios adaptados a las necesidades de los consumidores.", "Aumento del tamaño físico de las empresas"],
+      key: [0, 1, 2, 4], why: "Costos y decisiones (UPS), nuevos servicios (Telefónica–BBVA) y ventaja competitiva con servicios a medida (Generali). \"Trabajar más\" y \"tamaño físico\" son relleno." },
+    { t: "single", q: "¿Cuáles son las características de la cuarta revolución industrial?",
+      o: ["Mayor uso de papel y lápiz, menos tecnología y conectividad", "Uso limitado de internet, poca tecnología, revolución industrial basada en la mecánica", "Uso de sensores menos potentes, Internet más limitado, sin inteligencia artificial", "Uso de tecnología antigua, internet limitado, sensores grandes y poco precisos", "Uso de tecnología obsoleta, falta de conectividad, sin sensores ni inteligencia artificial", "Revolución digital, internet móvil y mundial, sensores más pequeños y potentes, inteligencia artificial y aprendizaje automático"],
+      key: [5], why: "Es la cita de Klaus Schwab (2016). Todas las demás describen lo contrario." },
+    { t: "single", q: "¿Cuál de las siguientes opciones describe correctamente el tipo de dato y su subcategoría correspondiente?",
+      o: ["Datos cuantitativos nominales: Datos que pueden ser clasificados en categorías no ordenadas y no numéricas. Ejemplo: Colores de ojos.", "Datos cualitativos continuos: Datos que se pueden medir y se representan por números enteros. Ejemplo: Edad de una persona.", "Datos cuantitativos discretos: Datos que se pueden medir y se representan por números decimales. Ejemplo: Altura de una persona.", "Datos cualitativos ordinales: Datos que pueden ser clasificados en categorías ordenadas pero no numéricas. Ejemplo: Calificaciones escolares."],
+      key: [3], why: "Las otras cruzan mal la etiqueta: \"cuantitativos nominales\" y \"cualitativos continuos\" no existen, y la altura es continua, no discreta. Revisá <strong>etiqueta + definición + ejemplo</strong>." },
+    { t: "single", q: "¿Cuál de las siguientes opciones describe mejor las características de la gestión basada en datos o Data Driven?",
+      o: ["Toma decisiones basadas en la intuición y experiencia previa.", "Utiliza datos y análisis para tomar decisiones y priorizar acciones.", "Se enfoca en la recolección de datos únicamente.", "No tiene en cuenta el análisis de datos en la toma de decisiones."],
+      key: [1], why: "Data-driven: los datos y su análisis guían las decisiones y la priorización." },
+    { t: "tf", q: "La limpieza de datos o data cleansing es el proceso de detectar y corregir o eliminar errores, inconsistencias y datos duplicados en un conjunto de datos.",
+      o: ["Verdadero", "Falso"], key: [0], why: "Cleansing <strong>corrige o elimina</strong>. Profiling mide." },
+    { t: "tf", q: "El perfilado de datos o data profiling es un proceso que involucra el análisis y evaluación de la calidad de los datos de una organización.",
+      o: ["Verdadero", "Falso"], key: [0], why: "Profiling <strong>analiza y evalúa</strong> la calidad, sin corregir." },
+    { t: "tf", q: "La completitud o completeness es una medida que evalúa si todos los registros o datos requeridos están presentes en un conjunto de datos.",
+      o: ["Verdadero", "Falso"], key: [0], why: "\"¿Están todos los <strong>requeridos</strong>?\": se mide contra la definición de negocio." },
+    { t: "single", q: "La empresa \"El analista de datos srl\" tiene una base de datos enorme. Entre todas las tablas que la componen se encuentra la de Clientes, en donde la localidad asociada al cliente Jorge Perez es Moreno. En todos los reportes relacionados se encuentra dicha localidad asociada al cliente, salvo en uno en donde se lo asocia a la localidad que había informado años atrás, antes de mudarse. ¿De qué tipo de \"error\" respecto a recopilación de datos estamos hablando?",
+      o: ["Completitud", "Precisión", "Limpieza", "Consistencia"],
+      key: [3], why: "Palabra clave: <strong>\"salvo en uno\"</strong>. El dato difiere entre reportes, y eso es consistencia. \"Limpieza\" es un proceso, no una dimensión." },
+    { t: "single", q: "¿Cuál es la principal diferencia entre los puestos de CIO y CTO en una empresa?",
+      o: ["El CIO se enfoca en la innovación tecnológica y el CTO en la gestión de sistemas de información.", "El CIO se enfoca en la gestión y estrategia de los sistemas de información, y el CTO en la investigación y el desarrollo tecnológico y la innovación.", "El CIO y el CTO tienen roles y responsabilidades similares en una empresa.", "El CIO y el CTO son intercambiables y pueden desempeñar los mismos roles en una empresa."],
+      key: [1], why: "CIO <strong>opera</strong> (sistemas de información), CTO <strong>construye</strong> (I+D). La a es el par invertido; \"similares\" e \"intercambiables\" siempre son falsos." },
+    { t: "single", q: "¿Cuál es la principal diferencia entre los puestos de CSO y CISO en una empresa?",
+      o: ["El CSO es responsable de la gestión de riesgos de seguridad en general, mientras que el CISO se enfoca en la seguridad de la información.", "El CSO se enfoca en la seguridad de la información y el CISO en la protección de los activos físicos de la empresa.", "El CSO y el CISO tienen roles y responsabilidades similares en la protección de la seguridad de la información en una empresa.", "El CSO y el CISO son intercambiables y pueden desempeñar los mismos roles en una empresa."],
+      key: [0], why: "CSO: seguridad <strong>en general</strong>, incluida la física. CISO: solo la <strong>información</strong>. La b es el par invertido." },
+    { t: "single", q: "¿Cuál es la principal diferencia entre los puestos de CBDO y CEO en una empresa?",
+      o: ["El CBDO se enfoca en la dirección general de la empresa, mientras que el CEO es responsable de identificar nuevas oportunidades de negocio.", "El CEO es responsable de establecer la visión y la estrategia general de la empresa, mientras que el CBDO se enfoca en el crecimiento y la expansión de la empresa a través de nuevas oportunidades de negocio.", "El CBDO y el CEO tienen roles y responsabilidades similares en una empresa.", "El CBDO y el CEO son intercambiables y pueden desempeñar los mismos roles en una empresa."],
+      key: [1], why: "CEO: <strong>visión</strong>. CBDO: <strong>Business Development</strong>, es decir, crecimiento. La a es el par invertido." },
+    { t: "multi", q: "¿Cuáles son algunas de las responsabilidades de un CDO (Chief Data Officer) en una empresa? (Seleccione todas las que correspondan)",
+      o: ["Establece la Estrategia de uso y explotación de los datos", "Define las políticas y procedimientos para la gestión de los datos, trabajando de forma transversal con el resto de los departamentos de la empresa", "Diseño gráfico", "Identificación de oportunidades de crecimiento basado en análisis y gestión de los datos", "Desarrollo de software"],
+      key: [0, 1, 3], why: "Funciones del slide: estrategia de uso y explotación, políticas transversales y generar valor con los datos. Diseño gráfico y desarrollo de software son relleno." },
+    { t: "tf", q: "El Data Governance incluye la definición de roles y responsabilidades para la gestión de datos, así como la creación de políticas y procesos para la gestión de datos en toda la empresa.",
+      o: ["Verdadero", "Falso"], key: [0], why: "Governance (DAMA): roles, responsabilidades, políticas y procesos." },
+    { t: "multi", q: "¿Cuáles son algunas de las etapas en el proceso de análisis de datos? (Seleccione todas las que correspondan)",
+      o: ["Exploración de datos", "Transformación de datos", "Visualización de datos", "Extracción de datos", "Identificación de oportunidades de negocio", "Implementación de soluciones de hardware"],
+      key: [0, 1, 2, 3], doubt: [4], why: "Extraer, transformar, explorar y visualizar forman parte del ciclo. La <strong>e es dudosa</strong>: el programa incluye la \"identificación de problemas de negocio\" en el ciclo de vida del análisis. No suma ni resta. La f (hardware) nunca." },
+    { t: "single", q: "Asocie cada tipo de análisis de datos con su definición correspondiente:",
+      assoc: ["<strong>A)</strong> Descriptivo · <strong>B)</strong> Exploratorio · <strong>C)</strong> Diagnóstico · <strong>D)</strong> Predictivo · <strong>E)</strong> Prescriptivo",
+              "1. ¿Qué necesitamos hacer? Utiliza los resultados de las categorías de análisis descritas anteriormente. Analiza las decisiones pasadas para mejorarlas en el futuro.",
+              "2. Describe datos de una muestra mediante valores característicos y ve si representan a la población. Estadística descriptiva: media, mediana, desvío estándar, etc.",
+              "3. Examina los datos en busca de patrones o relaciones. Identifica información interesante en los datos que no se puede ver a primera vista con el análisis descriptivo.",
+              "4. Profundiza en encontrar las causas. ¿Por qué sucedió? Permite crear hipótesis sobre las posibles causas de su comportamiento actual.",
+              "5. Los datos actuales e históricos se analizan para hacer predicciones sobre eventos futuros."],
+      o: ["A-1, B-2, C-3, D-4, E-5", "A-2, B-3, C-4, D-5, E-1", "A-3, B-4, C-5, D-1, E-2", "A-4, B-5, C-1, D-2, E-3"],
+      key: [1], why: "Descriptivo = valores característicos (2), exploratorio = patrones (3), diagnóstico = causas e hipótesis (4), predictivo = futuro (5) y prescriptivo = qué hacer (1)." },
+    { t: "single", q: "¿Cuál es la definición más precisa del término \"insights\"?",
+      o: ["Datos sin procesar que no tienen valor para la toma de decisiones.", "Información que se utiliza para fines estadísticos y no para la toma de decisiones.", "Información que no tiene relación con el planteo de estrategias de negocio.", "Información valiosa que ayuda en la toma de decisiones y en el planteo de estrategias de negocio."],
+      key: [3], why: "Definición literal: información valiosa para decidir y plantear estrategias." },
+    { t: "single", q: "¿Un Data Analyst debe saber programar?",
+      o: ["No necesariamente, pero es una ventaja competitiva", "Sí, es fundamental", "No, no es necesario en absoluto"],
+      key: [0], why: "Inferida: los slides ponen Python/R como una herramienta más, junto a Excel y la visualización. Confianza media." },
+    { t: "multi", q: "¿Cuáles son los objetivos principales de los Data Products? (Seleccione todas las que correspondan)",
+      o: ["Proporcionar datos de interés al usuario final.", "Proporcionar datos de valor a una funcionalidad concreta del producto final.", "Ofrecer una solución basada en tecnología para el uso y análisis de datos", "Mejorar la seguridad de los datos de una empresa.", "Aumentar la productividad de los empleados de una empresa."],
+      key: [0, 1], doubt: [2], why: "<strong>No aparece en los slides revisados</strong>, así que esta clave es la de menor confianza. Lo más defendible: datos de interés o de valor para el usuario y el producto final (a, b). La c es ambigua (no suma ni resta); d y e no se relacionan." },
+  ];
+
+  const STORE = "adi-suite:unidad1";
+  const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (_) { return {}; } };
+  const save = (v) => { try { localStorage.setItem(STORE, JSON.stringify(v)); } catch (_) {} };
+  let state = load();
+  state.answers = state.answers || {};
+  const root = document.getElementById("quiz");
+  const letters = "abcdef";
+  const label = { single: "opción única", multi: "seleccione todas", tf: "verdadero o falso" };
+
+  function render() {
+    root.innerHTML = "";
+    Q.forEach((item, i) => {
+      const box = document.createElement("section");
+      box.className = "q" + (state.graded ? " graded" : "");
+      box.innerHTML = `<div class="q-head"><span class="q-num">PREGUNTA ${i + 1}</span><span class="tag">${label[item.t]}</span></div>
+        <div class="q-text">${item.q}</div>` + (item.assoc ? `<div class="q-assoc">${item.assoc.map((p) => `<p>${p}</p>`).join("")}</div>` : "");
+      const chosen = state.answers[i] || [];
+      item.o.forEach((text, j) => {
+        const lab = document.createElement("label");
+        lab.className = "opt";
+        const inp = document.createElement("input");
+        inp.type = item.t === "multi" ? "checkbox" : "radio";
+        inp.name = "q" + i;
+        inp.checked = chosen.includes(j);
+        inp.disabled = !!state.graded;
+        inp.addEventListener("change", () => {
+          let cur = state.answers[i] || [];
+          if (item.t === "multi") cur = inp.checked ? [...cur, j] : cur.filter((x) => x !== j);
+          else cur = [j];
+          state.answers[i] = cur;
+          save(state);
+          progress();
+        });
+        const letter = document.createElement("span");
+        letter.className = "letter";
+        letter.textContent = item.t === "tf" ? "" : letters[j] + ".";
+        const span = document.createElement("span");
+        span.textContent = text;
+        lab.append(inp, letter, span);
+        if (state.graded) {
+          const isKey = item.key.includes(j), isDoubt = (item.doubt || []).includes(j), picked = chosen.includes(j);
+          if (isDoubt) lab.classList.add("neutral");
+          else if (picked && isKey) lab.classList.add("ok");
+          else if (picked && !isKey) lab.classList.add("bad");
+          else if (!picked && isKey) lab.classList.add("missed");
+        }
+        box.appendChild(lab);
+      });
+      if (state.graded) {
+        const s = score(item, chosen);
+        const fb = document.createElement("div");
+        fb.className = "fb";
+        fb.innerHTML = `<strong class="pts">${fmt(s)} / 1</strong> · ${item.why}`;
+        box.appendChild(fb);
+      }
+      root.appendChild(box);
+    });
+    progress();
+  }
+
+  function score(item, chosen) {
+    if (item.t !== "multi") return chosen.length === 1 && item.key.includes(chosen[0]) ? 1 : 0;
+    const doubt = item.doubt || [];
+    const wrong = item.o.map((_, j) => j).filter((j) => !item.key.includes(j) && !doubt.includes(j));
+    const hits = chosen.filter((j) => item.key.includes(j)).length;
+    const misses = chosen.filter((j) => wrong.includes(j)).length;
+    return Math.max(0, hits / item.key.length - (wrong.length ? misses / wrong.length : 0));
+  }
+  const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString("es-AR");
+
+  function progress() {
+    const n = Q.filter((_, i) => (state.answers[i] || []).length).length;
+    document.getElementById("progress").textContent = `${n} de ${Q.length} respondidas` + (state.graded ? " · corregido" : "");
+  }
+
+  function showResult() {
+    const res = document.getElementById("result");
+    if (!state.graded) { res.innerHTML = ""; return; }
+    const total = Q.reduce((acc, item, i) => acc + score(item, state.answers[i] || []), 0);
+    const nota = total / Q.length * 10;
+    const falladas = Q.map((item, i) => [i, score(item, state.answers[i] || [])]).filter(([, s]) => s < 1).map(([i]) => i + 1);
+    res.innerHTML = `<div class="result"><p class="eyebrow">Resultado</p>
+      <div class="big">${fmt(nota)}<span style="font-size:1.2rem;color:var(--muted)"> / 10</span></div>
+      <p>${fmt(total)} de ${Q.length} puntos. ${falladas.length ? "Revisá: " + falladas.join(", ") + "." : "Todas perfectas."}</p>
+      <p class="legend">Verde: marcada y correcta · Rojo: marcada e incorrecta · Verde punteado: correcta que no marcaste · Naranja punteado: la clave no la puede confirmar (no suma ni resta).</p></div>`;
+  }
+
+  document.getElementById("grade").addEventListener("click", () => {
+    state.graded = true; save(state); render(); showResult();
+    document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+  });
+  document.getElementById("reset").addEventListener("click", () => {
+    state = { answers: {} }; save(state); render(); showResult(); window.scrollTo(0, 0);
+  });
+  render(); showResult();
+})();
+</script>
+<script>
+(() => {
+  const b = document.getElementById("theme-btn"); if (!b) return;
+  const cur = () => document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const paint = () => { b.textContent = cur() === "dark" ? "☀ Modo claro" : "☾ Modo oscuro"; };
+  b.addEventListener("click", () => { const n = cur() === "dark" ? "light" : "dark"; document.documentElement.setAttribute("data-theme", n); try { localStorage.setItem("adi-suite:theme", JSON.stringify(n)); } catch (_) {} paint(); });
+  paint();
+})();
+</script>
+</body>
+</html>

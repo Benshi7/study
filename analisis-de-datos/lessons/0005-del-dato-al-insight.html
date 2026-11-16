@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Del dato al insight</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0005 · Bloque 1: Introducción a los datos</div>
+
+<div class="kicker">Lección 0005</div>
+<h1>Del dato al insight, y quién hace cada parte</h1>
+<p class="lede">La pirámide DIKW, el flujo de trabajo del Data Analyst y los roles que lo rodean. Vos sos el Data Engineer de esta historia.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la lección 0003: ¿quién construye productos, el CIO o el CTO? ¿Y quién cubre la seguridad física, el CSO o el CISO?</p>
+</div>
+
+<h2>¿Datos e información son lo mismo? No.</h2>
+<!-- diagram:dikw -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 352" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="dikw-title dikw-desc" xmlns="http://www.w3.org/2000/svg"><title id="dikw-title">Pirámide DIKW</title><desc id="dikw-desc">Pirámide de cuatro niveles, de datos en la base a sabiduría en la cima, con el propósito de cada nivel; información está destacada.</desc><defs><marker id="dikw-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="dikw-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="dikw-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge" d="M16,300 L16,64" marker-end="url(#dikw-arrow)"/><text class="eyebrow" x="8" y="48" text-anchor="start">MÁS VALOR</text><text class="eyebrow" x="560" y="48" text-anchor="start">PROPÓSITO DE CADA NIVEL</text><polygon class="layer" points="32,312 512,312 464,248 80,248"/><text class="name" x="272" y="278" text-anchor="middle">Datos</text><text class="sub" x="272" y="292" text-anchor="middle">elementos discontinuos</text><line class="leader" x1="496" y1="280" x2="548" y2="280"/><text class="body" x="560" y="278" text-anchor="start">Registrar hechos y eventos</text><text class="body" x="560" y="294" text-anchor="start">del mundo real</text><polygon class="layer-focal" points="80,248 464,248 416,184 128,184"/><text class="name" x="272" y="214" text-anchor="middle">Información</text><text class="sub-accent" x="272" y="228" text-anchor="middle">datos procesados</text><line class="leader" x1="448" y1="216" x2="548" y2="216"/><text class="name" x="560" y="214" text-anchor="start">Dar contexto y significado</text><text class="name" x="560" y="230" text-anchor="start">a los datos</text><polygon class="layer" points="128,184 416,184 368,120 176,120"/><text class="name" x="272" y="150" text-anchor="middle">Conocimiento</text><text class="sub" x="272" y="164" text-anchor="middle">aplicar la información</text><line class="leader" x1="400" y1="152" x2="548" y2="152"/><text class="body" x="560" y="150" text-anchor="start">Resolver problemas y</text><text class="body" x="560" y="166" text-anchor="start">generar valor</text><polygon class="layer" points="176,120 368,120 320,56 224,56"/><text class="name" x="272" y="92" text-anchor="middle">Sabiduría</text><line class="leader" x1="352" y1="88" x2="548" y2="88"/><text class="body" x="560" y="86" text-anchor="start">Juicio y comprensión profunda</text><text class="body" x="560" y="102" text-anchor="start">para decisiones estratégicas</text><text class="sub" x="16" y="340" text-anchor="start">Fuente: Hey, «The Data, Information, Knowledge, Wisdom Chain», citado en los slides.</text></svg></div><figcaption>DIKW: información son datos procesados, con contexto y significado. <a href="../diagrams/dikw.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:dikw -->
+<span class="sidenote">Pirámide DIKW (Hey, "The Data, Information, Knowledge, Wisdom Chain"), citada en <a href="../raw/001_INTRODUCCION_parte_2.pdf#page=28">Intro parte 2, "¿Datos o información?"</a>.</span>
+
+<p><strong>Insight</strong>, definición literal: <em>información de valor que ayuda a la toma de decisiones y al planteo de estrategias de negocio</em>.</p>
+
+<h2>Cómo se genera información</h2>
+<pre class="diagram">FUENTES → EXTRACT → TRANSFORM → LOAD → ANÁLISIS → VISUALIZACIÓN → DECISIONES
+DBs,      extraer   limpiar,    repo.   insights   patrones,        DATA-DRIVEN
+apps, web           normalizar  central.           tendencias</pre>
+
+<h2>El flujo del Data Analyst (es iterativo)</h2>
+<!-- diagram:flujo-da -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 720 616" style="max-width:720px;margin-inline:auto" role="img" aria-labelledby="flujo-da-title flujo-da-desc" xmlns="http://www.w3.org/2000/svg"><title id="flujo-da-title">Flujo de trabajo del Data Analyst</title><desc id="flujo-da-desc">Ciclo de seis pasos, de la pregunta de negocio a comunicar hallazgos, que vuelve a empezar con una nueva pregunta y alimenta los insights del centro.</desc><defs><marker id="flujo-da-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="flujo-da-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="flujo-da-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge" d="M440.000,100.697 A200,200 0 0 1 512.904,155.080" marker-end="url(#flujo-da-arrow)"/><path class="edge" d="M546.590,212.000 A200,200 0 0 1 547.019,354.879" marker-end="url(#flujo-da-arrow)"/><path class="edge" d="M513.675,412.000 A200,200 0 0 1 441.098,466.820" marker-end="url(#flujo-da-arrow)"/><path class="edge" d="M280.000,467.303 A200,200 0 0 1 207.096,412.920" marker-end="url(#flujo-da-arrow)"/><path class="edge" d="M173.410,356.000 A200,200 0 0 1 172.981,213.121" marker-end="url(#flujo-da-arrow)"/><path class="edge" d="M206.325,156.000 A200,200 0 0 1 278.902,101.180" marker-end="url(#flujo-da-arrow)"/><path class="edge-soft" d="M360.000,456.000 L360.000,334.000" marker-end="url(#flujo-da-arrow-soft)"/><path class="edge-soft" d="M236.160,212.000 L279.133,236.984" marker-end="url(#flujo-da-arrow-soft)"/><rect class="mask" x="184" y="84" width="84" height="12" rx="2"/><text class="label" x="226" y="93" text-anchor="middle">NUEVA PREGUNTA</text><rect class="mask" x="280" y="56" width="160" height="56" rx="6"/><rect class="focal" x="280" y="56" width="160" height="56" rx="6"/><text class="name" x="360" y="82" text-anchor="middle">Problema o pregunta</text><text class="sub-accent" x="360" y="96" text-anchor="middle">¿qué necesita el negocio?</text><rect class="mask" x="452" y="156" width="160" height="56" rx="6"/><rect class="node" x="452" y="156" width="160" height="56" rx="6"/><text class="name" x="532" y="182" text-anchor="middle">Hipótesis</text><text class="sub" x="532" y="196" text-anchor="middle">suposición a validar</text><rect class="mask" x="452" y="356" width="160" height="56" rx="6"/><rect class="node" x="452" y="356" width="160" height="56" rx="6"/><text class="name" x="532" y="382" text-anchor="middle">Exploración y consultas</text><text class="sub" x="532" y="396" text-anchor="middle">SQL · Python</text><rect class="mask" x="280" y="456" width="160" height="56" rx="6"/><rect class="node" x="280" y="456" width="160" height="56" rx="6"/><text class="name" x="360" y="482" text-anchor="middle">Recopilar info de valor</text><text class="sub" x="360" y="496" text-anchor="middle">datos relevantes</text><rect class="mask" x="108" y="356" width="160" height="56" rx="6"/><rect class="node" x="108" y="356" width="160" height="56" rx="6"/><text class="name" x="188" y="382" text-anchor="middle">Visualizaciones</text><text class="sub" x="188" y="396" text-anchor="middle">gráficos claros</text><rect class="mask" x="108" y="156" width="160" height="56" rx="6"/><rect class="node" x="108" y="156" width="160" height="56" rx="6"/><text class="name" x="188" y="182" text-anchor="middle">Comunicar hallazgos</text><text class="sub" x="188" y="196" text-anchor="middle">storytelling</text><rect class="hub" x="272" y="240" width="176" height="88" rx="8"/><text class="name-inverse" x="360" y="282" text-anchor="middle">Insights</text><text class="sub-inverse" x="360" y="300" text-anchor="middle">información de valor</text><line class="rule" x1="24" y1="572" x2="696" y2="572"/><text class="eyebrow" x="24" y="596" text-anchor="start">LEYENDA</text><line class="edge" x1="104" y1="592" x2="136" y2="592"/><text class="sub" x="144" y="595" text-anchor="start">flujo de trabajo, iterativo</text><line class="edge-soft" x1="344" y1="592" x2="376" y2="592"/><text class="sub" x="384" y="595" text-anchor="start">lo que alimenta los insights</text></svg></div><figcaption>Pregunta → hipótesis → exploración → recopilar → visualizar → comunicar, y otra vez. <a href="../diagrams/flujo-da.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:flujo-da -->
+<p>Ejemplo del slide: <em>"El CEO dice que el mes pasado cayeron las ventas."</em> Pregunta: ¿por qué? → Hipótesis: la web tardaba demasiado → Consultas sobre tiempos de espera → Tendencia en el tiempo → Dashboard con series de tiempo → Presentación con storytelling.</p>
+
+<h2>El equipo</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Rol</th><th>Lo que lo distingue</th></tr>
+  <tr><td><strong>Data Analyst</strong></td><td>Recolecta, analiza e interpreta datos y los convierte en insights. Herramientas: SQL, Excel, Python/R, visualización</td></tr>
+  <tr><td><strong>Business Analyst</strong></td><td>Conoce el negocio más a fondo; <strong>ayuda al Data Analyst a transformar necesidades de información en preguntas</strong></td></tr>
+  <tr><td><strong>Data Visualization Specialist</strong></td><td>Experto en presentar resultados y diseñar visualizaciones</td></tr>
+  <tr><td><strong>Data Engineer</strong></td><td><strong>Diseña y construye data pipelines</strong>; transforma y transporta datos entre fuentes y formatos; los deja en producción listos para analistas y científicos</td></tr>
+  <tr><td><strong>Data Scientist</strong></td><td>Usa datos internos y externos como insumo para <strong>modelos de machine learning</strong>; impulsa la cultura de decisiones basadas en datos</td></tr>
+</table>
+</div>
+<span class="sidenote">Fuente: <a href="../raw/001_INTRODUCCION_parte_3.pdf">Intro parte 3</a>. En los slides de SQL el orden del ecosistema es DBA → Arquitecto → Ingeniero → Data Scientist → Analista, y el Analista es "nuestro foco".</span>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0005-del-dato-al-insight"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "\"Información de valor que ayuda a la toma de decisiones y al planteo de estrategias de negocio.\" ¿Qué término define?",
+   "options": ["Insight", "Dato", "Métrica", "Registro"], "answer": 0,
+   "why": "Es la definición literal del slide y la pregunta 18 del cuestionario."},
+  {"q": "En la pirámide DIKW, ¿cómo se llama el nivel de los \"datos procesados, con contexto y significado\"?",
+   "options": ["Información", "Conocimiento", "Sabiduría", "Dato"], "answer": 0,
+   "why": "Los datos registran hechos; la información les da contexto y significado."},
+  {"q": "¿Cuál es el primer paso del flujo de trabajo del Data Analyst?",
+   "options": ["Plantear el problema", "Armar el dashboard", "Comunicar los hallazgos", "Limpiar los datos"], "answer": 0,
+   "why": "Todo empieza por identificar el problema de negocio o la pregunta clave."},
+  {"q": "En ese flujo, ¿qué viene inmediatamente después de plantear la pregunta?",
+   "options": ["Formular una hipótesis", "Construir un dashboard", "Comunicar los hallazgos", "Entrenar un modelo"], "answer": 0,
+   "why": "Pregunta, hipótesis, exploración y consultas, recopilar, visualizar, comunicar."},
+  {"q": "¿Quién ayuda al Data Analyst a transformar necesidades de información en preguntas?",
+   "options": ["Business Analyst", "Data Engineer", "Data Scientist", "Visualization Specialist"], "answer": 0,
+   "why": "El Business Analyst tiene el conocimiento más profundo del negocio e interactúa con sus unidades."},
+  {"q": "¿Quién diseña y construye data pipelines y deja los datos listos para analistas y científicos?",
+   "options": ["Data Engineer", "Business Analyst", "Data Scientist", "Visualization Specialist"], "answer": 0,
+   "why": "Sos vos. Pipelines, ETL, data lake, data warehouse, Spark, Airflow."},
+  {"q": "¿Quién usa datos internos y externos como insumo para desarrollar modelos de machine learning?",
+   "options": ["Data Scientist", "Data Engineer", "Business Analyst", "Visualization Specialist"], "answer": 0,
+   "why": "El Data Scientist; su diferencial es ML, estadística, cálculo multivariable y álgebra lineal."},
+  {"q": "En ETL, la \"E\" significa…",
+   "options": ["Extraer", "Evaluar", "Exportar", "Explorar"], "answer": 0,
+   "why": "Extract, Transform, Load: extraer de varias fuentes, transformar (limpiar y normalizar) y cargar en un repositorio centralizado."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Podés explicar por qué dato e información no son lo mismo, recitar el flujo del Data Analyst en orden y ubicar a cada rol del equipo.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/001_INTRODUCCION_parte_2.pdf#page=26">Intro parte 2, sección Data Analyst</a> e <a href="../raw/001_INTRODUCCION_parte_3.pdf">Intro parte 3</a>. Resumen: <a href="../reference/datos-y-analisis.html">Referencia · Datos y análisis</a> y <a href="../reference/roles.html">Referencia · Roles</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>La pregunta 19 del cuestionario ("¿un Data Analyst debe saber programar?") es ambigua según los slides. Si querés, la discutimos en el chat.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0004-big-data-y-contexto.html">← 0004 · Big Data y contexto</a>
+  <a href="0006-repaso-intercalado-bloque-1.html">0006 · Repaso intercalado →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

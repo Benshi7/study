@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 8 · Agilidad, Manifiesto y Cynefin</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagram.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 8 · 30/9/2026 · Parcial del 18/11</p>
+  <h1>Agilidad, Manifiesto y Cynefin: cuándo conviene cada enfoque</h1>
+  <p class="subtitle">Qué significa ser ágil, qué firmaron los 17 del Manifiesto y cómo decidir entre cascada y ágil según lo que se sabe del problema.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%202%20-%20Concepto%20de%20agilidad.pdf" title="Solo disponible en la copia completa con raw/">Concepto de agilidad</a>, p3 a 16</span><span><a href="../slides/08-agilidad/index.html">Ver las slides</a></span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder explicar qué es (y qué no es) la agilidad, enunciar los cuatro valores del Manifiesto, comparar ágil con cascada en nueve puntos, clasificar un proyecto en un dominio de Cynefin y justificar qué enfoque le corresponde.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="02-proyectos.html">Clase 2</a> (ciclo de vida y primer contraste cascada vs. ágil) y de <a href="03b-cronograma-camino-critico.html">Clase 3</a> (planificar todo al inicio es lo que hace la cascada).</p>
+  <p><span class="to">Alimenta</span> todo el bloque ágil del parcial: sigue <a href="09-scrum-roles-artefactos.html">Scrum: roles y artefactos</a>.</p>
+</div>
+
+<h2 id="repaso-previo">Antes de empezar · repaso de la ruta cascada</h2>
+<details class="recall">
+  <summary>Sin mirar: ¿cómo se organiza un proyecto en cascada? Decir qué se define al inicio y cuándo ve el cliente el producto.</summary>
+  <p>Fases secuenciales que cierran con hitos de aprobación; el alcance se define al inicio (Charter, EDT, Gantt) y el cliente ve el producto recién en la entrega final. Esta clase compara eso con ágil. Repasar: <a href="02-proyectos.html">Clase 2</a> y <a href="03b-cronograma-camino-critico.html">Clase 3b</a>.</p>
+</details>
+
+<p class="note"><strong>Numeración.</strong> El PDF se titula «Clase 2: Concepto de agilidad» (numeración propia del material). En el cronograma de la materia corresponde a la <strong>clase 8</strong> del 30/9, junto con «cascada, manifiesto ágil y Cynefin».</p>
+
+<h2 id="el-problema">El problema</h2>
+<p>La cascada planifica todo al inicio: alcance, cronograma, costos, riesgos. Eso funciona cuando se sabe qué se va a construir. Cuando no se sabe, un plan detallado envejece en la primera semana. La agilidad responde a ese caso con tres ideas (Clase 8, p5):</p>
+<ul>
+<li><strong>Dar valor lo más temprano posible.</strong></li>
+<li><strong>Retroalimentación temprana.</strong></li>
+<li><strong>Adaptarse fácilmente a los cambios.</strong></li>
+</ul>
+<p class="note"><strong>Ágil ≠ rápido.</strong> Es la advertencia de la diapositiva. Un equipo ágil no trabaja más rápido: entrega <em>antes</em> algo que sirve y corrige el rumbo con lo que aprende. Ejemplo: una web de reservas de restaurantes puede salir en un mes solo con «buscar y reservar», y sumar calificaciones después de ver cómo se usa. El trabajo total no se achica; lo que cambia es cuándo llega el primer valor.</p>
+
+<h2 id="manifiesto">Idea 1 · El Manifiesto Ágil</h2>
+<p>Nace en febrero de 2001 en Utah. Lo firman 17 representantes de distintas metodologías, entre ellos Kent Beck (Extreme Programming) y Jeff Sutherland y Ken Schwaber (Scrum). Decretaron <strong>4 valores y 12 principios</strong> (Clase 8, p6). El sitio oficial lo precisa: fue entre el 11 y el 13 de febrero, en la estación de esquí Snowbird.<sup class="cite"><a href="https://agilemanifesto.org/history.html">1</a></sup></p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Se valora más</th><th>…que</th></tr></thead>
+<tbody>
+<tr><td><strong>Individuos e interacciones</strong></td><td>procesos y herramientas</td></tr>
+<tr><td><strong>Software funcionando</strong></td><td>documentación extensiva</td></tr>
+<tr><td><strong>Colaboración con el cliente</strong></td><td>negociación contractual</td></tr>
+<tr><td><strong>Respuesta ante el cambio</strong></td><td>seguir un plan</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Se lee con la frase final.</strong> El Manifiesto cierra así: «aunque valoramos los elementos de la derecha, valoramos más los de la izquierda».<sup class="cite"><a href="https://agilemanifesto.org/iso/es/manifesto.html">2</a></sup> No dice que el plan o la documentación sobren; dice cuál gana cuando hay que elegir.</p>
+
+<h3>Los 12 principios, agrupados para recordarlos</h3>
+<p>Los enunciados son los de la cátedra (Clase 8, p8 y p9); la agrupación en tres ideas es propia, para memorizar. Los números son los del Manifiesto.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Idea</th><th>Principios</th></tr></thead>
+<tbody>
+<tr><td>Entregar valor</td><td>1 entrega temprana y continua · 2 aceptar cambios incluso tarde · 3 entregar entre dos semanas y dos meses · 7 software funcionando como medida de progreso</td></tr>
+<tr><td>Personas</td><td>4 negocio y desarrollo trabajan juntos a diario · 5 individuos motivados y con confianza · 6 conversación cara a cara · 11 equipos autoorganizados</td></tr>
+<tr><td>Sostener y mejorar</td><td>8 ritmo sostenible · 9 excelencia técnica y buen diseño · 10 simplicidad, o maximizar el trabajo no realizado · 12 reflexión a intervalos regulares</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Tres principios con una trampa adentro.</strong> El <strong>2</strong> acepta cambios «incluso en etapas tardías»: no es solo al principio. El <strong>3</strong> da un rango, «entre dos semanas y dos meses», el mismo que la cátedra usa después para la duración del Sprint (<a href="10-ceremonias-scrum.html#sprint">Clase 10</a>). El <strong>10</strong> define la simplicidad como «maximizar la cantidad de trabajo <em>no</em> realizado»: hacer menos, no hacer más.</p>
+<p class="note"><strong>Valor ↔ principio.</strong> Cada valor tiene principios que lo bajan a tierra: <em>individuos e interacciones</em> → 5, 6 y 11; <em>software funcionando</em> → 1, 3 y 7; <em>colaboración con el cliente</em> → 4; <em>respuesta ante el cambio</em> → 2 y 12. El emparejamiento es propio.</p>
+
+<h2 id="agil-vs-cascada">Idea 2 · Ágil versus cascada</h2>
+<p>La diferencia de fondo es <strong>cuándo llega el valor</strong>. En cascada se planifica todo al inicio y el cliente ve resultados al final. En ágil se planifican períodos cortos y cada iteración agrega valor.</p>
+
+<figure class="diagram">
+<!--diagram:agil-vs-cascada-->
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="agil-vs-cascada-title agil-vs-cascada-desc"><title id="agil-vs-cascada-title">Ágil versus cascada: cuándo llega el primer valor</title><desc id="agil-vs-cascada-desc">Dos filas sobre el mismo eje de tiempo: en cascada hay cinco fases secuenciales y el cliente recibe valor recién en la entrega final; en ágil hay cinco iteraciones y el primer valor llega al terminar la primera.</desc><defs><marker id="agil-vs-cascada-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="agil-vs-cascada-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="agil-vs-cascada-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-row" x="40" y="48" text-anchor="start">Cascada · planificar todo al inicio, entregar al final</text>
+<rect class="dg-mask" x="40" y="64" width="128" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="64" width="128" height="64" rx="6"/>
+<text class="dg-name" x="104" y="101" text-anchor="middle">Requisitos</text>
+<rect class="dg-mask" x="176" y="64" width="128" height="64" rx="6"/>
+<rect class="dg-box" x="176" y="64" width="128" height="64" rx="6"/>
+<text class="dg-name" x="240" y="101" text-anchor="middle">Diseño</text>
+<rect class="dg-mask" x="312" y="64" width="288" height="64" rx="6"/>
+<rect class="dg-box" x="312" y="64" width="288" height="64" rx="6"/>
+<text class="dg-name" x="456" y="101" text-anchor="middle">Desarrollo</text>
+<rect class="dg-mask" x="608" y="64" width="160" height="64" rx="6"/>
+<rect class="dg-box" x="608" y="64" width="160" height="64" rx="6"/>
+<text class="dg-name" x="688" y="101" text-anchor="middle">Pruebas</text>
+<rect class="dg-mask" x="776" y="64" width="136" height="64" rx="6"/>
+<rect class="dg-focal" x="776" y="64" width="136" height="64" rx="6"/>
+<text class="dg-name" x="844" y="101" text-anchor="middle">Entrega</text>
+<text class="dg-note" x="844" y="156" text-anchor="middle">valor recién acá</text>
+<text class="dg-row" x="40" y="244" text-anchor="start">Ágil · planificar períodos cortos, entregar en cada iteración</text>
+<path class="dg-line-link" d="M192 292 H220" marker-end="url(#agil-vs-cascada-arrow-link)"/>
+<path class="dg-line-link" d="M372 292 H400" marker-end="url(#agil-vs-cascada-arrow-link)"/>
+<path class="dg-line-link" d="M552 292 H580" marker-end="url(#agil-vs-cascada-arrow-link)"/>
+<path class="dg-line-link" d="M732 292 H760" marker-end="url(#agil-vs-cascada-arrow-link)"/>
+<rect class="dg-mask" x="40" y="260" width="152" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="260" width="152" height="64" rx="6"/>
+<text class="dg-name" x="116" y="288" text-anchor="middle">Iteración 1</text>
+<text class="dg-sub" x="116" y="306" text-anchor="middle">entrega valor</text>
+<circle class="dg-dot-focal" cx="116" cy="352" r="8"/>
+<rect class="dg-mask" x="220" y="260" width="152" height="64" rx="6"/>
+<rect class="dg-box" x="220" y="260" width="152" height="64" rx="6"/>
+<text class="dg-name" x="296" y="288" text-anchor="middle">Iteración 2</text>
+<text class="dg-sub" x="296" y="306" text-anchor="middle">entrega valor</text>
+<circle class="dg-dot" cx="296" cy="352" r="8"/>
+<rect class="dg-mask" x="400" y="260" width="152" height="64" rx="6"/>
+<rect class="dg-box" x="400" y="260" width="152" height="64" rx="6"/>
+<text class="dg-name" x="476" y="288" text-anchor="middle">Iteración 3</text>
+<text class="dg-sub" x="476" y="306" text-anchor="middle">entrega valor</text>
+<circle class="dg-dot" cx="476" cy="352" r="8"/>
+<rect class="dg-mask" x="580" y="260" width="152" height="64" rx="6"/>
+<rect class="dg-box" x="580" y="260" width="152" height="64" rx="6"/>
+<text class="dg-name" x="656" y="288" text-anchor="middle">Iteración 4</text>
+<text class="dg-sub" x="656" y="306" text-anchor="middle">entrega valor</text>
+<circle class="dg-dot" cx="656" cy="352" r="8"/>
+<rect class="dg-mask" x="760" y="260" width="152" height="64" rx="6"/>
+<rect class="dg-box" x="760" y="260" width="152" height="64" rx="6"/>
+<text class="dg-name" x="836" y="288" text-anchor="middle">Iteración 5</text>
+<text class="dg-sub" x="836" y="306" text-anchor="middle">entrega valor</text>
+<circle class="dg-dot" cx="836" cy="352" r="8"/>
+<text class="dg-note-accent" x="116" y="384" text-anchor="middle">primer valor</text>
+<path class="dg-line" d="M40 428 H920" marker-end="url(#agil-vs-cascada-arrow)"/>
+<text class="dg-lbl" x="40" y="452" text-anchor="start">inicio</text>
+<text class="dg-note" x="480" y="452" text-anchor="middle">misma duración total</text>
+<text class="dg-lbl" x="912" y="452" text-anchor="end">fin</text>
+<line class="dg-rule" x1="40" y1="484" x2="920" y2="484"/>
+<text class="dg-tag" x="40" y="512" text-anchor="start">LEYENDA</text>
+<circle class="dg-dot-focal" cx="136" cy="508" r="8"/>
+<text class="dg-note" x="152" y="512" text-anchor="start">incremento con valor para el cliente</text>
+<path class="dg-line-link" d="M424 508 H448" marker-end="url(#agil-vs-cascada-arrow-link)"/>
+<text class="dg-note" x="456" y="512" text-anchor="start">feedback y ajuste</text></svg>
+<!--/diagram:agil-vs-cascada-->
+<figcaption>Mismo proyecto, misma duración total. El primer valor llega al terminar la primera iteración en ágil y recién en la entrega en cascada. Diagrama propio sobre la comparación de la cátedra (Clase 8, p11).</figcaption>
+</figure>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Ágil</th><th>Cascada</th></tr></thead>
+<tbody>
+<tr><td>Planificar períodos cortos</td><td>Planificar todo al inicio</td></tr>
+<tr><td>Adaptabilidad al cambio</td><td>Contratos estrictos</td></tr>
+<tr><td>Detectar errores temprano y aprender</td><td>El error no es bien visto</td></tr>
+<tr><td>Manejo de la incertidumbre</td><td>Incertidumbre no controlada</td></tr>
+<tr><td>Aprendizaje continuo</td><td>Especialización necesaria</td></tr>
+<tr><td>Valor al final de cada iteración</td><td>Valor solo al final del proyecto</td></tr>
+<tr><td>Tiempos de mercado</td><td>Desfasado del mercado</td></tr>
+<tr><td>El cliente es parte del equipo</td><td>El cliente no participa activamente</td></tr>
+<tr><td>Equipos reducidos</td><td>Equipos extensos</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">La tabla es la de la cátedra (Clase 8, p11) y está escrita desde el lado ágil, por eso la columna de cascada suena negativa. Eso no vuelve mala a la cascada: es la adecuada cuando el problema se conoce bien (ver Cynefin). Para memorizarla conviene leerla por pares de opuestos: corto/todo, cambio/contrato, cada iteración/al final, cliente adentro/cliente afuera, equipo chico/equipo extenso.</p>
+
+<h2 id="cynefin">Idea 3 · Cynefin: elegir según lo que se sabe</h2>
+<p>Cynefin significa «hábitat» en galés. Ayuda a <strong>tomar decisiones</strong> y abarca cinco dominios (Clase 8, p12). La cátedra los ordena por cuánta experiencia hay con el tema y con la tecnología, y les asigna un enfoque:</p>
+
+<figure class="diagram">
+<!--diagram:cynefin-->
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cynefin-title cynefin-desc"><title id="cynefin-title">Cynefin: qué metodología corresponde a cada dominio</title><desc id="cynefin-desc">Cuatro dominios ordenados por incertidumbre creciente: simple usa buenas prácticas, complicado usa cascada, complejo y caótico usan ágil; el dominio desordenado exige accionar para llegar a alguno de los cuatro.</desc><defs><marker id="cynefin-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="cynefin-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="cynefin-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-tag" x="40" y="40" text-anchor="start">INCERTIDUMBRE CRECIENTE</text>
+<path class="dg-line" d="M40 56 H920" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M138 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M366 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M594 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M822 184 V240" marker-end="url(#cynefin-arrow)"/>
+<rect class="dg-mask" x="40" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="224" y="108" text-anchor="end">1</text>
+<text class="dg-name" x="138" y="123" text-anchor="middle">Simple</text>
+<text class="dg-sub" x="138" y="141" text-anchor="middle">Situaciones claras</text>
+<text class="dg-sub" x="138" y="159" text-anchor="middle">y conocidas</text>
+<rect class="dg-mask" x="268" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-focal" x="268" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="452" y="108" text-anchor="end">2</text>
+<text class="dg-name" x="366" y="123" text-anchor="middle">Complicado</text>
+<text class="dg-sub" x="366" y="141" text-anchor="middle">Requiere experiencia</text>
+<text class="dg-sub" x="366" y="159" text-anchor="middle">en la materia</text>
+<rect class="dg-mask" x="496" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="496" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="680" y="108" text-anchor="end">3</text>
+<text class="dg-name" x="594" y="123" text-anchor="middle">Complejo</text>
+<text class="dg-sub" x="594" y="141" text-anchor="middle">Sin experiencia en el</text>
+<text class="dg-sub" x="594" y="159" text-anchor="middle">tema o la tecnología</text>
+<rect class="dg-mask" x="724" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="724" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="908" y="108" text-anchor="end">4</text>
+<text class="dg-name" x="822" y="123" text-anchor="middle">Caótico</text>
+<text class="dg-sub" x="822" y="141" text-anchor="middle">Sin experiencia en el</text>
+<text class="dg-sub" x="822" y="159" text-anchor="middle">tema ni la tecnología</text>
+<rect class="dg-mask" x="40" y="240" width="196" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="240" width="196" height="64" rx="6"/>
+<text class="dg-name" x="138" y="277" text-anchor="middle">Buenas prácticas</text>
+<rect class="dg-mask" x="268" y="240" width="196" height="64" rx="6"/>
+<rect class="dg-focal" x="268" y="240" width="196" height="64" rx="6"/>
+<text class="dg-name" x="366" y="277" text-anchor="middle">Cascada</text>
+<rect class="dg-mask" x="496" y="240" width="424" height="64" rx="6"/>
+<rect class="dg-viol" x="496" y="240" width="424" height="64" rx="6"/>
+<text class="dg-name" x="708" y="277" text-anchor="middle">Ágil</text>
+<rect class="dg-mask" x="40" y="368" width="880" height="80" rx="6"/>
+<rect class="dg-ghost" x="40" y="368" width="880" height="80" rx="6"/>
+<text class="dg-tag" x="908" y="388" text-anchor="end">5</text>
+<text class="dg-name" x="480" y="404" text-anchor="middle">Desordenado</text>
+<text class="dg-sub" x="480" y="428" text-anchor="middle">No aplica a ninguno de los anteriores: accionar para llegar a los 4 anteriores</text>
+<line class="dg-rule" x1="40" y1="484" x2="920" y2="484"/>
+<text class="dg-tag" x="40" y="512" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="512" text-anchor="start">único dominio en cascada</text>
+<path class="dg-line" d="M348 508 H372" marker-end="url(#cynefin-arrow)"/>
+<text class="dg-note" x="380" y="512" text-anchor="start">se gestiona con</text>
+<rect class="dg-ghost" x="512" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="540" y="512" text-anchor="start">dominio sin clasificar</text></svg>
+<!--/diagram:cynefin-->
+<figcaption>Dominio → enfoque, tal como lo muestra la cátedra (Clase 8, p12 y p13). El único dominio que va en cascada es el complicado.</figcaption>
+</figure>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Dominio</th><th>Ejemplo de la cátedra</th><th>Enfoque</th></tr></thead>
+<tbody>
+<tr><td>Simple</td><td>Necesito controlar mis gastos</td><td>Buena práctica</td></tr>
+<tr><td>Complicado</td><td>Implementar el producto que vende mi compañía en un nuevo cliente</td><td>Cascada</td></tr>
+<tr><td>Complejo</td><td>Hacer consolas para satélites en Java</td><td>Ágil</td></tr>
+<tr><td>Caótico</td><td>Hacer consolas para satélites en un lenguaje propietario de la NASA</td><td>Ágil</td></tr>
+<tr><td>Desordenado</td><td>…y además en el espacio exterior</td><td>Entrenar programadores como astronautas (en serio: accionar para llegar a los 4 anteriores)</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>La diferencia entre complejo y caótico es una sola letra.</strong> Complejo: no hay experiencia en el tema <strong>o</strong> en la tecnología (falta una de las dos). Caótico: no hay experiencia en el tema <strong>ni</strong> en la tecnología (faltan las dos). En los ejemplos, lo único que cambia entre uno y otro es el lenguaje: Java, conocido, contra el lenguaje propietario de la NASA. Los dos van con ágil.</p>
+
+<div class="source">
+  <strong>Complemento (no es de la cátedra)</strong>
+  El marco original lo creó Dave Snowden en 1999 y hoy nombra los dominios <em>Clear, Complicated, Complex, Chaotic</em> y <em>Confusion</em>, cada uno con su patrón de respuesta (por ejemplo, en lo complejo: probar, sentir, responder).<sup class="cite"><a href="https://en.wikipedia.org/wiki/Cynefin_framework">3</a></sup> La cátedra lo simplifica a «dominio → metodología». <strong>Para el parcial usar la versión de la cátedra</strong>; si alguna fuente la contradice, gana la cátedra.<br>Para repasar: <a href="../reference/agil-glosario.html">glosario y hoja de repaso ágil</a> (imprimible).
+</div>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: ¿cuándo y dónde nació el Manifiesto, cuántas personas lo firmaron y cuáles son los cuatro valores?</summary>
+  <p>Febrero de 2001, Utah, 17 personas. Individuos e interacciones sobre procesos y herramientas; software funcionando sobre documentación extensiva; colaboración con el cliente sobre negociación contractual; respuesta ante el cambio sobre seguir un plan (Clase 8, p6 y p7).</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: ¿qué enfoque le corresponde a cada dominio de Cynefin?</summary>
+  <p>Simple: buenas prácticas. Complicado: cascada. Complejo y caótico: ágil. Desordenado: accionar para llegar a los cuatro anteriores (Clase 8, p12).</p>
+</details>
+
+<h2 id="practica-2-clasificar">Práctica 2 · Clasificar</h2>
+<p>Ubicar cada proyecto en un dominio antes de abrir la respuesta. Son ejemplos propios, no de la cátedra: lo que importa es justificar con «experiencia en el tema» y «experiencia en la tecnología».</p>
+<details class="recall">
+  <summary>A. Llevar la contabilidad mensual de un kiosco con una planilla conocida.</summary>
+  <p><strong>Simple.</strong> Situación clara y conocida: alcanza con buenas prácticas.</p>
+</details>
+<details class="recall">
+  <summary>B. Instalar nuestro sistema de turnos, que ya funciona en otras tres clínicas, en una clínica nueva.</summary>
+  <p><strong>Complicado.</strong> Se conoce el tema y la tecnología; requiere experiencia y análisis, pero no descubrimiento. Cascada.</p>
+</details>
+<details class="recall">
+  <summary>C. Armar una app con una tecnología que nadie del equipo usó, para un rubro que nadie del equipo conoce.</summary>
+  <p><strong>Complejo o caótico</strong>, según cuánto se desconozca. Hay que aprender iterando: ágil.</p>
+</details>
+<details class="recall">
+  <summary>D. La actividad de la cátedra: Ana, arquitecta de casas antisísmicas en Chile, recibe la propuesta de un shopping en Dubái. ¿Qué enfoque debería usar?</summary>
+  <p>La diapositiva no da una respuesta única (Clase 8, p14). Un argumento a favor de <em>complicado</em>: Ana domina la construcción y puede analizar. Uno a favor de <em>complejo</em>: Dubái cambia el tipo de obra, la normativa y la escala, así que parte de su experiencia no aplica. Lo que se evalúa es la justificación.</p>
+</details>
+
+<h2 id="practica-3-preguntas">Práctica 3 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">Según la cátedra, ¿qué significa ser «ágil»?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: dar valor temprano, recibir feedback temprano y adaptarse fácilmente al cambio (Clase 8, p5).">Dar valor temprano y adaptarse fácilmente al cambio</button>
+    <button data-why="No: la cátedra aclara que ágil no es lo mismo que rápido (Clase 8, p5).">Hacer el mismo trabajo a mayor velocidad siempre</button>
+    <button data-why="No: el Manifiesto valora más el software funcionando, pero no elimina la documentación ni el plan.">Eliminar por completo la documentación y la planificación</button>
+    <button data-why="No: los equipos reducidos son una característica habitual, no la definición de agilidad.">Reducir el equipo siempre al tamaño mínimo posible</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">El Manifiesto dice «software funcionando sobre documentación extensiva». ¿Cómo se interpreta?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: «aunque valoramos los elementos de la derecha, valoramos más los de la izquierda».">La documentación importa, pero el software funcionando más</button>
+    <button data-why="No: el Manifiesto no prohíbe nada; establece prioridades.">La documentación queda prohibida en cualquier proyecto ágil</button>
+    <button data-why="No: nada en el valor habla de omitir pruebas.">El software puede entregarse sin ninguna prueba previa</button>
+    <button data-why="No: el valor habla de priorizar el software, no de quién decide los documentos.">El cliente decide siempre qué documentos se escriben</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">«Hacer consolas para satélites en Java» es el ejemplo de la cátedra para un dominio de Cynefin. ¿Cuál y con qué enfoque?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: es el ejemplo de dominio complejo, que se gestiona con ágil (Clase 8, p13).">Complejo, y se gestiona con ágil</button>
+    <button data-why="No: complicado es «implementar el producto de mi compañía en un nuevo cliente», con cascada.">Complicado, y se gestiona con cascada</button>
+    <button data-why="No: simple es «controlar mis gastos», con buenas prácticas.">Simple, y alcanza con buenas prácticas</button>
+    <button data-why="No: el desordenado es el ejemplo con lenguaje de la NASA y en el espacio exterior.">Desordenado, y hay que entrenar astronautas</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Un equipo conoce bien el rubro y la tecnología, y puede detallar todo el alcance antes de empezar. ¿Qué dominio de Cynefin es?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: se conoce el tema y la tecnología, y alcanza con experiencia y análisis. Es el dominio de la cascada (Clase 8, p12).">Complicado: hay experiencia y se puede analizar</button>
+    <button data-why="No: en lo caótico no hay experiencia con el tema ni con la tecnología, y la cátedra lo asigna a ágil.">Caótico: no hay experiencia ni tecnología conocida</button>
+    <button data-why="No: en lo complejo hay que descubrir iterando, lo opuesto a detallar el alcance al inicio.">Complejo: hay que descubrir qué construir iterando</button>
+    <button data-why="No: simple es para situaciones claras y conocidas que se resuelven con una buena práctica, sin análisis experto.">Simple: bastan buenas prácticas sin análisis previo</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Cuál de estas frases NO es un valor del Manifiesto Ágil?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: no figura entre los cuatro valores. El Manifiesto habla de individuos, software funcionando, cliente y cambio (Clase 8, p7).">Equipos reducidos y autoorganizados sobre equipos extensos</button>
+    <button data-why="Sí es un valor: el tercero (Clase 8, p7).">Colaboración con el cliente sobre negociación contractual</button>
+    <button data-why="Sí es un valor: el cuarto (Clase 8, p7).">Respuesta ante el cambio sobre seguir un plan</button>
+    <button data-why="Sí es un valor: el primero (Clase 8, p7).">Individuos e interacciones sobre procesos y herramientas</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Según la cátedra, ¿qué distingue al dominio caótico del complejo?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: complejo es sin experiencia en el tema o la tecnología; caótico, sin experiencia en el tema ni la tecnología (Clase 8, p12).">Falta experiencia en el tema y en la tecnología</button>
+    <button data-why="No: los dos se gestionan con ágil; la cascada es del dominio complicado.">El caótico se gestiona con cascada y contratos estrictos</button>
+    <button data-why="No: eso describe al desordenado, el quinto dominio.">No se parece a ninguno de los otros dominios</button>
+    <button data-why="No: las situaciones claras y conocidas son el dominio simple.">Es una situación clara que pide solo buenas prácticas</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="trampas">Trampas de opción múltiple</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>La opción tentadora</th><th>Por qué está mal</th></tr></thead>
+<tbody>
+<tr><td>«Ágil es hacer el trabajo más rápido»</td><td>Ágil ≠ rápido: es dar valor temprano, recibir feedback temprano y adaptarse al cambio</td></tr>
+<tr><td>«El Manifiesto elimina la documentación y el plan»</td><td>Valora más lo de la izquierda, pero lo de la derecha también vale</td></tr>
+<tr><td>«El Manifiesto tiene 12 valores y 4 principios»</td><td>Al revés: <strong>4 valores y 12 principios</strong>; 17 firmantes; febrero de 2001, Utah</td></tr>
+<tr><td>«Kent Beck creó Scrum»</td><td>Kent Beck es de Extreme Programming; Scrum es de Jeff Sutherland y Ken Schwaber</td></tr>
+<tr><td>«Ágil sirve para cualquier proyecto»</td><td>Cynefin: el dominio complicado va en cascada y el simple, con buenas prácticas</td></tr>
+<tr><td>«Complejo → cascada»</td><td>Complicado → cascada. Complejo y caótico → ágil. Las dos palabras se parecen</td></tr>
+<tr><td>«En el dominio desordenado se usa ágil»</td><td>No tiene enfoque propio: se acciona para llegar a alguno de los otros cuatro</td></tr>
+<tr><td>«Equipos reducidos» como valor del Manifiesto</td><td>Es una fila de la comparación ágil vs. cascada, no un valor ni un principio</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%202%20-%20Concepto%20de%20agilidad.pdf" title="Solo disponible en la copia completa con raw/">Concepto de agilidad</a>, diapositivas 3 a 16. Textos oficiales del Manifiesto: <a href="https://agilemanifesto.org/iso/es/manifesto.html">agilemanifesto.org</a>.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «dame cinco proyectos y yo digo el dominio de Cynefin», «¿qué diferencia hay entre complejo y caótico en la versión de la cátedra?» o «tómame un mini examen de esta clase».
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <span class="dim">Inicio · Ruta ágil</span>
+  <a href="09-scrum-roles-artefactos.html">Clase 9 · Scrum →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

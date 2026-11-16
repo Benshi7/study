@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 32 · SELECT: proyección, filtro y orden</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 32 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">SELECT: qué columnas, qué filas, en qué orden</h1>
+    <p class="masthead__standfirst">
+      Una consulta de selección devuelve una tabla. Tres cláusulas deciden su forma:
+      SELECT recorta columnas, WHERE recorta filas, ORDER BY las ordena.
+    </p>
+    <p class="masthead__meta">
+      <span>~12 minutos</span>
+      <span>Deck "DML", slides 3–8 y 14</span>
+      <span>Prioridad para el 2do parcial: alta</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Columnas: SELECT, DISTINCT y alias</h2>
+
+<pre><code><span class="k">SELECT</span>   Nombre <span class="k">AS</span> Paciente, F_Nacimiento
+<span class="k">FROM</span>     PACIENTE <span class="k">AS</span> P;</code></pre>
+
+  <ul>
+    <li><code>SELECT *</code> trae todas las columnas; listar los nombres trae sólo esas.
+        En álgebra relacional, esto es la <em class="term">proyección</em>.</li>
+    <li><code>SELECT DISTINCT</code> "elimina las filas duplicadas y muestra una lista única
+        de valores". Mira la <b>fila entera</b> que devolvés, no una columna suelta.</li>
+    <li>Un <em class="term">alias</em> es "un nombre temporal" para una tabla o columna que
+        "sólo existe mientras dura esa consulta". El <code>AS</code> es opcional:
+        <code>FROM PACIENTE P</code> vale igual.</li>
+  </ul>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Por qué al TP5 le importan los alias</span>
+    <p>
+      La consigna pide vistas "apuntando a producción con sus campos en español". Las tablas
+      Prod tienen columnas en inglés, así que cada columna de la vista es un alias:
+      <code>Tower_Id AS Id_Torre</code>. Esta es la herramienta que vas a usar ahí
+      (<a href="0039-vistas.html">0039</a>).
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Filas: WHERE, AND, OR</h2>
+
+<pre><code><span class="k">SELECT</span> Cod_Habitacion, Piso, Numero
+<span class="k">FROM</span>   HABITACION
+<span class="k">WHERE</span>  Cod_Torre = 1 <span class="k">AND</span> Posee_Ventana = 'S';</code></pre>
+
+  <p>
+    <code>WHERE</code> extrae "sólo los registros que cumplan con una condición".
+    <code>AND</code> exige las dos; <code>OR</code>, cualquiera de las dos.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">AND se evalúa antes que OR</span>
+    <p>
+      <code>WHERE Cod_Torre = 1 OR Cod_Torre = 2 AND Posee_Ventana = 'S'</code> se lee como
+      <code>Cod_Torre = 1 OR (Cod_Torre = 2 AND Posee_Ventana = 'S')</code>: trae <b>toda</b>
+      la torre 1, con o sin ventana. Cuando mezcles los dos, poné paréntesis siempre.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Orden: ORDER BY</h2>
+
+  <p>
+    Ascendente por defecto; <code>DESC</code> lo invierte. Se puede ordenar por varias
+    columnas: <code>ORDER BY Cod_Torre, Piso DESC</code> ordena por torre y, dentro de
+    cada torre, por piso de mayor a menor. Sin <code>ORDER BY</code>, el orden de las filas
+    <b>no está garantizado</b>, aunque parezca estable.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="sqlbox" data-seed="clinica" data-ordered>
+    <span class="sqlbox__label">1 de 3 · Proyectar y ordenar</span>
+    <p class="sqlbox__task">
+      Listá el nombre y la fecha de nacimiento de todos los pacientes, del más joven al más grande.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT *
+FROM PACIENTE;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Nombre, F_Nacimiento
+FROM PACIENTE
+ORDER BY F_Nacimiento DESC;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 3 · DISTINCT</span>
+    <p class="sqlbox__task">
+      ¿Qué diagnósticos distintos hay registrados en las historias clínicas? Cada uno, una sola vez.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Diagnostico
+FROM HISTORIA_CLINICA;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT Diagnostico
+FROM HISTORIA_CLINICA;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 3 · Paréntesis</span>
+    <p class="sqlbox__task">
+      Habitaciones (código, torre y piso) que tengan ventana y estén en la torre 1 <b>o</b> en la torre 2.
+      El código de abajo devuelve de más: encontrá por qué.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Cod_Habitacion, Cod_Torre, Piso
+FROM HABITACION
+WHERE Cod_Torre = 1 OR Cod_Torre = 2 AND Posee_Ventana = 'S';</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Cod_Habitacion, Cod_Torre, Piso
+FROM HABITACION
+WHERE (Cod_Torre = 1 OR Cod_Torre = 2) AND Posee_Ventana = 'S';
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">DISTINCT a fondo</span>
+    <p class="quiz__q">
+      <code>SELECT DISTINCT Cod_Paciente, Diagnostico FROM HISTORIA_CLINICA</code>.
+      José tiene dos consultas, las dos con "Hipertensión". ¿Cuántas filas suyas aparecen?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Una. DISTINCT compara la fila que devolvés, que acá es (Cod_Paciente, Diagnostico). Las dos consultas de José dan (5, 'Hipertensión'), la misma fila, y queda una sola.">Aparece en una sola fila</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Serían dos si la consulta trajera algo que las diferencie, como Id_Consulta o Fecha. Con sólo paciente y diagnóstico, las dos filas son idénticas.">Aparece en dos filas iguales</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="DISTINCT no elimina filas que se repiten: deja una de cada grupo de iguales. José sigue apareciendo.">No aparece en el resultado</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Alias</span>
+    <p class="quiz__q">Según el deck, ¿cuánto existe un alias como <code>FROM ENVIOS E</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Eso sería un objeto de la base. El alias no se guarda en ningún lado.">Hasta que se borre la tabla</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 5: &quot;Un alias solo existe mientras dura esa consulta&quot;. El &lt;code&gt;AS&lt;/code&gt; es opcional.">Sólo mientras dura esa consulta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No dura tanto: vale sólo dentro de la consulta que lo declara.">Hasta que termine la sesión</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b> (<code>raw/DML_Base de Datos.pptx</code>), slides 3–8 y 14. Las frases
+      entre comillas son textuales de ahí.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.4 "Consultas básicas en SQL" (p. 213).
+      Precedencia de operadores en el motor de los ejercicios:
+      <a href="https://www.sqlite.org/lang_expr.html#operators_and_parse_affecting_attributes">SQLite — Operators</a>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si algún resultado no te cierra, pegame tu consulta y lo que
+      devolvió, y lo miramos juntos.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0031-ddl-create-table.html">Anterior: 0031 · CREATE TABLE</a>
+    <a href="0033-condiciones-y-null.html">Siguiente: 0033 · Condiciones y NULL</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

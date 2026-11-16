@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 10 — Regresión y Correlación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 8 · Regresión y correlación</span>
+<h1>Regresión y Correlación</h1>
+<p class="subtitle">Dos variables que se mueven juntas. La correlación mide cuánto; la regresión arma una recta para predecir. Para el multiple choice, casi todo es leer bien r, R² y el signo — la cuenta la hace la app.</p>
+
+<h2>Correlación: fuerza y dirección de una relación lineal</h2>
+<p>El <strong>coeficiente de Pearson (r)</strong> mide qué tan bien se alinean dos variables cuantitativas sobre una recta.</p>
+<div class="box">
+<span class="formula">−1 ≤ r ≤ 1</span>
+</div>
+<table>
+<tr><th>Valor de r</th><th>Qué significa</th></tr>
+<tr><td class="formula">r &gt; 0</td><td>Relación <strong>directa</strong>: una sube, la otra sube</td></tr>
+<tr><td class="formula">r &lt; 0</td><td>Relación <strong>inversa</strong>: una sube, la otra baja</td></tr>
+<tr><td class="formula">r = 0</td><td>No hay relación <strong>lineal</strong> (¡puede haber una curva!)</td></tr>
+<tr><td class="formula">|r| ≥ 0,7</td><td>Relación <strong>fuerte</strong> (criterio de la cátedra)</td></tr>
+</table>
+<div class="warn">
+<strong>La trampa estrella: correlación ≠ causalidad.</strong> Un r alto solo dice que dos cosas se mueven juntas, NUNCA que una cause la otra. Ejemplo clásico: más bomberos en un incendio se correlaciona con más daños — pero no es que los bomberos causen el daño; ambos crecen con el tamaño del incendio (variable de confusión).
+</div>
+
+<h2>Regresión: la recta que predice</h2>
+<p>Si la correlación es fuerte, tiene sentido armar una recta para <strong>predecir</strong> Y a partir de X:</p>
+<div class="box">
+<span class="formula">ŷ = a + b·x</span>
+</div>
+<table>
+<tr><th>Coeficiente</th><th>Qué representa</th></tr>
+<tr><td class="formula">b (pendiente)</td><td>Cuánto cambia Y en promedio por cada unidad que sube X</td></tr>
+<tr><td class="formula">a (ordenada)</td><td>Valor de Y cuando X = 0</td></tr>
+</table>
+<p>Se calcula por <strong>mínimos cuadrados</strong> (la recta que hace mínima la suma de los errores al cuadrado). Dos datos que se preguntan seguido: la recta pasa siempre por el punto <span class="formula">(x̄, ȳ)</span>, y el <strong>signo de b siempre coincide con el signo de r</strong>.</p>
+<div class="warn">
+<strong>Extrapolar es peligroso.</strong> Si la recta se armó con temperaturas de 5° a 35°, usarla para predecir a 80° es un error metodológico: no hay evidencia de que la relación lineal siga afuera del rango observado. Matemáticamente da un número; conceptualmente no es confiable.
+</div>
+
+<h2>R²: cuánto explica el modelo</h2>
+<div class="box">
+<span class="formula">R² = r²</span> &nbsp;·&nbsp; rango <span class="formula">0 ≤ R² ≤ 1</span>
+</div>
+<p>R² es el <strong>porcentaje de la variabilidad de Y que la recta logra explicar</strong>. Si R² = 0,97, el 97% de lo que varía Y se explica por X, y el 3% queda para otros factores. Como es r al cuadrado, <strong>nunca es negativo</strong> (perdió el signo — no dice dirección, solo bondad de ajuste). Criterio de la cátedra: <span class="formula">R² &gt; 0,5</span> = buen ajuste.</p>
+<div class="box">
+<strong>r vs. R² — no los mezcles.</strong> <span class="formula">r</span> mide fuerza Y dirección (tiene signo, va de −1 a 1). <span class="formula">R²</span> mide % de variabilidad explicada (sin signo, de 0 a 1). Si te preguntan por "bondad de ajuste", es R².
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. Un estudio halla r = 0,85 entre bomberos enviados a un incendio y daños materiales. ¿Qué se concluye?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> Enviar más bomberos causa más daños</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> Habría que enviar menos bomberos para reducir daños</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> r = 0,85 indica una relación débil</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', true)"> Hay fuerte asociación lineal, pero no causalidad (ambas dependen del tamaño del incendio)</label>
+<div id="q1a" class="feedback wrong">Correlación no implica causalidad. Es el error que la pregunta busca que cometas.</div>
+<div id="q1b" class="feedback wrong">Sería actuar sobre una relación causal que no existe — mismo error de fondo.</div>
+<div id="q1c" class="feedback wrong">|r| = 0,85 ≥ 0,7, así que es una relación fuerte, no débil.</div>
+<div id="q1d" class="feedback correct">Variable de confusión clásica: el tamaño del incendio explica tanto los bomberos como los daños. Asociación fuerte, sí; causalidad, no.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. La recta de regresión da b = −3,5. ¿Qué se puede afirmar sobre r?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', true)"> r será negativo</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> r será positivo</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> r será igual a cero</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> No se puede saber el signo de r</label>
+<div id="q2a" class="feedback correct">El signo de b siempre coincide con el de r. b negativo ⇒ r negativo (relación inversa).</div>
+<div id="q2b" class="feedback wrong">El signo de b y el de r siempre coinciden; b es negativo, así que r no puede ser positivo.</div>
+<div id="q2c" class="feedback wrong">r = 0 implicaría b = 0 (recta horizontal). Acá b = −3,5, hay pendiente.</div>
+<div id="q2d" class="feedback wrong">Sí se puede: el signo de r queda determinado por el signo de b.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. Un modelo obtiene R² = 0,30. ¿Qué se puede afirmar?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> Es un modelo excelente, explica el 30%</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', true)"> Ajuste pobre: solo el 30% de la variabilidad de Y se explica por X</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> r tiene que ser negativo</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> La correlación es perfecta</label>
+<div id="q3a" class="feedback wrong">Con el criterio de la cátedra (R² > 0,5 = buen ajuste), 0,30 es pobre, no excelente.</div>
+<div id="q3b" class="feedback correct">R² = 0,30 ⇒ solo el 30% de la variación de Y queda explicada; el 70% depende de otros factores. Ajuste débil.</div>
+<div id="q3c" class="feedback wrong">R² no tiene signo (es r²). No podés deducir la dirección de la relación desde R².</div>
+<div id="q3d" class="feedback wrong">Correlación perfecta sería R² = 1. 0,30 está lejos.</div>
+</div>
+
+<div class="ask">
+¿Querés el ejemplo completo de helados/temperatura (r, recta, R²) resuelto paso a paso? Pedímelo.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/correlation.html" target="_blank">Math is Fun — Correlation</a>.
+<div class="nav-row">
+  <span>← <a href="0009-intervalos-de-confianza.html">Lección 9 — Intervalos de confianza</a></span>
+  <span><a href="0011-medidas-de-posicion-y-forma.html">Lección 11 — Medidas de posición y forma</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 31 · DDL: CREATE TABLE y restricciones</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 31 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">CREATE TABLE, y las seis restricciones</h1>
+    <p class="masthead__standfirst">
+      Pasar una tabla del MER a una sentencia que el motor ejecute. Las restricciones
+      son la mitad del trabajo, y la mitad de lo que toman.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Deck "DDL, SP, Triggers", slides 2–13</span>
+      <span>Prioridad para el 2do parcial: alta</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Esto ya lo tomaron</span>
+    <p>
+      El modelo de examen que circula (<a href="../raw/Examen1.webp">Examen1</a>) pregunta
+      textual: <b>"Nombre y explique 3 Restricciones (Constraints)"</b>. Al final de esta
+      lección tenés que poder nombrar las seis y explicar cualquiera en dos renglones.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Qué crea el DDL</h2>
+
+  <p>
+    El deck abre con una definición: el DDL "se encarga de la <b>creación y modificación
+    de la estructura</b> de los objetos de la base de datos". Los tres comandos son
+    <code>CREATE</code>, <code>ALTER</code> y <code>DROP</code>. Esta lección cubre el
+    primero; los otros dos están en la <a href="0038-alter-drop-on-delete.html">0038</a>.
+    Los objetos básicos son cuatro:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Objeto</th><th>Qué es, según el deck</th></tr></thead>
+      <tbody>
+        <tr><td>Tabla</td><td>Unidad básica de almacenamiento. La representación física de las entidades.</td></tr>
+        <tr><td>Vista</td><td>Representación lógica de un subconjunto de datos de una o más tablas.</td></tr>
+        <tr><td>Índice</td><td>Estructura asociada a la tabla para que las consultas rindan más (<a href="0028-indices.html">0028</a>).</td></tr>
+        <tr><td>Restricción</td><td>Fuerza condiciones (reglas de negocio) sobre los registros. <b>La representación física de las relaciones.</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    La última frase es la que conecta todo el cuatrimestre: el rombo del DER se convierte en
+    una FK, y la FK es una restricción. Lo que dibujaste en el DER, el motor lo hace cumplir acá.
+  </p>
+
+  <h2><span class="num">02</span>La forma de la sentencia</h2>
+
+<pre><code><span class="k">CREATE TABLE</span> NOMBRE_TABLA (
+  nombre_campo  tipo(extensión)  NULL | NOT NULL  restricción,
+  ...
+);</code></pre>
+
+  <p>
+    Los tipos que lista el deck: <code>CHAR(n)</code> (largo fijo), <code>VARCHAR(n)</code>
+    (largo variable), <code>INT</code>/<code>SMALLINT</code>, <code>FLOAT</code>/<code>REAL</code>
+    (aproximado), <code>DECIMAL</code>/<code>NUMERIC</code> (precisión fija),
+    <code>DATETIME</code>. Para plata o medidas, <code>DECIMAL</code>: el <code>FLOAT</code>
+    redondea.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Si no ponés nada, acepta NULL</span>
+    <p>
+      "Si no especifica NULL o NOT NULL, se utiliza el valor predeterminado, el cuál es que
+      las columnas se creen con la opción <b>NULL</b>." Olvidarse el <code>NOT NULL</code> no
+      da error: deja pasar datos vacíos sin avisar.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Las seis restricciones</h2>
+
+  <p>El deck las enumera en este orden. Antes de abrir cada una, intentá decir qué fuerza:</p>
+
+  <details class="reveal">
+    <summary>PRIMARY KEY</summary>
+    <div class="reveal__body">
+      <p>
+        Fuerza la <b>unicidad</b> del conjunto de columnas que identifica cada registro.
+        Lleva implícito el NOT NULL. Se declara <b>a nivel de columna</b> si es simple
+        (<code>codigo INT PRIMARY KEY</code>) o <b>a nivel de tabla</b>, que sirve también para
+        las compuestas: <code>CONSTRAINT pk_curso PRIMARY KEY (codigo_curso, codigo_categoria)</code>.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>UNIQUE</summary>
+    <div class="reveal__body">
+      <p>
+        Fuerza la unicidad de una columna que <b>no</b> es la PK. Es la forma de declarar una
+        clave candidata (<a href="0005-claves-e-integridad.html">0005</a>): en la Clínica,
+        la habitación se identifica por <code>Cod_Habitacion</code>, pero
+        <code>(Cod_Torre, Piso, Numero)</code> tampoco puede repetirse.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>DEFAULT</summary>
+    <div class="reveal__body">
+      <p>
+        Fuerza un <b>valor predeterminado</b> cuando el INSERT no trae esa columna.
+        <code>Cant_Banios INT NOT NULL DEFAULT 1</code>.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>NOT NULL</summary>
+    <div class="reveal__body">
+      <p>Fuerza la <b>existencia</b> de valor: cada fila tiene que traer esa columna completa.</p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>CHECK</summary>
+    <div class="reveal__body">
+      <p>
+        Restringe el <b>dominio</b>: una condición que toda fila debe cumplir.
+        <code>CHECK (Cant_Camas &gt; 0)</code>, <code>CHECK (Posee_Ventana IN ('S','N'))</code>.
+        Ojo con la tabla de evaluación del deck, abajo.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>FOREIGN KEY</summary>
+    <div class="reveal__body">
+      <p>
+        Fuerza la <b>integridad referencial</b>: el valor tiene que existir como PK en la tabla
+        padre, o ser NULL. Establece la jerarquía padre–hijo.
+        <code>FOREIGN KEY (Cod_Torre) REFERENCES TORRE (Cod_Torre)</code>. El
+        <code>ON DELETE</code> se ve en la <a href="0038-alter-drop-on-delete.html">0038</a>.
+      </p>
+    </div>
+  </details>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">CHECK con un NULL: pasa</span>
+    <p>
+      El deck lo tabula: si la condición da <b>FALSO</b>, error. Si da <b>VERDADERO</b>, pasa.
+      Y si da <b>DESCONOCIDO</b>, porque el campo es NULL, <b>también pasa</b>.
+      <code>CHECK (Cant_Camas &gt; 0)</code> no impide un <code>Cant_Camas</code> nulo:
+      para eso hace falta además el <code>NOT NULL</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <p>
+    La base de estos ejercicios es la Clínica del TP5, armada con el DER de la cátedra
+    (<a href="0040-integrador-tp5-clinica.html">0040</a>). El botón <b>Tablas</b> te muestra
+    qué hay. Cada ejercicio corre contra una copia limpia, así que no rompés nada.
+  </p>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 3 · Escribir</span>
+    <p class="sqlbox__task">
+      Creá la tabla <code>PREPAGA_PLAN</code>: un código entero que es la PK, un nombre de
+      hasta 30 caracteres obligatorio, un <code>Cod_Prepaga</code> obligatorio que referencia a
+      <code>PREPAGA</code>, y un <code>Precio</code> decimal que tiene que ser mayor a cero.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE PREPAGA_PLAN (
+
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE PREPAGA_PLAN (
+  Cod_Plan    INT          PRIMARY KEY,
+  Nombre      VARCHAR(30)  NOT NULL,
+  Cod_Prepaga INT          NOT NULL,
+  Precio      DECIMAL(10,2) CHECK (Precio > 0),
+  FOREIGN KEY (Cod_Prepaga) REFERENCES PREPAGA (Cod_Prepaga)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO PREPAGA_PLAN VALUES (1, '210', 1, 50000);
+SELECT COUNT(*) FROM PREPAGA_PLAN;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 3 · ¿Lo frena tu tabla?</span>
+    <p class="sqlbox__task">
+      Escribí de nuevo <code>PREPAGA_PLAN</code>. Esta vez la comprobación intenta cargar un plan
+      de la prepaga <b>99</b>, que no existe. Tu tabla tiene que rechazarlo.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE PREPAGA_PLAN (
+  Cod_Plan    INT PRIMARY KEY,
+  Nombre      VARCHAR(30) NOT NULL,
+  Cod_Prepaga INT NOT NULL,
+  Precio      DECIMAL(10,2) CHECK (Precio > 0)
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE PREPAGA_PLAN (
+  Cod_Plan    INT PRIMARY KEY,
+  Nombre      VARCHAR(30) NOT NULL,
+  Cod_Prepaga INT NOT NULL REFERENCES PREPAGA (Cod_Prepaga),
+  Precio      DECIMAL(10,2) CHECK (Precio > 0)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO PREPAGA_PLAN VALUES (1, 'Plan fantasma', 99, 1000);
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 3 · La trampa del CHECK</span>
+    <p class="sqlbox__task">
+      Corregí la tabla para que un plan <b>sin precio</b> (NULL) también se rechace.
+      La comprobación intenta cargar uno.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE PREPAGA_PLAN (
+  Cod_Plan    INT PRIMARY KEY,
+  Nombre      VARCHAR(30) NOT NULL,
+  Cod_Prepaga INT NOT NULL REFERENCES PREPAGA (Cod_Prepaga),
+  Precio      DECIMAL(10,2) CHECK (Precio > 0)
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE PREPAGA_PLAN (
+  Cod_Plan    INT PRIMARY KEY,
+  Nombre      VARCHAR(30) NOT NULL,
+  Cod_Prepaga INT NOT NULL REFERENCES PREPAGA (Cod_Prepaga),
+  Precio      DECIMAL(10,2) NOT NULL CHECK (Precio > 0)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO PREPAGA_PLAN VALUES (1, 'Plan sin precio', 1, NULL);
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Discriminar</span>
+    <p class="quiz__q">
+      En <code>PACIENTE</code>, ¿qué restricción declara que <code>Cod_Prepaga</code> tiene que
+      existir en la tabla <code>PREPAGA</code>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La FOREIGN KEY fuerza la integridad referencial: el valor tiene que existir como PK en la tabla padre, o ser NULL.">Una restricción FOREIGN KEY</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="UNIQUE impide que el valor se repita dentro de la misma tabla. Acá queremos lo contrario: muchos pacientes comparten prepaga.">Una restricción de UNIQUE</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="CHECK sólo puede mirar columnas de la misma fila y la misma tabla. No puede consultar otra tabla.">Una restricción de CHECK</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Para la hoja</span>
+    <p class="quiz__q">
+      ¿Por qué esta sentencia es inválida según el deck?
+      <code>codigo INT NOT NULL PRIMARY KEY</code>
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El deck lo marca como no válido: la PRIMARY KEY ya implica NOT NULL, y declarar las dos condiciones hace que el motor arroje error. En la práctica muchos motores lo aceptan, pero en el parcial vale lo que dice el material.">La PK ya implica el NOT NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las PK simples se pueden declarar a nivel de columna. Lo que sólo admite el nivel de tabla es la PK compuesta.">La PK va a nivel de la tabla</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="INT es un tipo perfectamente válido para una PK. El problema no es el tipo.">INT no sirve como clave PK</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Sin declarar</span>
+    <p class="quiz__q">Si en el CREATE TABLE no ponés ni <code>NULL</code> ni <code>NOT NULL</code>, ¿qué pasa con la columna?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="No es obligatorio. El deck dice que, si no se especifica, se usa el valor predeterminado.">Da error: es obligatorio declararlo</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 3: &quot;Si no específica NULL o NOT NULL, se utiliza el valor predeterminado, el cuál es que las columnas se creen con la opción NULL&quot;.">Acepta NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al revés: el predeterminado es NULL. Por eso hay que escribir NOT NULL cuando el dato es obligatorio.">Queda NOT NULL</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">PK compuesta</span>
+    <p class="quiz__q">La clave de <code>Curso</code> es <code>(codigo_curso, codigo_categoria)</code>. ¿Dónde se declara?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slides 6–8: a nivel columna &quot;sólo es admitida en los casos donde la misma no sea compuesta&quot;. A nivel tabla vale para las dos.">A nivel tabla, con <code>CONSTRAINT … PRIMARY KEY (a, b)</code></button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso declararía dos claves primarias, y una tabla tiene una sola. La compuesta va a nivel tabla.">Poniendo PRIMARY KEY en cada una de las dos columnas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Para una clave simple sí da igual. Para una compuesta, sólo a nivel tabla.">Da igual: columna o tabla</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Alcance del CHECK</span>
+    <p class="quiz__q">Según el deck, ¿qué puede referenciar una restricción <code>CHECK</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="No: por eso, para reglas que cruzan tablas, el deck manda a un trigger BEFORE.">Columnas de otra tabla</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es la FOREIGN KEY.">La PK de la tabla padre</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 12: &quot;Solo puede referenciar una columna y debe ser de la misma tabla&quot;. Restringe el dominio de un campo.">Una sola columna, de la misma tabla</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Valores de la FK</span>
+    <p class="quiz__q">En una relación padre–hijo, ¿qué valores puede tomar la columna FK de la tabla hija?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 10: &quot;Los valores de los campos de la tabla referenciada (Tabla Padre) mas el valor Null forman el conjunto de valores posibles&quot;. Para prohibir el NULL hay que agregar NOT NULL.">Los de la PK del padre, más NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El NULL entra en el conjunto salvo que declares NOT NULL aparte.">Sólo los del padre, nunca NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El deck exige que los campos referenciados sean la clave primaria del padre: &quot;de lo contrario no es posible crear la restricción&quot;.">Cualquiera de cualquier columna del padre</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DDL, SP, Triggers"</b> (<code>raw/DDL, SP , Triggers .pptx</code>), slides 2–13.
+      Es el mismo contenido que <code>raw/Material_Examen/unidad 4 DDL.pdf</code>.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.1 "Definición de datos y tipos de datos de SQL"
+      (p. 205) y §8.2 "Especificación de restricciones en SQL" (p. 209).
+    </p>
+    <p>
+      Para el motor que usan los ejercicios:
+      <a href="https://www.sqlite.org/lang_createtable.html">SQLite — CREATE TABLE</a>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Escribime de memoria las tres restricciones que elegirías
+      para responder la pregunta del Examen1, y te las corrijo como lo haría el docente.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0028-indices.html">Anterior: 0028 · Índices</a>
+    <a href="0032-select-basico.html">Siguiente: 0032 · SELECT</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

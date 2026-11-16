@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 13 — Tablas de Contingencia: armar y leer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+<style>
+  .ct { border-collapse: collapse; margin: 1.2rem 0; width: 100%; max-width: 460px; font-family: var(--font-mono); }
+  .ct th, .ct td { border: 1px solid var(--line); padding: 0.6rem 0.5rem; text-align: center; font-size: 0.9rem; }
+  .ct th { background: rgba(230,195,132,0.10); color: var(--accent); text-transform: none; letter-spacing: 0; }
+  .ct .rowhdr { background: rgba(230,195,132,0.10); color: var(--accent); font-weight: 600; }
+  .ct .given { background: rgba(122,168,159,0.16); color: var(--formula); font-weight: 600; }   /* dato */
+  .ct .derived { background: rgba(152,187,108,0.14); color: var(--good); }                        /* deducido */
+  .ct .marg { background: rgba(230,195,132,0.06); font-weight: 600; }
+  .legend { display: flex; gap: 1.2rem; flex-wrap: wrap; font-size: 0.8rem; margin: 0.4rem 0 0; }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .sw { width: 0.9rem; height: 0.9rem; border-radius: 3px; display: inline-block; border: 1px solid var(--line); }
+  .step { counter-increment: st; margin: 0.9rem 0; padding-left: 2.2rem; position: relative; }
+  .step::before { content: counter(st); position: absolute; left: 0; top: -0.1rem; width: 1.5rem; height: 1.5rem;
+    background: var(--accent); color: #1f1f28; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 0.85rem; }
+  .steps { counter-reset: st; }
+</style>
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Probabilidad · Lección gráfica</span>
+<h1>Tablas de Contingencia: armar y leer</h1>
+<p class="subtitle">La tabla es tu mejor herramienta: si la sabés llenar, casi cualquier pregunta de probabilidad se contesta mirándola. Lo difícil casi nunca es la cuenta — es reconstruir la tabla desde el enunciado.</p>
+
+<h2>El problema (de tu parcial real)</h2>
+<div class="box">
+En una empresa, el <strong>30%</strong> de los empleados tiene título universitario. De éstos, el <strong>40%</strong> trabaja en atención al cliente. Además, el <strong>72%</strong> de todos los empleados trabaja en atención al cliente.
+</div>
+<p>Dos variables binarias: <span class="formula">U</span> = universitario (sí/no) y <span class="formula">A</span> = atención al cliente (sí/no). Vamos a llenar una tabla 2×2 con <strong>probabilidades</strong> (proporciones sobre el total = 1).</p>
+
+<h2>Paso a paso: reconstruir la tabla</h2>
+<div class="steps">
+<div class="step"><strong>Anotá los márgenes que te dan.</strong> "30% universitarios" ⇒ <span class="formula">P(U)=0,30</span> (margen de fila). "72% en atención" ⇒ <span class="formula">P(A)=0,72</span> (margen de columna).</div>
+<div class="step"><strong>Ojo con el "de éstos".</strong> "De los universitarios, el 40% en atención" es una <strong>condicional</strong>: <span class="formula">P(A/U)=0,40</span>. Para meterla en la tabla, multiplicá: <span class="formula">P(U∩A)=P(U)·P(A/U)=0,30·0,40=0,12</span>.</div>
+<div class="step"><strong>Completá por resta.</strong> Cada fila y columna cierra en su margen, y todo suma 1. Lo demás sale solo.</div>
+</div>
+
+<table class="ct">
+<tr><th></th><th>A</th><th>A̅</th><th class="marg">Total</th></tr>
+<tr><td class="rowhdr">U</td><td class="given">0,12</td><td class="derived">0,18</td><td class="given">0,30</td></tr>
+<tr><td class="rowhdr">U̅</td><td class="derived">0,60</td><td class="derived">0,10</td><td class="derived">0,70</td></tr>
+<tr><td class="rowhdr marg">Total</td><td class="given">0,72</td><td class="derived">0,28</td><td class="marg">1,00</td></tr>
+</table>
+<div class="legend">
+  <span><span class="sw" style="background:rgba(122,168,159,0.4)"></span> dato del enunciado</span>
+  <span><span class="sw" style="background:rgba(152,187,108,0.4)"></span> deducido por resta</span>
+  <span><span class="sw" style="background:rgba(230,195,132,0.25)"></span> márgenes / total</span>
+</div>
+<div class="box">
+Cómo salieron los deducidos: <span class="formula">P(U∩A̅)=0,30−0,12=0,18</span> · <span class="formula">P(U̅∩A)=0,72−0,12=0,60</span> · <span class="formula">P(U̅)=1−0,30=0,70</span> · el resto cierra cada fila/columna.
+</div>
+
+<h2>Con la tabla armada, respondé cualquier cosa</h2>
+<table>
+<tr><th>Pregunta</th><th>Se lee así</th><th>Resultado</th></tr>
+<tr><td>Si NO es universitario, ¿prob. de estar en atención?</td><td class="formula">P(A/U̅)=P(U̅∩A)/P(U̅)=0,60/0,70</td><td>0,857</td></tr>
+<tr><td>¿Prob. de ser universitario O estar en atención?</td><td class="formula">P(U∪A)=0,30+0,72−0,12</td><td>0,90</td></tr>
+<tr><td>¿Universitario y atención son independientes?</td><td class="formula">P(A/U)=0,40 vs P(A)=0,72</td><td>No (distintos)</td></tr>
+</table>
+<div class="warn">
+<strong>Chequeo de independencia:</strong> son independientes solo si <span class="formula">P(A/U)=P(A)</span> (saber U no cambia la prob de A). Acá 0,40 ≠ 0,72 ⇒ <strong>dependientes</strong>. Equivalente: comparar <span class="formula">P(U∩A)</span> con <span class="formula">P(U)·P(A)</span> — si son iguales, independientes.
+</div>
+
+<h2>Regla de oro para llenar la tabla</h2>
+<div class="box">
+1) Los <strong>totales</strong> (márgenes) siempre suman 1. &nbsp; 2) Un porcentaje "<strong>de</strong> los universitarios…" es <strong>condicional</strong> → multiplicá para llevarlo a la celda. &nbsp; 3) Un porcentaje "del total…" ya es <strong>marginal</strong> o de celda directo. &nbsp; 4) Lo que falta, sale por resta.
+</div>
+
+<h2>Practicá</h2>
+
+<div class="quiz">
+<p class="q">1. El enunciado dice "de los universitarios, el 40% está en atención". ¿Cómo entra ese 40% en la tabla?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> a. Es P(U∩A) directo = 0,40</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', true)"> b. Es P(A/U)=0,40; hay que multiplicar por P(U) para la celda</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> c. Es P(A)=0,40</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> d. Es un margen de columna</label>
+<div id="q1a" class="feedback wrong">"De los universitarios" restringe el universo a U: es condicional, no la conjunta directa. La conjunta es 0,30·0,40=0,12.</div>
+<div id="q1b" class="feedback correct">"De los universitarios" ⇒ condicional P(A/U)=0,40. Para la celda: P(U∩A)=P(U)·P(A/U)=0,12.</div>
+<div id="q1c" class="feedback wrong">P(A) es el 72% del total; el 40% es solo dentro de los universitarios.</div>
+<div id="q1d" class="feedback wrong">Los márgenes son P(U) y P(A); el 40% es una condicional dentro de una fila.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Con la tabla armada, ¿cómo verificás si U y A son independientes?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> a. Viendo si P(U∩A)=0</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> b. Viendo si los márgenes suman 1</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> c. Viendo si P(U)=P(A)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', true)"> d. Viendo si P(A/U)=P(A) (o si P(U∩A)=P(U)·P(A))</label>
+<div id="q2a" class="feedback wrong">Eso testea si son EXCLUYENTES, no independientes (y son cosas distintas).</div>
+<div id="q2b" class="feedback wrong">Los márgenes siempre suman 1 en cualquier tabla; no dice nada sobre independencia.</div>
+<div id="q2c" class="feedback wrong">Que dos probabilidades marginales coincidan no tiene relación con la independencia.</div>
+<div id="q2d" class="feedback correct">Independencia = saber U no cambia la prob de A: P(A/U)=P(A). Equivale a P(U∩A)=P(U)·P(A).</div>
+</div>
+
+<div class="ask">
+¿Querés que armemos juntos otra tabla desde un enunciado (ej. el de padres/hijos del TP2)? Pasámelo y lo llenamos paso a paso.
+</div>
+
+<footer>
+Ejemplo tomado de tu Práctica Primer Parcial (ejercicio 2) — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="index.html">Índice</a></span>
+  <span><a href="0014-que-distribucion-uso.html">Lección 14 — ¿Qué distribución uso?</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var q = document.getElementById(id).parentNode;
+  q.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  document.getElementById(id).style.display = 'block';
+}
+</script>
+
+</body>
+</html>

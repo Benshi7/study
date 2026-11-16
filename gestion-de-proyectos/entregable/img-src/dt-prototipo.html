@@ -1,0 +1,18 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><!-- size: 1500x800 -->
+<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="figure.css">
+<style>.scr{background:var(--c-card);border:1px solid var(--c-rule);border-radius:14px;overflow:hidden;min-height:500px;display:flex;flex-direction:column}
+.bar{background:var(--c-accent);color:var(--c-bg);font-weight:700;letter-spacing:.05em;padding:11px 16px;font-size:15px}.body{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.map{height:200px;border-radius:10px;background:var(--c-accent-soft);position:relative;border:1px solid var(--c-rule)}.map:before,.map:after{content:"";position:absolute;background:var(--c-bg)}.map:before{left:0;right:0;top:48%;height:8px}.map:after{top:0;bottom:0;left:38%;width:8px}
+.pin{position:absolute;left:calc(38% - 8px);top:calc(48% - 8px);width:24px;height:24px;border-radius:50%;background:var(--c-warn);border:5px solid var(--c-bg);z-index:2;box-shadow:0 0 0 2px var(--c-warn)}
+.btn{background:var(--c-accent);color:var(--c-bg);text-align:center;font-weight:700;padding:12px;border-radius:8px}.fld{background:var(--c-bg);border:1px solid var(--c-rule);border-radius:8px;padding:8px 12px}.fld small{display:block;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--c-muted)}.fld b{font-size:17px}
+.note{font-size:14px;color:var(--c-muted)}.st{display:flex;align-items:center;gap:12px;font-weight:700;font-size:17px;padding:6px 0}.dot{width:16px;height:16px;border-radius:50%;background:var(--c-ok)}.st.v .dot{background:var(--c-warn)}.st.r .dot{background:var(--c-muted)}</style></head>
+<body><div class="fig">
+<p class="eyebrow">Fase 4 · Prototipo</p><h1>Tres pantallas, un mismo recorrido</h1>
+<p class="sub">Técnica aplicada: prototipo de baja fidelidad del flujo vecinal. Maqueta conceptual con estados de ejemplo.</p>
+<div class="row">
+<div class="scr"><div class="bar">1 · CONSULTAR</div><div class="body"><div class="map"><div class="pin"></div></div><p><b>Información oficial · actualizada</b></p><div class="btn">Reportar una incidencia</div></div></div>
+<div class="scr"><div class="bar">2 · REPORTAR</div><div class="body"><div class="fld"><small>¿Qué ocurre?</small><b>Obstrucción en la vía</b></div><div class="fld"><small>Ubicación</small><b>Punto marcado en el mapa</b></div><div class="btn">Enviar reporte</div><p class="note">Sin datos personales para reportar</p></div></div>
+<div class="scr"><div class="bar">3 · SEGUIR</div><div class="body"><div class="st"><span class="dot"></span>RECIBIDO</div><div class="st v"><span class="dot"></span>EN VALIDACIÓN</div><div class="st"><span class="dot"></span>DERIVADO</div><div class="st r"><span class="dot"></span>RESUELTO</div><p class="note">Estados y responsables: confirmar con las áreas.</p></div></div>
+</div>
+<p class="foot">Boti / BAX como puntos de acceso · integración sujeta a validación.</p>
+</div></body></html>

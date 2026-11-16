@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 47 · Control de acceso: GRANT, REVOKE y vistas</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 47 · Unidad 8 · Seguridad e integridad · Opcional</p>
+    <h1 class="masthead__title">Quién puede ver qué: privilegios y vistas</h1>
+    <p class="masthead__standfirst">
+      El control de acceso discrecional se maneja con dos sentencias, GRANT y REVOKE. Con
+      WITH GRANT OPTION, el permiso además se puede pasar a otros.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Clase de transacciones (captura 16) y audio</span>
+      <span>Prioridad para el parcial: opcional</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Lección opcional</span>
+    <p>
+      Se vio en la misma clase que transacciones, al final. No está en lo que el docente nombró
+      para el 2do parcial. Sólo hay una captura (la de GRANT OPTION); el resto sale del resumen del
+      audio, contrastado con Elmasri.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Para qué sirve la seguridad</h2>
+
+  <p>
+    Proteger los tres pilares: <b>confidencialidad</b> (que no lea quien no debe),
+    <b>integridad</b> (que no modifique quien no debe) y <b>disponibilidad</b> (que los datos estén
+    cuando se necesitan). Hay dos modelos de control de acceso:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>Discrecional (DAC)</th><th>Obligatorio (MAC)</th></tr></thead>
+      <tbody>
+        <tr><td><b>Cómo funciona</b></td><td>Se conceden y revocan <b>privilegios</b> sobre objetos (tablas, vistas) a usuarios o roles</td><td>Cada dato y cada usuario tienen un <b>nivel de seguridad</b> (alto secreto, secreto, confidencial, no clasificado) y el sistema compara</td></tr>
+        <tr><td><b>Quién decide</b></td><td>El dueño del objeto, a su criterio ("discrecional")</td><td>Una política central fija; nadie la cambia por su cuenta</td></tr>
+        <tr><td><b>En SQL</b></td><td><code>GRANT</code> / <code>REVOKE</code></td><td>No tiene sentencias propias en SQL estándar</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Dos controles más que pueden aparecer en un choice:</p>
+  <ul>
+    <li><b>Control de inferencia</b>: impedir que alguien deduzca un dato individual a partir de
+      consultas agregadas permitidas. Por ejemplo, sacar el sueldo de una persona con el promedio
+      de un grupo de dos.</li>
+    <li><b>Control de flujo</b>: impedir que la información pase de un objeto protegido a otro
+      menos protegido, donde la puedan leer usuarios sin permiso.</li>
+  </ul>
+
+  <h2><span class="num">02</span>El DBA</h2>
+
+  <p>
+    El administrador de base de datos es la cuenta con todos los privilegios. Crea las cuentas de
+    usuario, concede y revoca privilegios, y se ocupa de los planes de recuperación ante desastres.
+  </p>
+
+  <h2><span class="num">03</span>GRANT y REVOKE</h2>
+
+<pre><code>GRANT [privilegios] ON [objeto] TO [usuario] [WITH GRANT OPTION];
+REVOKE [privilegios] ON [objeto] FROM [usuario];</code></pre>
+
+  <h3>Sin WITH GRANT OPTION</h3>
+
+<pre><code>GRANT SELECT ON base.tabla TO usuario1;</code></pre>
+
+  <p>
+    "Le da al usuario1 el permiso (en este ejemplo, SELECT) para que pueda consultar la tabla."
+    Puede usarlo, pero <b>no puede pasárselo a nadie</b>.
+  </p>
+
+  <h3>Con WITH GRANT OPTION</h3>
+
+<pre><code>GRANT SELECT ON clientes TO usuario_A WITH GRANT OPTION;
+-- usuario_A ahora puede ejecutar:
+GRANT SELECT ON clientes TO usuario_B;</code></pre>
+
+  <p>
+    El slide: el administrador (o el propietario) le da a A el permiso de consultar
+    <code>clientes</code> "además de la facultad de pasárselo a alguien más". Es la
+    <b>propagación de privilegios</b>.
+  </p>
+
+  <h3>La revocación en cascada</h3>
+
+  <p>
+    Si el DBA le da SELECT a A con GRANT OPTION, A se lo da a B, y B a C, y después el DBA revoca el
+    de A, <b>también se pierden los de B y C</b>: venían del permiso de A. Así ningún usuario queda
+    con un permiso cuyo origen ya no existe.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">En los motores reales</span>
+    <p>
+      El SQL estándar pide escribir la cascada a mano: <code>REVOKE … FROM usuario_A CASCADE</code>.
+      Con <code>RESTRICT</code>, el REVOKE falla si A ya le pasó el permiso a otros. SQL Server da
+      error si A otorgó el permiso a otros y no se pone <code>CASCADE</code>. Para el choice alcanza
+      con la idea: revocar en el origen corta toda la cadena.
+    </p>
+  </div>
+
+  <h3>Roles</h3>
+
+  <p>
+    En vez de dar los permisos usuario por usuario, se agrupan en un <b>rol</b> (por ejemplo,
+    <code>rol_analista</code>) y se le da el rol a cada persona. Cuando cambia el puesto, se cambia
+    el rol.
+  </p>
+
+  <h2><span class="num">04</span>Vistas como mecanismo de seguridad</h2>
+
+  <p>
+    No se da permiso sobre la tabla, sino sobre una <b>vista</b> que muestra sólo una parte (lección
+    <a href="0039-vistas.html">0039</a>):
+  </p>
+  <ul>
+    <li><b>Columnas</b>: Recursos Humanos ve los empleados, pero sin los datos bancarios.</li>
+    <li><b>Filas</b>: Ventas de una región ve sólo los clientes de su región.</li>
+  </ul>
+
+<pre><code>CREATE VIEW Empleados_RRHH AS
+SELECT Legajo, Nombre, Puesto, Fecha_Ingreso   -- sin CBU ni sueldo
+FROM   Empleado;
+
+GRANT SELECT ON Empleados_RRHH TO rol_rrhh;</code></pre>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 5 · GRANT OPTION</span>
+    <p class="quiz__q">Se ejecuta <code>GRANT SELECT ON clientes TO usuario1;</code>. ¿Qué puede hacer usuario1?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Sólo consultar la tabla. Sin WITH GRANT OPTION no puede pasarle el permiso a nadie más.">Consultar la tabla, pero no pasarle el permiso a otros</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Para pasar el permiso hace falta WITH GRANT OPTION, y esta sentencia no la tiene.">Consultar la tabla y darle el SELECT a otro usuario</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="SELECT sólo permite leer. Para modificar harían falta INSERT, UPDATE o DELETE.">Consultar y modificar las filas de la tabla</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 5 · Cascada</span>
+    <p class="quiz__q">El DBA le dio SELECT a A con GRANT OPTION, y A se lo dio a B. Si el DBA revoca el permiso de A, ¿qué pasa con B?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="B también lo pierde: su permiso dependía del de A. Es la revocación en cascada.">B también pierde el permiso, en cascada</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Si B lo conservara, quedaría con un permiso cuyo origen ya no existe. La revocación en cascada evita justamente eso.">B lo conserva, porque se lo dio A y no el DBA</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Nadie hereda nada: el permiso de B desaparece porque dependía del de A.">B pasa a tener el GRANT OPTION que tenía A</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 5 · DAC o MAC</span>
+    <p class="quiz__q">Cada usuario tiene un nivel (secreto, confidencial…) y cada dato una clasificación; el sistema los compara. ¿Qué modelo es?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Obligatorio (MAC): niveles de seguridad fijos que el sistema compara, sin que el dueño decida.">Control de acceso obligatorio (MAC)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El discrecional se basa en privilegios que el dueño concede con GRANT. Acá no decide nadie: compara niveles.">Control de acceso discrecional (DAC)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El control de inferencia evita deducir datos individuales a partir de consultas agregadas. No usa niveles.">Control de inferencia</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 5 · Vistas</span>
+    <p class="quiz__q">RRHH tiene que ver los empleados, pero no sus datos bancarios. ¿Qué se hace?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Una vista sin las columnas bancarias, y el permiso sobre la vista y no sobre la tabla. Es el uso de las vistas como mecanismo de seguridad.">Una vista sin esas columnas, y GRANT sobre la vista</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Con SELECT sobre la tabla, RRHH vería todas las columnas, también las bancarias.">GRANT SELECT sobre la tabla de empleados</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Pasar el permiso a otros no restringe lo que se ve. El recorte de columnas lo hace una vista.">GRANT sobre la tabla WITH GRANT OPTION</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 5 · Inferencia</span>
+    <p class="quiz__q">Alguien saca el sueldo de un gerente consultando el promedio de un grupo de dos personas. ¿Qué control debería impedirlo?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Control de inferencia: evitar que se deduzca un dato individual a partir de consultas agregadas permitidas.">Control de inferencia</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El control de flujo regula que la información no pase a objetos menos protegidos. Acá el problema es deducir un dato desde un promedio.">Control de flujo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Revocar con REVOKE quita un permiso; el problema es que con un permiso válido (el promedio) se deduce otro dato.">Revocación en cascada</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Captura <code>raw/Clase Transacciones (capturas)/16-grant-option.png</code> (slide 10,
+      "Control de acceso discrecional basado en la concesión y revocación de privilegios"). Lo demás
+      sale del resumen del audio de la clase y de <b>Elmasri &amp; Navathe</b>, cap. 23 (seguridad).
+      La nota sobre <code>CASCADE</code> es de la documentación de SQL Server, no de la clase.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0044-estados-fallos-y-recuperacion.html">Anterior: 0044 · Estados, fallos y recuperación</a>
+    <a href="0039-vistas.html">Vistas: 0039</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

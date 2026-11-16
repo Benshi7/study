@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 14 · Contar registros del supertipo</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 14 · Unidad 2 · Diseño conceptual</p>
+    <h1 class="masthead__title">Contar registros del supertipo, contemplando todas las posibilidades</h1>
+    <p class="masthead__standfirst">
+      Es la pregunta con la que el docente verifica que entendiste las restricciones de
+      verdad y no memorizaste dos dibujitos. La respuesta casi nunca es un número: es un
+      <b>rango</b>, y cuál sea el rango lo deciden el círculo y el arco.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Requiere: <a href="0013-especializacion-la-notacion-isa.html">0013</a></span>
+      <span>Alta probabilidad de examen</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Por qué la pregunta tiene sentido</h2>
+
+  <p>
+    Las restricciones de especialización no son decoración del diagrama: son
+    <b>restricciones de integridad</b>. Dicen qué combinaciones de filas puede y no puede
+    tener la base. Si las entendés, podés contar. Si no, no.
+  </p>
+
+  <p>Cada restricción prohíbe una cosa distinta, y sólo una:</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Marca</th><th>Qué prohíbe</th><th>Efecto sobre la cuenta</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Total</b> (círculo)</td>
+        <td>Que exista un registro del supertipo fuera de todo subtipo</td>
+        <td>Pone un <b>techo</b>: el supertipo no puede tener más que la suma</td>
+      </tr>
+      <tr>
+        <td><b>Exclusiva</b> (arco)</td>
+        <td>Que un registro esté en dos subtipos a la vez</td>
+        <td>Pone un <b>piso</b>: los subtipos no se pisan, así que todos suman</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">La frase que ordena todo</span>
+    <b>"Total" te da el máximo. "Exclusiva" te da el mínimo.</b>
+    Si tenés las dos, máximo y mínimo coinciden y la respuesta es un número exacto. Si te
+    falta una, te queda un rango abierto de ese lado.
+  </blockquote>
+
+  <h2><span class="num">02</span>Las cuatro cuentas</h2>
+
+  <p>
+    Trabajemos con un caso concreto. Supertipo <b>Persona</b>, subtipos <b>Alumno</b> con 30
+    registros y <b>Docente</b> con 20. Pregunta: <i>¿cuántos registros puede tener Persona?</i>
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/especializacion-conteo.svg"
+         alt="Cuatro diagramas de conjuntos que muestran cuántos registros tiene el supertipo Persona en cada combinación de restricciones, con Alumno igual a treinta y Docente igual a veinte.">
+    <figcaption>
+      Los puntitos del rincón son los registros del supertipo que no caen en ningún subtipo.
+      Sólo existen cuando la especialización es <b>parcial</b>.
+    </figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Combinación</th><th>Respuesta</th><th>El razonamiento, en una línea</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Total + exclusiva</b></td>
+        <td><b>exactamente 50</b></td>
+        <td>Nadie afuera y nadie repetido: la suma es la cuenta.</td>
+      </tr>
+      <tr>
+        <td><b>Total + solapada</b></td>
+        <td><b>entre 30 y 50</b></td>
+        <td>Nadie afuera pone el techo en 50; el piso es el subtipo más grande, cuando todos los docentes son además alumnos.</td>
+      </tr>
+      <tr>
+        <td><b>Parcial + exclusiva</b></td>
+        <td><b>50 o más</b></td>
+        <td>Nadie repetido pone el piso en 50; los que sobran no tienen tope.</td>
+      </tr>
+      <tr>
+        <td><b>Parcial + solapada</b></td>
+        <td><b>30 o más</b></td>
+        <td>El caso más flojo: no hay techo, y el piso es sólo el subtipo más grande.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Las mismas cuatro, en fórmula, para que se te fije el patrón:</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th></th><th>Exclusiva</th><th>Solapada</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Total</b></td>
+        <td><code>|E| = Σ nᵢ</code></td>
+        <td><code>máx(nᵢ) ≤ |E| ≤ Σ nᵢ</code></td>
+      </tr>
+      <tr>
+        <td><b>Parcial</b></td>
+        <td><code>|E| ≥ Σ nᵢ</code></td>
+        <td><code>|E| ≥ máx(nᵢ)</code></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Trampa · el mínimo del caso solapado</span>
+    El error clásico es poner el mínimo en <b>0</b> o en <b>1</b> cuando la especialización
+    es solapada. No: el subtipo más grande tiene 30 filas, y cada una de esas filas
+    <b>es</b> una persona. No podés tener menos personas que alumnos. El piso siempre es
+    <code>máx(nᵢ)</code>, nunca cero.
+  </blockquote>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Trampa · "contemplando todas las posibilidades"</span>
+    Cuando el docente agrega esa frase te está pidiendo <b>los dos extremos y por qué</b>,
+    no un número. Si escribís sólo "50", aunque el 50 sea alcanzable, la respuesta está
+    incompleta. Escribí siempre: <b>mínimo, máximo, y el escenario que produce cada uno.</b>
+  </blockquote>
+
+  <h2><span class="num">03</span>La pregunta al revés</h2>
+
+  <p>
+    A veces te dan el supertipo y preguntan por los subtipos. Es el mismo razonamiento
+    espejado. Si <b>Persona = 50</b>:
+  </p>
+
+  <ul>
+    <li><b>Total:</b> la suma de los subtipos es <b>al menos 50</b> (exactamente 50 si además
+      es exclusiva, más de 50 si se solapan porque hay gente contada dos veces).</li>
+    <li><b>Parcial:</b> la suma de los subtipos puede ser cualquier cosa <b>entre 0 y 50</b>
+      si es exclusiva &mdash; con 0 significando que ningún registro se especializó todavía.</li>
+  </ul>
+
+  <p>
+    Y un corolario que conviene tener a mano: <b>ningún subtipo puede tener más registros que
+    el supertipo</b>, nunca, en ninguna de las cuatro combinaciones. Un subtipo es un
+    subconjunto. Si en tu respuesta el subtipo supera al padre, algo se rompió.
+  </p>
+
+  <h2><span class="num">04</span>Ahora contás vos</h2>
+
+  <p>
+    Papel. Para cada caso escribí <b>mínimo, máximo y el escenario</b>. Después comparás.
+  </p>
+
+  <ol class="paso">
+    <li><b>Vehículo</b> → Diesel (12) / Nafta (40). Especialización <b>total y exclusiva</b>.
+      ¿Cuántos vehículos?</li>
+    <li><b>Empleado</b> → Camarero (8) / Cocinero (5) / Lavaplatos (4). <b>Parcial y
+      exclusiva</b>. ¿Cuántos empleados?</li>
+    <li><b>Participante</b> → Productor (3) / Director (2) / Actor (25). <b>Parcial y
+      solapada</b>. ¿Cuántos participantes?</li>
+    <li><b>Jugador</b> → Delantero (6) / Defensa (7) / Arquero (2). <b>Total y solapada</b>.
+      ¿Cuántos jugadores?</li>
+    <li>Del caso 4, el DT te dice que el equipo tiene <b>exactamente 15 jugadores</b>.
+      ¿Qué podés afirmar ahora sobre los solapamientos?</li>
+  </ol>
+
+  <details class="reveal">
+    <summary>Comparar con la corrección</summary>
+    <div class="reveal__body">
+      <ol>
+        <li><b>Exactamente 52.</b> Total + exclusiva es el único caso de número cerrado:
+          12 + 40, nadie afuera y nadie repetido.</li>
+        <li><b>17 o más.</b> Exclusiva da el piso: 8 + 5 + 4 = 17, todos distintos. Parcial
+          saca el techo: puede haber empleados que no son ninguna de las tres cosas (un
+          encargado, un cajero), y no sabés cuántos.</li>
+        <li><b>25 o más.</b> El peor caso para acotar. El piso es máx(3, 2, 25) = 25, que se
+          da si el productor y los directores son además actores. No hay techo porque es
+          parcial. <b>Si pusiste 30, contaste como si fuera exclusiva.</b></li>
+        <li><b>Entre 7 y 15.</b> Total pone el techo en 6 + 7 + 2 = 15. El piso es
+          máx(6, 7, 2) = 7, que se daría si los 6 delanteros y los 2 arqueros fueran también
+          defensas. Que sea raro en el fútbol no importa: el modelo lo permite, y la
+          pregunta es qué permite el modelo.</li>
+        <li><b>Que no hay ningún solapamiento.</b> 15 es justo el techo, y el techo se
+          alcanza únicamente cuando nadie está en dos subtipos. Es decir: la instancia
+          concreta cumple la restricción de exclusividad aunque el modelo no la exija.
+          <b>Y ojo con la conclusión que NO podés sacar:</b> eso no convierte la
+          especialización en exclusiva. Las restricciones son del <b>esquema</b>, no de la
+          instancia &mdash; lo mismo que ya viste con las dependencias funcionales en
+          <a href="0020-dependencia-funcional.html">0020</a>. Una instancia que hoy no se
+          solapa no prohíbe que mañana se solape.</li>
+      </ol>
+    </div>
+  </details>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">Subtipos A=40 y B=10, especialización total y solapada. ¿Cuántos registros tiene el supertipo?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+        data-feedback="Correcto. Total pone el techo en 50; el piso es el subtipo más grande, 40, que se da si los 10 de B están todos dentro de A.">Entre 40 y 50 registros</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Ese sería el resultado si fuera exclusiva. Al solaparse, algunos registros se cuentan dos veces y el total baja.">Exactamente 50 registros</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Al ser total no puede haber registros afuera de los subtipos, así que 50 es un techo y no un piso.">50 registros o más</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. El subtipo A ya tiene 40 filas y cada una es un registro del supertipo: el mínimo nunca puede ser 10.">Entre 10 y 50 registros</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">¿Cuál de las cuatro combinaciones permite responder con un número exacto?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+        data-feedback="Correcto. Total fija el techo y exclusiva fija el piso: los dos coinciden en la suma de los subtipos, así que la cuenta es cerrada.">Total y exclusiva, la suma</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Al ser solapada perdés el piso, porque no sabés cuántos registros están contados dos veces en los subtipos.">Total y solapada, la suma</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Al ser parcial perdés el techo, porque no sabés cuántos registros quedan afuera de todos los subtipos.">Parcial y exclusiva, la suma</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Sin círculo y sin arco perdés el techo y el piso a la vez: es la combinación que menos información aporta.">Parcial y solapada, la suma</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b><code>raw/B Clase 2 Diseño Conceptual Udeci.pptx</code>, slides 25 y 26</b> &mdash;
+      las justificaciones del docente de cada una de las cuatro combinaciones son
+      literalmente enunciados de conteo ("sólo hay 2 tipos de fichas", "puede haber más
+      empleados"). Releelas pensando en cuántas filas permite cada frase.
+    </p>
+    <p>
+      De apoyo: Elmasri &amp; Navathe, cap. 4, sección 4.3.1 y 4.3.2, donde las
+      restricciones están definidas como condiciones sobre los <i>conjuntos</i> de
+      entidades &mdash; que es exactamente de dónde sale la aritmética de esta lección.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Este es el tipo de pregunta que el docente usa para separar
+      al que entendió del que memorizó. Si querés que te tire diez casos seguidos para
+      cronometrarte, pedímelo en el chat.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0013-especializacion-la-notacion-isa.html">Anterior: 0013 · notación ISA</a>
+    <a href="../reference/0004-notacion-der-a-mano.html">Referencia: notación a mano</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

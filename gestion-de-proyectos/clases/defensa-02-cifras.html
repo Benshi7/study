@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Defensa 2 · Las cifras que atan el TP</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: EMV calculator (colors via theme tokens) */
+  .calc { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 1rem; margin: 1.2rem 0; font-family: var(--sans); font-size: .85rem; }
+  .calc .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: .8rem; margin-bottom: .8rem; }
+  .calc label { display: block; color: var(--muted); font-size: .72rem; margin-bottom: .2rem; }
+  .calc select, .calc input { width: 100%; font: inherit; padding: .4rem .5rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--fg); }
+  .calc .out { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: .6rem; margin-top: .4rem; }
+  .calc .out div { background: var(--accent-soft); border-radius: 6px; padding: .5rem .6rem; }
+  .calc .out span { display: block; font-size: .68rem; color: var(--muted); }
+  .calc .out strong { font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+  .calc .out .res { background: var(--violet-soft); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Defensa del TP · 18/11/2026 · Secciones 6, 9 y 10</p>
+  <h1>Las cifras que atan el TP: de dónde sale cada número</h1>
+  <p class="subtitle">Todo número del documento viene de otro. Si se puede reconstruir en voz alta, la defensa se sostiene sola.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../entregable/dist/TP_Cascada_Grupo01.pdf" title="Solo disponible en la copia completa">TP final del equipo</a> (puntos 6, 9.7, 10 y Anexo A)</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder reconstruir en voz alta la cadena 126 días → 25,2 semanas → USD 4.833 por semana → impacto de un riesgo → EMV → reserva de USD 41.206 → línea base de USD 241.839, y explicar por qué la reserva no es un porcentaje.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="03b-cronograma-camino-critico.html">Clase 3 (camino crítico)</a>, <a href="05-riesgos-foda.html">Clase 5 (EMV)</a> y <a href="04-costos-pestel.html">Clase 4 (reservas)</a>; y de <a href="defensa-01-relato.html">Defensa 1</a>, que muestra las tres ataduras de dato.</p>
+  <p><span class="to">Alimenta</span> <a href="defensa-03-preguntas.html">Defensa 3</a>: la mayoría de las preguntas difíciles son «¿de dónde sale…?».</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>Los números del TP no son independientes: la duración del Gantt define el costo semanal, el costo semanal valora los riesgos, los riesgos definen la reserva y la reserva completa el presupuesto. Un jurado que tira de un solo hilo (por ejemplo «¿por qué USD 41.206?») recorre toda la cadena. Hay que recorrerla primero uno mismo.</p>
+
+<h2 id="tabla">Idea 1 · Las cifras ancla</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Cifra</th><th>Qué es</th><th>De dónde sale</th><th>Punto del TP</th></tr></thead>
+<tbody>
+<tr><td class="num">8 · 8</td><td>Fases e hitos de control</td><td>Una fase por etapa (inicio a cierre); un hito/gate por fase</td><td>5.12, 6.3, 6.5</td></tr>
+<tr><td class="num">40 · 23</td><td>Actividades · críticas</td><td>Red del Gantt; 23 con holgura cero</td><td>Anexo A</td></tr>
+<tr><td class="num">126 d.h.</td><td>Camino crítico</td><td>Duración de la red, dentro de una ventana de 131 días hábiles (01/04 al 30/09/2026)</td><td>6, A.4</td></tr>
+<tr><td class="num">25,2 sem.</td><td>Duración en semanas</td><td>126 ÷ 5</td><td>9.7.2</td></tr>
+<tr><td class="num">USD 121.790</td><td>Recursos humanos</td><td>Meses de dedicación × costo mensual por perfil</td><td>10.2</td></tr>
+<tr><td class="num">USD 4.833</td><td>Costo semanal del equipo</td><td>121.790 ÷ 25,2; valora los retrasos</td><td>9.7.2</td></tr>
+<tr><td class="num">USD 200.633</td><td>Presupuesto base</td><td>Suma de seis categorías (RRHH, desarrollo, datos/GIS, infraestructura, implementación, mantenimiento)</td><td>10.8, 10.9</td></tr>
+<tr><td class="num">15 · 6 · 8 · 1</td><td>Riesgos · inaceptables · con atención · aceptable</td><td>Mapa de calor probabilidad × impacto</td><td>9.2, 9.4</td></tr>
+<tr><td class="num">USD 69.353</td><td>EMV inicial (sin respuestas)</td><td>Suma de probabilidad × impacto por riesgo</td><td>9.7.3</td></tr>
+<tr><td class="num">USD 41.206</td><td>Reserva de contingencia</td><td>Suma del EMV <em>residual</em> (después de la respuesta); equivale a 20,5 % del base</td><td>9.7.3, 10.8</td></tr>
+<tr><td class="num">USD 241.839</td><td>Línea base de costos</td><td>200.633 + 41.206. No incluye reserva de gestión</td><td>10.8, 10.9</td></tr>
+<tr><td class="num">USD 24.107</td><td>Referencia de reserva de gestión</td><td>10 % de la línea base (ejemplo de la cátedra); decisión pendiente del Sponsor</td><td>10.8</td></tr>
+<tr><td class="num">ARS 1.560</td><td>Tipo de cambio supuesto</td><td>El equipo estimó en pesos (total ARS 344,3 M, con 10 % plano) y se convirtió dividiendo por 1.560</td><td>10.1</td></tr>
+<tr><td class="num">15 · 7 · 4</td><td>Stakeholders · críticos · estrategias</td><td>Matriz poder × interés; las cuatro estrategias de la cátedra</td><td>7.1 a 7.3</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="cadena">Idea 2 · La cadena de cálculo</h2>
+<ol class="chain">
+  <li><strong>Duración: 126 días hábiles</strong><span class="q">El camino crítico del Gantt. ¿Cuántas semanas son?</span></li>
+  <li data-in="126 ÷ 5"><strong>25,2 semanas</strong><span class="q">¿Cuánto cuesta el equipo por semana?</span></li>
+  <li data-in="USD 121.790 de RRHH ÷ 25,2"><strong>USD 4.833 por semana</strong><span class="q">¿Cuánto cuesta que un riesgo retrase el proyecto?</span></li>
+  <li data-in="semanas de retraso × 4.833 + gastos afectados"><strong>Impacto en USD de cada riesgo</strong><span class="q">¿Cuánto se espera perder, considerando la probabilidad?</span></li>
+  <li data-in="probabilidad × impacto, con la respuesta aplicada"><strong>EMV residual de cada riesgo</strong><span class="q">¿Cuánto hay que reservar en total?</span></li>
+  <li data-in="suma de los 15 EMV residuales"><strong>Reserva de contingencia: USD 41.206</strong><span class="q">¿Cuál es la línea base?</span></li>
+  <li data-in="USD 200.633 + 41.206"><strong>Línea base de costos: USD 241.839</strong></li>
+</ol>
+
+<h3>Las escalas que convierten la matriz en dinero</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Nivel</th><th>Probabilidad</th><th>Impacto si ocurre</th></tr></thead>
+<tbody>
+<tr><td>1 · Muy bajo</td><td class="num">10 %</td><td class="num">hasta USD 1.000</td></tr>
+<tr><td>2 · Bajo</td><td class="num">30 %</td><td class="num">1.000 a 3.000</td></tr>
+<tr><td>3 · Medio</td><td class="num">50 %</td><td class="num">3.000 a 6.000</td></tr>
+<tr><td>4 · Alto</td><td class="num">70 %</td><td class="num">6.000 a 10.000</td></tr>
+<tr><td>5 · Muy alto</td><td class="num">90 %</td><td class="num">más de 10.000</td></tr>
+</tbody>
+</table>
+</div>
+<p>Criterio de respuesta (TP, 9.7.3): <strong>Mitigar</strong> baja la probabilidad un nivel; <strong>Evitar / Mitigar</strong>, dos niveles (mínimo nivel 1); <strong>Aceptar</strong> no la baja. El impacto no cambia. Son supuestos de planificación del equipo, a validar.</p>
+
+<h2 id="calc">Práctica 1 · Rehacer un EMV</h2>
+<p>La calculadora viene cargada con <strong>R02 (datos de baja calidad)</strong>: 2 semanas de retraso más USD 3.205 de preparación y normalización de datos, probabilidad nivel 4, respuesta Mitigar. Cambiar los valores y comprobar qué mueve más la reserva: ¿la probabilidad, la respuesta o el impacto?</p>
+<div class="calc" id="emv" aria-live="polite">
+  <div class="row">
+    <div><label for="emv-sem">Semanas de retraso</label><input id="emv-sem" type="number" min="0" step="0.5" value="2"></div>
+    <div><label for="emv-otros">Otros gastos afectados (USD)</label><input id="emv-otros" type="number" min="0" step="100" value="3205"></div>
+    <div><label for="emv-p">Probabilidad inicial</label>
+      <select id="emv-p"><option value="1">1 · Muy baja (10 %)</option><option value="2">2 · Baja (30 %)</option><option value="3">3 · Media (50 %)</option><option value="4" selected>4 · Alta (70 %)</option><option value="5">5 · Muy alta (90 %)</option></select></div>
+    <div><label for="emv-r">Respuesta</label>
+      <select id="emv-r"><option value="0">Aceptar (no baja)</option><option value="1" selected>Mitigar (baja 1 nivel)</option><option value="2">Evitar / Mitigar (baja 2)</option></select></div>
+  </div>
+  <div class="out">
+    <div><span>Impacto (semanas × 4.833 + otros)</span><strong id="o-imp">—</strong></div>
+    <div><span>EMV inicial</span><strong id="o-emv0">—</strong></div>
+    <div class="res"><span>Probabilidad residual</span><strong id="o-pr">—</strong></div>
+    <div class="res"><span>EMV residual (va a la reserva)</span><strong id="o-emv1">—</strong></div>
+  </div>
+</div>
+<details class="recall">
+  <summary>Control: con los valores iniciales deberían salir los números de R02 en el TP.</summary>
+  <p>Impacto USD 12.871; EMV inicial USD 9.010 (70 %); probabilidad residual 50 %; EMV residual USD 6.436 (TP, 9.7.2 y 9.7.3). R02 es el riesgo con mayor EMV residual de los 15.</p>
+</details>
+
+<details class="recall">
+  <summary>Para verificar la reserva completa: los 15 EMV residuales (USD) suman 41.206.</summary>
+  <p>R01 3.938 · R02 6.436 · R03 2.142 · R04 3.625 · R05 3.231 · R06 1.538 · R07 1.923 · R08 4.423 · R09 1.875 · R10 1.479 · R11 2.175 · R12 2.488 · R13 2.175 · R14 2.604 · R15 1.154. Mayores: R02, R08, R01, R04 y R05 (TP, 9.7.3).</p>
+</details>
+
+<h2 id="practica-2-recuperar-sin-mirar">Práctica 2 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: ¿por qué la reserva es 20,5 % y no 10 %?</summary>
+  <p>Porque no es una regla sino un resultado: es la suma de los EMV residuales de los 15 riesgos (USD 41.206) dividida por el presupuesto base (USD 200.633). Reemplaza al 10 % plano de la estimación original del equipo (TP, 10.8).</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: ¿qué diferencia hay entre reserva de contingencia y reserva de gestión, y cuál está en el total?</summary>
+  <p>Contingencia: cubre riesgos identificados, está en el presupuesto (USD 41.206). Gestión: cubre imprevistos no identificados, requiere aprobación de la alta dirección y <strong>no está incluida</strong>; su inclusión es una decisión pendiente del Sponsor (Clase 4, reservas; TP, 10.8).</p>
+</details>
+
+<h2 id="practica-3-preguntas">Práctica 3 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">¿Cómo se obtiene el costo semanal de USD 4.833 que valora los retrasos?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: USD 121.790 de RRHH divididos en las 25,2 semanas del camino crítico (TP, 9.7.2).">Dividiendo los recursos humanos por las semanas del camino crítico</button>
+    <button data-why="No: el presupuesto base incluye mantenimiento e infraestructura; el costo del equipo es solo RRHH.">Dividiendo el presupuesto base por las semanas del proyecto</button>
+    <button data-why="No: la reserva no se divide por semanas; se calcula con el EMV de cada riesgo.">Dividiendo la reserva de contingencia por la cantidad de riesgos</button>
+    <button data-why="No: el tipo de cambio convierte pesos a dólares pero no define un costo semanal.">Multiplicando el total en pesos por el tipo de cambio supuesto</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Qué representa USD 241.839 en el TP?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: línea base de costos = presupuesto base + reserva de contingencia (TP, 10.8 y 10.9). No incluye reserva de gestión.">Presupuesto base más reserva de contingencia, sin reserva de gestión</button>
+    <button data-why="No: sin la reserva de contingencia el presupuesto base es USD 200.633.">Solo el presupuesto base con todas sus categorías</button>
+    <button data-why="No: la reserva de gestión no está incluida en el total; es una decisión pendiente.">Presupuesto base más las reservas de contingencia y de gestión</button>
+    <button data-why="No: el total original en pesos era ARS 344,3 millones, con una contingencia plana del 10 %.">El total original en pesos convertido al dólar actual</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">R10 (datos de usuarios) tiene probabilidad baja, y aun así está en la zona inaceptable. ¿Por qué?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: en el mapa de calor, probabilidad 2 e impacto 5 cae en inaceptable; el impacto muy alto (privacidad, confianza) pesa más que la baja probabilidad (TP, 9.4).">Porque su impacto es muy alto y el mapa de calor lo penaliza</button>
+    <button data-why="No: la reserva y el mapa de calor son cosas distintas; la zona sale de la matriz, no del presupuesto.">Porque su costo es el más alto de toda la reserva</button>
+    <button data-why="No: la zona sale del cruce probabilidad × impacto, no de quién es responsable.">Porque su responsable es el Sponsor del proyecto</button>
+    <button data-why="No: el mapa de calor no distingue entre riesgos legales y técnicos.">Porque es un riesgo legal y los legales son siempre inaceptables</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">El Sponsor pide «sacar la reserva y poner el 10 % de siempre». ¿Qué se pierde?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: sin EMV la reserva deja de estar justificada por los riesgos identificados y la sección 10 deja de atarse a la 9.">La trazabilidad: la reserva ya no sale de los riesgos del TP</button>
+    <button data-why="No: la duración la define el Gantt, que no depende de la reserva.">La duración del camino crítico de 126 días hábiles</button>
+    <button data-why="No: los stakeholders no dependen del método de reserva.">La clasificación de interesados por poder e interés</button>
+    <button data-why="No: la escala de probabilidad e impacto sigue existiendo en la matriz.">La escala de 1 a 5 de probabilidad e impacto</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-a-la-defensa">Aplicado a la defensa</h2>
+<p class="note"><strong>Qué llevar:</strong> una tarjeta con la cadena de siete eslabones y las seis categorías del base, para poder contestar «¿de dónde sale?» sin abrir el documento. Chequear coherencia con: Gantt (126 y 25,2), Riesgos (15 y 6 inaceptables), Presupuesto (200.633, 41.206, 241.839). Si algún número cambia, cambian en cadena: actualizarlos todos juntos.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../entregable/dist/TP_Cascada_Grupo01.pdf">TP final del equipo</a>, puntos 9.7, 10.1, 10.8, 10.9 y Anexo A. Teoría: <a class="local-only" href="../raw/Clase%205%20-%20Gesti%C3%B3n%20de%20riesgos.pdf">Clase 5 (EMV, p31)</a> y <a class="local-only" href="../raw/Clase%204-%20Gesti%C3%B3n%20de%20costos.pptx.pdf">Clase 4 (reservas, p19 a 24)</a>.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «explícame cómo se calcula el impacto de R08», «¿qué pasa con la reserva si R02 baja a probabilidad 3?» o «hazme preguntas numéricas como las del jurado».
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="defensa-01-relato.html">← Defensa 1 · El relato</a>
+  <a href="defensa-03-preguntas.html">Defensa 3 · Preguntas →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+<script>
+// EMV calculator: same rules as TP 9.7 (level -> probability, response -> levels dropped, weekly cost fixed).
+(function () {
+  var WEEK = 4833;
+  var PROB = { 1: 0.1, 2: 0.3, 3: 0.5, 4: 0.7, 5: 0.9 };
+  var fmt = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
+  function $(id) { return document.getElementById(id); }
+  function run() {
+    var sem = parseFloat($("emv-sem").value) || 0;
+    var otros = parseFloat($("emv-otros").value) || 0;
+    var p = parseInt($("emv-p").value, 10);
+    var drop = parseInt($("emv-r").value, 10);
+    var pr = Math.max(1, p - drop);
+    var imp = sem * WEEK + otros;
+    $("o-imp").textContent = "USD " + fmt.format(Math.round(imp));
+    $("o-emv0").textContent = "USD " + fmt.format(Math.round(PROB[p] * imp));
+    $("o-pr").textContent = Math.round(PROB[pr] * 100) + " % (nivel " + pr + ")";
+    $("o-emv1").textContent = "USD " + fmt.format(Math.round(PROB[pr] * imp));
+  }
+  ["emv-sem", "emv-otros", "emv-p", "emv-r"].forEach(function (id) {
+    $(id).addEventListener("input", run);
+    $(id).addEventListener("change", run);
+  });
+  run();
+})();
+</script>
+</body>
+</html>

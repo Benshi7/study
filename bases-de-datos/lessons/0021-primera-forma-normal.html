@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 21 · Primera forma normal</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 21 · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Primera forma normal: el grupo repetitivo</h1>
+    <p class="masthead__standfirst">
+      El primer corte es el más fácil de ver y el que más limpia. Separa lo que pasa
+      una vez por factura de lo que pasa una vez por renglón.
+    </p>
+    <p class="masthead__meta">
+      <span>~8 minutos</span>
+      <span>Clase 3, slides 6–8</span>
+      <span>Elimina anomalías 1 y 2</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La definición de la cátedra</h2>
+
+  <blockquote class="callout">
+    "Una estructura de datos se encuentra en <b>1FN</b> si no posee atributos que puedan
+    repetirse para la misma clave primaria."
+  </blockquote>
+
+  <p>
+    Y el diagnóstico previo, que es lo que te dice <b>dónde cortar</b>:
+    la factura tiene <q>dos partes bien diferenciadas: por un lado la
+    <b>cabecera</b>, que incluye el Número de la Factura, la Fecha y los datos del Cliente,
+    y por el otro cada <b>renglón</b>, que incluye los demás datos</q>.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Vocabulario que ya conocés</span>
+    <p>
+      El profe conecta explícitamente con el diseño conceptual: al conjunto
+      <code>CProd, Canti, PUnit, Descri</code> lo llamamos en la Unidad 2
+      <em class="term">atributo multivaluado</em> o <em class="term">grupo repetitivo</em>.
+      Es el mismo fenómeno visto desde el otro lado: lo que en el DER era un óvalo doble,
+      acá es un bloque de columnas que se repite dentro de la misma factura.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>El paso, con los datos</h2>
+
+  <p>
+    <b>Regla operativa:</b> sacá el grupo repetitivo a una tabla nueva, y llevate la clave
+    de la original como parte de la clave de la nueva.
+  </p>
+
+  <h3>Antes — una sola tabla</h3>
+
+  <div class="rel">
+    Factura (<b>#NFact</b>, <b>#CProd</b>, Fecha, CodCli, NomCli, Descri, Canti, PUnit)
+  </div>
+
+  <h3>Después — cabecera y renglones</h3>
+
+  <div class="paso">
+    <div>
+      <h3>CabeceraFact</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>Nfact</th><th>Fecha</th><th>CodCli</th><th>NomCli</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">1</td><td>12/01/2006</td><td>3</td><td>Carlos</td></tr>
+            <tr><td class="pk">2</td><td>13/01/2006</td><td>4</td><td>Pablo</td></tr>
+            <tr><td class="pk">3</td><td>14/01/2006</td><td>3</td><td>Carlitos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>RenglonFact</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>NFact</th><th>CProd</th><th>Descri</th><th>Canti</th><th>PUnit</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">1</td><td class="pk">35</td><td>Peras</td><td>6</td><td>3</td></tr>
+            <tr><td class="pk">1</td><td class="pk">37</td><td>Uvas</td><td>1</td><td>5</td></tr>
+            <tr><td class="pk">1</td><td class="pk">39</td><td>Kiwi</td><td>5</td><td>10</td></tr>
+            <tr><td class="pk">1</td><td class="pk">40</td><td>Sandía</td><td>2</td><td>3</td></tr>
+            <tr><td class="pk">2</td><td class="pk">37</td><td>Peras</td><td>5</td><td>3</td></tr>
+            <tr><td class="pk">2</td><td class="pk">39</td><td>Kivi</td><td>3</td><td>11</td></tr>
+            <tr><td class="pk">2</td><td class="pk">44</td><td>Tomates</td><td>2</td><td>5</td></tr>
+            <tr><td class="pk">3</td><td class="pk">35</td><td>Peras</td><td>4</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="rel">
+    CabeceraFact (<b>#NFact</b>, Fecha, CodCli, NomCli)<br>
+    RenglonFact (<b>#NFact</b>, <b>#CProd</b>, Descri, Canti, PUnit)
+  </div>
+
+  <h2><span class="num">03</span>Qué se arregló, exactamente</h2>
+
+  <p>
+    Mirá <code>CabeceraFact</code>: la factura 1 ahora es <b>una sola fila</b>. Como
+    <code>NFact</code> es la clave primaria, la tabla <b>no puede</b> guardar dos fechas
+    ni dos códigos de cliente para la misma factura. Anomalías 1 y 2, eliminadas — y no
+    por disciplina, sino por estructura.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Lo que nadie te avisa</span>
+    <p>
+      Al colapsar las cuatro filas de la factura 1 en una sola, <b>hubo que elegir</b>:
+      ¿la fecha es 12/01 o 12/02? ¿el cliente es 3 o 4? El profe eligió 12/01 y el 3
+      — que es lo que él mismo sugiere en la anomalía 2, "porque es el que aparece en
+      más registros".
+    </p>
+    <p>
+      Esa decisión <b>no la toma la normalización</b>. La normalización te obliga a
+      tomarla, que es distinto. En un caso real, ahí es donde levantás el teléfono
+      y preguntás cuál era la fecha buena.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>La cátedra y el libro dicen cosas distintas (y las dos sirven)</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>Cátedra</th><th>Elmasri</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Qué prohíbe</b></td>
+          <td>Atributos que se repiten para la misma clave primaria.</td>
+          <td>Que el dominio de un atributo tenga valores no atómicos.</td>
+        </tr>
+        <tr>
+          <td><b>Cita</b></td>
+          <td>"…no posee atributos que puedan repetirse para la misma clave primaria."</td>
+          <td>"…el dominio de un atributo sólo debe incluir valores atómicos (simples, indivisibles)."</td>
+        </tr>
+        <tr>
+          <td><b>Mira</b></td>
+          <td>La <b>tabla</b>: hay un bloque de columnas que se repite.</td>
+          <td>La <b>celda</b>: hay un conjunto de valores adentro de una celda.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Son dos caras de lo mismo. Si guardaras los renglones dentro de la fila de la factura,
+    tendrías una celda con un conjunto adentro (Elmasri). Si los desparramás en filas,
+    tenés columnas que se repiten (cátedra). El corte que arregla los dos casos es el mismo.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Para el parcial</span>
+    <p>
+      <b>Usá la definición de la cátedra</b>, porque es la que corrige el docente.
+      Pero si te toca un enunciado con <code>Teléfonos: 4555-1234 / 4555-9876</code> en una
+      sola celda, esa también es una violación de 1FN — y se arregla igual: tabla aparte,
+      con la clave del dueño más el propio teléfono.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Detectar</span>
+    <p class="quiz__q">
+      Tabla <code>Empleado(Legajo, Nombre, Telefonos)</code> donde <code>Telefonos</code>
+      guarda <code>"4555-1234 / 4555-9876"</code>. ¿Está en 1FN?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="No: hay más de un valor en una celda. Se arregla con Empleado(#Legajo, Nombre) y EmpleadoTelefono(#Legajo, #Telefono). Fijate que el teléfono es parte de la clave: es lo que distingue una fila de otra del mismo empleado.">No, y va a una tabla aparte</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El tipo de dato no decide nada. Aunque el motor lo acepte como VARCHAR, semánticamente hay dos teléfonos metidos en una celda: eso es un valor no atómico, y viola 1FN.">Sí, porque es un solo campo texto</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · La clave nueva</span>
+    <p class="quiz__q">
+      Al separar los renglones, ¿por qué la clave de <code>RenglonFact</code> es
+      <code>(NFact, CProd)</code> y no sólo <code>CProd</code>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El mismo producto aparece en varias facturas: CProd 35 está en la 1 y en la 3, CProd 37 en la 1 y en la 2. Sólo con CProd habría filas repetidas. Hace falta saber DE QUÉ FACTURA es el renglón.">Un producto está en varias facturas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El orden de las columnas no tiene absolutamente nada que ver con la clave — acordate de la lección 4: una relación es un conjunto y el orden no forma parte de su definición.">Porque NFact va primero en la tabla</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La clave foránea es un mecanismo de referencia, y sí, NFact lo es acá. Pero la razón de que forme parte de la CLAVE PRIMARIA es otra: sin él, las filas no serían únicas.">Porque NFact es una clave foránea</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Alcance</span>
+    <p class="quiz__q">
+      Después de 1FN, ¿el producto 39 puede seguir apareciendo como "Kiwi" y como "Kivi"?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Sí, y ahí está el límite de 1FN. En RenglonFact las dos filas tienen clave distinta —(1,39) y (2,39)— así que nada impide descripciones distintas. Esa anomalía la elimina 2FN, en la lección que sigue.">Sí: las claves de esas filas difieren</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Mirá los datos de RenglonFact: la fila (1,39) dice Kiwi y la (2,39) dice Kivi. Siguen ahí las dos. 1FN separó cabecera de renglones, pero no tocó nada dentro del renglón.">No: 1FN unificó las descripciones</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Clase 3 — Normalización</b>, slides 6 a 8. Las dos tablas de esta lección son
+      exactamente las de la slide 8.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 10.3.4 "Primera forma normal"
+      (págs. 299–301; en el PDF de <code>raw/</code>, páginas 325 a 327). Ahí están las
+      tres formas de llevar una relación a 1FN, que es más de lo que pide la cátedra.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si en un enunciado no ves claro dónde está el grupo
+      repetitivo, mandámelo. La pista casi siempre es la misma: buscá el sustantivo que
+      viene en plural.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0020-dependencia-funcional.html">Anterior: 0020</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0022-segunda-forma-normal.html">Siguiente: 0022 · 2FN</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

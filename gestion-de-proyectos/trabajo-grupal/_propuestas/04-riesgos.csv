@@ -1,0 +1,20 @@
+ID,Riesgo,Nuevo,P,I,Puntaje,Nivel,EMV inicial (USD),Respuesta,P res.,I res.,EMV residual (USD),Dueño,Alto nivel Charter
+R10,Tratamiento inadecuado de datos personales y del perfil de hogar,no,3,5,15,Alto,8013,Evitar,2,5,4808,Datos + Seguridad,no
+R01,Falta de disponibilidad de APIs o fuentes necesarias,no,3,5,15,Alto,8013,Mitigar,2,4,2308,Tecnología + Datos,sí
+R02,Baja calidad o desactualización de los datos,no,4,5,20,Crítico,11218,Mitigar,2,4,2308,Datos + áreas responsables,sí
+R05,Crecimiento no controlado del alcance,no,4,5,20,Crítico,11218,Evitar,2,4,2308,PM + Sponsor,sí
+R08,Problemas de rendimiento o disponibilidad,no,3,5,15,Alto,8013,Mitigar,2,4,2308,Tecnología + Infraestructura,no
+R04,Falta de coordinación entre áreas,no,4,4,16,Alto,5385,Mitigar,3,3,1923,Project Manager,sí
+R19,Variación del tipo de cambio ARS/USD (presupuesto expresado en USD),sí,4,3,12,Alto,2692,Mitigar,3,3,1923,Sponsor + PM,no
+R03,Problemas de integración entre sistemas,no,3,4,12,Alto,3846,Mitigar,2,3,1154,Tecnología,no
+R06,Baja participación de los vecinos,no,3,3,9,Medio,1923,Mitigar,2,3,1154,UX + Comunicación,no
+R07,Reportes incorrectos o maliciosos,no,3,4,12,Alto,3846,Mitigar,2,3,1154,Tecnología + Datos,no
+R09,Restricciones presupuestarias,no,3,4,12,Alto,3846,Mitigar,2,3,1154,Sponsor + PM,no
+R11,Demoras en desarrollo o pruebas,no,3,4,12,Alto,3846,Mitigar,2,3,1154,PM + Tecnología,no
+R12,"Cambios en canales digitales existentes (Boti, BAX, miBA)",no,3,4,12,Alto,3846,Mitigar,2,3,1154,Tecnología + responsables de canales,sí
+R13,Falta de validación de las áreas responsables,no,3,4,12,Alto,3846,Mitigar,2,3,1154,PM + áreas responsables,no
+R14,Fallas detectadas en las pruebas finales,no,3,4,12,Alto,3846,Mitigar,2,3,1154,QA + Tecnología,no
+R16,Las áreas no adoptan la capa común,sí,3,4,12,Alto,3846,Mitigar,2,3,1154,Sponsor + PM,no
+R18,Dependencia de miBA como identidad digital (supuesto a confirmar),sí,2,4,8,Medio,2308,Transferir,1,4,769,Responsables de canales,no
+R17,"Dependencia de socios y convenios (tercer lado, opcional)",sí,2,2,4,Bajo,577,Aceptar,2,2,577,Sponsor,no
+R15,Confusión entre información oficial y contenido de socios,no,2,3,6,Medio,1154,Evitar,1,3,385,PM + Comunicación,no

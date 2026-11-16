@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 39 · Vistas</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 39 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">Vistas: una consulta con nombre</h1>
+    <p class="masthead__standfirst">
+      Una vista no guarda datos: guarda un SELECT. Sirve para renombrar, para esconder
+      columnas, para calcular derivados y para darle a cada usuario sólo lo que necesita.
+    </p>
+    <p class="masthead__meta">
+      <span>~18 minutos</span>
+      <span>Consigna TP5, slides 4 y 7 · Deck "DDL", slide 2</span>
+      <span>Prioridad para el TP5 y el 2do parcial: muy alta</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Dónde aparece</span>
+    <p>
+      La consigna del TP5 pide "todas las vistas apuntando a producción con sus campos en
+      español" y la vista <code>RRHH_Medicos</code>. Y el modelo de examen
+      <a href="../raw/Material_Examen/bd parcial 1a.jpg">bd parcial 1a</a> pide "una vista con
+      la información actual completa de los clientes (los campos deben estar en Castellano)"
+      y "un indicador en la vista" que catalogue registros como "Externos" o "Propios".
+      Es el mismo ejercicio que el TP.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Qué es, y la sintaxis</h2>
+
+  <p>
+    El deck define la vista como la "representación lógica de un subconjunto de datos de una
+    o más tablas". Lógica, no física: cada vez que consultás la vista, el motor ejecuta su
+    SELECT sobre las tablas de ese momento. Si cambian los datos, la vista ya los muestra.
+  </p>
+
+<pre><code><span class="k">CREATE VIEW</span> MKT_SERVICIOS <span class="k">AS</span>
+<span class="k">SELECT</span> Id_Service   <span class="k">AS</span> Servicio_MKT,
+       Name_Service <span class="k">AS</span> Nombre_Servicio_MKT
+<span class="k">FROM</span>   Prod_Service;</code></pre>
+
+  <p>
+    Es el ejemplo del slide 7 de la consigna. Los alias del SELECT
+    (<a href="0032-select-basico.html">0032</a>) se convierten en los nombres de las columnas
+    de la vista. Así se pasa de producción en inglés a una vista en español.
+  </p>
+
+  <h2><span class="num">02</span>Columnas calculadas: el atributo derivado</h2>
+
+  <p>
+    En el DER de la cátedra, <code>EDAD</code> está dibujada con línea punteada: es un
+    <b>atributo derivado</b>, se calcula a partir de la fecha de nacimiento. No se guarda en
+    la tabla (se desactualizaría cada año). Se calcula en la vista:
+  </p>
+
+<pre><code><span class="c">-- años cumplidos al 2026-10-15 (el "hoy" de los ejercicios)</span>
+(strftime('%Y', '2026-10-15') - strftime('%Y', F_Nacimiento))
+  - (strftime('%m-%d', '2026-10-15') &lt; strftime('%m-%d', F_Nacimiento)) <span class="k">AS</span> Edad</code></pre>
+
+  <p>
+    Restar los años y descontar uno si el cumpleaños todavía no llegó. En un sistema real
+    va <code>date('now')</code> en lugar de la fecha fija. Cada motor tiene su función:
+    <code>TIMESTAMPDIFF(YEAR, …)</code> en MySQL, <code>DATEDIFF</code> en SQL Server.
+  </p>
+
+  <h2><span class="num">03</span>Indicadores: CASE</h2>
+
+  <p>
+    El deck no lo muestra, pero la consigna y el examen lo piden ("indicador de médico jefe
+    (SI/NO)"). <code>CASE</code> es el if-else de SQL, y devuelve un valor por fila:
+  </p>
+
+<pre><code><span class="k">CASE WHEN</span> Cod_Especialidad <span class="k">IN</span> (2, 3) <span class="k">THEN</span> 'SI' <span class="k">ELSE</span> 'NO' <span class="k">END AS</span> Especialidad_Riesgo</code></pre>
+
+  <p>
+    La condición puede ser cualquier cosa que iría en un WHERE, incluso un
+    <code>EXISTS</code>. Así se arma el indicador de jefe:
+    <code>CASE WHEN EXISTS (SELECT * FROM PROFESIONAL S WHERE S.Cod_Jefe = P.Cod_Profesional) THEN 'SI' ELSE 'NO' END</code>.
+  </p>
+
+  <p>
+    Cuando se compara <b>una misma columna</b> contra varios valores fijos, existe la forma
+    corta (el docente la mostró en la extra clase). Si falta el <code>ELSE</code>, lo que no
+    coincide con ningún WHEN da <code>NULL</code>:
+  </p>
+<pre><code><span class="k">CASE</span> banco_id
+    <span class="k">WHEN</span> 100 <span class="k">THEN</span> 'A'
+    <span class="k">WHEN</span> 110 <span class="k">THEN</span> 'B'
+    <span class="k">WHEN</span> 120 <span class="k">THEN</span> 'C'
+    <span class="k">ELSE</span> 'Z'
+<span class="k">END AS</span> Categoria</code></pre>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Concatenar depende del motor</span>
+    <p>
+      La consigna pide "la concatenación del Id de médico, las primeras seis letras del
+      nombre y el nombre de su especialidad". En SQLite y en el estándar se concatena con
+      <code>||</code> y se recorta con <code>SUBSTR(Nombre, 1, 6)</code>. En MySQL es
+      <code>CONCAT(…)</code>; en SQL Server, <code>+</code> y <code>LEFT(Nombre, 6)</code>.
+      Usá el del motor que vayan a corregir.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Para qué sirven de verdad</h2>
+
+  <ul>
+    <li><b>Seguridad</b>: se da permiso sobre la vista y no sobre la tabla. RRHH ve
+        <code>RRHH_Medicos</code> sin tocar historias clínicas. Es la Unidad 8.</li>
+    <li><b>Simplificar</b>: un JOIN de cinco tablas se escribe una vez y se consulta como una tabla.</li>
+    <li><b>Independencia lógica</b> (<a href="0003-tres-niveles.html">0003</a>): si cambia
+        la tabla, se ajusta la vista y las consultas de los usuarios siguen funcionando.
+        Las vistas <b>son</b> el nivel externo de los tres niveles.</li>
+  </ul>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 3 · Vista en español sobre producción</span>
+    <p class="sqlbox__task">
+      Existe <code>PROD_SERVICE(Service_Id, Service_Name)</code>. Creá <code>Vista_Servicio</code>
+      con las columnas <code>Id_Servicio</code> y <code>Nombre_Servicio</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Vista_Servicio AS
+</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE PROD_SERVICE (Service_Id INT PRIMARY KEY, Service_Name VARCHAR(30) NOT NULL);
+INSERT INTO PROD_SERVICE SELECT Cod_Servicio, Nombre FROM SERVICIO;
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Vista_Servicio AS
+SELECT Service_Id   AS Id_Servicio,
+       Service_Name AS Nombre_Servicio
+FROM PROD_SERVICE;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT Id_Servicio, Nombre_Servicio FROM Vista_Servicio;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 3 · El derivado</span>
+    <p class="sqlbox__task">
+      Creá <code>Vista_Paciente</code> con <code>Cod_Paciente</code>, <code>Nombre</code> y
+      <code>Edad</code>, calculada al 2026-10-15.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Vista_Paciente AS
+SELECT Cod_Paciente, Nombre,
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Vista_Paciente AS
+SELECT Cod_Paciente, Nombre,
+       (strftime('%Y', '2026-10-15') - strftime('%Y', F_Nacimiento))
+       - (strftime('%m-%d', '2026-10-15') < strftime('%m-%d', F_Nacimiento)) AS Edad
+FROM PACIENTE;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT Cod_Paciente, Nombre, Edad FROM Vista_Paciente;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 3 · Consigna TP5: RRHH_Medicos</span>
+    <p class="sqlbox__task">
+      Creá <code>RRHH_Medicos</code> con estas columnas, en este orden: <code>Cod_Profesional</code>,
+      <code>Nombre</code>, <code>Cod_Especialidad</code>, <code>Cod_Jefe</code>,
+      <code>Es_Jefe</code> (SI/NO), <code>Especialidad_Riesgo</code> (SI si la especialidad es 2 o 3)
+      e <code>Identificador</code>: para los jefes, <code>código-primeras seis letras del nombre-especialidad</code>;
+      para el resto, sólo la especialidad.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW RRHH_Medicos AS
+SELECT P.Cod_Profesional, P.Nombre, P.Cod_Especialidad, P.Cod_Jefe,
+
+FROM PROFESIONAL P
+JOIN ESPECIALIDAD E ON E.Cod_Especialidad = P.Cod_Especialidad;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW RRHH_Medicos AS
+SELECT P.Cod_Profesional, P.Nombre, P.Cod_Especialidad, P.Cod_Jefe,
+       CASE WHEN EXISTS (SELECT * FROM PROFESIONAL S WHERE S.Cod_Jefe = P.Cod_Profesional)
+            THEN 'SI' ELSE 'NO' END AS Es_Jefe,
+       CASE WHEN P.Cod_Especialidad IN (2, 3) THEN 'SI' ELSE 'NO' END AS Especialidad_Riesgo,
+       CASE WHEN EXISTS (SELECT * FROM PROFESIONAL S WHERE S.Cod_Jefe = P.Cod_Profesional)
+            THEN P.Cod_Profesional || '-' || SUBSTR(P.Nombre, 1, 6) || '-' || E.Nombre
+            ELSE E.Nombre END AS Identificador
+FROM PROFESIONAL P
+JOIN ESPECIALIDAD E ON E.Cod_Especialidad = P.Cod_Especialidad;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM RRHH_Medicos;
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Qué guarda</span>
+    <p class="quiz__q">
+      Creás <code>Vista_Paciente</code> y después insertás un paciente nuevo en <code>PACIENTE</code>.
+      ¿Aparece en la vista?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Sí, en la próxima consulta. La vista guarda el SELECT, no las filas: cada vez que se la consulta, el SELECT corre sobre los datos actuales.">Sí: la vista se recalcula siempre</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso describiría una copia o una vista materializada. La vista común, la del deck, es lógica: no guarda datos propios.">No: tiene las filas de su creación</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No hace falta recrearla. La definición no cambió; cambiaron los datos, y la vista los lee en cada consulta.">Sólo si se vuelve a crear la vista</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Qué guarda</span>
+    <p class="quiz__q">¿Qué guarda la base cuando hacés <code>CREATE VIEW</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Si guardara filas, la vista quedaría vieja. Por eso un paciente nuevo aparece solo en la vista.">Una copia de las filas de ese momento</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. La vista es una &quot;representación lógica de un subconjunto de datos&quot;: guarda la definición y la ejecuta cada vez que se la usa.">La consulta (el SELECT)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un índice se crea aparte y sirve para buscar más rápido. La vista no lo crea.">Un índice sobre las tablas base</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Consigna <code>raw/TP5/TP DDL-DML Clinica.pptx</code>, slides 4 y 7; deck "DDL, SP,
+      Triggers", slide 2. <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.8 "Vistas (tablas
+      virtuales) en SQL" (p. 239).
+    </p>
+    <p>
+      <a href="https://www.sqlite.org/lang_createview.html">SQLite — CREATE VIEW</a> ·
+      <a href="https://www.sqlite.org/lang_expr.html#the_case_expression">CASE</a> ·
+      <a href="https://www.sqlite.org/lang_datefunc.html">funciones de fecha</a>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Intentá el ejercicio de <code>CUSTOMER_GROUP</code> de
+      bd parcial 1a en papel, y pasámelo. Es esta misma lección con otras tablas.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0038-alter-drop-on-delete.html">Anterior: 0038 · ALTER y DROP</a>
+    <a href="0040-integrador-tp5-clinica.html">Siguiente: 0040 · Integrador TP5</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

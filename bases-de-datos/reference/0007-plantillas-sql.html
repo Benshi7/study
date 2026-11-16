@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Plantillas SQL para memorizar</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Referencia 07 · Para memorizar</p>
+    <h1 class="masthead__title">Plantillas SQL que se repiten</h1>
+    <p class="masthead__standfirst">
+      Los docentes reciclan las tablas (SUMINISTROS, CUSTOMER_GROUP, la Clínica) y los pedidos.
+      Cada bloque arranca con la frase del enunciado. Antes de abrirlo, escribí la consulta
+      en papel y compará. Todas se probaron sobre las bases del curso.
+    </p>
+  </header>
+
+  <p>
+    <button class="toolbar__btn" type="button" id="toggle-all">Abrir todas</button>
+    Al imprimir se abren solas.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Nombres</span>
+    <p>
+      En el examen las columnas se llaman <code>P#</code>, <code>C#</code>, <code>T#</code>. Acá
+      van como en la base del profe (<code>P_Id</code>, <code>C_Id</code>, <code>T_Id</code>), así
+      corren igual en DBeaver. En papel, usá los nombres de la hoja del examen.
+    </p>
+  </div>
+
+  <h2><span class="num">A</span>Las tres tablas de SUMINISTROS</h2>
+
+  <p>
+    <code>PROVEEDORES(P_Id, PNombre, Categoria, Ciudad)</code> ·
+    <code>COMPONENTES(C_Id, CNombre, Color, Peso, Ciudad)</code> ·
+    <code>ARTICULOS(T_Id, TNombre, Ciudad)</code> ·
+    <code>ENVIOS(P_Id, C_Id, T_Id, Cantidad)</code>. ENVIOS está en el medio: casi todo pasa por ella.
+  </p>
+
+  <details class="reveal">
+    <summary>1 · "Los nombres de los proveedores que enviaron algún componente ROJO"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT DISTINCT</span> P.PNombre
+<span class="k">FROM</span>   PROVEEDORES P
+<span class="k">JOIN</span>   ENVIOS E      <span class="k">ON</span> E.P_Id = P.P_Id       <span class="c">-- cada JOIN recorre una FK</span>
+<span class="k">JOIN</span>   COMPONENTES C <span class="k">ON</span> C.C_Id = E.C_Id
+<span class="k">WHERE</span>  C.Color = 'ROJO';</code></pre>
+      <p>Da CARLOS, JOSE, INMA y EVA. Sin <code>DISTINCT</code>, EVA sale tres veces (una por envío).</p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>2 · "…que <b>no</b> enviaron ningún componente ROJO" (y la versión con EXISTS)</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span> P.PNombre
+<span class="k">FROM</span>   PROVEEDORES P
+<span class="k">WHERE NOT EXISTS</span> (<span class="k">SELECT</span> *
+                  <span class="k">FROM</span>   ENVIOS E <span class="k">JOIN</span> COMPONENTES C <span class="k">ON</span> C.C_Id = E.C_Id
+                  <span class="k">WHERE</span>  E.P_Id = P.P_Id          <span class="c">-- engancha con la fila de afuera</span>
+                    <span class="k">AND</span>  C.Color = 'ROJO');</code></pre>
+      <p>
+        Da sólo JUAN. Sacando el <code>NOT</code> sale la plantilla 1. Es la pregunta 3 del
+        modelo 1a: "EXISTS comprueba la existencia de ciertas filas; es verdadero si el número
+        de filas de la subconsulta no es cero". Sólo funciona con subconsultas, mientras que
+        IN acepta también listas de valores.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>3 · "Los componentes que se suministran para <b>ambos</b> artículos T1 y T2"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span> C.C_Id, C.CNombre
+<span class="k">FROM</span>   COMPONENTES C
+<span class="k">WHERE</span>  C.C_Id <span class="k">IN</span> (<span class="k">SELECT</span> C_Id <span class="k">FROM</span> ENVIOS <span class="k">WHERE</span> T_Id = 'T1')
+  <span class="k">AND</span>  C.C_Id <span class="k">IN</span> (<span class="k">SELECT</span> C_Id <span class="k">FROM</span> ENVIOS <span class="k">WHERE</span> T_Id = 'T2');</code></pre>
+      <p>Da C3 (C4B). Es el modelo 1b, ejercicio b.</p>
+      <div class="callout callout--trap">
+        <span class="callout__label">Trampa</span>
+        <p><code>WHERE T_Id = 'T1' AND T_Id = 'T2'</code> devuelve vacío: ninguna fila tiene dos
+        valores a la vez. "Ambos" significa dos filas distintas. "T1 <b>o</b> T2" es <code>IN ('T1', 'T2')</code>.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>4 · "…con cantidad mayor que la media de los envíos del componente ROJO"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span> P.PNombre, P.Ciudad, E.Cantidad
+<span class="k">FROM</span>   PROVEEDORES P
+<span class="k">JOIN</span>   ENVIOS E <span class="k">ON</span> E.P_Id = P.P_Id
+<span class="k">WHERE</span>  E.Cantidad &gt; (<span class="k">SELECT AVG</span>(E2.Cantidad)       <span class="c">-- un solo número: 400</span>
+                     <span class="k">FROM</span>   ENVIOS E2 <span class="k">JOIN</span> COMPONENTES C <span class="k">ON</span> C.C_Id = E2.C_Id
+                     <span class="k">WHERE</span>  C.Color = 'ROJO');</code></pre>
+      <p>
+        Es el modelo 1b, ejercicio a, y devuelve 8 filas. La subconsulta escalar da un solo
+        valor, así que se compara con <code>&gt;</code>. Un agregado no puede ir suelto en el
+        WHERE: <code>WHERE Cantidad &gt; AVG(Cantidad)</code> da error.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>5 · "…mayor que la media de <b>su</b> componente" (correlacionada)</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT DISTINCT</span> E.P_Id
+<span class="k">FROM</span>   ENVIOS E
+<span class="k">WHERE</span>  E.Cantidad &gt; (<span class="k">SELECT AVG</span>(E2.Cantidad)
+                     <span class="k">FROM</span>   ENVIOS E2
+                     <span class="k">WHERE</span>  E2.C_Id = E.C_Id);   <span class="c">-- se recalcula por cada fila de afuera</span></code></pre>
+      <p>Da P1, P2 y P5. La palabra que la delata es "<b>su</b>". Usa dos alias de la misma tabla.</p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>6 · "Para cada proveedor, cuántos envíos y cuánto envió, si hizo más de 3"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span>   P.PNombre, <span class="k">COUNT</span>(*) <span class="k">AS</span> Envios, <span class="k">SUM</span>(E.Cantidad) <span class="k">AS</span> Total
+<span class="k">FROM</span>     PROVEEDORES P
+<span class="k">JOIN</span>     ENVIOS E <span class="k">ON</span> E.P_Id = P.P_Id
+<span class="k">GROUP BY</span> P.P_Id, P.PNombre       <span class="c">-- todo lo que no está agregado en el SELECT</span>
+<span class="k">HAVING</span>   <span class="k">COUNT</span>(*) &gt; 3;           <span class="c">-- condición sobre el grupo</span></code></pre>
+      <p>
+        Da JUAN (8 envíos, 3200) y EVA (10, 3100). Las condiciones sobre filas van en WHERE,
+        antes de agrupar. Las que usan un agregado van en HAVING. El orden es SELECT, FROM,
+        WHERE, GROUP BY, HAVING, ORDER BY.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>7 · "Los proveedores que suministran a <b>todos</b> los artículos"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span>   P_Id
+<span class="k">FROM</span>     ENVIOS
+<span class="k">GROUP BY</span> P_Id
+<span class="k">HAVING</span>   <span class="k">COUNT</span>(<span class="k">DISTINCT</span> T_Id) = (<span class="k">SELECT COUNT</span>(*) <span class="k">FROM</span> ARTICULOS);</code></pre>
+      <p>Da P2. Sin <code>DISTINCT</code> se cuentan envíos, no artículos distintos.</p>
+    </div>
+  </details>
+
+  <h2><span class="num">B</span>Jefe / no jefe: la relación unaria y el NULL</h2>
+
+  <p>
+    <code>PROFESIONAL(Cod_Profesional, Nombre, Cod_Especialidad, Cod_Jefe)</code>, con
+    <code>Cod_Jefe</code> FK a la misma tabla. Los que no tienen jefe llevan NULL. Base de la
+    Clínica: 8 profesionales y 4 sin jefe.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>El enunciado dice</th><th>Condición</th><th>Filas</th></tr></thead>
+      <tbody>
+        <tr><td>"no tiene jefe"</td><td><code>WHERE Cod_Jefe IS NULL</code></td><td>4</td></tr>
+        <tr><td>"tiene jefe"</td><td><code>WHERE Cod_Jefe IS NOT NULL</code></td><td>4</td></tr>
+        <tr><td>"es jefe" (alguien lo tiene de jefe)</td><td><code>WHERE EXISTS (SELECT * FROM PROFESIONAL S WHERE S.Cod_Jefe = P.Cod_Profesional)</code></td><td>3</td></tr>
+        <tr><td>"no es jefe de nadie"</td><td>lo mismo con <code>NOT EXISTS</code></td><td>5</td></tr>
+        <tr><td>"cada profesional y el nombre de su jefe"</td><td>self join con dos alias, <code>LEFT</code> para no perder a los que no tienen</td><td>8</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<pre><code><span class="k">SELECT</span> E.Nombre, J.Nombre <span class="k">AS</span> Jefe
+<span class="k">FROM</span>   PROFESIONAL E
+<span class="k">LEFT JOIN</span> PROFESIONAL J <span class="k">ON</span> J.Cod_Profesional = E.Cod_Jefe;   <span class="c">-- J = el jefe</span></code></pre>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Las tres trampas del NULL (ninguna da error)</span>
+    <p>
+      <b>1.</b> <code>WHERE Cod_Jefe = NULL</code> devuelve 0 filas. Con NULL ninguna
+      comparación da verdadero: da DESCONOCIDO, y el WHERE sólo deja pasar VERDADERO. Siempre se
+      escribe <code>IS NULL</code>.
+    </p>
+    <p>
+      <b>2.</b> <code>WHERE Cod_Jefe &lt;&gt; 1</code> tampoco trae a los que no tienen jefe
+      (sale 2 en vez de 6). Para incluirlos: <code>… OR Cod_Jefe IS NULL</code>.
+    </p>
+    <p>
+      <b>3.</b> <code>WHERE Cod_Profesional NOT IN (SELECT Cod_Jefe FROM PROFESIONAL)</code>
+      devuelve <b>0 filas</b>. Basta un NULL en la lista para que nada sea "distinto de todos".
+      Usá <code>NOT EXISTS</code>, o filtrá <code>WHERE Cod_Jefe IS NOT NULL</code> dentro de la
+      subconsulta.
+    </p>
+  </div>
+
+  <p>
+    Relacionado: <code>COUNT(*)</code> da 8 (filas) y <code>COUNT(Cod_Jefe)</code> da 4 (no nulos).
+    Un <code>CHECK</code> con NULL <b>pasa</b>, porque sólo rechaza el FALSO.
+  </p>
+
+  <h2><span class="num">C</span>Vista con indicador y Slow Change Dimension</h2>
+
+  <p>
+    <code>CUSTOMER_GROUP(Customer_Group_Id, Start_Dt, …, Officer_Id, Banking_Group_Id, …, End_Dt)</code>:
+    una fila por foto, y la vigente cierra en <code>2100-12-31</code>.
+    <code>CUSTOMER_NAME(CG_Id, CG_Name)</code>.
+  </p>
+
+  <details class="reveal">
+    <summary>8 · "Vista con la información <b>actual</b>, campos en castellano, con un indicador Externo/Propio"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">CREATE VIEW</span> Clientes_Actual <span class="k">AS</span>
+<span class="k">SELECT</span> G.Customer_Group_Id       <span class="k">AS</span> Id_Cliente,
+       N.CG_Name                 <span class="k">AS</span> Nombre,
+       G.Start_Dt                <span class="k">AS</span> Fecha_Inicio,
+       G.SIC_Cd                  <span class="k">AS</span> Cod_Actividad,
+       G.CG_Begin_Dt             <span class="k">AS</span> Fecha_Alta,
+       G.Officer_Id              <span class="k">AS</span> Id_Oficial,
+       G.Banking_Group_Id        <span class="k">AS</span> Id_Banca,
+       G.Telephone_Ind           <span class="k">AS</span> Ind_Telefono,
+       G.CG_Type_Cd              <span class="k">AS</span> Cod_Tipo,
+       G.Customer_Group_Assoc_Id <span class="k">AS</span> Id_Asociacion,
+       <span class="k">CASE WHEN</span> G.Officer_Id &lt; 21 <span class="k">AND</span> G.Banking_Group_Id &gt; 4
+            <span class="k">THEN</span> 'Externo' <span class="k">ELSE</span> 'Propio' <span class="k">END</span> <span class="k">AS</span> Tipo_Oficial
+<span class="k">FROM</span>   CUSTOMER_GROUP G
+<span class="k">JOIN</span>   CUSTOMER_NAME N <span class="k">ON</span> N.CG_Id = G.Customer_Group_Id
+<span class="k">WHERE</span>  G.End_Dt = '2100-12-31';                  <span class="c">-- "actual" = la foto vigente</span></code></pre>
+      <p>
+        Es el modelo 1a, puntos a y b juntos. El esqueleto se repite siempre: <b>alias en
+        castellano</b>, un <b>CASE</b>, un <b>JOIN</b> para traer el nombre y el filtro de la foto
+        vigente. El indicador del TP5 (<code>Es_Jefe</code>) es el mismo CASE con un
+        <code>EXISTS</code> adentro.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>9 · "Pegarle a la vista": los clientes Externos</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span> Nombre <span class="k">FROM</span> Clientes_Actual <span class="k">WHERE</span> Tipo_Oficial = 'Externo';</code></pre>
+      <p>Sobre la vista se usan los nombres nuevos, en castellano, y nunca los originales.</p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>10 · "Todos los clientes <b>al</b> 31 de enero de 2021"</summary>
+    <div class="reveal__body">
+<pre><code><span class="k">SELECT</span> *
+<span class="k">FROM</span>   CUSTOMER_GROUP
+<span class="k">WHERE</span>  '2021-01-31' <span class="k">BETWEEN</span> Start_Dt <span class="k">AND</span> End_Dt;    <span class="c">-- una sola foto por cliente</span></code></pre>
+      <p>
+        Al cliente 125269 le toca la foto del 2/12/2016 al 1/12/2021 (oficial 11). La hoja del
+        examen viene en día/mes/año: pasá la fecha a <code>AAAA-MM-DD</code> antes de comparar.
+      </p>
+    </div>
+  </details>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>El enunciado dice</th><th>Condición sobre las fotos</th></tr></thead>
+      <tbody>
+        <tr><td>"actual", "vigente"</td><td><code>End_Dt = '2100-12-31'</code></td></tr>
+        <tr><td>"al 31/01/2021"</td><td><code>'2021-01-31' BETWEEN Start_Dt AND End_Dt</code></td></tr>
+        <tr><td>"hasta el 31/01/2021"</td><td><code>Start_Dt &lt;= '2021-01-31'</code></td></tr>
+        <tr><td>"histórico" (sumar, promediar)</td><td>ninguna: todas las fotos, con <code>GROUP BY</code> por cliente</td></tr>
+        <tr><td>"anteriores a la actual"</td><td><code>End_Dt &lt;&gt; '2100-12-31'</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">D</span>DDL y DML: los esqueletos</h2>
+
+<pre><code><span class="k">CREATE TABLE</span> ENVIOS (
+  P_Id     <span class="k">CHAR</span>(2) <span class="k">NOT NULL</span>,
+  C_Id     <span class="k">CHAR</span>(2) <span class="k">NOT NULL</span>,
+  T_Id     <span class="k">CHAR</span>(2) <span class="k">NOT NULL</span>,
+  Cantidad <span class="k">INT</span>     <span class="k">NOT NULL CHECK</span> (Cantidad &gt; 0),
+  <span class="k">CONSTRAINT</span> pk_envios <span class="k">PRIMARY KEY</span> (P_Id, C_Id, T_Id),          <span class="c">-- compuesta: a nivel tabla</span>
+  <span class="k">CONSTRAINT</span> fk_env_prov <span class="k">FOREIGN KEY</span> (P_Id) <span class="k">REFERENCES</span> PROVEEDORES (P_Id)
+);
+<span class="k">INSERT INTO</span> Prod_Envios (P_Id, C_Id, T_Id, Cantidad)   <span class="c">-- empareja por posición</span>
+<span class="k">SELECT</span> P_Id, C_Id, T_Id, Cantidad <span class="k">FROM</span> Desa_Envios;
+<span class="k">UPDATE</span> ENVIOS <span class="k">SET</span> Cantidad = 300 <span class="k">WHERE</span> P_Id = 'P1' <span class="k">AND</span> T_Id = 'T4';
+<span class="k">DELETE FROM</span> ENVIOS <span class="k">WHERE</span> P_Id = 'P4';                 <span class="c">-- sin WHERE: toda la tabla</span>
+<span class="k">ALTER TABLE</span> Curso <span class="k">DROP</span> duracion;
+<span class="k">ALTER TABLE</span> Curso <span class="k">ADD</span> sueldo <span class="k">DECIMAL</span>(10,2);</code></pre>
+
+  <p>
+    La sintaxis completa y los SP y triggers están en <a href="0006-sql-ddl-dml.html">SQL en una hoja</a>.
+    El deck DML no trae <code>WITH</code> (CTE): la cátedra resuelve todo con subconsultas, y
+    eso alcanza.
+  </p>
+
+  <hr>
+
+  <nav class="nav">
+    <a href="0006-sql-ddl-dml.html">Ref 06 · SQL en una hoja</a>
+    <a href="../practica/suministros.html">Las 31 de SUMINISTROS</a>
+    <a href="../lessons/0052-slow-change-dimension.html">0052 · SCD</a>
+  </nav>
+
+</main>
+
+<script>
+  (function () {
+    var all = document.querySelectorAll("details.reveal");
+    var btn = document.getElementById("toggle-all");
+    btn.addEventListener("click", function () {
+      var open = btn.textContent === "Abrir todas";
+      all.forEach(function (d) { d.open = open; });
+      btn.textContent = open ? "Cerrar todas" : "Abrir todas";
+    });
+    window.addEventListener("beforeprint", function () { all.forEach(function (d) { d.open = true; }); });
+  })();
+</script>
+
+</body>
+</html>

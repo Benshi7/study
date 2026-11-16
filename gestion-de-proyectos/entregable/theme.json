@@ -1,0 +1,56 @@
+{
+  "_comment": "Single source of colors, fonts and sizes. The docx build and the HTML figures (img-src/theme.css, generated) both read this file. To restyle the document (e.g. white + pink), edit only this file and run build.sh.",
+  "fonts": {
+    "body": "Calibri",
+    "heading": "Calibri",
+    "mono": "Consolas"
+  },
+  "colors": {
+    "text": "222222",
+    "muted": "5F6670",
+    "heading": "1F3A5F",
+    "accent": "1F3A5F",
+    "accentSoft": "E8ECF1",
+    "rule": "BFC5CC",
+    "tableHeaderFill": "E8ECF1",
+    "tableHeaderText": "1F3A5F",
+    "tableBorder": "BFC5CC",
+    "calloutFill": "F2F4F7",
+    "calloutBorder": "1F3A5F",
+    "figureBg": "FFFFFF",
+    "figureCard": "F7F8FA",
+    "figureInk": "222222",
+    "figureOk": "2E7D4F",
+    "figureWarn": "B3402E",
+    "phase1": "5F6670",
+    "phase2": "3E6FA3",
+    "phase3": "2A7F7F",
+    "phase4": "1F3A5F",
+    "phase5": "6B4C93",
+    "phase6": "B08A1E",
+    "phase7": "4C8C4A",
+    "phase8": "8A5A44",
+    "zoneRed": "F3C5BF",
+    "zoneYellow": "FBEFB5",
+    "zoneGreen": "CDE7D2",
+    "zoneRedInk": "8A2A1C",
+    "zoneYellowInk": "6B5200",
+    "zoneGreenInk": "1E5B35"
+  },
+  "sizes": {
+    "bodyPt": 11,
+    "h1Pt": 20,
+    "h2Pt": 15,
+    "h3Pt": 12.5,
+    "captionPt": 9.5,
+    "tablePt": 9,
+    "annexTablePt": 8,
+    "coverTitlePt": 26,
+    "coverSubtitlePt": 14,
+    "footerPt": 9
+  },
+  "page": {
+    "_comment": "A4. Content widths are computed by the build from the margins.",
+    "marginCm": 2.2
+  }
+}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 33 · Condiciones de búsqueda y NULL</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 33 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">LIKE, BETWEEN, IN, NOT — y la trampa de NULL</h1>
+    <p class="masthead__standfirst">
+      Cuatro operadores que abrevian condiciones largas. Y un valor, NULL, que no se
+      compara como los demás.
+    </p>
+    <p class="masthead__meta">
+      <span>~12 minutos</span>
+      <span>Deck "DML", slides 9–11 y 13</span>
+      <span>Prioridad para el 2do parcial: media</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Los cuatro operadores</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Operador</th><th>Para qué</th><th>En la Clínica</th></tr></thead>
+      <tbody>
+        <tr><td><code>LIKE</code></td><td>Patrón sobre texto. <code>%</code> = cualquier cadena, <code>_</code> = un carácter.</td><td><code>Nombre LIKE 'M%'</code></td></tr>
+        <tr><td><code>BETWEEN</code></td><td>Rango <b>inclusivo</b> en los dos extremos. Fechas, números, textos.</td><td><code>Fecha BETWEEN '2026-02-01' AND '2026-03-31'</code></td></tr>
+        <tr><td><code>IN</code></td><td>Coincide con algún valor de una lista o de una subconsulta. Abrevia varios OR.</td><td><code>Cod_Servicio IN (2, 3)</code></td></tr>
+        <tr><td><code>NOT</code></td><td>Invierte la expresión que le sigue inmediatamente.</td><td><code>NOT Cod_Torre = 3</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <code>IN</code> con subconsulta es la puerta a la <a href="0036-subconsultas-exists.html">0036</a>.
+    <code>EXISTS</code>, que el deck presenta junto a estos, también se ve ahí.
+  </p>
+
+  <h2><span class="num">02</span>NULL no es un valor: es "no sé"</h2>
+
+  <p>
+    Comparar con NULL no da verdadero ni falso: da <b>desconocido</b>. El mismo tercer valor
+    que viste en la tabla del CHECK (<a href="0031-ddl-create-table.html">0031</a>). Y
+    <code>WHERE</code> sólo deja pasar las filas donde la condición da <b>verdadero</b>.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">= NULL nunca encuentra nada</span>
+    <p>
+      <code>WHERE Cod_Prepaga = NULL</code> devuelve <b>cero filas</b>, sin error, aunque haya
+      pacientes sin prepaga. Se escribe <code>WHERE Cod_Prepaga IS NULL</code>, y la inversa,
+      <code>IS NOT NULL</code>.
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Y NOT tampoco los rescata</span>
+    <p>
+      <code>WHERE NOT Cod_Prepaga = 1</code> trae a los que no son de OSDE… pero <b>no</b> a los
+      que no tienen prepaga: <code>NOT desconocido</code> sigue siendo desconocido. Si los
+      querés, hay que pedirlos: <code>OR Cod_Prepaga IS NULL</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Práctica</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 4 · LIKE</span>
+    <p class="sqlbox__task">Nombre de los pacientes cuyo nombre empieza con "M".</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Nombre
+FROM PACIENTE
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Nombre
+FROM PACIENTE
+WHERE Nombre LIKE 'M%';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 4 · BETWEEN</span>
+    <p class="sqlbox__task">
+      Consultas (paciente, número de consulta y fecha) entre el 1 de febrero y el 31 de marzo de 2026, ambos incluidos.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Cod_Paciente, Id_Consulta, Fecha
+FROM HISTORIA_CLINICA
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Cod_Paciente, Id_Consulta, Fecha
+FROM HISTORIA_CLINICA
+WHERE Fecha BETWEEN '2026-02-01' AND '2026-03-31';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 4 · IS NULL</span>
+    <p class="sqlbox__task">Pacientes que no tienen prepaga. El código de abajo no encuentra a ninguno.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Nombre
+FROM PACIENTE
+WHERE Cod_Prepaga = NULL;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Nombre
+FROM PACIENTE
+WHERE Cod_Prepaga IS NULL;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">4 de 4 · NOT con NULL</span>
+    <p class="sqlbox__task">
+      Pacientes que <b>no</b> son de OSDE (código 1), incluyendo a los que no tienen prepaga.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Nombre
+FROM PACIENTE
+WHERE NOT Cod_Prepaga = 1;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Nombre
+FROM PACIENTE
+WHERE NOT Cod_Prepaga = 1 OR Cod_Prepaga IS NULL;
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">BETWEEN</span>
+    <p class="quiz__q">
+      <code>WHERE Cant_Camas BETWEEN 1 AND 2</code>. ¿Qué habitaciones entran?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="BETWEEN es inclusivo en los dos extremos, como dice el deck. Equivale a Cant_Camas >= 1 AND Cant_Camas <= 2.">Las de una y las de dos camas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso sería un rango abierto en el extremo superior (>= 1 AND < 2). BETWEEN incluye los dos extremos.">Sólo las que tienen una cama</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No hay ningún entero estrictamente entre 1 y 2, pero BETWEEN no es estricto: incluye los extremos.">Ninguna: no hay entero entre</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">NOT IN y NULL</span>
+    <p class="quiz__q">Hay profesionales sin jefe (<code>Cod_Jefe</code> NULL). ¿Qué devuelve <code>WHERE Cod_Profesional NOT IN (SELECT Cod_Jefe FROM PROFESIONAL)</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Es lo que uno espera, pero no. Para Sofía, por ejemplo, el motor evalúa 8 &amp;lt;&amp;gt; 1 AND … AND 8 &amp;lt;&amp;gt; NULL, y 8 &amp;lt;&amp;gt; NULL da DESCONOCIDO: el AND entero nunca llega a VERDADERO.">Los profesionales que no son jefe de nadie</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto, y sin dar error. Basta con un NULL en la lista para que NOT IN no devuelva nada. Usá NOT EXISTS, o agregá WHERE Cod_Jefe IS NOT NULL dentro de la subconsulta.">Ninguna fila</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La sintaxis está bien: el problema es lógico, por eso es una trampa.">Un error de sintaxis</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Distinto de</span>
+    <p class="quiz__q">¿Aparecen los profesionales sin jefe con <code>WHERE Cod_Jefe &lt;&gt; 1</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. NULL &amp;lt;&amp;gt; 1 no es VERDADERO: es DESCONOCIDO, y el WHERE sólo deja pasar VERDADERO. Para incluirlos: &lt;code&gt;WHERE Cod_Jefe &amp;lt;&amp;gt; 1 OR Cod_Jefe IS NULL&lt;/code&gt;.">No</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Con NULL no hay &quot;distinto&quot;: cualquier comparación da DESCONOCIDO.">Sí: NULL es distinto de 1</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La columna admite NULL, y aun así esas filas no salen.">Sólo si la columna admite NULL</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b>, slides 9–11 y 13. <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.5.1
+      "Comparaciones con valores NULL y lógica de tres valores" (dentro de §8.5, p. 222).
+    </p>
+    <p>
+      <a href="https://www.sqlite.org/nulls.html">SQLite — NULL Handling</a>: cómo trata cada
+      motor los NULL, comparado lado a lado.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> La lógica de tres valores confunde a todos al principio.
+      Si querés, te armo más casos con NULL hasta que te salgan sin pensar.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0032-select-basico.html">Anterior: 0032 · SELECT</a>
+    <a href="0034-joins.html">Siguiente: 0034 · JOIN</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 27 · Almacenamiento y ficheros</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 27 · Unidad 4 · Organización física</p>
+    <h1 class="masthead__title">Dónde viven los datos, y por qué eso importa</h1>
+    <p class="masthead__standfirst">
+      La CPU no puede tocar el disco. Todo lo demás de esta unidad sale de esa
+      sola limitación.
+    </p>
+    <p class="masthead__meta">
+      <span>~8 minutos</span>
+      <span>Unidad 4 — Conceptos, pp. 1–3</span>
+      <span>Prioridad para el parcial: baja</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Antes de arrancar: cuánto invertir acá</span>
+    <p>
+      Este tema está en el material de la Unidad 4, así que <b>entra</b>. Pero el docente
+      no lo nombró cuando enumeró los temas de teoría. Leelo una vez, quedate con los
+      cuatro problemas de la sección 03, y pasá a
+      <a href="0028-indices.html">la lección 28</a>, que sí tiene pregunta confirmada.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Dos categorías, y una frontera que no se cruza</h2>
+
+  <p>El material parte la jerarquía en dos:</p>
+
+  <blockquote class="callout">
+    "<b>Almacenamiento principal o primario.</b> Esta categoría incluye los medios de
+    almacenamiento en los que la CPU puede operar, como la memoria principal del computador
+    y las memorias caché, más pequeñas pero más rápidas. […] normalmente proporciona un
+    acceso rápido a los datos, pero tiene una capacidad de almacenamiento limitada."
+  </blockquote>
+
+  <blockquote class="callout">
+    "<b>Almacenamientos secundario y terciario.</b> […] los discos magnéticos, los discos
+    ópticos y las cintas. Las unidades de disco duro se clasifican como almacenamiento
+    secundario, mientras que los medios removibles o extraíbles están considerados como
+    almacenamiento terciario."
+  </blockquote>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La frase que hay que saber de memoria</span>
+    <p>
+      "La CPU <b>no puede procesar directamente</b> los datos almacenados en un
+      almacenamiento secundario o terciario; primero deben <b>copiarse en el almacenamiento
+      principal</b>."
+    </p>
+  </div>
+
+  <p>
+    Fijate lo que eso implica. Si un dato está en disco y alguien lo necesita, hay un viaje
+    obligatorio: <b>buscarlo en disco → copiarlo a memoria principal → procesarlo → volver a
+    escribirlo en disco si cambió</b>. Ese viaje es el costo dominante de una base de datos,
+    y es lo que toda la Unidad 4 intenta evitar.
+  </p>
+
+  <h2><span class="num">02</span>La escalera, de lo caro a lo barato</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Nivel</th><th>Qué dice el material</th><th>Categoría</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Caché</b></td>
+          <td>"La memoria de alta velocidad es la más cara y, por tanto, está disponible
+              con una menor capacidad." La usa la CPU para acelerar la ejecución de los programas.</td>
+          <td>principal</td>
+        </tr>
+        <tr>
+          <td><b>DRAM</b></td>
+          <td>Área de trabajo principal de la CPU. Ventaja: bajo coste.
+              Inconveniente: <b>volatilidad</b> y baja velocidad frente a la RAM estática.</td>
+          <td>principal</td>
+        </tr>
+        <tr>
+          <td><b>Flash</b></td>
+          <td>"Entre la DRAM y el almacenamiento en disco magnético." Alta densidad y alto
+              rendimiento, tecnología <b>EEPROM</b>.</td>
+          <td>intermedia</td>
+        </tr>
+        <tr>
+          <td><b>Disco</b></td>
+          <td>Dispositivo <b>online</b>: se puede acceder directamente en cualquier momento.</td>
+          <td>secundario</td>
+        </tr>
+        <tr>
+          <td><b>Cinta</b></td>
+          <td>Copias de seguridad, "incluso menos costoso que el almacenamiento en disco",
+              pero el acceso es "bastante más lento". Datos <b>offline</b>.</td>
+          <td>terciario</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <b>Online frente a offline</b> es la distinción que conviene tener lista. La cinta está
+    offline porque "antes se necesita alguna intervención por parte de un operador (o un
+    dispositivo de carga automática) para cargar una cinta". El disco no necesita a nadie.
+    De ahí que la cinta sirva para <em class="term">backup</em> y el disco para operar.
+  </p>
+
+  <h3>Y el dato se guarda como un fichero de registros</h3>
+
+  <blockquote class="callout">
+    "Los datos almacenados en el disco se organizan como <b>ficheros de registros</b>. Un
+    registro es una colección de valores de datos que pueden interpretarse como hechos
+    relacionados con las entidades, sus atributos y sus relaciones."
+  </blockquote>
+
+  <p>
+    Reconocés el vocabulario: entidades, atributos, relaciones. Es el mismo modelo que
+    venías dibujando en la Unidad 2, pero ahora aterrizado en bloques de disco. Y el material
+    agrega la condición que abre la próxima lección: los registros "deben almacenarse en
+    disco de un modo que haga posible su localización de la forma <b>más eficaz</b>".
+  </p>
+
+  <h2><span class="num">03</span>Los cuatro problemas del enfoque de archivos</h2>
+
+  <p>
+    Esta es la parte de la lección con más probabilidad de aparecer, porque es una lista
+    cerrada y numerada. El material describe el mundo previo a las bases de datos: "los
+    datos se almacenan en archivos individuales, exclusivos para cada aplicación particular".
+    Y enumera cuatro problemas.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Problema</th><th>Qué es, según el material</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Redundancia</b></td>
+          <td>"Al no existir algún tipo de control sobre el ingreso más que el del usuario,
+              es muy normal que existan este tipo de errores de duplicidad en los registros."</td>
+        </tr>
+        <tr>
+          <td><b>Error de ingreso</b></td>
+          <td>"Errores comunes en el ingreso manual de datos, errores de tipo ortográfico,
+              números mal ingresados, etc."</td>
+        </tr>
+        <tr>
+          <td><b>Estandarización</b></td>
+          <td>"Es el tipo de error <b>más común</b>" — el ejemplo es la fecha:
+              <code>21-12-2021</code>, <code>21/02/2021</code>, <code>21/2/2021</code>.</td>
+        </tr>
+        <tr>
+          <td><b>Seguridad</b></td>
+          <td>"No hay un control de uso y acceso por usuarios a los datos, más que el
+              control al archivo físico en el computador local o servidor."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Y contra esos cuatro, lo que la base de datos permite — dos verbos, textuales:</p>
+
+  <blockquote class="callout">
+    "<b>Integrar</b>: significa que los diferentes archivos de datos han sido lógicamente
+    organizados para reducir la redundancia de datos y facilitar el acceso a ellos.<br>
+    <b>Compartir</b>: significa que todos los usuarios calificados tienen acceso a los
+    mismos datos, para usarlos en diferentes actividades."
+  </blockquote>
+
+  <details class="reveal">
+    <summary>¿Qué problema de los cuatro resuelve la normalización, y cuál no?</summary>
+    <div class="reveal__body">
+      <p>
+        La <b>redundancia</b> es la que ataca la normalización de la
+        <a href="0019-las-anomalias.html">Unidad 3</a>: cada hecho guardado una sola vez.
+        La <b>estandarización</b> la resuelve el tipo de dato y las restricciones declaradas.
+        La <b>seguridad</b> no la resuelve el modelo: necesita el control de acceso del DBMS,
+        que es Unidad 8.
+      </p>
+      <p>
+        Fijate que los cuatro problemas son los mismos que motivan la normalización en la
+        <a href="0019-las-anomalias.html">lección 19</a>, pero vistos un nivel más abajo.
+        No es casualidad: es el mismo enemigo.
+      </p>
+    </div>
+  </details>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 2 · La frontera</span>
+    <p class="quiz__q">
+      Un programa necesita un registro que está en un disco duro. ¿Qué pasa primero?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El disco es almacenamiento secundario, y la CPU no puede procesar ahí directamente. El bloque se copia a la memoria principal, se procesa, y se reescribe en disco sólo si el dato cambió.">Se copia al almacenamiento principal</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No existe ese camino. El material es explícito: la CPU no puede procesar directamente los datos de un almacenamiento secundario o terciario. Hay una copia obligatoria en el medio.">La CPU lo procesa donde está</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La caché acelera el acceso, pero no cambia la regla: el dato entra igual al almacenamiento principal. Y la caché es parte del principal, no un atajo al disco.">La caché lo lee desde el disco</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 2 · Online y offline</span>
+    <p class="quiz__q">
+      ¿Por qué el material clasifica la cinta magnética como almacenamiento
+      <em>offline</em>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Textual: para que los datos estén disponibles se necesita antes la intervención de un operador, o de un dispositivo de carga automática, para cargar la cinta. El disco, en cambio, es online: acceso directo en cualquier momento.">Alguien tiene que cargarla antes</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es cierto que el acceso a la cinta es bastante más lento, pero la lentitud no es lo que la define como offline. Lo que la define es que no se puede acceder sin una intervención previa.">Su acceso resulta bastante lento</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al contrario: el material dice que la cinta es incluso menos costosa que el disco, y por eso se usa para copias de seguridad. El precio no tiene que ver con online u offline.">Resulta más costosa que el disco</button></li>
+    </ul>
+  </div>
+
+  <h2><span class="num">05</span>La pregunta que queda abierta</h2>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Y con esto arranca la lección 28</span>
+    <p>
+      Ya sabemos dos cosas: que <b>ir al disco es el costo dominante</b>, y que en el disco
+      un dato vive dentro de un <b>fichero de registros</b>.
+    </p>
+    <p>
+      Entonces: si necesito el registro del cliente 4.318 y el fichero tiene un millón de
+      registros, <b>¿tengo que leerlos todos hasta encontrarlo?</b> Esa lectura de principio
+      a fin se llama <em class="term">búsqueda secuencial</em>, y evitarla es el único
+      motivo por el que existen los índices.
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Unidad 4 — Conceptos</b>, páginas 1 a 3
+      (<code>raw/Material_Examen/unidad 4 conceptos.pdf</code>), equivalente a los slides
+      2 a 8 del deck <code>Clase Indices y Txn</code>. Todas las citas de esta lección son
+      textuales de ahí.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — capítulo 13, "Almacenamiento en disco,
+      estructuras básicas de ficheros y dispersión", que es de donde el material tomó estas
+      definiciones. En el PDF de <code>raw/</code>: a partir de la página 426.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si querés que te arme una pregunta de desarrollo estilo
+      parcial sobre los cuatro problemas del enfoque de archivos y te la corrija, pedímela.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0026-integrador-proveedores.html">Anterior: 0026</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+    <a href="0028-indices.html">Siguiente: 0028 · Índices</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

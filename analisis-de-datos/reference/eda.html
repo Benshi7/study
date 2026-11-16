@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDA</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body class="reference">
+<main>
+<div class="topbar no-print"><a href="../index.html">← Índice</a> · Referencia</div>
+<div class="kicker">Referencia · Bloque 4</div>
+<h1>Análisis exploratorio de datos (EDA): flujo, fórmulas y código</h1>
+<p class="muted">Fuentes: <a href="../material_eda/1-Teoría-Conceptual/003_ANALISIS_EXPLORATORIO_Data_Science_RESUMIDO_2_2026.pdf">PDF 003 Análisis Exploratorio</a> y notebooks 0 a 8 de <code>material_eda/</code>. Lecciones: <a href="../lessons/0016-el-eda-y-su-flujo.html">0016</a> a <a href="../lessons/0021-eda-automatico-y-practica.html">0021</a>.</p>
+
+<div class="ref-grid">
+<section>
+<h2>Definición y flujo</h2>
+<p><strong>EDA</strong>: explorar y resumir un conjunto de datos para comprender sus características, detectar patrones, identificar problemas y <strong>generar hipótesis</strong>. No establece causalidad.</p>
+<ol>
+  <li><strong>Definir preguntas</strong>: objetivo del análisis</li>
+  <li><strong>Conocer los datos</strong>: <code>head</code> · <code>shape</code> · <code>dtypes</code> · <code>info</code></li>
+  <li><strong>Clasificar variables</strong></li>
+  <li><strong>Evaluar la calidad</strong>: faltantes · duplicados · tipos incorrectos · inconsistentes · outliers</li>
+  <li><strong>Explorar y analizar</strong>: descriptivos · gráficos · correlación · segmentación</li>
+</ol>
+<p><strong>Fuentes</strong>: primaria (de primera mano, la controlamos) · secundaria (la recolectó otro: INDEC) · terciaria (compilada de varias fuentes).</p>
+
+<h2>Variables</h2>
+<ul>
+  <li><strong>Categórica nominal</strong> (sin orden) · <strong>ordinal</strong> (con orden) → frecuencias, barras, torta</li>
+  <li><strong>Numérica discreta</strong> (contable) · <strong>continua</strong> (rango) → resumen, histograma, boxplot, dispersión</li>
+  <li>Unidad 1: cualitativo = categórico, cuantitativo = numérico; binaria → categórica</li>
+  <li><strong>dtype ≠ tipo de variable</strong>: <code>target</code> <code>int64</code> es categórica nominal</li>
+</ul>
+
+<h2>Problemas → tratamiento</h2>
+<ul>
+  <li><strong>Eliminar</strong>: no aporta o tiene errores graves</li>
+  <li><strong>Corregir</strong>: se puede recuperar (formato, tipo)</li>
+  <li><strong>Imputar</strong>: estimar con media, mediana o moda</li>
+  <li>En el EDA primero se <strong>detecta y mide</strong>; después se decide</li>
+</ul>
+
+<h2>Medidas descriptivas</h2>
+<ul>
+  <li><strong>Tendencia central</strong>: media · mediana · moda</li>
+  <li><strong>Dispersión</strong>: mín, máx · rango · desvío estándar</li>
+  <li><strong>Posición</strong>: cuartiles (4 partes) · percentiles (100 partes)</li>
+  <li>Lámina (2, 4, 4, 6, 10): media 5,2 · mediana 4 · moda 4 · rango 8 · Q1 3 · Q3 8. <em>pandas da Q1 4 y Q3 6</em></li>
+</ul>
+
+<h2>Forma de la distribución</h2>
+<ul>
+  <li>Simétrica: media ≈ mediana ≈ moda</li>
+  <li><strong>Positiva</strong> (cola a la derecha): <strong>media &gt; mediana</strong> → ingresos</li>
+  <li><strong>Negativa</strong> (cola a la izquierda): <strong>media &lt; mediana</strong> → puntaje con tope</li>
+  <li>Asimétrica → la <strong>mediana</strong> representa mejor</li>
+  <li><code>skew()</code>: ≈ 0 simétrica · &gt; 0 positiva · &lt; 0 negativa</li>
+</ul>
+</section>
+
+<section>
+<h2>Fórmulas</h2>
+<ul>
+  <li><strong>Rice</strong>: k = ⌈ 2 · n<sup>1/3</sup> ⌉ (n no nulos) · <code>bins="rice"</code></li>
+  <li><strong>RIC</strong> = Q3 − Q1 (50% central)</li>
+  <li><strong>Li</strong> = Q1 − 1,5 · RIC · <strong>Ls</strong> = Q3 + 1,5 · RIC</li>
+  <li><strong>Atípico</strong>: x &lt; Li o x &gt; Ls</li>
+  <li><strong>z</strong> = (x − media) / desvío → media 0, desvío 1, misma forma</li>
+  <li>Lámina salarios: Q1 26 · Q3 41 · RIC 15 · Li 3,5 · Ls 63,5 · atípicos 2 y 75</li>
+</ul>
+
+<h2>Correlación</h2>
+<ul>
+  <li>r ∈ [−1, 1]: signo = dirección, |r| = fuerza</li>
+  <li>≈ 0,7–0,99 fuerte · ≈ 0,3–0,7 moderada · ≈ 0 sin relación <em>lineal</em></li>
+  <li><strong>Pearson</strong>: lineal, valores, sensible a outliers (default)</li>
+  <li><strong>Spearman</strong>: monótona, rangos, robusta</li>
+  <li><strong>Correlación ≠ causalidad</strong> (helados y ahogamientos, r = 0,89 → temperatura)</li>
+  <li>Outliers: r = 0,2 con, 0,8 sin</li>
+  <li>Signo vs target: <code>target</code> 0 = maligno → negativo = maligno · <code>maligno</code> 1 = M → positivo = maligno</li>
+</ul>
+
+<h2>Código</h2>
+<pre class="code">df.shape · df.dtypes            # atributos
+df.info() · df.head() · df.sample(5)
+s.unique() · s.nunique()        # nunique sin NaN
+s.value_counts(dropna=False, normalize=True)
+df.isna().sum() · df.isna().mean()
+df.duplicated().sum() · df.dropna().shape
+df.describe().T
+df.describe(include=["object"])  # count unique top freq
+df.describe(percentiles=[.05, .95])
+df.skew(numeric_only=True)
+df.hist(bins="rice")
+s.quantile(0.25)
+df.boxplot(column="x", by="target")
+df.corr(method="spearman", numeric_only=True)
+sns.pairplot(df, vars=[...], hue="diag", corner=True)
+sns.jointplot(data=df, x=, y=, hue=)
+sns.heatmap(corr, cmap="coolwarm", vmin=-1, vmax=1)</pre>
+
+<h2>Reportes automáticos</h2>
+<ul>
+  <li><strong>Sweetviz</strong>: <code>analyze(df, target_feat=)</code> · <code>compare()</code> · <code>compare_intra()</code></li>
+  <li><strong>ydata-profiling</strong>: <code>ProfileReport(df, title=, minimal=True)</code> · alertas</li>
+  <li>Alertas: Missing · Duplicates · High correlation · Imbalance · Skewed · Zeros · Constant/Unique</li>
+  <li>Punto de partida: se <strong>verifica</strong> con pandas</li>
+</ul>
+</section>
+</div>
+</main>
+</body>
+</html>

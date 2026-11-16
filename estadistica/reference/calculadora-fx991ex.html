@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía de la calculadora Casio fx-991EX — Final de FEP</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Referencia · Calculadora Casio fx-991EX · UNICABA — FEP</span>
+<h1>Calculadora Casio fx-991EX (ClassWiz)</h1>
+<p class="subtitle">Qué modo, qué teclas y qué trampas para cada tipo de ejercicio del final. Pensada para consultar y para imprimir.</p>
+<p class="source">Fuente: <em>fx-570EX / fx-991EX Guía del usuario</em> (manual oficial en español, RJA532433-001V01). Las citas "p. N" son las páginas <strong>impresas</strong> del manual (la página N del PDF es la N+1). Todo lo marcado <strong>[manual]</strong> está escrito o mostrado en el manual; lo marcado <strong>[no está en el manual]</strong> es convención habitual o inferencia y conviene confirmarlo en pantalla antes del examen.</p>
+<p>Notación de teclas: <code>[=]</code> es la tecla igual, <code>[▼]</code>/<code>[▲]</code> son el cursor, <code>[1]</code>…<code>[9]</code> son las teclas numéricas usadas para elegir ítems de menú. <code>SHIFT</code> y <code>OPTN</code> se escriben tal cual.</p>
+
+<h2 id="indice">Índice</h2>
+<ul>
+<li><a href="#s0">0. Resumen de una pantalla</a></li>
+<li><a href="#s1">1. Preparación y configuración</a></li>
+<li><a href="#s2">2. Estadística de una variable (descriptiva)</a></li>
+<li><a href="#s3">3. Regresión lineal y correlación</a></li>
+<li><a href="#s4">4. Distribución Normal: Normal PD y Normal CD</a></li>
+<li><a href="#s5">5. Normal inversa (percentiles y Z de intervalos)</a></li>
+<li><a href="#s6">6. Distribución muestral de la media y de la suma</a></li>
+<li><a href="#s7">7. Intervalo de confianza para la media (Z y t)</a></li>
+<li><a href="#s8">8. Proporción y tamaño de muestra</a></li>
+<li><a href="#s9">9. Binomial (Binomial PD y Binomial CD)</a></li>
+<li><a href="#s10">10. Poisson (Poisson PD y Poisson CD)</a></li>
+<li><a href="#s11">11. Herramientas auxiliares</a></li>
+<li><a href="#s12">12. Qué NO hace la calculadora</a></li>
+<li><a href="#s13">13. Control rápido de plausibilidad (antes de marcar)</a></li>
+<li><a href="#s14">14. Índice de páginas del manual citadas</a></li>
+</ul>
+
+<h2 id="s0">0. Resumen de una pantalla</h2>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Quiero…</th>
+<th>Modo</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x̄, s, σ, n, Σx, cuartiles de datos (con o sin frecuencia)</td>
+<td><code>MENU 6</code> Statistics → <code>[1]</code> 1-Variable</td>
+<td><code>OPTN 3</code> (1-Variable Calc)</td>
+</tr>
+<tr>
+<td>Recta y = a + bx, r, ŷ, x̂</td>
+<td><code>MENU 6</code> Statistics → <code>[2]</code> y=a+bx</td>
+<td><code>OPTN 4</code> (Regression Calc)</td>
+</tr>
+<tr>
+<td>P(a &lt; X &lt; b), P(X &gt; a), P(X &lt; b) con Normal</td>
+<td><code>MENU 7</code> Distribution → <code>[2]</code> Normal CD</td>
+<td>Lower, Upper, σ, μ</td>
+</tr>
+<tr>
+<td>Valor x tal que P(X ≤ x) = área (percentil, Z de un IC)</td>
+<td><code>MENU 7</code> → <code>[3]</code> Inverse Normal</td>
+<td>Area, σ, μ</td>
+</tr>
+<tr>
+<td>P(X = k) Binomial / Poisson</td>
+<td><code>MENU 7</code> → <code>[4]</code> Binomial PD / <code>[▼][2]</code> Poisson PD</td>
+<td>x, N, p / x, λ</td>
+</tr>
+<tr>
+<td>P(X ≤ k) Binomial / Poisson</td>
+<td><code>MENU 7</code> → <code>[▼][1]</code> Binomial CD / <code>[▼][3]</code> Poisson CD</td>
+<td>x, N, p / x, λ</td>
+</tr>
+<tr>
+<td>nCr, n!</td>
+<td><code>MENU 1</code> Calculate</td>
+<td><code>SHIFT ÷</code> (nCr), <code>SHIFT x⁻¹</code> (x!)</td>
+</tr>
+<tr>
+<td>Fracción ↔ decimal</td>
+<td>cualquier cálculo</td>
+<td><code>S⇔D</code></td>
+</tr>
+<tr>
+<td>Student t (probabilidad o valor crítico)</td>
+<td><strong>no existe</strong></td>
+<td>usar la tabla t</td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="s1">1. Preparación y configuración</h2>
+<h3>1.1 Menú principal (p. 5) [manual]</h3>
+<p><code>MENU</code> muestra 8 íconos numerados por pantalla: <strong>1</strong> Calculate, <strong>2</strong> Complex, <strong>3</strong> Base-N, <strong>4</strong> Matrix, <strong>5</strong> Vector, <strong>6</strong> Statistics, <strong>7</strong> Distribution, <strong>8</strong> Spreadsheet; con <code>[▼]</code> aparecen <strong>9</strong> Table, <strong>A</strong> Equation/Func, <strong>B</strong> Inequality, <strong>C</strong> Ratio. Se elige con el número (o con el cursor y <code>[=]</code>).</p>
+<h3>1.2 SETUP (pp. 6-8) [manual]</h3>
+<p><code>SHIFT MENU</code> (SETUP), luego <code>[▼]</code>/<code>[▲]</code> para recorrer y el número del ítem.</p>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>Teclas</th>
+<th>Para qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Input/Output</td>
+<td><code>SETUP 1</code> → <code>1</code> MathI/MathO (por defecto) · <code>2</code> MathI/DecimalO · <code>3</code> LineI/LineO · <code>4</code> LineI/DecimalO</td>
+<td><code>MathI/DecimalO</code> hace que los resultados salgan directo en decimal.</td>
+</tr>
+<tr>
+<td>Number Format</td>
+<td><code>SETUP 3</code> → <code>1</code> Fix (decimales, 0-9) · <code>2</code> Sci · <code>3</code> Norm</td>
+<td><code>Fix 4</code> = 4 decimales; es redondeo de <strong>pantalla</strong>.</td>
+</tr>
+<tr>
+<td><strong>Statistics (columna Freq)</strong></td>
+<td><code>SETUP [▼] 3</code> (Statistics) → <code>1</code> On / <code>2</code> Off</td>
+<td><strong>On</strong> agrega la columna <code>Freq</code> en el editor.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Importante (p. 22): <strong>cambiar el ajuste Statistics, salir del modo Statistics o cambiar entre 1 variable y 2 variables borra todos los datos del editor.</strong> Por eso hay que activar <code>Freq</code> <strong>antes</strong> de cargar los datos.</p>
+<h3>1.3 Memoria y reinicio (pp. 2, 13, 45) [manual]</h3>
+<ul>
+<li><strong>Ans</strong>: guarda el último resultado. Se usa con la tecla <code>Ans</code>. En modo Distribution, el resultado queda en Ans salvo que se haya elegido <code>List</code> (p. 33).</li>
+<li><strong>Variables A-F, M, x, y</strong>: <code>SHIFT RCL</code> (STO) + tecla de la variable guarda el resultado visible (el manual lo muestra con <code>3+5</code> → STO A). Se recuperan con <code>ALPHA</code> + tecla de la variable, o con <code>RCL</code>.</li>
+<li>Ans, M y variables <strong>se mantienen</strong> al apretar <code>AC</code>, cambiar de modo o apagar (p. 13).</li>
+<li>Reinicio (<code>SHIFT 9</code> = RESET): <code>1</code> Setup Data (vuelve la configuración a los valores de fábrica, p. 45) · <code>2</code> Memory (borra Ans/M/variables, p. 13) · <code>3</code> Initialize All (borra todo, p. 2). Cada uno pide confirmar con <code>[=]</code> (Yes). El orden 2 y 3 de este menú <strong>[no está en el manual]</strong>; el manual solo escribe los nombres.</li>
+<li>Para volver a cálculos aritméticos desde Statistics: <code>MENU 1</code> (p. 45).</li>
+</ul>
+
+<h2 id="s2">2. Estadística de una variable (descriptiva)</h2>
+<h3>Cuándo la uso</h3>
+<p>Media, desvío, n, Σx, Σx², mínimo/máximo, cuartiles de una lista de datos, o de una <strong>tabla de frecuencias</strong> (valor + frecuencia). Para datos agrupados en intervalos, se carga la <strong>marca de clase</strong> como x y la frecuencia como Freq.</p>
+<h3>Secuencia de teclas (pp. 21-23) [manual]</h3>
+<ol>
+<li><code>SHIFT MENU [▼] 3</code> (Statistics) → <code>1</code> (On). <em>(Solo si hay tabla de frecuencias; para una lista simple se deja Off.)</em></li>
+<li><code>MENU 6</code> (Statistics) → <code>[=]</code>.</li>
+<li>En <em>Select Type</em>: <code>[1]</code> (1-Variable). Aparece el editor con columnas <code>x</code> y <code>Freq</code>.</li>
+<li>Escribir cada valor de x con <code>[=]</code>; bajar con <code>[▼]</code>, pasar a la columna Freq con <code>[▶]</code> y escribir cada frecuencia con <code>[=]</code>. (El manual escribe la x de arriba hacia abajo y luego las frecuencias: <code>1=2=3=4=5=</code> <code>▼ ▶</code> <code>1=2=3=2=</code>).</li>
+<li><code>AC</code> → pantalla de cálculo estadístico. Para volver a editar los datos: <code>OPTN 3</code> (Data).</li>
+<li>Ver todas las medidas: desde el editor <code>OPTN 3</code> (1-Variable Calc); desde la pantalla de cálculo <code>OPTN 2</code> (1-Variable Calc). Se recorre con <code>[▼]</code>.</li>
+<li>Para usar un valor en una cuenta (p. ej. el CV): <code>AC</code>, <code>OPTN [▼] 2</code> (Variable) y la tecla del símbolo (en el manual, <code>x̄</code> es <code>OPTN [▼] 2</code> → <code>[1]</code>); <code>Σx</code>/<code>Σx²</code> están en <code>OPTN [▼] 1</code> (Summation, ítems 1-8); <code>min/máx/Q1/Med/Q3</code> en <code>OPTN [▼] 3</code> (Min/Max).</li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<p>La pantalla <em>1-Variable Calc</em> lista (el manual muestra las primeras seis líneas, p. 22): <code>x̄</code>, <code>Σx</code>, <code>Σx²</code>, <code>σ²x</code>, <code>σx</code>, <code>s²x</code>; y con <code>[▼]</code> siguen <code>sx</code>, <code>n</code>, <code>minX</code>, <code>Q1</code>, <code>Med</code>, <code>Q3</code>, <code>maxX</code> (orden de las últimas líneas <strong>[no está en el manual]</strong>; leer las etiquetas).</p>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Símbolo</th>
+<th>Significado</th>
+<th>Fórmula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x̄</code></td>
+<td>media</td>
+<td>Σ f·x / n</td>
+</tr>
+<tr>
+<td><code>σx</code></td>
+<td>desvío <strong>poblacional</strong> (divide por n)</td>
+<td>√(Σ f(x−x̄)² / n)</td>
+</tr>
+<tr>
+<td><code>sx</code></td>
+<td>desvío <strong>muestral</strong> (divide por n−1)</td>
+<td>√(Σ f(x−x̄)² / (n−1))</td>
+</tr>
+<tr>
+<td><code>σ²x</code>, <code>s²x</code></td>
+<td>varianzas correspondientes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>suma de las frecuencias (no la cantidad de filas)</td>
+<td>Σ f</td>
+</tr>
+<tr>
+<td><code>Σx</code>, <code>Σx²</code></td>
+<td>suma de x y de x² ponderadas por Freq</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Q1</code>, <code>Med</code>, <code>Q3</code></td>
+<td>cuartiles de los datos tal como se cargaron</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Trampas</h3>
+<ul>
+<li><strong>σx vs sx</strong>: la cátedra escribe <strong>S</strong> para el estadístico muestral y <strong>σ</strong> para el parámetro poblacional (<code>knowledge-base/02</code>, Red 2). En los materiales, el desvío "con calculadora" de una muestra se informa como S (p. ej. S = 8,5733 con n = 20 y t de 19 g.l.; S = 3,0101 en el TP1 con n = 200; no se pudo comprobar con los datos crudos cuál de las dos opciones de la calculadora produce cada valor). <strong>Regla práctica:</strong> los datos son una <strong>muestra</strong> (peso de paquetes, presión de pacientes, n elegidos) → <code>sx</code>. Solo si el enunciado dice que son <strong>todos</strong> los elementos de la población → <code>σx</code>. Esta regla es coherente con la convención de la cátedra, pero el criterio exacto no está escrito en <code>NOTES.md</code>; si un enunciado de múltiple opción da dos opciones que difieren solo en el 3.er decimal, mirar si dice "muestra" o "población".</li>
+<li><strong>Variable aleatoria discreta (tabla x, P(x))</strong>: la calculadora no acepta probabilidades como frecuencias de forma documentada. Convertirlas a enteros (p. ej. P×100) y cargar eso como Freq; con la tabla completa de la distribución corresponde <code>σx</code> (es el desvío de <strong>la variable</strong>, E(X) = x̄). <strong>[el uso de Freq decimal no está en el manual]</strong></li>
+<li><strong>Datos agrupados</strong>: x̄ y σ salen <strong>aproximados</strong> (usan marcas de clase). <code>Q1/Med/Q3</code> de la calculadora <strong>no</strong> son los percentiles interpolados de la cátedra (Pk = LI + (kN/100 − Fa)/f · i) y la manera en que la calculadora define los cuartiles no figura en el manual. Para Me, Mo y percentiles de datos agrupados, usar la fórmula.</li>
+<li><strong>Freq olvidada</strong>: sin la columna <code>Freq</code> hay que repetir los datos. Con <code>Freq</code> en On, olvidarse de escribir la frecuencia deja valores incompletos en la tabla.</li>
+<li><strong>CV</strong>: <code>CV = (sx ÷ x̄) × 100</code>. Umbrales de la cátedra: ver <code>NOTES.md</code> (homogeneidad &lt; 20 %).</li>
+<li>Se borra todo al salir del modo o al cambiar el tipo (p. 22).</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p><strong>Manual (p. 23):</strong> x = {1, 2, 3, 4, 5}, Freq = {1, 2, 3, 2, 1} (es decir, los datos 1, 2, 2, 3, 3, 3, 4, 4, 5). <code>x̄ = 3</code> [manual].
+Resto (verificado con Python): <code>n = 9</code>, <code>Σx = 27</code>, <code>Σx² = 93</code>, <code>σx = 1.154700538</code>, <code>sx = 1.224744871</code>, <code>σ²x = 1.3333…</code>, <code>s²x = 1.5</code>, <code>minX = 1</code>, <code>maxX = 5</code>.</p>
+<p><strong>Tabla agrupada:</strong> marcas de clase 31, 33, 35, 37, 39 con frecuencias 10, 30, 80, 60, 20.
+<code>n = 200</code>, <code>Σx = 7100</code>, <code>Σx² = 252840</code>, <code>x̄ = 35.5</code>, <code>σx = 1.987460691</code>, <code>sx = 1.992448054</code>.
+CV con sx: 1.992448 ÷ 35.5 × 100 = <strong>5.61 %</strong> (&lt; 20 % → homogéneo).</p>
+<p><strong>Variable aleatoria discreta:</strong> X = 0, 1, 2, 3 con P = 0.1, 0.3, 0.4, 0.2. Cargar Freq = 10, 30, 40, 20: <code>n = 100</code>, <code>x̄ = 1.7</code> (= E(X)), <code>σx = 0.9</code> (= desvío de X, <strong>no</strong> <code>sx = 0.9045…</code>).</p>
+
+<h2 id="s3">3. Regresión lineal y correlación</h2>
+<h3>Cuándo la uso</h3>
+<p>Cuando hay pares (x, y) y piden recta de regresión y = a + bx, correlación r, R² = r², o una predicción.</p>
+<h3>Secuencia de teclas (pp. 21-24) [manual]</h3>
+<ol>
+<li>(Si quedó Freq en On: <code>SHIFT MENU [▼] 3</code> → <code>2</code> Off, para no tener columna de frecuencias.)</li>
+<li><code>MENU 6</code> (Statistics) → <code>[=]</code> → <code>[2]</code> (y = a + bx). El editor muestra <code>x</code> e <code>y</code>.</li>
+<li>Cargar todos los x (cada uno con <code>[=]</code>), <code>[▼]</code> + <code>[▶]</code> para ir a la columna y, y cargar los y.</li>
+<li>Desde el editor, <code>OPTN 4</code> (Regression Calc) muestra la recta con <code>a</code>, <code>b</code>, <code>r</code>.</li>
+<li>Para leer un coeficiente en una cuenta: <code>AC</code>, <code>OPTN [▼] 4</code> (Regression), luego <code>[1]</code> a, <code>[2]</code> b, <code>[3]</code> r, <code>[4]</code> x̂, <code>[5]</code> ŷ, y <code>[=]</code>.</li>
+<li><strong>Predicción de ŷ</strong>: <code>AC</code>, escribir el valor de x, <code>OPTN [▼] 4</code> → <code>[5]</code> (ŷ), <code>[=]</code> (manual Ej. 4).</li>
+<li><strong>Estimación de x̂</strong>: <code>AC</code>, escribir el valor de y, <code>OPTN [▼] 4</code> → <code>[4]</code> (x̂), <code>[=]</code>.</li>
+<li>Medias, desvíos y sumas de ambas variables: <code>OPTN 3</code> (2-Variable Calc) desde el editor; <code>Σxy</code>, <code>Σy</code>, <code>Σy²</code> están en <code>OPTN [▼] 1</code> (Summation).</li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<ul>
+<li><code>b</code> (pendiente): variación media de y por cada unidad que aumenta x.</li>
+<li><code>a</code> (ordenada): valor estimado de y cuando x = 0 (solo tiene sentido si x = 0 está dentro del rango).</li>
+<li><code>r</code>: correlación lineal, −1 ≤ r ≤ 1; el signo de r es el signo de b. <code>r² = R²</code> = proporción de la variación de y explicada por la recta.</li>
+<li><code>ŷ</code>: valor estimado de y para el x dado.</li>
+</ul>
+<h3>Trampas</h3>
+<ul>
+<li><strong>x̂ no es la regresión de x sobre y.</strong> La calculadora resuelve y = a + bx para x (el manual lo describe así, p. 23). Si el ejercicio pide "regresión de x sobre y", hay que intercambiar las columnas.</li>
+<li>Extrapolar fuera del rango de x no tiene respaldo, aunque la calculadora devuelva un número.</li>
+<li><code>r</code> alto no prueba causalidad.</li>
+<li>Cambiar entre 1 variable y 2 variables <strong>borra</strong> los datos (p. 22). Cambiar entre tipos de regresión de 2 variables con <code>OPTN 1</code> (Select Type) no está descrito en el manual como operación que borre; <strong>verificar en pantalla</strong> antes de confiar en que los datos siguen.</li>
+<li>Elegir bien el tipo: <code>[2]</code> es lineal; <code>[4]</code> es logarítmica (mismo menú, p. 21). Una <code>r</code> rara y <code>a</code>, <code>b</code> raros suelen indicar tipo equivocado.</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p>Datos: x = 20, 22, 24, 27, 30, 33 (temperatura); y = 48, 53, 57, 66, 71, 80 (ventas).</p>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Resultado</th>
+<th>Pantalla (aprox.)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a</code></td>
+<td>−0.5819672131</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>2.426229508</td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td>0.9976854256</td>
+</tr>
+<tr>
+<td><code>r²</code> (R²)</td>
+<td>0.9953762 (99,54 % explicado)</td>
+</tr>
+<tr>
+<td><code>ŷ</code> para x = 25</td>
+<td>60.07377049</td>
+</tr>
+<tr>
+<td><code>x̂</code> para y = 60</td>
+<td>24.96959459</td>
+</tr>
+</tbody>
+</table></div>
+<p>Lectura: por cada 1 °C más, las ventas suben ≈ 2,43 unidades; correlación lineal positiva muy fuerte.
+En 2-Variable Calc: <code>n = 6</code>, <code>x̄ = 26</code>, <code>ȳ = 62.5</code>, <code>sx = 4.939635614</code>, <code>sy = 12.0124935</code>, <code>σx = 4.50924975</code>, <code>σy = 10.9658561</code>, <code>Σx = 156</code>, <code>Σx² = 4178</code>, <code>Σy = 375</code>, <code>Σy² = 24159</code>, <code>Σxy = 10046</code>.</p>
+<p><strong>Control con el manual (p. 23-24):</strong> regresión logarítmica (20, 3150), (110, 7310), (200, 8800), (290, 9310) con Fix 3 → <code>r = 0.998</code>, <code>a = −3857.984</code>, <code>b = 2357.532</code>; <code>ŷ(160) = 8106.898</code>. Verificado con Python.</p>
+
+<h2 id="s4">4. Distribución Normal: Normal PD y Normal CD</h2>
+<h3>Cuándo la uso</h3>
+<ul>
+<li><strong>Normal CD</strong>: probabilidades de intervalos o colas, P(a &lt; X &lt; b), P(X &gt; a), P(X &lt; b). Es lo que reemplaza la tabla Z.</li>
+<li><strong>Normal PD</strong>: altura de la curva f(x). Casi nunca se pide en el final (la probabilidad de un punto es 0 en una variable continua).</li>
+</ul>
+<h3>Secuencia de teclas (pp. 32-34) [manual]</h3>
+<ol>
+<li><code>MENU 7</code> (Distribution) → <code>[=]</code>.</li>
+<li><code>[2]</code> (Normal CD).</li>
+<li>Pantalla de variables (el manual muestra, para Normal PD, los valores por defecto <code>x:0, σ:1, μ:0</code>): para <strong>Normal CD</strong> los campos son <strong>Lower, Upper, σ, μ</strong>. Escribir cada valor con <code>[=]</code>.</li>
+<li>Un <code>[=]</code> final calcula (en el manual, tras <code>36 = 2 = 35 =</code> se aprieta <code>[=]</code> para ver el resultado).</li>
+<li>De la pantalla de resultado, <code>[=]</code> o <code>AC</code> vuelven a la pantalla de variables. Para cambiar de tipo de distribución: <code>OPTN 1</code> (Select Type).</li>
+<li>El resultado queda en <code>Ans</code> (p. 33).</li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<p>Normal CD devuelve P(Lower &lt; X &lt; Upper) = área bajo la curva entre los dos límites (etiqueta <code>p=</code>; la calculadora puede mostrar también los límites estandarizados <code>z:Low</code>/<code>z:Up</code> <strong>[no está en el manual]</strong>). Normal PD devuelve la densidad en x (etiqueta <code>p=</code>; manual: 0.1760326634 para x=36, σ=2, μ=35).</p>
+<h3>Trampas</h3>
+<ul>
+<li><strong>Colas infinitas</strong>: para P(X &gt; a) escribir <code>Lower = a</code>, <code>Upper = 1E99</code> (tecla <code>×10ˣ</code>: <code>1 [×10ˣ] 99</code>). Para P(X &lt; b), <code>Lower = −1E99</code> (<code>(−) 1 [×10ˣ] 99</code>), <code>Upper = b</code>. El uso de ±1E99 es la convención habitual <strong>[no está en el manual]</strong>; alternativa segura: usar μ ± 10σ como límite.</li>
+<li><strong>Los campos recuerdan lo último que se usó</strong> (el manual lo indica para N y p en Binomial, p. 34): antes de calcular, revisar los <strong>cuatro</strong> campos. El error típico es dejar σ o μ de un ejercicio anterior.</li>
+<li><strong>Orden de campos</strong>: σ va <strong>antes</strong> que μ (Normal PD: x, σ, μ; Normal CD: Lower, Upper, σ, μ, p. 33). Invertirlos es un error frecuente.</li>
+<li>Se ingresa el <strong>desvío σ</strong>, no la varianza σ².</li>
+<li>Para la <strong>distribución muestral</strong> hay que ingresar el <strong>error estándar</strong>: σ/√n, no σ (ver sección 6).</li>
+<li>Se puede ingresar μ = 0 y σ = 1 (valores por defecto) para trabajar directamente con Z.</li>
+<li>Precisión: "hasta seis dígitos significativos" (p. 33), aunque se muestren más dígitos. No comparar la 7.ª cifra con las opciones.</li>
+<li><code>P(X = a)</code> en continua es 0; Normal PD <strong>no</strong> es una probabilidad.</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p>X ~ N(μ = 100, σ = 15).</p>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Pregunta</th>
+<th>Campos</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P(85 &lt; X &lt; 120)</td>
+<td>Lower = 85, Upper = 120, σ = 15, μ = 100</td>
+<td><code>p = 0.750134</code></td>
+</tr>
+<tr>
+<td>P(X &gt; 120)</td>
+<td>Lower = 120, Upper = 1E99</td>
+<td><code>p = 0.0912112</code></td>
+</tr>
+<tr>
+<td>P(X &lt; 85)</td>
+<td>Lower = −1E99, Upper = 85</td>
+<td><code>p = 0.158655</code></td>
+</tr>
+<tr>
+<td>f(105) (Normal PD)</td>
+<td>x = 105, σ = 15, μ = 100</td>
+<td><code>p = 0.0251589</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Con Z directamente (σ = 1, μ = 0): P(−0.5 &lt; Z &lt; 1.2) → <code>0.576393</code>.</p>
+
+<h2 id="s5">5. Normal inversa (percentiles y Z de intervalos)</h2>
+<h3>Cuándo la uso</h3>
+<ul>
+<li>Dado un área (probabilidad) hallar el valor: percentiles, "el 10 % superior", Z crítico para IC (1,96; 1,645; 2,576).</li>
+<li>Búsqueda de parámetros (dos percentiles → μ y σ): una consulta por cada percentil.</li>
+</ul>
+<h3>Secuencia de teclas (p. 32-33) [manual]</h3>
+<p><code>MENU 7</code> → <code>[=]</code> → <code>[3]</code> (Inverse Normal) → escribir <strong>Area</strong>, <strong>σ</strong>, <strong>μ</strong> (cada uno con <code>[=]</code>) → <code>[=]</code>.
+El resultado es el valor x tal que <strong>P(X ≤ x) = Area</strong>. El manual indica: <strong>"ajuste de cola siempre a la izquierda"</strong> (p. 33): no se puede elegir cola derecha ni central.</p>
+<h3>Qué significa el resultado</h3>
+<p>Es un valor de la variable (x, o Z si σ = 1 y μ = 0). Rango de Area: 0 ≤ Area ≤ 1 (p. 33).</p>
+<h3>Trampas</h3>
+<ul>
+<li><strong>Siempre cola izquierda.</strong> Para "el 10 % superior" hay que ingresar <code>Area = 0.90</code>, no 0.10. Para P(X &gt; x) = 0.05 → <code>Area = 0.95</code>.</li>
+<li><strong>Z de un IC al nivel (1−α)</strong>: usar <code>Area = 1 − α/2</code> (95 % → 0.975; 90 % → 0.95; 99 % → 0.995), con σ = 1, μ = 0. Si se ingresa 0.95 para un IC al 95 % se obtiene 1.645 (el valor del 90 %).</li>
+<li>Con σ y μ de la variable, el resultado ya viene en unidades originales (no hace falta des-estandarizar).</li>
+<li>Es una función inversa: no devuelve probabilidades.</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Pedido</th>
+<th>Campos</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Z para IC al 95 %</td>
+<td>Area = 0.975, σ = 1, μ = 0</td>
+<td><code>1.95996</code> (exacto 1.959963985)</td>
+</tr>
+<tr>
+<td>Z para IC al 90 %</td>
+<td>Area = 0.95</td>
+<td><code>1.64485</code></td>
+</tr>
+<tr>
+<td>Z para IC al 99 %</td>
+<td>Area = 0.995</td>
+<td><code>2.57583</code></td>
+</tr>
+<tr>
+<td>Corte del 10 % superior de N(100, 15)</td>
+<td>Area = 0.90, σ = 15, μ = 100</td>
+<td><code>119.223</code></td>
+</tr>
+<tr>
+<td>Primer cuartil de N(100, 15)</td>
+<td>Area = 0.25</td>
+<td><code>89.8827</code></td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="s6">6. Distribución muestral de la media y de la suma</h2>
+<h3>Cuándo la uso</h3>
+<p>Preguntas sobre un <strong>promedio de muestra</strong> x̄ (distribución muestral, TCL) o sobre una <strong>suma</strong> W de n variables. Se usa Normal CD con los parámetros de x̄ o de W.</p>
+<h3>Secuencia de teclas</h3>
+<ol>
+<li>Calcular los parámetros con la calculadora en <code>MENU 1</code>: error estándar σ/√n (promedio) o σ√n (suma). Guardarlo con <code>SHIFT RCL</code> (STO) + variable, o escribirlo directamente.</li>
+<li><code>MENU 7</code> → <code>[2]</code> Normal CD.</li>
+<li><strong>Promedio</strong>: σ = σ/√n, μ = μ. <strong>Suma</strong>: μ = nμ, σ = σ√n.</li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<p>Probabilidad sobre el <strong>promedio</strong> (o la suma), no sobre una observación individual.</p>
+<h3>Trampas</h3>
+<ul>
+<li>Ingresar σ (el de la variable) en vez de σ/√n: error clásico. Se detecta porque da una probabilidad demasiado cercana a la de un individuo.</li>
+<li>Suma: μ_W = nμ y σ_W = √n·σ (<strong>no</strong> σ/√n); promedio: μ y σ/√n.</li>
+<li>El TCL requiere n ≥ 30 si la población no es normal (convención de la cátedra, <code>knowledge-base/04</code>).</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p><strong>Promedio:</strong> μ = 50, σ = 12, n = 36 → σ_x̄ = 12/√36 = 2.
+P(x̄ &gt; 52): Lower = 52, Upper = 1E99, σ = 2, μ = 50 → <code>p = 0.158655</code>.
+<em>(Con el error σ = 12 se obtendría 0.433816: otro número, otra opción de múltiple opción.)</em></p>
+<p><strong>Suma:</strong> 50 días, μ = 5, σ = 2 por día → μ_W = 250, σ_W = 2√50 = 14.1421.
+P(W &gt; 260): Lower = 260, Upper = 1E99, σ = 14.1421, μ = 250 → <code>p = 0.239750</code>.</p>
+
+<h2 id="s7">7. Intervalo de confianza para la media (Z y t)</h2>
+<h3>Cuándo la uso</h3>
+<p>La calculadora <strong>no tiene un modo de intervalos de confianza</strong>. Se usa para: obtener x̄ y sx de los datos (sección 2), obtener Z (sección 5), y hacer la aritmética de x̄ ± E con E = Z·σ/√n o E = t·s/√n.</p>
+<h3>Secuencia de teclas</h3>
+<p><strong>σ conocido (Z):</strong>
+1. <code>MENU 7</code> → <code>[3]</code> Inverse Normal: Area = 1 − α/2, σ = 1, μ = 0 → resultado (queda en Ans).
+2. <code>MENU 1</code>: <code>Ans × σ ÷ √n</code> (<code>√</code> es la tecla <code>√▪</code>; cerrar paréntesis si hace falta) → E. Luego x̄ − E y x̄ + E.</p>
+<p><strong>σ desconocido (t):</strong>
+1. Obtener x̄ y <strong>sx</strong> de los datos (<code>MENU 6</code>, sección 2), y n.
+2. <strong>Buscar t en la tabla</strong> con ν = n − 1 y α/2 (la calculadora no lo calcula, ver abajo).
+3. <code>MENU 1</code>: E = t × sx ÷ √n; luego x̄ ± E.</p>
+<h3>Qué significa el resultado</h3>
+<p>E es el margen de error; el IC es (x̄ − E; x̄ + E). Amplitud del IC = 2E. Con una confianza del 95 %, el <strong>procedimiento</strong> captura a μ en el 95 % de las muestras (no es "el 95 % de los datos").</p>
+<h3>Trampas</h3>
+<ul>
+<li><strong>No existe la distribución t en la fx-991EX</strong> (ver sección 12). No hay forma de calcular t crítico ni P(T &lt; t) con la calculadora.</li>
+<li>Usar <code>sx</code> (no <code>σx</code>) para el desvío cuando σ es desconocido.</li>
+<li>ν = n − 1 (no n) para entrar a la tabla t.</li>
+<li>Si el enunciado da σ poblacional → Z; si da un desvío calculado de la muestra → t, aunque n sea grande (convención de la cátedra, <code>knowledge-base/04</code>).</li>
+<li>Usar <code>Area = 0.95</code> en vez de <code>0.975</code> para un IC bilateral al 95 %.</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p><strong>Z:</strong> x̄ = 82.4, σ = 9, n = 36, confianza 95 %.
+Inverse Normal (Area = 0.975) → <code>1.95996</code>. Luego <code>Ans × 9 ÷ √36</code> → <code>E = 2.93994</code>. IC = (79.46; 85.34).</p>
+<p><strong>t (valor de tabla):</strong> x̄ = 50.35, s = 8.5733, n = 20 (examen de la cátedra), t₁₉;₀,₀₂₅ = 2.093 (tabla).
+<code>E = 2.093 × 8.5733 ÷ √20 = 4.01238</code> → IC = (46.34; 54.36).</p>
+
+<h2 id="s8">8. Proporción y tamaño de muestra</h2>
+<h3>Cuándo la uso</h3>
+<ul>
+<li>IC para la proporción: p̂ ± Z·√(p̂q̂/n).</li>
+<li>Tamaño de muestra: n = (Z·σ/E)² (media, σ conocido) o n = Z²·p̂q̂/E² (proporción).
+Son <strong>cuentas aritméticas</strong> con Z de Inverse Normal.</li>
+</ul>
+<h3>Secuencia de teclas</h3>
+<ol>
+<li>Z con Inverse Normal (Area = 1 − α/2).</li>
+<li>En <code>MENU 1</code>: IC proporción: <code>Z × √(p̂ × (1 − p̂) ÷ n)</code>. Tamaño de muestra: <code>(Z × σ ÷ E)</code> y elevar al cuadrado con <code>x²</code>.</li>
+<li><strong>Redondear n siempre hacia arriba.</strong></li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<p>E = margen de error. n = cantidad <strong>mínima</strong> de observaciones para lograr el margen E con la confianza dada.</p>
+<h3>Trampas</h3>
+<ul>
+<li><strong>n se redondea siempre hacia arriba</strong> (138,29 → 139; 150,06 → 151), nunca al más cercano.</li>
+<li>Sin estimación previa de p, usar p̂ = 0.5 (peor caso).</li>
+<li>Con σ desconocido el tamaño de muestra requiere iteración con t (la calculadora no ayuda con t).</li>
+<li>E es el <strong>semi-ancho</strong> del intervalo, no el ancho total.</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p><strong>Proporción:</strong> p̂ = 0.30, n = 200, 95 %: <code>E = 1.95996 × √(0.3 × 0.7 ÷ 200) = 0.0635101</code>; IC = (0.2365; 0.3635).
+<strong>Tamaño de muestra (media):</strong> σ = 12, E = 2, 95 %: <code>(1.95996 × 12 ÷ 2)² = 138.2925</code> → <strong>n = 139</strong>.
+<strong>Tamaño de muestra (proporción, peor caso):</strong> E = 0.03, p̂ = 0.5: <code>1.95996² × 0.25 ÷ 0.03² = 1067.07</code> → <strong>n = 1068</strong>.</p>
+
+<h2 id="s9">9. Binomial (Binomial PD y Binomial CD)</h2>
+<h3>Cuándo la uso</h3>
+<p>X = número de éxitos en n ensayos independientes con probabilidad p constante.
+- <strong>Binomial PD</strong> → P(X = k).
+- <strong>Binomial CD</strong> → P(X ≤ k) (acumulada; el manual la llama "distribución acumulada binomial" y no explicita el sentido, p. 32; el sentido "hasta k inclusive" es la convención habitual <strong>[no está en el manual]</strong>: control rápido, <code>CD(x = N)</code> debe dar 1).</p>
+<h3>Secuencia de teclas (pp. 32-34) [manual]</h3>
+<ol>
+<li><code>MENU 7</code> → <code>[=]</code>.</li>
+<li>Elegir tipo: <code>[4]</code> Binomial PD, o <code>[▼][1]</code> Binomial CD.</li>
+<li>Elegir método: <code>[1]</code> List (varios x a la vez) o <code>[2]</code> Variable (un solo x).</li>
+<li><strong>Variable</strong>: ingresar <code>x</code>, <code>N</code>, <code>p</code> (cada uno con <code>[=]</code>), luego <code>[=]</code>.</li>
+<li><strong>List</strong>: escribir los x de la lista (cada uno con <code>[=]</code>), <code>[=]</code>, luego <code>N</code> y <code>p</code>, <code>[=]</code>. Devuelve la columna P con un resultado por cada x (hasta 45 valores, p. 33).</li>
+<li>Con Variable, el resultado queda en <code>Ans</code> → permite <code>1 − Ans</code>.</li>
+<li>Para cambiar de tipo: <code>OPTN 1</code> (Select Type).</li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<p><code>p=</code> es la probabilidad pedida (PD: exacta en k; CD: acumulada hasta k).</p>
+<h3>Trampas</h3>
+<ul>
+<li><strong>Traducir el enunciado a acumuladas</strong> (CD = P(X ≤ k)):</li>
+</ul>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Enunciado</th>
+<th>Cuenta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P(X = k)</td>
+<td>PD(k)</td>
+</tr>
+<tr>
+<td>P(X ≤ k), "como máximo k"</td>
+<td>CD(k)</td>
+</tr>
+<tr>
+<td>P(X &lt; k)</td>
+<td>CD(k − 1)</td>
+</tr>
+<tr>
+<td>P(X ≥ k), "al menos k"</td>
+<td>1 − CD(k − 1)</td>
+</tr>
+<tr>
+<td>P(X &gt; k), "más de k"</td>
+<td>1 − CD(k)</td>
+</tr>
+<tr>
+<td>P(a ≤ X ≤ b)</td>
+<td>CD(b) − CD(a − 1)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>"Al menos uno": 1 − PD(0) (equivale a 1 − CD(0)).</li>
+<li><strong>Pantalla de lista</strong>: muestra 4 decimales y, en el ejemplo del manual (p. 34), los muestra <strong>truncados, no redondeados</strong> (0.12677… aparece como 0.1267; 0.06338… como 0.0633). Para una respuesta precisa usar el modo Variable.</li>
+<li>Los campos N y p se <strong>conservan</strong> del cálculo anterior (p. 34): reingresarlos siempre.</li>
+<li>Variable → x debe ser entero 0 ≤ x ≤ N; fuera de rango da <code>ERROR</code> (p. 34).</li>
+<li>Verificar que sea Binomial: n fijo, ensayos independientes, p constante. Si hay muestreo sin reposición de población chica, no lo es.</li>
+<li>Esperanza y varianza: np y npq (cuenta aparte, no las da el modo Distribution).</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p>X ~ Bin(N = 10, p = 0.3).</p>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Pregunta</th>
+<th>Función</th>
+<th>Campos</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P(X = 3)</td>
+<td>Binomial PD</td>
+<td>x = 3, N = 10, p = 0.3</td>
+<td><code>p = 0.266828</code></td>
+</tr>
+<tr>
+<td>P(X ≤ 3)</td>
+<td>Binomial CD</td>
+<td>x = 3</td>
+<td><code>p = 0.649611</code></td>
+</tr>
+<tr>
+<td>P(X ≥ 4)</td>
+<td><code>1 − CD(3)</code></td>
+<td><code>1 − Ans</code></td>
+<td><code>0.350389</code></td>
+</tr>
+<tr>
+<td>P(X &lt; 3)</td>
+<td><code>CD(2)</code></td>
+<td>x = 2</td>
+<td><code>0.382783</code></td>
+</tr>
+<tr>
+<td>P(2 ≤ X ≤ 5)</td>
+<td><code>CD(5) − CD(1)</code></td>
+<td>dos corridas</td>
+<td><code>0.803343</code></td>
+</tr>
+<tr>
+<td>P(al menos 1)</td>
+<td><code>1 − PD(0)</code></td>
+<td>x = 0</td>
+<td><code>0.971752</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Tabla List de PD para x = 0, 1, 2, 3: columna P ≈ 0.0282, 0.1211, 0.2335, 0.2668 (se verá con 4 decimales).
+<strong>Control del manual (p. 34):</strong> N = 15, p = 0.6, x = {10, 11, 12, 13} → P = 0.1859, 0.1267, 0.0633, 0.0219.</p>
+<p><strong>Combo Normal → Binomial:</strong> si p = P(X &gt; 120) = 0.0912112 (Normal CD, guardar con STO A) y se toman 5 elementos, P(al menos uno supera 120) = <code>1 − PD(x = 0, N = 5, p = A)</code> = <code>0.380110</code>.</p>
+
+<h2 id="s10">10. Poisson (Poisson PD y Poisson CD)</h2>
+<h3>Cuándo la uso</h3>
+<p>X = número de eventos en un intervalo (tiempo, área, longitud) con tasa media constante λ.</p>
+<h3>Secuencia de teclas (pp. 32-34) [manual]</h3>
+<ol>
+<li><code>MENU 7</code> → <code>[=]</code>.</li>
+<li><code>[▼][2]</code> Poisson PD, o <code>[▼][3]</code> Poisson CD.</li>
+<li>Método: <code>[1]</code> List o <code>[2]</code> Variable.</li>
+<li>Campos: <strong>x</strong>, <strong>λ</strong> (solo dos). Cada uno con <code>[=]</code>, luego <code>[=]</code>.</li>
+</ol>
+<h3>Qué significa el resultado</h3>
+<p>PD: P(X = k). CD: P(X ≤ k) (mismo criterio que en binomial <strong>[sentido no explicitado en el manual]</strong>).</p>
+<h3>Trampas</h3>
+<ul>
+<li><strong>Escalar λ al intervalo pedido</strong>: si la tasa es 3 por hora y piden 2 horas, λ = 3 × 2 = 6 (convención de la cátedra, <code>NOTES.md</code>). Si cambia la ventana de tiempo, cambia λ.</li>
+<li>Mismas conversiones que en binomial: P(X ≥ k) = 1 − CD(k − 1); P(X &lt; k) = CD(k − 1); P(X &gt; k) = 1 − CD(k).</li>
+<li>Para Poisson, E(X) = Var(X) = λ.</li>
+<li>No hay campo N ni p; si el problema los tiene, es binomial.</li>
+</ul>
+<h3>Ejemplo con salida</h3>
+<p>Tasa 3 por hora, ventana 2 h → λ = 6.</p>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Pregunta</th>
+<th>Función</th>
+<th>Campos</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P(X = 4)</td>
+<td>Poisson PD</td>
+<td>x = 4, λ = 6</td>
+<td><code>p = 0.133853</code></td>
+</tr>
+<tr>
+<td>P(X ≤ 4)</td>
+<td>Poisson CD</td>
+<td>x = 4, λ = 6</td>
+<td><code>p = 0.285057</code></td>
+</tr>
+<tr>
+<td>P(X ≥ 5)</td>
+<td><code>1 − CD(4)</code></td>
+<td><code>1 − Ans</code></td>
+<td><code>0.714943</code></td>
+</tr>
+<tr>
+<td>P(X = 0)</td>
+<td>Poisson PD</td>
+<td>x = 0, λ = 6</td>
+<td><code>0.00247875</code></td>
+</tr>
+</tbody>
+</table></div>
+
+<h2 id="s11">11. Herramientas auxiliares</h2>
+<h3>Combinaciones, permutaciones y factorial (p. 17) [manual]</h3>
+<ul>
+<li>nCr: <code>10 SHIFT ÷ (nCr) 4 [=]</code> → <code>210</code>.</li>
+<li>nPr: <code>10 SHIFT × (nPr) 4 [=]</code> → <code>5040</code>.</li>
+<li>n!: <code>5 SHIFT x⁻¹ (x!) [=]</code> → <code>120</code> (manual: <code>(5+3)!</code> → <code>40320</code>).</li>
+</ul>
+<h3>Fracciones y decimales (pp. 5-6, 10-11, 45) [manual]</h3>
+<ul>
+<li>Con la configuración por defecto (MathI/MathO), los cocientes salen como fracción. Para pasar a decimal: tecla <code>S⇔D</code> mientras se muestra el resultado (FAQ, p. 45).</li>
+<li>Para que salgan siempre en decimal: <code>SHIFT MENU 1</code> (Input/Output) → <code>2</code> (MathI/DecimalO).</li>
+<li>Para pasar a Fix de N decimales: <code>SHIFT MENU 3</code> (Number Format) → <code>1</code> (Fix) → N.</li>
+<li>Fracción impropia ↔ mixta: el manual la menciona en p. 11 pero la tecla no se lee en el texto extraído; ver el manual impreso o la leyenda sobre la tecla <code>S⇔D</code>.</li>
+</ul>
+<h3>Memoria y Ans</h3>
+<p>Ver sección 1.3. Uso típico: <code>Binomial CD</code> → <code>1 − Ans</code>; Inverse Normal → <code>Ans × σ ÷ √n</code>; guardar λ, σ_x̄ o p en una variable con <code>SHIFT RCL</code> (STO) y reutilizarla con <code>ALPHA</code> + variable.</p>
+<h3>Modo Table (pp. 28-29) [manual]</h3>
+<p><code>MENU 9</code> (Table): genera una tabla f(x) (y opcionalmente g(x)) para un rango Start / End / Step. Para una binomial completa: <code>f(x) = 10 nCr x × 0.3^x × 0.7^(10−x)</code> con Start 0, End 10, Step 1; devuelve P(X = 0)…P(X = 10) (0.0282, 0.1211, 0.2335, 0.2668, 0.2001, 0.1029, 0.0368, 0.0090, 0.0014, 0.0001, 0.0000). <strong>[el armado de f(x) con nCr no está en el manual; control: valores de la tabla de Binomial PD]</strong>. Útil para ver toda la distribución de golpe; no es necesario para el examen.</p>
+<h3>Normal dentro de Statistics (p. 24)</h3>
+<p>En 1-Variable, <code>OPTN [▼] 4</code> (Norm Dist) ofrece <code>P(t)</code>, <code>Q(t)</code>, <code>R(t)</code> y <code>▸t</code>. <strong><code>▸t</code> estandariza usando x̄ y σx (poblacional)</strong> de los datos cargados: es x̄ y σ <strong>calculados</strong>, no los del enunciado. Mejor usar Distribution con los parámetros del enunciado.</p>
+
+<h2 id="s12">12. Qué NO hace la calculadora</h2>
+<ul>
+<li><strong>No tiene distribución t de Student.</strong> El modo Distribution ofrece <strong>exactamente siete tipos</strong>: Normal PD, Normal CD, Inverse Normal, Binomial PD, Binomial CD, Poisson PD, Poisson CD (manual, p. 32-33, "siete tipos distintos de cálculos de distribución"). No hay t, χ² ni F. Los valores críticos t y los p de pruebas con t salen de la <strong>tabla t</strong> (con ν = n − 1).</li>
+<li>No elige la distribución: decidir Binomial vs. Poisson vs. Normal, y Z vs. t, es parte del ejercicio.</li>
+<li>No decide si usar σ/√n, ni escala λ, ni traduce "al menos / más de / a lo sumo" a la acumulada correcta.</li>
+<li>No calcula IC, tamaño de muestra ni R²: son cuentas con los resultados de otras funciones.</li>
+<li>No interpreta r, b, E ni el IC.</li>
+<li>No calcula percentiles interpolados de datos agrupados (Pk) ni Mo/Me de una tabla de intervalos; para eso es la fórmula de la cátedra. Los cuartiles de la calculadora son sobre los datos cargados.</li>
+<li>No avisa si los datos no son lineales (r alto no implica linealidad).</li>
+<li>No da cola derecha en Inverse Normal (siempre izquierda).</li>
+<li>Normal PD, Binomial PD y Poisson PD no acumulan: hay que sumar o usar CD.</li>
+</ul>
+
+<h2 id="s13">13. Control rápido de plausibilidad (antes de marcar)</h2>
+<ol>
+<li>¿Una probabilidad entre 0 y 1? Si da &gt; 1, revisar si se cargó λ, p o σ mal.</li>
+<li>Normal CD sobre un promedio: ¿σ/√n? El resultado de una cola debe ser <strong>menor</strong> que el del individuo.</li>
+<li>Inverse Normal: ¿el Z de IC al 95 % da 1.96? Si da 1.645, se usó 0.95 en vez de 0.975.</li>
+<li>Binomial: <code>CD(N)</code> = 1.</li>
+<li>Estadística: ¿<code>sx</code> &gt; <code>σx</code>? Siempre es mayor (factor √(n/(n−1))).</li>
+<li>¿Sigue la columna Freq en On cuando se carga una lista simple (o a la inversa)?</li>
+<li>Recordar que <code>Ans</code> solo se actualiza con un cálculo nuevo; si se editó un dato sin recalcular, el <code>Ans</code> es viejo.</li>
+</ol>
+
+<h2 id="s14">14. Índice de páginas del manual citadas</h2>
+<div class="tw"><table class="compact">
+<thead>
+<tr>
+<th>Tema</th>
+<th>Página impresa (PDF = +1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inicializar / Initialize All</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Menú de modos</td>
+<td>5</td>
+</tr>
+<tr>
+<td>SETUP (Input/Output, Number Format, Statistics)</td>
+<td>6-8</td>
+</tr>
+<tr>
+<td>Fracciones, S⇔D</td>
+<td>10-11</td>
+</tr>
+<tr>
+<td>Ans, variables, memoria, borrado</td>
+<td>13</td>
+</tr>
+<tr>
+<td>nCr, nPr, x!</td>
+<td>17</td>
+</tr>
+<tr>
+<td>Cálculos estadísticos (editor, Freq, 1-Variable, regresión, ŷ, x̂)</td>
+<td>21-24</td>
+</tr>
+<tr>
+<td>Table</td>
+<td>28-29</td>
+</tr>
+<tr>
+<td>Distribución (7 tipos, campos, lista, ejemplos)</td>
+<td>32-34</td>
+</tr>
+<tr>
+<td>FAQ (S⇔D, RESET Setup Data, Ans)</td>
+<td>45</td>
+</tr>
+</tbody>
+</table></div>
+
+<footer>
+Referencia rápida: <a href="machete-final.html">Machete final</a> · <a href="super-glosario.html">Super glosario</a> · <a href="../lessons/index.html">Índice de lecciones</a>
+<div class="nav-row">
+  <span>← <a href="machete-final.html">Machete final</a></span>
+  <span><a href="../lessons/index.html">Lecciones</a> →</span>
+</div>
+</footer>
+
+</body>
+</html>

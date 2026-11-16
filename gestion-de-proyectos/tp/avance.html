@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avance del TP</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">TP · Avance</p>
+  <h1>Tablero de avance</h1>
+  <p class="subtitle">Estado, responsable y revisor de cada sección, más el checklist de coherencia.</p>
+  <p class="meta"><span>Entrega: 14/10/2026 · <strong data-countdown="2026-10-14"></strong></span></p>
+</header>
+
+<div class="win">
+  <strong>Cómo se comparte</strong>
+  Cada persona edita en su navegador. Con <em>Copiar estado</em> genera un código para el grupo; con <em>Integrar estado de un compañero</em> se mezcla el suyo con el propio: <strong>por sección gana la edición más reciente</strong> (a igual fecha se conserva la local).
+</div>
+
+<div class="overall">
+  <div class="pct" id="pct">0%</div>
+  <div>
+    <div class="progress" role="progressbar" aria-label="Avance total del TP" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><span style="width:0%"></span></div>
+    <div class="hint" id="counts"></div>
+  </div>
+</div>
+
+<h2 id="secciones">Secciones</h2>
+<div id="cards"></div>
+<noscript><p class="errors">Esta página necesita JavaScript.</p></noscript>
+
+<h2 id="coherencia">Checklist de coherencia</h2>
+<p>Antes de entregar, tienen que cumplirse los siete puntos. Se marcan acá y también viajan en el estado compartido.</p>
+<div class="checklist-box"><ul id="coherence"></ul></div>
+
+<h2 id="compartir">Compartir el estado</h2>
+<div class="btn-row">
+  <button type="button" class="btn" id="copy-state">Copiar estado</button>
+  <button type="button" class="btn danger" id="reset-state">Empezar de cero</button>
+</div>
+<label class="field" for="paste-state">
+  <span>Integrar estado de un compañero (pegar su código)</span>
+  <textarea id="paste-state" rows="3" placeholder="Estado del TP: TPS1.eyJ2Ijox…"></textarea>
+</label>
+<div class="btn-row"><button type="button" class="btn secondary" id="merge-state">Integrar estado</button></div>
+<div id="merge-msg" aria-live="polite"></div>
+
+<nav class="nav">
+  <a href="decisiones.html">← Decisiones</a>
+  <a href="plan.html">Plan del TP →</a>
+</nav>
+</main>
+
+<script src="assets/tp-data.js"></script>
+<script src="assets/logic.js"></script>
+<script src="assets/tp-common.js"></script>
+<script>
+(function () {
+  var L = TPLogic, C = TPCommon;
+  var KEY = "tp-avance-v1";
+  var LABELS = { "sin-empezar": "Sin empezar", borrador: "Borrador", revision: "En revisión", listo: "Listo" };
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+
+  function load() {
+    var raw = C.store.get(KEY);
+    if (!raw) return L.emptyState();
+    try { return L.normalizeState(JSON.parse(raw)); } catch (e) { return L.emptyState(); }
+  }
+  var state = load();
+  function persist() { C.store.set(KEY, JSON.stringify(state)); }
+
+  function section(n) {
+    return state.sections[String(n)] || { status: "sin-empezar", owner: "", reviewer: "", notes: "", checks: {}, ts: 0 };
+  }
+  function fmt(ts) {
+    if (!ts) return "sin ediciones";
+    var d = new Date(ts);
+    var p = function (x) { return String(x).length < 2 ? "0" + x : x; };
+    return p(d.getDate()) + "/" + p(d.getMonth() + 1) + " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  }
+
+  function warningFor(s) {
+    var mine = section(s.n);
+    if (mine.status === "sin-empezar") return "";
+    var blocked = s.dependsOn.filter(function (d) { return section(d).status === "sin-empezar"; });
+    return blocked.length ? "Ojo: depende de la sección " + blocked.join(", ") + ", que todavía no empezó." : "";
+  }
+
+  function renderCards() {
+    $("cards").innerHTML = TP.sections.map(function (s) {
+      var cur = section(s.n);
+      var title = s.page ? '<a href="' + s.page + '">' + esc(s.title) + "</a>" : esc(s.title);
+      var deps = s.dependsOn.length ? "Depende de: " + s.dependsOn.join(", ") : "No depende de otra sección" + (s.status === "al-final" ? " (se escribe al final)" : "");
+      var options = L.STATUSES.map(function (st) {
+        return '<option value="' + st + '"' + (cur.status === st ? " selected" : "") + ">" + LABELS[st] + "</option>";
+      }).join("");
+      var checks = TP.checks.map(function (c) {
+        return '<label><input type="checkbox" data-check="' + c.id + '"' + (cur.checks[c.id] ? " checked" : "") + "> " + esc(c.label) + "</label>";
+      }).join("");
+      return '<article class="section-card" data-n="' + s.n + '" data-status="' + cur.status + '">' +
+        "<h3>" + s.n + ". " + title + "</h3>" +
+        '<p class="deps">' + esc(deps) + "</p>" +
+        '<p class="hint" data-warning style="margin:.2rem 0"></p>' +
+        '<div class="field-row">' +
+        '<label class="field"><span>Estado</span><select data-field="status">' + options + "</select></label>" +
+        '<label class="field"><span>Responsable</span><input type="text" data-field="owner" maxlength="60" value="' + esc(cur.owner) + '"></label>' +
+        '<label class="field"><span>Revisor</span><input type="text" data-field="reviewer" maxlength="60" value="' + esc(cur.reviewer) + '"></label></div>' +
+        '<label class="field"><span>Notas</span><textarea data-field="notes" rows="2" maxlength="2000">' + esc(cur.notes) + "</textarea></label>" +
+        '<div class="checks">' + checks + "</div>" +
+        '<p class="stamp" data-stamp></p></article>';
+    }).join("");
+    TP.sections.forEach(function (s) { refreshCard(s.n); });
+  }
+
+  function refreshCard(n) {
+    var card = document.querySelector('.section-card[data-n="' + n + '"]');
+    if (!card) return;
+    var s = TP.sections.filter(function (x) { return x.n === n; })[0];
+    card.setAttribute("data-status", section(n).status);
+    card.querySelector("[data-stamp]").textContent = "Última edición: " + fmt(section(n).ts);
+    var w = warningFor(s);
+    var node = card.querySelector("[data-warning]");
+    node.textContent = w;
+    node.hidden = !w;
+  }
+
+  function refreshAll() {
+    var p = L.progress(state, TP.sections.length);
+    $("pct").textContent = p.percent + "%";
+    $("bar").setAttribute("aria-valuenow", p.percent);
+    $("bar").firstElementChild.style.width = p.percent + "%";
+    $("counts").textContent = LABELS.listo + ": " + p.counts.listo + " · " + LABELS.revision + ": " + p.counts.revision + " · " + LABELS.borrador + ": " + p.counts.borrador + " · " + LABELS["sin-empezar"] + ": " + p.counts["sin-empezar"];
+    TP.sections.forEach(function (s) { refreshCard(s.n); });
+  }
+
+  $("cards").addEventListener("input", onEdit);
+  $("cards").addEventListener("change", onEdit);
+  function onEdit(e) {
+    var card = e.target.closest(".section-card");
+    if (!card) return;
+    if (e.type === "input" && e.target.tagName === "SELECT") return; // wait for "change"
+    var n = Number(card.getAttribute("data-n"));
+    var patch = {};
+    if (e.target.hasAttribute("data-check")) {
+      patch.checks = {};
+      patch.checks[e.target.getAttribute("data-check")] = e.target.checked;
+    } else if (e.target.hasAttribute("data-field")) {
+      patch[e.target.getAttribute("data-field")] = e.target.value;
+    } else return;
+    state = L.setSection(state, n, patch, Date.now());
+    persist();
+    refreshAll();
+  }
+
+  function renderChecklist() {
+    C.renderChecklist($("coherence"), true, function (id) { return state.checklist[id] && state.checklist[id].done; }, function (id, done) {
+      state = L.setChecklist(state, id, done, Date.now());
+      persist();
+    });
+  }
+
+  $("copy-state").addEventListener("click", function () {
+    var text = "Estado del TP (" + fmt(Date.now()) + "):\n" + L.encodeState(state);
+    C.copyText(text).then(function (ok) { C.say(ok ? "Estado copiado: pegarlo en el grupo" : "No se pudo copiar el estado"); });
+  });
+
+  $("merge-state").addEventListener("click", function () {
+    var res = L.decodeState($("paste-state").value);
+    var box = $("merge-msg");
+    if (res.error) { box.innerHTML = '<div class="errors">' + esc(res.error) + "</div>"; return; }
+    var before = JSON.stringify(state);
+    var prev = state;
+    state = L.mergeState(state, res.state);
+    var changed = Object.keys(state.sections).filter(function (k) {
+      return JSON.stringify(state.sections[k]) !== JSON.stringify(prev.sections[k]);
+    });
+    var changedChecks = Object.keys(state.checklist).filter(function (k) {
+      return JSON.stringify(state.checklist[k]) !== JSON.stringify(prev.checklist[k]);
+    });
+    persist();
+    renderCards();
+    renderChecklist();
+    refreshAll();
+    box.innerHTML = before === JSON.stringify(state)
+      ? '<p class="note">El estado pegado no traía nada más nuevo que lo que ya tenías.</p>'
+      : '<p class="note"><strong>Integrado.</strong> Secciones actualizadas: ' + (changed.length ? changed.sort(function (a, b) { return a - b; }).join(", ") : "ninguna") +
+        ". Puntos del checklist actualizados: " + changedChecks.length + ".</p>";
+    $("paste-state").value = "";
+  });
+
+  $("reset-state").addEventListener("click", function () {
+    if (!window.confirm("¿Borrar el estado guardado en este navegador y empezar de cero?")) return;
+    state = L.emptyState();
+    C.store.remove(KEY);
+    renderCards();
+    renderChecklist();
+    refreshAll();
+    $("merge-msg").innerHTML = "";
+  });
+
+  renderCards();
+  renderChecklist();
+  refreshAll();
+})();
+</script>
+</body>
+</html>

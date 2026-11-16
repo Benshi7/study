@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Source: raw/Clase 6 -  Scrum Parte 3.pdf ("Clase 6: Scrum Parte 3" = cronograma clase 11).
+     Diagrams between markers come from tools/diagramas.py; slide screenshots live in clases/img/. -->
+<title>Clase 11 · Daily, Review y Retrospectiva</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagram.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 11 · 21/10/2026 · Parcial del 18/11</p>
+  <h1>Cerrar el Sprint: Daily, Review y Retrospectiva</h1>
+  <p class="subtitle">Cómo se controla el avance todos los días, cómo se muestra lo hecho y cómo el equipo mejora su forma de trabajar.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%206%20-%20%20Scrum%20Parte%203.pdf" title="Solo disponible en la copia completa con raw/">Scrum parte 3</a>, p6 a p17</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder decir qué pasa en la Daily, la Review y la Retrospectiva y en qué se diferencian, recorrer los siete pasos de una retrospectiva, y usar Starfish y Sailing Boat con un ejemplo propio.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> la <a href="10-ceremonias-scrum.html">Clase 10</a> (Sprint, Planning, DoR, slicing) y de la <a href="05-riesgos-foda.html">Clase 5</a>: Sailing Boat es un FODA con dibujos.</p>
+  <p><span class="to">Alimenta</span> <a href="12a-lean-xp.html">Lean y XP</a> y <a href="12b-kanban.html">Kanban</a> (la mejora continua aparece en los tres) y el <a href="parcial-agil-guia.html">parcial del 18/11</a>.</p>
+</div>
+
+<h2 id="repaso-previo">Antes de empezar · repaso de Clase 10</h2>
+<details class="recall">
+  <summary>Sin mirar: duración del Sprint y del Sprint 0, para qué sirve la DoR, y la diferencia entre slicing y splitting.</summary>
+  <p>Sprint de 2 semanas a 2 meses, fijo; Sprint 0 de hasta 2 Sprints. La DoR dice si una historia puede entrar al Sprint. Slicing parte historias (refinamiento); splitting parte una historia en tareas (planning). Es el mismo repaso que hace la cátedra (Scrum parte 3, p3 y p4). Repasar en la <a href="10-ceremonias-scrum.html">Clase 10</a>.</p>
+</details>
+
+<p class="note"><strong>Numeración.</strong> El PDF se titula «Clase 6: Scrum Parte 3». En el cronograma es la <strong>clase 11</strong> (21/10): «retrospectiva, actividad integradora».</p>
+
+<h2 id="el-problema">El problema</h2>
+<p>Ya hay un Sprint planificado. Quedan tres preguntas: <strong>¿vamos bien hoy?</strong> (Daily), <strong>¿lo que hicimos sirve?</strong> (Review) y <strong>¿cómo trabajamos mejor la próxima vez?</strong> (Retrospectiva). En cascada, esas preguntas se hacen en los hitos de fase, a veces meses después. En Scrum se hacen todos los días y en cada Sprint.</p>
+
+<h2 id="daily">Idea 1 · Daily Scrum: 15 minutos para detectar desvíos</h2>
+<p>La cátedra la llama de tres formas: <strong>Daily Scrum, Stand Up o Meeting</strong>. Es la misma reunión.</p>
+<ul>
+<li>Dura <strong>15 minutos</strong>. Se comentan los <strong>impedimentos</strong> y se acuerda cómo resolverlos.</li>
+<li>Es <strong>la única ceremonia que se repite</strong> dentro del Sprint: las otras tres ocurren una vez (Kanban, Lean y XP, p3, repaso).</li>
+<li>Permite <strong>identificar desvíos rápido si las tareas duran como máximo 8 horas</strong>: si una tarea de 8 horas sigue abierta al día siguiente, algo pasa.</li>
+<li>Se hace <strong>todos los días, a la misma hora</strong> (Scrum parte 2, p18).</li>
+<li>Cada miembro responde <strong>tres preguntas</strong>: ¿qué hice ayer?, ¿qué voy a hacer hoy?, ¿tengo algún impedimento? (Scrum parte 3, p7).</li>
+</ul>
+<p class="note"><strong>Ejemplo</strong> (web de reservas de restaurantes). «Ayer terminé el selector de día y hora. Hoy hago la consulta de mesas libres. Impedimento: el servicio de correo rechaza los envíos desde ayer.» El impedimento se <strong>comenta</strong> en la Daily, pero no se resuelve ahí: se pide ayuda y se trata <strong>por fuera de la reunión</strong>, como dice el repaso de la cátedra. Por eso alcanzan 15 minutos.</p>
+<p class="note"><strong>No es un reporte al jefe.</strong> Las tres preguntas sirven para que el equipo detecte desvíos e impedimentos, no para rendir cuentas. Eliminar impedimentos es justamente una de las tareas del Scrum Master (<a href="09-scrum-roles-artefactos.html#roles">Clase 9</a>).</p>
+<p class="note"><strong>Complemento.</strong> La Guía 2020 sacó las tres preguntas y deja el formato libre. Para el parcial, la respuesta es la de la cátedra: las tres preguntas.</p>
+
+<h2 id="review">Idea 2 · Sprint Review: mostrar el incremento</h2>
+<p>Tiene dos partes (Scrum parte 3, p8):</p>
+<ol>
+<li><strong>Se revisa el incremento de valor</strong> del Sprint: el <strong>PO explica a los stakeholders</strong> qué ítems alcanzaron la <strong>DoD</strong>, y luego uno o varios miembros del equipo hacen una <strong>demostración</strong> en el producto.</li>
+<li><strong>Se acuerdan los próximos pasos</strong>: se identifican <strong>cambios al backlog</strong> y se revisan <strong>presupuesto y roadmap</strong> del producto.</li>
+</ol>
+<p class="note"><strong>Dos detalles que se preguntan.</strong> En la primera parte hablan dos: el <strong>PO explica</strong> qué se terminó y el <strong>equipo hace la demostración</strong>. Y solo se muestra lo que <strong>alcanzó la DoD</strong>: una historia a medio hacer no se presenta. La segunda parte es la que conecta con el Manifiesto: el feedback de los stakeholders se convierte en cambios al backlog («respuesta ante el cambio»).</p>
+
+<h3>Review contra Retrospectiva</h3>
+<p>Las dos ocurren al final del Sprint y las dos revisan algo. La diferencia está en <em>qué</em> revisan:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Sprint Review</th><th>Sprint Retrospective</th></tr></thead>
+<tbody>
+<tr><td>Qué se revisa</td><td>El <strong>producto</strong>: el incremento que cumple la DoD</td><td>La <strong>forma de trabajar</strong> del equipo</td></tr>
+<tr><td>Con quién</td><td>Equipo, PO <strong>y stakeholders</strong></td><td>El equipo</td></tr>
+<tr><td>Qué sale</td><td>Cambios al backlog, presupuesto y roadmap revisados</td><td>Planes de acción con fecha y responsable</td></tr>
+<tr><td>Orden</td><td>Antes de la retrospectiva</td><td><strong>Última tarea del Sprint</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="retro">Idea 3 · Sprint Retrospective</h2>
+<p>El equipo se toma un tiempo para <strong>pensar cómo mejorar de cara al Sprint siguiente</strong>. Es <strong>la última tarea del Sprint</strong> (Scrum parte 3, p9). Tiene tres reglas:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Regla (p9)</th><th>Mal</th><th>Bien</th></tr></thead>
+<tbody>
+<tr><td>Debe tener un <strong>objetivo</strong></td><td>«Hablemos de cómo fue el Sprint»</td><td>«Hoy queremos entender por qué no llegamos a probar dos historias»</td></tr>
+<tr><td>Hablar de <strong>temas, no de personas</strong></td><td>«Juan siempre entrega tarde»</td><td>«Las tareas de back-end llegan a pruebas el último día»</td></tr>
+<tr><td><strong>Priorizar el respeto</strong></td><td>Ironías, culpas</td><td>Cada uno opina sin ser interrumpido</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Los siete pasos: antes, durante y en el Sprint siguiente</h3>
+<div class="pair">
+<figure class="slide">
+  <img src="img/scrum3-p10.jpg" alt="Diapositiva de la cátedra: siete pasos de la retrospectiva agrupados en Antes (setear objetivo, realizar planificación), Durante (aplicar dinámicas, priorizar temas, establecer planes de acción con fecha y responsable) y Siguiente Sprint (ejecutar y seguir los planes de acción)." loading="lazy">
+  <figcaption>Diapositiva de la cátedra (Scrum parte 3, p10).</figcaption>
+</figure>
+</div>
+<ol class="chain">
+  <li><strong>Antes · 1. Setear objetivo · 2. Realizar planificación</strong><span class="q">¿Qué queremos mejorar y con qué dinámica?</span></li>
+  <li data-in="objetivo y dinámica elegida"><strong>Durante · 3. Aplicar dinámicas · 4. Priorizar temas · 5. Planes de acción con fecha y responsable</strong><span class="q">¿Qué cambiamos, quién y para cuándo?</span></li>
+  <li data-in="planes de acción"><strong>Siguiente Sprint · 6. Ejecutar · 7. Seguir los planes de acción</strong><span class="q">¿Lo hicimos? ¿Sirvió?</span></li>
+</ol>
+<p class="note"><strong>El paso que más se olvida es el 7.</strong> Una retro sin seguimiento repite las mismas quejas cada Sprint. Por eso el plan de acción lleva <strong>fecha y responsable</strong>, y por eso los planes de acción de la retro pueden entrar al Sprint Backlog siguiente (<a href="09-scrum-roles-artefactos.html#artefactos">Clase 9</a>).</p>
+<p class="note"><strong>Dónde cae cada paso.</strong> Solo tres de los siete ocurren <em>durante</em> la reunión (3, 4 y 5). El objetivo y la planificación (1 y 2) se preparan <em>antes</em>; ejecutar y seguir los planes (6 y 7) pasa en el <em>Sprint siguiente</em>. Las dinámicas del paso 3 son Starfish y Sailing Boat.</p>
+
+<h2 id="starfish">Idea 4 · Dinámica Starfish (estrella de mar)</h2>
+<p>Cinco brazos para clasificar las prácticas según el valor que dan hoy (Scrum parte 3, p11). La cátedra la ejemplificó con la propia materia:</p>
+<div class="pair">
+<figure class="slide">
+  <img src="img/scrum3-p11.jpg" alt="Diapositiva de la cátedra: Starfish con Patricio Estrella. Comenzar a hacer: ejemplos prácticos. Seguir haciendo: actividades relacionadas al TP. Dejar de hacer: clases largas sin recreo. Hacer más: repasos al inicio de la clase. Hacer menos: bajar la cantidad de instancias de evaluación." loading="lazy">
+  <figcaption>Diapositiva de la cátedra (Scrum parte 3, p11).</figcaption>
+</figure>
+</div>
+<figure class="diagram">
+<!--diagram:retro-starfish-->
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="retro-starfish-title retro-starfish-desc"><title id="retro-starfish-title">Retrospectiva Starfish: cinco brazos</title><desc id="retro-starfish-desc">La estrella de mar tiene cinco brazos: comenzar a hacer, seguir haciendo, dejar de hacer, hacer más y hacer menos. Cada brazo clasifica una práctica según el valor que da hoy.</desc><defs><marker id="retro-starfish-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="retro-starfish-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="retro-starfish-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M480 272 L480 68"/>
+<path class="dg-line" d="M480 272 L160 212"/>
+<path class="dg-line" d="M480 272 L800 212"/>
+<path class="dg-line" d="M480 272 L256 412"/>
+<path class="dg-line" d="M480 272 L704 412"/>
+<circle class="dg-mask" cx="480" cy="272" r="64"/>
+<circle class="dg-focal" cx="480" cy="272" r="64"/>
+<text class="dg-name" x="480" y="270" text-anchor="middle">Starfish</text>
+<text class="dg-sub" x="480" y="290" text-anchor="middle">¿qué hacemos con</text>
+<text class="dg-sub" x="480" y="306" text-anchor="middle">cada práctica?</text>
+<rect class="dg-mask" x="360" y="24" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="360" y="24" width="240" height="88" rx="6"/>
+<text class="dg-name" x="480" y="55" text-anchor="middle">Seguir haciendo</text>
+<text class="dg-sub" x="480" y="73" text-anchor="middle">da valor tal como está</text>
+<text class="dg-sub" x="480" y="91" text-anchor="middle">ej.: actividades del TP</text>
+<rect class="dg-mask" x="40" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="199" text-anchor="middle">Comenzar a hacer</text>
+<text class="dg-sub" x="160" y="217" text-anchor="middle">creemos que dará valor</text>
+<text class="dg-sub" x="160" y="235" text-anchor="middle">ej.: ejemplos prácticos</text>
+<rect class="dg-mask" x="680" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="680" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="800" y="199" text-anchor="middle">Dejar de hacer</text>
+<text class="dg-sub" x="800" y="217" text-anchor="middle">ya no aporta valor</text>
+<text class="dg-sub" x="800" y="235" text-anchor="middle">ej.: clases sin recreo</text>
+<rect class="dg-mask" x="136" y="368" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="136" y="368" width="240" height="88" rx="6"/>
+<text class="dg-name" x="256" y="399" text-anchor="middle">Hacer más</text>
+<text class="dg-sub" x="256" y="417" text-anchor="middle">da más valor del esperado</text>
+<text class="dg-sub" x="256" y="435" text-anchor="middle">ej.: repasos al inicio</text>
+<rect class="dg-mask" x="584" y="368" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="584" y="368" width="240" height="88" rx="6"/>
+<text class="dg-name" x="704" y="399" text-anchor="middle">Hacer menos</text>
+<text class="dg-sub" x="704" y="417" text-anchor="middle">antes valía, ahora poco</text>
+<text class="dg-sub" x="704" y="435" text-anchor="middle">ej.: menos evaluaciones</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<rect class="dg-box" x="128" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="532" text-anchor="start">brazo: decisión sobre una práctica</text>
+<rect class="dg-focal" x="416" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="444" y="532" text-anchor="start">el equipo, en la retro</text></svg>
+<!--/diagram:retro-starfish-->
+<figcaption>Los cinco brazos con su significado y el ejemplo de la cátedra. Diagrama propio. <a href="../diagramas/retro-starfish.html">Ver en grande</a>.</figcaption>
+</figure>
+<p class="note"><strong>Truco para no confundirlos.</strong> Hay dos parejas y uno solo: <em>comenzar</em> / <em>dejar</em> (algo que se empieza o se corta del todo), <em>hacer más</em> / <em>hacer menos</em> (algo que ya se hace y se ajusta) y <em>seguir haciendo</em> (no se toca).</p>
+<p class="note"><strong>Cómo lo resume la cátedra</strong> (repaso al empezar la clase 12): Starfish es un <strong>brainstorming</strong> para encontrar acciones de mejora rápidas, y su versión simplificada tiene tres brazos: <strong>start, stop, continue/keep</strong>. Sailing Boat, en cambio, es un <strong>FODA</strong> para ver cómo está el equipo frente a nuevos desafíos.</p>
+
+<h3>Ejemplo propio: la retro de un equipo de desarrollo</h3>
+<p>El equipo de la web de reservas cierra un Sprint en el que dos historias no llegaron a probarse. Para ubicar cada práctica, la pregunta es <strong>cuánto valor da hoy</strong>:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Brazo</th><th>Definición de la cátedra</th><th>Práctica del equipo</th></tr></thead>
+<tbody>
+<tr><td>Seguir haciendo</td><td>Nos da valor suficiente tal cual está</td><td>La demo al PO antes de la Review</td></tr>
+<tr><td>Comenzar a hacer</td><td>Creemos que nos puede dar valor</td><td>Probar cada historia apenas se termina, no al final del Sprint</td></tr>
+<tr><td>Dejar de hacer</td><td>Ya no aporta valor</td><td>Aceptar historias sin criterios de aceptación (no cumplen la DoR)</td></tr>
+<tr><td>Hacer más</td><td>Nos da más valor del que esperábamos</td><td>Programar de a dos las historias difíciles: salieron sin defectos</td></tr>
+<tr><td>Hacer menos</td><td>Nos dio mucho valor en un momento, pero ahora poco</td><td>Reuniones largas para temas que se resuelven por chat</td></tr>
+</tbody>
+</table>
+</div>
+<p>Después se priorizan los temas (paso 4) y se arma un plan de acción (paso 5): «Desde el próximo Sprint, cada historia se prueba el mismo día en que se termina. Responsable: quien hace las pruebas. Se revisa en la retro siguiente».</p>
+<p class="note"><strong>Hacer menos contra dejar de hacer.</strong> Es el par que más se confunde. Si la práctica <strong>todavía aporta algo</strong>, es «hacer menos». Si <strong>ya no aporta nada</strong>, es «dejar de hacer». Lo mismo del otro lado: «comenzar» es para algo que <em>todavía no se hace</em>; «hacer más», para algo que ya se hace y rindió más de lo esperado.</p>
+
+<h2 id="velero">Idea 5 · Dinámica Sailing Boat (velero)</h2>
+<p>El barco es el equipo y navega hacia una isla (el objetivo). La cátedra rotula cada elemento con una palabra que ya conocemos (Scrum parte 3, p12):</p>
+<div class="pair">
+<figure class="slide">
+  <img src="img/scrum3-p12.jpg" alt="Diapositiva de la cátedra: Sailing Boat. Isla, objetivo: promocionar. Sol, oportunidades: tenemos a Carlos y Luciano. Viento, fortalezas: buena química en los equipos. Ancla, debilidades: temas que desconocemos. Rocas, riesgos y amenazas: problemas los miércoles. Barco: nosotros." loading="lazy">
+  <figcaption>Diapositiva de la cátedra (Scrum parte 3, p12).</figcaption>
+</figure>
+</div>
+<figure class="diagram">
+<!--diagram:retro-velero-->
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="retro-velero-title retro-velero-desc"><title id="retro-velero-title">Retrospectiva Sailing Boat y su equivalencia con FODA</title><desc id="retro-velero-desc">El barco es el equipo y la isla el objetivo. El viento son las fortalezas que impulsan, el ancla las debilidades que frenan, el sol las oportunidades y las rocas las amenazas o riesgos: son los cuatro cuadrantes del FODA.</desc><defs><marker id="retro-velero-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="retro-velero-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="retro-velero-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line-link" d="M380 260 H244" marker-end="url(#retro-velero-arrow-link)"/>
+<rect class="dg-mask" x="290" y="236" width="44" height="16" rx="2"/>
+<text class="dg-lbl" x="312" y="248" text-anchor="middle">rumbo</text>
+<path class="dg-line-accent" d="M680 84 L580 212" marker-end="url(#retro-velero-arrow-accent)"/>
+<path class="dg-line-accent" d="M280 84 L380 212" marker-end="url(#retro-velero-arrow-accent)"/>
+<path class="dg-line" d="M440 304 L360 392" marker-end="url(#retro-velero-arrow)"/>
+<path class="dg-line" d="M520 304 L600 392" marker-end="url(#retro-velero-arrow)"/>
+<rect class="dg-mask" x="40" y="40" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="40" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="268" y="60" text-anchor="end">O</text>
+<text class="dg-name" x="160" y="71" text-anchor="middle">Sol · oportunidades</text>
+<text class="dg-sub" x="160" y="89" text-anchor="middle">FODA: O (externo +)</text>
+<text class="dg-sub" x="160" y="107" text-anchor="middle">ej.: tenemos a los profes</text>
+<rect class="dg-mask" x="680" y="40" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="680" y="40" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="908" y="60" text-anchor="end">F</text>
+<text class="dg-name" x="800" y="71" text-anchor="middle">Viento · fortalezas</text>
+<text class="dg-sub" x="800" y="89" text-anchor="middle">FODA: F (interno +)</text>
+<text class="dg-sub" x="800" y="107" text-anchor="middle">ej.: buena química</text>
+<rect class="dg-mask" x="40" y="216" width="200" height="88" rx="6"/>
+<rect class="dg-store" x="40" y="216" width="200" height="88" rx="6"/>
+<text class="dg-name" x="140" y="256" text-anchor="middle">Isla · objetivo</text>
+<text class="dg-sub" x="140" y="274" text-anchor="middle">ej.: promocionar</text>
+<rect class="dg-mask" x="380" y="216" width="200" height="88" rx="6"/>
+<rect class="dg-focal" x="380" y="216" width="200" height="88" rx="6"/>
+<text class="dg-name" x="480" y="256" text-anchor="middle">Barco · el equipo</text>
+<text class="dg-sub" x="480" y="274" text-anchor="middle">nosotros</text>
+<rect class="dg-mask" x="200" y="396" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="200" y="396" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="428" y="416" text-anchor="end">D</text>
+<text class="dg-name" x="320" y="427" text-anchor="middle">Ancla · debilidades</text>
+<text class="dg-sub" x="320" y="445" text-anchor="middle">FODA: D (interno −)</text>
+<text class="dg-sub" x="320" y="463" text-anchor="middle">ej.: temas que no sabemos</text>
+<rect class="dg-mask" x="520" y="396" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="520" y="396" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="748" y="416" text-anchor="end">A</text>
+<text class="dg-name" x="640" y="427" text-anchor="middle">Rocas · amenazas</text>
+<text class="dg-sub" x="640" y="445" text-anchor="middle">FODA: A (externo −)</text>
+<text class="dg-sub" x="640" y="463" text-anchor="middle">ej.: problemas los miércoles</text>
+<line class="dg-rule" x1="40" y1="524" x2="920" y2="524"/>
+<text class="dg-tag" x="40" y="552" text-anchor="start">LEYENDA</text>
+<path class="dg-line-accent" d="M128 548 H152" marker-end="url(#retro-velero-arrow-accent)"/>
+<text class="dg-note" x="160" y="552" text-anchor="start">impulsa o ilumina</text>
+<path class="dg-line" d="M308 548 H332" marker-end="url(#retro-velero-arrow)"/>
+<text class="dg-note" x="340" y="552" text-anchor="start">frena o pone en riesgo</text>
+<path class="dg-line-link" d="M520 548 H544" marker-end="url(#retro-velero-arrow-link)"/>
+<text class="dg-note" x="552" y="552" text-anchor="start">hacia el objetivo</text></svg>
+<!--/diagram:retro-velero-->
+<figcaption>Cada elemento del velero es un cuadrante del FODA de la <a href="05-riesgos-foda.html">Clase 5</a>. Diagrama propio. <a href="../diagramas/retro-velero.html">Ver en grande</a>.</figcaption>
+</figure>
+<p class="note"><strong>La conexión que vale oro en el parcial.</strong> Sailing Boat es un <strong>FODA</strong> con un objetivo arriba: viento = <strong>F</strong>ortalezas, sol = <strong>O</strong>portunidades, ancla = <strong>D</strong>ebilidades, rocas = <strong>A</strong>menazas (riesgos). En la Clase 5 el FODA servía para identificar riesgos del proyecto; acá sirve para que el equipo vea qué lo impulsa y qué lo frena antes de elegir planes de acción.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Starfish</th><th>Sailing Boat</th></tr></thead>
+<tbody>
+<tr><td>Qué es (cátedra)</td><td>Un <strong>brainstorming</strong></td><td>Un <strong>FODA</strong></td></tr>
+<tr><td>Para qué</td><td>Identificar <strong>acciones de mejora rápidas</strong></td><td>Entender <strong>cómo está el equipo de cara a nuevos desafíos</strong></td></tr>
+<tr><td>Partes</td><td>5 brazos (versión simple: start, stop, continue/keep)</td><td>Barco, isla, viento, sol, ancla, rocas</td></tr>
+<tr><td>Mira hacia…</td><td>Las prácticas del equipo: qué cambiar ya</td><td>El objetivo: qué ayuda y qué frena para llegar</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="robot">Idea 6 · Actividad integradora: el robot Transformer</h2>
+<p>La clase cerró con una actividad: armar en equipos un robot parecido a un Transformer (Scrum parte 3, p13 a p17).</p>
+<div class="pair">
+<figure class="slide">
+  <img src="img/scrum3-p14.jpg" alt="Diapositiva de la cátedra: objetivo del robot, mantenerse en pie y transformarse en máximo 5 movimientos. Roadmap de 4 sprints: piernas y apoyo, cabeza y torso, brazos y armas, transformación. Sprints de 10 minutos: 2 de planning, 5 de ejecución y 3 de retro." loading="lazy">
+  <figcaption>Diapositiva de la cátedra (Scrum parte 3, p14).</figcaption>
+</figure>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Sprint</th><th>Objetivo (roadmap)</th><th>Giro de la consigna</th><th>Qué concepto muestra (lectura propia)</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Piernas y apoyo</td><td>Armar 4 equipos iguales y definir roles en 3 minutos</td><td>Roles de Scrum y time box: 10 minutos fijos (2 de planning, 5 de ejecución y 3 de retro)</td></tr>
+<tr><td>2</td><td>Cabeza y torso</td><td>Misma duración</td><td>Sprints de largo fijo; la retro del Sprint 1 ya se aplica</td></tr>
+<tr><td>3</td><td>Brazos y armas</td><td>Un miembro rota al equipo de la derecha</td><td>Cambiar a la gente baja el rendimiento: el equipo pierde conocimiento y tiene que volver a coordinarse</td></tr>
+<tr><td>4</td><td>Transformación</td><td>Vuelven los que rotaron. Los stakeholders quieren robots pacifistas: hay que quitar las armas</td><td>Cambio de requisitos aceptado: «responder ante el cambio sobre seguir un plan» (<a href="08-agilidad-manifiesto-cynefin.html">Manifiesto</a>). En cascada sería un pedido de cambio formal</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Lectura propia.</strong> Las diapositivas solo dan la consigna; la columna «qué concepto muestra» es una interpretación. El objetivo «mantenerse en pie y transformarse en máximo 5 movimientos» funciona como un criterio de aceptación: se cumple o no se cumple.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: las tres preguntas de la Daily y por qué conviene que las tareas duren como máximo 8 horas.</summary>
+  <p>¿Qué hice ayer? ¿Qué voy a hacer hoy? ¿Tengo algún impedimento? Con tareas de hasta 8 horas, una tarea abierta dos días seguidos es un desvío visible al día siguiente.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: los siete pasos de la retrospectiva, agrupados en antes, durante y Sprint siguiente.</summary>
+  <p>Antes: setear objetivo, planificar. Durante: aplicar dinámicas, priorizar temas, planes de acción con fecha y responsable. Siguiente Sprint: ejecutar y seguir los planes.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: los cinco brazos de Starfish y los seis elementos de Sailing Boat con su equivalente FODA.</summary>
+  <p>Starfish: comenzar a hacer, seguir haciendo, dejar de hacer, hacer más, hacer menos. Sailing Boat: barco (equipo), isla (objetivo), viento (fortalezas), sol (oportunidades), ancla (debilidades), rocas (amenazas o riesgos).</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">¿Cuál es la última tarea del Sprint?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: «es la última tarea del Sprint» (Scrum parte 3, p9).">La Sprint Retrospective</button>
+    <button data-why="No: la Review va antes; la retrospectiva cierra el Sprint (p9).">La Sprint Review</button>
+    <button data-why="No: el refinamiento prepara historias para Sprints futuros; la cátedra lo ubica como parte de la planning.">El Backlog Refinement</button>
+    <button data-why="No: la Planning es la primera tarea del Sprint (Scrum parte 2, p9).">La Planning siguiente</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">En la Sprint Review, ¿quién explica a los stakeholders qué ítems alcanzaron la DoD?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: «el PO explica a los stakeholders los ítems que alcanzaron la DOD»; después el equipo hace la demostración (Scrum parte 3, p8).">El PO; después el equipo hace demo</button>
+    <button data-why="No: el Scrum Master facilita, pero la cátedra le asigna esta parte al PO.">El Scrum Master, sin demo del equipo</button>
+    <button data-why="No: los stakeholders reciben la explicación; no la dan.">Los stakeholders, al equipo y al PO</button>
+    <button data-why="No: el equipo hace la demostración, pero la explicación de lo terminado la da el PO.">Solo los desarrolladores, sin el PO presente</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">En una Sailing Boat, el equipo anota «la API de otra área se cae seguido». ¿Dónde va y qué es en un FODA?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: es un factor externo negativo, un riesgo: rocas = riesgos y amenazas (Scrum parte 3, p12; Clase 5).">En las rocas: es una amenaza</button>
+    <button data-why="No: el ancla son debilidades internas del equipo (lo que desconocemos), y la API es de otra área.">En el ancla: es una debilidad</button>
+    <button data-why="No: el viento impulsa; son fortalezas.">En el viento: es una fortaleza</button>
+    <button data-why="No: la isla es el objetivo del equipo.">En la isla: es el objetivo</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">«Hacemos dailies de 40 minutos y ya no aportan tanto como al principio.» ¿Qué brazo de Starfish es?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: hacer menos es para lo que «nos dio mucho valor en un momento, pero ahora poco» (Scrum parte 3, p11).">Hacer menos</button>
+    <button data-why="No: dejar de hacer es para lo que ya no aporta valor; acá todavía aporta algo.">Dejar de hacer</button>
+    <button data-why="No: seguir haciendo es para lo que da valor tal como está.">Seguir haciendo</button>
+    <button data-why="No: hacer más es para lo que da más valor del esperado.">Hacer más</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">En la actividad del robot, en el Sprint 4 los stakeholders piden quitar las armas. ¿Qué idea ágil se practica?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: es el cuarto valor del Manifiesto. En Scrum, ese cambio llega por la Review y modifica el backlog (Scrum parte 3, p8 y p17).">Responder al cambio sobre seguir un plan</button>
+    <button data-why="No: la DoR controla si una historia puede entrar al Sprint; no trata cambios de los stakeholders.">Cumplir siempre la Definition of Ready acordada</button>
+    <button data-why="No: en ágil el cambio se acepta y se prioriza; congelar el alcance es lógica de cascada.">Congelar el alcance hasta el último Sprint</button>
+    <button data-why="No: el Sprint 0 es la puesta a punto inicial.">Volver al Sprint 0 para replanificar todo</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="trampas">Trampas de opción múltiple</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>La opción tentadora</th><th>Por qué está mal</th></tr></thead>
+<tbody>
+<tr><td>«En la Daily se resuelven los impedimentos»</td><td>Se <strong>comentan</strong> y se acuerda cómo resolverlos; se tratan por fuera de la reunión</td></tr>
+<tr><td>«¿Qué voy a hacer mañana?» como pregunta de la Daily</td><td>Las tres son: qué hice <strong>ayer</strong>, qué voy a hacer <strong>hoy</strong>, si tengo algún <strong>impedimento</strong></td></tr>
+<tr><td>«La Daily dura 30 minutos»</td><td><strong>15 minutos</strong>, todos los días a la misma hora</td></tr>
+<tr><td>«En la Review el Scrum Master presenta el Incremento»</td><td>El <strong>PO explica</strong> a los stakeholders lo que alcanzó la DoD y el <strong>equipo</strong> hace la demo</td></tr>
+<tr><td>«La Review revisa cómo trabajó el equipo»</td><td>Eso es la Retrospectiva. La Review mira el <strong>producto</strong> y los próximos pasos</td></tr>
+<tr><td>«La Review es la última tarea del Sprint»</td><td>La última es la <strong>Retrospectiva</strong>; la primera, la Planning</td></tr>
+<tr><td>«En la retro se habla de quién falló»</td><td>Se habla de <strong>temas, no de personas</strong>; debe tener un objetivo y priorizar el respeto</td></tr>
+<tr><td>«La retro termina cuando se arma el plan de acción»</td><td>Faltan los pasos 6 y 7: <strong>ejecutar y seguir</strong> los planes en el Sprint siguiente</td></tr>
+<tr><td>«Starfish es un FODA»</td><td>Starfish es un <strong>brainstorming</strong>; el FODA es Sailing Boat</td></tr>
+<tr><td>«El ancla son las amenazas»</td><td>Ancla = <strong>debilidades</strong> (internas). Las amenazas o riesgos son las <strong>rocas</strong></td></tr>
+<tr><td>«El sol son las fortalezas»</td><td>Sol = <strong>oportunidades</strong>. Las fortalezas son el <strong>viento</strong>, que impulsa</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%206%20-%20%20Scrum%20Parte%203.pdf" title="Solo disponible en la copia completa con raw/">Scrum parte 3</a> (PDF «Clase 6»), diapositivas 6 a 17; Daily y Review también en <a class="local-only" href="../raw/Clase%205%20-%20Scrum%20Parte.pdf" title="Solo disponible en la copia completa con raw/">Scrum parte 2</a>, p18 y p19. El resumen de las tres ceremonias y de las dos dinámicas sale del repaso de «Kanban, Lean y XP», p3. Complemento: <a href="https://scrumguides.org/scrum-guide.html">Guía de Scrum 2020</a>. Los ejemplos de la web de reservas son propios.<br>Para repasar: <a href="../reference/agil-glosario.html">glosario y hoja de repaso ágil</a> (imprimible).
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «hazme de facilitador de una retro Starfish sobre mi semana», «¿cómo se pasa de un FODA a una Sailing Boat?» o «dame cinco frases y yo digo si van en la Review o en la Retro».
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="10-ceremonias-scrum.html">← Clase 10 · El Sprint por dentro</a>
+  <a href="11.1-repaso-listas-que-se-confunden.html">Clase 11.1 · Repaso →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

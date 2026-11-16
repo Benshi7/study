@@ -1,0 +1,104 @@
+/* Estilos compartidos de los decks de estudio (slides/NN-tema/index.html), sobre assets/ppt/base.css y el tema udeci.
+   Los diagramas SVG usan clases .dg y los tokens del tema, así siguen al modo oscuro. */
+body{background:var(--bg)}
+.slide{justify-content:flex-start;padding:56px 96px 76px}
+.slide.center{justify-content:center}
+.slide .h2{font-size:58px;margin-bottom:8px}
+.slide .kicker{margin-bottom:6px;font-size:16px}
+.sub{font-size:30px;color:var(--text-2);margin:0 0 18px;line-height:1.4}
+.small{font-size:20px;color:var(--text-3)}
+
+.bl{list-style:none;padding:0;margin:14px 0 0}
+.bl li{position:relative;padding-left:40px;margin:0 0 18px;font-size:36px;line-height:1.36}
+.bl li::before{content:"";position:absolute;left:4px;top:.5em;width:13px;height:13px;border-radius:4px;background:var(--accent)}
+.bl.sm li{font-size:31px;margin-bottom:14px}
+.bl li small{display:block;font-size:.7em;color:var(--text-2)}
+
+.crio,.ojo{margin-top:auto;display:flex;gap:22px;align-items:flex-start;padding:20px 28px;border-radius:var(--radius);
+  background:var(--surface-2);border:1px solid var(--border);border-left:7px solid var(--accent)}
+.ojo{border-left-color:var(--warn)}
+.crio+.ojo{margin-top:14px}
+.crio .lbl,.ojo .lbl{flex:none;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 12px;border-radius:999px;color:var(--accent-ink);background:var(--accent);margin-top:5px;font-family:var(--font-mono)}
+.ojo .lbl{background:var(--warn);color:var(--bg)}
+.crio p,.ojo p{margin:0;font-size:29px;line-height:1.45;color:var(--text-1)}
+.crio b{color:var(--accent)}.ojo b{color:var(--warn)}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.three{display:grid;grid-template-columns:1.1fr 1fr .9fr;gap:24px}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card{box-shadow:none}
+.card h4{font-size:33px;margin-bottom:12px;font-family:var(--font-display)}
+.card p,.card li{font-size:29px;line-height:1.42}
+.card ul{margin:0;padding-left:28px}
+.card li{margin-bottom:6px}
+.card .src{font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;font-family:var(--font-mono)}
+
+.t{width:100%;border-collapse:collapse;font-size:28px}
+.t th,.t td{padding:13px 18px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.36}
+.t td:first-child{font-weight:700;color:var(--accent)}
+.t.head th{background:var(--text-1);color:var(--bg);font-size:28px;padding:14px 18px;font-family:var(--font-display)}
+.t ul{margin:0;padding-left:26px}.t li{margin-bottom:3px}
+
+.quote{font-size:34px;font-style:italic;line-height:1.4;padding:10px 24px;border-left:5px solid var(--accent);margin:0 0 16px}
+.pill-lg{display:inline-block;padding:8px 22px;border-radius:999px;font-size:28px;font-weight:700;
+  background:var(--accent-tint);color:var(--accent);margin:0 10px 12px 0;text-decoration:line-through;text-decoration-thickness:2px}
+
+pre.code{background:#1e1219;color:#f8e9f1;border-radius:var(--radius);padding:24px 32px;font-size:28px;line-height:1.45;margin:6px 0 0;overflow:hidden}
+pre.code .k{color:#ff8fbd}
+.img-fit{display:block;max-width:100%;margin:0 auto;border-radius:var(--radius);border:1px solid var(--border);background:#fff}
+.adv h4{color:var(--good)}.dis h4{color:var(--bad)}
+
+/* Autoevaluación */
+.qz{display:grid;grid-template-columns:1fr 1fr;gap:16px 28px;margin-top:8px}
+.qz details{border:1px solid var(--border);border-radius:var(--radius);padding:16px 22px;background:var(--surface)}
+.qz summary{font-size:30px;line-height:1.35;cursor:pointer;font-weight:700}
+.qz details p{margin:10px 0 0;font-size:26px;color:var(--accent);line-height:1.4}
+
+/* ---------- Diagramas (diagram-design, tokens del tema) ---------- */
+svg.dg{display:block;width:100%;height:auto;overflow:visible}
+.dg text{font-family:var(--font-sans);fill:var(--text-1)}
+.dg .nm{font-size:28px;font-weight:700}
+.dg .nm-s{font-size:24px;font-weight:700}
+.dg .sb{font-size:19px;fill:var(--text-2);font-family:var(--font-mono)}
+.dg .tx{font-size:24px;fill:var(--text-1)}
+.dg .tx2{font-size:24px;fill:var(--text-2)}
+.dg .ey{font-size:16px;font-weight:700;letter-spacing:.12em;fill:var(--text-3);font-family:var(--font-mono)}
+.dg .eyA{font-size:16px;font-weight:700;letter-spacing:.12em;fill:var(--accent);font-family:var(--font-mono)}
+.dg .lb{font-size:16px;font-family:var(--font-mono);fill:var(--text-3);letter-spacing:.06em}
+.dg .box{fill:var(--surface);stroke:var(--text-1);stroke-width:1.5}
+.dg .store{fill:var(--surface-2);stroke:var(--text-2);stroke-width:1.5}
+.dg .soft{fill:var(--surface);stroke:var(--text-3);stroke-width:1.5;stroke-dasharray:6 4}
+.dg .foc{fill:var(--accent-tint);stroke:var(--accent);stroke-width:2.5}
+.dg .zone{fill:var(--surface-2);stroke:var(--border-strong);stroke-width:1.5}
+.dg .zoneD{fill:none;stroke:var(--text-3);stroke-width:1.5;stroke-dasharray:8 6}
+.dg .cube{fill:color-mix(in srgb,var(--note) 10%,var(--surface));stroke:var(--note);stroke-width:1.5}
+.dg .ln{fill:none;stroke:var(--text-2);stroke-width:2}
+.dg .lnA{fill:none;stroke:var(--accent);stroke-width:2.5}
+.dg .lnD{fill:none;stroke:var(--text-3);stroke-width:2;stroke-dasharray:6 5}
+.dg .bar{stroke-width:4}
+.dg .mask{fill:var(--bg)}
+.dg .hd{fill:var(--text-1)}.dg .hdT{fill:var(--bg);font-size:22px;font-weight:700}
+.dg .hdA{fill:var(--accent)}.dg .hdAT{fill:var(--accent-ink);font-size:22px;font-weight:700}
+.dg .row{font-size:22px}.dg .rowK{font-size:22px;font-weight:700}
+.dg .tag{font-size:15px;font-family:var(--font-mono);fill:var(--accent);font-weight:700}
+.dg .acc{fill:var(--accent)}
+.ah{fill:var(--text-2)}.ahA{fill:var(--accent)}
+.legend{display:flex;gap:28px;font-size:20px;color:var(--text-2);margin-top:10px;font-family:var(--font-mono)}
+.legend i{display:inline-block;width:18px;height:18px;border-radius:4px;vertical-align:-3px;margin-right:8px;border:2px solid}
+.dg .bad{fill:color-mix(in srgb,var(--bad) 10%,var(--surface));stroke:var(--bad);stroke-width:2}
+.dg .lnBad{fill:none;stroke:var(--bad);stroke-width:2;stroke-dasharray:6 5}
+.dg .lbBad{font-size:16px;font-family:var(--font-mono);fill:var(--bad);letter-spacing:.06em;font-weight:700}
+.dg .grp{fill:var(--accent-tint)}
+.ahB{fill:var(--bad)}
+pre.code.sm{font-size:24px;padding:18px 24px}
+.t.mini{font-size:24px}.t.mini td,.t.mini th{padding:8px 14px}
+.t.mini td:first-child{color:var(--text-1)}
+.res{font-family:var(--font-mono);font-size:20px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin:12px 0 6px}
+
+/* Botón claro/oscuro (assets/ppt/mode.js). Discreto: no tapa el contenido y no sale al imprimir. */
+.mode-btn{position:fixed;right:14px;bottom:14px;z-index:50;font:600 13px/1 var(--font-mono);letter-spacing:.04em;
+  padding:8px 12px;border-radius:999px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text-2);
+  cursor:pointer;opacity:.55;transition:opacity .15s}
+.mode-btn:hover,.mode-btn:focus-visible{opacity:1;color:var(--accent);border-color:var(--accent)}
+@media print{.mode-btn{display:none}}

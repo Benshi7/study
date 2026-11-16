@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suite de estudio</title>
+<script src="assets/theme.js"></script>
+<script src="assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/suite.css">
+</head>
+<body data-base="">
+<main class="wide">
+
+<header class="hub-hero">
+  <p class="kicker">Taller de Gestión de Proyectos Digitales · UNICABA 2026</p>
+  <h1>Suite de estudio</h1>
+  <p>Lecciones, slides, diagramas y práctica de las dos rutas. Lo que se tilda y la última sección leída quedan guardados en este navegador.</p>
+</header>
+
+<noscript><p class="note">Esta página arma sus listas con JavaScript. Sin JavaScript: <a href="clases/10-ceremonias-scrum.html">lecciones</a>, <a href="diagramas/index.html">diagramas</a>, <a href="clases/simulacro-parcial-agil.html">simulacro</a>.</p></noscript>
+
+<div class="when" data-suite="when" aria-label="Próximas evaluaciones"></div>
+
+<div class="tiles">
+  <a class="tile is-resume" data-suite="resume" href="clases/index.html">
+    <span class="k">Retomar la lectura</span>
+    <strong>—</strong>
+    <span></span>
+  </a>
+  <a class="tile" href="clases/simulacro-parcial-agil.html">
+    <span class="k">Practicar</span>
+    <strong>Simulacro del parcial</strong>
+    <span data-suite="sim-score">Opción múltiple con puntaje por tema.</span>
+  </a>
+  <a class="tile" href="clases/parcial-agil-guia.html">
+    <span class="k">Integrar</span>
+    <strong>Guía del parcial ágil</strong>
+    <span>El temario en una página y el plan de los últimos días.</span>
+  </a>
+  <a class="tile" href="diagramas/sprint-mapa.html">
+    <span class="k">Diagrama</span>
+    <strong>El Sprint completo</strong>
+    <span>Ceremonias, artefactos, refinamiento, slicing, splitting y tiempos.</span>
+  </a>
+  <a class="tile" href="reference/agil-glosario.html">
+    <span class="k">Consultar</span>
+    <strong>Glosario ágil</strong>
+    <span>Todos los términos, con la versión de la cátedra.</span>
+  </a>
+  <a class="tile" href="clases/11.1-repaso-listas-que-se-confunden.html">
+    <span class="k">Repaso</span>
+    <strong>Listas que se confunden</strong>
+    <span>De qué enfoque es cada lista suelta.</span>
+  </a>
+</div>
+
+<div class="section-head">
+  <h2>Rutas</h2>
+  <div class="tools">
+    <button class="btn" type="button" data-fold="open" data-scope="#rutas">Expandir todo</button>
+    <button class="btn" type="button" data-fold="close" data-scope="#rutas">Plegar todo</button>
+  </div>
+</div>
+<div id="rutas" data-suite="routes" data-tracks="agil,cascada"></div>
+<p class="quiz-score">Un clic en una ruta la pliega o la abre; en una clase, muestra sus secciones, diagramas y slides. El título abre la lección. El círculo se completa al tildar las partes (o con «Marcar leída», arriba de cada lección).</p>
+
+<details class="fold">
+  <summary>Cronograma de las 16 clases</summary>
+  <ol class="timeline" data-suite="timeline" aria-label="Las 16 clases del cuatrimestre"></ol>
+  <p class="quiz-score">Rosa: bloque cascada · violeta: bloque ágil · ámbar: evaluaciones.</p>
+</details>
+
+<details class="fold">
+  <summary>Cómo usar la suite para estudiar</summary>
+  <ol>
+    <li>Cada lección se recorre así: lección → slides → práctica sin mirar → preguntas → trampas de opción múltiple.</li>
+    <li>Después de estudiar o rendir el simulacro, contarle al agente qué quedó claro y qué preguntas se fallaron (están numeradas). Con eso se anotan los avances y, si algo queda flojo, se arma una clase de repaso (por ejemplo, 11.1).</li>
+    <li>La carpeta del TP del equipo está en <a href="tp/index.html">tp/</a> (solo en la copia local; no se sube a la web).</li>
+    <li>Para sumar una clase: PDF en <code>raw/</code>, entrada en <code>assets/suite-data.js</code>, lección en <code>clases/</code>; después <code>python3 tools/diagramas.py</code>, <code>python3 tools/suite-index.py</code> y <code>tools/check-links.sh</code>.</li>
+  </ol>
+</details>
+
+</main>
+<script src="assets/suite-data.js"></script>
+<script src="assets/suite-index.js"></script>
+<script src="assets/suite-render.js"></script>
+</body>
+</html>

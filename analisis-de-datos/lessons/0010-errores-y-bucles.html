@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Errores y bucles</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0010 · Bloque 3: Python</div>
+
+<div class="kicker">Lección 0010</div>
+<h1>Errores, bucles e imports</h1>
+<p class="lede">La primera mitad del notebook autoguiado de la clase 2: <code>try</code>/<code>except</code>, las cuatro excepciones que enseña la cátedra, <code>for</code>/<code>while</code>, <code>break</code>/<code>continue</code>, list comprehension y las formas de importar.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la 0009: ¿qué devuelve <code>"hola".find("x")</code>? ¿Y una función que no tiene <code>return</code>?</p>
+</div>
+
+<h2>Manejo de errores</h2>
+<!-- diagram:try-except -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 488" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="try-except-title try-except-desc" xmlns="http://www.w3.org/2000/svg"><title id="try-except-title">Flujo de try / except</title><desc id="try-except-desc">Diagrama de flujo: si una línea del try falla, se salta al except sin ejecutar el resto del try; si no falla, el except se saltea; en ambos casos el programa sigue.</desc><defs><marker id="try-except-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="try-except-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="try-except-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge" d="M320,64 L320,96" marker-end="url(#try-except-arrow)"/><path class="edge" d="M320,144 L320,168" marker-end="url(#try-except-arrow)"/><path class="edge-accent" d="M432,212 L520,212" marker-end="url(#try-except-arrow-accent)"/><rect class="mask" x="466" y="192" width="20" height="12" rx="2"/><text class="label-accent" x="476" y="201" text-anchor="middle">SÍ</text><path class="edge" d="M320,256 L320,296" marker-end="url(#try-except-arrow)"/><rect class="mask" x="328" y="270" width="20" height="12" rx="2"/><text class="label" x="338" y="279" text-anchor="middle">NO</text><path class="edge" d="M320,344 L320,392"/><path class="edge" d="M640,236 L640,388 Q640,396 632,396 L324,396"/><path class="edge" d="M320,400 L320,424" marker-end="url(#try-except-arrow)"/><rect class="mask" x="240" y="24" width="160" height="40" rx="20"/><rect class="node" x="240" y="24" width="160" height="40" rx="20"/><text class="name" x="320" y="48" text-anchor="middle">Entra al try</text><rect class="mask" x="200" y="96" width="240" height="48" rx="6"/><rect class="node" x="200" y="96" width="240" height="48" rx="6"/><text class="name" x="320" y="118" text-anchor="middle">Ejecuta el try línea a línea</text><text class="sub" x="320" y="132" text-anchor="middle">print(&#x27;2&#x27;) → 10 / 0 → …</text><polygon class="mask" points="320,168 432,212 320,256 208,212"/><polygon class="node" points="320,168 432,212 320,256 208,212"/><text class="name" x="320" y="216" text-anchor="middle">¿Alguna línea falla?</text><rect class="mask" x="520" y="188" width="240" height="48" rx="6"/><rect class="focal" x="520" y="188" width="240" height="48" rx="6"/><text class="name" x="640" y="210" text-anchor="middle">Salta al except</text><text class="sub-accent" x="640" y="224" text-anchor="middle">el resto del try NO se ejecuta</text><rect class="mask" x="200" y="296" width="240" height="48" rx="6"/><rect class="node" x="200" y="296" width="240" height="48" rx="6"/><text class="name" x="320" y="318" text-anchor="middle">El try termina completo</text><text class="sub" x="320" y="332" text-anchor="middle">el except se saltea</text><circle class="dot" cx="320" cy="396" r="4"/><rect class="mask" x="200" y="424" width="240" height="40" rx="20"/><rect class="node" x="200" y="424" width="240" height="40" rx="20"/><text class="name" x="320" y="448" text-anchor="middle">Sigue después del try/except</text><text class="note" x="472" y="316" text-anchor="start">Ejemplo del notebook:</text><text class="note" x="472" y="332" text-anchor="start">imprime 1 · 2 · 4 · 5</text></svg></div><figcaption>try/except: por qué el ejemplo del notebook imprime 1, 2, 4, 5. <a href="../diagrams/try-except.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:try-except -->
+
+<div class="table-wrap">
+<table>
+  <tr><th>Excepción</th><th>Causa</th><th>Ejemplo del notebook</th></tr>
+  <tr><td><code>ZeroDivisionError</code></td><td>División por cero</td><td><code>10 / 0</code></td></tr>
+  <tr><td><code>ValueError</code></td><td>El tipo está bien pero el <strong>valor</strong> no sirve</td><td><code>int("cuarenta")</code></td></tr>
+  <tr><td><code>IndexError</code></td><td>Posición inexistente en una lista</td><td><code>[1, 2, 3][10]</code></td></tr>
+  <tr><td><code>KeyError</code></td><td>Clave inexistente en un diccionario</td><td><code>datos["apellido"]</code></td></tr>
+</table>
+</div>
+<p>Un <code>except</code> genérico atrapa cualquier error, pero no dice cuál fue. Capturar la excepción <strong>específica</strong> permite dar mensajes claros y reaccionar distinto según el error.</p>
+
+<h2>Bucles</h2>
+<div class="table-wrap">
+<table>
+  <tr><th></th><th><code>for</code></th><th><code>while</code></th></tr>
+  <tr><td>Idea</td><td>"Para cada elemento de esta secuencia…"</td><td>"Mientras se cumpla la condición…"</td></tr>
+  <tr><td>Cuándo</td><td>Recorrer una colección o repetir un número <strong>conocido</strong> de veces</td><td>Cuando <strong>no sabemos</strong> cuántas vueltas habrá</td></tr>
+  <tr><td>Riesgo</td><td>—</td><td>Bucle infinito si la condición nunca se vuelve falsa</td></tr>
+</table>
+</div>
+
+<ul>
+  <li><code>range(inicio, fin, paso)</code>: el <strong>fin NO se incluye</strong>. <code>range(1, 101)</code> da 100 vueltas; <code>range(5, 0, -1)</code> da 5, 4, 3, 2, 1.</li>
+  <li><code>enumerate(lista)</code> devuelve pares (posición, elemento).</li>
+  <li><code>break</code> termina el bucle completo · <code>continue</code> salta a la siguiente vuelta.</li>
+  <li>List comprehension: <code>[n ** 2 for n in numeros]</code> es lo mismo que un <code>for</code> con <code>append()</code>, en una línea.</li>
+</ul>
+
+<h2>Importar</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Forma</th><th>Cómo se usa después</th></tr>
+  <tr><td><code>import math</code></td><td><code>math.sqrt(25)</code></td></tr>
+  <tr><td><code>from math import sqrt</code></td><td><code>sqrt(25)</code></td></tr>
+  <tr><td><code>import datetime as dt</code></td><td><code>dt.date.today()</code> (el alias es otro nombre, no otra librería)</td></tr>
+  <tr><td><code>from math import *</code></td><td>Funciona, pero <strong>no se recomienda</strong>: no se sabe de dónde viene cada nombre</td></tr>
+</table>
+</div>
+<p><strong>Instalar ≠ importar.</strong> <code>!pip install pandas</code> instala la librería en el entorno (el <code>!</code> le dice a Colab que ejecute un comando del sistema). <code>import pandas as pd</code> la carga en el programa. La <em>biblioteca estándar</em> (<code>math</code>, <code>random</code>, <code>datetime</code>) viene con Python; las <em>externas</em> (<code>pandas</code>, <code>matplotlib</code>) pueden necesitar instalación.</p>
+<span class="sidenote">Fuente: notebook "CLASE_2_Introduccion_a_PYTHON_AUTOGUIADA", secciones de errores, bucles e imports.</span>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0010-errores-y-bucles"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Qué números se imprimen, en orden?<pre class=\"code\">print(\"1\")\ntry:\n    print(\"2\")\n    resultado = 10 / 0\n    print(\"3\")\nexcept:\n    print(\"4\")\nprint(\"5\")</pre>",
+   "options": ["1, 2, 4, 5", "1, 2, 3, 5", "1, 2, 3, 4", "2, 3, 4, 5"], "answer": 0,
+   "why": "Al fallar la división, el resto del try (el 3) NO se ejecuta: salta al except (4) y después sigue (5)."},
+  {"q": "¿Qué excepción lanza <code>int(\"cuarenta\")</code>?",
+   "options": ["ValueError", "TypeError", "IndexError", "KeyError"], "answer": 0,
+   "why": "El tipo (str) es aceptable para int(), pero ese valor no se puede convertir."},
+  {"q": "¿Qué excepción lanza esto?<pre class=\"code\">lista = [1, 2, 3]\nelemento = lista[10]</pre>",
+   "options": ["IndexError", "KeyError", "ValueError", "ZeroDivisionError"], "answer": 0,
+   "why": "La posición 10 no existe en la lista."},
+  {"q": "¿Qué excepción lanza esto?<pre class=\"code\">datos = {\"nombre\": \"Ana\", \"edad\": 25}\napellido = datos[\"apellido\"]</pre>",
+   "options": ["KeyError", "IndexError", "ValueError", "TypeError"], "answer": 0,
+   "why": "La clave no existe en el diccionario. Con <code>datos.get(\"apellido\")</code> se obtendría None en lugar del error."},
+  {"q": "¿Qué ventaja tiene capturar una excepción específica en lugar de usar un <code>except</code> genérico?",
+   "options": ["Reaccionar distinto según cada tipo de error", "Hacer que el programa corra más rápido", "Evitar tener que escribir el bloque try", "Lograr que los errores dejen de ocurrir"], "answer": 0,
+   "why": "Permite dar mensajes claros y actuar según la causa. No evita el error ni acelera nada."},
+  {"q": "¿Cuántas veces se ejecuta el bloque?<pre class=\"code\">for x in range(1, 101):\n    print(x)</pre>",
+   "options": ["100", "101", "99", "1"], "answer": 0,
+   "why": "El fin del range no se incluye: va de 1 a 100."},
+  {"q": "¿Cuál es el último número que imprime?<pre class=\"code\">for numero in range(0, 11, 2):\n    print(numero)</pre>",
+   "options": ["10", "11", "8", "12"], "answer": 0,
+   "why": "Imprime 0, 2, 4, 6, 8 y 10. El 11 es el límite y no se incluye; 10 es menor que 11."},
+  {"q": "¿Cuál es el último número que imprime?<pre class=\"code\">for i in range(10):\n    print(i)\n    if i == 3:\n        break</pre>",
+   "options": ["3", "4", "9", "2"], "answer": 0,
+   "why": "Imprime 0, 1, 2 y 3; cuando i vale 3, <code>break</code> corta el bucle (el print está antes del if)."},
+  {"q": "¿Cuántos números imprime?<pre class=\"code\">for i in range(6):\n    if i == 2:\n        continue\n    print(i)</pre>",
+   "options": ["5", "6", "2", "3"], "answer": 0,
+   "why": "Imprime 0, 1, 3, 4 y 5: <code>continue</code> saltea solo la vuelta del 2."},
+  {"q": "¿Qué hace <code>continue</code>?",
+   "options": ["Salta a la siguiente iteración", "Termina el bucle por completo", "Reinicia el bucle desde cero", "Detiene todo el programa entero"], "answer": 0,
+   "why": "<code>break</code> termina el bucle; <code>continue</code> solo saltea la vuelta actual."},
+  {"q": "¿Cuál es el PRIMER número que imprime?<pre class=\"code\">i = 1\nwhile i &gt; 0:\n    i += 1\n    print(i)\n    if i == 10:\n        break</pre>",
+   "options": ["2", "1", "0", "10"], "answer": 0,
+   "why": "Incrementa antes de imprimir: el primer print muestra 2. Termina por el <code>break</code> en 10, porque la condición i &gt; 0 nunca se vuelve falsa."},
+  {"q": "¿Qué imprime?<pre class=\"code\">print([n ** 2 for n in [1, 2, 3]])</pre>",
+   "options": ["[1, 4, 9]", "[2, 4, 6]", "[1, 2, 3]", "[1, 8, 27]"], "answer": 0,
+   "why": "List comprehension: eleva al cuadrado cada elemento. Es equivalente a un for con append()."},
+  {"q": "¿Cuándo conviene usar <code>while</code> en lugar de <code>for</code>?",
+   "options": ["Cuando no sabemos cuántas vueltas habrá", "Cuando recorremos cada elemento de lista", "Cuando queremos definir una función nueva", "Cuando necesitamos importar una librería externa"], "answer": 0,
+   "why": "<code>while</code> repite mientras se cumpla una condición; <code>for</code> recorre una secuencia conocida."},
+  {"q": "Después de <code>from math import sqrt</code>, ¿cómo se llama a la función?",
+   "options": ["sqrt(81)", "math.sqrt(81)", "import.sqrt(81)", "math->sqrt(81)"], "answer": 0,
+   "why": "<code>from ... import</code> trae el nombre directamente. <code>math.sqrt</code> sería con <code>import math</code>."},
+  {"q": "¿Qué línea instala una librería externa en Colab?",
+   "options": ["!pip install pandas", "from pandas import", "pandas install now", "import install pandas"], "answer": 0,
+   "why": "<code>pip</code> es el gestor de paquetes y el <code>!</code> ejecuta el comando en el sistema. Importar es otro paso."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Seguís el flujo de un <code>try</code>/<code>except</code>, nombrás la excepción de cada error y predecís exactamente dónde cortan <code>range</code>, <code>break</code> y <code>continue</code>.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><code>raw/notebooks/CLASE_2_Introduccion_a_PYTHON_AUTOGUIADA_[Alumnos] (2).ipynb</code>, hasta la sección de instalación. Resumen: <a href="../reference/python.html">Referencia · Python</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>El notebook cierra con preguntas para contestar "con tus palabras" (¿para qué sirve try/except?, ¿for o while?). Respondémelas en el chat y te digo si están completas.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0009-que-imprime-2.html">← 0009 · ¿Qué imprime? (II)</a>
+  <a href="0011-pandas-y-matplotlib.html">0011 · Pandas y Matplotlib →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

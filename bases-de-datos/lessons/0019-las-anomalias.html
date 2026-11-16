@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 19 · Las anomalías</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 19 · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Las anomalías: por qué se normaliza</h1>
+    <p class="masthead__standfirst">
+      Normalizar no es un ritual. Es la respuesta a un problema concreto que se puede ver
+      con los ojos en una tabla. Primero mirá el problema.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Clase 3, slides 2–5</span>
+      <span>Elmasri, cap. 10</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La tabla que el profe pone de ejemplo</h2>
+
+  <p>
+    La Clase 3 arranca con el ejemplo clásico de facturación, y con una frase que conviene
+    tomarse en serio: <q>algún ansioso implementador podría sentirse tentado a crear una
+    sola tabla con todos estos datos</q>.
+  </p>
+
+  <p>El resultado de esa tentación es esto:</p>
+
+  <div class="tbl-wrap">
+    <table class="datos">
+      <thead>
+        <tr><th>NFact</th><th>Fecha</th><th>CodCli</th><th>NomCli</th><th>CProd</th><th>Descri</th><th>Canti</th><th>PUnit</th><th>PcioR</th><th>PcioT</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>12/01/2006</td><td>3</td><td>Carlos</td><td>35</td><td>Peras</td><td>6</td><td>3</td><td>18</td><td>59</td></tr>
+        <tr><td>1</td><td>12/01/2006</td><td>3</td><td>Carlos</td><td>37</td><td class="bad">Uvas</td><td>1</td><td>5</td><td>5</td><td>59</td></tr>
+        <tr><td>1</td><td class="bad">12/02/2006</td><td>3</td><td class="bad">Carla</td><td>39</td><td>Kiwi</td><td>5</td><td class="bad">10</td><td>50</td><td>59</td></tr>
+        <tr><td>1</td><td>12/01/2006</td><td class="bad">4</td><td>Carlos</td><td>40</td><td>Sandía</td><td>2</td><td>3</td><td>6</td><td>59</td></tr>
+        <tr><td>2</td><td>13/01/2006</td><td>4</td><td class="bad">Pablo</td><td>37</td><td class="bad">Peras</td><td>5</td><td>3</td><td>15</td><td>58</td></tr>
+        <tr><td>2</td><td>13/01/2006</td><td>4</td><td>Pablo</td><td>39</td><td class="bad">Kivi</td><td>3</td><td class="bad">11</td><td>33</td><td>58</td></tr>
+        <tr><td>2</td><td>13/01/2006</td><td>4</td><td>Pablo</td><td>44</td><td>Tomates</td><td>2</td><td>5</td><td>10</td><td>58</td></tr>
+        <tr><td>3</td><td>14/01/2006</td><td>3</td><td class="bad">Carlitos</td><td>35</td><td>Peras</td><td>4</td><td>3</td><td>12</td><td>12</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Ocho filas. Y ya hay siete cosas rotas. Antes de seguir leyendo,
+    <b>buscá al menos tres vos mismo</b> — el hábito de mirar los datos y desconfiar es
+    la mitad de la materia.
+  </p>
+
+  <h2><span class="num">02</span>Primero, lo que sobra: los derivados</h2>
+
+  <p>
+    Antes de las anomalías, la slide 4 marca algo aparte:
+    <code>PcioR = Canti × PUnit</code>, y <code>PcioT</code> es la suma de los
+    <code>PcioR</code> de la misma factura.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Regla</span>
+    <p>
+      Un <em class="term">atributo derivado</em> no se guarda: se calcula cuando se necesita.
+      Guardarlo es garantizar que algún día no coincida con el cálculo — y entonces tenés
+      dos verdades. Salen del modelo <b>antes</b> de empezar a normalizar.
+    </p>
+    <p>
+      Fijate que ya lo conocés del diseño conceptual: es el óvalo punteado. Lo que cambia
+      acá es que ahora se ve el daño concreto.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Las siete anomalías, y de dónde sale cada una</h2>
+
+  <p>
+    Esta es la lista del profe, tal cual, con una columna que él no pone y que es la que
+    te ordena todo el resto de la unidad: <b>qué paso la arregla</b>.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Qué se ve en la tabla</th><th>Causa real</th><th>Lo arregla</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>La factura 1 tiene dos fechas: 12/01 y 12/02.</td><td rowspan="2">La factura tiene <b>cabecera</b> y <b>renglones</b>, y están aplastados en una fila.</td><td rowspan="2"><b>1FN</b></td></tr>
+        <tr><td>2</td><td>La factura 1 tiene dos <code>CodCli</code>: 3 y 4.</td></tr>
+        <tr><td>3</td><td><code>CodCli</code> 4 aparece como Carlos y como Pablo.</td><td rowspan="2">El nombre del cliente depende del <b>cliente</b>, no de la factura.</td><td rowspan="2"><b>3FN</b></td></tr>
+        <tr><td>4</td><td><code>CodCli</code> 3 aparece como Carlos, Carla y Carlitos.</td></tr>
+        <tr><td>5</td><td><code>CProd</code> 37 es Uvas y también Peras.</td><td rowspan="2">La descripción depende del <b>producto</b>, no del renglón.</td><td rowspan="2"><b>2FN</b></td></tr>
+        <tr><td>6</td><td><code>CProd</code> 39 es Kiwi y también Kivi.</td></tr>
+        <tr><td>7</td><td><code>CProd</code> 39 tiene <code>PUnit</code> 10 y 11.</td><td>Depende de <b>qué decida el negocio</b> sobre el precio.</td><td><b>Ninguno de los tres</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Esto es lo importante de toda la lección</span>
+    <p>
+      Mirá la última fila. <b>La anomalía 7 no la arregla 1FN, ni 2FN, ni 3FN.</b>
+      El modelo final de la slide 11 la deja viva: en
+      <code>RenglonFact(#NFact, #CProd, Canti, PUnit)</code> el producto 39 puede seguir
+      teniendo precio 10 en una factura y 11 en otra.
+    </p>
+    <p>
+      Y no es un descuido del profe. Es que <b>esa anomalía no es un problema de forma
+      normal, es una pregunta de negocio</b>: ¿el precio es del producto, o es del renglón?
+      La respuesta la dan las slides 14 y 15, y le dedicamos la
+      <a href="0024-donde-vive-el-precio.html">lección 24</a> entera.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Los tres nombres que Elmasri le pone a esto</h2>
+
+  <p>
+    La cátedra dice "anomalías" y lista casos. Elmasri las clasifica en tres, y los nombres
+    se preguntan porque explican <b>por qué</b> duele:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Anomalía</th><th>Qué te impide hacer</th><th>En la tabla de arriba</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>De inserción</b></td>
+          <td>Dar de alta un hecho sin tener otro que no viene al caso.</td>
+          <td>No podés cargar un producto nuevo hasta que alguien lo compre. No hay dónde ponerlo.</td>
+        </tr>
+        <tr>
+          <td><b>De borrado</b></td>
+          <td>Borrar un hecho sin perder otro sin querer.</td>
+          <td>Si borrás la factura 2, se te va el único registro de que existe el producto 44 (Tomates).</td>
+        </tr>
+        <tr>
+          <td><b>De modificación</b></td>
+          <td>Cambiar un dato en un solo lugar.</td>
+          <td>Corregir "Kivi" a "Kiwi" obliga a tocar todas las filas donde aparece. Si te salteás una, quedan las dos.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Fijate el hilo con la <a href="0001-que-resuelve-una-base-de-datos.html">lección 1</a>:
+    ahí dijimos que la redundancia es la causa y la inconsistencia el daño. Las anomalías
+    son <b>el mecanismo</b> por el que la causa produce el daño.
+  </p>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Leer la tabla</span>
+    <p class="quiz__q">
+      ¿Por qué la factura 1 puede tener dos fechas distintas, si en el mundo real una
+      factura tiene una sola?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Exacto. La clave de esa tabla es (NFact, CProd), no NFact. Como cada renglón es una fila y cada fila trae su copia de la fecha, nada impide que dos copias difieran. La estructura permite lo que la realidad prohíbe: ése es el defecto.">La fecha se repite en cada renglón</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí, la de la tercera fila parece un error de tipeo — el profe mismo lo dice. Pero la pregunta es por qué el ERROR FUE POSIBLE. Un buen modelo no debería dejar que se cargue.">Alguien se equivocó al cargar el dato</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No hay nada en la tabla que sugiera dos emisiones. Y si lo hubiera, sería un dato nuevo a modelar, no una explicación del desorden que se ve.">La factura se emitió en dos partes</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Derivados</span>
+    <p class="quiz__q">
+      ¿Por qué <code>PcioT</code> es el peor atributo de toda la tabla?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es derivado Y se repite en cada renglón de la factura. Doble falta: se puede recalcular, y encima está copiado ocho veces. Cualquier renglón que cambie deja desactualizadas todas las copias del total.">Es derivado y además está repetido</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El tipo numérico no tiene nada de malo. El problema es que es un valor CALCULABLE guardado, y guardado muchas veces por factura.">Es numérico y ocupa mucho espacio</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Clasificar</span>
+    <p class="quiz__q">
+      El producto 44 (Tomates) aparece sólo en la factura 2. Borrás esa factura.
+      ¿Qué anomalía es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="De borrado: al eliminar un hecho — la factura — perdiste otro que no querías perder, la existencia del producto 44. Dos hechos independientes viven en la misma fila, y por eso mueren juntos.">De borrado: se pierde otro hecho</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La de inserción es la simétrica: no poder dar de alta un producto hasta que alguien lo compre. Acá el problema es al revés, es al eliminar.">De inserción: no se puede dar alta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La de modificación aparece cuando corregís un dato repetido y tenés que tocarlo en muchos lugares. Acá no estás modificando nada: estás borrando.">De modificación: hay que tocar todo</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Clase 3 — Normalización</b>, slides 2 a 5. La lista de las siete anomalías es
+      textual del profe; la columna "lo arregla" la agregamos nosotros.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 10.1.2 "Anomalías de actualización en
+      las tuplas", donde están las tres categorías formales.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si encontraste una anomalía que no está en la lista de las
+      siete, decímela — hay más de siete en esa tabla, y encontrarlas es mejor ejercicio
+      que leer la lista.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../index.html">Índice</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0020-dependencia-funcional.html">Siguiente: 0020 · Dependencia funcional</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

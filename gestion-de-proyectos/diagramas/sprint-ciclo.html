@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Sprint y sus eventos</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Diagram skin for diagram-design SVGs (profile "unicaba-cursada").
+   Shared by clases/*.html, slides/* and diagramas/*.html. Self-contained: it does not need course.css.
+   Light values = assets/course.css tokens; dark follows data-theme (theme.js) or the system. */
+:root {
+  --d-paper: #ffffff;
+  --d-paper-2: #f8f1f5;
+  --d-box: #ffffff;
+  --d-ink: #24171f;
+  --d-muted: #6a5764;
+  --d-soft: #8d7a87;
+  --d-rule: #e6d3df;
+  --d-accent: #b83a95;
+  --d-accent-ink: #9c2a7b;
+  --d-accent-tint: rgba(184, 58, 149, .08);
+  --d-link: #6b2fae;
+  --d-link-tint: rgba(107, 47, 174, .08);
+}
+:root[data-theme="dark"] {
+  --d-paper: #1a1218;
+  --d-paper-2: #241a22;
+  --d-box: #241a22;
+  --d-ink: #f2e9ef;
+  --d-muted: #b3a3ae;
+  --d-soft: #8f7d89;
+  --d-rule: #43303e;
+  --d-accent: #f08fcf;
+  --d-accent-ink: #f08fcf;
+  --d-accent-tint: rgba(240, 143, 207, .10);
+  --d-link: #b99af0;
+  --d-link-tint: rgba(185, 154, 240, .10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --d-paper: #1a1218;
+    --d-paper-2: #241a22;
+    --d-box: #241a22;
+    --d-ink: #f2e9ef;
+    --d-muted: #b3a3ae;
+    --d-soft: #8f7d89;
+    --d-rule: #43303e;
+    --d-accent: #f08fcf;
+    --d-accent-ink: #f08fcf;
+    --d-accent-tint: rgba(240, 143, 207, .10);
+    --d-link: #b99af0;
+    --d-link-tint: rgba(185, 154, 240, .10);
+  }
+}
+
+/* Figure wrapper used by lessons */
+figure.diagram { margin: 1.6rem 0; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .5rem; }
+
+/* SVG classes (all prefixed dg-) */
+.dg-bg { fill: var(--d-paper); }
+.dg-mask { fill: var(--d-paper); }
+.dg-zone { fill: var(--d-paper-2); stroke: var(--d-rule); stroke-width: 1; }
+.dg-rule { stroke: var(--d-rule); stroke-width: .8; fill: none; }
+
+.dg-box { fill: var(--d-box); stroke: var(--d-ink); stroke-width: 1; }
+.dg-store { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-focal { fill: var(--d-accent-tint); stroke: var(--d-accent); stroke-width: 1.2; }
+.dg-viol { fill: var(--d-link-tint); stroke: var(--d-link); stroke-width: 1; }
+.dg-ghost { fill: none; stroke: var(--d-muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.dg-dot { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-dot-focal { fill: var(--d-accent); stroke: var(--d-accent); stroke-width: 1; }
+
+.dg-line { stroke: var(--d-muted); stroke-width: 1.2; fill: none; }
+.dg-line-accent { stroke: var(--d-accent); stroke-width: 1.2; fill: none; }
+.dg-line-link { stroke: var(--d-link); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+.dg-ah { fill: var(--d-muted); }
+.dg-ah-accent { fill: var(--d-accent); }
+.dg-ah-link { fill: var(--d-link); }
+
+.dg-name { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-sub { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-row { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-tag { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-soft); letter-spacing: .08em; }
+.dg-lbl { font: 400 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-muted); letter-spacing: .04em; }
+.dg-lbl-accent { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-accent-ink); letter-spacing: .04em; }
+.dg-lbl-link { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-link); letter-spacing: .04em; }
+.dg-note { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-note-accent { font: 600 12px "Montserrat", system-ui, sans-serif; fill: var(--d-accent-ink); }
+
+/* Catedra slide screenshots (clases/img/*.jpg) shown next to the own diagrams. */
+figure.slide { margin: 1.4rem 0; }
+figure.slide img { display: block; width: 100%; max-width: 720px; height: auto; border: 1px solid var(--rule, #e6d3df); border-radius: 6px; }
+figure.slide figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .4rem; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--d-paper); color: var(--d-ink); font-family: "Montserrat", system-ui, sans-serif; margin: 0; }
+  .frame { max-width: 1100px; margin: 0 auto; padding: 2rem 16px 3rem; }
+  .eyebrow { font: 500 .66rem "Geist Mono", ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--d-muted); margin-bottom: .5rem; }
+  h1 { font-size: clamp(1.4rem, 2vw + .8rem, 1.9rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
+  .sub { color: var(--d-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+  svg { display: block; width: 100%; height: auto; min-width: 640px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Diagrama · Taller de Gestión de Proyectos Digitales</p>
+  <h1>El Sprint y sus eventos</h1>
+  <p class="sub">Planning, Daily, Review y Retrospectiva dentro de un Sprint.</p>
+  <div class="scroll">
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sprint-ciclo-title sprint-ciclo-desc"><title id="sprint-ciclo-title">El Sprint y sus ceremonias según la cátedra</title><desc id="sprint-ciclo-desc">Un Sprint es un time box fijo de 2 semanas a 2 meses con cuatro ceremonias y un objetivo: Sprint Planning, trabajo con Daily Scrum, Sprint Review y Sprint Retrospective. Las historias del Product Backlog entran si cumplen la DoR, el Incremento cumple la DoD y se muestra en la Review, y la retrospectiva deja un plan de acción para el Sprint siguiente. Sprint 0 y refinamiento quedan fuera de los cuatro eventos.</desc><defs><marker id="sprint-ciclo-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="sprint-ciclo-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="sprint-ciclo-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><rect class="dg-zone" x="28" y="24" width="904" height="200" rx="8"/>
+<text class="dg-tag" x="44" y="48" text-anchor="start">SPRINT · TIME BOX FIJO DE 2 SEMANAS A 2 MESES · 4 CEREMONIAS, 1 OBJETIVO</text>
+<path class="dg-line" d="M236 128 H268" marker-end="url(#sprint-ciclo-arrow)"/>
+<path class="dg-line" d="M464 128 H496" marker-end="url(#sprint-ciclo-arrow)"/>
+<path class="dg-line" d="M692 128 H724" marker-end="url(#sprint-ciclo-arrow)"/>
+<path class="dg-line" d="M138 272 V176" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="146" y="252" text-anchor="start">entra si cumple la DoR</text>
+<path class="dg-line" d="M366 272 V176" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="374" y="252" text-anchor="start">guía el trabajo</text>
+<path class="dg-line" d="M594 176 V272" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="602" y="252" text-anchor="start">se muestra</text>
+<path class="dg-line" d="M822 176 V272" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="830" y="252" text-anchor="start">deja</text>
+<rect class="dg-mask" x="40" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="138" y="115" text-anchor="middle">Sprint Planning</text>
+<text class="dg-sub" x="138" y="133" text-anchor="middle">1ª tarea: PO explica HU</text>
+<text class="dg-sub" x="138" y="151" text-anchor="middle">objetivo + tareas</text>
+<rect class="dg-mask" x="268" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="268" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="366" y="115" text-anchor="middle">Trabajo + Daily</text>
+<text class="dg-sub" x="366" y="133" text-anchor="middle">15 min · 3 preguntas</text>
+<text class="dg-sub" x="366" y="151" text-anchor="middle">impedimentos</text>
+<rect class="dg-mask" x="496" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="496" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="594" y="115" text-anchor="middle">Sprint Review</text>
+<text class="dg-sub" x="594" y="133" text-anchor="middle">PO + demo</text>
+<text class="dg-sub" x="594" y="151" text-anchor="middle">a stakeholders</text>
+<rect class="dg-mask" x="724" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="724" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="822" y="115" text-anchor="middle">Retrospectiva</text>
+<text class="dg-sub" x="822" y="133" text-anchor="middle">última tarea</text>
+<text class="dg-sub" x="822" y="151" text-anchor="middle">cómo mejorar</text>
+<rect class="dg-mask" x="40" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-store" x="40" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="138" y="312" text-anchor="middle">Product Backlog</text>
+<text class="dg-sub" x="138" y="330" text-anchor="middle">ordenado por el PO</text>
+<rect class="dg-mask" x="268" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-store" x="268" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="366" y="312" text-anchor="middle">Sprint Backlog</text>
+<text class="dg-sub" x="366" y="330" text-anchor="middle">con el Sprint Goal</text>
+<rect class="dg-mask" x="496" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-focal" x="496" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="594" y="312" text-anchor="middle">Incremento</text>
+<text class="dg-sub" x="594" y="330" text-anchor="middle">cumple la DoD</text>
+<rect class="dg-mask" x="724" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-store" x="724" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="822" y="312" text-anchor="middle">Plan de acción</text>
+<text class="dg-sub" x="822" y="330" text-anchor="middle">fecha y responsable</text>
+<rect class="dg-mask" x="40" y="392" width="428" height="72" rx="6"/>
+<rect class="dg-ghost" x="40" y="392" width="428" height="72" rx="6"/>
+<text class="dg-name" x="254" y="424" text-anchor="middle">Sprint 0 · puesta a punto</text>
+<text class="dg-sub" x="254" y="442" text-anchor="middle">no está en la Guía · máximo 2 Sprints</text>
+<rect class="dg-mask" x="492" y="392" width="428" height="72" rx="6"/>
+<rect class="dg-ghost" x="492" y="392" width="428" height="72" rx="6"/>
+<text class="dg-name" x="706" y="424" text-anchor="middle">Refinamiento · lo modera el PO</text>
+<text class="dg-sub" x="706" y="442" text-anchor="middle">Scrum lo ve como parte de la Planning</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<rect class="dg-box" x="128" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="532" text-anchor="start">ceremonia</text>
+<rect class="dg-focal" x="248" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="276" y="532" text-anchor="start">lo que se entrega</text>
+<rect class="dg-ghost" x="424" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="452" y="532" text-anchor="start">fuera de las 4 ceremonias</text></svg>
+  </div>
+</div>
+</body>
+</html>

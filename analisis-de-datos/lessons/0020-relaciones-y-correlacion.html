@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relaciones y correlación</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0020 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0020 · Notebooks 4 y 5 (en equipo)</div>
+<h1>De la nube de puntos al número: dispersión, Pearson y Spearman</h1>
+<p class="lede">Hasta acá miramos variables de a una (<strong>univariado</strong>). Ahora vemos de a pares (<strong>bivariado</strong>): primero con gráficos (notebook 4) y después con un número, el coeficiente de correlación (notebook 5).</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>De la <a href="0011-pandas-y-matplotlib.html">0011</a>: ¿qué significa una correlación de −1? Y de la <a href="0019-boxplots-y-outliers.html">0019</a>: ¿qué le hacen los outliers a r?</p>
+</div>
+
+<h2>Leer un scatterplot</h2>
+<p>Una variable en X, otra en Y, <strong>un punto por fila</strong>. La forma de la nube muestra la relación:</p>
+<div class="table-wrap">
+<table>
+  <tr><th>La nube…</th><th>Relación</th></tr>
+  <tr><td>Sube de izquierda a derecha</td><td><strong>Positiva</strong>: cuando una crece, la otra también</td></tr>
+  <tr><td>Baja de izquierda a derecha</td><td><strong>Negativa</strong>: cuando una crece, la otra baja</td></tr>
+  <tr><td>No tiene dirección</td><td><strong>Nula o débil</strong></td></tr>
+  <tr><td>Está muy pegada a una línea</td><td><strong>Fuerte</strong></td></tr>
+</table>
+</div>
+
+<h2>Las variantes de seaborn (notebook 4)</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Código</th><th>Qué muestra</th></tr>
+  <tr><td><code>sns.pairplot(df.iloc[:, 0:5])</code></td><td><strong>Todos</strong> los scatterplots entre esas variables, en matriz. En la diagonal, el histograma de cada una</td></tr>
+  <tr><td><code>corner=True</code></td><td>Solo la mitad inferior: la de arriba es la misma con los ejes invertidos</td></tr>
+  <tr><td><code>kind="hist"</code></td><td>Cuadraditos más oscuros donde hay más puntos. Útil cuando los puntos se tapan</td></tr>
+  <tr><td><code>x_vars=[…], y_vars=[…]</code></td><td>Elegir qué variables van en cada eje</td></tr>
+  <tr><td><code>hue="diagnostico"</code></td><td>Color por grupo: muestra X, Y y la categoría. La diagonal pasa a ser <strong>curvas KDE</strong> (histograma suavizado), una por grupo</td></tr>
+  <tr><td><code>sns.jointplot(x=, y=, hue=)</code></td><td><strong>Un</strong> scatter grande (bivariado) y la distribución de cada variable en los márgenes (univariado)</td></tr>
+  <tr><td><code>df["target"].map({0: "maligno", 1: "benigno"})</code></td><td>Crea una columna con etiquetas en palabras, para que los gráficos se lean mejor</td></tr>
+</table>
+</div>
+
+<h2>El coeficiente de correlación r (notebook 5)</h2>
+<p>Resume en <strong>un número entre −1 y 1</strong> la <strong>dirección</strong> (el signo) y la <strong>fuerza</strong> (qué tan cerca de 1 en valor absoluto) de la relación entre dos variables numéricas.</p>
+<div class="table-wrap">
+<table>
+  <tr><th>r</th><th>Según el notebook</th><th>Según la lámina 18</th></tr>
+  <tr><td>1</td><td>Positiva perfecta</td><td>Positiva perfecta</td></tr>
+  <tr><td>≈ 0,7 a 0,99</td><td>Positiva fuerte</td><td>Positiva fuerte (ej. 0,8)</td></tr>
+  <tr><td>≈ 0,3 a 0,7</td><td>Positiva moderada</td><td>Débil (ej. 0,2–0,3)</td></tr>
+  <tr><td>≈ 0</td><td>Nula (sin relación <em>lineal</em>)</td><td>Nula</td></tr>
+  <tr><td>Negativos</td><td colspan="2">Lo mismo, pero la relación es negativa</td></tr>
+</table>
+</div>
+<span class="sidenote">Los cortes son orientativos y cambian según el área. El notebook agrega "moderada"; la lámina va de débil a fuerte.</span>
+
+<h3>Pearson vs Spearman</h3>
+<div class="table-wrap">
+<table>
+  <tr><th></th><th>Pearson (el default de <code>corr()</code>)</th><th>Spearman</th></tr>
+  <tr><td>Mide relaciones…</td><td><strong>Lineales</strong> (recta)</td><td><strong>Monótonas</strong>: siempre suben o siempre bajan, aunque sea en curva</td></tr>
+  <tr><td>Se calcula sobre…</td><td>Los valores originales</td><td>Los <strong>rangos</strong> (posición al ordenar: 1°, 2°, 3°…)</td></tr>
+  <tr><td>Sensibilidad a outliers</td><td><strong>Alta</strong></td><td><strong>Baja</strong></td></tr>
+  <tr><td>Supone distribución normal</td><td>Aproximadamente, sí</td><td>No</td></tr>
+</table>
+</div>
+
+<h3>Heatmap</h3>
+<p><code>sns.heatmap(corr, cmap="coolwarm", vmin=-1, vmax=1, annot=True)</code> pinta la matriz de correlación: <strong>rojo</strong> positiva fuerte, <strong>azul</strong> negativa fuerte, <strong>blanco</strong> cerca de 0. Con <code>corr.abs()</code> y <code>cmap="Reds"</code> se ve solo la <strong>intensidad</strong>.</p>
+
+<div class="box trap">
+  <span class="label">Tres trampas</span>
+  <p><strong>1. Correlación no implica causalidad.</strong> Helados y ahogamientos tienen r = 0,89, pero los dos dependen de un tercer factor: la temperatura.</p>
+  <p><strong>2. r ≈ 0 no significa "sin relación".</strong> Significa sin relación <em>lineal</em>: una relación en forma de U puede dar r ≈ 0.</p>
+  <p><strong>3. El signo depende de cómo está codificado el target.</strong> En <code>sample_dataset.csv</code>, <code>target</code> es 0 = maligno, así que una correlación <strong>negativa</strong> indica asociación con <strong>maligno</strong>. En el notebook 8 se crea <code>maligno</code> = 1, y el signo se invierte.</p>
+</div>
+
+<div class="box trap">
+  <span class="label">pandas 2.x en Colab</span>
+  <p><code>df.corr()</code> da error si hay columnas de texto (<code>area error</code>): hay que pasarle <code>numeric_only=True</code>.</p>
+</div>
+
+<h2>Respuestas guía · notebook 4</h2>
+
+<details class="answers"><summary>§1 · Lo que se ve en el pairplot de las primeras 5</summary>
+<p><strong><code>mean smoothness</code> vs <code>mean radius</code></strong>: nube sin dirección clara, relación débil (r = 0,17).</p>
+<p><strong><code>mean perimeter</code> vs <code>mean area</code></strong>: no, es todo lo contrario: positiva y muy fuerte (r = 0,98), puntos pegados a una línea.</p>
+<p><strong><code>mean radius</code> vs <code>mean area</code></strong>: es una <strong>curva</strong>, no una recta, porque el área de un círculo es π · r². El área crece con el cuadrado del radio.</p>
+<p><strong>Diagonal</strong>: los mismos gráficos aparecen a los dos lados, con los ejes invertidos (radius vs area arriba = area vs radius abajo). Por eso existe <code>corner=True</code>.</p>
+</details>
+
+<details class="answers"><summary>§3 · Con <code>hue</code>: ¿qué variable separa mejor?</summary>
+<p><strong>Curvas KDE más separadas</strong>: <code>mean concave points</code> y <code>mean radius</code>. <strong>Más superpuestas</strong>: <code>mean smoothness</code>, y después <code>mean texture</code>. Sus correlaciones con <code>target</code> lo confirman: −0,77, −0,73, −0,35 y −0,40.</p>
+<p><strong>Mejor combinación de dos</strong>: <code>mean radius</code> vs <code>mean concave points</code>. Los malignos quedan arriba a la derecha y los benignos abajo a la izquierda.</p>
+</details>
+
+<details class="answers"><summary>§5 · Dos relaciones entre las <code>worst</code></summary>
+<p>Si elegiste radius, perimeter o area: positivas casi perfectas (0,98–0,99), porque miden lo mismo (el tamaño). <code>worst compactness</code> vs <code>worst concavity</code>: positiva fuerte (0,89). <code>worst fractal dimension</code> contra las de tamaño: casi nula (≈ 0,1).</p>
+</details>
+
+<details class="answers"><summary>§6 · ¿El perímetro causa el área?</summary>
+<p>No. Las dos son medidas del <strong>mismo fenómeno</strong>, el tamaño del núcleo: geométricamente, ambas dependen del radio. Tener las dos en el dataset es <strong>redundancia</strong>: aportan casi la misma información, y para un modelo conviene quedarse con una.</p>
+</details>
+
+<h2>Respuestas guía · notebook 5</h2>
+
+<details class="answers"><summary>§1 · ¿Cómo se clasifican r = 0,98 y r = 0,17?</summary>
+<p><code>mean perimeter</code> vs <code>mean area</code>: <strong>0,98 → positiva fuerte</strong>, casi perfecta. <code>mean radius</code> vs <code>mean smoothness</code>: <strong>0,17 → débil</strong>, prácticamente nula.</p>
+</details>
+
+<details class="answers"><summary>§2 · ¿Por qué la diagonal tiene 1 y la matriz es simétrica?</summary>
+<p>Cada variable se correlaciona perfectamente consigo misma. Y corr(A, B) = corr(B, A), así que los dos triángulos son iguales. Con 31 × 31 números es muy difícil sacar conclusiones mirando la tabla: para eso está el heatmap.</p>
+</details>
+
+<details class="answers"><summary>§3 · Pearson vs Spearman en los tres pares</summary>
+<div class="table-wrap"><table>
+<tr><th>Par</th><th>Pearson</th><th>Spearman</th><th>Por qué</th></tr>
+<tr><td>mean radius vs mean area</td><td>0,99</td><td>1,00</td><td>La relación es una curva (π · r²) pero siempre creciente: monótona perfecta</td></tr>
+<tr><td>mean concavity vs mean area</td><td>0,69</td><td>0,65</td><td>Parecidas: relación moderada sin grandes distorsiones</td></tr>
+<tr><td>radius error vs mean radius</td><td>0,68</td><td>0,51</td><td><code>radius error</code> tiene 32 outliers, que inflan a Pearson</td></tr>
+</table></div>
+</details>
+
+<details class="answers"><summary>§4 · Pares &gt; 0,9 en el heatmap de las <code>mean</code>, y negativas</summary>
+<p>radius–perimeter (1,00), radius–area (0,99), perimeter–area (0,98) y concavity–concave points (0,92). Forman <strong>familias</strong>: la de <strong>tamaño</strong> (radius, perimeter, area) y la de <strong>forma irregular</strong> (compactness, concavity, concave points; compactness–concavity da 0,88).</p>
+<p>Negativas: ninguna fuerte. La más marcada es <code>mean fractal dimension</code> contra las de tamaño (≈ −0,3, débil).</p>
+</details>
+
+<details class="answers"><summary>§4 · Heatmap en valor absoluto: ¿qué ganás y qué perdés?</summary>
+<p>Ganás: ver de un vistazo qué pares están fuertemente relacionados, sin importar el signo. Perdés: la <strong>dirección</strong>. Ya no sabés si una sube cuando la otra baja.</p>
+</details>
+
+<details class="answers"><summary>§5–6 · Variables más asociadas al diagnóstico, y causalidad</summary>
+<p>Las más negativas (es decir, asociadas a <strong>maligno</strong>): <code>worst concave points</code> (−0,79), <code>worst perimeter</code> (−0,79), <code>worst radius</code> (−0,78), <code>mean concave points</code> (−0,77), <code>mean perimeter</code> (−0,75), <code>worst area</code> (−0,74). Casi nulas: <code>mean fractal dimension</code> (0,00), <code>texture error</code> (−0,03).</p>
+<p>No se puede decir que los puntos cóncavos <strong>causan</strong> el cáncer. La correlación solo dice que se mueven juntos; si hubiera una causa, lo más razonable sería al revés: el tumor cambia la forma de los núcleos. En un informe: <em>"Los valores altos de <code>worst concave points</code> están fuertemente asociados a diagnósticos malignos (r = −0,79 con target, donde 0 = maligno)."</em></p>
+</details>
+
+<h2>Práctica</h2>
+<div class="quiz" data-quiz-id="0020-relaciones-y-correlacion"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "En un scatterplot, la nube de puntos baja de izquierda a derecha, muy pegada a una línea. ¿Qué relación es?",
+   "options": ["Negativa fuerte", "Positiva fuerte", "Negativa débil", "Nula"], "answer": 0,
+   "why": "Baja → negativa. Pegada a una línea → fuerte."},
+  {"q": "¿Qué muestra la diagonal de un <code>sns.pairplot</code> sin <code>hue</code>?",
+   "options": ["El histograma de cada variable", "La correlación de cada par", "Un scatter de cada variable", "Los valores faltantes por columna"], "answer": 0,
+   "why": "Una variable contra sí misma no tiene sentido como scatter: se dibuja su distribución. Con <code>hue</code> pasan a ser curvas KDE."},
+  {"q": "¿Qué parámetro de <code>sns.pairplot</code> colorea los puntos según una variable categórica?",
+   "options": ["hue", "corner", "kind", "vars"], "answer": 0,
+   "why": "<code>hue=\"diagnostico\"</code> pinta cada punto según su grupo."},
+  {"q": "¿Qué gráfico muestra un solo scatter con la distribución de cada variable en los márgenes?",
+   "options": ["jointplot", "pairplot", "heatmap", "boxplot"], "answer": 0,
+   "why": "El jointplot combina bivariado (centro) y univariado (márgenes)."},
+  {"q": "r = 0,85 entre dos variables. ¿Cómo se clasifica?",
+   "options": ["Positiva fuerte", "Positiva moderada", "Positiva perfecta", "Negativa fuerte"], "answer": 0,
+   "why": "Entre ≈ 0,7 y 0,99 es fuerte; perfecta sería exactamente 1."},
+  {"q": "r ≈ 0 entre dos variables. ¿Qué podés afirmar?",
+   "options": ["No hay relación lineal entre ellas", "No existe ninguna relación entre ellas", "Una variable causa la otra", "Las dos tienen muchos faltantes"], "answer": 0,
+   "why": "r mide relación lineal. Puede haber una relación curva (por ejemplo en U) con r ≈ 0."},
+  {"q": "La relación entre radio y área es una curva siempre creciente. ¿Qué coeficiente da 1,00?",
+   "options": ["Spearman", "Pearson", "Los dos dan 0", "Ninguno de los dos"], "answer": 0,
+   "why": "Spearman mide relaciones monótonas (usa rangos). Pearson da 0,99 porque no es una recta exacta."},
+  {"q": "Una variable tiene muchos outliers. ¿Qué coeficiente es más confiable?",
+   "options": ["Spearman, porque usa rangos", "Pearson, porque usa los valores", "Los dos son igual de sensibles", "Ninguno se puede calcular"], "answer": 0,
+   "why": "Spearman es poco sensible a outliers; Pearson, muy sensible (radius error: 0,68 vs 0,51)."},
+  {"q": "Helados y ahogamientos tienen r = 0,89. ¿Cuál es la explicación según la lámina?",
+   "options": ["Un tercer factor: la temperatura", "Los helados causan los ahogamientos", "Es un error en los datos", "Es una correlación negativa"], "answer": 0,
+   "why": "Correlación no implica causalidad: las dos dependen de la temperatura."},
+  {"q": "Con <code>target</code> 0 = maligno, una variable tiene r = −0,79 con target. ¿Qué indica?",
+   "options": ["Valores altos se asocian a maligno", "Valores altos se asocian a benigno", "La variable causa el tumor maligno", "No tiene relación con el diagnóstico"], "answer": 0,
+   "why": "Negativa: cuando la variable sube, target baja hacia 0, que es maligno."},
+  {"q": "¿Qué perdés al graficar el heatmap de <code>corr.abs()</code>?",
+   "options": ["La dirección de la relación", "La fuerza de la relación", "Los nombres de las variables", "La diagonal de unos"], "answer": 0,
+   "why": "El valor absoluto iguala −0,8 y 0,8: conservás la intensidad pero no el signo."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Describís cualquier relación entre dos variables con dirección, fuerza y forma, elegís entre Pearson y Spearman con un motivo, y escribís un hallazgo sin afirmar causalidad.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>Notebooks <code>4_CIA_EDA</code> y <code>5_CIA_EDA</code> y las láminas 17 a 20 del <a href="../material_eda/1-Teoría-Conceptual/003_ANALISIS_EXPLORATORIO_Data_Science_RESUMIDO_2_2026.pdf">PDF de teoría</a>. Documentación: <a href="https://seaborn.pydata.org/generated/seaborn.pairplot.html">seaborn · pairplot</a> y <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html">pandas · DataFrame.corr</a>. Para ver por qué r no alcanza: el <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">cuarteto de Anscombe</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si querés, te armo un ejemplo con pocos números para calcular Spearman a mano con rangos.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0019-boxplots-y-outliers.html">← 0019 · Notebook 3</a>
+  <a href="0021-eda-automatico-y-practica.html">0021 · Notebooks 6, 7 y 8 →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

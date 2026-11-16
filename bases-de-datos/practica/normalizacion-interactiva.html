@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica · Normalización interactiva</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/normalizador.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Práctica · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Normalización interactiva: el procedimiento, paso a paso</h1>
+    <p class="masthead__standfirst">
+      Dos tablas del estilo que toma el docente, con sus definiciones textuales de cátedra.
+      Clickeá cada columna para ver de qué depende realmente, o pasá a modo examen
+      y clasificalas vos.
+    </p>
+    <p class="masthead__meta">
+      <span>~20 minutos</span>
+      <span>Clase 3 Udeci, slides 4–12</span>
+      <span>Definiciones textuales</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Las tres definiciones, textuales</h2>
+
+  <p>
+    Textuales de la <b>slide 12</b> del deck
+    <code>Clase 3 Base de Datos - Normalización Udeci.pptx</code> — verificadas dentro del
+    archivo, no de segunda mano. Son las que el docente espera leer en la hoja.
+    Memorizá <i>esta</i> redacción, no una parecida.
+  </p>
+
+  <blockquote class="callout">
+    "Una estructura de datos se encuentra en <b>1FN</b> si no poseen atributos que
+    puedan repetirse para la misma clave primaria. (Atributos Multivaluados)"
+  </blockquote>
+
+  <blockquote class="callout">
+    "Una estructura de datos se encuentra en <b>2FN</b> si se encuentra en 1FN y todos
+    sus atributos dependen funcionalmente de la totalidad de la clave primaria."
+  </blockquote>
+
+  <blockquote class="callout">
+    "Una estructura de datos se encuentra en <b>3FN</b> si se encuentra en 2FN y no
+    existe dependencia transitiva (ninguno de sus atributos depende de un campo no clave)."
+  </blockquote>
+
+  <p>
+    Tres oraciones. Cada una nombra a la anterior y agrega <b>una</b> condición.
+    Esa estructura es el andamio: si te acordás de que 2FN = 1FN + algo y
+    3FN = 2FN + algo, ya no podés perder la mitad del puntaje.
+  </p>
+
+  <h2><span class="num">02</span>Ejercicio 1 — facturación, el que tiene la trampa</h2>
+
+  <p>
+    Nueve columnas, tres filas, y un atributo que <b>no va a ninguna tabla</b>.
+    Empezá en modo Explorar; cuando creas que lo tenés, pasá a Modo examen y clasificá
+    las nueve sin ayuda.
+  </p>
+
+  <div class="callout callout--catedra">
+    <p>
+      <b>Procedencia, porque importa.</b> Esta tabla sale de
+      <code>raw/ejercicios.pdf</code>, que es un <b>apunte de alumno</b>, no material de
+      cátedra. La usamos porque tiene la misma forma que el ejercicio del modelo de parcial
+      y porque la trampa del derivado se verifica con aritmética pura. La descomposición
+      que te muestra al final es la que sale de aplicar las reglas: es defendible,
+      no es "la respuesta oficial".
+    </p>
+  </div>
+
+  <div class="nx" data-normalizador>
+<script type="application/json" class="nx__datos">
+{
+  "etiqueta": "Ejercicio 1 · Facturación",
+  "consigna": "Normalizar la siguiente tabla. Clave primaria: Factura_id + Id_producto.",
+  "clave": ["factura_id", "id_producto"],
+  "columnas": [
+    { "id": "fecha_id", "nombre": "Fecha_Id", "tipo": "parcial",
+      "determinante": ["factura_id"],
+      "porque": "La fecha es de la factura. Con el número de factura ya la tenés: el producto no aporta nada para determinarla.",
+      "destino": "Factura" },
+
+    { "id": "factura_id", "nombre": "Factura_id", "tipo": "clave",
+      "determinante": ["factura_id"],
+      "porque": "Primera mitad de la clave compuesta. Sin ella no sabés de qué factura hablás." },
+
+    { "id": "cliente_nombre", "nombre": "CLiente_Nombre", "tipo": "transitiva",
+      "determinante": ["cliente_id"],
+      "porque": "El nombre no es de la factura: es del cliente. La clave llega hasta Carlos pasando por Cliente_id, que no es clave. Por eso el mismo cliente 100 podría figurar como Carlos en una factura y Carlitos en otra.",
+      "destino": "Clientes" },
+
+    { "id": "cliente_id", "nombre": "Cliente_id", "tipo": "parcial",
+      "determinante": ["factura_id"],
+      "porque": "Quién compró lo determina la factura sola. El producto no interviene.",
+      "destino": "Factura" },
+
+    { "id": "cantidad", "nombre": "Cantidad", "tipo": "total",
+      "determinante": ["factura_id", "id_producto"],
+      "porque": "¿Cuántas unidades? Hace falta saber de qué factura Y de qué producto. Es el único atributo de toda la tabla que necesita la clave entera.",
+      "destino": "Factura_Detalle" },
+
+    { "id": "precio_total", "nombre": "Precio Total", "tipo": "derivado",
+      "determinante": ["cantidad", "precio_unitario"],
+      "porque": "Cantidad por precio unitario. En las tres filas da exacto. No es un dato: es una cuenta.",
+      "destino": "ninguna tabla — se elimina" },
+
+    { "id": "producto_nombre", "nombre": "Producto_Nombre", "tipo": "parcial",
+      "determinante": ["id_producto"],
+      "porque": "'Silla' es el nombre del producto 1 siempre, en cualquier factura. La mitad Factura_id de la clave no hace nada acá.",
+      "destino": "Productos" },
+
+    { "id": "id_producto", "nombre": "Id_producto", "tipo": "clave",
+      "determinante": ["id_producto"],
+      "porque": "Segunda mitad de la clave compuesta. Sin ella no sabés de qué renglón de la factura hablás." },
+
+    { "id": "precio_unitario", "nombre": "Precio_Unitario", "tipo": "parcial",
+      "determinante": ["id_producto"],
+      "porque": "Acá el precio se trata como del producto, no del renglón. Ojo: eso es una decisión de negocio, no un teorema. La cátedra deja viva esa ambigüedad a propósito — mirá la lección 0024.",
+      "destino": "Productos" }
+  ],
+  "filas": [
+    ["1/1/2024", 1,  "Carlos", 100, 4, 40,     "Silla",    1, 10],
+    ["2/2/2024", 40, "Ana",    125, 1, 150000, "Mesa",     2, 150000],
+    ["1/1/2024", 1,  "Carlos", 100, 1, 20000,  "Respaldo", 8, 20000]
+  ],
+  "derivado": { "col": "precio_total", "factores": ["cantidad", "precio_unitario"], "op": "×" },
+  "tituloEsquema": "La descomposición que sale de aplicar las reglas",
+  "resultado": [
+    { "tabla": "Factura",         "pk": ["Factura_Id"],                "cols": ["Fecha", "Cliente_Id"] },
+    { "tabla": "Factura_Detalle", "pk": ["Factura_Id", "Id_Producto"], "cols": ["Cantidad"] },
+    { "tabla": "Productos",       "pk": ["Id_Producto"],               "cols": ["Producto_Nombre", "Precio_Unitario"] },
+    { "tabla": "Clientes",        "pk": ["Id_Cliente"],                "cols": ["Cliente_Nombre"] }
+  ]
+}
+</script>
+  </div>
+
+  <div class="callout callout--key">
+    <p>
+      <b>Mirá el conteo.</b> De nueve columnas, <b>una sola</b> sobrevive en la tabla
+      de detalle: <code>Cantidad</code>. Dos son clave, cinco se mudan, una se borra.
+      Si tu resultado tiene más de un atributo colgando del detalle, volvé a revisar.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>El procedimiento, en el orden que corrige el docente</h2>
+
+  <p>
+    El widget te da el diagnóstico de golpe. En el papel hay que <b>mostrar los pasos</b>,
+    porque la cátedra evalúa el procedimiento. Este es el orden, con el vocabulario del deck.
+  </p>
+
+  <div class="move">
+    <p class="move__n">1FN</p>
+    <p class="move__t">Eliminar el grupo repetido</p>
+    <p>
+      La cátedra lo dice así, slide 8: <i>"Descomponer la estructura de datos en dos, una
+      de las cuales incluirá los datos atómicos (relacionados con la <b>cabecera</b>) y la
+      otra los atributos multivaluados (correspondientes a los <b>renglones</b>)."</i>
+      Los datos del producto se repiten dentro de una misma factura: se van a la tabla
+      de detalle, que hereda <code>Factura_Id</code> y suma <code>Id_Producto</code>.
+    </p>
+  </div>
+
+  <div class="move">
+    <p class="move__n">2FN</p>
+    <p class="move__t">Sacar lo que depende de media clave</p>
+    <p>
+      En el detalle, <code>Producto_Nombre</code> y <code>Precio_Unitario</code> dependen
+      de <code>Id_Producto</code> pero no de <code>Factura_Id</code>. Se van a
+      <b>Productos</b>, con <code>Id_Producto</code> de clave primaria.
+    </p>
+  </div>
+
+  <div class="move">
+    <p class="move__n">3FN</p>
+    <p class="move__t">Sacar lo que depende de un campo no clave</p>
+    <p>
+      En la cabecera, <code>Cliente_Nombre</code> depende de <code>Cliente_id</code>, que
+      no es la clave. Se va a <b>Clientes</b> junto con su determinante, y ése pasa a ser
+      la clave primaria de la tabla nueva.
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <p>
+      <b>Y el paso que no tiene número.</b> <code>Precio Total</code> se elimina, y
+      conviene eliminarlo <b>de entrada</b>, escribiendo al lado por qué:
+      <i>"atributo derivable, Precio Total = Cantidad × Precio_Unitario"</i>.
+      No lo borres en silencio — el docente quiere ver que lo detectaste.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Ejercicio 2 — órdenes, el mismo test sin trampa</h2>
+
+  <p>
+    La otra tabla del mismo apunte, también resuelta paso a paso ahí. Nueve columnas
+    otra vez, pero acá <b>no hay atributo derivado</b>. Sirve para comprobar si aprendiste
+    el test o si sólo memorizaste el resultado anterior.
+  </p>
+
+  <div class="nx" data-normalizador>
+<script type="application/json" class="nx__datos">
+{
+  "etiqueta": "Ejercicio 2 · Órdenes",
+  "consigna": "Normalizar la siguiente tabla. Clave primaria: Id_orden + Id_art.",
+  "clave": ["id_orden", "id_art"],
+  "columnas": [
+    { "id": "id_orden", "nombre": "Id_orden", "tipo": "clave",
+      "determinante": ["id_orden"],
+      "porque": "Primera mitad de la clave compuesta." },
+
+    { "id": "fecha", "nombre": "Fecha", "tipo": "parcial",
+      "determinante": ["id_orden"],
+      "porque": "La fecha es de la orden. El artículo no la determina.",
+      "destino": "Ordenes" },
+
+    { "id": "id_cliente", "nombre": "Id_cliente", "tipo": "parcial",
+      "determinante": ["id_orden"],
+      "porque": "Quién pidió lo determina la orden sola.",
+      "destino": "Ordenes" },
+
+    { "id": "nom_cliente", "nombre": "Nom_cliente", "tipo": "transitiva",
+      "determinante": ["id_cliente"],
+      "porque": "El PDF lo dice textual: Nom_cliente y Ciudad son dependientes de Id_cliente, y esa columna no es la llave primaria.",
+      "destino": "Clientes" },
+
+    { "id": "ciudad", "nombre": "Ciudad", "tipo": "transitiva",
+      "determinante": ["id_cliente"],
+      "porque": "La ciudad es del cliente, no de la orden. Misma cadena que el nombre: Id_orden → Id_cliente → Ciudad.",
+      "destino": "Clientes" },
+
+    { "id": "id_art", "nombre": "Id_art", "tipo": "clave",
+      "determinante": ["id_art"],
+      "porque": "Segunda mitad de la clave compuesta." },
+
+    { "id": "nom_art", "nombre": "Nom_art", "tipo": "parcial",
+      "determinante": ["id_art"],
+      "porque": "El artículo 4011 es 'Raqueta' en la orden 2301 y en la 2303. La orden no aporta nada.",
+      "destino": "Articulos" },
+
+    { "id": "cant", "nombre": "Cant", "tipo": "total",
+      "determinante": ["id_orden", "id_art"],
+      "porque": "El artículo 4011 va 6 veces en la orden 2301 y 2 veces en la 2303. Hacen falta las dos mitades de la clave.",
+      "destino": "Articulos_ordenes" },
+
+    { "id": "precio", "nombre": "Precio", "tipo": "parcial",
+      "determinante": ["id_art"],
+      "porque": "El PDF es explícito: Precio y Nom_art son dependientes de Id_art, pero no son dependientes de Id_orden.",
+      "destino": "Articulos" }
+  ],
+  "filas": [
+    [2301, "23/02/11", 101, "Martin", "Riobamba", 3786, "Red",     3, "35,00"],
+    [2301, "23/02/11", 101, "Martin", "Riobamba", 4011, "Raqueta", 6, "65,00"],
+    [2301, "23/02/11", 101, "Martin", "Riobamba", 9132, "Paq-3",   8, "4,75"],
+    [2302, "25/02/11", 107, "Herman", "Ambato",   5794, "Paq-6",   4, "5,00"],
+    [2303, "27/02/11", 110, "Pedro",  "Quito",    4011, "Raqueta", 2, "65,00"],
+    [2303, "27/02/11", 110, "Pedro",  "Quito",    3141, "Funda",   2, "10,00"]
+  ],
+  "tituloEsquema": "La descomposición que sale de aplicar las reglas",
+  "resultado": [
+    { "tabla": "Ordenes",           "pk": ["Id_orden"],             "cols": ["Fecha", "Id_cliente"] },
+    { "tabla": "Clientes",          "pk": ["Id_cliente"],           "cols": ["Nom_cliente", "Ciudad"] },
+    { "tabla": "Articulos",         "pk": ["Id_Art"],               "cols": ["Nom_art", "Precio"] },
+    { "tabla": "Articulos_ordenes", "pk": ["Id_orden", "Id_Art"],   "cols": ["Cant"] }
+  ]
+}
+</script>
+  </div>
+
+  <p>
+    Fijate el patrón: <b>las dos tablas dan cuatro tablas</b>, con la misma forma —
+    cabecera, detalle, catálogo de productos, catálogo de clientes. Y en las dos, el
+    único atributo que sobrevive en el detalle es la cantidad. Ese esqueleto es el
+    que tenés que poder dibujar de memoria.
+  </p>
+
+  <h2><span class="num">05</span>Control</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      En la tabla de facturación, ¿por qué <code>Producto_Nombre</code> viola la 2FN
+      y no la 3FN?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+            data-feedback="Depende de Id_producto, que ES parte de la clave. Que dependa de una PARTE de la clave compuesta es exactamente la definición de dependencia parcial, y eso es 2FN.">Porque depende de una parte de la clave</button></li>
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Correcto. Depende de Id_producto, que es media clave. Dependencia parcial, 2FN. La 3FN habla de depender de un campo que NO es clave, y no es el caso.">Porque depende de media clave, no de un no-clave</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. Precio Total es el derivado; Producto_Nombre es un dato real del producto, que simplemente está en la tabla equivocada.">Porque es un atributo calculado del producto</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      Tu resultado tiene <code>Precio Total</code> dentro de <code>Factura_Detalle</code>.
+      ¿Cuánto te descuenta el docente?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+            data-feedback="No. Está en 3FN, sí, pero la cátedra lo rotula como error igual: es el error nº 1 que marcan en todos los exámenes.">Nada: la tabla igual queda en 3FN</button></li>
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Exacto. 'Si lo ponen, está mal.' Es el error nº 1 del docente, y la slide 4 de Clase 3 rotula textual: 'Vemos campos que surgen de multiplicaciones, sumas etc. (Atributos Derivables) Pcio R = Cant x P Unit'.">Es el error nº 1: modelar un campo calculado</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No es un problema de clave primaria. El problema es que el atributo no debería existir en ninguna tabla: se calcula.">Poco: falta marcar su clave primaria</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      ¿Qué tienen en común <code>Cantidad</code> en facturación y <code>Cant</code> en
+      órdenes?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+            data-feedback="Al revés: son los únicos que NO se mudan. Se quedan en la tabla de detalle precisamente porque dependen de la clave entera.">Los dos se mudan a una tabla nueva</button></li>
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Correcto. Son los únicos atributos no clave que dependen de la clave compuesta entera, así que son lo único que queda en la tabla de detalle.">Son el único atributo que sobrevive en el detalle</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="Ninguno de los dos es derivable. Cantidad es un dato que alguien cargó; Precio Total era el calculado.">Los dos son atributos derivables</button></li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <p>
+      <b>Soy tu profe acá.</b> El widget te deja clasificar con un select. El jueves no
+      hay select: hay una hoja. Cuando saques 9 de 9 en los dos ejercicios, cerrá la
+      pestaña y rehacé el ejercicio 1 entero <b>a mano</b>, con las cuatro tablas y sus
+      claves primarias subrayadas. Ahí recién está aprendido.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../lessons/0022-segunda-forma-normal.html">Lección 0022 · 2FN</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="../lessons/0023-tercera-forma-normal.html">Lección 0023 · 3FN</a>
+  </nav>
+
+</main>
+
+<script src="../assets/normalizador.js"></script>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

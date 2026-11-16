@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 3 (2/2) · Cronograma y camino crítico</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: activity-network diagram and Gantt view of the worked example */
+  .net-figure { margin: 1.2rem 0; }
+  .net-figure .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; background: var(--card); padding: .5rem; }
+  .net-figure svg { display: block; min-width: 560px; width: 100%; height: auto; }
+  .net-figure figcaption { font-family: var(--sans); font-size: .75rem; color: var(--muted); margin-top: .4rem; }
+  .net-figure .node { fill: var(--card); stroke: var(--rule); stroke-width: 1.5; }
+  .net-figure .node.crit { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 3; }
+  .net-figure text { fill: var(--fg); font-family: var(--sans); font-size: 12px; }
+  .net-figure .nm { font-size: 14px; font-weight: 700; }
+  .net-figure .sl { font-size: 11px; fill: var(--muted); font-style: italic; }
+  .net-figure .edge { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 5 4; }
+  .net-figure .edge.crit { stroke: var(--accent); stroke-width: 3.5; stroke-dasharray: none; }
+  .net-figure .ah { fill: var(--muted); }
+  .net-figure .ah.crit { fill: var(--accent); }
+
+  .gantt-scroll { overflow-x: auto; margin: 1rem 0; }
+  .gantt { min-width: 36rem; font-family: var(--sans); font-size: .72rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--card); }
+  .gantt .g-row { display: grid; grid-template-columns: 8.5rem repeat(17, 1fr); align-items: center; min-height: 1.9rem; border-bottom: 1px solid var(--rule);
+    background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px); background-size: calc((100% - 8.5rem) / 17) 100%; background-position: 8.5rem 0; background-repeat: repeat-x; }
+  .gantt .g-row:last-child { border-bottom: 0; }
+  .gantt .g-row > * { grid-row: 1; }
+  .gantt .g-head { background-color: var(--th-bg); color: var(--th-fg); background-image: none; text-align: center; font-weight: 600; border-radius: 8px 8px 0 0; }
+  .gantt .g-head span { padding: .2rem 0; }
+  .gantt .g-lab { padding: 0 .5rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gantt .bar { height: 1.05rem; border-radius: 4px; background: var(--violet); }
+  .gantt .bar.crit { background: var(--accent); }
+  .gantt .bar.slack { background: transparent; border: 1.5px dashed var(--muted); height: .8rem; }
+  .gantt-legend { font-family: var(--sans); font-size: .72rem; color: var(--muted); display: flex; gap: 1rem; flex-wrap: wrap; }
+  .gantt-legend i { display: inline-block; width: 1.4rem; height: .6rem; border-radius: 3px; vertical-align: middle; margin-right: .3rem; }
+  .gantt-legend .c { background: var(--accent); }
+  .gantt-legend .n { background: var(--violet); }
+  .gantt-legend .s { border: 1.5px dashed var(--muted); }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 3 (2 de 2) · 26/8/2026 · Alimenta la sección 6 del TP</p>
+  <h1>Cronograma y camino crítico</h1>
+  <p class="subtitle">De la lista de actividades a una fecha final: qué depende de qué, cuánto dura cada cosa y qué tareas no pueden atrasarse.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%203%20-%20Gesti%C3%B3n%20del%20cronograma.pdf" title="Solo disponible en la copia completa con raw/">Clase 3</a>, p28 a 56</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder clasificar la relación entre dos actividades, calcular una duración esperada con PERT, encontrar el camino crítico y la holgura de una red de actividades, leer un Gantt y decir qué es la línea base.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="03a-charter-stakeholders-edt.html">Clase 3, parte 1</a>: las actividades salen de los paquetes de trabajo de la EDT y los hitos del Charter fijan fechas.</p>
+  <p><span class="to">Alimenta</span> la sección 6 del TP (Gantt), la sección 10 (las duraciones multiplican el costo de la mano de obra, <a href="04-costos-pestel.html">Clase 4</a>) y la <a href="05-riesgos-foda.html">Clase 5</a> (un retraso en el camino crítico es un riesgo de cronograma). Ver el <a href="mapa-de-conceptos.html">Mapa de conceptos</a>.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>La gestión del cronograma consiste en <em>planificar, desarrollar y controlar</em> un cronograma que organice las actividades del proyecto. Incluye estimar duraciones, identificar las relaciones entre actividades y hacer seguimiento del avance para cumplir el plazo (Clase 3, p28). Esta lección recorre esas tres piezas en orden.</p>
+
+<h2 id="idea-1">Idea 1 · Secuenciar: cuatro relaciones posibles</h2>
+<p>Secuenciar es identificar y documentar el orden lógico entre actividades (Clase 3, p30). La cátedra presenta tres tipos y aclara que hay cuatro relaciones posibles, de las cuales la más común es la primera (p31–34):</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Relación</th><th>Regla</th><th>Ejemplo de la cátedra</th></tr></thead>
+<tbody>
+<tr><td><strong>Final a Comienzo (FS)</strong></td><td>La sucesora no empieza hasta que termina la predecesora</td><td>No se pinta hasta terminar de levantar las paredes</td></tr>
+<tr><td><strong>Final a Final (FF)</strong></td><td>La sucesora no puede terminar hasta que termine la predecesora; pueden avanzar en paralelo</td><td>No se terminan los subtítulos hasta terminar de grabar los videos</td></tr>
+<tr><td><strong>Comienzo a Comienzo (SS)</strong></td><td>La sucesora no puede empezar hasta que la predecesora haya empezado</td><td>Los tests unitarios empiezan cuando ya hay algo de código del backend</td></tr>
+</tbody>
+</table>
+</div>
+<p>Además hay dos ajustes finos (p35): el <strong>adelanto</strong> (<em>lead</em>), en el que la sucesora arranca antes de que termine la predecesora, y el <strong>retraso</strong> (<em>lag</em>), en el que espera un tiempo después, por ejemplo 24 h de secado de pintura antes de colocar los muebles.</p>
+
+<h2 id="idea-2-estimar-la-duracion">Idea 2 · Estimar la duración</h2>
+<p>Métodos que enseña la cátedra (p36): <strong>juicio experto</strong>, <strong>analogía</strong> con proyectos previos, estimación <strong>paramétrica</strong> (regla de tres) y <strong>lluvia de ideas</strong>. Para imprevistos se agrega una contingencia (p37): un porcentaje, días fijos adicionales o, lo ideal, un análisis de riesgos.</p>
+<p>Para reducir la incertidumbre se combinan tres estimaciones por tarea (p38): optimista <strong>O</strong> (todo sale bien), más probable <strong>M</strong> y pesimista <strong>P</strong>.</p>
+<p class="note"><strong>Duración esperada = (O + 4·M + P) / 6.</strong> Ejemplo de la cátedra: O=4, M=6, P=14 da (4 + 24 + 14) / 6 = 7 días. Da más que M porque el caso pesimista está muy lejos.</p>
+
+<h2 id="idea-3-camino-critico-y-holgura">Idea 3 · Camino crítico y holgura</h2>
+<p>Un diagrama PERT representa las tareas, sus dependencias y sus tiempos como una red para hallar la duración total y el camino crítico. La <strong>holgura</strong> es el tiempo que una tarea puede retrasarse sin afectar la fecha final. El <strong>camino crítico</strong> es la secuencia de tareas de duración total máxima; cualquier retraso en ellas retrasa todo el proyecto (Clase 3, p45).</p>
+<p>Para calcularlo se recorre la red dos veces (método estándar, ver la nota de fuente al final):</p>
+<ol class="chain">
+  <li><strong>Pasada hacia adelante</strong><span class="q">ES (inicio temprano) = mayor EF de las predecesoras. EF (fin temprano) = ES + duración. El mayor EF es la duración total.</span></li>
+  <li data-in="duración total"><strong>Pasada hacia atrás</strong><span class="q">LF (fin tardío) = menor LS de las sucesoras (en la última, la duración total). LS (inicio tardío) = LF − duración.</span></li>
+  <li data-in="ES y LS de cada tarea"><strong>Holgura y camino crítico</strong><span class="q">Holgura = LS − ES. Las tareas con holgura 0 forman el camino crítico.</span></li>
+</ol>
+
+<h3>Ejemplo resuelto</h3>
+<p>Valores ilustrativos, no son el plan del Mapa. El tiempo se mide desde 0: una tarea de 3 días que empieza en 0 termina en 3. Primero, las duraciones esperadas con PERT:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Act.</th><th>Tarea (ilustrativa)</th><th>Predec.</th><th>O</th><th>M</th><th>P</th><th>(O+4M+P)/6</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>Relevar requisitos</td><td>—</td><td>2</td><td>3</td><td>4</td><td><strong>3</strong></td></tr>
+<tr><td>B</td><td>Diseñar interfaz</td><td>A</td><td>3</td><td>5</td><td>7</td><td><strong>5</strong></td></tr>
+<tr><td>C</td><td>Integrar datos</td><td>A</td><td>4</td><td>6</td><td>14</td><td><strong>7</strong></td></tr>
+<tr><td>D</td><td>Probar con usuarios</td><td>B</td><td>1</td><td>2</td><td>3</td><td><strong>2</strong></td></tr>
+<tr><td>E</td><td>Desarrollar vistas</td><td>C</td><td>2</td><td>4</td><td>6</td><td><strong>4</strong></td></tr>
+<tr><td>F</td><td>Puesta en marcha</td><td>D, E</td><td>2</td><td>3</td><td>4</td><td><strong>3</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>Con esas duraciones, las dos pasadas dan este resultado. Cada caja muestra ES y EF arriba, la tarea y su duración al centro, y LS y LF abajo. Se puede desplazar horizontalmente en pantallas chicas.</p>
+<figure class="net-figure">
+  <div class="scroll">
+    <svg viewBox="0 0 640 262" role="img" aria-labelledby="net-t net-d">
+      <title id="net-t">Red de actividades con camino crítico A, C, E, F</title>
+      <desc id="net-d">A dura 3 y precede a B y C. B dura 5 y precede a D. C dura 7 y precede a E. D dura 2 y E dura 4, ambas preceden a F, que dura 3. El camino crítico es A, C, E, F con 17 días. B y D tienen 4 días de holgura.</desc>
+      <defs>
+        <marker id="ah-n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="ah-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah crit" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <!-- edges -->
+      <path class="edge crit" d="M128,131 C152,131 152,211 176,211" marker-end="url(#ah-c)"/>
+      <path class="edge" d="M128,131 C152,131 152,51 176,51" marker-end="url(#ah-n)"/>
+      <path class="edge" d="M296,51 L344,51" marker-end="url(#ah-n)"/>
+      <path class="edge crit" d="M296,211 L344,211" marker-end="url(#ah-c)"/>
+      <path class="edge" d="M464,51 C488,51 488,131 512,131" marker-end="url(#ah-n)"/>
+      <path class="edge crit" d="M464,211 C488,211 488,131 512,131" marker-end="url(#ah-c)"/>
+      <!-- A -->
+      <rect class="node crit" x="8" y="88" width="120" height="86" rx="8"/>
+      <text x="16" y="105">ES 0</text><text x="120" y="105" text-anchor="end">EF 3</text>
+      <text class="nm" x="68" y="134" text-anchor="middle">A · 3 d</text>
+      <text x="16" y="164">LS 0</text><text x="120" y="164" text-anchor="end">LF 3</text>
+      <!-- B -->
+      <rect class="node" x="176" y="8" width="120" height="86" rx="8"/>
+      <text x="184" y="25">ES 3</text><text x="288" y="25" text-anchor="end">EF 8</text>
+      <text class="nm" x="236" y="50" text-anchor="middle">B · 5 d</text>
+      <text class="sl" x="236" y="65" text-anchor="middle">holgura 4</text>
+      <text x="184" y="84">LS 7</text><text x="288" y="84" text-anchor="end">LF 12</text>
+      <!-- C -->
+      <rect class="node crit" x="176" y="168" width="120" height="86" rx="8"/>
+      <text x="184" y="185">ES 3</text><text x="288" y="185" text-anchor="end">EF 10</text>
+      <text class="nm" x="236" y="214" text-anchor="middle">C · 7 d</text>
+      <text x="184" y="244">LS 3</text><text x="288" y="244" text-anchor="end">LF 10</text>
+      <!-- D -->
+      <rect class="node" x="344" y="8" width="120" height="86" rx="8"/>
+      <text x="352" y="25">ES 8</text><text x="456" y="25" text-anchor="end">EF 10</text>
+      <text class="nm" x="404" y="50" text-anchor="middle">D · 2 d</text>
+      <text class="sl" x="404" y="65" text-anchor="middle">holgura 4</text>
+      <text x="352" y="84">LS 12</text><text x="456" y="84" text-anchor="end">LF 14</text>
+      <!-- E -->
+      <rect class="node crit" x="344" y="168" width="120" height="86" rx="8"/>
+      <text x="352" y="185">ES 10</text><text x="456" y="185" text-anchor="end">EF 14</text>
+      <text class="nm" x="404" y="214" text-anchor="middle">E · 4 d</text>
+      <text x="352" y="244">LS 10</text><text x="456" y="244" text-anchor="end">LF 14</text>
+      <!-- F -->
+      <rect class="node crit" x="512" y="88" width="120" height="86" rx="8"/>
+      <text x="520" y="105">ES 14</text><text x="624" y="105" text-anchor="end">EF 17</text>
+      <text class="nm" x="572" y="134" text-anchor="middle">F · 3 d</text>
+      <text x="520" y="164">LS 14</text><text x="624" y="164" text-anchor="end">LF 17</text>
+    </svg>
+  </div>
+  <figcaption>Trazo grueso y caja rosada: camino crítico A → C → E → F. Trazo punteado: tareas con holgura.</figcaption>
+</figure>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Act.</th><th>Dur.</th><th>ES</th><th>EF</th><th>LS</th><th>LF</th><th>Holgura (LS − ES)</th><th>¿Crítica?</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>3</td><td>0</td><td>3</td><td>0</td><td>3</td><td>0</td><td>Sí</td></tr>
+<tr><td>B</td><td>5</td><td>3</td><td>8</td><td>7</td><td>12</td><td><strong>4</strong></td><td>No</td></tr>
+<tr><td>C</td><td>7</td><td>3</td><td>10</td><td>3</td><td>10</td><td>0</td><td>Sí</td></tr>
+<tr><td>D</td><td>2</td><td>8</td><td>10</td><td>12</td><td>14</td><td><strong>4</strong></td><td>No</td></tr>
+<tr><td>E</td><td>4</td><td>10</td><td>14</td><td>10</td><td>14</td><td>0</td><td>Sí</td></tr>
+<tr><td>F</td><td>3</td><td>14</td><td>17</td><td>14</td><td>17</td><td>0</td><td>Sí</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Duración total: 17 días.</strong> Camino crítico: A → C → E → F, con 3 + 7 + 4 + 3 = 17. El camino A → B → D → F suma solo 3 + 5 + 2 + 3 = 13, es decir 4 días menos: esa es la holgura de B y de D.</p>
+<p class="note"><strong>Qué pasa si algo se atrasa.</strong> Si D se atrasa 3 días, el proyecto sigue en 17 (usa parte de su holgura). Si C se atrasa 2 días, el proyecto pasa a 19. Si D se atrasa 5 días (más que su holgura), A → B → D → F suma 3 + 5 + 7 + 3 = 18: el proyecto se alarga a 18 y el camino crítico cambia.</p>
+
+<h2 id="idea-4-como-se-lee-un-gantt">Idea 4 · Cómo se lee un Gantt</h2>
+<p>El Gantt muestra las tareas en el tiempo: cuándo empieza y termina cada una, su duración y el avance. Ventajas según la cátedra: visualiza el cronograma, facilita el seguimiento y control, y mejora la comunicación del equipo (Clase 3, p40). Sus partes (p41): <strong>tareas</strong> (listado), <strong>barras</strong> (duración), <strong>eje de tiempo</strong> (días, semanas o meses) y <strong>dependencias</strong> (opcionales, indican qué debe finalizar antes). La cátedra lo ejemplifica con el lanzamiento de un producto: una tabla con duración, fechas planificadas y dependencia (p42) y su Gantt (p43), con la aclaración de que las fechas pueden ajustarse por disponibilidad de recursos, feriados o cambios.</p>
+<p>El mismo ejemplo resuelto arriba, dibujado como Gantt. La barra punteada es la holgura: la tarea puede correrse dentro de ese espacio sin mover la fecha final.</p>
+<div class="gantt-scroll">
+<div class="gantt" role="img" aria-label="Diagrama de Gantt del ejemplo: A de 0 a 3, B de 3 a 8, C de 3 a 10, D de 8 a 10, E de 10 a 14, F de 14 a 17. B y D tienen holgura de 4 días.">
+  <div class="g-row g-head"><span>Día</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span></div>
+  <div class="g-row"><span class="g-lab">A · Relevar</span><div class="bar crit" style="grid-column: 2 / 5"></div></div>
+  <div class="g-row"><span class="g-lab">B · Diseñar</span><div class="bar" style="grid-column: 5 / 10"></div><div class="bar slack" style="grid-column: 10 / 14"></div></div>
+  <div class="g-row"><span class="g-lab">C · Integrar</span><div class="bar crit" style="grid-column: 5 / 12"></div></div>
+  <div class="g-row"><span class="g-lab">D · Probar</span><div class="bar" style="grid-column: 10 / 12"></div><div class="bar slack" style="grid-column: 12 / 16"></div></div>
+  <div class="g-row"><span class="g-lab">E · Desarrollar</span><div class="bar crit" style="grid-column: 12 / 16"></div></div>
+  <div class="g-row"><span class="g-lab">F · Poner en marcha</span><div class="bar crit" style="grid-column: 16 / 19"></div></div>
+</div>
+</div>
+<p class="gantt-legend"><span><i class="c"></i>camino crítico</span><span><i class="n"></i>con holgura</span><span><i class="s"></i>holgura disponible</span></p>
+<p>Herramientas que menciona la cátedra (p50): MS Project (estándar profesional, pago), ProjectLibre y GanttProject (gratuitas), Jira, Trello y Asana (tableros ágiles), y Excel o Google Sheets para Gantt simples.</p>
+
+<h2 id="linea-base">Idea 5 · Línea base</h2>
+<p>La <strong>línea base</strong> es una versión aprobada del plan (cronograma, presupuesto y alcance) que sirve de referencia para medir el progreso y el desempeño (Clase 3, p52). Hay tres:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Línea base</th><th>Qué incluye</th><th>Cita</th></tr></thead>
+<tbody>
+<tr><td><strong>Cronograma</strong></td><td>Fechas de inicio y fin, duraciones, hitos y secuenciamiento</td><td>p53</td></tr>
+<tr><td><strong>Alcance</strong></td><td>Declaración del alcance (entregables, requisitos, límites) y EDT</td><td>p55</td></tr>
+<tr><td><strong>Costo</strong></td><td>Presupuesto detallado (costos directos e indirectos) y reservas para contingencias</td><td>p56</td></tr>
+</tbody>
+</table>
+</div>
+<p>La curva de la p54 compara el avance real con lo planificado: <em>el área entre ambas curvas es el desvío</em>. Sin línea base aprobada no hay contra qué medir.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Ejercicio de la cátedra (p48): calcular la duración total y marcar el camino crítico. A=3 (sin predecesora), B=4 (sin predecesora), C=2 (A), D=5 (B), E=2 (C), F=3 (C, D), G=2 (E, F). Antes de abrir, además, dar un ejemplo de SS.</summary>
+  <p>Duración total: <strong>14 días</strong>. Camino crítico: <strong>B → D → F → G</strong> (4 + 5 + 3 + 2 = 14, holgura 0), como indica la solución de la diapositiva 49. Verificación: A termina en 3, C en 5, E en 7, D en 9, F en 12 (espera a D, no a C), G en 14. Ejemplo de SS: escribir los tests del backend puede empezar cuando ya empezó el desarrollo (<a href="#idea-1">Idea 1</a>).</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">O = 2, M = 5, P = 14. ¿Cuál es la duración esperada según PERT?</p>
+  <div class="options">
+    <button data-ok data-why="(2 + 4×5 + 14) / 6 = 36 / 6 = 6 días (Clase 3, p38).">6 días</button>
+    <button data-why="Es M, el valor más probable, sin ponderar los extremos.">5 días</button>
+    <button data-why="Es el promedio simple (2+5+14)/3 = 7, pero PERT pondera M por 4 y divide por 6.">7 días</button>
+    <button data-why="Es P: tomar siempre el caso pesimista no es la fórmula.">14 días</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">En el ejemplo resuelto, la tarea B tiene 4 días de holgura. Si B se atrasa 3 días, ¿cuánto dura el proyecto?</p>
+  <div class="options">
+    <button data-ok data-why="B consume 3 de sus 4 días de holgura: A → B → D → F suma 16, menor que el camino crítico de 17.">Sigue en 17 días</button>
+    <button data-why="Solo se atrasaría el proyecto si B estuviera en el camino crítico o si superara su holgura.">20 días</button>
+    <button data-why="Un retraso menor que la holgura no cambia la fecha final (Clase 3, p45).">18 días</button>
+    <button data-why="Un retraso nunca acorta el proyecto.">14 días</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Qué contiene la línea base del <strong>alcance</strong>?</p>
+  <div class="options">
+    <button data-ok data-why="La declaración del alcance y la EDT definen entregables y límites (Clase 3, p55).">La declaración del alcance y la EDT</button>
+    <button data-why="Eso es la línea base del cronograma (p53).">Fechas de inicio y fin, duraciones e hitos</button>
+    <button data-why="Eso es la línea base del costo (p56).">El presupuesto detallado y las reservas de contingencia</button>
+    <button data-why="Los stakeholders se analizan en la matriz, no forman una línea base.">La matriz de stakeholders</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">El Charter dice «lanzamiento el 30/11» y el Gantt del TP termina el 15/12. ¿Cuál es el problema?</p>
+  <div class="options">
+    <button data-ok data-why="El cronograma de alto nivel del Charter (Clase 3, p15) debe coincidir con las fechas del Gantt.">Incoherencia: el Charter y el Gantt deben coincidir en hitos</button>
+    <button data-why="Un Gantt no reemplaza al Charter ni se puede apartar de él sin justificar el cambio.">Ninguno: el Gantt puede terminar cuando quiera</button>
+    <button data-why="El camino crítico se determina por dependencias y duraciones, no por una fecha decidida de antemano.">El camino crítico está mal por definición</button>
+    <button data-why="Las duraciones de la mano de obra dependen del Gantt; la fecha del Charter no cambia eso.">Falta una reserva de contingencia</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Sección 6, Gantt del proyecto completo.</strong> Receta: (1) tomar las actividades de la EDT; (2) escribir predecesoras con FS y anotar los casos de SS/FF o retrasos; (3) estimar duraciones, con PERT donde haya incertidumbre; (4) hacer las dos pasadas y marcar el camino crítico; (5) volcar todo a una hoja de cálculo o a GanttProject; (6) copiar los hitos al Charter (sección 5). Las duraciones del Gantt deben ser las mismas que usa el presupuesto de mano de obra (sección 10). Ver <a href="../tp/plan.html">Plan del TP</a> y su checklist de coherencia.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%203%20-%20Gesti%C3%B3n%20del%20cronograma.pdf" title="Solo disponible en la copia completa con raw/">Clase 3 — Gestión del cronograma</a>, diapositivas 28 a 56. Las diapositivas 40 a 43 y 54 son imágenes: se leyeron visualmente; la 47 no mostró contenido al renderizarla.
+  <br><strong>Complemento:</strong> (1) la cuarta relación, <em>Comienzo a Final (SF)</em>, en la que la sucesora no puede terminar hasta que la predecesora comience, es muy poco usada; las diapositivas dicen que hay cuatro relaciones pero solo describen tres. (2) Las pasadas hacia adelante y hacia atrás y la fórmula de holgura (LS − ES) son el método estándar para calcular el camino crítico; las diapositivas dan las definiciones (p45) y un ejercicio con solución (p48–49), pero no el procedimiento paso a paso. (3) La red y las duraciones del ejemplo resuelto son ilustrativas y propias de esta lección.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: cómo armar la red con las actividades del Mapa, cómo se ve un lag en el cálculo, o qué hacer cuando dos caminos empatan como críticos.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="03a-charter-stakeholders-edt.html">← Clase 3a · Charter y EDT</a>
+  <a href="04-costos-pestel.html">Clase 4 · Costos y PESTEL →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

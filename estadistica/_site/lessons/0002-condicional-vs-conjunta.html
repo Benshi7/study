@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 2 — Condicional vs. Conjunta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Probabilidad Básica · Lección 2 / n</span>
+<h1>Probabilidad Condicional vs. Conjunta</h1>
+<p class="subtitle">Dos preguntas que se parecen en el enunciado pero piden cuentas distintas. La confusión clásica del "y" mal traducido.</p>
+
+<h2>El problema</h2>
+<p>Frente a dos sucesos A y B, hay dos preguntas posibles:</p>
+<ol>
+  <li><strong>¿Cuál es la probabilidad de que ocurran los DOS?</strong> → probabilidad <strong>conjunta</strong>, <span class="formula">P(A∩B)</span>.</li>
+  <li><strong>Sabiendo que A YA ocurrió, ¿cuál es la probabilidad de B?</strong> → probabilidad <strong>condicional</strong>, <span class="formula">P(B/A)</span>.</li>
+</ol>
+<p>La conjunta mira el espacio muestral completo. La condicional lo <strong>reduce</strong>: una vez que sabés que A pasó, tu universo de posibilidades ya no es E, es A.</p>
+
+<h2>La fórmula que las conecta</h2>
+<div class="box">
+<span class="formula">P(A∩B) = P(A) · P(B/A)</span>
+</div>
+<p>Despejando, se obtiene la definición formal de condicional:</p>
+<div class="box">
+<span class="formula">P(B/A) = P(A∩B) / P(A)</span>, con P(A) ≠ 0
+</div>
+<p class="source">Fuente: <a href="https://www.mathsisfun.com/data/probability-events-conditional.html" target="_blank">Math is Fun — Conditional Probability</a>. La misma fuente lo resume así: la conjunta responde "¿cuál es la probabilidad de que ocurran los dos?"; la condicional responde "dado que uno ya ocurrió, ¿cuál es la probabilidad del otro?".</p>
+
+<h2>Ejemplo — extraer la condicional de datos conjuntos</h2>
+<div class="example">
+De tus amigos, 70% ama el chocolate y 35% ama chocolate Y frutilla a la vez.<br>
+Pregunta: de los que aman el chocolate, ¿qué porcentaje ama también la frutilla?<br><br>
+<span class="formula">P(Frutilla / Chocolate) = P(Choc∩Frut) / P(Choc) = 0,35 / 0,70 = 0,50</span><br>
+Es decir: <strong>50%</strong> de los que aman el chocolate también aman la frutilla — aunque en la población general solo el 35% ama ambas cosas.
+</div>
+<p>Notá la diferencia de magnitud: la conjunta (35%) y la condicional (50%) son números distintos porque miden cosas distintas. Confundirlas es el error más común de esta trampa.</p>
+
+<h2>Regla para no confundirse en el enunciado</h2>
+<table>
+<tr><th>Frase típica</th><th>Se traduce a</th></tr>
+<tr><td>"la probabilidad de que pasen A y B"</td><td class="formula">P(A∩B)</td></tr>
+<tr><td>"sabiendo que ocurrió A, la probabilidad de B"</td><td class="formula">P(B/A)</td></tr>
+<tr><td>"dado A" / "si A" / "entre los que son A"</td><td class="formula">P(B/A)</td></tr>
+<tr><td>"la probabilidad conjunta / simultánea"</td><td class="formula">P(A∩B)</td></tr>
+</table>
+
+<div class="warn">
+Si el ejercicio te da la conjunta y la probabilidad simple de un suceso (P(A) solo), y te pide la condicional (o viceversa), <strong>no las uses indistintamente</strong> — despejalas con la fórmula. Usar P(A∩B) donde corresponde P(B/A) es el error más común en este tipo de pregunta, porque numéricamente casi siempre dan valores distintos (la condicional suele ser mayor, porque el denominador se achica).
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. En una fábrica, P(defectuoso) = 3/18 y P(defectuoso ∩ máquina A) = 2/18. ¿Qué representa 2/18 dividido por 3/18?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> P(A ∩ defectuoso)</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> P(A) + P(defectuoso)</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> P(A) · P(defectuoso)</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', true)"> P(A / defectuoso)</label>
+<div id="q1a" class="feedback wrong">Eso ya está en el numerador (2/18) — dividir por P(defectuoso) te da una condicional, no otra conjunta.</div>
+<div id="q1b" class="feedback wrong">La suma no tiene sentido acá — no estás uniendo sucesos, estás condicionando.</div>
+<div id="q1c" class="feedback wrong">Ese producto se usaría si A y defectuoso fueran independientes, pero acá estás dividiendo, no multiplicando.</div>
+<div id="q1d" class="feedback correct">Dividir la conjunta P(A∩D) por la probabilidad simple P(D) da la condicional P(A/D): "de los defectuosos, qué proporción es de la máquina A".</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Un enunciado dice: "el 60% de los alumnos aprobó Estadística y el 40% aprobó Estadística Y Probabilidad". ¿Qué necesitás para hallar P(Probabilidad / Estadística)?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', true)"> Dividir 0,40 / 0,60</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> Multiplicar 0,60 · 0,40</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> Restar 0,60 − 0,40</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> Sumar 0,60 + 0,40</label>
+<div id="q2a" class="feedback correct">P(Prob/Estad) = P(Estad∩Prob)/P(Estad) = 0,40/0,60 ≈ 0,667. La condicional siempre se obtiene dividiendo la conjunta por la probabilidad simple del suceso que ya "ocurrió".</div>
+<div id="q2b" class="feedback wrong">Multiplicar te serviría si fueras del condicional a la conjunta, no al revés.</div>
+<div id="q2c" class="feedback wrong">Restar no tiene sentido matemático para pasar de conjunta a condicional.</div>
+<div id="q2d" class="feedback wrong">Sumar probabilidades de sucesos que no son excluyentes ni siquiera te daría P(A∪B) correctamente (faltaría restar la intersección), y no es lo que se pide.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. P(A) = 0,5 y P(A/B) = 0,5. ¿Qué podés concluir sobre P(A∩B)?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> P(A∩B) = 0,5 directamente, sin más cálculo</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', false)"> P(A∩B) = 1, porque A y B son iguales</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', true)"> No se puede saber P(A∩B) sin conocer P(B)</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> P(A∩B) = 0, porque son excluyentes</label>
+<div id="q3a" class="feedback wrong">P(A/B) no es lo mismo que P(A∩B) — son magnitudes distintas relacionadas por P(A∩B)=P(B)·P(A/B). Sin P(B) no podés calcular la conjunta.</div>
+<div id="q3b" class="feedback wrong">Que P(A) = P(A/B) no significa que A y B sean el mismo suceso — significa que son independientes.</div>
+<div id="q3c" class="feedback correct">Correcto — y de hecho lo interesante acá es otra cosa: como P(A) = P(A/B), esto prueba que A y B son INDEPENDIENTES (no habla directamente de la conjunta sin saber P(B)).</div>
+<div id="q3d" class="feedback wrong">Si fueran excluyentes, P(A/B) sería 0 (nunca ocurre A si ya ocurrió B) — no 0,5 como en el enunciado.</div>
+</div>
+
+<div class="ask">
+¿Alguna te costó? Decime cuál y armamos otro ejemplo numérico, o lo resolvemos juntos con diagrama de árbol.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/probability-events-conditional.html" target="_blank">Math is Fun — Conditional Probability</a>.
+<div class="nav-row">
+  <span>← <a href="0001-independencia-vs-exclusion-mutua.html">Lección 1 — Independencia vs. exclusión mutua</a></span>
+  <span>Ver también → <a href="../reference/glosario-probabilidad-basica.html">Glosario de referencia</a></span>
+  <span>Siguiente → <a href="0003-bayes-vs-probabilidad-total.html">Lección 3 — Bayes vs. probabilidad total</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

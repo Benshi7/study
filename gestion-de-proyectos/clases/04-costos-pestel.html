@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 4 · Costos y PESTEL</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: budget roll-up ladder and cumulative-cost (S) curve of the worked example */
+  .ladder { list-style: none; margin: 1.2rem 0; padding: 0; font-family: var(--sans); font-size: .82rem; }
+  .ladder li { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem .8rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--card); margin-top: -1px; }
+  .ladder li .lab { font-weight: 600; }
+  .ladder li .amt { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ladder li.sum { background: var(--accent-soft); border-color: var(--accent); }
+  .ladder li.reserve { background: var(--violet-soft); border-color: var(--violet); }
+  .ladder li .hint { display: block; font-weight: 400; font-size: .72rem; color: var(--muted); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .scurve { margin: 1.2rem 0; }
+  .scurve .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; background: var(--card); padding: .5rem; }
+  .scurve svg { display: block; min-width: 480px; width: 100%; height: auto; }
+  .scurve text { fill: var(--fg); font-family: var(--sans); font-size: 11px; }
+  .scurve .axis { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+  .scurve .gl { stroke: var(--rule); stroke-width: 1; }
+  .scurve .line { stroke: var(--accent); stroke-width: 3; fill: none; stroke-linejoin: round; }
+  .scurve .dot { fill: var(--accent); }
+  .scurve .muted { fill: var(--muted); }
+  .scurve figcaption { font-family: var(--sans); font-size: .75rem; color: var(--muted); margin-top: .4rem; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 4 · 2/9/2026 · Alimenta la sección 10 del TP</p>
+  <h1>Costos y PESTEL: del entorno al presupuesto</h1>
+  <p class="subtitle">Qué factores externos encarecen el proyecto, cómo se estima cada costo y por qué el presupuesto final tiene tres capas.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%204-%20Gesti%C3%B3n%20de%20costos.pptx.pdf" title="Solo disponible en la copia completa con raw/">Clase 4</a>, p5 a 37</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder usar PESTEL para detectar factores externos que mueven los costos, clasificar un costo (fijo o variable, directo o indirecto), calcular la mano de obra a partir de una duración, y armar la escalera del presupuesto: costos del proyecto + reserva de contingencia = línea base; línea base + reserva de gestión = presupuesto.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="03b-cronograma-camino-critico.html">Clase 3, parte 2</a> (las duraciones del Gantt multiplican las tarifas) y <a href="01-canvas.html">Clase 1</a> (la estructura de costos y los ingresos del Canvas).</p>
+  <p><span class="to">Alimenta</span> la sección 10 del TP (Presupuesto). Se apoya en la <a href="05-riesgos-foda.html">Clase 5</a>: la reserva de contingencia sale de la matriz de riesgos. Ver el conjunto en el <a href="mapa-de-conceptos.html">Mapa de conceptos</a>.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>Un presupuesto que solo suma sueldos y licencias falla por dos lados: ignora lo que cambia afuera del proyecto (inflación, leyes, tecnología) y ignora que algunas cosas van a salir mal. La cátedra resuelve lo primero con <strong>PESTEL</strong> y lo segundo con <strong>reservas</strong>. La gestión de costos es el proceso de <em>planificar, estimar, presupuestar y controlar</em> los costos para mantenerlos dentro del presupuesto aprobado (Clase 4, p12).</p>
+
+<h2 id="idea-1">Idea 1 · PESTEL: seis lentes sobre el entorno</h2>
+<p>PESTEL identifica factores externos que pueden afectar un proyecto, para entender el entorno macroeconómico y anticipar riesgos o cambios durante su ciclo de vida (Clase 4, p6). Sirve para detectar oportunidades y amenazas, para la planificación de largo plazo, para entrar a mercados nuevos y para lanzar productos (p8).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Letra</th><th>Factor</th><th>Ejemplos de la cátedra (p7)</th><th>Impacto en costos, ejemplo Tesla (p9)</th></tr></thead>
+<tbody>
+<tr><td><strong>P</strong></td><td>Político</td><td>Regulaciones, estabilidad gubernamental, políticas</td><td>Incentivos a vehículos eléctricos reducen costos de instalación</td></tr>
+<tr><td><strong>E</strong></td><td>Económico</td><td>Inflación, tipo de cambio, tasas de interés</td><td>Un euro más caro encarece los materiales importados</td></tr>
+<tr><td><strong>S</strong></td><td>Social</td><td>Comportamiento del consumidor, cambios demográficos</td><td>Buena aceptación del público justifica más inversión</td></tr>
+<tr><td><strong>T</strong></td><td>Tecnológico</td><td>Innovación, obsolescencia, digitalización</td><td>Líneas automatizadas: más inversión inicial, menos costo a largo plazo</td></tr>
+<tr><td><strong>E</strong></td><td>Ecológico</td><td>Normas ambientales, impacto climático</td><td>Reciclaje de baterías obligatorio sube costos operativos</td></tr>
+<tr><td><strong>L</strong></td><td>Legal</td><td>Leyes laborales, impositivas, comerciales</td><td>Normas laborales exigen beneficios que afectan el costo de personal</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Cómo se usa:</strong> por cada letra, una frase «este factor hace que el costo X suba o baje». Si un factor no toca ningún costo ni riesgo, se descarta. La consigna de la cátedra (p10) es la misma pregunta para cuatro empresas: <em>según el entorno, ¿es buen momento para avanzar? ¿Por qué?</em></p>
+
+<h2 id="idea-2">Idea 2 · Clasificar un costo: dos ejes independientes</h2>
+<p>Un mismo costo se clasifica con dos preguntas distintas:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Eje</th><th>Pregunta</th><th>Opciones y ejemplos (Clase 4)</th></tr></thead>
+<tbody>
+<tr><td><strong>Comportamiento</strong> (p13)</td><td>¿Cambia si cambia el trabajo?</td><td><strong>Fijo:</strong> no varía si aumenta la producción (alquiler de oficina, leasing de maquinaria). <strong>Variable:</strong> cambia con la cantidad de trabajo (materiales, mano de obra, combustible).</td></tr>
+<tr><td><strong>Asignación</strong> (p14)</td><td>¿Se atribuye a este proyecto?</td><td><strong>Directo:</strong> atribuible al trabajo del proyecto (materiales, viajes, mano de obra). <strong>Indirecto:</strong> beneficia a más de un proyecto (seguros, impuestos, alquileres).</td></tr>
+</tbody>
+</table>
+</div>
+<p>Un alquiler de oficina compartido con otros proyectos es <em>fijo</em> por comportamiento e <em>indirecto</em> por asignación. Las dos etiquetas no se excluyen.</p>
+
+<h2 id="idea-3">Idea 3 · Estimar: qué, con qué método</h2>
+<p>Las etapas de la gestión de costos son planificación, estimación, presupuestación y control (Clase 4, p15). La estimación parte de la estimación de recursos y tiempos, aplica las tasas de cada recurso, calcula un costo por paquete de trabajo y debe incluir costos directos e indirectos (p16). Hay que estimar mano de obra, materiales, subcontratistas y asesores, alquiler de equipo e instalaciones, viajes, y las dos reservas (p17).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Técnica (p18)</th><th>Base</th><th>Cuándo sirve</th></tr></thead>
+<tbody>
+<tr><td><strong>Análoga</strong></td><td>Costo real de proyectos anteriores similares</td><td>Rápida y de alto nivel; poca información detallada</td></tr>
+<tr><td><strong>Paramétrica</strong></td><td>Relaciones estadísticas, por ejemplo costo por metro cuadrado</td><td>Hay datos históricos detallados</td></tr>
+<tr><td><strong>Experta</strong></td><td>Experiencia y juicio experto</td><td>Proyectos innovadores o únicos, sin datos históricos</td></tr>
+</tbody>
+</table>
+</div>
+<p>La cátedra dedica seis diapositivas a la <strong>gestión de recursos</strong> (p32–37): planificar, estimar, adquirir, desarrollar el equipo, gestionar el equipo y controlar recursos. Para el TP alcanza con una consecuencia: <em>no hay costo sin una lista de recursos con cantidad y duración</em>.</p>
+
+<h2 id="reservas">Idea 4 · Dos reservas, dos dueños</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Reserva de contingencia (p19–20)</th><th>Reserva de gestión (p19, 21)</th></tr></thead>
+<tbody>
+<tr><td><strong>Cubre</strong></td><td>Riesgos identificados, que pueden o no ocurrir pero tienen cierta probabilidad</td><td>Eventos imprevistos o riesgos no identificados</td></tr>
+<tr><td><strong>Se calcula</strong></td><td>Con el análisis de riesgos, vinculada a riesgos específicos ya cuantificados</td><td>No se asigna a riesgos específicos; es un porcentaje decidido</td></tr>
+<tr><td><strong>Quién la usa</strong></td><td>El equipo del proyecto</td><td>Requiere aprobación de la alta dirección o del comité de control de cambios</td></tr>
+<tr><td><strong>Ejemplo de la cátedra</strong></td><td>Acero: gasto previsto $500.000; 30% de probabilidad de que suba 10%. 0,30 × 0,10 × 500.000 = <strong>$15.000</strong></td><td>Software innovador con incertidumbre técnica: 10% del presupuesto total = <strong>$100.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>La <strong>línea base</strong> es la condición contra la cual se comparan todos los demás estados del plan; para costos, es un costo fijo de referencia que permite ver dónde hubo desvíos (Clase 4, p22). La diapositiva 24 muestra cómo se arma, sumando desde abajo:</p>
+<ol class="ladder">
+  <li class="reserve"><span class="lab">Presupuesto<span class="hint">línea base + reservas de gerencia</span></span><span class="amt">$300</span></li>
+  <li class="reserve"><span class="lab">Reservas de gerencia</span><span class="amt">$60</span></li>
+  <li class="sum"><span class="lab">Línea base de costos<span class="hint">costo del proyecto + reservas de contingencia</span></span><span class="amt">$240</span></li>
+  <li class="reserve"><span class="lab">Reservas de contingencia</span><span class="amt">$40</span></li>
+  <li class="sum"><span class="lab">Proyecto<span class="hint">suma de centros contables</span></span><span class="amt">$200</span></li>
+  <li><span class="lab">Centros contables → paquetes de trabajo → actividades<span class="hint">la suma ascendente parte de las actividades</span></span><span class="amt">$40 + $70 + $90</span></li>
+</ol>
+<p>El orden de lectura importa: <strong>la reserva de gestión queda fuera de la línea base</strong>. Por eso la línea base ($240) y el presupuesto ($300) son números distintos, y por eso solo el comité puede tocar los $60.</p>
+<p>Si se acumula el costo período a período, el gráfico toma forma de <strong>curva S</strong>, que la cátedra presenta como línea base de desempeño esperado del proyecto (p23). Lento al inicio, rápido en la ejecución, lento al cierre.</p>
+
+<h2 id="ejemplo">Ejemplo resuelto: un presupuesto de punta a punta</h2>
+<p>Valores ilustrativos, no son el plan del Mapa. Se reutilizan las actividades y duraciones de la <a href="03b-cronograma-camino-critico.html">lección del Gantt</a> (la <strong>duración sale del Gantt</strong>) y los riesgos de la <a href="05-riesgos-foda.html">lección de riesgos</a> (la <strong>contingencia sale de la matriz de riesgos</strong>).</p>
+<p><strong>Paso 1 · Mano de obra por actividad</strong> = personas × tarifa por persona-día × duración en días. Se cobra el trabajo, no el camino crítico: B y D tienen holgura y aun así cuestan.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Act.</th><th>Tarea</th><th class="num">Personas</th><th class="num">Tarifa/día</th><th class="num">Días</th><th class="num">Costo</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>Relevar requisitos</td><td class="num">2</td><td class="num">$40.000</td><td class="num">3</td><td class="num">$240.000</td></tr>
+<tr><td>B</td><td>Diseñar interfaz</td><td class="num">2</td><td class="num">$40.000</td><td class="num">5</td><td class="num">$400.000</td></tr>
+<tr><td>C</td><td>Integrar datos</td><td class="num">3</td><td class="num">$50.000</td><td class="num">7</td><td class="num">$1.050.000</td></tr>
+<tr><td>D</td><td>Probar con usuarios</td><td class="num">2</td><td class="num">$40.000</td><td class="num">2</td><td class="num">$160.000</td></tr>
+<tr><td>E</td><td>Desarrollar vistas</td><td class="num">3</td><td class="num">$50.000</td><td class="num">4</td><td class="num">$600.000</td></tr>
+<tr><td>F</td><td>Puesta en marcha</td><td class="num">2</td><td class="num">$45.000</td><td class="num">3</td><td class="num">$270.000</td></tr>
+<tr><td colspan="5"><strong>Mano de obra (directo, variable)</strong></td><td class="num"><strong>$2.720.000</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Paso 2 · Otros costos.</strong> Licencias y servicios en la nube, directos: $180.000. Parte de la oficina y seguros compartidos con otros proyectos, indirectos: $100.000. Costo del proyecto: 2.720.000 + 180.000 + 100.000 = <strong>$3.000.000</strong>.</p>
+<p><strong>Paso 3 · Reserva de contingencia</strong> = suma de los EMV de la matriz de riesgos (EMV = probabilidad × impacto, Clase 5, p31). Amenazas: 90.000 + 80.000 + 50.000 + 40.000 = 260.000. Oportunidad: −50.000. Neto: <strong>$210.000</strong>. El detalle está en la <a href="05-riesgos-foda.html#ejemplo">lección de riesgos</a>.</p>
+<p><strong>Paso 4 · Línea base de costos</strong> = 3.000.000 + 210.000 = <strong>$3.210.000</strong>.</p>
+<p><strong>Paso 5 · Reserva de gestión</strong>: 10% de la línea base (decisión ilustrativa; la cátedra usa 10% del presupuesto en su ejemplo, p21) = <strong>$321.000</strong>. Presupuesto total: 3.210.000 + 321.000 = <strong>$3.531.000</strong>.</p>
+<figure class="scurve">
+  <div class="scroll">
+    <svg viewBox="0 0 520 260" role="img" aria-labelledby="sc-t sc-d">
+      <title id="sc-t">Curva S del costo acumulado de mano de obra</title>
+      <desc id="sc-d">El costo acumulado sube 240 mil en los primeros 3 días, llega a 1.850 mil en el día 10, 2.450 mil en el día 14 y 2.720 mil en el día 17. La pendiente es suave al inicio, fuerte en el medio y suave al final.</desc>
+      <line class="gl" x1="60" y1="28" x2="500" y2="28"/>
+      <line class="gl" x1="60" y1="88" x2="500" y2="88"/>
+      <line class="gl" x1="60" y1="149" x2="500" y2="149"/>
+      <path class="axis" d="M60,20 L60,210 L500,210"/>
+      <polyline class="line" points="60,210 138,194 319,85 422,44 500,26"/>
+      <circle class="dot" cx="138" cy="194" r="4"/><circle class="dot" cx="319" cy="85" r="4"/><circle class="dot" cx="422" cy="44" r="4"/><circle class="dot" cx="500" cy="26" r="4"/>
+      <text x="56" y="32" text-anchor="end" class="muted">2,7 M</text>
+      <text x="56" y="92" text-anchor="end" class="muted">1,8 M</text>
+      <text x="56" y="153" text-anchor="end" class="muted">0,9 M</text>
+      <text x="56" y="214" text-anchor="end" class="muted">0</text>
+      <text x="60" y="228" text-anchor="middle" class="muted">0</text>
+      <text x="138" y="228" text-anchor="middle" class="muted">día 3</text>
+      <text x="319" y="228" text-anchor="middle" class="muted">día 10</text>
+      <text x="422" y="228" text-anchor="middle" class="muted">día 14</text>
+      <text x="500" y="228" text-anchor="end" class="muted">día 17</text>
+      <text x="64" y="180">A: 80 mil/día</text>
+      <text x="250" y="150" text-anchor="middle">actividades en paralelo: 230 mil por día</text>
+      <text x="426" y="72" text-anchor="start">E: 150 mil</text>
+      <text x="494" y="16" text-anchor="end">F: 90 mil</text>
+    </svg>
+  </div>
+  <figcaption>Costo acumulado de mano de obra del ejemplo, sobre el cronograma del Gantt. La pendiente cambia cuando cambian las actividades en paralelo.</figcaption>
+</figure>
+
+<h2 id="idea-5-ingresos-el-otro-lado-del-canvas">Idea 5 · Ingresos: el otro lado del Canvas</h2>
+<p>Los flujos de ingresos son las fuentes con las que un proyecto o negocio genera dinero; identificarlos es fundamental para la sostenibilidad y la rentabilidad (Clase 4, p26). Tipos (p27): venta de productos o servicios, suscripción, licencias o regalías, publicidad y comisiones. Estrategias de precio (p28): por unidad, paquetes, freemium y dinámico.</p>
+<p>La diapositiva 29 agrega el <strong>valor tiempo del dinero</strong> con una inversión inicial de $1.600.000 y flujos incrementales durante 5 años; el valor actual de los flujos suma $1.527.921 y el resultado es −$72.079. Las cifras coinciden con descontar cada año a una tasa de 30% anual; la diapositiva no escribe la tasa, se deduce al recalcular. Lo que enseña: <strong>plata que llega más tarde vale menos</strong>, y una inversión puede tener flujos positivos y aun así resultar negativa.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: nombrar los seis factores de PESTEL y armar, de abajo hacia arriba, las capas del presupuesto.</summary>
+  <p>Político, Económico, Social, Tecnológico, Ecológico, Legal. Capas: actividades → paquetes de trabajo → centros contables → <strong>proyecto</strong>; + reserva de contingencia = <strong>línea base de costos</strong>; + reserva de gestión = <strong>presupuesto</strong>. Ver la <a href="#reservas">escalera</a>.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">¿Qué distingue a la reserva de contingencia de la reserva de gestión?</p>
+  <div class="options">
+    <button data-ok data-why="La contingencia cubre riesgos identificados y cuantificados; la de gestión cubre imprevistos no identificados y necesita aprobación de la alta dirección o del comité (Clase 4, p19).">La contingencia cubre riesgos identificados; la de gestión, imprevistos no identificados y requiere aprobación superior</button>
+    <button data-why="Es al revés: la de gestión no se asigna a riesgos específicos.">La contingencia no depende de riesgos y la de gestión sí</button>
+    <button data-why="Las dos son reservas financieras; lo que cambia es qué cubren y quién autoriza usarlas.">La contingencia es para costos y la de gestión para tiempos</button>
+    <button data-why="Son dos reservas distintas, con cálculo y aprobación diferentes.">Son dos nombres para la misma reserva</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Un seguro que cubre a la vez a tres proyectos de la empresa, ¿cómo se clasifica?</p>
+  <div class="options">
+    <button data-ok data-why="Beneficia a más de un proyecto: indirecto (p14). Además no cambia con el trabajo de un proyecto: fijo (p13).">Indirecto, y fijo por comportamiento</button>
+    <button data-why="Un costo directo se atribuye al trabajo de este proyecto; el seguro compartido no.">Directo y variable</button>
+    <button data-why="Los costos fijos y los indirectos no se excluyen: son dos ejes distintos.">Fijo, por lo tanto no puede ser indirecto</button>
+    <button data-why="Los seguros son un ejemplo explícito de costo indirecto en la clase (p14).">No es un costo del proyecto</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Ejemplo del acero: gasto previsto $500.000, 30% de probabilidad de que suba 10%. ¿Cuál es la reserva de contingencia?</p>
+  <div class="options">
+    <button data-ok data-why="0,30 × (10% de 500.000 = 50.000) = $15.000 (Clase 4, p20).">$15.000</button>
+    <button data-why="Es el aumento si ocurre (10% de 500.000), sin ponderar por la probabilidad.">$50.000</button>
+    <button data-why="Es 30% del gasto total, sin aplicar el 10% de aumento.">$150.000</button>
+    <button data-why="Es 10% de 50.000: se aplicó el porcentaje dos veces.">$5.000</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Según el esquema de la cátedra, ¿qué incluye la <strong>línea base de costos</strong>?</p>
+  <div class="options">
+    <button data-ok data-why="Línea base = proyecto + reservas de contingencia; la reserva de gestión se suma después para llegar al presupuesto (Clase 4, p24).">El costo del proyecto más la reserva de contingencia</button>
+    <button data-why="Eso es el presupuesto total, que suma también la reserva de gestión.">El costo del proyecto más las dos reservas</button>
+    <button data-why="Sin la contingencia sería solo el costo del proyecto, el escalón inferior.">Solo la suma de las actividades</button>
+    <button data-why="La reserva de gestión queda fuera de la línea base, porque solo la libera la alta dirección.">Solo la reserva de gestión</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Sección 10, Gestión de costos - Presupuesto.</strong> Receta: (1) tomar actividades y duraciones del Gantt (sección 6); (2) calcular mano de obra con personas × tarifa × duración; (3) sumar otros costos directos e indirectos; (4) traer la contingencia desde la Matriz de riesgos (sección 9), no inventarla; (5) obtener la línea base; (6) agregar una reserva de gestión con su porcentaje y quién la autoriza; (7) verificar que el total sea coherente con el presupuesto de alto nivel del Charter (sección 5). PESTEL puede abrir la sección o alimentar la 9: por ejemplo, el factor Legal (datos personales del perfil por hogar; la Ley 25.326 es la referencia a verificar) es candidato a riesgo y a costo de asesoría. Es una hipótesis a validar con el equipo. Ver el <a href="../tp/plan.html">Plan del TP</a>.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%204-%20Gesti%C3%B3n%20de%20costos.pptx.pdf" title="Solo disponible en la copia completa con raw/">Clase 4 — Gestión de costos</a>, diapositivas 5 a 37. Las diapositivas 9, 23, 24 y 29 son imágenes: se leyeron visualmente.
+  <br><strong>Complemento:</strong> (1) la tasa de 30% del ejemplo de valor tiempo del dinero se dedujo recalculando; no figura en la diapositiva. (2) El ejemplo resuelto (personas, tarifas, riesgos y porcentaje de reserva de gestión) es ilustrativo y propio de esta lección; solo la estructura de capas viene de la diapositiva 24.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: cómo estimar tarifas sin datos históricos, cuánto reservar como gestión y cómo justificarlo, o cómo pasar el Gantt del equipo a una tabla de costos.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="03b-cronograma-camino-critico.html">← Clase 3b · Cronograma</a>
+  <a href="05-riesgos-foda.html">Clase 5 · Riesgos y FODA →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

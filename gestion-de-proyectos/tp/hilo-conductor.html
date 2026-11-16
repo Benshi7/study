@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El hilo conductor</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+<header class="hero">
+<p class="kicker">TP · Hilo conductor</p>
+<h1>El hilo conductor del TP</h1>
+<p class="subtitle">Por qué las 10 secciones son una sola historia, y cómo se nota en el documento.</p>
+<p class="meta"><span>⏱ 15 minutos</span><span>Produce: el esqueleto del documento</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder decir, para cada sección, qué pregunta responde y qué dato le pasa a la siguiente. Es exactamente lo que la consigna exige y lo primero que se pregunta en una defensa.
+</div>
+
+<h2>El problema</h2>
+<p>La consigna termina con una advertencia: <em>"no deben ser puntos sueltos, el documento debe contener un storytelling dando continuidad y conexión entre los puntos"</em> (<a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Consigna%20TP%20Cascada.pdf">Consigna TP</a>).</p>
+<p>La trampa habitual en un TP grupal es repartir secciones ("uno hace riesgos, otro costos") y pegarlas al final. El resultado: un presupuesto que no usa las duraciones del Gantt, riesgos que nadie mencionó antes, stakeholders que aparecen de la nada.</p>
+
+<h2>La idea: cada sección consume a la anterior</h2>
+<p>En cascada primero se define y se diseña, y recién después se ejecuta (<a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%202%20%20-%20Proyectos.pdf">Clase 2</a>, p39). El documento sigue esa misma lógica: cada sección toma una <strong>salida</strong> concreta de una sección previa y la usa como <strong>entrada</strong>.</p>
+
+<ol class="chain" id="cadena">
+  <li><strong>Canvas</strong><span class="q">¿Qué negocio y para quién?</span></li>
+  <li data-in="segmento + propuesta de valor"><strong>Design Thinking</strong><span class="q">¿El problema es real? ¿Cuál es la mejor solución?</span></li>
+  <li data-in="problema validado + solución"><strong>Project Charter</strong><span class="q">¿Qué hacemos, por qué y con qué límites?</span></li>
+  <li data-in="alcance + hitos"><strong>Gantt</strong><span class="q">¿Qué tareas, en qué orden y cuánto duran?</span></li>
+  <li data-in="stakeholders principales del Charter"><strong>Matriz de stakeholders</strong><span class="q">¿A quién afecta y con cuánto poder e interés?</span></li>
+  <li data-in="stakeholders clasificados"><strong>Plan de comunicación</strong><span class="q">¿Qué, a quién, cuándo y por qué canal?</span></li>
+  <li data-in="actividades + stakeholders + contexto"><strong>Matriz de riesgos</strong><span class="q">¿Qué puede pasar y qué hacemos?</span></li>
+  <li data-in="duraciones del Gantt + EMV de riesgos"><strong>Presupuesto</strong><span class="q">¿Cuánto cuesta?</span></li>
+</ol>
+
+<p>Dos flechas sostienen todo el final del documento, y las dos están en el material de la cátedra:</p>
+<ul>
+  <li>Los costos se estiman <em>a partir de la estimación de recursos y tiempos</em>, con las tasas de cada recurso (<a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%204-%20Gesti%C3%B3n%20de%20costos.pptx.pdf">Clase 4</a>, p16). Gantt → Presupuesto.</li>
+  <li>El valor monetario esperado de cada riesgo, <strong>EMV = P × I</strong>, es con lo que <em>"generamos la reserva de contingencia"</em> (<a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%205%20-%20Gesti%C3%B3n%20de%20riesgos.pdf">Clase 5</a>, p31). Riesgos → Presupuesto.</li>
+</ul>
+
+<h3>El Charter se escribe dos veces</h3>
+<p>El Charter lleva cronograma, presupuesto y riesgos <em>de alto nivel</em>, y los stakeholders principales (<a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%203%20-%20Gesti%C3%B3n%20del%20cronograma.pdf">Clase 3</a>, p15–16). Se escribe temprano con estimaciones gruesas; cuando ya existen el Gantt, los riesgos y el presupuesto, se vuelve a él para que sus números <strong>coincidan</strong> con el detalle. Si el Charter dice "6 meses y $4M" y el Gantt suma 8 meses, en la defensa se nota.</p>
+
+<h2>Cómo se ve en el texto: la frase puente</h2>
+<p>Cada sección abre con una o dos oraciones que citan un dato <strong>concreto</strong> de la sección anterior. Plantilla:</p>
+<p class="note"><em>"En [sección anterior] vimos que [dato concreto]. Por eso, en esta sección [qué se hace con ese dato]."</em></p>
+<p>Ejemplo ilustrativo con el Canvas de insumos médicos (<a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Ejemplo%20Clase.pdf">Ejemplo Clase</a>), inventando lo que falta:</p>
+<ul>
+  <li><strong>Apertura de Design Thinking:</strong> "El Canvas mostró que clínicas y pacientes crónicos compran de forma recurrente, pero la relación hoy es reactiva. Para entender por qué, entrevistamos a…"</li>
+  <li><strong>Apertura de Riesgos:</strong> "Las actividades del camino crítico dependen de la integración con MercadoLibre. Tomándolas como punto de partida, identificamos…"</li>
+</ul>
+<p>Una apertura del tipo "A continuación se presenta la matriz de riesgos" <strong>no</strong> es puente: no cita nada de antes.</p>
+
+<h2>Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>En una hoja, sin volver arriba: escribir las 8 secciones en orden y, sobre cada flecha, qué dato pasa. Después abrir esto.</summary>
+  <p>Comparar con la <a href="#cadena">cadena</a>. Lo que más se olvida suele ser la entrada del Presupuesto (son <strong>dos</strong>: duraciones y EMV). Repetir este ejercicio un par de días después sin haber releído la lección.</p>
+</details>
+
+<h2>Práctica 2 · Preguntas</h2>
+
+<div class="quiz">
+  <p class="prompt">La reserva de contingencia del Presupuesto se calcula a partir de…</p>
+  <div class="options">
+    <button data-ok data-why="Clase 5, p31: EMV = P × I, y con ese valor se genera la reserva de contingencia.">la suma del EMV de riesgos</button>
+    <button data-why="El camino crítico define la duración total; alimenta la mano de obra, no la reserva.">la duración total del camino crítico</button>
+    <button data-why="Poder e interés deciden cómo comunicar, no cuánto dinero reservar.">el poder e interés de stakeholders</button>
+    <button data-why="Los segmentos entran por el Canvas, muy lejos del cálculo de reservas.">los segmentos de clientes del Canvas</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Un stakeholder aparece en el Plan de comunicación pero no en la Matriz de stakeholders. ¿Qué pasa?</p>
+  <div class="options">
+    <button data-ok data-why="El Plan de comunicación consume la Matriz: todo stakeholder del plan tiene que venir de ahí.">Incoherencia: la matriz debe alimentar al plan</button>
+    <button data-why="Justamente eso es lo que la consigna prohíbe: puntos sueltos.">Ninguno: cada sección se arma por separado</button>
+    <button data-why="El plan no inventa personas: comunica a los que la matriz identificó.">Ninguno: el plan siempre incluye más personas</button>
+    <button data-why="No es de formato: es una ruptura de la cadena entre secciones.">Error de formato: falta la columna canal</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Qué sección convierte "las clínicas pierden horas reponiendo insumos" en algo que el proyecto se compromete a lograr?</p>
+  <div class="options">
+    <button data-ok data-why="El Charter fija objetivos claros y medibles (Clase 3, p14); SMART viene de Clase 1.">El Charter, con objetivos SMART medibles</button>
+    <button data-why="El Canvas describe el negocio; no compromete al proyecto a una meta con fecha.">El Canvas, con propuesta de valor</button>
+    <button data-why="El Gantt ordena tareas para cumplir objetivos que ya fueron definidos antes.">El Gantt, con su camino crítico</button>
+    <button data-why="La matriz de riesgos cuida los objetivos, no los define.">La matriz, con riesgos ya priorizados</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Por qué se vuelve al Charter al final, si se escribió al principio?</p>
+  <div class="options">
+    <button data-ok data-why="Tiene cronograma, presupuesto y riesgos de alto nivel: deben cerrar con el detalle.">Sus hitos y montos deben coincidir con el detalle</button>
+    <button data-why="No existe esa regla; se revisa por coherencia, no por ritual.">Porque en cascada todo documento se reescribe al terminar</button>
+    <button data-why="Al revés: el Charter formaliza el INICIO del proyecto (Clase 3, p13).">Porque el sponsor lo aprueba recién en el cierre</button>
+    <button data-why="El Charter ya incluye riesgos de alto nivel desde su primera versión.">Porque recién ahí se agregan los riesgos del proyecto</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Cuál de estas aperturas de la sección de riesgos cumple con el storytelling?</p>
+  <div class="options">
+    <button data-ok data-why="Cita un dato concreto de la sección anterior (el Gantt) y lo usa como entrada.">Tomando las actividades del camino crítico, identificamos qué podría retrasarlas.</button>
+    <button data-why="Es una definición correcta, pero no conecta con nada del proyecto.">Un riesgo es un evento incierto que afecta al proyecto.</button>
+    <button data-why="Anuncia la sección pero no la conecta: es el típico punto suelto.">A continuación se presenta la matriz de riesgos del proyecto.</button>
+    <button data-why="Teoría genérica; no dice nada de ESTE proyecto.">La gestión de riesgos es un área clave del PMBOK.</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2>Para el equipo (10 minutos)</h2>
+<p>Abrir el documento del TP y, debajo de cada título de sección vacía, escribir <strong>solo</strong> la pregunta que responde y la frase puente con el hueco: <em>"En [sección] vimos que ___."</em> Ese esqueleto obliga a todo el equipo a pensar la cadena antes de repartir tareas.</p>
+<p>Y para la clase de hoy: tener en una oración <strong>qué problema de qué segmento</strong> resuelve el proyecto según el Canvas. Es la entrada de Design Thinking.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%203%20-%20Gesti%C3%B3n%20del%20cronograma.pdf">Clase 3 — Gestión del cronograma</a>, diapositivas 12 a 16 (Project Charter). El Charter es el centro de la cadena: leer sus 3 partes muestra de dónde sale cada sección siguiente.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Llevar al grupo o a los profesores cualquier cosa que no cierre: una flecha de la cadena, cómo escribir una frase puente o cómo aplica esto al proyecto del equipo.
+</div>
+
+<nav class="nav">
+  <a href="plan.html">← Plan del TP</a>
+  <a href="canvas-segmentos.html">Siguiente: Canvas · segmentos →</a>
+  <a href="plan.html#guias">Guías por sección</a>
+</nav>
+</main>
+<script src="assets/quiz.js"></script>
+<script src="assets/tp-data.js"></script>
+<script src="assets/tp-common.js"></script>
+</body>
+</html>

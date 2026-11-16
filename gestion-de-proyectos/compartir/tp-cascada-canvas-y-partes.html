@@ -1,0 +1,1382 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TP Cascada: Canvas y partes del trabajo</title>
+<meta name="description" content="Borrador compartido del Canvas y de las partes del TP Cascada: Modernización del Mapa Interactivo de la Ciudad.">
+<script>
+/* Apply the saved theme before first paint to avoid a flash. */
+(function () {
+  try {
+    var t = localStorage.getItem("tp-theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+  document.documentElement.classList.add("js");
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #24171f;
+  --muted: #6a5764;
+  --rule: #e6d3df;
+  --card: #ffffff;
+  --accent: #b83a95;
+  --accent-ink: #9c2a7b;
+  --accent-soft: #fbeef7;
+  --hero-bg: #b83a95;
+  --violet: #6b2fae;
+  --violet-soft: #f1eafa;
+  --th-bg: #6b2fae;
+  --th-fg: #ffffff;
+  --ok: #1f6b43;   --ok-soft: #e6f4ec;
+  --warn: #7a5200; --warn-soft: #fdf1d6;
+  --bad: #9b2c1d;  --bad-soft: #fbe9e5;
+  --gray-soft: #f2ecf0;
+  --shadow: 0 1px 2px rgba(36, 23, 31, .08);
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #1a1218;
+  --fg: #f2e9ef;
+  --muted: #b3a3ae;
+  --rule: #43303e;
+  --card: #241a22;
+  --accent: #f08fcf;
+  --accent-ink: #f08fcf;
+  --accent-soft: #33202d;
+  --hero-bg: #8f2a74;
+  --violet: #b99af0;
+  --violet-soft: #2a2038;
+  --th-bg: #4b2a78;
+  --th-fg: #f2e9ef;
+  --ok: #7fd3a0;   --ok-soft: #1c3226;
+  --warn: #f2c56b; --warn-soft: #3a2f14;
+  --bad: #f2a08f;  --bad-soft: #3a211c;
+  --gray-soft: #2d2430;
+  --shadow: none;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #1a1218;
+    --fg: #f2e9ef;
+    --muted: #b3a3ae;
+    --rule: #43303e;
+    --card: #241a22;
+    --accent: #f08fcf;
+    --accent-ink: #f08fcf;
+    --accent-soft: #33202d;
+    --hero-bg: #8f2a74;
+    --violet: #b99af0;
+    --violet-soft: #2a2038;
+    --th-bg: #4b2a78;
+    --th-fg: #f2e9ef;
+    --ok: #7fd3a0;   --ok-soft: #1c3226;
+    --warn: #f2c56b; --warn-soft: #3a2f14;
+  --bad: #f2a08f;  --bad-soft: #3a211c;
+    --gray-soft: #2d2430;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { font-size: 17px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--serif); line-height: 1.6;
+}
+a { color: var(--accent-ink); }
+main { max-width: 68rem; margin: 0 auto; padding: 1.2rem 16px 4rem; }
+h1, h2, h3 { font-family: var(--sans); line-height: 1.25; }
+h2 {
+  font-size: 1.3rem; margin: 3rem 0 .8rem; padding-bottom: .3rem;
+  border-bottom: 2px solid var(--accent);
+}
+h3 { font-size: 1rem; margin: 0 0 .4rem; }
+p { margin: .6rem 0; }
+.lede { font-size: 1.05rem; }
+.muted { color: var(--muted); }
+
+/* Theme toggle */
+.theme-toggle {
+  position: absolute; top: .7rem; right: .7rem; z-index: 10;
+  font: 600 .75rem/1 var(--sans); cursor: pointer;
+  background: var(--card); color: var(--fg);
+  border: 1px solid var(--rule); border-radius: 999px; padding: .5rem .8rem;
+  box-shadow: var(--shadow);
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+
+/* Hero: echoes the title bar of the course slides */
+.hero {
+  position: relative; overflow: hidden;
+  background: var(--hero-bg); color: #fff;
+  border-radius: 1rem 4.5rem 1rem 1rem;
+  padding: 1.6rem 1.4rem 1.5rem; margin: 2.6rem 0 1.5rem;
+}
+.hero::after {
+  content: ""; position: absolute; top: .9rem; right: .9rem;
+  width: 1.7rem; height: 2rem; background: #6b2fae;
+  border: 3px solid #fff; border-radius: 0 100% 0 100%;
+}
+.hero p { margin: 0; }
+.hero .kicker { font: 600 .72rem var(--sans); letter-spacing: .08em; text-transform: uppercase; }
+.hero h1 { font-size: 1.7rem; margin: .4rem 0 .5rem; padding-right: 2.5rem; }
+.hero .subtitle { font-style: italic; margin-bottom: .8rem; }
+.hero .dates { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font: 600 .82rem var(--sans); }
+.hero .dates span { white-space: nowrap; }
+
+/* Status chips: text label always present, color is only a reinforcement */
+.chip {
+  display: inline-block; font: 600 .68rem/1.3 var(--sans); letter-spacing: .02em;
+  padding: .12rem .5rem; border-radius: 999px; white-space: nowrap; vertical-align: middle;
+}
+.chip.hecho { background: var(--ok-soft); color: var(--ok); }
+.chip.borrador { background: var(--violet-soft); color: var(--violet); }
+.chip.clase { background: var(--warn-soft); color: var(--warn); }
+.chip.tbd { background: var(--gray-soft); color: var(--muted); }
+.chip.draft { background: var(--violet-soft); color: var(--violet); }
+.chip.prop { background: transparent; color: var(--accent-ink); border: 1px dashed var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: .5rem .9rem; align-items: center; font: .8rem var(--sans); margin: 1rem 0 0; }
+.legend dt, .legend dd { margin: 0; display: inline; }
+.legend div { display: flex; gap: .4rem; align-items: center; }
+
+/* Callouts */
+.note {
+  border-left: 4px solid var(--accent); background: var(--accent-soft);
+  padding: .7rem 1rem; margin: 1.2rem 0; border-radius: 0 8px 8px 0;
+}
+.note > strong:first-child { display: block; font: 600 .72rem var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+
+/* Project summary */
+.facts { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); margin: 1rem 0; padding: 0; list-style: none; }
+.facts li { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: .7rem .9rem; font-size: .92rem; }
+.facts strong { display: block; font: 600 .75rem var(--sans); text-transform: uppercase; letter-spacing: .05em; color: var(--accent-ink); margin-bottom: .2rem; }
+
+/* Canvas */
+.cands { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: .8rem 1rem; margin: 1rem 0; }
+.cands p { margin: .3rem 0; }
+.cands ol { margin: .4rem 0 0; padding-left: 1.3rem; font-size: .92rem; }
+.template { font-style: italic; }
+.canvas { display: grid; gap: .7rem; grid-template-columns: 1fr; margin: 1.2rem 0; }
+.cv {
+  background: var(--card); border: 1px solid var(--rule); border-top: 4px solid var(--accent);
+  border-radius: 8px; padding: .7rem .8rem; font-size: .84rem; line-height: 1.45; min-width: 0;
+}
+.cv.pv { border-top-color: var(--violet); background: var(--violet-soft); }
+.cv .n { font: 700 .72rem var(--sans); color: var(--accent-ink); }
+.cv .src { margin: .3rem 0; }
+.cv .src em { color: var(--muted); }
+.cv ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+.cv li { margin: .2rem 0; }
+.cv .prop-block { margin-top: .5rem; }
+.canvas-legend { font: .78rem var(--sans); color: var(--muted); }
+@media (min-width: 720px) {
+  .canvas { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1000px) {
+  .canvas { grid-template-columns: repeat(10, 1fr); grid-auto-rows: auto; }
+  .cv.socios { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .cv.actividades { grid-column: 3 / 5; grid-row: 1; }
+  .cv.recursos { grid-column: 3 / 5; grid-row: 2; }
+  .cv.pv { grid-column: 5 / 7; grid-row: 1 / 3; }
+  .cv.relacion { grid-column: 7 / 9; grid-row: 1; }
+  .cv.canales { grid-column: 7 / 9; grid-row: 2; }
+  .cv.segmentos { grid-column: 9 / 11; grid-row: 1 / 3; }
+  .cv.costos { grid-column: 1 / 6; grid-row: 3; }
+  .cv.ingresos { grid-column: 6 / 11; grid-row: 3; }
+}
+
+/* Chain diagram */
+.chain-wrap { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: .6rem; margin: 1rem 0; overflow-x: auto; }
+.chain-wrap svg { display: block; width: 100%; height: auto; min-width: 430px; max-width: 640px; margin: 0 auto; font-family: var(--sans); }
+.scroll-hint { display: none; font: .75rem var(--sans); color: var(--muted); margin: .2rem 0 0; }
+@media screen and (max-width: 520px) { .scroll-hint { display: block; } }
+.chain-wrap .box { fill: var(--card); stroke: var(--accent); stroke-width: 1.6; }
+.chain-wrap .box.pend { stroke: var(--violet); stroke-dasharray: 5 3; }
+.chain-wrap .box.done { fill: var(--accent-soft); }
+.chain-wrap .t { fill: var(--fg); font-size: 12.5px; font-weight: 600; }
+.chain-wrap .s { fill: var(--muted); font-size: 10.5px; }
+.chain-wrap .lbl { fill: var(--muted); font-size: 11px; }
+.chain-wrap .arr { fill: none; stroke: var(--accent-ink); stroke-width: 1.6; }
+.chain-wrap .arr.loop { stroke: var(--violet); stroke-dasharray: 4 3; }
+.chain-wrap .ah { fill: var(--accent-ink); }
+.chain-wrap .ah.v { fill: var(--violet); }
+.chain-wrap .lbl.v { fill: var(--violet); }
+.svg-note { font: .78rem var(--sans); color: var(--muted); margin: .4rem 0 0; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; margin: 1rem 0; }
+th, td { border-bottom: 1px solid var(--rule); padding: .5rem .55rem; text-align: left; vertical-align: top; }
+thead th { background: var(--th-bg); color: var(--th-fg); font: 600 .72rem var(--sans); letter-spacing: .03em; }
+tbody th { font-weight: 600; }
+td .chip { margin-top: .1rem; }
+@media screen and (max-width: 760px) {
+  table.stack, table.stack tbody, table.stack tr, table.stack th, table.stack td { display: block; width: 100%; }
+  table.stack thead { position: absolute; left: -9999px; }
+  table.stack tr { border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .7rem; margin: 0 0 .8rem; background: var(--card); }
+  table.stack td, table.stack th { border: 0; padding: .25rem 0; }
+  table.stack td::before, table.stack th[scope="row"]::before {
+    content: attr(data-label); display: block; font: 600 .66rem var(--sans);
+    text-transform: uppercase; letter-spacing: .05em; color: var(--accent-ink);
+  }
+}
+
+/* Decisions and lists */
+.decisions { padding: 0; list-style: none; counter-reset: dec; }
+.decisions > li {
+  counter-increment: dec; background: var(--card); border: 1px solid var(--rule);
+  border-radius: 8px; padding: .7rem .9rem .7rem 2.9rem; margin: .6rem 0; position: relative;
+}
+.decisions > li::before {
+  content: counter(dec); position: absolute; left: .9rem; top: .7rem;
+  font: 700 .95rem var(--sans); color: var(--accent-ink);
+}
+.decisions strong { font-family: var(--sans); font-size: .9rem; }
+.decisions .opts { margin: .3rem 0 0; font-size: .88rem; color: var(--muted); }
+.decisions .opts b { color: var(--fg); font-weight: 600; }
+.cols { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+.timeline { list-style: none; padding: 0; margin: 1rem 0; border-left: 3px solid var(--accent); }
+.timeline li { position: relative; padding: .3rem 0 .7rem 1.1rem; }
+.timeline li::before {
+  content: ""; position: absolute; left: -8px; top: .7rem; width: 13px; height: 13px;
+  border-radius: 50%; background: var(--bg); border: 3px solid var(--accent);
+}
+.timeline li.key::before { background: var(--accent); }
+.timeline .d { font: 700 .82rem var(--sans); }
+.checks { padding-left: 1.2rem; }
+.checks li { margin: .4rem 0; }
+
+footer { margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); font: .8rem var(--sans); color: var(--muted); }
+
+/* Canvas options (rendered at build time from the shared data) */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.js-only { display: none; }
+.js .tabs.js-only { display: flex; }
+.js .copy-row.js-only { display: block; }
+.star { color: var(--violet); }
+.chip.sug { background: var(--accent-soft); color: var(--accent-ink); border: 1px solid var(--accent); white-space: normal; }
+.chip.lvl-ok { background: var(--ok-soft); color: var(--ok); }
+.chip.lvl-mid { background: var(--warn-soft); color: var(--warn); }
+.chip.lvl-bad { background: var(--bad-soft); color: var(--bad); }
+.tabs { flex-wrap: wrap; gap: .5rem; margin: 1rem 0 .8rem; }
+.tabs button {
+  font: 600 .82rem/1.3 var(--sans); text-align: left; cursor: pointer; color: var(--fg);
+  background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .8rem; flex: 1 1 10rem;
+}
+.tabs button .tag { display: block; font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-ink); }
+.tabs button:hover { border-color: var(--accent); }
+.tabs button[aria-selected="true"] { background: var(--accent-soft); border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); }
+.tabs button:focus-visible, .copy-btn:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
+.opt-panel { margin: 1.4rem 0 2rem; }
+.opt-title { font-size: 1.1rem; margin: 0 0 .4rem; }
+.opt-idea { margin: .3rem 0 .8rem; }
+.opt-facts { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); margin: .8rem 0; }
+.opt-facts > div { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: .55rem .8rem; font-size: .88rem; }
+.opt-facts dt { font: 600 .68rem var(--sans); letter-spacing: .05em; text-transform: uppercase; color: var(--accent-ink); }
+.opt-facts dd { margin: .15rem 0 0; }
+.cv h3, .cv h4 { display: flex; gap: .4rem; align-items: baseline; font-family: var(--sans); font-size: .86rem; margin: 0 0 .4rem; }
+h4.sub { font: 600 .9rem var(--sans); margin: 1.2rem 0 .3rem; }
+.flow { list-style: none; padding: 0; margin: .5rem 0; display: grid; gap: .5rem; }
+.flow li { background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: .5rem .8rem; font-size: .9rem; }
+.flow .sec { font: 700 .68rem var(--sans); letter-spacing: .05em; text-transform: uppercase; color: var(--accent-ink); margin-right: .3rem; }
+.flow p { margin: .2rem 0 0; }
+.copy-btn { font: 600 .8rem var(--sans); cursor: pointer; color: var(--fg); background: var(--card); border: 1px solid var(--accent); border-radius: 999px; padding: .45rem .9rem; }
+.copy-btn:hover { background: var(--accent-soft); }
+.copy-status { font: .8rem var(--sans); color: var(--muted); margin-left: .5rem; }
+.copy-fallback { width: 100%; min-height: 9rem; margin-top: .6rem; font: .8rem/1.4 ui-monospace, monospace; background: var(--card); color: var(--fg); border: 1px solid var(--rule); border-radius: 8px; padding: .6rem; }
+.defs { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .9rem; margin: .8rem 0; font-size: .88rem; }
+.defs summary { cursor: pointer; font: 600 .85rem var(--sans); }
+.defs dt { font: 600 .75rem var(--sans); color: var(--accent-ink); margin-top: .6rem; }
+.defs dd { margin: .1rem 0 0; }
+.cap { text-align: left; font: .8rem var(--sans); caption-side: top; padding-bottom: .3rem; }
+.js tr.is-current > * { background: var(--accent-soft); }
+.vmaps { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); margin: 1rem 0; }
+.vmap { background: var(--card); border: 1px solid var(--rule); border-top: 4px solid var(--violet); border-radius: 8px; padding: .7rem .9rem; font-size: .88rem; }
+.vmap h4 { font: 600 .92rem var(--sans); margin: 0 0 .4rem; }
+.vcol { margin-top: .6rem; }
+.vh { font: 700 .68rem var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--violet); margin: 0; }
+.vmap h5 { font: 600 .8rem var(--sans); margin: .5rem 0 .1rem; }
+.vmap ul { margin: .1rem 0 0; padding-left: 1.1rem; }
+.orig td, .orig th { font-size: .85rem; }
+
+/* Print: clean A4, everything expanded, light palette */
+@media print {
+  :root, :root[data-theme="dark"] {
+    --bg: #fff; --fg: #000; --muted: #444; --rule: #ccc; --card: #fff;
+    --accent-soft: #fbeef7; --violet-soft: #f1eafa; --hero-bg: #b83a95; --th-bg: #6b2fae;
+    --accent-ink: #9c2a7b; --accent: #b83a95; --violet: #6b2fae;
+    --ok: #1f6b43; --ok-soft: #e6f4ec; --warn: #7a5200; --warn-soft: #fdf1d6;
+  --bad: #9b2c1d;  --bad-soft: #fbe9e5; --gray-soft: #f2ecf0;
+  }
+  @page { size: A4; margin: 14mm; }
+  html { font-size: 11.5px; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .theme-toggle { display: none; }
+  main { max-width: none; padding: 0; }
+  .hero { margin-top: 0; }
+  h2 { break-after: avoid; }
+  .cv, .decisions > li, .facts li, tr, .chain-wrap { break-inside: avoid; }
+  .chain-wrap { overflow: visible; }
+  .canvas { grid-template-columns: repeat(10, 1fr); }
+  .cv.socios { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .cv.actividades { grid-column: 3 / 5; grid-row: 1; }
+  .cv.recursos { grid-column: 3 / 5; grid-row: 2; }
+  .cv.pv { grid-column: 5 / 7; grid-row: 1 / 3; }
+  .cv.relacion { grid-column: 7 / 9; grid-row: 1; }
+  .cv.canales { grid-column: 7 / 9; grid-row: 2; }
+  .cv.segmentos { grid-column: 9 / 11; grid-row: 1 / 3; }
+  .cv.costos { grid-column: 1 / 6; grid-row: 3; }
+  .cv.ingresos { grid-column: 6 / 11; grid-row: 3; }
+  .cv { font-size: 9.5px; }
+  a { color: inherit; text-decoration: none; }
+  .js-only, .js .tabs.js-only, .js .copy-row.js-only { display: none !important; }
+  .opt-panel[hidden] { display: block !important; }
+  .opt-panel + .opt-panel { break-before: page; }
+  .vmap, .flow li, .opt-facts > div { break-inside: avoid; }
+  .defs > * { display: block; }
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false" aria-label="Cambiar entre modo claro y modo oscuro">Modo oscuro</button>
+
+<main>
+<header class="hero">
+  <p class="kicker">TP Cascada · Borrador compartido</p>
+  <h1>Modernización del Mapa Interactivo de la Ciudad: Canvas y partes del trabajo</h1>
+  <p class="subtitle">Taller de Gestión de Proyectos Digitales · UNICABA 2026</p>
+  <p class="dates">
+    <span>Entrega: 14/10/2026 (clase 10)</span>
+    <span>Defensa oral: 18/11/2026 (clase 15)</span>
+    <span id="countdown"></span>
+  </p>
+</header>
+
+<p class="lede">Este documento junta en un solo lugar el Canvas del proyecto con sus cuatro modelos posibles, las diez partes que pide la consigna y cómo se conectan entre sí, qué clase del taller aporta a cada parte y qué decisiones hay que tomar entre todos. Es un borrador para leer, corregir y completar en el grupo.</p>
+
+<dl class="legend" aria-label="Referencia de estados">
+  <div><dt><span class="chip hecho">Hecho</span></dt><dd>cerrado y revisado</dd></div>
+  <div><dt><span class="chip borrador">Borrador</span></dt><dd>hay texto, falta revisar</dd></div>
+  <div><dt><span class="chip clase">Pendiente de clase</span></dt><dd>falta ver el tema en el taller</dd></div>
+  <div><dt><span class="chip tbd">Por definir</span></dt><dd>todavía sin contenido</dd></div>
+</dl>
+
+<h2 id="proyecto">El proyecto en breve</h2>
+<p>La idea es modernizar el <a href="https://mapa.buenosaires.gob.ar/">Mapa Interactivo de la Ciudad</a> (hoy en su versión 4.1, con “Cómo llego”, mapas temáticos, buscador y favoritos). El punto de partida es un dolor concreto: <em>hoy el vecino tiene que saber de antemano qué preguntar, a qué organismo y en qué canal</em>. La idea fue aprobada por el profesor el 9/9.</p>
+<ul class="facts">
+  <li><strong>Visión</strong>Una identidad geográfica única que atraviesa las áreas de gobierno, en lugar de un mapa por área.</li>
+  <li><strong>Qué incluye la propuesta</strong>Perfil por hogar, proactividad (el Mapa avisa), loop de reclamos con estado visible y una vista de gestión para el gobierno.</li>
+  <li><strong>Capa reutilizable</strong>La capa geográfica como base que otros canales de la Ciudad (Boti, DisfrutemosBA) pueden consumir.</li>
+  <li><strong>Datos disponibles</strong>El GCBA publica <a href="https://buenosaires.gob.ar/gcaba_historico/innovacionytransformaciondigital/datos-abiertos-de-buenos-aires/apis">14 APIs oficiales</a> y el catálogo <a href="https://data.buenosaires.gob.ar/">BA Data</a>.</li>
+  <li><strong>Ideas a explorar (no confirmadas)</strong>Promociones del Banco Ciudad y Pase Cultural como oferta geolocalizada para el vecino.</li>
+  <li><strong>A verificar</strong>El perfil por hogar implica datos personales: hay que revisar el marco legal (Ley 25.326) antes de darlo por viable.</li>
+</ul>
+
+<h2 id="canvas">Canvas del proyecto: cuatro modelos posibles <span class="chip borrador">Borrador</span></h2>
+<p>El mismo proyecto admite más de un modelo de negocio. Las cuatro opciones usan los mismos nueve bloques del <a href="https://www.strategyzer.com/library/the-business-model-canvas">Business Model Canvas</a> (Osterwalder y Pigneur, Clase 1) y lo que cambia es <strong>quién es el cliente</strong>; por arrastre cambian quién paga, qué se investiga en Design Thinking y cuánto trabajo trae cada sección siguiente. Ninguna está acordada: es material para decidir entre todos. La opción marcada con ★ es solo la sugerencia del borrador.</p>
+<noscript><p class="muted">Sin JavaScript se muestran las cuatro opciones una debajo de otra, sin pestañas ni botón de copiar.</p></noscript>
+
+<h3 id="borrador-original">Punto de partida: el borrador original del equipo</h3>
+<p>Antes de las cuatro opciones, esto es lo que el equipo había escrito (<span class="chip draft">Borrador del equipo</span>) y lo que todavía no tenía contenido (<span class="chip tbd">Sin contenido</span>). Sirve para ver de dónde parte cada opción.</p>
+<div class="table-wrap">
+<table class="stack orig">
+  <thead><tr><th scope="col">Bloque</th><th scope="col">Estado</th><th scope="col">Texto del borrador</th></tr></thead>
+  <tbody>
+    <tr><th scope="row" data-label="Bloque">Segmentos de clientes</th><td data-label="Estado"><span class="chip draft">Borrador del equipo</span></td><td data-label="Texto del borrador">Estudiantes, trabajadores, turistas, residentes, ciudadanos y visitantes. Es casi toda la población: falta foco.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Propuesta de valor</th><td data-label="Estado"><span class="chip tbd">Sin contenido</span></td><td data-label="Texto del borrador">Falta en el borrador. Es el bloque central.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Canales</th><td data-label="Estado"><span class="chip draft">Borrador del equipo</span></td><td data-label="Texto del borrador">Publicidad, comunidades. Son formas de difusión más que puntos de contacto.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Relación con clientes</th><td data-label="Estado"><span class="chip tbd">Sin contenido</span></td><td data-label="Texto del borrador">Falta en el borrador.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Fuentes de ingresos</th><td data-label="Estado"><span class="chip draft">Borrador del equipo</span></td><td data-label="Texto del borrador">Colaboración con privados. No dice quién paga, por qué ni cuánto.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Recursos clave</th><td data-label="Estado"><span class="chip draft">Borrador del equipo</span></td><td data-label="Texto del borrador">El sistema, los usuarios.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Actividades clave</th><td data-label="Estado"><span class="chip tbd">Sin contenido</span></td><td data-label="Texto del borrador">Sin borrador.</td></tr>
+    <tr><th scope="row" data-label="Bloque">Socios clave</th><td data-label="Estado"><span class="chip draft">Borrador del equipo</span></td><td data-label="Texto del borrador">Gobierno de la Ciudad. ¿Es socio o es quien paga?</td></tr>
+    <tr><th scope="row" data-label="Bloque">Estructura de costos</th><td data-label="Estado"><span class="chip tbd">Sin contenido</span></td><td data-label="Texto del borrador">Sin borrador.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="cands">
+  <p><strong>Segmento de vecinos: cómo definirlo</strong></p>
+  <p class="template">[quiénes] que [situación] y hoy [dolor]</p>
+  <p>Los tres candidatos salen de la visión del equipo. Hay que elegir uno para investigar en Design Thinking:</p>
+  <ol>
+    <li>Hogares con chicos en edad escolar que hoy se enteran tarde de la inscripción o la vacunación. <span class="chip prop">Propuesta para empezar</span></li>
+    <li>Personas con movilidad reducida que hoy no saben qué veredas de su recorrido están en obra.</li>
+    <li>Vecinos que hacen reclamos y hoy no ven qué pasó con ellos en el mapa.</li>
+  </ol>
+</div>
+
+<div class="note" id="sugerencia"><strong>Sugerencia del borrador, a votar entre todos</strong><strong>Opción B, pero con el segmento de la A.</strong> Es decir: Canvas multilateral (vecino + GCBA), con un solo segmento de vecinos elegido y nombrado con nombre y apellido. Y mencionar C y D en una línea como alternativas evaluadas y descartadas. Eso vale doble: arregla el problema de foco del borrador y, en la defensa, muestra que hubo criterio y no una sola idea.</div>
+<h3 id="modelos">Los cuatro modelos sobre los mismos nueve bloques</h3>
+<details class="defs"><summary>Qué va en cada bloque (definiciones de la cátedra)</summary><dl><div><dt>2 · Segmentos de mercado</dt><dd>Los diferentes grupos de personas o empresas a los que una organización busca alcanzar y servir.</dd></div><div><dt>1 · Propuesta de valor</dt><dd>Conjunto de productos y servicios que crean valor para un segmento de mercado específico. Es la razón por la cual los clientes eligen una empresa en vez de otra.</dd></div><div><dt>3 · Canales</dt><dd>Cómo la organización alcanza e interactúa con sus segmentos de mercado para entregar una propuesta de valor. Son puntos de contacto.</dd></div><div><dt>4 · Relación con el cliente</dt><dd>Los tipos de relaciones que una empresa establece con un segmento de mercado específico, y cómo serán gestionados.</dd></div><div><dt>5 · Modelo de ingresos</dt><dd>Cómo una empresa obtiene dinero de cada uno de sus segmentos de clientes: de qué manera cobra y cómo monetiza su propuesta de valor.</dd></div><div><dt>6 · Recursos clave</dt><dd>Los activos esenciales que la empresa necesita para entregar su propuesta de valor, alcanzar a sus clientes, mantener relaciones y generar ingresos.</dd></div><div><dt>7 · Actividades clave</dt><dd>Las acciones más importantes que una empresa debe realizar para que su modelo de negocio funcione adecuadamente.</dd></div><div><dt>8 · Socios clave</dt><dd>La red de proveedores y socios que no puedo reemplazar fácilmente, y que hacen que nuestro modelo de negocio funcione adecuadamente.</dd></div><div><dt>9 · Estructura de costos</dt><dd>Todos los costos incurridos para poder operar el modelo de negocios diseñado en los pasos anteriores.</dd></div></dl></details>
+<div class="tabs js-only" role="tablist" aria-label="Opciones de modelo de negocio"><button type="button" role="tab" id="tab-a" aria-controls="opt-a" aria-selected="false" tabindex="-1" data-opt="a"><span class="tag">Opción A</span>Servicio público enfocado</button><button type="button" role="tab" id="tab-b" aria-controls="opt-b" aria-selected="true" tabindex="0" data-opt="b"><span class="tag">Opción B <span aria-hidden="true">★</span><span class="sr">(sugerida)</span></span>Plataforma multilateral</button><button type="button" role="tab" id="tab-c" aria-controls="opt-c" aria-selected="false" tabindex="-1" data-opt="c"><span class="tag">Opción C</span>Capa de identidad geográfica</button><button type="button" role="tab" id="tab-d" aria-controls="opt-d" aria-selected="false" tabindex="-1" data-opt="d"><span class="tag">Opción D</span>Ecosistema con beneficios</button></div>
+<div class="opts"><section class="opt-panel" id="opt-a" data-opt="a" role="tabpanel" aria-labelledby="tab-a"><h3 class="opt-title">Opción A · Servicio público enfocado</h3><p class="opt-idea">El Mapa se moderniza para resolver un dolor concreto de un grupo de vecinos. Un solo segmento, sin ingreso comercial: el modelo se financia con presupuesto y se justifica por el servicio que presta.</p><dl class="opt-facts"><div><dt>Cliente principal</dt><dd>Un segmento de vecinos de CABA</dd></div><div><dt>Quién paga</dt><dd>El GCBA, con partida presupuestaria</dd></div><div><dt>Interno / externo</dt><dd>Todo mira hacia afuera: el vecino es el cliente y el GCBA es el sponsor que financia.</dd></div><div><dt>El riesgo de elegirla</dt><dd>Van a preguntar por los ingresos. Hay que sostener que un proyecto público se mide por servicio prestado, no por facturación.</dd></div></dl><div class="canvas" role="group" aria-label="Opción A · Servicio público enfocado"><article class="cv segmentos"><h4><span class="n">2</span>Segmentos de mercado</h4><ul><li>Hogares con chicos en edad escolar en CABA que hoy se enteran tarde de la inscripción o la vacunación.</li><li>Secundario: el GCBA como sponsor que financia y decide.</li><li>Descartados por ahora: turistas, comercios, “toda la población”.</li></ul></article><article class="cv pv"><h4><span class="n">1</span>Propuesta de valor</h4><ul><li>Saber qué le corresponde a cada vecino en su cuadra, sin tener que saber de antemano qué preguntar ni a qué organismo.</li><li>Perfil por hogar: el Mapa avisa (inscripción, vacunación, obra en la vereda) en lugar de esperar la consulta.</li><li>Un solo lugar, en vez de un trámite por organismo.</li></ul></article><article class="cv canales"><h4><span class="n">3</span>Canales</h4><ul><li>mapa.buenosaires.gob.ar, el canal actual (v4.1).</li><li>Boti, el WhatsApp de la Ciudad.</li><li>miBA y notificaciones del perfil.</li><li>El 147 como canal de respaldo.</li></ul></article><article class="cv relacion"><h4><span class="n">4</span>Relación con el cliente</h4><ul><li>Autoservicio: el vecino resuelve solo, con la información encima del mapa.</li><li>Proactiva: la notificación llega sin que la pida.</li><li>Comunidad: el reclamo queda visible en el mapa con su estado.</li></ul></article><article class="cv ingresos"><h4><span class="n">5</span>Modelo de ingresos</h4><ul><li>Sin ingreso comercial. Financiación: partida presupuestaria del GCBA.</li><li>El retorno se mide, no se factura: menos consultas al 147 y más trámites autogestionados.</li><li>Es un modelo impulsado por el valor público, no por el precio.</li></ul></article><article class="cv recursos"><h4><span class="n">6</span>Recursos clave</h4><ul><li>Intelectuales: las 14 APIs oficiales del GCBA, BA Data y el geocodificador de USIG.</li><li>Intelectuales: la marca “Mapa de la Ciudad”, ya instalada.</li><li>Humanos: equipo de producto, desarrollo y diseño.</li><li>Financieros: la partida asignada al proyecto.</li></ul></article><article class="cv actividades"><h4><span class="n">7</span>Actividades clave</h4><ul><li>Integrar las APIs de las áreas dueñas del dato.</li><li>Diseñar y sostener el perfil por hogar.</li><li>Curar las capas temáticas: que el dato esté al día.</li><li>Operar el loop de reclamos de punta a punta.</li></ul></article><article class="cv socios"><h4><span class="n">8</span>Socios clave</h4><ul><li>Áreas dueñas del dato: Educación, Salud, Espacio Público, Movilidad.</li><li>USIG, por el geocodificador y la normalización de direcciones.</li><li>El equipo de Boti, para llegar por WhatsApp.</li></ul></article><article class="cv costos"><h4><span class="n">9</span>Estructura de costos</h4><ul><li>Fijo: sueldos del equipo, el rubro de mayor peso.</li><li>Variable: infraestructura cloud y servicio de mapas, por uso.</li><li>Fijo: licencias y herramientas.</li><li>Por única vez: comunicación del lanzamiento.</li></ul></article></div><h4 class="sub">Qué cambia en el resto del TP con esta opción</h4><ol class="flow"><li><span class="sec">Sección 4</span> <strong>Design Thinking</strong><p>Entrevistás a familias de ese segmento. El problema a validar es uno solo y ya está escrito.</p></li><li><span class="sec">Sección 5</span> <strong>Project Charter</strong><p>Alcance corto y nítido. El objetivo SMART mide adopción del segmento, no facturación.</p></li><li><span class="sec">Sección 6</span> <strong>Gantt</strong><p>Pocas integraciones: 3 o 4 capas. El camino crítico pasa por el acuerdo de datos con cada área.</p></li><li><span class="sec">Sección 7</span> <strong>Stakeholders</strong><p>Pocos, y casi todos internos. La matriz poder-interés queda simple.</p></li><li><span class="sec">Sección 9</span> <strong>Riesgos</strong><p>El riesgo grande es que un área no entregue el dato a tiempo. Datos personales aparece, pero acotado.</p></li><li><span class="sec">Sección 10</span> <strong>Presupuesto</strong><p>Sueldos por la duración del Gantt, más cloud. No hay ingresos que proyectar.</p></li></ol><p class="copy-row js-only"><button type="button" class="copy-btn" data-copy="a">Copiar esta opción como texto</button> <span class="copy-status" role="status" aria-live="polite"></span></p></section>
+<section class="opt-panel" id="opt-b" data-opt="b" role="tabpanel" aria-labelledby="tab-b"><h3 class="opt-title">Opción B · Plataforma multilateral <span class="star" aria-hidden="true">★</span> <span class="chip sug">Sugerencia del borrador, a votar entre todos</span></h3><p class="opt-idea">El Mapa crea valor para dos lados distintos al mismo tiempo: el vecino que lo usa y el área de gobierno que lo paga. Osterwalder llama a esto plataforma multilateral, y exige una propuesta de valor por lado.</p><dl class="opt-facts"><div><dt>Cliente principal</dt><dd>Dos: el vecino elegido y las áreas de gobierno</dd></div><div><dt>Quién paga</dt><dd>GCBA por presupuesto, más convenios con socios</dd></div><div><dt>Interno / externo</dt><dd>El borde deja de ser un problema: el lado vecino es la parte externa y el lado áreas es la interna. El Canvas los muestra como dos segmentos rotulados.</dd></div><div><dt>El riesgo de elegirla</dt><dd>Dos propuestas de valor en una sola hoja. Hay que rotularlas bien para que no se lea como desorden.</dd></div></dl><div class="canvas" role="group" aria-label="Opción B · Plataforma multilateral"><article class="cv segmentos"><h4><span class="n">2</span>Segmentos de mercado</h4><ul><li>Lado externo, principal: hogares de la Ciudad, que hoy se enteran tarde de lo que les corresponde.</li><li>Beneficiarios secundarios: visitantes y turistas, que consultan el mismo mapa sin reportar.</li><li>Lado interno: áreas que hoy mantienen su propio mapa (Educación, Salud, Espacio Público, Movilidad).</li><li>Tercer lado, opcional: socios con oferta geolocalizada (Banco Ciudad, Pase Cultural).</li></ul></article><article class="cv pv"><h4><span class="n">1</span>Propuesta de valor</h4><ul><li>Al vecino: enterarse de lo que le corresponde en su cuadra, sin saber qué preguntar ni a quién.</li><li>Al área de gobierno: la vista de gestión —dónde se concentran los reclamos— y una capa geográfica lista para consumir en vez de reconstruirla.</li><li>Al socio: llegar al vecino geolocalizado, dentro de un canal oficial.</li><li>Son dos propuestas porque son dos segmentos: quien usa no es quien paga.</li></ul></article><article class="cv canales"><h4><span class="n">3</span>Canales</h4><ul><li>Al vecino: web del mapa, Boti, miBA y notificaciones.</li><li>Al área: API pública documentada y panel de gestión.</li><li>Al socio: convenio y espacio en la capa de beneficios.</li><li>Los tres integrados sobre la misma capa de datos.</li></ul></article><article class="cv relacion"><h4><span class="n">4</span>Relación con el cliente</h4><ul><li>Vecino: autoservicio más comunidad (reclamos con estado visible).</li><li>Área de gobierno: asistencia dedicada, un referente técnico por área.</li><li>Socio: relación contractual, por convenio.</li></ul></article><article class="cv ingresos"><h4><span class="n">5</span>Modelo de ingresos</h4><ul><li>Principal: presupuesto del GCBA asignado a la plataforma.</li><li>Costos evitados: cada área que deja de mantener su mapa libera presupuesto. Es el argumento más fuerte frente al sponsor.</li><li>Convenios con socios: comisiones y canjes son fuentes válidas según la cátedra.</li><li>Al vecino no se le cobra nunca.</li></ul></article><article class="cv recursos"><h4><span class="n">6</span>Recursos clave</h4><ul><li>Intelectuales: el geocodificador, las 14 APIs y BA Data.</li><li>Intelectuales: la marca “Mapa de la Ciudad”.</li><li>Humanos: equipo de plataforma más un rol de gestión de convenios.</li><li>Financieros: la partida y el compromiso plurianual.</li></ul></article><article class="cv actividades"><h4><span class="n">7</span>Actividades clave</h4><ul><li>Construir y versionar la capa geográfica como producto: es una actividad de plataforma.</li><li>Diseñar el perfil por hogar y el loop de reclamos.</li><li>Gestionar los acuerdos de datos con cada área.</li><li>Negociar y administrar los convenios con socios.</li></ul></article><article class="cv socios"><h4><span class="n">8</span>Socios clave</h4><ul><li>Las áreas dueñas del dato: son socias y clientas al mismo tiempo.</li><li>USIG e Innovación / ASI, por infraestructura y estándares.</li><li>Boti y DisfrutemosBA, canales que consumen la capa.</li><li>Banco Ciudad y Pase Cultural, para la capa de beneficios.</li></ul></article><article class="cv costos"><h4><span class="n">9</span>Estructura de costos</h4><ul><li>Fijo: equipo de plataforma.</li><li>Variable: infraestructura y servicio de mapas, crece con el uso.</li><li>Fijo: gobierno del dato, el precio de ser plataforma.</li><li>Variable: costo de gestionar convenios.</li></ul></article></div><h4 class="sub">Qué cambia en el resto del TP con esta opción</h4><ol class="flow"><li><span class="sec">Sección 4</span> <strong>Design Thinking</strong><p>Dos investigaciones: vecinos y también empleados de las áreas. Más trabajo, bastante mejor historia.</p></li><li><span class="sec">Sección 5</span> <strong>Project Charter</strong><p>Objetivos SMART por lado: adopción del vecino y adopción interna de la capa.</p></li><li><span class="sec">Sección 6</span> <strong>Gantt</strong><p>Dos frentes: producto para el vecino y API para las áreas. El camino crítico suele pasar por la API.</p></li><li><span class="sec">Sección 7</span> <strong>Stakeholders</strong><p>La matriz se llena sola: internos con mucho poder, vecinos con mucho interés y poco poder.</p></li><li><span class="sec">Sección 9</span> <strong>Riesgos</strong><p>Los tres riesgos jugosos: datos personales (Ley 25.326), que un área no adopte la capa, y dependencia de terceros.</p></li><li><span class="sec">Sección 10</span> <strong>Presupuesto</strong><p>Dos frentes y una reserva de contingencia más grande, justificada por los EMV de la matriz.</p></li></ol><p class="copy-row js-only"><button type="button" class="copy-btn" data-copy="b">Copiar esta opción como texto</button> <span class="copy-status" role="status" aria-live="polite"></span></p></section>
+<section class="opt-panel" id="opt-c" data-opt="c" role="tabpanel" aria-labelledby="tab-c"><h3 class="opt-title">Opción C · Capa de identidad geográfica (B2G)</h3><p class="opt-idea">El producto no es la web: es la capa. Una sola identidad geográfica para toda la Ciudad, que cada área consume en lugar de mantener su propio mapa. El cliente es el Estado; el vecino es beneficiario final.</p><dl class="opt-facts"><div><dt>Cliente principal</dt><dd>Áreas de gobierno y otros productos del GCBA</dd></div><div><dt>Quién paga</dt><dd>Presupuesto central más costo compartido por área</dd></div><div><dt>Interno / externo</dt><dd>Todo es interno. Es la opción que responde la pregunta del equipo de la forma más limpia: en este Canvas no hay lado externo.</dd></div><div><dt>El riesgo de elegirla</dt><dd>Se pierde la cara visible del proyecto. El Design Thinking se hace con empleados públicos, no con vecinos, y eso hay que anunciarlo de entrada.</dd></div></dl><div class="canvas" role="group" aria-label="Opción C · Capa de identidad geográfica (B2G)"><article class="cv segmentos"><h4><span class="n">2</span>Segmentos de mercado</h4><ul><li>Áreas que hoy mantienen mapas propios: Educación, Salud, Espacio Público, Movilidad.</li><li>Productos del GCBA que necesitan geo: Boti, DisfrutemosBA, miBA.</li><li>Atención Ciudadana (147), que necesita ubicar cada consulta.</li><li>El vecino no es cliente en este modelo: es beneficiario final.</li></ul></article><article class="cv pv"><h4><span class="n">1</span>Propuesta de valor</h4><ul><li>Una sola identidad geográfica para toda la Ciudad: una dirección significa lo mismo en todos los sistemas.</li><li>Que cada área deje de construir y mantener su propio mapa.</li><li>Una sola capa de obras, reclamos y equipamiento, versionada y con soporte.</li></ul></article><article class="cv canales"><h4><span class="n">3</span>Canales</h4><ul><li>API y SDK documentados.</li><li>Catálogo interno de capas y datasets.</li><li>Comité de datos: la mesa donde se acuerda qué se publica.</li><li>Onboarding técnico área por área.</li></ul></article><article class="cv relacion"><h4><span class="n">4</span>Relación con el cliente</h4><ul><li>Asistencia personal dedicada: un referente técnico asignado por área.</li><li>Acuerdos de nivel de servicio: disponibilidad y frescura del dato.</li><li>Comunidad de práctica entre las áreas que consumen la capa.</li></ul></article><article class="cv ingresos"><h4><span class="n">5</span>Modelo de ingresos</h4><ul><li>Presupuesto central de la Secretaría que opera la plataforma.</li><li>Costo compartido: cada área aporta una parte por consumir la capa.</li><li>El valor económico real es el ahorro por no duplicar desarrollos, y hay que estimarlo con número.</li></ul></article><article class="cv recursos"><h4><span class="n">6</span>Recursos clave</h4><ul><li>Intelectuales: el geocodificador de USIG, el activo central del modelo.</li><li>Intelectuales: BA Data y las 14 APIs publicadas.</li><li>Humanos: equipo de plataforma y de gobierno del dato.</li><li>Físicos: la infraestructura donde corre la capa.</li></ul></article><article class="cv actividades"><h4><span class="n">7</span>Actividades clave</h4><ul><li>Normalizar direcciones y mantener el geocodificador.</li><li>Publicar, versionar y documentar APIs.</li><li>Gobernar el dato: quién es dueño de qué y con qué frescura.</li><li>Migrar área por área desde su mapa propio.</li></ul></article><article class="cv socios"><h4><span class="n">8</span>Socios clave</h4><ul><li>USIG, dueña histórica de la información geográfica de la Ciudad.</li><li>Innovación / ASI, por infraestructura y estándares.</li><li>Las áreas dueñas del dato: socias y clientas a la vez.</li></ul></article><article class="cv costos"><h4><span class="n">9</span>Estructura de costos</h4><ul><li>Fijo: equipo de plataforma y de datos.</li><li>Fijo: gobierno del dato, comités y documentación.</li><li>Variable: infraestructura, por volumen de consultas a la API.</li><li>Por única vez: la migración de cada área.</li></ul></article></div><h4 class="sub">Qué cambia en el resto del TP con esta opción</h4><ol class="flow"><li><span class="sec">Sección 4</span> <strong>Design Thinking</strong><p>La investigación se hace con empleados de las áreas: el usuario es quien integra la capa.</p></li><li><span class="sec">Sección 5</span> <strong>Project Charter</strong><p>El alcance es técnico: qué áreas migran en esta fase y qué APIs se publican.</p></li><li><span class="sec">Sección 6</span> <strong>Gantt</strong><p>Gantt de migración, área por área. El camino crítico es el geocodificador: sin él no migra nadie.</p></li><li><span class="sec">Sección 7</span> <strong>Stakeholders</strong><p>Es el corazón del TP: todos internos, todos con poder real de bloquear.</p></li><li><span class="sec">Sección 9</span> <strong>Riesgos</strong><p>El riesgo dominante es de adopción: que un área no quiera dejar su mapa. Político, no técnico.</p></li><li><span class="sec">Sección 10</span> <strong>Presupuesto</strong><p>Equipo fijo más infraestructura por consumo. Hay que estimar el ahorro para justificarlo.</p></li></ol><p class="copy-row js-only"><button type="button" class="copy-btn" data-copy="c">Copiar esta opción como texto</button> <span class="copy-status" role="status" aria-live="polite"></span></p></section>
+<section class="opt-panel" id="opt-d" data-opt="d" role="tabpanel" aria-labelledby="tab-d"><h3 class="opt-title">Opción D · Ecosistema con beneficios</h3><p class="opt-idea">El Mapa deja de ser sólo información y pasa a mostrar qué hay y qué beneficios hay a diez cuadras. Es la única opción que responde de frente la pregunta de los ingresos, y la que más riesgo trae.</p><dl class="opt-facts"><div><dt>Cliente principal</dt><dd>Vecino consumidor, más comercios y Banco Ciudad</dd></div><div><dt>Quién paga</dt><dd>Comisiones, espacios destacados y convenios</dd></div><div><dt>Interno / externo</dt><dd>El borde se corre hacia afuera: entran actores privados al Canvas. Hay que decir explícitamente qué dato nunca sale del Estado.</dd></div><div><dt>El riesgo de elegirla</dt><dd>Publicidad sobre un activo público, y el perfil por hogar implica datos personales (Ley 25.326). Es material de PESTEL y de matriz de riesgos.</dd></div></dl><div class="canvas" role="group" aria-label="Opción D · Ecosistema con beneficios"><article class="cv segmentos"><h4><span class="n">2</span>Segmentos de mercado</h4><ul><li>Vecinos que consumen en su barrio y buscan qué hacer cerca.</li><li>Comercios de proximidad e instituciones culturales con oferta local.</li><li>Banco Ciudad y Pase Cultural, socios con beneficios propios.</li></ul></article><article class="cv pv"><h4><span class="n">1</span>Propuesta de valor</h4><ul><li>Al vecino: descubrir qué hay y qué beneficios le corresponden a diez cuadras, en el mismo mapa donde ya busca cómo llegar.</li><li>Al comercio: visibilidad geolocalizada dentro de un canal oficial de la Ciudad.</li><li>Al socio: llegar con su beneficio en el momento y el lugar en que el vecino decide.</li></ul></article><article class="cv canales"><h4><span class="n">3</span>Canales</h4><ul><li>Web del mapa y Boti, que ya acumula más de 26 millones de conversaciones.</li><li>DisfrutemosBA para la oferta cultural.</li><li>Autogestión para que el comercio cargue y actualice su oferta.</li></ul></article><article class="cv relacion"><h4><span class="n">4</span>Relación con el cliente</h4><ul><li>Vecino: autoservicio, con recomendación según el perfil.</li><li>Comercio: autoservicio con soporte.</li><li>Socio grande: asistencia dedicada y convenio.</li></ul></article><article class="cv ingresos"><h4><span class="n">5</span>Modelo de ingresos</h4><ul><li>Comisión por beneficio canjeado.</li><li>Espacios destacados dentro de las capas temáticas.</li><li>Convenios con Banco Ciudad y Pase Cultural.</li><li>Licencia de la capa geográfica a terceros.</li><li>Al vecino no se le cobra: rompería la legitimidad del canal.</li></ul></article><article class="cv recursos"><h4><span class="n">6</span>Recursos clave</h4><ul><li>Intelectuales: el perfil del vecino, el activo más valioso y el más delicado.</li><li>Intelectuales: la marca oficial de la Ciudad, que es lo que hace confiable al beneficio.</li><li>Humanos: equipo comercial y de alianzas, que hoy no existe.</li><li>Físicos: la plataforma y el sistema de canje.</li></ul></article><article class="cv actividades"><h4><span class="n">7</span>Actividades clave</h4><ul><li>Captar y sostener la oferta de comercios.</li><li>Operar el sistema de canje y su liquidación.</li><li>Segmentar y personalizar sin cruzar la línea legal.</li><li>Auditar qué se publica con marca oficial.</li></ul></article><article class="cv socios"><h4><span class="n">8</span>Socios clave</h4><ul><li>Banco Ciudad, socio financiero y de beneficios.</li><li>Pase Cultural y el sector cultural.</li><li>Cámaras de comercio y centros comerciales a cielo abierto.</li><li>Medios de pago, para el canje.</li></ul></article><article class="cv costos"><h4><span class="n">9</span>Estructura de costos</h4><ul><li>Fijo: equipo comercial y de alianzas.</li><li>Variable: costo de adquisición de comercios.</li><li>Fijo: cumplimiento legal, auditoría y protección de datos.</li><li>Variable: infraestructura y sistema de canje.</li></ul></article></div><h4 class="sub">Qué cambia en el resto del TP con esta opción</h4><ol class="flow"><li><span class="sec">Sección 4</span> <strong>Design Thinking</strong><p>Dos usuarios a investigar: el vecino que canjea y el comercio que publica.</p></li><li><span class="sec">Sección 5</span> <strong>Project Charter</strong><p>Necesita una restricción explícita: qué dato personal no se usa nunca. Si no está, la defensa se cae.</p></li><li><span class="sec">Sección 6</span> <strong>Gantt</strong><p>Más largo: además del producto hay que sumar convenios y sistema de canje.</p></li><li><span class="sec">Sección 7</span> <strong>Stakeholders</strong><p>Aparecen externos con poder: cámaras, medios y la autoridad de protección de datos.</p></li><li><span class="sec">Sección 9</span> <strong>Riesgos</strong><p>Es la sección estrella: Ley 25.326, percepción de favorecer comercios, dependencia del socio.</p></li><li><span class="sec">Sección 10</span> <strong>Presupuesto</strong><p>El único con ingresos proyectados. También el que necesita la reserva de contingencia más alta.</p></li></ol><p class="copy-row js-only"><button type="button" class="copy-btn" data-copy="d">Copiar esta opción como texto</button> <span class="copy-status" role="status" aria-live="polite"></span></p></section></div>
+<h3 id="comparador">Comparar antes de decidir</h3>
+<p>Las cuatro son defendibles. No son igual de fáciles de escribir ni de sostener en la defensa.</p>
+<div class="table-wrap"><table class="stack" id="tabla-comparador"><caption class="muted cap">Comparación de las cuatro opciones</caption><thead><tr><th scope="col">Opción</th><th scope="col">Segmento principal</th><th scope="col">De dónde sale la plata</th><th scope="col">Trabajo en el TP</th><th scope="col">Lo que van a preguntar</th><th scope="col">Conviene si…</th></tr></thead><tbody><tr data-row="a"><th scope="row" data-label="Opción"><strong>A</strong> · Servicio público enfocado</th><td data-label="Segmento principal">Un grupo de vecinos con un dolor concreto</td><td data-label="De dónde sale la plata">Partida presupuestaria del GCBA. Sin ingreso comercial.</td><td data-label="Trabajo en el TP"><span class="chip lvl-ok">Bajo</span></td><td data-label="Lo que van a preguntar">“¿Un modelo de negocio sin ingresos?”</td><td data-label="Conviene si…">El equipo quiere entregar seguro y a tiempo.</td></tr><tr data-row="b"><th scope="row" data-label="Opción"><strong>B</strong> · Plataforma multilateral <span class="star" aria-hidden="true">★</span><span class="sr">(sugerida)</span></th><td data-label="Segmento principal">Vecino y área de gobierno (dos lados)</td><td data-label="De dónde sale la plata">Presupuesto + costos evitados + convenios con socios</td><td data-label="Trabajo en el TP"><span class="chip lvl-mid">Medio</span></td><td data-label="Lo que van a preguntar">“¿Por qué dos propuestas de valor?”</td><td data-label="Conviene si…">Quieren la nota alta y tienen las tres semanas.</td></tr><tr data-row="c"><th scope="row" data-label="Opción"><strong>C</strong> · Capa de identidad geográfica</th><td data-label="Segmento principal">Áreas de gobierno (B2G interno)</td><td data-label="De dónde sale la plata">Presupuesto central + costo compartido por área</td><td data-label="Trabajo en el TP"><span class="chip lvl-mid">Medio</span></td><td data-label="Lo que van a preguntar">“¿Y dónde queda el vecino?”</td><td data-label="Conviene si…">Les interesa más la arquitectura que la UX.</td></tr><tr data-row="d"><th scope="row" data-label="Opción"><strong>D</strong> · Ecosistema con beneficios</th><td data-label="Segmento principal">Vecino consumidor + comercios y Banco Ciudad</td><td data-label="De dónde sale la plata">Comisiones, espacios destacados, convenios</td><td data-label="Trabajo en el TP"><span class="chip lvl-bad">Alto</span></td><td data-label="Lo que van a preguntar">“¿Publicidad en un servicio público? ¿Y la Ley 25.326?”</td><td data-label="Conviene si…">Quieren lucirse en riesgos y PESTEL, y saben defenderlo.</td></tr></tbody></table></div>
+<h3 id="mapa-de-valor">Mapa de valor del segmento de ejemplo</h3>
+<p>Se desarma la propuesta de valor en seis partes, como en el ejemplo de la cátedra. Sirve para cualquiera de las cuatro opciones: el bloque de cliente se completa primero y el de valor responde a lo que aparece ahí.</p>
+<div class="vmaps"><div class="vmap"><h4>Lado vecino · <span class="muted">hogares con chicos en edad escolar</span></h4><div class="vcol"><p class="vh">Bloque de cliente</p><h5>Tareas del cliente</h5><ul><li>Inscribir a los chicos en la escuela en la fecha que corresponde.</li><li>Llevar el calendario de vacunación al día.</li><li>Llegar a la escuela, al centro de salud y al trabajo todos los días.</li><li>Reclamar cuando algo de la cuadra está roto.</li></ul><h5>Frustraciones</h5><ul><li>Hay que saber de antemano qué preguntar, a qué organismo y en qué canal.</li><li>Se enteran tarde de lo que tenía fecha de cierre.</li><li>Un trámite por organismo, cada uno con su propia web.</li><li>El reclamo se hace y después no se sabe qué pasó.</li></ul><h5>Beneficios esperados</h5><ul><li>Que le avisen antes, sin tener que preguntar.</li><li>Ver todo lo de su cuadra en un solo lugar.</li><li>Saber en qué estado está su reclamo.</li><li>Confiar en que el dato es el oficial y está al día.</li></ul></div><div class="vcol"><p class="vh">Bloque de valor</p><h5>Propuesta de valor</h5><ul><li>El Mapa le dice al vecino qué le corresponde en su cuadra, sin que tenga que saber qué preguntar.</li><li>Perfil por hogar: lo que aparece depende de dónde vive el vecino y de con quién.</li><li>Reclamos con estado visible sobre el mapa.</li></ul><h5>Generadores de alivio</h5><ul><li>Aviso proactivo por fecha y por zona: ataca directo el “me enteré tarde”.</li><li>Un solo lugar, en vez de un organismo por trámite.</li><li>El reclamo con estado en el mapa cierra el loop que hoy queda abierto.</li><li>Dato oficial, con fecha de actualización a la vista.</li></ul><h5>Generadores de satisfacción</h5><ul><li>Llega por Boti, donde el vecino ya habla con la Ciudad.</li><li>Funciona sin cuenta para lo básico: el perfil es opcional.</li><li>Una sola identidad geográfica: la dirección significa lo mismo en todos lados.</li></ul></div></div><div class="vmap"><h4>Lado GCBA (quien paga) · <span class="muted">el área del GCBA que financia y decide</span></h4><div class="vcol"><p class="vh">Bloque de cliente</p><h5>Tareas del cliente</h5><ul><li>Cumplir metas de gestión y poder mostrar resultados.</li><li>Atender el volumen de consultas y reclamos con el equipo que tiene.</li><li>Coordinar áreas que no se hablan entre sí.</li><li>Justificar cada peso del presupuesto.</li></ul><h5>Frustraciones</h5><ul><li>Cada área mantiene su propio mapa y su propia versión de la verdad.</li><li>No hay una vista única de dónde se concentran los problemas.</li><li>El vecino llama al 147 por cosas que podría autogestionar.</li><li>Cada iniciativa nueva reconstruye la capa geográfica desde cero.</li></ul><h5>Beneficios esperados</h5><ul><li>Ver en un tablero dónde se concentran los reclamos.</li><li>Dejar de pagar cuatro veces el mismo mapa.</li><li>Bajar el volumen de consultas evitables.</li><li>Poder mostrar el impacto con números.</li></ul></div><div class="vcol"><p class="vh">Bloque de valor</p><h5>Propuesta de valor</h5><ul><li>La vista de gestión: un tablero geográfico de reclamos y demanda.</li><li>Una capa reutilizable que las demás iniciativas consumen en vez de reconstruir.</li></ul><h5>Generadores de alivio</h5><ul><li>Una sola fuente geográfica: se termina la discusión sobre qué mapa vale.</li><li>Costos evitados medibles: cada área que migra libera presupuesto.</li><li>Menos consultas al 147 sobre lo que el Mapa ya resuelve.</li></ul><h5>Generadores de satisfacción</h5><ul><li>La capa la consumen Boti y DisfrutemosBA: el resultado se ve en productos que ya existen.</li><li>El Mapa como identidad de la Ciudad, no como una app más.</li><li>Datos para decidir dónde intervenir primero.</li></ul></div></div></div>
+
+<div class="note">
+  <strong>Qué le falta a este Canvas</strong>
+  <ul class="checks">
+    <li>Elegir un modelo (decisión 1) y escribirlo en una frase antes de completar los bloques. Mencionar las otras opciones en una línea como alternativas evaluadas y descartadas.</li>
+    <li>Elegir el segmento de vecinos y escribirlo con la plantilla de arriba.</li>
+    <li>Definir quién paga y cómo (decisión 4 de la lista de decisiones abiertas).</li>
+    <li>Responder cómo se separa lo interno de lo externo (pregunta para los profesores).</li>
+    <li>Reemplazar los montos “por definir” en Ingresos y Costos cuando existan el Gantt y el presupuesto.</li>
+    <li>Confirmar con fuente cualquier dato que no esté verificado (por ejemplo, la cantidad de APIs: son 14 en la página oficial).</li>
+  </ul>
+</div>
+
+<h2 id="partes">Las partes del trabajo y cómo se conectan</h2>
+<p>La consigna pide diez puntos y advierte que <em>no deben ser puntos sueltos</em>: el documento tiene que contar una historia con continuidad. En la práctica significa que cada sección usa un dato concreto de una sección anterior, y que la primera oración de cada una lo cita. Lo que sigue muestra qué le pasa cada parte a las siguientes.</p>
+
+<p class="scroll-hint">Deslizar el diagrama hacia los costados para verlo completo.</p>
+<div class="chain-wrap" id="cadena">
+<svg viewBox="0 0 404 530" role="img" aria-labelledby="chainT chainD">
+  <title id="chainT">Cadena de secciones del TP</title>
+  <desc id="chainD">El Canvas entrega segmento y propuesta de valor a Design Thinking, que entrega el problema validado al Project Charter. El Charter entrega alcance e hitos al Gantt y stakeholders principales a la matriz de stakeholders. El Gantt entrega actividades a la matriz de riesgos y duraciones al presupuesto. Los stakeholders alimentan el plan de comunicación y la matriz de riesgos. Los riesgos entregan la reserva de contingencia al presupuesto. Al final se ajusta el Charter para que coincida con el detalle.</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+    <marker id="ahv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah v" d="M0 0 L10 5 L0 10 z"/></marker>
+  </defs>
+
+  <!-- Nodes -->
+  <rect class="box done" x="125" y="10" width="150" height="46" rx="8"/>
+  <text class="t" x="200" y="31" text-anchor="middle">3 · Canvas</text>
+  <text class="s" x="200" y="46" text-anchor="middle">Clase 1 · borrador</text>
+
+  <rect class="box pend" x="125" y="90" width="150" height="46" rx="8"/>
+  <text class="t" x="200" y="111" text-anchor="middle">4 · Design Thinking</text>
+  <text class="s" x="200" y="126" text-anchor="middle">Clase 7 · pendiente</text>
+
+  <rect class="box" x="40" y="170" width="320" height="46" rx="8"/>
+  <text class="t" x="200" y="191" text-anchor="middle">5 · Project Charter</text>
+  <text class="s" x="200" y="206" text-anchor="middle">Clases 2 y 3 · se ajusta al final</text>
+
+  <rect class="box" x="40" y="270" width="150" height="46" rx="8"/>
+  <text class="t" x="115" y="291" text-anchor="middle">6 · Gantt</text>
+  <text class="s" x="115" y="306" text-anchor="middle">Clase 3</text>
+
+  <rect class="box" x="210" y="270" width="150" height="46" rx="8"/>
+  <text class="t" x="285" y="291" text-anchor="middle">7 · Stakeholders</text>
+  <text class="s" x="285" y="306" text-anchor="middle">Clase 3</text>
+
+  <rect class="box" x="40" y="370" width="150" height="46" rx="8"/>
+  <text class="t" x="115" y="391" text-anchor="middle">9 · Riesgos</text>
+  <text class="s" x="115" y="406" text-anchor="middle">Clase 5</text>
+
+  <rect class="box" x="210" y="370" width="150" height="46" rx="8"/>
+  <text class="t" x="285" y="391" text-anchor="middle">8 · Comunicación</text>
+  <text class="s" x="285" y="406" text-anchor="middle">Clase 6</text>
+
+  <rect class="box" x="40" y="470" width="320" height="46" rx="8"/>
+  <text class="t" x="200" y="491" text-anchor="middle">10 · Presupuesto</text>
+  <text class="s" x="200" y="506" text-anchor="middle">Clase 4</text>
+
+  <!-- Arrows and their labels -->
+  <path class="arr" d="M200 56 V88" marker-end="url(#ah)"/>
+  <text class="lbl" x="208" y="77">segmento + propuesta de valor</text>
+
+  <path class="arr" d="M200 136 V168" marker-end="url(#ah)"/>
+  <text class="lbl" x="208" y="157">problema validado + solución</text>
+
+  <path class="arr" d="M115 216 V268" marker-end="url(#ah)"/>
+  <text class="lbl" x="123" y="238">alcance, hitos</text>
+
+  <path class="arr" d="M285 216 V268" marker-end="url(#ah)"/>
+  <text class="lbl" x="277" y="258" text-anchor="end">stakeholders principales</text>
+
+  <path class="arr" d="M115 316 V368" marker-end="url(#ah)"/>
+  <text class="lbl" x="123" y="346">actividades</text>
+
+  <path class="arr" d="M285 316 V368" marker-end="url(#ah)"/>
+  <text class="lbl" x="293" y="339">stakeholders</text>
+  <text class="lbl" x="293" y="353">clasificados</text>
+
+  <path class="arr" d="M228 316 L172 368" marker-end="url(#ah)"/>
+  <text class="lbl" x="196" y="356">stakeholders</text>
+
+  <path class="arr" d="M115 416 V468" marker-end="url(#ah)"/>
+  <text class="lbl" x="123" y="447">EMV → reserva de contingencia</text>
+
+  <path class="arr" d="M40 293 C12 293 12 493 38 493" marker-end="url(#ah)"/>
+  <text class="lbl" x="11" y="393" text-anchor="middle" transform="rotate(-90 11 393)">duraciones</text>
+
+  <path class="arr loop" d="M360 493 C392 493 392 193 362 193" marker-end="url(#ahv)"/>
+  <text class="lbl v" x="396" y="343" text-anchor="middle" transform="rotate(90 396 343)">el Charter se ajusta al final</text>
+</svg>
+<p class="svg-note">Además de lo que muestran las flechas: la matriz de riesgos también recibe a los stakeholders (flecha diagonal). La carátula y el índice no entran en la cadena: se arman al final. Línea punteada: el Charter se escribe temprano con estimaciones gruesas y se vuelve a él cuando ya existen el Gantt, los riesgos y el presupuesto.</p>
+</div>
+
+<div class="table-wrap">
+<table class="stack">
+  <caption class="muted" style="text-align:left;font:.8rem var(--sans);caption-side:top;padding-bottom:.3rem">Las diez secciones de la consigna, en orden</caption>
+  <thead>
+    <tr><th scope="col">#</th><th scope="col">Sección</th><th scope="col">Pregunta que responde</th><th scope="col">Clase del taller</th><th scope="col">Recibe de</th><th scope="col">Entrega a</th><th scope="col">Estado</th><th scope="col">Responsable</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="#">1</td><th scope="row" data-label="Sección">Carátula</th>
+      <td data-label="Pregunta que responde">¿Quiénes somos y qué presentamos?</td>
+      <td data-label="Clase del taller">—</td><td data-label="Recibe de">—</td><td data-label="Entrega a">—</td>
+      <td data-label="Estado"><span class="chip borrador">Borrador</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">2</td><th scope="row" data-label="Sección">Índice</th>
+      <td data-label="Pregunta que responde">¿En qué orden se cuenta la historia?</td>
+      <td data-label="Clase del taller">—</td><td data-label="Recibe de">Todas las secciones</td><td data-label="Entrega a">—</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span> (se arma al final)</td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">3</td><th scope="row" data-label="Sección">Canvas del proyecto</th>
+      <td data-label="Pregunta que responde">¿Qué negocio y para quién?</td>
+      <td data-label="Clase del taller">Clase 1 · Modelo Canvas (12/8)</td><td data-label="Recibe de">—</td><td data-label="Entrega a">4 · segmento y propuesta de valor</td>
+      <td data-label="Estado"><span class="chip borrador">Borrador</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">4</td><th scope="row" data-label="Sección">Aplicar Design Thinking</th>
+      <td data-label="Pregunta que responde">¿El problema es real? ¿Cuál es la mejor solución?</td>
+      <td data-label="Clase del taller">Clase 7 · Design Thinking (23/9)</td><td data-label="Recibe de">3 · segmento y propuesta de valor</td><td data-label="Entrega a">5 · problema validado y solución</td>
+      <td data-label="Estado"><span class="chip clase">Pendiente de clase</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">5</td><th scope="row" data-label="Sección">Project Charter</th>
+      <td data-label="Pregunta que responde">¿Qué hacemos, por qué y con qué límites?</td>
+      <td data-label="Clase del taller">Clase 2 · Proyectos (19/8) y Clase 3 · Cronograma (26/8)</td><td data-label="Recibe de">3 y 4</td><td data-label="Entrega a">6, 7, 9 y 10 · objetivos SMART, alcance, hitos, presupuesto y riesgos de alto nivel, stakeholders principales</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">6</td><th scope="row" data-label="Sección">Gantt del proyecto completo</th>
+      <td data-label="Pregunta que responde">¿Qué tareas, en qué orden y cuánto duran?</td>
+      <td data-label="Clase del taller">Clase 3 · Gestión del cronograma (26/8)</td><td data-label="Recibe de">5 · alcance e hitos</td><td data-label="Entrega a">9 y 10 · actividades, duraciones y camino crítico</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">7</td><th scope="row" data-label="Sección">Matriz de stakeholders</th>
+      <td data-label="Pregunta que responde">¿A quién afecta y con cuánto poder e interés?</td>
+      <td data-label="Clase del taller">Clase 3 · Gestión del cronograma (26/8)</td><td data-label="Recibe de">5 · stakeholders principales</td><td data-label="Entrega a">8 y 9 · stakeholders clasificados</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">8</td><th scope="row" data-label="Sección">Plan de comunicación</th>
+      <td data-label="Pregunta que responde">¿Qué, a quién, cuándo y por qué canal?</td>
+      <td data-label="Clase del taller">Clase 6 · Comunicación (16/9)</td><td data-label="Recibe de">7 · stakeholders clasificados</td><td data-label="Entrega a">Cierra la cadena de comunicación</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">9</td><th scope="row" data-label="Sección">Gestión de riesgos: matriz de riesgos</th>
+      <td data-label="Pregunta que responde">¿Qué puede pasar y qué hacemos?</td>
+      <td data-label="Clase del taller">Clase 5 · Gestión de riesgos (9/9)</td><td data-label="Recibe de">5, 6 y 7 · riesgos de alto nivel, actividades y stakeholders</td><td data-label="Entrega a">10 · valor esperado (EMV) y reserva de contingencia</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+    <tr>
+      <td data-label="#">10</td><th scope="row" data-label="Sección">Gestión de costos: presupuesto</th>
+      <td data-label="Pregunta que responde">¿Cuánto cuesta?</td>
+      <td data-label="Clase del taller">Clase 4 · Gestión de costos (2/9)</td><td data-label="Recibe de">6 · duraciones, y 9 · reserva de contingencia</td><td data-label="Entrega a">5 · se ajusta el presupuesto de alto nivel del Charter</td>
+      <td data-label="Estado"><span class="chip tbd">Por definir</span></td><td data-label="Responsable">Por asignar</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p class="muted" style="font-size:.85rem">La carátula figura como borrador porque el equipo ya tiene una idea de cómo será; su versión final se cierra con el resto del documento.</p>
+
+<h2 id="clases">Clases y qué aportan al TP</h2>
+<div class="table-wrap">
+<table class="stack">
+  <thead><tr><th scope="col">Clase</th><th scope="col">Fecha</th><th scope="col">Qué se ve</th><th scope="col">Aporta a</th></tr></thead>
+  <tbody>
+    <tr><th scope="row" data-label="Clase">1 · Modelo Canvas</th><td data-label="Fecha">12/8</td><td data-label="Qué se ve">Canvas, segmentación de mercado, propuesta de valor, OKR.</td><td data-label="Aporta a">Sección 3. Los objetivos SMART se reusan en el Charter.</td></tr>
+    <tr><th scope="row" data-label="Clase">2 · Proyectos</th><td data-label="Fecha">19/8</td><td data-label="Qué se ve">Qué es un proyecto, gestión de proyectos, rol del director de proyectos, PMI y PMBOK, áreas de conocimiento, objetivos.</td><td data-label="Aporta a">Sección 5: justificar por qué es un proyecto y por qué cascada.</td></tr>
+    <tr><th scope="row" data-label="Clase">3 · Gestión del cronograma</th><td data-label="Fecha">26/8</td><td data-label="Qué se ve">Ciclo de vida y fases, Project Charter, stakeholders, tareas y EDT, tipos de secuenciamiento, línea base.</td><td data-label="Aporta a">Secciones 5, 6 y 7.</td></tr>
+    <tr><th scope="row" data-label="Clase">4 · Gestión de costos</th><td data-label="Fecha">2/9</td><td data-label="Qué se ve">Estructura de costos y flujos de ingresos, PESTEL.</td><td data-label="Aporta a">Sección 10. El PESTEL también da contexto para los riesgos.</td></tr>
+    <tr><th scope="row" data-label="Clase">5 · Gestión de riesgos</th><td data-label="Fecha">9/9</td><td data-label="Qué se ve">Identificación, priorización y cuantificación de riesgos; FODA para identificarlos.</td><td data-label="Aporta a">Sección 9, y la reserva de contingencia de la sección 10.</td></tr>
+    <tr><th scope="row" data-label="Clase">6 · Comunicación</th><td data-label="Fecha">16/9</td><td data-label="Qué se ve">Gestión de la comunicación, canales, dimensiones, comunicación efectiva y barreras. El material también incluye gestión de cambios y negociación.</td><td data-label="Aporta a">Sección 8. La gestión de cambios se relaciona con el alcance del Charter.</td></tr>
+    <tr><th scope="row" data-label="Clase">7 · Design Thinking</th><td data-label="Fecha">23/9</td><td data-label="Qué se ve">Definición de producto, Design Thinking: fases y técnicas.</td><td data-label="Aporta a">Sección 4. <span class="chip clase">Pendiente de clase</span></td></tr>
+    <tr><th scope="row" data-label="Clase">8 · Cascada y ágil</th><td data-label="Fecha">30/9</td><td data-label="Qué se ve">Metodología cascada, Manifiesto ágil, metodologías ágiles, CYNEFIN.</td><td data-label="Aporta a">Puede servir para justificar la elección de cascada en el Charter (a confirmar). <span class="chip clase">Pendiente de clase</span></td></tr>
+  </tbody>
+</table>
+</div>
+<p class="muted" style="font-size:.85rem">Las clases 9 a 13 (Scrum, ceremonias, Lean, XP, Kanban y otros temas) corresponden al parcial de metodologías ágiles del 11/11 y no forman parte del documento del TP.</p>
+
+<h2 id="decisiones">Decisiones abiertas para acordar entre todos</h2>
+<p>Estas son las preguntas que hay que cerrar para poder avanzar con el resto de las secciones. Cada una tiene opciones propuestas; se puede sumar otra. <strong>Respondan en el grupo de WhatsApp</strong> con el número de decisión y su opción preferida.</p>
+<ol class="decisions">
+  <li><strong>¿Qué modelo de negocio adoptamos para el Canvas?</strong> Se comparan en la sección Canvas.
+    <p class="opts"><b>A)</b> servicio público enfocado · <b>B)</b> plataforma multilateral (la sugerencia del borrador, con el segmento de la A) · <b>C)</b> capa de identidad geográfica (B2G) · <b>D)</b> ecosistema con beneficios.</p></li>
+  <li><strong>¿Qué segmento de vecinos priorizamos?</strong>
+    <p class="opts"><b>A)</b> hogares con chicos en edad escolar · <b>B)</b> personas con movilidad reducida · <b>C)</b> vecinos que hacen reclamos.</p></li>
+  <li><strong>¿Qué entra en el alcance y qué queda como fase futura?</strong>
+    <p class="opts"><b>A)</b> núcleo: identidad geográfica única + loop de reclamos · <b>B)</b> núcleo + vista de gestión · <b>C)</b> núcleo + vista de gestión + perfil por hogar y proactividad · <b>D)</b> todo lo anterior + capa consumida por Boti y DisfrutemosBA.</p></li>
+  <li><strong>¿Quién paga el proyecto y cómo se sostiene?</strong>
+    <p class="opts"><b>A)</b> el GCBA como único sponsor · <b>B)</b> socios privados con publicidad o comisiones · <b>C)</b> mixto: el GCBA financia el núcleo y los socios aportan ingresos complementarios.</p></li>
+  <li><strong>¿Cómo separamos lo interno de lo externo en el Canvas? (postura provisional hasta que respondan los profesores)</strong>
+    <p class="opts"><b>A)</b> por pertenencia: interno = áreas del GCBA, externo = vecinos, privados y otros organismos · <b>B)</b> por control: interno = lo que decide el equipo del proyecto, externo = lo que depende de terceros · <b>C)</b> no separar por ahora.</p></li>
+  <li><strong>¿Cómo sumamos los EMV para la reserva de contingencia?</strong> La diapositiva 32 de la Clase 5 resta las oportunidades a las amenazas (37.000 − 17.000 = 20.000); sumar todo daría 54.000.
+    <p class="opts"><b>A)</b> neto: amenazas menos oportunidades · <b>B)</b> solo amenazas, con las oportunidades aparte · <b>C)</b> neto en el presupuesto, mostrando también el total de amenazas.</p></li>
+  <li><strong>¿En qué herramienta armamos el Gantt?</strong>
+    <p class="opts"><b>A)</b> Google Sheets o Excel · <b>B)</b> GanttProject · <b>C)</b> otra.</p></li>
+  <li><strong>¿Cómo repartimos la escritura de las secciones?</strong> Repartir y pegar al final rompe la cadena entre secciones.
+    <p class="opts"><b>A)</b> una persona por sección, con revisión cruzada · <b>B)</b> por pares, cada dupla escribe un tramo de la cadena · <b>C)</b> todo en conjunto, con una persona que escribe.</p></li>
+  <li><strong>¿En qué herramienta escribimos el documento final?</strong>
+    <p class="opts"><b>A)</b> Google Docs · <b>B)</b> Word compartido en una nube · <b>C)</b> otra.</p></li>
+</ol>
+
+<div class="cols">
+  <div>
+    <h3>Preguntas para los profesores</h3>
+    <ul class="checks">
+      <li>¿Cómo conviene separar lo interno de lo externo en el Canvas de un proyecto público?</li>
+      <li>¿Es válido un Canvas con dos propuestas de valor (vecino y gobierno)?</li>
+      <li>¿Cómo se suman oportunidades y amenazas en el EMV para la reserva de contingencia?</li>
+      <li>¿Qué formato esperan para el Project Charter?</li>
+      <li>¿Qué escala de probabilidad e impacto usan para la matriz de riesgos?</li>
+      <li>¿Qué nivel de detalle esperan en el Gantt (cantidad de actividades, duración mínima)?</li>
+    </ul>
+  </div>
+  <div>
+    <h3>Línea de tiempo hasta la entrega</h3>
+    <ul class="timeline">
+      <li><span class="d">23/9 · Clase 7</span><br>Design Thinking y definición de producto.</li>
+      <li><span class="d">30/9 · Clase 8</span><br>Cascada, Manifiesto ágil, CYNEFIN (virtual).</li>
+      <li><span class="d">7/10 · Clase 9</span><br>Scrum: responsabilidades, sprint y ceremonias. Última clase antes de la entrega: conviene tener el documento completo para revisarlo.</li>
+      <li class="key"><span class="d">14/10 · Clase 10</span><br><strong>Entrega del TP Cascada.</strong></li>
+      <li><span class="d">11/11 · Clase 14</span><br>Parcial de metodologías ágiles.</li>
+      <li class="key"><span class="d">18/11 · Clase 15</span><br><strong>Defensa oral del TP.</strong></li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="coherencia">Coherencia entre secciones</h2>
+<p>Antes de entregar, conviene revisar entre todos que los números y los nombres coincidan de una sección a otra. Es lo primero que se nota en una defensa.</p>
+<ul class="checks">
+  <li>Los <strong>hitos</strong> del Charter tienen la misma fecha en el Gantt.</li>
+  <li>El <strong>presupuesto de alto nivel</strong> del Charter coincide con el total del presupuesto.</li>
+  <li>Los <strong>riesgos de alto nivel</strong> del Charter figuran en la matriz de riesgos.</li>
+  <li>Los <strong>stakeholders principales</strong> del Charter están en la matriz de stakeholders, y todos los de la matriz tienen una fila en el plan de comunicación.</li>
+  <li>La <strong>reserva de contingencia</strong> sale de los valores esperados (EMV) de la matriz de riesgos.</li>
+  <li>El <strong>costo de mano de obra</strong> usa las duraciones del Gantt.</li>
+  <li>Cada sección abre con una <strong>frase puente</strong> que cita un dato concreto de la anterior. Por ejemplo: “En el Gantt vimos que el camino crítico dura X; por eso, en riesgos, empezamos por las actividades que lo forman”.</li>
+</ul>
+
+<footer>
+  <p>Borrador de trabajo — revisar y corregir entre todos. Fuentes: material de la cátedra del Taller de Gestión de Proyectos Digitales (Clases 1 a 7 y cronograma), <a href="https://mapa.buenosaires.gob.ar/">mapa.buenosaires.gob.ar</a>, <a href="https://data.buenosaires.gob.ar/">BA Data</a> y <a href="https://www.strategyzer.com/library/the-business-model-canvas">Strategyzer</a>.</p>
+</footer>
+</main>
+
+<script>
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.CANVAS_DATA = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  var data = {
+    meta: {
+      title: 'Modelo Canvas — Mapa Interactivo de la Ciudad',
+      source: 'Clase 1 — Modelo Canvas (Business Model Canvas, Osterwalder & Pigneur).'
+    },
+    order: [
+      'segmentos',
+      'pv',
+      'canales',
+      'relacion',
+      'ingresos',
+      'recursos',
+      'actividades',
+      'socios',
+      'costos'
+    ],
+    blocks: {
+      pv: {
+        n: 1,
+        name: 'Propuesta de valor',
+        def: 'Conjunto de productos y servicios que crean valor para un segmento de mercado específico. Es la razón por la cual los clientes eligen una empresa en vez de otra.',
+        questions: [
+          '¿Qué problema del cliente estamos ayudando a resolver?',
+          '¿Qué necesidad estamos satisfaciendo?',
+          '¿Qué paquetes de productos o servicios ofrecemos a cada segmento de clientes?'
+        ],
+        types: [
+          'Elementos que crean valor: precio, diseño, personalización, ahorro, novedad, marca y reputación',
+          'Se desarma en 6 partes: ver el mapa de valor más abajo'
+        ],
+        src: 'Clase 1, p7–9'
+      },
+      segmentos: {
+        n: 2,
+        name: 'Segmentos de mercado',
+        def: 'Los diferentes grupos de personas o empresas a los que una organización busca alcanzar y servir.',
+        questions: ['¿Para quién estamos creando valor?', '¿Quiénes son nuestros clientes más importantes?'],
+        types: [
+          'Mercado masivo',
+          'Nicho de mercado',
+          'Mercado segmentado',
+          'Plantilla útil: [quiénes] que [situación] y hoy [dolor]',
+          'El ejemplo de la cátedra sugiere priorizar 1 o 2 segmentos'
+        ],
+        src: 'Clase 1, p11 · Ejemplo Clase, p5'
+      },
+      canales: {
+        n: 3,
+        name: 'Canales',
+        def: 'Cómo la organización alcanza e interactúa con sus segmentos de mercado para entregar una propuesta de valor. Son puntos de contacto.',
+        questions: [
+          '¿A través de qué canales prefieren los clientes ser alcanzados?',
+          '¿Cómo estamos integrando nuestros canales?'
+        ],
+        types: [
+          'Fase 1 · dar a conocer los productos y servicios',
+          'Fase 2 · ayudar a evaluar la propuesta de valor',
+          'Fase 3 · permitir comprar o acceder',
+          'Fase 4 · entregar la propuesta de valor',
+          'Fase 5 · ofrecer atención posventa'
+        ],
+        src: 'Clase 1, p13–14'
+      },
+      relacion: {
+        n: 4,
+        name: 'Relación con el cliente',
+        def: 'Los tipos de relaciones que una empresa establece con un segmento de mercado específico, y cómo serán gestionados.',
+        questions: [
+          '¿Qué tipo de relación esperan nuestros clientes que establezcamos con ellos?',
+          '¿Cómo se integran estas relaciones con el resto del modelo de negocio?',
+          '¿De qué forma prefieren comunicarse nuestros clientes?'
+        ],
+        types: [
+          'Asistencia personal: hay un representante real',
+          'Asistencia personal dedicada: un ejecutivo específico',
+          'Autoservicio: se le dan los medios para que se ayude a sí mismo',
+          'Comunidades: se facilita la conexión entre clientes y con la empresa'
+        ],
+        src: 'Clase 1, p16'
+      },
+      ingresos: {
+        n: 5,
+        name: 'Modelo de ingresos',
+        def: 'Cómo una empresa obtiene dinero de cada uno de sus segmentos de clientes: de qué manera cobra y cómo monetiza su propuesta de valor.',
+        questions: [
+          '¿Qué valor están dispuestos a pagar nuestros clientes?',
+          '¿Cómo prefieren pagar? (pago único, suscripción, cuotas)',
+          '¿Cuánto están dispuestos a pagar?'
+        ],
+        types: [
+          'Venta de bienes',
+          'Suscripciones',
+          'Licencias',
+          'Publicidad',
+          'Comisiones',
+          'Freemium',
+          'Alquileres'
+        ],
+        src: 'Clase 1, p18'
+      },
+      recursos: {
+        n: 6,
+        name: 'Recursos clave',
+        def: 'Los activos esenciales que la empresa necesita para entregar su propuesta de valor, alcanzar a sus clientes, mantener relaciones y generar ingresos.',
+        questions: [
+          '¿Qué recursos necesitamos para entregar nuestra propuesta de valor?',
+          '¿Qué recursos son esenciales para mantener las relaciones con los clientes?',
+          '¿Cómo obtendremos y mantendremos estos recursos?'
+        ],
+        types: [
+          'Físicos: fábricas, vehículos, máquinas, sistemas',
+          'Intelectuales: marcas, conocimiento, patentes, derechos de autor',
+          'Financieros: dinero en efectivo, líneas de crédito',
+          'Humanos: perfiles creativos, intensivos en conocimiento, científicos'
+        ],
+        src: 'Clase 1, p20–21'
+      },
+      actividades: {
+        n: 7,
+        name: 'Actividades clave',
+        def: 'Las acciones más importantes que una empresa debe realizar para que su modelo de negocio funcione adecuadamente.',
+        questions: [
+          '¿Qué actividades pueden ser subcontratadas y cuáles deben mantenerse propias?'
+        ],
+        types: [
+          'Producción de bienes: empresas industriales',
+          'Solución de problemas: empresas de servicios',
+          'Plataforma: empresas que brindan servicios de plataforma'
+        ],
+        src: 'Clase 1, p23'
+      },
+      socios: {
+        n: 8,
+        name: 'Socios clave',
+        def: 'La red de proveedores y socios que no puedo reemplazar fácilmente, y que hacen que nuestro modelo de negocio funcione adecuadamente.',
+        questions: [
+          '¿Qué actividades clave o recursos no podemos realizar internamente y necesitamos de socios externos?',
+          '¿Cómo afectan estos socios a nuestra estructura de costos y nuestras fuentes de ingresos?'
+        ],
+        types: [
+          'Motivo 1: asegurar la disponibilidad de recursos',
+          'Motivo 2: reducción de riesgo',
+          'Motivo 3: optimizar economías de escala'
+        ],
+        src: 'Clase 1, p25'
+      },
+      costos: {
+        n: 9,
+        name: 'Estructura de costos',
+        def: 'Todos los costos incurridos para poder operar el modelo de negocios diseñado en los pasos anteriores.',
+        questions: [
+          '¿Cuáles son nuestros costos fijos y variables?',
+          '¿Cómo afectan estos costos a nuestra estructura de precios y rentabilidad?',
+          '¿Qué oportunidades existen para reducir costos sin comprometer la calidad o la propuesta de valor?'
+        ],
+        types: [
+          'Fijos: constantes sin importar el nivel de actividad (alquiler, sueldos fijos, seguros)',
+          'Variables: cambian con el nivel de actividad (insumos, costo por unidad, comisiones)',
+          'Impulsado por el costo (aerolínea low cost) frente a impulsado por el valor (autos de lujo)'
+        ],
+        src: 'Clase 1, p27–28'
+      }
+    },
+    options: {
+      a: {
+        name: 'Servicio público enfocado',
+        idea: 'El Mapa se moderniza para resolver un dolor concreto de un grupo de vecinos. Un solo segmento, sin ingreso comercial: el modelo se financia con presupuesto y se justifica por el servicio que presta.',
+        cliente: 'Un segmento de vecinos de CABA',
+        paga: 'El GCBA, con partida presupuestaria',
+        borde: 'Todo mira hacia afuera: el vecino es el cliente y el GCBA es el sponsor que financia.',
+        riesgo: 'Van a preguntar por los ingresos. Hay que sostener que un proyecto público se mide por servicio prestado, no por facturación.',
+        blocks: {
+          segmentos: [
+            'Hogares con chicos en edad escolar en CABA que hoy se enteran tarde de la inscripción o la vacunación.',
+            'Secundario: el GCBA como sponsor que financia y decide.',
+            'Descartados por ahora: turistas, comercios, “toda la población”.'
+          ],
+          pv: [
+            'Saber qué le corresponde a cada vecino en su cuadra, sin tener que saber de antemano qué preguntar ni a qué organismo.',
+            'Perfil por hogar: el Mapa avisa (inscripción, vacunación, obra en la vereda) en lugar de esperar la consulta.',
+            'Un solo lugar, en vez de un trámite por organismo.'
+          ],
+          canales: [
+            'mapa.buenosaires.gob.ar, el canal actual (v4.1).',
+            'Boti, el WhatsApp de la Ciudad.',
+            'miBA y notificaciones del perfil.',
+            'El 147 como canal de respaldo.'
+          ],
+          relacion: [
+            'Autoservicio: el vecino resuelve solo, con la información encima del mapa.',
+            'Proactiva: la notificación llega sin que la pida.',
+            'Comunidad: el reclamo queda visible en el mapa con su estado.'
+          ],
+          ingresos: [
+            'Sin ingreso comercial. Financiación: partida presupuestaria del GCBA.',
+            'El retorno se mide, no se factura: menos consultas al 147 y más trámites autogestionados.',
+            'Es un modelo impulsado por el valor público, no por el precio.'
+          ],
+          recursos: [
+            'Intelectuales: las 14 APIs oficiales del GCBA, BA Data y el geocodificador de USIG.',
+            'Intelectuales: la marca “Mapa de la Ciudad”, ya instalada.',
+            'Humanos: equipo de producto, desarrollo y diseño.',
+            'Financieros: la partida asignada al proyecto.'
+          ],
+          actividades: [
+            'Integrar las APIs de las áreas dueñas del dato.',
+            'Diseñar y sostener el perfil por hogar.',
+            'Curar las capas temáticas: que el dato esté al día.',
+            'Operar el loop de reclamos de punta a punta.'
+          ],
+          socios: [
+            'Áreas dueñas del dato: Educación, Salud, Espacio Público, Movilidad.',
+            'USIG, por el geocodificador y la normalización de direcciones.',
+            'El equipo de Boti, para llegar por WhatsApp.'
+          ],
+          costos: [
+            'Fijo: sueldos del equipo, el rubro de mayor peso.',
+            'Variable: infraestructura cloud y servicio de mapas, por uso.',
+            'Fijo: licencias y herramientas.',
+            'Por única vez: comunicación del lanzamiento.'
+          ]
+        },
+        flow: [
+          ['Sección 4', 'Design Thinking', 'Entrevistás a familias de ese segmento. El problema a validar es uno solo y ya está escrito.'],
+          ['Sección 5', 'Project Charter', 'Alcance corto y nítido. El objetivo SMART mide adopción del segmento, no facturación.'],
+          ['Sección 6', 'Gantt', 'Pocas integraciones: 3 o 4 capas. El camino crítico pasa por el acuerdo de datos con cada área.'],
+          ['Sección 7', 'Stakeholders', 'Pocos, y casi todos internos. La matriz poder-interés queda simple.'],
+          ['Sección 9', 'Riesgos', 'El riesgo grande es que un área no entregue el dato a tiempo. Datos personales aparece, pero acotado.'],
+          ['Sección 10', 'Presupuesto', 'Sueldos por la duración del Gantt, más cloud. No hay ingresos que proyectar.']
+        ]
+      },
+      b: {
+        name: 'Plataforma multilateral',
+        suggested: true,
+        idea: 'El Mapa crea valor para dos lados distintos al mismo tiempo: el vecino que lo usa y el área de gobierno que lo paga. Osterwalder llama a esto plataforma multilateral, y exige una propuesta de valor por lado.',
+        cliente: 'Dos: el vecino elegido y las áreas de gobierno',
+        paga: 'GCBA por presupuesto, más convenios con socios',
+        borde: 'El borde deja de ser un problema: el lado vecino es la parte externa y el lado áreas es la interna. El Canvas los muestra como dos segmentos rotulados.',
+        riesgo: 'Dos propuestas de valor en una sola hoja. Hay que rotularlas bien para que no se lea como desorden.',
+        blocks: {
+          segmentos: [
+            'Lado externo, principal: hogares de la Ciudad, que hoy se enteran tarde de lo que les corresponde.',
+            'Beneficiarios secundarios: visitantes y turistas, que consultan el mismo mapa sin reportar.',
+            'Lado interno: áreas que hoy mantienen su propio mapa (Educación, Salud, Espacio Público, Movilidad).',
+            'Tercer lado, opcional: socios con oferta geolocalizada (Banco Ciudad, Pase Cultural).'
+          ],
+          pv: [
+            'Al vecino: enterarse de lo que le corresponde en su cuadra, sin saber qué preguntar ni a quién.',
+            'Al área de gobierno: la vista de gestión —dónde se concentran los reclamos— y una capa geográfica lista para consumir en vez de reconstruirla.',
+            'Al socio: llegar al vecino geolocalizado, dentro de un canal oficial.',
+            'Son dos propuestas porque son dos segmentos: quien usa no es quien paga.'
+          ],
+          canales: [
+            'Al vecino: web del mapa, Boti, miBA y notificaciones.',
+            'Al área: API pública documentada y panel de gestión.',
+            'Al socio: convenio y espacio en la capa de beneficios.',
+            'Los tres integrados sobre la misma capa de datos.'
+          ],
+          relacion: [
+            'Vecino: autoservicio más comunidad (reclamos con estado visible).',
+            'Área de gobierno: asistencia dedicada, un referente técnico por área.',
+            'Socio: relación contractual, por convenio.'
+          ],
+          ingresos: [
+            'Principal: presupuesto del GCBA asignado a la plataforma.',
+            'Costos evitados: cada área que deja de mantener su mapa libera presupuesto. Es el argumento más fuerte frente al sponsor.',
+            'Convenios con socios: comisiones y canjes son fuentes válidas según la cátedra.',
+            'Al vecino no se le cobra nunca.'
+          ],
+          recursos: [
+            'Intelectuales: el geocodificador, las 14 APIs y BA Data.',
+            'Intelectuales: la marca “Mapa de la Ciudad”.',
+            'Humanos: equipo de plataforma más un rol de gestión de convenios.',
+            'Financieros: la partida y el compromiso plurianual.'
+          ],
+          actividades: [
+            'Construir y versionar la capa geográfica como producto: es una actividad de plataforma.',
+            'Diseñar el perfil por hogar y el loop de reclamos.',
+            'Gestionar los acuerdos de datos con cada área.',
+            'Negociar y administrar los convenios con socios.'
+          ],
+          socios: [
+            'Las áreas dueñas del dato: son socias y clientas al mismo tiempo.',
+            'USIG e Innovación / ASI, por infraestructura y estándares.',
+            'Boti y DisfrutemosBA, canales que consumen la capa.',
+            'Banco Ciudad y Pase Cultural, para la capa de beneficios.'
+          ],
+          costos: [
+            'Fijo: equipo de plataforma.',
+            'Variable: infraestructura y servicio de mapas, crece con el uso.',
+            'Fijo: gobierno del dato, el precio de ser plataforma.',
+            'Variable: costo de gestionar convenios.'
+          ]
+        },
+        flow: [
+          ['Sección 4', 'Design Thinking', 'Dos investigaciones: vecinos y también empleados de las áreas. Más trabajo, bastante mejor historia.'],
+          ['Sección 5', 'Project Charter', 'Objetivos SMART por lado: adopción del vecino y adopción interna de la capa.'],
+          ['Sección 6', 'Gantt', 'Dos frentes: producto para el vecino y API para las áreas. El camino crítico suele pasar por la API.'],
+          ['Sección 7', 'Stakeholders', 'La matriz se llena sola: internos con mucho poder, vecinos con mucho interés y poco poder.'],
+          ['Sección 9', 'Riesgos', 'Los tres riesgos jugosos: datos personales (Ley 25.326), que un área no adopte la capa, y dependencia de terceros.'],
+          ['Sección 10', 'Presupuesto', 'Dos frentes y una reserva de contingencia más grande, justificada por los EMV de la matriz.']
+        ]
+      },
+      c: {
+        name: 'Capa de identidad geográfica',
+      tag: 'B2G',
+        idea: 'El producto no es la web: es la capa. Una sola identidad geográfica para toda la Ciudad, que cada área consume en lugar de mantener su propio mapa. El cliente es el Estado; el vecino es beneficiario final.',
+        cliente: 'Áreas de gobierno y otros productos del GCBA',
+        paga: 'Presupuesto central más costo compartido por área',
+        borde: 'Todo es interno. Es la opción que responde la pregunta del equipo de la forma más limpia: en este Canvas no hay lado externo.',
+        riesgo: 'Se pierde la cara visible del proyecto. El Design Thinking se hace con empleados públicos, no con vecinos, y eso hay que anunciarlo de entrada.',
+        blocks: {
+          segmentos: [
+            'Áreas que hoy mantienen mapas propios: Educación, Salud, Espacio Público, Movilidad.',
+            'Productos del GCBA que necesitan geo: Boti, DisfrutemosBA, miBA.',
+            'Atención Ciudadana (147), que necesita ubicar cada consulta.',
+            'El vecino no es cliente en este modelo: es beneficiario final.'
+          ],
+          pv: [
+            'Una sola identidad geográfica para toda la Ciudad: una dirección significa lo mismo en todos los sistemas.',
+            'Que cada área deje de construir y mantener su propio mapa.',
+            'Una sola capa de obras, reclamos y equipamiento, versionada y con soporte.'
+          ],
+          canales: [
+            'API y SDK documentados.',
+            'Catálogo interno de capas y datasets.',
+            'Comité de datos: la mesa donde se acuerda qué se publica.',
+            'Onboarding técnico área por área.'
+          ],
+          relacion: [
+            'Asistencia personal dedicada: un referente técnico asignado por área.',
+            'Acuerdos de nivel de servicio: disponibilidad y frescura del dato.',
+            'Comunidad de práctica entre las áreas que consumen la capa.'
+          ],
+          ingresos: [
+            'Presupuesto central de la Secretaría que opera la plataforma.',
+            'Costo compartido: cada área aporta una parte por consumir la capa.',
+            'El valor económico real es el ahorro por no duplicar desarrollos, y hay que estimarlo con número.'
+          ],
+          recursos: [
+            'Intelectuales: el geocodificador de USIG, el activo central del modelo.',
+            'Intelectuales: BA Data y las 14 APIs publicadas.',
+            'Humanos: equipo de plataforma y de gobierno del dato.',
+            'Físicos: la infraestructura donde corre la capa.'
+          ],
+          actividades: [
+            'Normalizar direcciones y mantener el geocodificador.',
+            'Publicar, versionar y documentar APIs.',
+            'Gobernar el dato: quién es dueño de qué y con qué frescura.',
+            'Migrar área por área desde su mapa propio.'
+          ],
+          socios: [
+            'USIG, dueña histórica de la información geográfica de la Ciudad.',
+            'Innovación / ASI, por infraestructura y estándares.',
+            'Las áreas dueñas del dato: socias y clientas a la vez.'
+          ],
+          costos: [
+            'Fijo: equipo de plataforma y de datos.',
+            'Fijo: gobierno del dato, comités y documentación.',
+            'Variable: infraestructura, por volumen de consultas a la API.',
+            'Por única vez: la migración de cada área.'
+          ]
+        },
+        flow: [
+          ['Sección 4', 'Design Thinking', 'La investigación se hace con empleados de las áreas: el usuario es quien integra la capa.'],
+          ['Sección 5', 'Project Charter', 'El alcance es técnico: qué áreas migran en esta fase y qué APIs se publican.'],
+          ['Sección 6', 'Gantt', 'Gantt de migración, área por área. El camino crítico es el geocodificador: sin él no migra nadie.'],
+          ['Sección 7', 'Stakeholders', 'Es el corazón del TP: todos internos, todos con poder real de bloquear.'],
+          ['Sección 9', 'Riesgos', 'El riesgo dominante es de adopción: que un área no quiera dejar su mapa. Político, no técnico.'],
+          ['Sección 10', 'Presupuesto', 'Equipo fijo más infraestructura por consumo. Hay que estimar el ahorro para justificarlo.']
+        ]
+      },
+      d: {
+        name: 'Ecosistema con beneficios',
+        idea: 'El Mapa deja de ser sólo información y pasa a mostrar qué hay y qué beneficios hay a diez cuadras. Es la única opción que responde de frente la pregunta de los ingresos, y la que más riesgo trae.',
+        cliente: 'Vecino consumidor, más comercios y Banco Ciudad',
+        paga: 'Comisiones, espacios destacados y convenios',
+        borde: 'El borde se corre hacia afuera: entran actores privados al Canvas. Hay que decir explícitamente qué dato nunca sale del Estado.',
+        riesgo: 'Publicidad sobre un activo público, y el perfil por hogar implica datos personales (Ley 25.326). Es material de PESTEL y de matriz de riesgos.',
+        blocks: {
+          segmentos: [
+            'Vecinos que consumen en su barrio y buscan qué hacer cerca.',
+            'Comercios de proximidad e instituciones culturales con oferta local.',
+            'Banco Ciudad y Pase Cultural, socios con beneficios propios.'
+          ],
+          pv: [
+            'Al vecino: descubrir qué hay y qué beneficios le corresponden a diez cuadras, en el mismo mapa donde ya busca cómo llegar.',
+            'Al comercio: visibilidad geolocalizada dentro de un canal oficial de la Ciudad.',
+            'Al socio: llegar con su beneficio en el momento y el lugar en que el vecino decide.'
+          ],
+          canales: [
+            'Web del mapa y Boti, que ya acumula más de 26 millones de conversaciones.',
+            'DisfrutemosBA para la oferta cultural.',
+            'Autogestión para que el comercio cargue y actualice su oferta.'
+          ],
+          relacion: [
+            'Vecino: autoservicio, con recomendación según el perfil.',
+            'Comercio: autoservicio con soporte.',
+            'Socio grande: asistencia dedicada y convenio.'
+          ],
+          ingresos: [
+            'Comisión por beneficio canjeado.',
+            'Espacios destacados dentro de las capas temáticas.',
+            'Convenios con Banco Ciudad y Pase Cultural.',
+            'Licencia de la capa geográfica a terceros.',
+            'Al vecino no se le cobra: rompería la legitimidad del canal.'
+          ],
+          recursos: [
+            'Intelectuales: el perfil del vecino, el activo más valioso y el más delicado.',
+            'Intelectuales: la marca oficial de la Ciudad, que es lo que hace confiable al beneficio.',
+            'Humanos: equipo comercial y de alianzas, que hoy no existe.',
+            'Físicos: la plataforma y el sistema de canje.'
+          ],
+          actividades: [
+            'Captar y sostener la oferta de comercios.',
+            'Operar el sistema de canje y su liquidación.',
+            'Segmentar y personalizar sin cruzar la línea legal.',
+            'Auditar qué se publica con marca oficial.'
+          ],
+          socios: [
+            'Banco Ciudad, socio financiero y de beneficios.',
+            'Pase Cultural y el sector cultural.',
+            'Cámaras de comercio y centros comerciales a cielo abierto.',
+            'Medios de pago, para el canje.'
+          ],
+          costos: [
+            'Fijo: equipo comercial y de alianzas.',
+            'Variable: costo de adquisición de comercios.',
+            'Fijo: cumplimiento legal, auditoría y protección de datos.',
+            'Variable: infraestructura y sistema de canje.'
+          ]
+        },
+        flow: [
+          ['Sección 4', 'Design Thinking', 'Dos usuarios a investigar: el vecino que canjea y el comercio que publica.'],
+          ['Sección 5', 'Project Charter', 'Necesita una restricción explícita: qué dato personal no se usa nunca. Si no está, la defensa se cae.'],
+          ['Sección 6', 'Gantt', 'Más largo: además del producto hay que sumar convenios y sistema de canje.'],
+          ['Sección 7', 'Stakeholders', 'Aparecen externos con poder: cámaras, medios y la autoridad de protección de datos.'],
+          ['Sección 9', 'Riesgos', 'Es la sección estrella: Ley 25.326, percepción de favorecer comercios, dependencia del socio.'],
+          ['Sección 10', 'Presupuesto', 'El único con ingresos proyectados. También el que necesita la reserva de contingencia más alta.']
+        ]
+      }
+    },
+    comparison: [
+      {
+        id: 'a',
+        segmento: 'Un grupo de vecinos con un dolor concreto',
+        plata: 'Partida presupuestaria del GCBA. Sin ingreso comercial.',
+        trabajo: {
+          texto: 'Bajo',
+          nivel: 'ok'
+        },
+        pregunta: '“¿Un modelo de negocio sin ingresos?”',
+        conviene: 'El equipo quiere entregar seguro y a tiempo.'
+      },
+      {
+        id: 'b',
+        segmento: 'Vecino y área de gobierno (dos lados)',
+        plata: 'Presupuesto + costos evitados + convenios con socios',
+        trabajo: {
+          texto: 'Medio',
+          nivel: 'mid'
+        },
+        pregunta: '“¿Por qué dos propuestas de valor?”',
+        conviene: 'Quieren la nota alta y tienen las tres semanas.'
+      },
+      {
+        id: 'c',
+        segmento: 'Áreas de gobierno (B2G interno)',
+        plata: 'Presupuesto central + costo compartido por área',
+        trabajo: {
+          texto: 'Medio',
+          nivel: 'mid'
+        },
+        pregunta: '“¿Y dónde queda el vecino?”',
+        conviene: 'Les interesa más la arquitectura que la UX.'
+      },
+      {
+        id: 'd',
+        segmento: 'Vecino consumidor + comercios y Banco Ciudad',
+        plata: 'Comisiones, espacios destacados, convenios',
+        trabajo: {
+          texto: 'Alto',
+          nivel: 'bad'
+        },
+        pregunta: '“¿Publicidad en un servicio público? ¿Y la Ley 25.326?”',
+        conviene: 'Quieren lucirse en riesgos y PESTEL, y saben defenderlo.'
+      }
+    ],
+    recommendation: {
+      titulo: 'Opción B, pero con el segmento de la A.',
+      texto: 'Es decir: Canvas multilateral (vecino + GCBA), con un solo segmento de vecinos elegido y nombrado con nombre y apellido. Y mencionar C y D en una línea como alternativas evaluadas y descartadas. Eso vale doble: arregla el problema de foco del borrador y, en la defensa, muestra que hubo criterio y no una sola idea.'
+    },
+    valueMaps: {
+      vecino: {
+        who: 'hogares con chicos en edad escolar',
+        tareas: [
+          'Inscribir a los chicos en la escuela en la fecha que corresponde.',
+          'Llevar el calendario de vacunación al día.',
+          'Llegar a la escuela, al centro de salud y al trabajo todos los días.',
+          'Reclamar cuando algo de la cuadra está roto.'
+        ],
+        frust: [
+          'Hay que saber de antemano qué preguntar, a qué organismo y en qué canal.',
+          'Se enteran tarde de lo que tenía fecha de cierre.',
+          'Un trámite por organismo, cada uno con su propia web.',
+          'El reclamo se hace y después no se sabe qué pasó.'
+        ],
+        benef: [
+          'Que le avisen antes, sin tener que preguntar.',
+          'Ver todo lo de su cuadra en un solo lugar.',
+          'Saber en qué estado está su reclamo.',
+          'Confiar en que el dato es el oficial y está al día.'
+        ],
+        pv: [
+          'El Mapa le dice al vecino qué le corresponde en su cuadra, sin que tenga que saber qué preguntar.',
+          'Perfil por hogar: lo que aparece depende de dónde vive el vecino y de con quién.',
+          'Reclamos con estado visible sobre el mapa.'
+        ],
+        alivio: [
+          'Aviso proactivo por fecha y por zona: ataca directo el “me enteré tarde”.',
+          'Un solo lugar, en vez de un organismo por trámite.',
+          'El reclamo con estado en el mapa cierra el loop que hoy queda abierto.',
+          'Dato oficial, con fecha de actualización a la vista.'
+        ],
+        satis: [
+          'Llega por Boti, donde el vecino ya habla con la Ciudad.',
+          'Funciona sin cuenta para lo básico: el perfil es opcional.',
+          'Una sola identidad geográfica: la dirección significa lo mismo en todos lados.'
+        ]
+      },
+      gcba: {
+        who: 'el área del GCBA que financia y decide',
+        tareas: [
+          'Cumplir metas de gestión y poder mostrar resultados.',
+          'Atender el volumen de consultas y reclamos con el equipo que tiene.',
+          'Coordinar áreas que no se hablan entre sí.',
+          'Justificar cada peso del presupuesto.'
+        ],
+        frust: [
+          'Cada área mantiene su propio mapa y su propia versión de la verdad.',
+          'No hay una vista única de dónde se concentran los problemas.',
+          'El vecino llama al 147 por cosas que podría autogestionar.',
+          'Cada iniciativa nueva reconstruye la capa geográfica desde cero.'
+        ],
+        benef: [
+          'Ver en un tablero dónde se concentran los reclamos.',
+          'Dejar de pagar cuatro veces el mismo mapa.',
+          'Bajar el volumen de consultas evitables.',
+          'Poder mostrar el impacto con números.'
+        ],
+        pv: [
+          'La vista de gestión: un tablero geográfico de reclamos y demanda.',
+          'Una capa reutilizable que las demás iniciativas consumen en vez de reconstruir.'
+        ],
+        alivio: [
+          'Una sola fuente geográfica: se termina la discusión sobre qué mapa vale.',
+          'Costos evitados medibles: cada área que migra libera presupuesto.',
+          'Menos consultas al 147 sobre lo que el Mapa ya resuelve.'
+        ],
+        satis: [
+          'La capa la consumen Boti y DisfrutemosBA: el resultado se ve en productos que ya existen.',
+          'El Mapa como identidad de la Ciudad, no como una app más.',
+          'Datos para decidir dónde intervenir primero.'
+        ]
+      }
+    }
+  };
+
+  /* 'Opción B · Plataforma multilateral' (+ ' (B2G)' when the option has a tag). */
+  data.titleOf = function (id) {
+    var o = data.options[id];
+    return 'Opción ' + id.toUpperCase() + ' · ' + o.name + (o.tag ? ' (' + o.tag + ')' : '');
+  };
+
+  return data;
+});
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById("themeToggle");
+
+  function isDark() {
+    var t = root.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }
+  function paint() {
+    var dark = isDark();
+    btn.setAttribute("aria-pressed", dark ? "true" : "false");
+    btn.textContent = dark ? "Modo claro" : "Modo oscuro";
+  }
+  btn.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("tp-theme", next); } catch (e) {}
+    paint();
+  });
+  paint();
+
+  // Canvas options: tabs and copy button (every option is already in the page; this only enhances it).
+  (function () {
+    var D = window.CANVAS_DATA;
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".tabs [role=tab]"));
+    var panels = Array.prototype.slice.call(document.querySelectorAll(".opt-panel"));
+    var rows = Array.prototype.slice.call(document.querySelectorAll("#tabla-comparador tbody tr"));
+    if (!D || !tabs.length) return;
+
+    function select(id, focus) {
+      tabs.forEach(function (t) {
+        var on = t.getAttribute("data-opt") === id;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach(function (p) { p.hidden = p.getAttribute("data-opt") !== id; });
+      rows.forEach(function (r) { r.classList.toggle("is-current", r.getAttribute("data-row") === id); });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { select(t.getAttribute("data-opt")); });
+      t.addEventListener("keydown", function (e) {
+        var n = null;
+        if (e.key === "ArrowRight") n = (i + 1) % tabs.length;
+        else if (e.key === "ArrowLeft") n = (i + tabs.length - 1) % tabs.length;
+        else if (e.key === "Home") n = 0;
+        else if (e.key === "End") n = tabs.length - 1;
+        if (n === null) return;
+        e.preventDefault();
+        select(tabs[n].getAttribute("data-opt"), true);
+      });
+    });
+    var start = Object.keys(D.options).filter(function (k) { return D.options[k].suggested; })[0] || "a";
+    select(start);
+
+    function textFor(id) {
+      var o = D.options[id];
+      var out = ["# " + D.meta.title, "", D.titleOf(id), "", o.idea, ""];
+      D.order.forEach(function (k) {
+        out.push("## " + D.blocks[k].n + ". " + D.blocks[k].name);
+        o.blocks[k].forEach(function (l) { out.push("- " + l); });
+        out.push("");
+      });
+      out.push("Fuente: " + D.meta.source);
+      return out.join("\n");
+    }
+    function legacyCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      return ok;
+    }
+    Array.prototype.forEach.call(document.querySelectorAll(".copy-btn"), function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-copy");
+        var status = btn.parentNode.querySelector(".copy-status");
+        var text = textFor(id);
+        function done(msg) { status.textContent = msg; }
+        function manual() {
+          var ta = btn.parentNode.querySelector(".copy-fallback");
+          if (!ta) {
+            ta = document.createElement("textarea");
+            ta.className = "copy-fallback"; ta.readOnly = true;
+            ta.setAttribute("aria-label", "Texto de la opción para copiar a mano");
+            btn.parentNode.appendChild(ta);
+          }
+          ta.value = text; ta.focus(); ta.select();
+          done("No se pudo copiar solo: seleccionar el texto de abajo y copiar.");
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { done("Copiado."); }, function () {
+            if (legacyCopy(text)) done("Copiado."); else manual();
+          });
+        } else if (legacyCopy(text)) done("Copiado.");
+        else manual();
+      });
+    });
+  })();
+
+  // Days left until the delivery date (display only; fails silently).
+  try {
+    var el = document.getElementById("countdown");
+    var target = new Date(2026, 9, 14);
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var days = Math.round((target - today) / 86400000);
+    if (days > 0) el.textContent = "Faltan " + days + " días para la entrega";
+    else if (days === 0) el.textContent = "La entrega es hoy";
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

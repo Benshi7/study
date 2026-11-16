@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Reference document (teach workspace): compressed essence of the agile lessons (clases 8-12).
+     Every lesson of the agile route must use these terms with these meanings. Cátedra wording wins; "Guía 2020" marks the differences. -->
+<title>Glosario ágil</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .gl dt { font-weight: 700; margin-top: .7rem; }
+  .gl dd { margin: .1rem 0 0 0; }
+  .gl dd .src { color: var(--muted); font-size: .85em; }
+  .diff { color: var(--violet); font-weight: 600; }
+  @media print {
+    .hero { background: none !important; color: #000 !important; padding: 0 !important; }
+    .theme-toggle, .nav, .noprint { display: none !important; }
+    h2 { break-after: avoid; }
+    .gl dt, .gl dd { break-inside: avoid; }
+    body { font-size: 10.5pt; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Referencia · Ruta 2 · Metodologías ágiles · Parcial del 18/11</p>
+  <h1>Glosario y hoja de repaso ágil</h1>
+  <p class="subtitle">Cada término con las palabras de la cátedra, la clase donde se ve y, si corresponde, en qué difiere la Guía de Scrum 2020.</p>
+</header>
+
+<p class="note noprint"><strong>Cómo usarlo.</strong> No es para estudiar de cero: es para repasar después de las lecciones. Tapar la definición, decirla en voz alta y recién después mirar. Se imprime bien (Ctrl+P). Las <span class="diff">diferencias con la Guía 2020</span> están en violeta: en el parcial, responder como la cátedra.</p>
+
+<h2 id="las-cinco-respuestas-que-mas-se-pregunta">Las cinco respuestas que más se preguntan</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Pregunta</th><th>Respuesta corta (cátedra)</th></tr></thead>
+<tbody>
+<tr><td>¿Objetivo de Kanban?</td><td><strong>Eliminar cuellos de botella.</strong> Tres reglas: mostrar el proceso, limitar el trabajo en curso, optimizar el flujo (<a href="../clases/12b-kanban.html#objetivos">Clase 12b</a>)</td></tr>
+<tr><td>¿Relación entre Lean y Kanban?</td><td>Espera del operario (muda) → cuello de botella → Kanban lo elimina → se ataca la espera. Lean dice <em>qué</em> eliminar; Kanban, <em>cómo</em> (<a href="../clases/12b-kanban.html#lean-kanban">Clase 12b</a>)</td></tr>
+<tr><td>¿Review o Retro?</td><td>Review: el <strong>producto</strong>, con stakeholders. Retro: la <strong>forma de trabajar</strong>; es la última tarea del Sprint (<a href="../clases/11-retrospectiva.html#review">Clase 11</a>)</td></tr>
+<tr><td>¿DoR o DoD?</td><td>DoR: puerta de <strong>entrada</strong> al Sprint. DoD: puerta de <strong>salida</strong> al Incremento (<a href="../clases/10-ceremonias-scrum.html#planning">Clase 10</a>)</td></tr>
+<tr><td>¿Slicing o splitting?</td><td>Slicing: historia grande → historias chicas (refinamiento). Splitting: historia → tareas (planning) (<a href="../clases/10-ceremonias-scrum.html#partir">Clase 10</a>)</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="clase-8-agilidad">Clase 8 · Agilidad</h2>
+<dl class="gl">
+<dt>Agilidad</dt><dd>Dar valor temprano y adaptarse fácilmente al cambio. No es «hacer lo mismo más rápido». <span class="src">Clase 8</span></dd>
+<dt>Manifiesto ágil</dt><dd>Febrero de 2001, Utah, 17 firmantes. 4 valores y 12 principios. Valoramos más: individuos e interacciones (sobre procesos y herramientas), software funcionando (sobre documentación extensiva), colaboración con el cliente (sobre negociación contractual), respuesta ante el cambio (sobre seguir un plan). Lo de la derecha también vale, pero menos. <span class="src">Clase 8</span></dd>
+<dt>Cynefin</dt><dd>«Hábitat» en galés; ayuda a decidir. Versión de la cátedra: <strong>simple</strong> → buenas prácticas; <strong>complicado</strong> → cascada; <strong>complejo</strong> y <strong>caótico</strong> → ágil; <strong>desordenado</strong> → accionar para llegar a alguno de los anteriores. <span class="src">Clase 8, p12</span></dd>
+</dl>
+
+<h2 id="clase-9-scrum-roles-y-artefactos">Clase 9 · Scrum: roles y artefactos</h2>
+<dl class="gl">
+<dt>Scrum</dt><dd><strong>Framework</strong> (no metodología): ligero, fácil de entender, difícil de dominar. Se basa en el <strong>empirismo</strong>. Se aprende en 3 horas; dominarlo puede llevar un año. <span class="src">Clase 9; Scrum parte 2, p3 y p4</span></dd>
+<dt>Pilares</dt><dd>Transparencia, inspección y adaptación.</dd>
+<dt>Roles</dt><dd>La cátedra cuenta 4: <strong>Equipo Scrum</strong> (= los otros tres), <strong>Product Owner</strong>, <strong>Scrum Master</strong> y <strong>desarrolladores</strong>. <span class="src">Scrum parte 2, p3</span></dd>
+<dt>Product Owner (PO)</dt><dd>Una sola persona. Mantiene el Product Backlog actualizado, refinado y priorizado; el equipo respeta sus decisiones. Modera el refinamiento.</dd>
+<dt>Scrum Master (SM)</dt><dd>Ayuda a aplicar Scrum, modera las ceremonias, quita impedimentos. <strong>No es un Project Manager.</strong></dd>
+<dt>Equipo de desarrollo</dt><dd>Autoorganizado y multifuncional, de <strong>3 a 9</strong> personas. <span class="diff">Guía 2020: «Developers»; equipo Scrum de 10 o menos.</span></dd>
+<dt>Product Backlog</dt><dd>Lista única de todo lo deseable del producto, ordenada por valor de negocio. La administra el PO.</dd>
+<dt>Sprint Backlog</dt><dd>Lo elegido para el Sprint, con su objetivo (Sprint Goal) y las tareas.</dd>
+<dt>Incremento</dt><dd>Todas las historias que alcanzaron la DoD durante el Sprint.</dd>
+<dt>MoSCoW</dt><dd><strong>M</strong>ust: debe estar en el MVP · <strong>S</strong>hould: entra si no compromete cronograma ni presupuesto · <strong>C</strong>ould: fase 2 · <strong>W</strong>on't: baja prioridad o descartar. <span class="src">Clase 9, p12</span></dd>
+<dt>DoD (Definition of Done)</dt><dd>Contrato del Equipo Scrum, en forma de checklist, sobre qué significa «terminado».</dd>
+</dl>
+
+<h2 id="clase-10-el-sprint-por-dentro">Clase 10 · El Sprint por dentro</h2>
+<dl class="gl">
+<dt>Sprint</dt><dd>Ciclo iterativo de duración <strong>fija</strong>, de <strong>2 semanas a 2 meses</strong>: 4 ceremonias, 1 objetivo. Se puede cancelar. <span class="src">Scrum parte 2, p8</span> <span class="diff">Guía 2020: un mes o menos.</span></dd>
+<dt>Sprint 0</dt><dd>Planificación macro y puesta a punto (arquitectura, equipos, capacitaciones, backlog inicial, pivote, entornos, DoR y DoD iniciales). Máximo lo equivalente a <strong>2 Sprints</strong>. <span class="diff">No está en la guía.</span> <span class="src">p7</span></dd>
+<dt>Sprint Planning</dt><dd>Primera tarea del Sprint. 1) el PO explica las HU candidatas; 2) el equipo estima cuáles puede terminar; 3) se acuerda el objetivo; 4) se separan las HU en tareas. <span class="src">p9</span></dd>
+<dt>DoR (Definition of Ready)</dt><dd>Contrato de equipo, actualizable, que dice si una HU puede entrar al Sprint (flujos, criterios de aceptación, pantallas, dependencias resueltas). <span class="src">p10</span> <span class="diff">La Guía 2020 no la menciona.</span></dd>
+<dt>Estimación ágil</dt><dd>Puntos que combinan experiencia, incertidumbre y complejidad, relativos a un <strong>pivote</strong>. Técnicas: talles de camiseta, vasos de Starbucks, caramelos, Fibonacci, planning poker. <span class="src">p11</span></dd>
+<dt>Planning poker</dt><dd>Cartas Fibonacci. El PO presenta, cada uno elige, se muestran a la vez, <strong>los dos extremos explican</strong>, se vuelve a votar. <span class="src">p12</span></dd>
+<dt>Historia de usuario (HU)</dt><dd>Cómo una función da valor al cliente, desde la óptica del usuario. «Como [rol], quiero [acción], para [objetivo].» Jerarquía: épica → HU → tarea. <span class="src">p17</span></dd>
+<dt>Splitting</dt><dd>Partir una HU en <strong>tareas</strong>, en la planning: por tipo de actividad, componente técnico, tecnología o herramienta. <span class="src">p13</span></dd>
+<dt>Slicing</dt><dd>Partir en <strong>historias más chicas</strong>, en el refinamiento: por roles, pasos del flujo, flujo principal/alternativo, regla de negocio, datos de entrada, datos de salida, operaciones. <span class="src">p16</span></dd>
+<dt>Backlog Refinement</dt><dd>Entender las HU, evaluar completitud y dependencias, ver si entran en un Sprint. <strong>Única reunión que modera el PO.</strong> Scrum la ve como parte de la planning. <span class="src">p15</span></dd>
+</dl>
+
+<h2 id="clase-11-cerrar-el-sprint">Clase 11 · Cerrar el Sprint</h2>
+<dl class="gl">
+<dt>Daily Scrum</dt><dd>15 minutos, misma hora todos los días. Tres preguntas: ¿qué hice ayer?, ¿qué haré hoy?, ¿tengo impedimentos? Con tareas de máximo 8 horas, los desvíos se ven rápido. <span class="src">Scrum parte 3, p7</span> <span class="diff">Guía 2020: formato libre.</span></dd>
+<dt>Sprint Review</dt><dd>El PO explica a los stakeholders lo que alcanzó la DoD y el equipo hace una demo; se acuerdan próximos pasos, cambios al backlog, presupuesto y roadmap. <span class="src">p8</span></dd>
+<dt>Sprint Retrospective</dt><dd>Última tarea del Sprint: cómo mejorar para el siguiente. Con objetivo, de temas y no de personas, con respeto. 7 pasos: antes (objetivo, planificación), durante (dinámicas, priorizar, planes de acción con fecha y responsable), siguiente Sprint (ejecutar, seguir). <span class="src">p9 y p10</span></dd>
+<dt>Starfish</dt><dd>Comenzar a hacer · seguir haciendo · dejar de hacer · hacer más · hacer menos. <span class="src">p11</span></dd>
+<dt>Sailing Boat</dt><dd>Barco = equipo · isla = objetivo · viento = fortalezas · sol = oportunidades · ancla = debilidades · rocas = riesgos y amenazas. Es un FODA. <span class="src">p12</span></dd>
+</dl>
+
+<h2 id="clase-12-lean-xp-y-kanban">Clase 12 · Lean, XP y Kanban</h2>
+<dl class="gl">
+<dt>Lean</dt><dd>Objetivo: <strong>optimizar los procesos eliminando el desperdicio</strong> (las 7 mudas). Creada por Taiichi Ohno, dentro de Kaizen. Basada en el ciclo de Deming (PDCA: planificar, hacer, verificar, actuar). <span class="src">Clase 12, PDF</span></dd>
+<dt>Muda</dt><dd>Desperdicio. La cátedra da 7: transporte (del producto), inventario (de materias primas), movimiento (del operario), espera (del operario), sobreprocesamiento (proceso o herramienta), sobreproducción (costos de producción), defectos (del producto). <span class="src">Clase 12, PDF</span></dd>
+<dt>Kaizen</dt><dd>Mejora continua; Lean y Kanban nacieron dentro de esta metodología. <span class="src">Clase 12, PDF</span></dd>
+<dt>XP (Extreme Programming)</dt><dd>Chrysler, años 90, Kent Beck: buenas prácticas recolectadas de sus equipos, previo al Manifiesto. 5 bases: comunicación (cara a cara), simplicidad (omitir detalles), retroalimentación (del cliente), respeto (entre equipo y con cliente), coraje (para plantear los temas). 12 prácticas: cliente in situ, semana de 40 horas, programación de pares · diseño simple, refactorización, código estándar, propiedad colectiva · entregas cortas, testing (UT, regresión, UAT), integración continua · metáfora, juego de planificación. <span class="src">Clase 12, PDF</span></dd>
+<dt>Kanban</dt><dd>«Registro visual». Creado en Toyota por Taiichi Ohno en los 50, dentro de Kaizen, para <strong>eliminar cuellos de botella</strong>. Maneja pull. 3 reglas: mostrar el proceso, limitar el trabajo en curso, optimizar el flujo. <span class="src">Clase 12, PDF</span></dd>
+<dt>Tablero y tarjeta Kanban</dt><dd>Tablero de 3 columnas: To do, WIP (se puede abrir en varias) y Done. Tarjeta mínima: descripción, responsable, fecha de inicio y fin. Herramientas: Trello (chico, gratis), Jira (configurable, caro desde 10 usuarios), Azure DevOps (grandes empresas con Microsoft). <span class="src">Clase 12, PDF</span></dd>
+<dt>WIP (trabajo en curso)</dt><dd>Ítems empezados y no terminados. Limitarlo = máximo de tarjetas por columna; la columna llena muestra el cuello de botella.</dd>
+<dt>Pull / push</dt><dd>Pull: se toma trabajo cuando hay capacidad. Push: se empuja sin mirar la capacidad, y la cola se acumula sin que nadie la vea.</dd>
+<dt>Cuello de botella</dt><dd>La etapa que no da abasto y frena a las demás; se nota como espera.</dd>
+</dl>
+
+<div class="ask noprint">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «tómame el glosario: dime un término y yo lo defino» o «mezcla preguntas de las clases 8 a 12 sin decirme de cuál son».
+</div>
+
+<nav class="nav">
+  <a href="../clases/index.html">↑ Todas las clases</a>
+  <a href="../clases/parcial-agil-guia.html">Guía del parcial →</a>
+</nav>
+</main>
+</body>
+</html>

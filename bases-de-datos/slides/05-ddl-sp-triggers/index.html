@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DDL, stored procedures y triggers · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<!-- Deck de estudio sobre el PPT "DDL, SP, Triggers" de la cátedra. Sintaxis y definiciones del deck (con sus erratas de OCR corregidas);
+     los comportamientos de ON DELETE, CHECK y PRIMARY KEY + NOT NULL se probaron en SQLite. Diagramas y recuadros "En criollo" / "Ojo" son nuestros. -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ah"/></marker>
+  <marker id="arA" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahA"/></marker>
+  <marker id="arB" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahB"/></marker>
+</defs></svg>
+
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · Clase 4 · práctica y teoría del 2.º parcial</p>
+    <h1 class="h1" style="font-size:104px;line-height:1">DDL, stored procedures<br><span class="gradient-text">y triggers</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Cómo se define la estructura, qué reglas puede imponer y qué código vive dentro de la base.</p>
+    <p class="small">Basado en el PPT de la cátedra. Los recuadros “En criollo” y “Ojo” son explicación nuestra.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="slide" data-title="DDL frente a DML">
+  <p class="kicker">Mapa</p>
+  <h2 class="h2">DDL arma la caja; DML maneja lo que hay adentro</h2>
+  <div class="two" style="margin-top:8px">
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">Data Definition Language</div><h4>DDL · la estructura</h4><p>Crea y modifica la <b>estructura de los objetos</b> de la base.</p><p style="margin-top:12px"><code>CREATE</code> · <code>ALTER</code> · <code>DROP</code></p></div>
+    <div class="card card-soft"><div class="src">Data Manipulation Language</div><h4>DML · los datos</h4><p>Gestiona <b>los datos</b> dentro de esas estructuras (deck 3).</p><p style="margin-top:12px"><code>SELECT</code> · <code>INSERT</code> · <code>UPDATE</code> · <code>DELETE</code></p></div>
+  </div>
+  <p class="res" style="margin-top:22px">Los objetos más básicos que crea CREATE</p>
+  <table class="t head" style="font-size:26px">
+    <thead><tr><th style="width:20%">Objeto</th><th>Qué es (del deck)</th></tr></thead>
+    <tbody>
+      <tr><td>Tabla</td><td>Unidad básica de almacenamiento, de registros y columnas. La <b>representación física de las entidades</b>.</td></tr>
+      <tr><td>Vista</td><td>Representación <b>lógica</b> de un subconjunto de datos de una o más tablas.</td></tr>
+      <tr><td>Índice</td><td>Estructura de almacenamiento relacionada con las tablas para <b>mejorar el rendimiento de las consultas</b>.</td></tr>
+      <tr><td>Restricción</td><td>Fuerza el cumplimiento de condiciones (reglas de negocio). La <b>representación física de las relaciones</b>.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 1 · CREATE ============ -->
+<section class="slide" data-title="Anatomía de una columna">
+  <p class="kicker">1 · CREATE TABLE</p>
+  <h2 class="h2">Cada columna se declara en cuatro partes</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="col-title col-desc" style="margin-top:6px">
+    <title id="col-title">Las partes de la definición de una columna</title>
+    <desc id="col-desc">La definición duracion int NOT NULL CHECK (duracion mayor que 0) tiene nombre del campo, tipo de dato, nulidad y restricción.</desc>
+    <rect x="0" y="40" width="1728" height="104" rx="8" style="fill:#1e1219"/>
+    <text x="48" y="108" style="font-family:var(--font-mono);font-size:44px;fill:#f8e9f1">duracion</text>
+    <text x="400" y="108" style="font-family:var(--font-mono);font-size:44px;fill:#ff8fbd">int</text>
+    <text x="640" y="108" style="font-family:var(--font-mono);font-size:44px;fill:#ff8fbd">NOT NULL</text>
+    <text x="1032" y="108" style="font-family:var(--font-mono);font-size:44px;fill:#9ad6a4">CHECK (duracion &gt; 0)</text>
+    <path d="M48,160 V172 H316 V160" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+    <path d="M400,160 V172 H484 V160" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+    <path d="M640,160 V172 H880 V160" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+    <path d="M1032,160 V172 H1560 V160" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+    <text x="48" y="212" class="nm-s">Nombre del campo</text>
+    <text x="400" y="212" class="nm-s">Tipo (extensión)</text><text x="400" y="244" class="sb">char(40), int…</text>
+    <text x="640" y="212" class="nm-s">Nulidad</text><text x="640" y="244" class="sb">NULL / NOT NULL</text>
+    <text x="1032" y="212" class="nm-s" style="fill:var(--accent)">Restricción</text><text x="1032" y="244" class="sb">limita el uso del campo</text>
+    <text x="0" y="24" class="ey">CREATE TABLE Curso ( … una línea así por columna … );</text>
+  </svg>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p>Si no ponés <code>NULL</code> ni <code>NOT NULL</code>, el valor por defecto es que la columna <b>acepta nulos</b>. <code>NOT NULL</code> obliga a que cada fila tenga un valor en esa columna.</p></div>
+</section>
+
+<section class="slide" data-title="Tipos de datos">
+  <p class="kicker">1 · CREATE TABLE</p>
+  <h2 class="h2">Tipos de datos</h2>
+  <table class="t head" style="margin-top:6px">
+    <thead><tr><th style="width:18%">Categoría</th><th style="width:30%">Tipo</th><th>Qué guarda</th></tr></thead>
+    <tbody>
+      <tr><td>Cadena</td><td><code>char(n)</code></td><td>Texto de longitud <b>fija</b></td></tr>
+      <tr><td></td><td><code>varchar(n)</code></td><td>Texto de longitud <b>variable</b></td></tr>
+      <tr><td>Binario</td><td><code>binary(n)</code></td><td>Información binaria</td></tr>
+      <tr><td>Entero</td><td><code>int</code>, <code>smallint</code></td><td>Valores enteros</td></tr>
+      <tr><td>Numérico</td><td><code>float</code>, <code>real</code></td><td>Números <b>aproximados</b></td></tr>
+      <tr><td></td><td><code>decimal</code>, <code>numeric</code></td><td>Números con <b>precisión y escala fijas</b> (plata: <code>DECIMAL(10,2)</code>)</td></tr>
+      <tr><td>Fecha y hora</td><td><code>datetime</code>, <code>smalldatetime</code></td><td>Fechas y horas</td></tr>
+    </tbody>
+  </table>
+  <div class="crio"><span class="lbl">En criollo</span><p><code>char(40)</code> siempre ocupa 40 aunque guardes “Ana”; <code>varchar(40)</code> ocupa lo que guardás. Para importes usá <code>decimal</code>, no <code>float</code>: el float es aproximado.</p></div>
+</section>
+
+<!-- ============ 2 · RESTRICCIONES ============ -->
+<section class="slide" data-title="Las restricciones">
+  <p class="kicker">2 · Restricciones</p>
+  <h2 class="h2">Seis restricciones, seis cosas que se fuerzan</h2>
+  <div class="three" style="grid-template-columns:repeat(3,1fr);margin-top:8px">
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">PRIMARY KEY</div><p>Unicidad del conjunto de columnas que identifica cada fila.</p></div>
+    <div class="card card-accent"><div class="src">UNIQUE</div><p>Unicidad de una columna que no es la clave.</p></div>
+    <div class="card card-accent"><div class="src">DEFAULT</div><p>Un valor predeterminado si no se carga ninguno.</p></div>
+    <div class="card card-accent"><div class="src">NOT NULL</div><p>Que el valor exista.</p></div>
+    <div class="card card-accent"><div class="src">CHECK</div><p>Restringir el <b>dominio</b>: una condición que toda fila cumple.</p></div>
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">FOREIGN KEY</div><p><b>Integridad referencial</b>: jerarquía padre-hijo entre tablas.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Las restricciones son parte de la definición de la tabla. La base <b>rechaza</b> cualquier INSERT o UPDATE que las viole: las reglas no dependen de que la aplicación se acuerde de validarlas.</p></div>
+</section>
+
+<section class="slide" data-title="Primary key">
+  <p class="kicker">2 · Restricciones</p>
+  <h2 class="h2">PRIMARY KEY: a nivel de columna o de tabla</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div><p class="res">A nivel de columna · sólo clave simple</p><pre class="code sm" style="margin:0"><span class="k">CREATE TABLE</span> Curso (
+  codigo_curso <span class="k">int PRIMARY KEY</span>,
+  nombre       <span class="k">char</span>(40) <span class="k">NOT NULL</span>
+);</pre></div>
+    <div><p class="res">A nivel de tabla · simple o compuesta</p><pre class="code sm" style="margin:0"><span class="k">CREATE TABLE</span> Curso (
+  codigo_curso     <span class="k">int</span>,
+  codigo_categoria <span class="k">int</span>,
+  nombre           <span class="k">char</span>(40) <span class="k">NOT NULL</span>,
+  <span class="k">CONSTRAINT</span> pk_curso
+    <span class="k">PRIMARY KEY</span> (codigo_curso, codigo_categoria)
+);</pre></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Si la clave tiene <b>dos o más columnas</b>, sólo se puede declarar a nivel de tabla. A nivel de tabla, además, le ponés <b>nombre</b> a la restricción (<code>pk_curso</code>), y eso te deja borrarla después con <code>ALTER … DROP CONSTRAINT</code>.</p></div>
+  <div class="ojo"><span class="lbl">Ojo</span><p>La PK ya implica <b>NOT NULL</b>. El deck dice que declarar las dos cosas da error; en SQLite lo probamos y se acepta. En la hoja, seguí al deck y <b>no las declares juntas</b>.</p></div>
+</section>
+
+<section class="slide" data-title="Foreign key">
+  <p class="kicker">2 · Restricciones</p>
+  <h2 class="h2">FOREIGN KEY: el hijo sólo puede apuntar a padres que existen</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="fk-title fk-desc" style="margin-top:6px">
+    <title id="fk-title">Jerarquía padre-hijo de una clave foránea</title>
+    <desc id="fk-desc">La tabla hija CURSO tiene codigo_categoria, que referencia la clave primaria de la tabla padre CATEGORIA. Los valores posibles son las claves del padre, 1 y 2, más NULL; un 9 se rechaza.</desc>
+    <text x="0" y="20" class="eyA">TABLA PADRE · REFERENCIADA</text>
+    <rect x="0" y="40" width="440" height="48" rx="6" class="hd"/><text x="20" y="72" class="hdT">CATEGORIA</text><text x="420" y="72" class="hdT" text-anchor="end">PK</text>
+    <rect x="0" y="88" width="440" height="104" class="foc"/><text x="20" y="128" class="rowK">1</text><text x="96" y="128" class="row">Programación</text><text x="20" y="172" class="rowK">2</text><text x="96" y="172" class="row">Bases de datos</text>
+    <text x="1288" y="20" class="ey">TABLA HIJA · REFERENTE</text>
+    <rect x="1288" y="40" width="440" height="48" rx="6" class="hd"/><text x="1308" y="72" class="hdT">CURSO</text><text x="1708" y="72" class="hdT" text-anchor="end">FK → CATEGORIA</text>
+    <rect x="1288" y="88" width="440" height="180" class="box"/>
+    <text x="1308" y="128" class="row">curso 10 · categoría <tspan font-weight="700">1</tspan></text><text x="1708" y="128" class="tag" text-anchor="end" style="fill:var(--good)">✓</text>
+    <text x="1308" y="172" class="row">curso 11 · categoría <tspan font-weight="700">NULL</tspan></text><text x="1708" y="172" class="tag" text-anchor="end" style="fill:var(--good)">✓</text>
+    <text x="1308" y="216" class="row">curso 12 · categoría <tspan font-weight="700">9</tspan></text><text x="1708" y="216" class="tag" text-anchor="end" style="fill:var(--bad)">✗ no existe</text>
+    <line x1="1284" y1="124" x2="444" y2="124" class="lnA" marker-end="url(#arA)"/>
+    <rect x="716" y="88" width="296" height="20" class="mask"/><text x="864" y="103" class="lb" text-anchor="middle" style="fill:var(--accent)">REFERENCES CATEGORIA(id)</text>
+    <text x="864" y="196" class="tx2" text-anchor="middle">valores posibles en el hijo:</text>
+    <text x="864" y="232" class="nm-s" text-anchor="middle">{ 1, 2 } ∪ { NULL }</text>
+  </svg>
+  <div class="two" style="margin-top:6px">
+    <div class="card card-soft"><p>Los campos referenciados del padre tienen que ser <b>su clave primaria</b>; si no, la restricción no se puede crear.</p></div>
+    <pre class="code sm" style="margin:0"><span class="k">CONSTRAINT</span> fk_curso_cat
+  <span class="k">FOREIGN KEY</span> (codigo_categoria)
+  <span class="k">REFERENCES</span> Categoria (id)
+  [<span class="k">ON DELETE</span> {<span class="k">CASCADE</span> | <span class="k">SET NULL</span>}]</pre>
+  </div>
+  <p class="small" style="margin-top:8px">Los valores de las tablas son un ejemplo nuestro.</p>
+</section>
+
+<section class="slide" data-title="ON DELETE">
+  <p class="kicker">2 · Restricciones</p>
+  <h2 class="h2">ON DELETE: qué pasa con los hijos si borro al padre</h2>
+  <svg class="dg" viewBox="0 0 1728 296" role="img" aria-labelledby="od-title od-desc" style="margin-top:6px">
+    <title id="od-title">Tres comportamientos al borrar un padre con hijos</title>
+    <desc id="od-desc">Sin modificador, el borrado del padre se rechaza si tiene hijos. Con CASCADE se borran también los hijos. Con SET NULL los hijos quedan y su clave foránea pasa a NULL.</desc>
+    <text x="0" y="24" class="ey">SIN MODIFICADOR</text>
+    <text x="600" y="24" class="eyA">ON DELETE CASCADE</text>
+    <text x="1200" y="24" class="ey">ON DELETE SET NULL</text>
+    <g transform="translate(0,48)"><rect width="528" height="64" rx="6" class="bad"/><text x="20" y="40" class="nm-s">DELETE categoría 2</text>
+      <rect y="96" width="528" height="56" rx="6" class="box"/><text x="20" y="132" class="row">curso 20 · categoría 2</text>
+      <text x="0" y="200" class="lbBad">ERROR: tiene hijos</text><text x="0" y="232" class="tx2">el padre no se borra</text></g>
+    <g transform="translate(600,48)"><rect width="528" height="64" rx="6" class="foc"/><text x="20" y="40" class="nm-s">DELETE categoría 2</text>
+      <rect y="96" width="528" height="56" rx="6" class="soft"/><text x="20" y="132" class="row" style="fill:var(--text-3)" text-decoration="line-through">curso 20 · categoría 2</text>
+      <text x="0" y="200" class="lb" style="fill:var(--accent)">SE BORRAN LOS HIJOS</text><text x="0" y="232" class="tx2">en cascada, automáticamente</text></g>
+    <g transform="translate(1200,48)"><rect width="528" height="64" rx="6" class="foc"/><text x="20" y="40" class="nm-s">DELETE categoría 2</text>
+      <rect y="96" width="528" height="56" rx="6" class="box"/><text x="20" y="132" class="row">curso 20 · categoría <tspan font-weight="700">NULL</tspan></text>
+      <text x="0" y="200" class="lb">LOS HIJOS QUEDAN</text><text x="0" y="232" class="tx2">con la FK en NULL</text></g>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p><code>ON DELETE</code> <b>no es obligatorio</b>. Si no lo ponés, el motor valida que no haya hijos y, si los hay, rechaza el borrado. Lo probamos en SQLite: los tres casos se comportan así.</p></div>
+</section>
+
+<section class="slide" data-title="CHECK">
+  <p class="kicker">2 · Restricciones</p>
+  <h2 class="h2">CHECK: una condición que cada fila tiene que cumplir</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <p class="res">A nivel de columna</p>
+      <pre class="code sm" style="margin:0">duracion <span class="k">int CHECK</span> (duracion &gt; 0)</pre>
+      <p class="res">A nivel de tabla, con nombre</p>
+      <pre class="code sm" style="margin:0"><span class="k">CONSTRAINT</span> ck_curso_duracion
+  <span class="k">CHECK</span> (duracion &gt; 0)</pre>
+    </div>
+    <div>
+      <p class="res">Cómo resuelve el motor cada alta o cambio</p>
+      <table class="t head mini">
+        <thead><tr><th>La condición da…</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td><b>Falso</b> (−1)</td><td style="color:var(--bad);font-weight:700">viola · error</td></tr>
+          <tr><td><b>Verdadero</b> (5)</td><td style="color:var(--good);font-weight:700">no viola · ok</td></tr>
+          <tr style="background:var(--accent-tint)"><td><b>Desconocido</b> (NULL)</td><td style="color:var(--good);font-weight:700">no viola · ok</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo</span><p>Un NULL <b>pasa</b> el CHECK: <code>NULL &gt; 0</code> es desconocido, y desconocido no viola. Si el campo no puede quedar vacío, además va <code>NOT NULL</code>. Es la trampa del ejercicio 3 de la lección 0031.</p></div>
+</section>
+
+<!-- ============ 3 · ALTER Y DROP ============ -->
+<section class="slide" data-title="ALTER">
+  <p class="kicker">3 · ALTER y DROP</p>
+  <h2 class="h2">ALTER: cambiar la estructura de algo que ya existe</h2>
+  <table class="t head" style="margin-top:6px;font-size:25px">
+    <thead><tr><th style="width:13%">Acción</th><th style="width:16%">Objeto</th><th>Sintaxis</th></tr></thead>
+    <tbody>
+      <tr><td>Agregar</td><td>Columna</td><td><code>ALTER TABLE Curso ADD comentario char(40)</code></td></tr>
+      <tr><td></td><td>PK</td><td><code>ALTER TABLE T ADD CONSTRAINT pk_t PRIMARY KEY (c1, …)</code></td></tr>
+      <tr><td></td><td>FK</td><td><code>ALTER TABLE T ADD CONSTRAINT fk_t FOREIGN KEY (c) REFERENCES Padre(c)</code></td></tr>
+      <tr><td></td><td>Check</td><td><code>ALTER TABLE Curso ADD CONSTRAINT ck_cod_empresa CHECK (codigo_empresa &gt; 1)</code></td></tr>
+      <tr><td>Modificar</td><td>Columna</td><td><code>ALTER TABLE T MODIFY (campo1 tipo, …)</code></td></tr>
+      <tr><td>Eliminar</td><td>Columna</td><td><code>ALTER TABLE Curso DROP duracion</code></td></tr>
+      <tr><td></td><td>PK, FK, Check</td><td><code>ALTER TABLE Curso DROP CONSTRAINT fk_curso_requisito</code></td></tr>
+    </tbody>
+  </table>
+  <div class="crio"><span class="lbl">En criollo</span><p>Con ALTER se agregan, quitan o modifican <b>columnas, índices y restricciones</b> sin borrar la tabla ni sus datos. Para borrar una restricción hace falta su <b>nombre</b>: por eso conviene nombrarlas con <code>CONSTRAINT</code>.</p></div>
+</section>
+
+<section class="slide" data-title="DROP">
+  <p class="kicker">3 · ALTER y DROP</p>
+  <h2 class="h2">DROP borra el objeto entero; DELETE, sólo filas</h2>
+  <div class="three" style="grid-template-columns:repeat(3,1fr);margin-top:10px">
+    <div class="card" style="border-top:5px solid var(--bad)"><div class="src">DDL · el objeto</div><h4>DROP TABLE Curso</h4><p>Desaparece la tabla: <b>estructura y datos</b>.</p></div>
+    <div class="card card-accent"><div class="src">DDL · una columna</div><h4>ALTER … DROP COLUMN</h4><p><code>ALTER TABLE Curso DROP COLUMN Curso_Nombre</code>: la tabla queda, sin esa columna.</p></div>
+    <div class="card card-soft"><div class="src">DML · los datos</div><h4>DELETE FROM Curso</h4><p>Borra <b>filas</b>; la tabla vacía sigue existiendo.</p></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>DROP</b> es DDL (estructura); <b>DELETE</b> es DML (datos). Un <code>DELETE</code> sin WHERE deja la tabla vacía; un <code>DROP</code> la hace desaparecer.</p></div>
+</section>
+
+<!-- ============ 4 · STORED PROCEDURES ============ -->
+<section class="slide" data-title="Stored procedures">
+  <p class="kicker">4 · Stored procedures</p>
+  <h2 class="h2">Stored procedure: un proceso que vive en el servidor</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="sp-title sp-desc" style="margin-top:6px">
+    <title id="sp-title">Muchas idas y vueltas contra una sola llamada</title>
+    <desc id="sp-desc">Sin procedimiento, el cliente manda cada sentencia por separado y espera la respuesta. Con un procedimiento almacenado manda un solo CALL y los pasos encadenados se ejecutan dentro del servidor.</desc>
+    <text x="0" y="20" class="ey">SIN SP · CADA PASO VA Y VUELVE</text>
+    <rect x="0" y="40" width="240" height="104" rx="8" class="box"/><text x="120" y="100" class="nm-s" text-anchor="middle">Cliente</text>
+    <rect x="600" y="40" width="240" height="104" rx="8" class="store"/><text x="720" y="100" class="nm-s" text-anchor="middle">Servidor</text>
+    <line x1="240" y1="60" x2="596" y2="60" class="ln" marker-end="url(#ar)"/><line x1="600" y1="76" x2="244" y2="76" class="lnD" marker-end="url(#ar)"/>
+    <line x1="240" y1="100" x2="596" y2="100" class="ln" marker-end="url(#ar)"/><line x1="600" y1="116" x2="244" y2="116" class="lnD" marker-end="url(#ar)"/>
+    <line x1="240" y1="132" x2="596" y2="132" class="ln" marker-end="url(#ar)"/>
+    <text x="0" y="184" class="tx2">Más tráfico de datos y más tiempo.</text>
+    <text x="960" y="20" class="eyA">CON SP · UNA LLAMADA</text>
+    <rect x="960" y="40" width="240" height="104" rx="8" class="box"/><text x="1080" y="100" class="nm-s" text-anchor="middle">Cliente</text>
+    <rect x="1440" y="40" width="288" height="200" rx="8" class="foc"/><text x="1584" y="80" class="nm-s" text-anchor="middle">Servidor</text>
+    <rect x="1464" y="100" width="240" height="36" rx="4" class="box"/><text x="1584" y="126" class="row" text-anchor="middle">paso 1</text>
+    <rect x="1464" y="144" width="240" height="36" rx="4" class="box"/><text x="1584" y="170" class="row" text-anchor="middle">paso 2</text>
+    <rect x="1464" y="188" width="240" height="36" rx="4" class="box"/><text x="1584" y="214" class="row" text-anchor="middle">paso 3</text>
+    <line x1="1200" y1="92" x2="1436" y2="92" class="lnA" marker-end="url(#arA)"/>
+    <rect x="1252" y="56" width="132" height="20" class="mask"/><text x="1318" y="71" class="lb" text-anchor="middle" style="fill:var(--accent)">CALL SP(…)</text>
+    <text x="960" y="184" class="tx2">Los procesos encadenados se activan</text><text x="960" y="216" class="tx2">dentro del servidor.</text>
+  </svg>
+  <ul class="bl sm" style="margin-top:6px">
+    <li>Un <b>conjunto de instrucciones</b> para un proceso específico. Acepta parámetros de <b>entrada y salida</b> y puede devolver un valor o un conjunto de registros.</li>
+    <li>Sirve cuando <b>varias aplicaciones</b> necesitan el mismo programa (menos duplicación, más modularidad), para <b>reducir la comunicación</b> cliente-servidor y para dar tipos de datos derivados más complejos que una vista.</li>
+  </ul>
+</section>
+
+<section class="slide" data-title="Un SP de ejemplo">
+  <p class="kicker">4 · Stored procedures</p>
+  <h2 class="h2">El ejemplo del deck: GET_LOAD_ID</h2>
+  <div style="display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:start;margin-top:4px">
+    <pre class="code sm" style="margin:0;font-size:22px"><span class="k">CREATE PROCEDURE</span> Desa_ETL_ADMIN.GET_LOAD_ID(
+    <span class="k">IN</span>  DTS_Package_Name <span class="k">VARCHAR</span>(250),
+    <span class="k">OUT</span> Load_Id <span class="k">INTEGER</span>)
+<span class="k">BEGIN</span>
+  <span class="k">DECLARE</span> FECHA <span class="k">DATE</span>;
+  <span class="k">DECLARE</span> HORA <span class="k">INTEGER</span>;
+  <span class="k">SELECT DATE INTO</span> :FECHA;
+  <span class="k">SELECT TIME INTO</span> :HORA;
+  <span class="k">INSERT INTO</span> Desa_ETL_ADMIN.LOAD_INSTANCE_LOG
+    (DTS_Package_Name, Load_Start_Dt, Load_Start_Tm)
+  <span class="k">VALUES</span> (:DTS_Package_Name, :FECHA, :HORA);
+  <span class="k">SELECT</span> Load_Id <span class="k">INTO</span> :Load_Id
+  <span class="k">FROM</span> Desa_ETL_ADMIN.LOAD_INSTANCE_LOG
+  <span class="k">WHERE</span> DTS_Package_Name = :DTS_Package_Name
+    <span class="k">AND</span> Load_Start_Dt = :FECHA <span class="k">AND</span> Load_Start_Tm = :HORA;
+<span class="k">END</span>;</pre>
+    <div>
+      <div class="card card-soft"><h4>Qué hace</h4><ol style="margin:0;padding-left:28px;font-size:27px;line-height:1.45"><li>Recibe el nombre del paquete de carga (<b>IN</b>).</li><li>Toma la fecha y la hora.</li><li>Registra el inicio de la carga en un log.</li><li>Devuelve el <code>Load_Id</code> generado (<b>OUT</b>).</li></ol></div>
+      <pre class="code sm" style="margin-top:14px"><span class="k">CALL</span> Desa_ETL_ADMIN.GET_LOAD_ID(
+  'P_LDM_AGMT_DAILY_SALES', Load_Id);
+<span style="color:#a58a97">-- Load_Id = 10100009</span></pre>
+    </div>
+  </div>
+  <p class="small" style="margin-top:10px">Sintaxis de Teradata. Para ver el código de un SP: <code>SHOW PROCEDURE nombre</code>. El <code>Load_Id</code> es el mismo campo “identificador de carga” del TP de SCD.</p>
+</section>
+
+<!-- ============ 5 · TRIGGERS ============ -->
+<section class="slide" data-title="Triggers">
+  <p class="kicker">5 · Triggers</p>
+  <h2 class="h2">Trigger: código que se dispara solo ante un cambio</h2>
+  <svg class="dg" viewBox="0 0 1728 280" role="img" aria-labelledby="tg-title tg-desc" style="margin-top:6px">
+    <title id="tg-title">Cuándo se ejecuta un trigger BEFORE y uno AFTER</title>
+    <desc id="tg-desc">Llega una sentencia INSERT, UPDATE o DELETE. Un trigger BEFORE corre antes de verificar las restricciones; después se hace la operación; un trigger AFTER corre después, para hacer cambios en otras tablas.</desc>
+    <line x1="320" y1="96" x2="436" y2="96" class="ln" marker-end="url(#ar)"/>
+    <line x1="760" y1="96" x2="876" y2="96" class="ln" marker-end="url(#ar)"/>
+    <line x1="1200" y1="96" x2="1316" y2="96" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="40" width="320" height="112" rx="8" class="box"/><text x="160" y="88" class="nm-s" text-anchor="middle">Evento DML</text><text x="160" y="124" class="sb" text-anchor="middle">INSERT · UPDATE · DELETE</text>
+    <rect x="440" y="40" width="320" height="112" rx="8" class="foc"/><text x="600" y="88" class="nm-s" text-anchor="middle">BEFORE</text><text x="600" y="124" class="sb" text-anchor="middle">antes de las restricciones</text>
+    <rect x="880" y="40" width="320" height="112" rx="8" class="store"/><text x="1040" y="88" class="nm-s" text-anchor="middle">La operación</text><text x="1040" y="124" class="sb" text-anchor="middle">se escribe en la tabla</text>
+    <rect x="1320" y="40" width="408" height="112" rx="8" class="foc"/><text x="1524" y="88" class="nm-s" text-anchor="middle">AFTER</text><text x="1524" y="124" class="sb" text-anchor="middle">cambios en cascada en otras tablas</text>
+    <text x="440" y="196" class="tx2">Valida lo que las referencias</text><text x="440" y="228" class="tx2">no pueden verificar.</text>
+    <text x="1320" y="196" class="tx2">Mantiene otras tablas al día.</text>
+    <text x="0" y="268" class="ey">INSTEAD OF · SÓLO EN VISTAS · REEMPLAZA LA OPERACIÓN PARA HACERLAS ACTUALIZABLES</text>
+  </svg>
+  <ul class="bl sm" style="margin-top:8px">
+    <li>Activa una función cuando ocurre un <b>evento</b> sobre una tabla o una vista: cualquier sentencia <b>DML</b> que modifique datos.</li>
+    <li>Se usa para ejecutar <b>reglas de negocio</b>, <b>auditar</b> o <b>validar</b> datos.</li>
+  </ul>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>BEFORE</b> y <b>AFTER</b>: sólo en tablas. <b>INSTEAD OF</b>: en vistas. Un trigger <b>no se llama</b>: se dispara solo. Un SP se ejecuta con <code>CALL</code>.</p></div>
+</section>
+
+<section class="slide" data-title="Un trigger de ejemplo">
+  <p class="kicker">5 · Triggers</p>
+  <h2 class="h2">El ejemplo del deck: mantener el sueldo total del departamento</h2>
+  <div class="two" style="margin-top:4px;align-items:start">
+    <pre class="code sm" style="margin:0"><span class="k">CREATE TRIGGER</span> SueldoTotal1
+<span class="k">AFTER INSERT ON</span> EMPLEADO
+<span class="k">FOR EACH ROW</span>
+<span class="k">WHEN</span> (NEW.Dno <span class="k">IS NOT NULL</span>)
+  <span class="k">UPDATE</span> DEPARTAMENTO
+  <span class="k">SET</span> SueldoTotal = SueldoTotal + NEW.Sueldo
+  <span class="k">WHERE</span> Dno = NEW.Dno;</pre>
+    <svg class="dg" viewBox="0 0 820 420" role="img" aria-labelledby="st-title st-desc">
+      <title id="st-title">Un INSERT en EMPLEADO actualiza DEPARTAMENTO</title>
+      <desc id="st-desc">Se inserta un empleado con departamento 5 y sueldo 1000; el trigger suma 1000 al sueldo total del departamento 5.</desc>
+      <line x1="410" y1="120" x2="410" y2="148" class="ln" marker-end="url(#ar)"/>
+      <line x1="410" y1="268" x2="410" y2="296" class="lnA" marker-end="url(#arA)"/>
+      <rect x="0" y="16" width="820" height="104" rx="8" class="box"/><text x="24" y="56" class="nm-s">INSERT INTO EMPLEADO</text><text x="24" y="92" class="sb">Dno = 5 · Sueldo = 1000</text>
+      <rect x="0" y="152" width="820" height="116" rx="8" class="foc"/><text x="24" y="192" class="nm-s">Trigger SueldoTotal1 (AFTER)</text><text x="24" y="228" class="sb">¿NEW.Dno IS NOT NULL? sí → ejecuta la acción</text>
+      <rect x="0" y="300" width="820" height="104" rx="8" class="store"/><text x="24" y="340" class="nm-s">DEPARTAMENTO 5</text><text x="24" y="376" class="sb">SueldoTotal: 30000 → 31000</text>
+    </svg>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p><code>NEW</code> es la fila recién insertada. La condición evita tocar departamentos cuando el empleado no tiene uno. La acción del trigger es un evento sobre <b>otra tabla</b>: por eso es AFTER. (Los números del dibujo son un ejemplo; el PPT trae este código con errores de tipeo, “IN5ERT” y “15 NOT NULL”, que acá corregimos.)</p></div>
+</section>
+
+<section class="slide" data-title="Vista, SP o trigger">
+  <p class="kicker">Cierre</p>
+  <h2 class="h2">Vista, stored procedure o trigger: quién los activa</h2>
+  <table class="t head" style="margin-top:6px">
+    <thead><tr><th style="width:18%"></th><th>Vista</th><th>Stored procedure</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td>Qué es</td><td>Una consulta guardada</td><td>Un programa guardado</td><td>Una reacción guardada</td></tr>
+      <tr><td>Se activa</td><td>Al consultarla (<code>SELECT … FROM vista</code>)</td><td>A mano, con <code>CALL</code></td><td>Solo, ante un INSERT, UPDATE o DELETE</td></tr>
+      <tr><td>Parámetros</td><td>No</td><td>Sí, de entrada y de salida</td><td>No; usa <code>NEW</code> / <code>OLD</code></td></tr>
+      <tr><td>Para qué</td><td>Traducir, filtrar, indicadores</td><td>Procesos encadenados en el servidor</td><td>Reglas de negocio, auditoría, validación</td></tr>
+    </tbody>
+  </table>
+  <p class="small" style="margin-top:12px">Esta comparación es nuestra, armada con lo que dice el deck sobre cada uno. <code>OLD</code> (la fila antes del cambio) no aparece en el deck.</p>
+</section>
+
+<!-- ============ AUTOEVALUACIÓN ============ -->
+<section class="slide" data-title="Autoevaluación">
+  <p class="kicker">Autoevaluación</p>
+  <h2 class="h2">¿Lo tenés? Tocá cada pregunta para ver la respuesta</h2>
+  <div class="qz">
+    <details><summary>¿CREATE, ALTER y DROP son DDL o DML?</summary><p>DDL: definen la estructura.</p></details>
+    <details><summary>Si no ponés NULL ni NOT NULL, ¿la columna acepta nulos?</summary><p>Sí: por defecto se crea con NULL.</p></details>
+    <details><summary>Una PK de dos columnas, ¿a nivel de columna o de tabla?</summary><p>De tabla: a nivel de columna sólo van claves simples.</p></details>
+    <details><summary>¿Qué valores puede tomar una FK?</summary><p>Los de la PK del padre, más NULL.</p></details>
+    <details><summary>Borrás un padre con hijos y ON DELETE CASCADE: ¿qué pasa?</summary><p>Se borran también los hijos.</p></details>
+    <details><summary>Un NULL en un campo con CHECK (x &gt; 0), ¿pasa?</summary><p>Sí: desconocido no viola la restricción.</p></details>
+    <details><summary>¿Qué tipo de trigger se usa en vistas?</summary><p>INSTEAD OF, para hacerlas actualizables.</p></details>
+    <details><summary>¿Cómo se ejecuta un stored procedure?</summary><p>Con CALL nombre(argumentos).</p></details>
+  </div>
+  <p class="small" style="margin-top:auto">A practicar: lecciones 0029 (SP y triggers), 0031 (CREATE TABLE) y 0038 (ALTER, DROP, ON DELETE).</p>
+</section>
+
+<div class="deck-footer"><span class="dim2">DDL, SP y triggers</span><span class="slide-number" data-current="1" data-total="17"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

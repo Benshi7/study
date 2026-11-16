@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- TEMPLATE: copy to clases/NN-tema.html, then replace every [BRACKETED] item.
+     Conventions:
+     - Visible copy in neutral Spanish (no voseo). Code and comments in English.
+     - Source of truth is the cátedra slides in raw/. Cite them as (Clase N, pX). Never contradict them.
+     - PDF links use class="local-only": they only work in the full copy that has raw/.
+     - Keep the lesson short (15-25 min): concept -> example -> practice -> what goes in the TP.
+     - Route: every lesson belongs to ONE route (cascada -> TP/defensa, agil -> parcial). Nav = index | previous | next inside that route only.
+     - Spacing: right after .connect, a "Antes de empezar · repaso de <clase anterior>" details.recall (closed-book recall of the previous class).
+     - Quizzes: every option of a question has the SAME number of words; the correct one must not be the longest or most specific.
+     - Agile route: link reference/agil-glosario.html in .source and keep its terms consistent with the glossary.
+     - When done: set status to "listo" for the class in assets/suite-data.js, then run tools/check-links.sh. -->
+<title>[Tema de la clase]</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+
+<!-- .hero: magenta banner, like the slide title bar. Holds kicker, h1, subtitle, meta. -->
+<header class="hero">
+  <p class="kicker">Clase [N] · [fecha] · Alimenta las secciones [X] del TP</p>
+  <h1>[Título: qué se aprende]</h1>
+  <p class="subtitle">[Una frase: el problema que resuelve este tema.]</p>
+  <p class="meta"><span>⏱ [20] minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%20N%20-%20nombre.pdf" title="Solo disponible en la copia completa con raw/">Clase [N]</a></span></p>
+</header>
+
+<!-- .win: learning objective, observable ("poder explicar / calcular / decidir ..."). -->
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder [verbo observable] [concepto], y [decir qué parte del TP resuelve].
+</div>
+
+<!-- .connect: where the concept comes from and what it feeds. Use it on every lesson. -->
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> [Clase M: concepto que se usa acá].</p>
+  <p><span class="to">Alimenta</span> [Clase K / sección X del TP: qué dato le pasa].</p>
+</div>
+
+<h2 id="repaso-previo">Antes de empezar · repaso de [Clase anterior]</h2>
+<details class="recall">
+  <summary>Sin mirar: [pregunta sobre la clase anterior].</summary>
+  <p>[Respuesta corta y enlace a la lección anterior.]</p>
+</details>
+
+<h2>El problema</h2>
+<p>[Por qué existe este tema, en dos o tres oraciones.] (Clase [N], p[X])<sup class="cite"><a class="local-only" href="../raw/Clase%20N%20-%20nombre.pdf">1</a></sup></p>
+
+<h2>Idea 1 · [Nombre del concepto]</h2>
+<p>[Definición con las palabras de la cátedra, citando diapositiva.]</p>
+<p class="note">[Plantilla o regla práctica que se pueda copiar.]</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>[Columna]</th><th>[Columna]</th><th>[Columna]</th></tr></thead>
+<tbody>
+<tr><td>[dato]</td><td>[dato]</td><td>[dato]</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Ejemplo resuelto</h3>
+<p>[Un ejemplo de la cátedra (por ejemplo, el Canvas de insumos médicos) o del proyecto del Mapa Interactivo.]</p>
+
+<h2>Idea 2 · [Nombre del concepto]</h2>
+<p>[...]</p>
+
+<!-- .chain: ordered steps with hand-off labels (data-in) between them. -->
+<ol class="chain">
+  <li><strong>[Paso 1]</strong><span class="q">[¿Qué pregunta responde?]</span></li>
+  <li data-in="[dato que pasa del paso 1 al 2]"><strong>[Paso 2]</strong><span class="q">[¿Qué pregunta responde?]</span></li>
+</ol>
+
+<h2>Práctica 1 · Recuperar sin mirar</h2>
+<!-- details.recall: the answer stays hidden until the learner tries. -->
+<details class="recall">
+  <summary>Sin volver arriba: [consigna de recuperación].</summary>
+  <p>[Respuesta esperada y enlace a la sección donde está.]</p>
+</details>
+
+<h2>Práctica 2 · Preguntas</h2>
+<!-- Quiz: exactly one data-ok per question; data-why explains why, for right AND wrong options.
+     Options are shuffled by quiz.js. Aim for 4 questions, at least one about a connection between concepts. -->
+<div class="quiz">
+  <p class="prompt">[Pregunta]</p>
+  <div class="options">
+    <button data-ok data-why="[Por qué es correcta, con cita (Clase N, pX).]">[Opción correcta]</button>
+    <button data-why="[Por qué falla.]">[Distractor plausible]</button>
+    <button data-why="[Por qué falla.]">[Distractor plausible]</button>
+    <button data-why="[Por qué falla.]">[Distractor plausible]</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2>Aplicado al TP</h2>
+<p class="note"><strong>Qué llevar al documento:</strong> [entregable concreto de esta clase para el TP, con la sección y el archivo de <code>tp/</code> donde se trabaja]. Chequear coherencia con: [secciones que deben coincidir].</p>
+
+<!-- .source: primary source with slide numbers. -->
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%20N%20-%20nombre.pdf" title="Solo disponible en la copia completa con raw/">Clase [N] — [título]</a>, diapositivas [X] a [Y].
+</div>
+
+<!-- .ask: invites the learner to question the agent. -->
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: [dos o tres preguntas útiles sobre este tema].
+</div>
+
+<!-- Footer navigation: previous lesson, class index, next lesson. -->
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="index.html">← [Lección anterior de la misma ruta]</a>
+  <a href="index.html">[Lección siguiente de la misma ruta] →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

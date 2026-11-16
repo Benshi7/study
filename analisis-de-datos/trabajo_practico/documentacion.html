@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documentación del proceso · TP freMTPL2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#ffffff;--surface:#ffffff;--surface-2:#eef3f4;--border:rgba(11,37,69,.12);
+  --text-1:#0b2545;--text-2:#3d5368;--text-3:#7d8fa0;
+  --accent:#13706b;--accent-2:#13706b;
+  --font:'Inter',system-ui,sans-serif;--serif:'Source Serif 4',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text-2);font:17px/1.6 var(--font)}
+main{max-width:920px;margin:0 auto;padding:56px 24px 80px}
+h1,h2,h3{color:var(--text-1);line-height:1.2;font-family:var(--serif);font-weight:600}
+h1{font-size:48px;margin:8px 0 12px}
+h2{font-size:26px;margin:56px 0 12px;padding-top:24px;border-top:1px solid var(--border)}
+h3{font-size:18px;margin:24px 0 8px}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);margin:0}
+.lede{font-size:20px;color:var(--text-2);max-width:60ch}
+.divider{width:56px;height:3px;background:var(--accent);margin:24px 0}
+b,strong{color:var(--text-1)}
+code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 6px;border-radius:4px;color:var(--text-1)}
+pre{font-family:var(--mono);font-size:14px;background:var(--surface-2);padding:14px 18px;border-radius:6px;overflow-x:auto;color:var(--text-1)}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);font-weight:600}
+table.etapas td:first-child{white-space:nowrap}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:16px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px}
+.card .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin:0}
+.card .big{font-size:32px;font-weight:800;color:var(--accent);margin:4px 0}
+.card p{margin:4px 0 0;font-size:15px}
+figure{margin:16px 0}
+figure img{width:100%;border:1px solid var(--border);border-radius:8px}
+figcaption{font-size:14px;color:var(--text-3);margin-top:6px}
+.nota{border-left:3px solid var(--accent-2);padding:4px 16px;color:var(--text-2);font-size:15px}
+nav ol{columns:2;font-size:15px;padding-left:20px}
+nav a{color:var(--accent-2);text-decoration:none}
+@media (max-width:640px){h1{font-size:32px}nav ol{columns:1}table{font-size:13px}}
+</style>
+</head>
+<body>
+<main>
+
+<p class="kicker">TP Integrador · Análisis de Datos</p>
+<h1>¿Quién cuesta más?</h1>
+<p class="lede">Documentación breve del proceso: de dos CSV de una aseguradora francesa al costo esperado de siniestros por perfil de conductor y vehículo.</p>
+<p>Bruno · Juan Pablo · Uriel · Nicolás</p>
+<p>Esta página resume todo el trabajo. Cada etapa tiene su documento con más detalle en la carpeta <code>docs/</code>, numerados en el mismo orden que la consigna.</p>
+<div class="divider"></div>
+
+<nav><ol>
+  <li><a href="#caso">Caso y pregunta</a></li>
+  <li><a href="#dataset">Dataset</a></li>
+  <li><a href="#flujo">Flujo técnico (ETL)</a></li>
+  <li><a href="#calidad">Calidad y transformaciones</a></li>
+  <li><a href="#eda">Análisis exploratorio</a></li>
+  <li><a href="#dashboard">Dashboard</a></li>
+  <li><a href="#conclusiones">Conclusiones</a></li>
+  <li><a href="#limitaciones">Limitaciones y mejoras</a></li>
+  <li><a href="#archivos">Archivos y cómo reproducirlo</a></li>
+</ol></nav>
+
+<h2 id="caso">1. Caso y pregunta</h2>
+<p>Presentamos el trabajo desde el rol del <b>equipo de pricing</b> de una aseguradora de autos, que le presenta los resultados a la <b>dirección técnica</b>. Si todos pagan lo mismo, los clientes de bajo riesgo se van y los de alto riesgo se quedan: la cartera empeora sola (<i>selección adversa</i>). Por eso hay que saber cuánto cuesta cada perfil.</p>
+<p><b>Pregunta:</b> ¿qué perfiles tienen mayor <b>prima pura</b> y cuánto se apartan del promedio de la cartera?</p>
+<table>
+  <tr><th>Hipótesis</th><th>Enunciado</th></tr>
+  <tr><td>H1</td><td>El historial (BonusMalus) separa el riesgo más que la edad. Que un BonusMalus alto tenga más siniestros es esperable, porque resume los siniestros pasados; lo que se pone a prueba es cuánto pesa frente a un dato del perfil.</td></tr>
+  <tr><td>H2</td><td>La zona urbana sube la frecuencia, pero no necesariamente la severidad.</td></tr>
+  <tr><td>H3</td><td>Unos pocos siniestros grandes pesan más en el costo que el perfil del asegurado.</td></tr>
+</table>
+<p><b>Cómo medimos:</b> frecuencia = siniestros / años de exposición · severidad = monto / siniestros · prima pura = monto / exposición = frecuencia × severidad · relatividad = segmento / cartera (1,30 = cuesta 30 % más). La <b>exposición</b> es el tiempo que la póliza estuvo vigente: por eso nunca se promedia la cantidad de siniestros por póliza.</p>
+
+<h2 id="dataset">2. Dataset</h2>
+<p><b>freMTPL2</b> (French Motor Third-Party Liability): cartera real de responsabilidad civil de autos de una aseguradora francesa. Fuente: paquete CASdatasets de R, en su copia de Kaggle.</p>
+<div class="grid">
+  <div class="card"><p class="eyebrow">Pólizas (freq)</p><div class="big">678.013</div><p>1 fila = 1 póliza: exposición, siniestros declarados, edad, BonusMalus, datos del vehículo, zona, densidad y región.</p></div>
+  <div class="card"><p class="eyebrow">Siniestros (sev)</p><div class="big">26.639</div><p>1 fila = 1 siniestro: póliza y monto. Se une con pólizas por <code>IDpol</code> (relación 1 a N).</p></div>
+</div>
+<p>Lo elegimos porque obliga a <b>conciliar dos tablas</b>, combina variables numéricas y categóricas, trae problemas de calidad reales y se puede enriquecer con un dato externo (las regiones de 2016). Detalle de cada columna: <code>notebooks/01_comprension.ipynb</code>.</p>
+
+<h2 id="flujo">3. Flujo técnico (ETL)</h2>
+<figure><img src="presentacion/img/etl_flujo.png" alt="Flujo ETL: CSV, raw, core, mart, export, Power BI y Python"><figcaption>De los CSV originales al dashboard. Python orquesta; las transformaciones están en SQL.</figcaption></figure>
+<table class="etapas">
+  <tr><th>Etapa</th><th>Qué hace</th><th>Archivos</th></tr>
+  <tr><td>1 · Extraer</td><td>Carga los CSV a SQLite <b>sin corregir nada</b> (capa <code>raw_</code>).</td><td><code>src/load_raw.py</code>, <code>sql/01_raw_tables.sql</code></td></tr>
+  <tr><td>2 · Limpiar</td><td>Aplica las decisiones de calidad y arma tablas con claves y reglas (capa <code>core_</code>).</td><td><code>src/build_core.py</code>, <code>sql/02_core_tables.sql</code>, <code>sql/20_limpieza_core.sql</code></td></tr>
+  <tr><td>3 · Modelar</td><td>Una fila por póliza con sus montos y franjas, y el tope de siniestros grandes (capa <code>mart_</code>).</td><td><code>src/build_mart.py</code>, <code>sql/30_mart.sql</code>, <code>sql/31_mart_powerbi.sql</code></td></tr>
+  <tr><td>4 · Cargar</td><td>Exporta el dataset final a CSV para Power BI y Python.</td><td><code>export/*.csv</code></td></tr>
+</table>
+<p>Todo corre con <code>python src/etl.py</code> en unos 10 segundos. Entre etapas se controla que no se pierda <b>ninguna fila ni ningún euro</b>; si un control falla, el ETL se detiene. El registro queda en <code>export/etl_log.txt</code> y la demo paso a paso en <code>notebooks/00_etl_demo.ipynb</code>.</p>
+
+<h2 id="calidad">4. Calidad y transformaciones</h2>
+<p>Documentamos <b>14 problemas</b>, cada uno con la consulta SQL que lo detecta (<code>sql/11_calidad.sql</code>) y una decisión: <b>corregir</b> si sabemos el valor correcto, <b>marcar</b> si es dudoso pero borrarlo también sesga, o <b>dejar</b> si es raro pero real. Nada se borra: <code>raw_</code> queda intacto para mostrar el antes.</p>
+<table>
+  <tr><th>Problema</th><th class="n">Registros</th><th>Decisión</th></tr>
+  <tr><td>Pólizas que declaran siniestros sin monto en la tabla de siniestros</td><td class="n">9.117</td><td>Corregir: el conteo sale de la tabla de montos</td></tr>
+  <tr><td>Lote <code>IDpol ≤ 24.500</code>, origen del problema anterior</td><td class="n">9.139</td><td>Marcar (sin él, la frecuencia da igual: 0,0739)</td></tr>
+  <tr><td>Siniestros sin póliza</td><td class="n">195</td><td>Apartar en una tabla propia</td></tr>
+  <tr><td>ID escrito como <code>1.00E+05</code></td><td class="n">1</td><td>Corregir a 100000</td></tr>
+  <tr><td>Exposición mayor a 1 año</td><td class="n">1.224</td><td>Recortar a 1 y marcar</td></tr>
+  <tr><td>Regiones sin acentos (nombres anteriores a 2016)</td><td class="n">21</td><td>Normalizar y agrupar en las 13 regiones de 2016</td></tr>
+</table>
+<figure><img src="presentacion/img/a1_frecuencia_antes_despues.png" alt="Frecuencia antes 0,1007 y después 0,0738"><figcaption>La frecuencia estaba inflada un 36 %. Después de conciliar, frecuencia × severidad coincide con la prima pura (≈ 167). Antes/después completo: <code>sql/21_antes_despues.sql</code>.</figcaption></figure>
+
+<h2 id="eda">5. Análisis exploratorio</h2>
+<p>Cada variable se analiza con su <b>peso en la cartera al lado</b> (un segmento chico puede dar números extremos por azar) y con cruces para separar efectos reales de confusiones. Notebooks: <code>02_historia</code> (hipótesis) y <code>03_eda</code> (resto de las variables, correlaciones y outliers).</p>
+<table>
+  <tr><th>Hallazgo</th><th>Evidencia</th></tr>
+  <tr><td><b>H1.</b> El BonusMalus pesa más que la edad</td><td>Frecuencia: 18–21 años 2,86×, BonusMalus con recargo 4,77×. Van juntos (correlación −0,57): con el mismo BonusMalus, la diferencia por edad se achica mucho.</td></tr>
+  <tr><td><b>H2.</b> La ciudad choca más seguido, no más caro</td><td>Frecuencia de 0,74× (rural) a ≈ 1,3× (urbana); la severidad no sigue ese orden. Por deciles de densidad: de 0,70× a 1,32×.</td></tr>
+  <tr><td><b>H3.</b> Pocos siniestros grandes dominan el costo</td><td>El 1 % de los siniestros es el 38 % del costo. Los 3 más grandes son de conductores de 18 a 20 años.</td></tr>
+  <tr><td>Vehículo</td><td>Diésel +14 % de frecuencia, también dentro de cada edad, BonusMalus y zona. Autos de 16+ años ≈ 0,70× en prima pura.</td></tr>
+</table>
+<figure><img src="presentacion/img/a3_prima_pura_edad_tope.png" alt="Prima pura relativa por edad, con y sin tope"><figcaption>Sin tope, 3 siniestros hacen ver a los jóvenes 13× más caros. Recortando cada siniestro en el percentil 99 (16.451), 3,6×. El tope es configurable: <code>python src/etl.py 0.995</code>.</figcaption></figure>
+
+<h2 id="dashboard">6. Dashboard</h2>
+<p><code>powerbi/TP_freMTPL2.pbix</code> lee el dataset final de <code>export/</code>: no limpia nada, eso pasó antes. Las medidas suman y dividen (siniestros ÷ exposición), nunca promedian. Filtros por zona, combustible y antigüedad del vehículo.</p>
+<table>
+  <tr><th>Página</th><th>Pregunta</th><th>Contenido</th></tr>
+  <tr><td>Cartera</td><td>¿Cómo es la cartera?</td><td>Indicadores, frecuencia y severidad por zona, Pareto del costo (H3)</td></tr>
+  <tr><td>Perfiles</td><td>¿Quién cuesta más?</td><td>Relatividades por edad, BonusMalus y antigüedad (H1)</td></tr>
+  <tr><td>Mapa</td><td>¿Dónde cuesta más?</td><td>Prima pura relativa por región, con su peso en la cartera (H2)</td></tr>
+  <tr><td>Calidad</td><td>¿Podemos confiar en los datos?</td><td>Correcciones aplicadas y frecuencia antes/después</td></tr>
+</table>
+
+<h2 id="conclusiones">7. Conclusiones</h2>
+<div class="grid">
+  <div class="card"><p class="eyebrow">Datos</p><p><b>Sin conciliar, la frecuencia estaba 36 % arriba.</b> Corregidos, los indicadores vuelven a ser coherentes.</p></div>
+  <div class="card"><p class="eyebrow">Perfiles</p><p><b>BonusMalus con recargo ≈ 4,9×</b> y jóvenes de 18–21 ≈ 3,6× en prima pura (con tope). La zona urbana suma por frecuencia.</p></div>
+  <div class="card"><p class="eyebrow">Método</p><p><b>Los siniestros grandes engañan:</b> sin tope, un número que depende de 3 casos no se lleva a una tarifa.</p></div>
+</div>
+
+<h2 id="limitaciones">8. Limitaciones y mejoras</h2>
+<h3>Limitaciones</h3>
+<ul>
+  <li><b>No es tarifa:</b> es costo esperado, sin primas cobradas, gastos ni margen.</li>
+  <li><b>Asociación, no causa.</b> Edad y BonusMalus se mezclan; analizamos de a una o dos variables.</li>
+  <li><b>Segmentos chicos</b> dan números inestables, y el <b>tope</b> elegido cambia los resultados.</li>
+  <li>Una sola aseguradora (no representa a Francia), sin fechas (anterior a 2016), solo responsabilidad civil, marca anonimizada. Casi 1 de cada 3 montos es un importe fijo entre aseguradoras (convención IRSA), no el costo real del choque.</li>
+</ul>
+<h3>Mejoras</h3>
+<ul>
+  <li><b>Modelo multivariado (GLM Poisson)</b> para separar los efectos que hoy se mezclan.</li>
+  <li><b>Validar</b> las relatividades en pólizas que el análisis no vio.</li>
+  <li><b>Más datos:</b> primas cobradas, kilómetros recorridos y varios años.</li>
+</ul>
+
+<h2 id="archivos">9. Archivos y cómo reproducirlo</h2>
+<pre>pip install -r requirements.txt
+python src/etl.py                 # CSV -> raw_ -> core_ -> mart_ -> export/   (≈ 10 s)
+python src/run_sql.py 11_calidad.sql</pre>
+<table>
+  <tr><th>Carpeta</th><th>Contenido</th></tr>
+  <tr><td><code>docs/</code></td><td>Un documento por etapa: 01 caso · 02 datos · 03 modelo · 04 SQL y calidad · 05 limpieza · 06 ETL · 07 EDA · 08 dashboard · 09 conclusiones y limitaciones</td></tr>
+  <tr><td><code>datasets/</code></td><td>CSV originales (no se modifican)</td></tr>
+  <tr><td><code>sql/</code></td><td>Estructura (01–02), exploración y calidad (10–11), limpieza (20–21), mart (30–31)</td></tr>
+  <tr><td><code>src/</code></td><td><code>etl.py</code> (todo el flujo) y los pasos que usa</td></tr>
+  <tr><td><code>notebooks/</code></td><td>00 demo del ETL · 01 comprensión · 02 hipótesis · 03 EDA. El 00 va primero; después, cualquier orden</td></tr>
+  <tr><td><code>export/</code></td><td>Dataset final para Power BI y Python (<code>polizas.csv</code>, <code>siniestros.csv</code> y tablas del dashboard)</td></tr>
+  <tr><td><code>powerbi/</code></td><td>Dashboard, medidas DAX y guía</td></tr>
+  <tr><td><code>presentacion/</code></td><td>Exposición (<code>index.html</code>) y gráficos</td></tr>
+</table>
+<p class="nota">Datos externos usados: correspondencia de regiones según la reforma territorial francesa de 2016 (ley 2015-29), regla del BonusMalus francés (coeficiente que arranca en 1,00) y coordenadas aproximadas de las regiones para el mapa.</p>
+
+</main>
+</body>
+</html>

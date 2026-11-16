@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TP Cascada · Equipo</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">TP Cascada · Modernización del Mapa Interactivo</p>
+  <h1>Carpeta del equipo</h1>
+  <p class="subtitle">Todo lo necesario para escribir, decidir y votar el TP juntos.</p>
+  <p class="meta">
+    <span>Entrega: 14/10/2026 · <strong data-countdown="2026-10-14"></strong></span>
+    <span>Defensa: 18/11/2026 · <strong data-countdown="2026-11-18"></strong></span>
+  </p>
+</header>
+
+<h2>Qué es el TP</h2>
+<p>Un documento de proyecto en metodología cascada sobre la <strong>Modernización del Mapa Interactivo de la Ciudad</strong> (GCBA), con <strong>10 secciones</strong>: carátula, índice, Canvas, Design Thinking, Charter, Gantt, matriz de stakeholders, plan de comunicación, matriz de riesgos y presupuesto.</p>
+<p>La consigna exige <em>storytelling</em>: no son puntos sueltos, cada sección usa datos de la anterior. Por eso este material está armado como una <strong>cadena</strong> y no como una lista de tareas para repartir.</p>
+<p>Se entrega el 14/10 y se defiende oralmente el 18/11: cualquier integrante tiene que poder explicar cualquier sección.</p>
+
+<h2>Empezar por acá</h2>
+<div class="grid">
+  <a class="card" href="decisiones.html">
+    <h3>Decisiones para votar</h3>
+    <p>Segmento, alcance, quién paga, herramientas y reparto. Se vota sin servidor y se cuenta pegando los códigos del grupo.</p>
+  </a>
+  <a class="card" href="avance.html">
+    <h3>Tablero de avance</h3>
+    <p>Estado, responsable y revisor de cada sección, con el checklist de coherencia.</p>
+  </a>
+  <a class="card" href="plan.html">
+    <h3>Plan del TP</h3>
+    <p>Qué pregunta responde cada sección, qué le entrega a la siguiente y qué material falta.</p>
+  </a>
+  <a class="card" href="hilo-conductor.html">
+    <h3>El hilo conductor</h3>
+    <p>Por qué el documento es una sola historia y cómo escribir las frases puente.</p>
+  </a>
+  <a class="card" href="canvas-segmentos.html">
+    <h3>Canvas · segmentos</h3>
+    <p>Del borrador del equipo a uno o dos segmentos con un problema concreto.</p>
+  </a>
+  <a class="card" href="canvas-taller.html">
+    <h3>Taller de Canvas</h3>
+    <p>Tablero de 9 bloques con cuatro modelos completos, editable y exportable.</p>
+  </a>
+</div>
+
+<h2>La cadena de secciones</h2>
+<p>Cada fila usa como entrada lo que produce la anterior. La columna «Depende de» sirve para decidir en qué orden escribir.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>Sección</th><th>Pregunta que responde</th><th>Depende de</th><th>Estado de la guía</th></tr></thead>
+<tbody id="chain"></tbody>
+</table>
+</div>
+<noscript><p class="note">Esta tabla necesita JavaScript. La misma información está en el <a href="plan.html">Plan del TP</a>.</p></noscript>
+
+<h2>Cómo usar esta carpeta</h2>
+<ol>
+  <li><strong>Abrir.</strong> Descomprimir el zip y hacer doble clic en <code>index.html</code>. Funciona sin internet, sin cuentas y sin instalar nada (solo las tipografías necesitan conexión; sin ella se usan las del sistema).</li>
+  <li><strong>Votar.</strong> En <a href="decisiones.html">Decisiones</a>: escribir el nombre, elegir una opción por decisión, tocar <em>Copiar mis votos</em> y pegar el código en el grupo.</li>
+  <li><strong>Contar.</strong> Quien quiera ve el resultado pegando en <em>Recuento</em> los códigos que llegaron al grupo. Todos ven lo mismo; no hace falta que nadie centralice.</li>
+  <li><strong>Avanzar.</strong> En <a href="avance.html">Avance</a>: cada persona marca lo suyo y pasa su estado al grupo con <em>Copiar estado</em>; los demás lo integran con <em>Pegar estado</em>.</li>
+  <li><strong>Actualizar.</strong> Cuando alguien comparta una versión nueva de la carpeta, reemplazar la carpeta completa. Los votos y el avance quedan guardados en el navegador; conviene copiarlos antes por las dudas (ver <code>LEEME.txt</code>).</li>
+</ol>
+
+<div class="source">
+  <strong>Fuente</strong>
+  Consigna del TP Cascada y material de la cátedra (clases 1 a 6). Los datos del proyecto salen de la visión del equipo; todo lo que no está confirmado figura como <em>[completar]</em> o <em>propuesta para votar</em>.
+</div>
+
+<nav class="nav">
+  <a href="plan.html">Plan del TP →</a>
+  <a href="decisiones.html">Votar decisiones →</a>
+</nav>
+</main>
+<script src="assets/tp-data.js"></script>
+<script src="assets/tp-common.js"></script>
+<script>
+(function () {
+  var body = document.getElementById("chain");
+  if (!window.TP || !body) return;
+  var rows = TP.sections.map(function (s) {
+    var title = s.page ? '<a href="' + s.page + '">' + s.title + "</a>" : s.title;
+    var deps = s.dependsOn.length ? s.dependsOn.join(", ") : "—";
+    return "<tr><td>" + s.n + "</td><td>" + title + "</td><td>" + s.question + "</td><td>" + deps + "</td><td>" + TPCommon.statusChip(s.status) + "</td></tr>";
+  });
+  body.innerHTML = rows.join("");
+})();
+</script>
+</body>
+</html>

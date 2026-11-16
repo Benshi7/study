@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Base de Datos · Curso</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/theme.js"></script>
+<style>
+  .unit { margin: 2.6rem 0 0; }
+  .unit__head {
+    display: flex; align-items: baseline; gap: 0.7rem;
+    border-bottom: 1.5px solid var(--ink-soft); padding-bottom: 0.45rem; margin-bottom: 0.2rem;
+  }
+  .unit__n {
+    font: 600 0.68rem/1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); white-space: nowrap;
+  }
+  .unit__t { font: 400 1.15rem/1.25 var(--serif); margin: 0; }
+  .unit__c { margin-left: auto; font: 0.72rem/1 var(--sans); color: var(--ink-faint); white-space: nowrap; }
+
+  .lsn { list-style: none; padding: 0; margin: 0; }
+  .lsn li {
+    display: flex; gap: 0.8rem; align-items: baseline;
+    padding: 0.45rem 0; border-bottom: 1px solid var(--rule); margin: 0;
+  }
+  .lsn li:last-child { border-bottom: none; }
+  .lsn__n { font: 0.78rem/1.5 var(--mono); color: var(--ink-faint); min-width: 3.1rem; }
+  .lsn__t { font-size: 0.97rem; }
+  .lsn li.done .lsn__t a { font-weight: 600; }
+  .lsn li.todo { color: var(--ink-faint); }
+  .lsn li.todo .lsn__t { color: var(--ink-faint); }
+  .lsn__b {
+    margin-left: auto; font: 600 0.62rem/1 var(--sans); letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.24rem 0.42rem; border-radius: 3px; white-space: nowrap;
+  }
+  .lsn li.done .lsn__b { color: var(--good); background: var(--good-soft); }
+  .lsn li.next .lsn__b { color: var(--accent); background: var(--accent-soft); }
+  .lsn li.todo .lsn__b { color: var(--ink-faint); background: var(--paper-sunk); }
+
+  .kit { display: grid; grid-template-columns: 1.1fr 1fr 0.95fr; gap: 1rem; margin: 2rem 0 0; }
+  .kit > div {
+    border: 1px solid var(--rule); border-radius: 6px; padding: 0.9rem 1rem; font: 0.88rem/1.5 var(--sans);
+  }
+  .kit h3 { margin: 0 0 0.4rem; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .kit p { margin: 0; color: var(--ink-soft); }
+  .kit a { display: block; margin-top: 0.35rem; }
+  @media (max-width: 640px) { .kit { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<main class="sheet full">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Universidad de la Ciudad de Buenos Aires · 2026, 1er cuatrimestre</p>
+    <h1 class="masthead__title">Base de Datos</h1>
+    <p class="masthead__standfirst">
+      Las nueve unidades del programa, en orden, sin saltear. Cada lección es una idea
+      y una práctica; el objetivo es aprobar la materia con la notación de la cátedra.
+    </p>
+    <p class="masthead__meta">
+      <span>36 de 53 lecciones</span>
+      <span>Base: Elmasri &amp; Navathe, 5ª ed.</span>
+      <span>Herramienta: ERDPlus</span>
+    </p>
+  </header>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Nuevo</span>
+    <p><a href="suite/index.html"><strong>Abrir la suite de estudio →</strong></a>
+      Mapa de ideas conectado, fichas con repetición espaciada, simulacro con las preguntas de
+      todas las lecciones, clasificadores y JOINs en Venn. Todo sale de los decks de la cátedra.</p>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">2do parcial · jueves 12/11</span>
+    <p><a href="lessons/0055-la-clase-del-parcial.html"><strong>La clase del parcial →</strong></a>
+      7 bloques de 10 minutos con lo que más se repite: SCD, vista con indicador, anteúltima foto,
+      SUMINISTROS, conjuntos, DDL y teoría. Un ejercicio por bloque.</p>
+  </div>
+
+  <div class="kit">
+    <div>
+      <h3>Empezá acá</h3>
+      <p>La primera clase, desde cero.</p>
+      <a href="lessons/0001-que-resuelve-una-base-de-datos.html">0001 · Qué resuelve una base de datos</a>
+    </div>
+    <div>
+      <h3>Repaso final</h3>
+      <p>Una tarjeta por pregunta probable, con palabras clave.</p>
+      <a href="practica/repaso-final.html">Qué responder en cada pregunta (1er parcial)</a>
+      <a href="practica/repaso-teoria-parcial2.html">Teoría del 2do parcial: tarjetas</a>
+    </div>
+    <div>
+      <h3>Práctica interactiva</h3>
+      <p>Para resolver en pantalla, con corrección inmediata.</p>
+      <a href="practica/der-mer-interactivo.html">DER / MER interactivo</a>
+      <a href="practica/normalizacion-interactiva.html">Normalización interactiva</a>
+      <a href="practica/tp5-clinica.html">TP5 Clínica: los scripts paso a paso (SQL)</a>
+      <a href="practica/suministros.html">SUMINISTROS: las 31 consultas del profe (SQL)</a>
+    </div>
+    <div>
+      <h3>Slides de la cátedra</h3>
+      <p>Los PPT rehechos en HTML, con explicación “en criollo”.</p>
+      <a href="slides/01-intro-data-warehouse/index.html">1 · Intro Data Warehouse</a>
+      <a href="slides/02-indices-y-transacciones/index.html">2 · Índices y transacciones</a>
+      <a href="slides/03-consultas-sql/index.html">3 · Consultas SQL (DML)</a>
+      <a href="slides/04-slow-change-dimension/index.html">4 · Slow Change Dimension</a>
+      <a href="slides/05-ddl-sp-triggers/index.html">5 · DDL, stored procedures y triggers</a>
+      <a href="slides/06-simulacro-parcial/index.html">6 · Simulacro: el parcial de ejemplo y el real del 12/06/2025</a>
+      <a href="slides/07-blueprint/index.html">7 · Blueprint: los 7 temas en una slide cada uno (corrige el PDF de NotebookLM)</a>
+    </div>
+    <div>
+      <h3>Modelos de parcial</h3>
+      <p>Los exámenes reales. Sólo las preguntas en alcance.</p>
+      <a href="raw/Examen1.webp">Examen 1 (Q1 ciclo de vida, Q8 normalizar, Q9 conteo ISA)</a>
+      <a href="raw/Examen2.webp">Examen 2 (Q10 · DER → relacional 3FN)</a>
+      <a href="raw/Respuesta_Ejercicio20260910.png">Respuesta del ejercicio del 10/09</a>
+      <a href="raw/Material_Examen/bd parcial 1a.jpg">2do parcial · modelo 1a (EXISTS, vistas)</a>
+      <a href="raw/Material_Examen/bd parcial 1b.jpg">2do parcial · modelo 1b (subconsultas)</a>
+      <a href="raw/Material_Examen/Resolucion_2parcial_2025_1C.docx">2do parcial real del 12/06/2025 · .docx (su resolución tiene errores: ver deck 6)</a>
+    </div>
+    <div>
+      <h3>Para imprimir</h3>
+      <p>Hojas de consulta rápida.</p>
+      <a href="reference/0007-plantillas-sql.html">Plantillas SQL que se repiten (jefe/NULL, vistas, SCD)</a>
+      <a href="reference/0006-sql-ddl-dml.html">SQL en una hoja: DDL, DML, vistas, SP y triggers</a>
+      <a href="reference/0005-del-enunciado-al-der.html">Del enunciado al DER (y cómo verificarlo)</a>
+      <a href="reference/0004-notacion-der-a-mano.html">Notación DER a mano</a>
+      <a href="reference/0003-indices-y-transacciones.html">Índices y transacciones (ACID)</a>
+      <a href="reference/0002-normalizacion.html">Normalización y pasaje a relacional</a>
+      <a href="reference/0001-cardinalidad.html">Cardinalidad en el DER</a>
+    </div>
+    <div>
+      <h3>El plan</h3>
+      <p>Mapa del parcial y del temario.</p>
+      <a href="PARCIAL.md">Mapa del 1er parcial</a>
+      <a href="raw/PAUTAS_EXAMEN.md">Pautas del docente (17/09)</a>
+      <a href="raw/TP_CATALOGO.md">Catálogo de TP</a>
+      <a href="CURRICULUM.md">CURRICULUM</a>
+    </div>
+  </div>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 1</span>
+      <h2 class="unit__t">Sistemas de Gestión de Base de Datos</h2>
+      <span class="unit__c">6 de 6</span>
+    </div>
+    <ul class="lsn">
+      <li class="done"><span class="lsn__n">0001</span><span class="lsn__t"><a href="lessons/0001-que-resuelve-una-base-de-datos.html">Qué problema resuelve una base de datos</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0002</span><span class="lsn__t"><a href="lessons/0002-el-dbms.html">El DBMS por dentro: qué hace y quién lo usa</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0003</span><span class="lsn__t"><a href="lessons/0003-tres-niveles.html">Los tres niveles y la independencia de datos</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0004</span><span class="lsn__t"><a href="lessons/0004-estructura-relacional.html">La estructura relacional: relación, tupla, atributo, dominio</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0005</span><span class="lsn__t"><a href="lessons/0005-claves-e-integridad.html">Claves e integridad</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0006</span><span class="lsn__t"><a href="lessons/0006-ciclo-de-vida.html">El ciclo de vida de una base de datos</a></span><span class="lsn__b">Lista</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 2</span>
+      <h2 class="unit__t">Modelos de Datos</h2>
+      <span class="unit__c">1 de 12</span>
+    </div>
+    <ul class="lsn">
+      <li class="next"><span class="lsn__n">0007</span><span class="lsn__t">Modelo de datos, proceso de diseño y qué califica como entidad</span><span class="lsn__b">Próxima</span></li>
+      <li class="todo"><span class="lsn__n">0008</span><span class="lsn__t">Los cinco tipos de atributo</span><span class="lsn__b">Pendiente</span></li>
+      <li class="todo"><span class="lsn__n">0009</span><span class="lsn__t">Relaciones y grado: unaria, binaria, ternaria</span><span class="lsn__b">Pendiente</span></li>
+      <li class="done"><span class="lsn__n">0010</span><span class="lsn__t"><a href="lessons/0010-razon-de-cardinalidad.html">La razón de cardinalidad: dónde va el número</a></span><span class="lsn__b">Lista</span></li>
+      <li class="todo"><span class="lsn__n">0011</span><span class="lsn__t">Participación total vs parcial: la línea doble</span><span class="lsn__b">Pendiente</span></li>
+      <li class="todo"><span class="lsn__n">0012</span><span class="lsn__t">Entidad débil y relación identificativa</span><span class="lsn__b">Pendiente</span></li>
+      <li class="done"><span class="lsn__n">0013</span><span class="lsn__t"><a href="lessons/0013-especializacion-la-notacion-isa.html">Especialización: dos marcas y cuatro combinaciones</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0014</span><span class="lsn__t"><a href="lessons/0014-contar-registros-del-supertipo.html">Contar registros del supertipo, contemplando todas las posibilidades</a></span><span class="lsn__b">Lista</span></li>
+      <li class="todo"><span class="lsn__n">0015</span><span class="lsn__t">Relaciones N:N, atributos de relación y el patrón histórico</span><span class="lsn__b">Pendiente</span></li>
+      <li class="todo"><span class="lsn__n">0016</span><span class="lsn__t">Del DER al modelo relacional: las reglas de mapeo</span><span class="lsn__b">Pendiente</span></li>
+      <li class="todo"><span class="lsn__n">0017</span><span class="lsn__t">Integridad en el modelo relacional</span><span class="lsn__b">Pendiente</span></li>
+      <li class="todo"><span class="lsn__n">0018</span><span class="lsn__t">Integrador: resolver el Ej. Clínica de punta a punta</span><span class="lsn__b">Pendiente</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 3</span>
+      <h2 class="unit__t">Diseño de Base de Datos</h2>
+      <span class="unit__c">8 de 8</span>
+    </div>
+    <ul class="lsn">
+      <li class="done"><span class="lsn__n">0019</span><span class="lsn__t"><a href="lessons/0019-las-anomalias.html">Las anomalías: por qué se normaliza</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0020</span><span class="lsn__t"><a href="lessons/0020-dependencia-funcional.html">Dependencia funcional: la única herramienta</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0021</span><span class="lsn__t"><a href="lessons/0021-primera-forma-normal.html">Primera forma normal: el grupo repetitivo</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0022</span><span class="lsn__t"><a href="lessons/0022-segunda-forma-normal.html">Segunda forma normal: la dependencia parcial</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0023</span><span class="lsn__t"><a href="lessons/0023-tercera-forma-normal.html">Tercera forma normal: la dependencia transitiva</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0024</span><span class="lsn__t"><a href="lessons/0024-donde-vive-el-precio.html">Dónde vive el precio: N:N, asociativa e histórico</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0025</span><span class="lsn__t"><a href="lessons/0025-integrador-ordenes.html">Integrador A: el ejercicio del 10/09</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0026</span><span class="lsn__t"><a href="lessons/0026-integrador-proveedores.html">Integrador B: Ejercicio 1, del DER a 3FN</a></span><span class="lsn__b">Lista</span></li>
+    </ul>
+  </section>
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 4</span>
+      <h2 class="unit__t">Organización física e Índices</h2>
+      <span class="unit__c">3 de 3</span>
+    </div>
+    <ul class="lsn">
+      <li class="done"><span class="lsn__n">0027</span><span class="lsn__t"><a href="lessons/0027-almacenamiento-y-archivos.html">Almacenamiento, disco y el enfoque de archivos</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0028</span><span class="lsn__t"><a href="lessons/0028-indices.html">Índices: principal, agrupado y secundario</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0029</span><span class="lsn__t"><a href="lessons/0029-store-procedures-y-triggers.html">Store procedures y triggers</a></span><span class="lsn__b">Lista</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 5</span>
+      <h2 class="unit__t">Lenguaje de Consulta de Datos</h2>
+      <span class="unit__c">10 de 11</span>
+    </div>
+    <ul class="lsn">
+      <li class="todo"><span class="lsn__n">0030</span><span class="lsn__t">SQL: las tres familias (DDL, DML, DCL)</span><span class="lsn__b">Pendiente</span></li>
+      <li class="done"><span class="lsn__n">0031</span><span class="lsn__t"><a href="lessons/0031-ddl-create-table.html">DDL: CREATE TABLE y las seis restricciones</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0032</span><span class="lsn__t"><a href="lessons/0032-select-basico.html">SELECT: proyección, filtro y orden</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0033</span><span class="lsn__t"><a href="lessons/0033-condiciones-y-null.html">LIKE, BETWEEN, IN, NOT y la trampa de NULL</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0034</span><span class="lsn__t"><a href="lessons/0034-joins.html">JOIN: recorrer las FK que dibujaste</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0035</span><span class="lsn__t"><a href="lessons/0035-group-by-having.html">Agregar, agrupar y filtrar grupos</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0036</span><span class="lsn__t"><a href="lessons/0036-subconsultas-exists.html">Subconsultas, EXISTS y UNION</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0037</span><span class="lsn__t"><a href="lessons/0037-dml-insert-update-delete.html">INSERT, INSERT SELECT, UPDATE, DELETE</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0038</span><span class="lsn__t"><a href="lessons/0038-alter-drop-on-delete.html">ALTER, DROP y ON DELETE</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0039</span><span class="lsn__t"><a href="lessons/0039-vistas.html">Vistas: una consulta con nombre</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0040</span><span class="lsn__t"><a href="lessons/0040-integrador-tp5-clinica.html">Integrador TP5 Clínica: del DER de la cátedra a los scripts</a></span><span class="lsn__b">Lista</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 6</span>
+      <h2 class="unit__t">Administración de Transacciones</h2>
+      <span class="unit__c">4 de 4</span>
+    </div>
+    <ul class="lsn">
+      <li class="done"><span class="lsn__n">0041</span><span class="lsn__t"><a href="lessons/0041-transacciones-y-acid.html">Qué es una transacción y qué promete ACID</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0042</span><span class="lsn__t"><a href="lessons/0042-problemas-de-concurrencia.html">Problemas de concurrencia</a></span><span class="lsn__b">Opcional</span></li>
+      <li class="done"><span class="lsn__n">0043</span><span class="lsn__t"><a href="lessons/0043-planificaciones-y-serializacion.html">Planificaciones, serialización y bloqueos</a></span><span class="lsn__b">Opcional</span></li>
+      <li class="done"><span class="lsn__n">0044</span><span class="lsn__t"><a href="lessons/0044-estados-fallos-y-recuperacion.html">Estados, fallos y recuperación (UNDO/REDO)</a></span><span class="lsn__b">Opcional</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 7</span>
+      <h2 class="unit__t">Procesamiento y Optimización de Consultas</h2>
+      <span class="unit__c">0 de 2</span>
+    </div>
+    <ul class="lsn">
+      <li class="todo"><span class="lsn__n">0045</span><span class="lsn__t">Las etapas del procesamiento de una consulta</span><span class="lsn__b">Pendiente</span></li>
+      <li class="todo"><span class="lsn__n">0046</span><span class="lsn__t">Leer un plan de ejecución sin adivinar</span><span class="lsn__b">Pendiente</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 8</span>
+      <h2 class="unit__t">Seguridad e Integridad</h2>
+      <span class="unit__c">1 de 2</span>
+    </div>
+    <ul class="lsn">
+      <li class="done"><span class="lsn__n">0047</span><span class="lsn__t"><a href="lessons/0047-control-de-acceso.html">Control de acceso: privilegios, GRANT/REVOKE y vistas</a></span><span class="lsn__b">Opcional</span></li>
+      <li class="todo"><span class="lsn__n">0048</span><span class="lsn__t">Planes de contingencia (los tipos de falla están en la 0044)</span><span class="lsn__b">Pendiente</span></li>
+    </ul>
+  </section>
+
+  <section class="unit">
+    <div class="unit__head">
+      <span class="unit__n">Unidad 9</span>
+      <h2 class="unit__t">Datawarehouse</h2>
+      <span class="unit__c">5 de 5</span>
+    </div>
+    <ul class="lsn">
+      <li class="done"><span class="lsn__n">0049</span><span class="lsn__t"><a href="lessons/0049-oltp-olap-y-data-warehouse.html">OLTP, OLAP y qué es un Data Warehouse</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0050</span><span class="lsn__t"><a href="lessons/0050-componentes-de-un-dw.html">Los componentes de un DW: ETL, ODS, MDM, DQ y Data Mart</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0051</span><span class="lsn__t"><a href="lessons/0051-modelo-estrella-y-copo-de-nieve.html">Modelo estrella, copo de nieve, Inmon y Kimball</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0052</span><span class="lsn__t"><a href="lessons/0052-slow-change-dimension.html">Slow Change Dimension: una fila por foto</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0053</span><span class="lsn__t"><a href="lessons/0053-repaso-unidad-9.html">Repaso de la Unidad 9: definiciones y diferencias</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0054</span><span class="lsn__t"><a href="lessons/0054-conjuntos-en-sql.html">Conjuntos en SQL: del diagrama a la consulta</a></span><span class="lsn__b">Lista</span></li>
+      <li class="done"><span class="lsn__n">0055</span><span class="lsn__t"><a href="lessons/0055-la-clase-del-parcial.html">La clase del parcial: lo esencial en 7 bloques</a></span><span class="lsn__b">Lista</span></li>
+    </ul>
+  </section>
+
+  <nav class="nav">
+    <a href="MISSION.md">Misión</a>
+    <a href="CURRICULUM.md">Plan de clases</a>
+    <a href="RESOURCES.md">Recursos</a>
+    <a href="NOTES.md">Notas</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

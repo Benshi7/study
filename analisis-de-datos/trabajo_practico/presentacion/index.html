@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="consultora">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>¿Quién cuesta más? · Riesgo por perfil en seguro de autos</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" id="theme-link" href="assets/themes/consultora.css">
+<link rel="stylesheet" href="assets/animations/animations.css">
+<style>
+/* Gráfico grande a la izquierda + lectura a la derecha */
+.split{display:grid;grid-template-columns:1.55fr 1fr;gap:48px;margin-top:20px;flex:1;min-height:0}
+.split > div{display:flex;flex-direction:column;justify-content:center;min-height:0}
+.split .img-frame{aspect-ratio:auto;max-height:100%}
+.split ul{margin:12px 0 0;padding-left:22px}
+.split li{margin:12px 0;color:var(--text-2);font-size:21px;line-height:1.45}
+.big{font-size:84px;font-weight:800;line-height:1;color:var(--accent)}
+.big small{font-size:28px;font-weight:600;color:var(--text-2)}
+.formula{font-family:var(--font-mono,monospace);font-size:17px;color:var(--text-2);margin-top:10px}
+.quien{position:absolute;top:28px;right:40px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+.card ul{font-size:19px;line-height:1.5;padding-left:20px}
+</style>
+</head>
+<body data-themes="consultora,editorial-serif,corporate-clean" data-theme-base="assets/themes/">
+<div class="deck">
+
+  <!-- Portada -->
+  <section class="slide center tc" data-title="Portada">
+    <div>
+      <p class="kicker">Equipo de pricing · para la Dirección Técnica</p>
+      <h1 class="h1 anim-fade-up" data-anim="fade-up" style="font-size:88px">¿Quién cuesta más?</h1>
+      <p class="lede" style="margin:0 auto">Costo esperado de siniestros por perfil de conductor y vehículo<br>Seguro de autos RC · Francia (freMTPL2)</p>
+      <div class="divider-accent" style="margin:28px auto"></div>
+      <p class="dim">Bruno · Juan Pablo · Uriel · Nicolás — TP Integrador · Análisis de Datos</p>
+    </div>
+    <div class="notes"><p><b>🎤 Bruno · 0:15</b></p>
+      <p>Buenas, somos el grupo 4: Bruno, Juan Pablo, Uriel y Nicolás. Trabajamos sobre <b>seguros de autos</b>, desde el rol del <b>equipo de pricing</b> de una aseguradora, que le presenta a la <b>dirección técnica</b>.</p>
+      <p>La pregunta es simple: <b>¿quién nos cuesta más?</b></p></div>
+  </section>
+
+  <!-- 1. Presentación del caso -->
+  <section class="slide" data-title="El caso">
+    <span class="quien">Bruno</span>
+    <p class="kicker">1 · Presentación del caso</p>
+    <h2 class="h2">Si cobramos lo mismo a todos, la cartera empeora sola</h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><h4>Bajo riesgo paga de más</h4><p class="dim">Encuentra un precio mejor y se va.</p></div>
+      <div class="card"><h4>Alto riesgo paga de menos</h4><p class="dim">Se queda, porque nadie le cobra tan barato.</p></div>
+      <div class="card card-accent"><h4>Selección adversa</h4><p class="dim">La cartera se llena de los perfiles que más cuestan.</p></div>
+    </div>
+    <p class="lede mt-l">Saber <b>cuánto cuesta cada perfil</b> es la base de cualquier tarifa.</p>
+    <div class="notes"><p><b>🎤 Bruno · 0:40</b></p>
+      <p>Una aseguradora <b>cobra antes de saber cuánto le va a costar el cliente</b>.</p>
+      <p>Imaginen dos clientes que pagan 300 euros por año. Uno nos cuesta 100 y el otro 500. El primero <b>paga de más</b>, encuentra algo más barato y se va. El segundo <b>paga de menos</b> y se queda.</p>
+      <p>Así la cartera se llena de clientes caros: eso es <b>selección adversa</b>. Por eso, saber cuánto cuesta cada perfil es la base de cualquier tarifa.</p>
+      <p class="dim">(Los 300 / 100 / 500 son un ejemplo inventado, no salen del dataset.)</p></div>
+  </section>
+
+  <!-- 2. Problema, pregunta o hipótesis -->
+  <section class="slide" data-title="Pregunta">
+    <span class="quien">Bruno</span>
+    <p class="kicker">2 · Pregunta e hipótesis</p>
+    <h2 class="h2" style="max-width:28ch">¿Qué perfiles tienen mayor <span class="gradient-text">prima pura</span>, y cuánto se apartan del promedio?</h2>
+    <div class="grid g3 mt-l">
+      <div class="card"><p class="eyebrow">H1</p><h4>El historial pesa más que la edad</h4><p class="dim">→ el BonusMalus separa el riesgo más que ser joven</p></div>
+      <div class="card"><p class="eyebrow">H2</p><h4>Zona urbana</h4><p class="dim">→ más frecuencia, no necesariamente más severidad</p></div>
+      <div class="card"><p class="eyebrow">H3</p><h4>Pocos siniestros grandes</h4><p class="dim">→ dominan el costo más que el perfil</p></div>
+    </div>
+    <p class="formula" style="margin-top:36px">prima pura = monto / años de exposición = frecuencia × severidad · relatividad = segmento / cartera (1,30 = cuesta 30 % más)</p>
+    <div class="notes"><p><b>🎤 Bruno · 1:05</b></p>
+      <p>Nuestra pregunta: ¿qué perfiles tienen mayor <b>prima pura</b>, y cuánto se apartan del promedio? La prima pura es lo que esperamos que nos cueste un cliente por año: el costo, no el precio. Y la <b>relatividad</b> lo compara con el promedio: 1,30 es un 30 % más caro.</p>
+      <p>Usamos una cartera real de Francia, de 678 mil pólizas, y planteamos tres hipótesis.</p>
+      <p><b>Primera:</b> el historial pesa más que la edad. Cada conductor tiene un puntaje, el <b>BonusMalus</b>, que arranca en 100, baja cada año sin choques y sube con cada choque. Todos pensamos que el riesgoso es el joven, pero el joven también arranca con el puntaje alto. ¿Es la edad o el historial?</p>
+      <p><b>Segunda:</b> en la ciudad se choca más seguido, pero no más caro.</p>
+      <p><b>Tercera:</b> unos pocos siniestros muy grandes pesan más que el perfil.</p>
+      <p>Antes de responderlas hay que ver si los datos son confiables. Eso lo cuenta Juan Pablo.</p>
+      <p class="dim">Por si preguntan: exposición = tiempo que estuvo vigente la póliza, por eso dividimos por años y no promediamos por póliza. El BonusMalus baja hasta 50 y sube solo con siniestros con culpa. H1 no es "BonusMalus alto choca más" (eso es esperable): es si pesa más que la edad.</p></div>
+  </section>
+
+  <!-- 3. Descripción del dataset -->
+  <section class="slide" data-title="El dataset">
+    <span class="quien">Juan Pablo</span>
+    <p class="kicker">3 · Descripción del dataset · freMTPL2</p>
+    <h2 class="h2">Una cartera real: 678 mil pólizas de una aseguradora francesa</h2>
+    <div class="grid g2 mt-l">
+      <div class="card"><p class="eyebrow">Tabla 1 · pólizas (freq)</p><div class="big">678.013</div>
+        <p class="dim">1 fila = 1 póliza · exposición, cantidad de siniestros, edad, BonusMalus, datos del auto, zona, densidad y región</p></div>
+      <div class="card"><p class="eyebrow">Tabla 2 · siniestros (sev)</p><div class="big">26.639</div>
+        <p class="dim">1 fila = 1 siniestro · póliza y monto. Se une por <b>IDpol</b>: una póliza tiene 0, 1 o varios siniestros</p></div>
+    </div>
+    <p class="dim mt-l">Fuente: CASdatasets (R), vía Kaggle · solo responsabilidad civil · sin fechas (anterior a 2016) · marca anonimizada</p>
+    <div class="notes"><p><b>🎤 Juan Pablo · 1:15</b></p>
+      <p>Por qué lo elegimos: dos tablas que hay que <b>conciliar</b>, variables numéricas y categóricas, problemas de calidad reales y un dato externo para enriquecer (regiones 2016).</p>
+      <p>Granularidad: la frecuencia se calcula por póliza, la severidad por siniestro.</p></div>
+  </section>
+
+  <!-- 4. Explicación del flujo técnico -->
+  <section class="slide" data-title="Flujo técnico">
+    <span class="quien">Juan Pablo</span>
+    <p class="kicker">4 · Flujo técnico · ETL</p>
+    <h2 class="h2">De dos CSV al dashboard, con un solo comando</h2>
+    <figure class="img-frame contain mt-l" style="flex:1;min-height:0;border:0;background:none"><img src="img/etl_flujo.png" alt="Flujo ETL: CSV originales, raw, core, mart y dataset final, usado por Power BI y Python, con controles entre etapas"></figure>
+    <p class="lede mt-m">Todo el flujo se reconstruye con <span class="mono">python src/etl.py</span> en unos 10 segundos.</p>
+    <div class="notes"><p><b>🎤 Juan Pablo · 1:45 (con código)</b></p>
+      <p><b>Mostrar en vivo:</b> <span class="mono">notebooks/00_etl_demo.ipynb</span> (una celda por etapa, con su resultado). Si preguntan cómo se corre todo junto: <span class="mono">python src/etl.py</span>.</p>
+      <p>Por qué tres capas: raw queda intacto, así siempre podemos mostrar el antes contra el después.</p>
+      <p>Python orquesta; las transformaciones están en SQL (<span class="mono">sql/20_limpieza_core.sql</span>, <span class="mono">sql/30_mart.sql</span>). Paso a Uriel.</p></div>
+  </section>
+
+  <!-- 5. Transformaciones y controles de calidad -->
+  <section class="slide" data-title="Calidad">
+    <span class="quien">Uriel</span>
+    <p class="kicker">5 · Transformaciones y controles de calidad</p>
+    <h2 class="h2">Las dos tablas no cerraban: la frecuencia estaba inflada un 36 %</h2>
+    <div class="split">
+      <div><figure class="img-frame contain"><img src="img/a1_frecuencia_antes_despues.png" alt="Frecuencia antes 0,1007 y después 0,0738"></figure></div>
+      <div>
+        <ul>
+          <li><b>9.117 pólizas</b> declaraban siniestros sin monto (97 % en un mismo lote). El conteo pasa a salir de la tabla de montos.</li>
+          <li><b>195 siniestros sin póliza:</b> se apartan, no se borran.</li>
+          <li>Después: frecuencia × severidad = prima pura (<b>167</b>). Los números vuelven a cerrar.</li>
+          <li>14 problemas documentados, cada uno con su consulta SQL y su decisión.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notes"><p><b>🎤 Uriel · 1:45 (con código)</b></p>
+      <p>Cada problema tuvo una de tres decisiones: <b>corregir</b> (ID "1.00E+05"), <b>marcar</b> (el lote IDpol ≤ 24.500) o <b>dejar</b> (montos extremos, que son reales).</p>
+      <p><b>Mostrar en vivo:</b> la consulta de conciliación en <span class="mono">sql/11_calidad.sql</span> o el antes/después en <span class="mono">sql/21_antes_despues.sql</span>.</p>
+      <p>Si preguntan por qué no borramos el lote: borrarlo también sesga; lo marcamos y sin él la frecuencia da igual (0,0739).</p></div>
+  </section>
+
+  <!-- 6a. Análisis exploratorio: quién -->
+  <section class="slide" data-title="EDA · quién">
+    <span class="quien">Uriel</span>
+    <p class="kicker">6 · Análisis exploratorio · el conductor (H1)</p>
+    <h2 class="h2">El BonusMalus pesa más que la edad</h2>
+    <div class="split">
+      <div><figure class="img-frame contain"><img src="img/a2_cruce_edad_bm.png" alt="Frecuencia por edad y BonusMalus"></figure></div>
+      <div>
+        <ul>
+          <li>Mirados por separado: 18–21 años <b>2,86×</b> y BonusMalus con recargo <b>4,77×</b> la frecuencia promedio.</li>
+          <li>Pero van juntos (correlación −0,57): un conductor nuevo arranca en BonusMalus 100.</li>
+          <li>Con el mismo BonusMalus, la diferencia por edad se achica mucho.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notes"><p><b>🎤 Uriel · 1:15</b></p>
+      <p>Adelantarse a la objeción: "Que el BonusMalus anticipe siniestros es esperable, porque resume el historial. Lo interesante es <b>cuánto</b> pesa y que se mezcla con la edad: un joven tiene BonusMalus alto por ser nuevo, no por haber chocado."</p>
+      <p>Concepto clave: <b>variables confundidas</b>. Mirar una variable por vez exagera el efecto de la edad.</p>
+      <p>Celdas en blanco = menos de 500 años de exposición: no las interpretamos.</p>
+      <p>Regla del BonusMalus (dato externo): arranca en 100, baja 5 % por año sin siniestros hasta 50, sube 25 % por siniestro (docs/09).</p></div>
+  </section>
+
+  <!-- 6b. Análisis exploratorio: dónde y con qué auto -->
+  <section class="slide" data-title="EDA · dónde">
+    <span class="quien">Uriel</span>
+    <p class="kicker">6 · Análisis exploratorio · zona y vehículo (H2)</p>
+    <h2 class="h2">En la ciudad se choca más seguido, no más caro</h2>
+    <div class="split">
+      <div><figure class="img-frame contain"><img src="img/a2_zona_frecuencia_severidad.png" alt="Frecuencia y severidad relativas por zona"></figure></div>
+      <div>
+        <ul>
+          <li>Frecuencia: de <b>0,74</b> (rural) a <b>≈ 1,3</b> (urbana). La severidad no sigue ese orden.</li>
+          <li>Con densidad en deciles: de <b>0,70×</b> a <b>1,32×</b>.</li>
+          <li>Diésel: <b>+14 %</b> de frecuencia, también comparando conductores parecidos.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notes"><p><b>🎤 Uriel · 1:00 (con código)</b></p>
+      <p>Cómo trabajamos el EDA: cada variable con su peso en la cartera al lado, y cruces para separar efectos reales de confusiones.</p>
+      <p><b>Mostrar en vivo:</b> <span class="mono">notebooks/03_eda.ipynb</span> (descriptivas, distribuciones, correlaciones, outliers).</p>
+      <p>Paso a Nicolás, que lo muestra en el dashboard.</p></div>
+  </section>
+
+  <!-- 7. Dashboard -->
+  <section class="slide" data-title="Dashboard">
+    <span class="quien">Nicolás</span>
+    <p class="kicker">7 · Dashboard · Power BI · en vivo</p>
+    <h2 class="h2">Para que la dirección técnica explore por su cuenta</h2>
+    <div class="grid g4 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><p class="act">Página 1</p><h4>Cartera</h4><p class="dim">Indicadores clave, zona y Pareto del costo</p></div>
+      <div class="card card-accent"><p class="act">Página 2</p><h4>Perfiles</h4><p class="dim">Relatividades por edad, BonusMalus y antigüedad</p></div>
+      <div class="card"><p class="act">Página 3</p><h4>Mapa</h4><p class="dim">Costo por región, con su peso en la cartera</p></div>
+      <div class="card"><p class="act">Página 4</p><h4>Calidad</h4><p class="dim">Antes y después de la limpieza</p></div>
+    </div>
+    <p class="lede mt-l">Filtros por zona, combustible y antigüedad del vehículo</p>
+    <div class="notes"><p><b>🎤 Nicolás · 2:30 (demo)</b></p>
+      <p><b>Cambiar a Power BI.</b> En Perfiles, filtrar Combustible = Diesel: el orden por edad y BonusMalus se mantiene.</p>
+      <p>Power BI lee el dataset final del ETL (<span class="mono">export/polizas.csv</span>): no limpia nada, eso pasó antes.</p>
+      <p>Las medidas suman y dividen (siniestros ÷ exposición): nunca se promedia la cantidad de siniestros.</p>
+      <p>Plan B: capturas de cada página.</p></div>
+  </section>
+
+  <!-- 8a. Insights: el giro -->
+  <section class="slide" data-title="Insight · tope">
+    <span class="quien">Nicolás</span>
+    <p class="kicker">8 · Insights · pocos siniestros grandes (H3)</p>
+    <h2 class="h2">El 1 % de los siniestros es el 38 % del costo</h2>
+    <div class="split">
+      <div><figure class="img-frame contain"><img src="img/a3_prima_pura_edad_tope.png" alt="Prima pura relativa por edad, con y sin tope"></figure></div>
+      <div>
+        <ul>
+          <li>Los 3 siniestros más grandes (4,1 M · 1,4 M · 1,3 M) son de conductores de <b>18 a 20 años</b>.</li>
+          <li>Sin tope, esa franja parece <b>13×</b> más cara.</li>
+          <li>Recortando cada siniestro en el percentil 99 (16.451): <b>3,6×</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notes"><p><b>🎤 Nicolás · 0:50</b></p>
+      <p>Mensaje: un número que depende de 3 casos <b>no se lleva a una tarifa</b>.</p>
+      <p>El tope es configurable (<span class="mono">python src/etl.py 0.995</span>). El p99 saca el 30,7 % del monto: en una tarifa real ese excedente se reparte en toda la cartera.</p></div>
+  </section>
+
+  <!-- 8b. Conclusiones -->
+  <section class="slide" data-title="Conclusiones">
+    <span class="quien">Nicolás</span>
+    <p class="kicker">8 · Conclusiones</p>
+    <h2 class="h2">Las tres hipótesis se confirman, con matices</h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card card-accent"><p class="eyebrow">H1 · Historial vs. edad</p><h4>BonusMalus con recargo ≈ 4,9×</h4><p class="dim">Jóvenes ≈ 3,6×, y buena parte de eso es BonusMalus.</p></div>
+      <div class="card card-accent"><p class="eyebrow">H2 · Zona</p><h4>Más frecuencia, no más severidad</h4><p class="dim">Densidad: de 0,70× a 1,32×.</p></div>
+      <div class="card card-accent"><p class="eyebrow">H3 · Siniestros grandes</p><h4>Sin tope, engañan</h4><p class="dim">3 siniestros mueven una franja entera.</p></div>
+    </div>
+    <p class="lede mt-l">Y antes que nada: <b>los datos se corrigieron</b>; sin eso, la frecuencia estaba 36 % arriba.</p>
+    <div class="notes"><p><b>🎤 Nicolás · 0:50</b></p>
+      <p>Volver a la pregunta de la slide 2: los perfiles más caros son <b>BonusMalus con recargo</b> y <b>conductores de 18–21</b>; la zona urbana suma por frecuencia.</p>
+      <p>Valores con tope p99 (prima pura relativa). Paso a Bruno.</p></div>
+  </section>
+
+  <!-- 9. Limitaciones y mejoras -->
+  <section class="slide" data-title="Limitaciones">
+    <span class="quien">Bruno</span>
+    <p class="kicker">9 · Limitaciones y mejoras futuras</p>
+    <h2 class="h2">Qué no podemos afirmar, y qué haríamos después</h2>
+    <div class="grid g2 mt-l">
+      <div class="card"><h4>Limitaciones</h4><ul class="dim">
+        <li><b>No es tarifa:</b> sin primas cobradas, gastos ni margen.</li>
+        <li><b>Asociación, no causa.</b> Edad y BonusMalus se mezclan.</li>
+        <li><b>Segmentos chicos</b> dan números inestables, y el <b>tope</b> elegido cambia los resultados.</li>
+        <li>Una sola aseguradora, sin fechas, solo RC; casi 1 de cada 3 montos es un importe fijo entre aseguradoras.</li>
+      </ul></div>
+      <div class="card card-accent"><h4>Mejoras</h4><ul class="dim">
+        <li><b>Modelo multivariado (GLM Poisson):</b> separar edad, BonusMalus, densidad y combustible.</li>
+        <li><b>Validar</b> las relatividades en pólizas que el análisis no vio.</li>
+        <li><b>Más datos:</b> primas cobradas, kilómetros y varios años.</li>
+      </ul></div>
+    </div>
+    <div class="notes"><p><b>🎤 Bruno · 1:05</b></p>
+      <p>Para cerrar, queremos decir nosotros hasta dónde llega el análisis.</p>
+      <p><b>Primero:</b> no es una tarifa. Medimos cuánto cuesta cada perfil, pero no sabemos cuánto se le cobró ni el margen.</p>
+      <p><b>Segundo:</b> mostramos asociaciones, no causas, y edad y BonusMalus vienen mezclados.</p>
+      <p><b>Tercero:</b> los perfiles más caros son los más chicos. Los de 18 a 21 son poco más del 1 % de la cartera, y el tope que elegimos cambia el resultado.</p>
+      <p><b>Y los datos:</b> una sola aseguradora, sin fechas, y casi un tercio de los montos son importes fijos entre aseguradoras, no el costo real.</p>
+      <p>¿Qué haríamos después? Un modelo que mire todas las variables juntas, probar los números en pólizas nuevas y sumar primas y kilómetros recorridos. Así pasaríamos de saber cuánto <b>cuesta</b> cada perfil a saber cuánto <b>cobrarle</b>. Gracias, ¿preguntas?</p>
+      <p class="dim">Por si preguntan: el modelo es un GLM, que separa edad y BonusMalus. Importe fijo = forfait de la convención IRSA; 1.204 € aparece en el 18 % de los siniestros y 1.128,12 € en el 12 %. Solo cubre responsabilidad civil.</p></div>
+  </section>
+
+  <!-- Preguntas -->
+  <section class="slide center tc" data-title="Preguntas">
+    <div>
+      <p class="kicker">Gracias</p>
+      <h1 class="h1" style="font-size:96px">¿Preguntas?</h1>
+      <div class="divider-accent" style="margin:28px auto"></div>
+      <p class="dim" style="max-width:60ch;margin:0 auto;font-size:17px;line-height:1.6">
+        Evidencia técnica: <span class="mono">sql/</span> · <span class="mono">src/etl.py</span> · <span class="mono">notebooks/01–03</span> · <span class="mono">export/</span> · <span class="mono">powerbi/</span> · <span class="mono">docs/</span></p>
+    </div>
+    <div class="notes"><p><b>🎤 Todos</b></p>
+      <p>Cada uno responde las preguntas de su parte. Probables: ¿por qué no promediaron siniestros? (exposición) · ¿por qué el tope? (3 siniestros) · ¿por qué no borraron el lote? (sesga, y no cambia nada) · ¿la edad causa más choques? (asociación, no causa).</p></div>
+  </section>
+
+</div>
+<script src="assets/runtime.js"></script>
+<script>
+  // Navegar con la rueda del mouse o el trackpad: un gesto = una slide.
+  let ultimoScroll = 0;
+  document.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaY) < 30 || Date.now() - ultimoScroll < 700) return;
+    ultimoScroll = Date.now();
+    const tecla = e.deltaY > 0 ? "ArrowRight" : "ArrowLeft";
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: tecla }));
+  }, { passive: true });
+</script>
+</body></html>

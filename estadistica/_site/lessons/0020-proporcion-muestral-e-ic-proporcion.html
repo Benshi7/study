@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 20 — Proporción muestral e IC para una proporción</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+<style>
+  .tw { overflow-x: auto; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  td.c, th.c { text-align: center; }
+  tr.tot td { font-weight: 700; border-top: 2px solid var(--accent-dim); }
+  .example table, .calc table, .box table { background: transparent; }
+  .calc {
+    border-radius: 3px; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.95rem;
+    background: var(--paper-raised); border-left: 3px solid var(--formula);
+  }
+  .calc::before {
+    content: "\1F5A9  EN LA FX-991EX"; display: block; font-size: 0.68rem; letter-spacing: 0.12em;
+    font-weight: 700; margin-bottom: 0.5rem; color: var(--formula); font-family: var(--font-mono);
+  }
+  .key {
+    display: inline-block; border: 1px solid var(--accent-dim); border-bottom-width: 2px; border-radius: 4px;
+    padding: 0 0.4rem; margin: 0.1rem 0.1rem; font-size: 0.82rem; font-weight: 600; color: var(--accent);
+    background: var(--code-bg); line-height: 1.55; white-space: nowrap;
+  }
+  .out { color: var(--good); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .calc ol, .example ol, .box ol { margin: 0.4rem 0 0.4rem 1.2rem; padding: 0; }
+  .calc li, .example li, .box li { margin: 0.35rem 0; }
+  .fig { margin: 1.3rem 0; text-align: center; }
+  .fig svg { max-width: 100%; height: auto; }
+  .fig figcaption { font-size: 0.85rem; color: var(--ink-dim); margin-top: 0.3rem; }
+  .plots { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin: 1.3rem 0; }
+  .plots .fig { margin: 0; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 4px; padding: 0.6rem 0.4rem; }
+  .svg-axis { stroke: var(--ink-dim); stroke-width: 1.2; fill: none; }
+  .svg-curve { stroke: var(--formula); stroke-width: 2; fill: none; }
+  .svg-fill { fill: rgba(230, 195, 132, 0.38); stroke: none; }
+  .svg-mark { stroke: var(--accent-dim); stroke-width: 1; stroke-dasharray: 3 3; }
+  .svg-t { fill: var(--ink-dim); font-size: 11px; font-family: var(--font-body); }
+  .svg-tb { fill: var(--ink); font-size: 11.5px; font-family: var(--font-body); font-weight: 600; }
+  .svg-dot { fill: var(--accent); fill-opacity: 0.85; }
+  .svg-line { stroke: var(--formula); stroke-width: 1.6; fill: none; }
+  .quiz label span.opt { flex: 1; }
+</style>
+</head>
+<body>
+
+<span class="kicker">Unidad 7 · Distribución muestral de p̂ e intervalos de confianza · Lección mecánica</span>
+<h1>Proporción muestral e IC para una proporción</h1>
+<p class="subtitle">p̂ ~ Normal(p; √(pq/n)) con n·p y n·q ≥ 15, el IC p̂ ± Z·√(p̂q̂/n), el tamaño de muestra con p = 0,5 por defecto y cómo averiguar el nivel de confianza de un intervalo dado.</p>
+
+
+<h2>El problema</h2>
+<p>Cuando la pregunta es una <strong>proporción</strong> (“el 43 % de los propietarios prefiere…”, “140 de 500 son fumadores”), el estadístico es <span class="formula">p̂ = x/n</span>: la fracción de éxitos <em>de la muestra</em>. Cambia de muestra en muestra, así que es una variable aleatoria con su propia distribución. De esa distribución salen dos cosas: (1) la probabilidad de que p̂ caiga en cierto rango <em>cuando p se conoce</em>, y (2) el intervalo de confianza para p <em>cuando p se desconoce</em>.</p>
+
+<h2>Las fórmulas de la cátedra</h2>
+<div class="tw"><table>
+<tr><th>Qué</th><th>Fórmula</th><th>Notas</th></tr>
+<tr><td>Estadístico</td><td><span class="formula">p̂ = x / n</span></td><td>x = éxitos en la muestra (qué es “éxito” lo define la pregunta)</td></tr>
+<tr><td>Distribución de p̂</td><td><span class="formula">μ_p̂ = p</span>  <span class="formula">σ_p̂ = √(p·q / n)</span></td><td>q = 1 − p. Se usa cuando p se CONOCE</td></tr>
+<tr><td>Estandarizar</td><td><span class="formula">Z = (p̂ − p) / √(p·q/n)</span></td><td>Para probabilidades sobre p̂</td></tr>
+<tr><td>Normalidad</td><td><span class="formula">n·p ≥ 15  y  n·q ≥ 15</span></td><td>Criterio de la cátedra para p̂ (no es n ≥ 30)</td></tr>
+<tr><td>Error estándar (IC)</td><td><span class="formula">se = √(p̂·q̂ / n)</span></td><td>p desconocido ⇒ se usa p̂</td></tr>
+<tr><td>Margen de error</td><td><span class="formula">E = Z · √(p̂·q̂ / n)</span></td><td>Amplitud del IC = 2E</td></tr>
+<tr><td>Intervalo</td><td><span class="formula">IC(p) = p̂ ± Z · √(p̂·q̂ / n)</span></td><td>Z siempre (nunca t con proporciones)</td></tr>
+<tr><td>Tamaño de muestra</td><td><span class="formula">n = Z² · p̂·q̂ / E²</span></td><td>Sin información previa p̂ = 0,5. Redondear SIEMPRE hacia arriba</td></tr>
+</table></div>
+<div class="box">
+En el IC se verifica la normalidad con los valores de la muestra: <span class="formula">n·p̂ ≥ 15</span> y <span class="formula">n·q̂ ≥ 15</span>. La diapositiva escribe “&gt; 15”; la explicación de la cátedra es “más de 15 de cada uno”. Con p cerca de 0 o de 1 hace falta un n más grande.
+</div>
+
+
+<h2>Ejemplo resuelto 1 — Distribución muestral de p̂ (ejercicios adicionales 4)</h2>
+<div class="example">
+<strong>Datos:</strong> el 43 % de los propietarios de una ciudad prefiere un sótano terminado. Se encuesta a n = 300. Describe la distribución de p̂ y calcula P(p̂ &lt; 0,40).
+<ol>
+<li><strong>Chequeo de normalidad:</strong> <span class="formula">n·p = 300 · 0,43 = 129 ≥ 15</span> y <span class="formula">n·q = 300 · 0,57 = 171 ≥ 15</span> ✓ ⇒ p̂ ≈ Normal.</li>
+<li><strong>Media:</strong> <span class="formula">μ_p̂ = p = 0,43 = 43 %</span></li>
+<li><strong>Desvío:</strong> <span class="formula">σ_p̂ = √(0,43 · 0,57 / 300) = √0,000817 = 0,0286</span> ≈ <strong>2,9 %</strong></li>
+<li><span class="formula">z = (0,40 − 0,43) / 0,0286 = −1,050</span>; <span class="formula">P(p̂ &lt; 0,40) = Φ(−1,05) = 0,1470</span></li>
+<li><strong>Interpretación:</strong> en el 14,7 % de las muestras de 300 propietarios, la proporción que prefiere sótano terminado será menor al 40 %.</li>
+</ol>
+Con p = 0,26 y n = 300 (ejercicio adicional 5): σ_p̂ = √(0,26·0,74/300) = 0,0253 ≈ 2,5 %, y la media sigue siendo 26 %.
+</div>
+
+<h2>Ejemplo resuelto 2 — IC, tamaño de muestra y confianza inversa (fumadores, 140 de 500)</h2>
+<div class="example">
+<strong>Datos:</strong> universidad privada de 11.000 alumnos; muestra de 500 con 140 fumadores. “Éxito” = ser fumador.
+<ol>
+<li><strong>(a) IC al 90 %.</strong> <span class="formula">p̂ = 140/500 = 0,28</span>, <span class="formula">q̂ = 0,72</span>. Normalidad: n·p̂ = 140 y n·q̂ = 360 ≥ 15 ✓.</li>
+<li><span class="formula">se = √(0,28 · 0,72 / 500) = √0,000403 = 0,02008</span></li>
+<li><span class="formula">Z = 1,64485</span> (90 % de confianza; Inverse Normal con área 0,95). <span class="formula">E = 1,64485 · 0,02008 = 0,0330</span></li>
+<li><span class="formula">IC = 0,28 ± 0,033 = (0,247; 0,313)</span>. <strong>Interpretación:</strong> con 90 % de confianza, la proporción de fumadores entre los alumnos está entre 24,7 % y 31,3 %.</li>
+<li><strong>(b) ¿Cuántos alumnos para un error de 0,02 (misma confianza)?</strong> <span class="formula">n = 1,64485² · 0,2016 / 0,02² = 2,7055 · 0,2016 / 0,0004 = 1363,59</span> ⇒ se redondea <strong>hacia arriba</strong>: <strong>1364</strong>. “¿Cuántos más?” es 1364 − 500 = <strong>864</strong>.</li>
+<li><strong>Sin información previa</strong> de p se usa p̂ = 0,5 (peor caso, pq = 0,25): <span class="formula">n = 2,7055 · 0,25 / 0,0004 = 1690,96</span> ⇒ 1691.</li>
+<li><strong>(c) Confianza inversa:</strong> otro investigador informa (26 %; 30 %) con los mismos datos. Amplitud = 0,04 ⇒ <span class="formula">E = 0,04/2 = 0,02</span>. De E = Z·se: <span class="formula">Z = 0,02 / 0,02008 = 0,996</span>. El área central entre −0,996 y 0,996 es <span class="formula">2·Φ(0,996) − 1 = 0,6808</span> ⇒ <strong>confianza ≈ 68 %</strong> (la cátedra: 68,07 %, con Z redondeado a 0,996). Equivale a α = 0,3192.</li>
+</ol>
+</div>
+
+<h2>Ejemplo resuelto 3 — Error estándar y margen (398 de 1545 de acuerdo)</h2>
+<div class="example">
+<ol>
+<li><span class="formula">p̂ = 398/1545 = 0,2576 ≈ 0,26</span></li>
+<li><strong>Error estándar</strong> (cuánto se espera que p̂ varíe de muestra en muestra): <span class="formula">se = √(0,26 · 0,74 / 1545) = 0,0112 ≈ 0,011</span> (sin redondear p̂: 0,0111).</li>
+<li><strong>Margen de error al 95 %:</strong> <span class="formula">E = 1,96 · 0,011 = 0,0216</span> ⇒ ±0,022 (±2,2 puntos porcentuales alrededor de 26 %). Sin redondear p̂ sale 0,0218, que también redondea a ±0,022.</li>
+</ol>
+</div>
+
+<h2>Para practicar: más intervalos con su verificación</h2>
+<div class="tw"><table>
+<tr><th>Caso</th><th class="n">p̂</th><th class="n">se</th><th class="n">Z</th><th class="n">E</th><th>IC</th><th>n·p̂ y n·q̂</th></tr>
+<tr><td>TP5 ej. 11: 20 fumadores de 60 (95 %)</td><td class="n">0,3333</td><td class="n">0,0609</td><td class="n">1,960</td><td class="n">0,1193</td><td>(0,214; 0,453)</td><td>20 y 40</td></tr>
+<tr><td>TP5 ej. 12: 465 de 500 prefieren tarjeta (95 %)</td><td class="n">0,9300</td><td class="n">0,0114</td><td class="n">1,960</td><td class="n">0,0224</td><td>(0,908; 0,952)</td><td>465 y 35</td></tr>
+<tr><td>TP5 ej. 14a: 100 desempleados de 400 (98 %)</td><td class="n">0,2500</td><td class="n">0,0217</td><td class="n">2,326</td><td class="n">0,0504</td><td>(0,200; 0,300)</td><td>100 y 300</td></tr>
+<tr><td>Adicional 1: 114 de 293 tienen auto (99 %)</td><td class="n">0,3891</td><td class="n">0,0285</td><td class="n">2,576</td><td class="n">0,0734</td><td>(0,316; 0,462)</td><td>114 y 179</td></tr>
+<tr><td>Adicional 10: 408 de 865 a favor (95 %)</td><td class="n">0,4717</td><td class="n">0,0170</td><td class="n">1,960</td><td class="n">0,0333</td><td>(0,438; 0,505)</td><td>408 y 457</td></tr>
+</table></div>
+<p>Las claves de la cátedra pueden diferir en la 4.ª cifra decimal (p. ej. (0,1995; 0,3005) en vez de (0,1996; 0,3004)) porque redondean Z o p̂ antes de operar. En el ejercicio 14b del TP5 la clave informa unas 10180 personas: eso sale con Z = 2,33 redondeado; con Z = 2,3263 son 10147,30 ⇒ 10148. Elige siempre la opción más cercana.</p>
+
+
+<div class="calc">
+<strong>IC para una proporción, paso a paso (la calculadora no tiene un modo de IC)</strong>
+<ol>
+<li><strong>Z:</strong> <span class="key">MENU</span> <span class="key">7</span> → <span class="key">3</span> (Inverse Normal), Area = 0,95, σ = 1, μ = 0 ⇒ <span class="out">1,64485</span> (queda en Ans). Para 95 %: Area = 0,975 ⇒ 1,95996.</li>
+<li><strong>E (MENU 1):</strong> <span class="key">Ans</span> <span class="key">×</span> <span class="key">√</span> <span class="key">(</span> 0.28 <span class="key">×</span> <span class="key">(</span> 1 <span class="key">−</span> 0.28 <span class="key">)</span> <span class="key">÷</span> 500 <span class="key">)</span> <span class="key">=</span> ⇒ <span class="out">0,03303</span>. Luego <span class="key">0.28</span> <span class="key">−</span> <span class="key">Ans</span> y <span class="key">0.28</span> <span class="key">+</span> <span class="key">Ans</span>.</li>
+<li><strong>Tamaño de muestra:</strong> <span class="key">1.64485</span> <span class="key">x²</span> <span class="key">×</span> <span class="key">0.28</span> <span class="key">×</span> <span class="key">0.72</span> <span class="key">÷</span> <span class="key">0.02</span> <span class="key">x²</span> <span class="key">=</span> ⇒ <span class="out">1363,59</span>. <strong>Se redondea siempre hacia arriba</strong> (1364).</li>
+<li><strong>Confianza inversa:</strong> Z = E ÷ se = 0,996; <span class="key">MENU</span> <span class="key">7</span> → <span class="key">2</span> (Normal CD), Lower = −0,996, Upper = 0,996, σ = 1, μ = 0 ⇒ <span class="out">p = 0,6808</span>: esa área central es directamente el nivel de confianza (68,07 %).</li>
+</ol>
+<p><strong>Qué significa:</strong> E es el semi-ancho del intervalo; la amplitud total es 2E. n es el <em>mínimo</em> de observaciones que logra ese E con esa confianza.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>p vs. p̂:</strong> si el enunciado <em>da</em> p (“el 43 % prefiere…”) y pregunta por probabilidades de p̂, usa p en √(pq/n). Si <em>estima</em> p con una muestra, usa p̂ y arma un IC.</li>
+<li><strong>Criterio de normalidad:</strong> n·p y n·q ≥ 15 (no “n ≥ 30”). Si p es chico, un n de 100 puede no alcanzar (100·0,05 = 5).</li>
+<li><strong>n siempre hacia arriba:</strong> 1363,59 ⇒ 1364 (no 1363 ni 1364 “por redondeo”).</li>
+<li><strong>“¿Cuántos más?”</strong> es n requerido − n actual (864), no 1364.</li>
+<li><strong>Sin información de p ⇒ p̂ = 0,5</strong> (pq = 0,25, el máximo). Con p̂ previo, se usa ese.</li>
+<li><strong>Z por nivel:</strong> 90 % ⇒ 1,645; 95 % ⇒ 1,96; 99 % ⇒ 2,576. No uses 1,96 siempre.</li>
+<li><strong>E es el semi-ancho:</strong> amplitud 2 % significa E = 0,01, no 0,02.</li>
+<li><strong>Interpretación:</strong> la confianza es del <em>método</em>: “con 90 % de confianza p está entre…”. No es “el 90 % de los alumnos…”.</li>
+</ul>
+</div>
+
+<h2>Practica: ¿probabilidad de p̂ o intervalo para p?</h2>
+<div class="quiz">
+<p class="q">1. El 43 % de los propietarios prefiere un sótano terminado y se encuesta a n = 300. ¿Cuál describe la distribución muestral de p̂?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a')"><span class="opt">a. Media = 43 %; desvío ≈ 49,5 %</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b')"><span class="opt">b. Media = 57 %; desvío ≈ 2,9 %</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c')"><span class="opt">c. Media = 43 %; desvío ≈ 2,9 % (aproximadamente Normal)</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d')"><span class="opt">d. Media = 43 %; desvío ≈ 0,08 %</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1e')"><span class="opt">e. No hay suficiente información para describirla</span></label>
+<div id="q1a" class="feedback wrong">Calculaste √(pq) = 49,5 % y olvidaste dividir por n dentro de la raíz.</div>
+<div id="q1b" class="feedback wrong">La media de p̂ es p (la proporción de ‘éxito’ = 43 %). El 57 % es q, el complemento.</div>
+<div id="q1c" class="feedback correct">μ_p̂ = p = 0,43 y σ_p̂ = √(0,43·0,57/300) = 0,0286. n·p = 129 y n·q = 171 son ≥ 15, así que p̂ es aproximadamente Normal.</div>
+<div id="q1d" class="feedback wrong">Te faltó la raíz: pq/n = 0,0008 es la varianza; el desvío es su raíz cuadrada, 0,0286.</div>
+<div id="q1e" class="feedback wrong">Sí la hay: p y n alcanzan, y se verifica que n·p y n·q son mayores que 15, así que la aproximación Normal es válida.</div>
+</div>
+<div class="quiz">
+<p class="q">2. ¿En cuál de estos casos se cumple la condición de normalidad de p̂ de la cátedra (n·p ≥ 15 y n·q ≥ 15)?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a')"><span class="opt">a. n = 40, p = 0,2 (8 y 32)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b')"><span class="opt">b. n = 100, p = 0,05 (5 y 95)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c')"><span class="opt">c. n = 25, p = 0,5 (12,5 y 12,5)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d')"><span class="opt">d. n = 60, p = 0,9 (54 y 6)</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2e')"><span class="opt">e. n = 80, p = 0,5 (40 y 40)</span></label>
+<div id="q2a" class="feedback wrong">n·p = 8 &lt; 15: no se cumple.</div>
+<div id="q2b" class="feedback wrong">Aunque n es grande, n·p = 5 &lt; 15. La condición es sobre los éxitos y fracasos esperados, no solo sobre n.</div>
+<div id="q2c" class="feedback wrong">Ambos valores quedan por debajo de 15. Con p = 0,5 hace falta al menos n = 30.</div>
+<div id="q2d" class="feedback wrong">n·q = 6 &lt; 15. El desequilibrio (muy pocos fracasos esperados) invalida la aproximación.</div>
+<div id="q2e" class="feedback correct">n·p = 40 y n·q = 40, ambos mayores que 15.</div>
+</div>
+<div class="quiz">
+<p class="q">3. No hay información previa sobre p. ¿Cuántas personas hay que encuestar para estimar una proporción con un error E = 0,03 y 95 % de confianza?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a')"><span class="opt">a. 1067</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b')"><span class="opt">b. 1068</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c')"><span class="opt">c. 4269</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d')"><span class="opt">d. 33</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3e')"><span class="opt">e. 2135</span></label>
+<div id="q3a" class="feedback wrong">Redondeaste 1067,1 al entero más cercano. El tamaño de muestra se redondea SIEMPRE hacia arriba.</div>
+<div id="q3b" class="feedback correct">n = Z²·p̂q̂/E² con p̂ = 0,5: 1,96²·0,25/0,03² = 1067,1; siempre hacia arriba ⇒ 1068.</div>
+<div id="q3c" class="feedback wrong">Tomaste E = 0,015 (la mitad). 0,03 ya es el margen de error E (semi-ancho), no la amplitud total.</div>
+<div id="q3d" class="feedback wrong">No elevaste Z/E al cuadrado: la fórmula es Z²·p̂q̂/E² y no Z·p̂/E.</div>
+<div id="q3e" class="feedback wrong">Usaste p̂ = 0,5 como producto p̂q̂. El producto es 0,5 · 0,5 = 0,25.</div>
+</div>
+<div class="quiz">
+<p class="q">4. Con 500 alumnos ya encuestados, el cálculo indica que harían falta 1364 para un error de 0,02. ¿Cuántos alumnos MÁS hay que encuestar?</p>
+<label><input type="radio" name="q4" onclick="showFeedback('q4a')"><span class="opt">a. 1364</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4b')"><span class="opt">b. 500</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4c')"><span class="opt">c. 1864</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4d')"><span class="opt">d. 864</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4e')"><span class="opt">e. 1363</span></label>
+<div id="q4a" class="feedback wrong">Ese es el tamaño total requerido, no los que faltan.</div>
+<div id="q4b" class="feedback wrong">Es la muestra que ya se tiene.</div>
+<div id="q4c" class="feedback wrong">Sumaste en lugar de restar: 1364 + 500.</div>
+<div id="q4d" class="feedback correct">‘Cuántos más’ = n requerido − n actual = 1364 − 500 = 864.</div>
+<div id="q4e" class="feedback wrong">Es 1363,59 redondeado hacia abajo y sin restar los 500 que ya se tienen. Hay que redondear hacia arriba (1364) y luego restar: 1364 − 500 = 864.</div>
+</div>
+<div class="quiz">
+<p class="q">5. Una muestra de 500 alumnos con p̂ = 0,28 (se = 0,0201) da un intervalo (26 %; 30 %). ¿Qué nivel de confianza tiene?</p>
+<label><input type="radio" name="q5" onclick="showFeedback('q5a')"><span class="opt">a. Aproximadamente 68 %</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5b')"><span class="opt">b. 95 %</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5c')"><span class="opt">c. 90 %</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5d')"><span class="opt">d. 99 %</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5e')"><span class="opt">e. 32 %</span></label>
+<div id="q5a" class="feedback correct">Amplitud 0,04 ⇒ E = 0,02 ⇒ Z = 0,02/0,0201 = 0,996, y el área central entre −0,996 y 0,996 es 0,68.</div>
+<div id="q5b" class="feedback wrong">95 % correspondería a Z = 1,96, o sea E = 1,96·0,0201 = 0,039: intervalo de ±3,9 puntos, no ±2.</div>
+<div id="q5c" class="feedback wrong">90 % corresponde a Z = 1,645, es decir E = 0,033. Acá E = 0,02.</div>
+<div id="q5d" class="feedback wrong">99 % corresponde a Z = 2,576, E = 0,052; el intervalo sería mucho más ancho.</div>
+<div id="q5e" class="feedback wrong">0,32 es α, el nivel de riesgo. La confianza es 1 − α = 0,68.</div>
+</div>
+<div class="quiz">
+<p class="q">6. Con 140 fumadores en 500, el IC al 90 % es (24,7 %; 31,3 %). ¿Cuál es la interpretación correcta?</p>
+<label><input type="radio" name="q6" onclick="showFeedback('q6a')"><span class="opt">a. El 90 % de los alumnos fuma entre 24,7 % y 31,3 % de su tiempo</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6b')"><span class="opt">b. El 28 % de los alumnos fuma con una probabilidad del 90 %</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6c')"><span class="opt">c. Con 90 % de confianza, la proporción de fumadores entre todos los alumnos está entre 24,7 % y 31,3 %</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6d')"><span class="opt">d. Hay 90 % de probabilidad de que la próxima muestra de 500 tenga p̂ entre 24,7 % y 31,3 %</span></label>
+<label><input type="radio" name="q6" onclick="showFeedback('q6e')"><span class="opt">e. Entre 24,7 % y 31,3 % de la muestra fuma</span></label>
+<div id="q6a" class="feedback wrong">Mezcla variables: el 90 % es la confianza del procedimiento, no un porcentaje de alumnos.</div>
+<div id="q6b" class="feedback wrong">28 % es p̂ (de la muestra), observado con certeza. Lo incierto es p, y de eso habla el intervalo.</div>
+<div id="q6c" class="feedback correct">El IC estima el parámetro poblacional p; el 90 % es la confianza del método (90 % de las muestras producen un intervalo que contiene a p).</div>
+<div id="q6d" class="feedback wrong">El IC no describe la próxima muestra: estima el parámetro poblacional p.</div>
+<div id="q6e" class="feedback wrong">En la muestra fuma exactamente el 28 % (140/500). El intervalo es sobre la población.</div>
+</div>
+
+<div class="ask">
+¿Quieres que te dé un enunciado sin decir si p es dato o estimación, para que decidas si va √(pq/n) o √(p̂q̂/n)? Es la confusión más común.
+</div>
+
+<footer>
+Ejemplos de la teoría de la cátedra (fumadores 140/500; 398/1545), de los ejercicios adicionales (4, 5, 1, 10) y del TP5 (11, 12, 14) — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0019-distribucion-muestral-tcl.html">Lección 19 — Distribución muestral y TCL</a></span>
+  <span><a href="0021-ic-media-resueltos.html">Lección 21 — IC para la media</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

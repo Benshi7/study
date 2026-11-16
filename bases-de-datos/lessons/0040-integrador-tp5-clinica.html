@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 40 · Integrador TP5 Clínica</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 40 · Unidad 5 · Integrador</p>
+    <h1 class="masthead__title">TP5 Clínica: del DER de la cátedra a los scripts</h1>
+    <p class="masthead__standfirst">
+      Los profes dieron el DER. El trabajo ya no es modelar: es leer un modelo ajeno,
+      traducirlo a tablas sin perder nada, y después escribir los scripts. Esta lección
+      cubre las dos primeras partes y te deja el camino armado para la tercera.
+    </p>
+    <p class="masthead__meta">
+      <span>~35 minutos, en dos sentadas</span>
+      <span>Consigna TP5 + DER de la cátedra</span>
+      <span>Entrega: en una semana · 2do parcial: en un mes</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Qué cambió</span>
+    <p>
+      La primera versión de la consigna no traía el DER, y el grupo modeló desde cero. Los
+      docentes aclararon que el DER de referencia es <b>el de ellos</b>
+      (<code>raw/TP5/TP DDL-DML Clinica con DER.pptx</code>, slide 8), y que el foco del TP son
+      <b>los scripts</b>: DDL, inserts, vistas y consultas. Modelar bien ya no suma; lo que
+      suma es mapear fiel ese DER y que los scripts funcionen.
+    </p>
+  </div>
+
+  <figure class="full">
+    <img src="../assets/diagrams/tp5-der-catedra.png" alt="DER de la cátedra para la Clínica: TORRE con especialización en HABITACION y CONSULTORIO; SERVICIO, HISTORIA CLINICA como entidad débil de PACIENTE, PROFESIONAL con relación unaria TRABAJA PARA, ESPECIALIDAD, PREPAGA, y la relación OCUPA entre HABITACION y PACIENTE con F.DESDE y F.HASTA." style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;background:#fff">
+    <figcaption><b>El DER de la cátedra.</b> Extraído del slide 8 del pptx "con DER". Es el contrato del TP.</figcaption>
+  </figure>
+
+  <h2><span class="num">01</span>Leer el DER antes de tocar nada</h2>
+
+  <p>
+    Con el diagrama a la vista, hacé el inventario en papel: las entidades (cuál es débil),
+    y cada rombo con sus dos extremos y su cardinalidad. Recién después abrí la respuesta.
+    Es la <b>Forma 2</b> del parcial (<a href="../PARCIAL.md">PARCIAL.md</a>): DER dado, pasarlo a relacional.
+  </p>
+
+  <details class="reveal">
+    <summary>Inventario: 9 entidades y 9 relaciones</summary>
+    <div class="reveal__body">
+      <p>
+        <b>Entidades:</b> TORRE, HABITACION, CONSULTORIO, SERVICIO, PACIENTE, PREPAGA,
+        PROFESIONAL, ESPECIALIDAD y HISTORIA CLINICA, que es <b>débil</b> (rectángulo doble).
+      </p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Rombo</th><th>Extremos</th><th>Razón</th></tr></thead>
+          <tbody>
+            <tr><td>(triángulo)</td><td>TORRE → HABITACION, CONSULTORIO</td><td>especialización</td></tr>
+            <tr><td>PRESTADO</td><td>SERVICIO — CONSULTORIO</td><td>N:N</td></tr>
+            <tr><td>CONTIENE</td><td>SERVICIO — HISTORIA CLINICA</td><td>1:N</td></tr>
+            <tr><td>POSEE (doble)</td><td>PACIENTE — HISTORIA CLINICA</td><td>1:N, identificadora</td></tr>
+            <tr><td>ATIENDE</td><td>PROFESIONAL — HISTORIA CLINICA</td><td>1:N</td></tr>
+            <tr><td>TRABAJA PARA</td><td>PROFESIONAL — PROFESIONAL</td><td>1:N, unaria</td></tr>
+            <tr><td>POSEE</td><td>ESPECIALIDAD — PROFESIONAL</td><td>1:N</td></tr>
+            <tr><td>OCUPA</td><td>HABITACION — PACIENTE, con F.DESDE y F.HASTA</td><td>N:N con atributos</td></tr>
+            <tr><td>CUENTA</td><td>PREPAGA — PACIENTE</td><td>1:N</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <b>Atributos especiales:</b> DIRECCION compuesto; TELEFONO multivaluado (doble óvalo) en
+        PACIENTE y en PROFESIONAL; EDAD derivado (punteado); F.HASTA también punteado;
+        ID_CONSULTA, clave parcial de la entidad débil.
+      </p>
+    </div>
+  </details>
+
+  <h2><span class="num">02</span>Diez decisiones de mapeo</h2>
+
+  <p>
+    Cada una aplica una regla que ya viste. Para cada título, decí qué tabla o columna
+    sale, y después abrí la decisión.
+  </p>
+
+  <details class="reveal">
+    <summary>1 · Entidades fuertes</summary>
+    <div class="reveal__body">
+      <p>
+        Cada una es una tabla, y su <code>CODIGO</code> subrayado es la PK. Sale <code>TORRE</code>,
+        <code>SERVICIO</code>, <code>PREPAGA</code>, <code>PACIENTE</code>, <code>PROFESIONAL</code>,
+        <code>ESPECIALIDAD</code>. HABITACION y CONSULTORIO también tienen su propio CODIGO; eso
+        importa en la decisión 3.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>2 · DIRECCION y LONGITUD</summary>
+    <div class="reveal__body">
+      <p>
+        Un compuesto se aplana: <code>DIRECCION</code> se convierte en <code>Calle, Numero, Piso, Depto</code>
+        dentro de TORRE. <code>LONGITUD</code> está dibujado como simple, pero el enunciado dice
+        "longitud (ancho y largo)": se mapea como <code>Ancho, Largo</code>. Cuando el texto y el
+        diagrama difieren en un detalle así, se respeta el texto y se aclara en el informe.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>3 · El triángulo de TORRE</summary>
+    <div class="reveal__body">
+      <p>
+        La regla de la especialización (<a href="0013-especializacion-la-notacion-isa.html">0013</a>)
+        dice que el subtipo hereda la PK del supertipo. Acá eso no funciona: la PK de HABITACION
+        sería <code>Cod_Torre</code>, y una torre tendría <b>una sola</b> habitación. El propio
+        DER lo resuelve dándole a cada subtipo su <code>CODIGO</code>.
+      </p>
+      <p>
+        El triángulo está usado como "una torre se divide en habitaciones o consultorios", y
+        eso es una relación 1:N. Se mapea así: <code>HABITACION(#Cod_Habitacion, (FK)Cod_Torre, …)</code>,
+        y lo mismo CONSULTORIO. Ya lo habíamos discutido para el DER del grupo: una habitación
+        no <b>es una</b> torre. No cambies el DER de la cátedra, pero si te preguntan, esta es
+        la justificación del mapeo.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>4 · Las 1:N comunes</summary>
+    <div class="reveal__body">
+      <p>
+        La FK va en el lado N (<a href="0010-razon-de-cardinalidad.html">0010</a>):
+        <code>PACIENTE.Cod_Prepaga</code>, <code>PROFESIONAL.Cod_Especialidad</code>,
+        <code>HISTORIA_CLINICA.Cod_Servicio</code> y <code>HISTORIA_CLINICA.Cod_Profesional</code>.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>5 · TRABAJA PARA</summary>
+    <div class="reveal__body">
+      <p>
+        Unaria 1:N: una FK a la misma tabla. <code>PROFESIONAL.Cod_Jefe</code> admite NULL,
+        porque el jefe del área no tiene jefe. Es lo que pide "para un jefe de área es
+        importante saber qué personal tiene a su cargo", y alimenta RRHH_Medicos y el pedido 6.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>6 · PRESTADO, N:N sin atributos</summary>
+    <div class="reveal__body">
+      <p>
+        Tabla nueva con las dos PK como PK compuesta (<a href="0024-donde-vive-el-precio.html">0024</a>):
+        <code>SERVICIO_CONSULTORIO(#Cod_Servicio, #Cod_Consultorio)</code>. Un consultorio lo usan
+        varios servicios y un servicio atiende en varios consultorios.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>7 · OCUPA, N:N con atributos</summary>
+    <div class="reveal__body">
+      <p>
+        Tabla nueva, y los atributos del rombo van ahí:
+        <code>OCUPACION(#Cod_Habitacion, #Cod_Paciente, #F_Desde, F_Hasta_Prevista)</code>.
+      </p>
+      <p>
+        <code>F_Desde</code> entra en la PK por historicidad: el mismo paciente puede volver a la
+        misma habitación en otra internación. Sin la fecha, la segunda internación chocaría con la
+        primera. Es el patrón de "dónde vive el precio": el dato que cambia en el tiempo va en la
+        relación.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>8 · HISTORIA CLINICA, entidad débil</summary>
+    <div class="reveal__body">
+      <p>
+        PK = PK del dueño + clave parcial:
+        <code>HISTORIA_CLINICA(#Cod_Paciente (FK), #Id_Consulta, Fecha, Diagnostico, (FK)Cod_Servicio, (FK)Cod_Profesional)</code>.
+      </p>
+      <p>
+        Fijate qué representa: con FECHA y DIAGNOSTICO adentro, cada fila es <b>una consulta</b>
+        registrada en la historia del paciente, no "la carpeta". Por eso no hace falta una tabla
+        CONSULTA aparte. El <code>Id_Consulta</code> se repite entre pacientes (cada uno tiene su
+        consulta 1, 2, 3…); sólo junto con el paciente identifica la fila.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>9 · Los TELEFONO multivaluados</summary>
+    <div class="reveal__body">
+      <p>
+        Tabla aparte, como resolviste en el 1er parcial: <code>PACIENTE_TELEFONO(#Cod_Paciente (FK), #Telefono)</code>.
+        Para el profesional, el enunciado distingue "teléfono particular" y "para urgencias", así que
+        la tabla lleva el tipo: <code>PROFESIONAL_TELEFONO(#Cod_Profesional (FK), #Telefono, Tipo)</code>.
+        La otra opción es poner dos columnas en PROFESIONAL. Es más simple, pero se aparta del doble óvalo.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>10 · EDAD y F.HASTA, los dos punteados</summary>
+    <div class="reveal__body">
+      <p>
+        <b>EDAD</b> es derivada de F_NACIMIENTO: <b>no se guarda</b>, se calcula en la vista
+        (<a href="0039-vistas.html">0039</a>). Si se guardara, quedaría desactualizada al año.
+      </p>
+      <p>
+        <b>F.HASTA</b> también está punteada, pero no se puede derivar de nada: el enunciado dice
+        "por cuánto tiempo está previsto que la ocupe", que es un dato que alguien carga. Se
+        guarda como <code>F_Hasta_Prevista</code>. Probablemente el punteado quiso decir
+        "previsto", no "derivado". Es una buena pregunta para el docente.
+      </p>
+    </div>
+  </details>
+
+  <h2><span class="num">03</span>El modelo relacional resultante</h2>
+
+  <div class="rel">
+    TORRE (<b>#Cod_Torre</b>, Nombre, Tipo_Torre, Calle, Numero, Piso, Depto)<br>
+    HABITACION (<b>#Cod_Habitacion</b>, <i>(FK)Cod_Torre</i>, Piso, Numero, Ancho, Largo, Cant_Banios, Posee_Closet, Cant_Camas, Posee_Ventana)<br>
+    CONSULTORIO (<b>#Cod_Consultorio</b>, <i>(FK)Cod_Torre</i>, Piso, Numero, Ancho, Largo)<br>
+    SERVICIO (<b>#Cod_Servicio</b>, Nombre)<br>
+    SERVICIO_CONSULTORIO (<b>#Cod_Servicio</b> <i>(FK)</i>, <b>#Cod_Consultorio</b> <i>(FK)</i>)<br>
+    PREPAGA (<b>#Cod_Prepaga</b>, Nombre)<br>
+    PACIENTE (<b>#Cod_Paciente</b>, Nombre, F_Nacimiento, <i>(FK)Cod_Prepaga</i>)<br>
+    PACIENTE_TELEFONO (<b>#Cod_Paciente</b> <i>(FK)</i>, <b>#Telefono</b>)<br>
+    OCUPACION (<b>#Cod_Habitacion</b> <i>(FK)</i>, <b>#Cod_Paciente</b> <i>(FK)</i>, <b>#F_Desde</b>, F_Hasta_Prevista)<br>
+    ESPECIALIDAD (<b>#Cod_Especialidad</b>, Nombre)<br>
+    PROFESIONAL (<b>#Cod_Profesional</b>, Nombre, <i>(FK)Cod_Especialidad</i>, <i>(FK)Cod_Jefe</i>)<br>
+    PROFESIONAL_TELEFONO (<b>#Cod_Profesional</b> <i>(FK)</i>, <b>#Telefono</b>, Tipo)<br>
+    HISTORIA_CLINICA (<b>#Cod_Paciente</b> <i>(FK)</i>, <b>#Id_Consulta</b>, Fecha, Diagnostico, <i>(FK)Cod_Servicio</i>, <i>(FK)Cod_Profesional</i>)
+  </div>
+
+  <p>
+    Trece tablas. Es exactamente la base que usan los ejercicios de las lecciones 0029 a 0039:
+    el botón <b>Tablas</b> de cualquier ejercicio te la muestra, con datos. Su DDL completo,
+    con todas las restricciones, está en <code>assets/seeds/clinica.js</code>.
+  </p>
+
+  <h2><span class="num">04</span>Qué cambia respecto de lo que hizo el grupo</h2>
+
+  <p>
+    El patrón de los scripts (Desa en español, Prod en inglés, insert-select, vistas y consultas)
+    queda igual. Lo que cambia es el esquema:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Antes (Grupo 3)</th><th>Con el DER de la cátedra</th></tr></thead>
+      <tbody>
+        <tr><td><code>ESPACIO</code> como supertipo, PK (torre, piso, número)</td><td>Desaparece. HABITACION y CONSULTORIO con código propio y FK a TORRE.</td></tr>
+        <tr><td><code>Fecha_Ocupacion</code> en HABITACION; FK de habitación en PACIENTE</td><td>Las dos salen. Aparece <code>OCUPACION</code>, con desde y hasta prevista.</td></tr>
+        <tr><td><code>CONSULTA</code> + <code>HISTORIA_CLINICA</code> como tabla puente de 3 columnas</td><td>Una sola tabla, <code>HISTORIA_CLINICA</code>, débil, con PK (paciente, id_consulta).</td></tr>
+        <tr><td>CONSULTA con FK a CONSULTORIO</td><td>El DER no une la consulta con el consultorio. Une SERVICIO con CONSULTORIO (N:N).</td></tr>
+        <tr><td>Teléfonos del profesional como dos columnas</td><td><code>PROFESIONAL_TELEFONO</code> con tipo, o se defienden las dos columnas.</td></tr>
+        <tr><td><code>Edad</code> guardada en PACIENTE</td><td>Calculada en <code>Vista_Paciente</code>.</td></tr>
+        <tr><td>TORRE sin nombre</td><td>TORRE con <code>Nombre</code> y <code>Tipo_Torre</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Lo que sigue sirviendo del script del grupo</span>
+    <p>
+      La estructura completa: los DROP, los CREATE en dos idiomas, los INSERT … SELECT y las
+      vistas de <code>TP5_Grupo3_Vistas_Consultas.sql</code>. Es reescribir tablas, no empezar
+      de nuevo. Y acordate de los dos arreglos que ya vimos: <b>DROP en orden inverso</b>
+      (<a href="0038-alter-drop-on-delete.html">0038</a>) y traducciones correctas en Prod
+      (consultorio es <i>office</i>; consulta es <i>appointment</i>, no <i>query</i>).
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>El camino hasta los scripts</h2>
+
+  <p>
+    Cada paso usa una sola lección nueva y se apoya en el anterior. El criterio de "listo" es
+    concreto: no avances hasta cumplirlo. La práctica guiada de cada paso, con corrección
+    automática, está en <a href="../practica/tp5-clinica.html">practica/tp5-clinica.html</a>.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Paso</th><th>Qué hacés</th><th>Lección</th><th>Listo cuando…</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Inventario del DER y mapeo a relacional</td><td>esta</td><td>Escribís las 13 tablas sin mirar la sección 03.</td></tr>
+        <tr><td>2</td><td><code>CREATE TABLE</code> de las Desa_, con PK, FK, NOT NULL y CHECK</td><td><a href="0031-ddl-create-table.html">0031</a></td><td>Podés nombrar las 6 restricciones y cada tabla usa al menos las que le tocan.</td></tr>
+        <tr><td>3</td><td><code>INSERT … VALUES</code> en orden de padres a hijos</td><td><a href="0037-dml-insert-update-delete.html">0037</a></td><td>Con las FK activas, el script corre entero sin errores.</td></tr>
+        <tr><td>4</td><td>Las Prod_ en inglés y el <code>INSERT … SELECT</code></td><td><a href="0037-dml-insert-update-delete.html">0037</a></td><td>Cada columna cae en su par, verificado con un SELECT.</td></tr>
+        <tr><td>5</td><td>Una <code>Vista_</code> por tabla de Prod, en español</td><td><a href="0032-select-basico.html">0032</a>, <a href="0039-vistas.html">0039</a></td><td><code>Vista_Paciente</code> calcula la edad.</td></tr>
+        <tr><td>6</td><td><code>RRHH_Medicos</code></td><td><a href="0036-subconsultas-exists.html">0036</a>, <a href="0039-vistas.html">0039</a></td><td>Sofía Luna sale como "NO" jefa.</td></tr>
+        <tr><td>7</td><td>Los 6 pedidos</td><td><a href="0034-joins.html">0034</a>–<a href="0036-subconsultas-exists.html">0036</a></td><td>Cada uno resuelto contra las vistas, no contra las tablas.</td></tr>
+        <tr><td>8</td><td>Opcional: un trigger que valide algo</td><td><a href="0029-store-procedures-y-triggers.html">0029</a></td><td>Podés explicar por qué no alcanzaba con un CHECK.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">06</span>Práctica de mapeo</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Entidad débil</span>
+    <p class="quiz__q">¿Cuál es la PK de HISTORIA_CLINICA?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La PK de una entidad débil es la PK del dueño (por la relación identificadora, el rombo doble POSEE) más su clave parcial. Id_Consulta sola se repite entre pacientes.">Cod_Paciente junto a Id_Consulta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Id_Consulta es la clave parcial: identifica la consulta sólo dentro de un paciente. Cada paciente tiene su consulta 1, por eso sola se repite.">Sólo la columna de Id_Consulta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El profesional es una FK por la relación ATIENDE, que es 1:N y no identificadora. No forma parte de la PK.">Cod_Profesional con Id_Consulta</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">N:N con atributos</span>
+    <p class="quiz__q">¿Dónde se guarda F_DESDE, la fecha en que el paciente empieza a ocupar la habitación?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="En OCUPACION. Es un atributo del rombo OCUPA, que es N:N, así que vive en la tabla que se crea para la relación. No es del paciente ni de la habitación: es del par.">En la tabla nueva OCUPACION</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es lo que había hecho el grupo, y falla: si dos pacientes comparten la habitación desde fechas distintas, una sola fecha no alcanza.">En la tabla de la HABITACION</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un paciente puede tener varias internaciones a lo largo del tiempo. En PACIENTE sólo cabría una fecha.">En la tabla del mismo PACIENTE</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Derivado</span>
+    <p class="quiz__q">¿Por qué EDAD no es una columna de PACIENTE?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es un atributo derivado (óvalo punteado): se calcula a partir de F_Nacimiento. Guardarlo crea un dato que se desactualiza solo, cada año. Se calcula en la vista.">Se deriva de la de nacimiento</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al contrario: la consigna pide edad entre los datos del paciente. Se muestra, pero calculada, no guardada.">La consigna no pide la edad</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La edad no depende de nada multivaluado: un paciente tiene una sola edad. El problema es que se calcula.">Es un atributo multivaluado</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      La consigna con el DER: <code>raw/TP5/TP DDL-DML Clinica con DER.pptx</code> (slides 2–4
+      el enunciado, slide 8 el DER). <b>Elmasri &amp; Navathe, 5ª ed.</b> — capítulo 7, "Diseño
+      de bases de datos relacionales por mapeado ER- y EER-a-relacional": los pasos para entidad
+      débil, 1:N, N:N y multivaluados son exactamente los de la sección 02.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Hacé el paso 1 en papel, las 13 tablas, sacale una foto y
+      pasámela. Te la corrijo antes de que arranques con los CREATE.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0039-vistas.html">Anterior: 0039 · Vistas</a>
+    <a href="../practica/tp5-clinica.html">Práctica: los scripts paso a paso</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 49 · OLTP, OLAP y Data Warehouse</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 49 · Unidad 9 · Data warehouse</p>
+    <h1 class="masthead__title">OLTP, OLAP y qué es un Data Warehouse</h1>
+    <p class="masthead__standfirst">
+      La base que registra las operaciones del día no sirve para analizar el negocio. El Data
+      Warehouse existe para eso, y la inteligencia de negocios (BI) se apoya en él.
+    </p>
+    <p class="masthead__meta">
+      <span>~20 minutos</span>
+      <span>Deck "Intro Datawarehouse", slides 13–21 y 44–52</span>
+      <span>Prioridad para el 2do parcial: alta (teoría choice)</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Qué tomar de esta lección</span>
+    <p>
+      El docente avisó que la teoría del 2do parcial es <b>choice en papel</b>. Esta lección son
+      definiciones y comparaciones: las cinco características del DW, OLTP contra OLAP, y los tres
+      modelos de almacenamiento OLAP con sus ventajas y desventajas. El modelo de parcial 1a
+      también pide <i>graficar</i> el DW: eso está en la <a href="0050-componentes-de-un-dw.html">0050</a>.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Business Intelligence: qué no es</h2>
+
+  <blockquote class="callout">
+    "<b>BI no es</b>: una marca, un producto, un sistema, una base de datos, una empresa, una
+    ciencia… Es mejor pensar que BI está más vinculado a una <b>arquitectura</b>, una colección
+    integrada de datos operacionales, una serie de aplicaciones para la toma de decisión y bases
+    de datos que, en su conjunto y a través de técnicas específicas, proveen a una comunidad de
+    usuarios un fácil acceso a datos de negocio. <b>BI no se compra, se construye.</b>"
+  </blockquote>
+
+  <p>Sus características, según el deck: <b>accesibilidad</b> a datos e información, <b>apoyo en la
+  toma de decisiones</b> y <b>orientación al usuario final</b>. Por técnicas y salidas, se
+  categoriza en cuatro:</p>
+
+  <ul>
+    <li><b>Consultas e informes</b> (queries, reporting, charting).</li>
+    <li><b>Análisis OLAP</b> (On Line Analytical Processing).</li>
+    <li><b>Analytics</b>: data mining, text mining, advanced analytics.</li>
+    <li><b>Sistemas de previsión empresarial</b>: forecasting, análisis predictivo.</li>
+  </ul>
+
+  <p>
+    Las herramientas de BI no leen las tablas crudas: acceden a una <b>capa lógica</b> hecha de
+    vistas que se adapta a cada organización. El deck lo muestra con una vista
+    <code>Clientes</code> que renombra campos y agrega un indicador
+    <code>CASE WHEN … THEN 'Propio' ELSE 'Externo' END AS Ind_Staff</code>: la misma técnica de la
+    lección <a href="0039-vistas.html">0039</a> y de la <a href="0052-slow-change-dimension.html">0052</a>.
+  </p>
+
+  <h2><span class="num">02</span>El Data Warehouse</h2>
+
+  <p>El deck da varias definiciones y cierra con "Varios… Muchos". Las tres que muestra:</p>
+
+  <blockquote class="callout">
+    "Un Data Warehouse (DW) es un almacén o repositorio de datos categorizados, que concentra un
+    gran volumen de información de interés para toda una organización, la cual se distribuye por
+    medio de diversas herramientas de consulta y de creación de informes <b>orientadas a la toma
+    de decisiones</b>."
+  </blockquote>
+
+  <blockquote class="callout">
+    "Es una <b>copia de datos transaccionales</b> específicamente estructurados para consultas y
+    reportes" (Ralph Kimball).
+  </blockquote>
+
+  <blockquote class="callout">
+    "Es una vista consolidada de datos corporativos optimizados para reportes y análisis: copia
+    sumarizada de transacciones y datos no transaccionales específicamente estructurados para
+    consultas y análisis."
+  </blockquote>
+
+  <h3>Las cinco características</h3>
+
+  <p>El slide 21 lo resume como una lista. <b>"El DW es":</b></p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Característica</th><th>Qué significa</th></tr></thead>
+      <tbody>
+        <tr><td><b>Colección de datos</b></td><td>Repositorio de datos categorizados, no un programa.</td></tr>
+        <tr><td><b>Orientado a temas / foco</b></td><td>Se organiza por temas del negocio (ventas, clientes…) y no por aplicación.</td></tr>
+        <tr><td><b>Integrado</b></td><td>Reúne datos de varias fuentes en una sola visión homogénea.</td></tr>
+        <tr><td><b>Variante en el tiempo</b></td><td>Los datos llevan tiempo: se guarda cómo eran en cada momento. Acá entra la <a href="0052-slow-change-dimension.html">0052</a>.</td></tr>
+        <tr><td><b>No volátil / histórico</b></td><td>Los datos se cargan y se consultan; no se modifican ni se borran como en una base operativa.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="muted">
+    El deck sólo enumera las cinco; la columna de la derecha es la explicación habitual de cada una.
+  </p>
+
+  <p>
+    El deck lo plantea como <b>primera solución a viejos problemas</b>: las preguntas de la
+    dirección ("¿cuánto vendimos por región y por mes?") eran difíciles de responder con los
+    sistemas operativos. El DW pretende "dar un soporte a la organización para proporcionarle una
+    buena gestión de sus datos, que le ayude en la toma de decisiones estratégicas / tácticas".
+  </p>
+
+  <h2><span class="num">03</span>OLTP contra OLAP</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>OLTP</th><th>OLAP</th></tr></thead>
+      <tbody>
+        <tr><td><b>Sigla</b></td><td>On-Line Transactional Processing</td><td>On-Line Analytical Processing</td></tr>
+        <tr><td><b>Para qué</b></td><td>Ejecutar transacciones (banca en línea, compras, entrada de pedidos, mensajes de texto)</td><td>Análisis multidimensional: tendencias de ventas, patrones de consumo, informes complejos</td></tr>
+        <tr><td><b>Operaciones</b></td><td>Muchas transacciones simples: inserciones, actualizaciones y eliminaciones</td><td>Lectura de grandes volúmenes de datos para extraer información útil</td></tr>
+        <tr><td><b>Velocidad</b></td><td>Respuesta en milisegundos</td><td>Alta velocidad sobre grandes volúmenes</td></tr>
+        <tr><td><b>Disponibilidad</b></td><td>24 horas, 7 días, con copias de seguridad incrementales constantes</td><td>—</td></tr>
+        <tr><td><b>De dónde vienen los datos</b></td><td>Se generan ahí, por los empleados de front-end y los clientes</td><td>Provienen de un data mart, un almacén de datos centralizado o un data warehouse</td></tr>
+        <tr><td><b>Ejemplo del deck</b></td><td>Una pareja intenta retirar a la vez, desde dos cajeros, todo el saldo de la cuenta conjunta: el sistema asegura que lo retirado no supere lo disponible</td><td>Presupuestos, previsión de ventas, análisis financiero</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote class="callout">
+    "Los sistemas OLTP están diseñados para la <b>superioridad de las transacciones en lugar del
+    análisis de datos</b>."
+  </blockquote>
+
+  <h2><span class="num">04</span>El cubo OLAP</h2>
+
+  <blockquote class="callout">
+    "<b>Cubo (OLAP)</b>: información <b>pre-agregada</b> con todas las combinaciones posibles de
+    las perspectivas incluidas, y de esta forma visualizar las métricas que le interesen al
+    usuario."
+  </blockquote>
+
+  <p>
+    Las estructuras multidimensionales están compuestas por <b>dimensiones</b> y
+    <b>métricas</b>. Las dimensiones, a su vez, tienen <b>jerarquías y niveles</b>: en la dimensión
+    geográfica, el nivel más alto son los continentes, luego los países, los estados y, el más
+    bajo, los municipios. El cubo del deck cruza <i>clientes × productos × fechas</i> y responde
+    cosas como "¿cuántas muñecas se vendieron en total a Toyland?".
+  </p>
+
+  <h2><span class="num">05</span>MOLAP, ROLAP y HOLAP</h2>
+
+  <p>Tres formas de guardar los datos de un sistema OLAP:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Modelo</th><th>Dónde están los datos</th><th>Ventajas</th><th>Desventajas</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>MOLAP</b></td>
+          <td>En una <b>estructura multidimensional</b>. El resumen se calcula por adelantado (agregaciones precalculadas), con técnicas de compresión.</td>
+          <td>Mayor desempeño en las consultas · puede escribir sobre las bases de datos · permite cálculos más complicados</td>
+          <td>Tamaño limitado para la arquitectura del cubo · no se accede a los datos que están en el cubo · no se explota el paralelismo de las bases de datos</td>
+        </tr>
+        <tr>
+          <td><b>ROLAP</b></td>
+          <td>En una <b>base de datos relacional</b>: datos detallados, sin agregaciones, tablas normalizadas. Esquemas estrella o copo de nieve.</td>
+          <td>Usa toda la seguridad e integridad de la base · escalable a grandes volúmenes · datos compartidos con aplicaciones de consulta (SQL) · estructuras más dinámicas</td>
+          <td>Consultas más lentas · construcción cara · los cálculos se limitan a las funciones de la base de datos</td>
+        </tr>
+        <tr>
+          <td><b>HOLAP</b><br><span style="color:var(--ink-soft)">híbrido</span></td>
+          <td>El <b>detalle</b> en la base relacional y los datos <b>resumidos o agregados</b> en una base multidimensional separada.</td>
+          <td colspan="2">Toma un poco de cada uno.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Cuándo conviene cuál</h3>
+
+  <ul>
+    <li><b>Volatilidad:</b> si cambian las reglas de agregación, ROLAP hace la consolidación ad-hoc; MOLAP está pensado para consolidaciones batch (precompiladas).</li>
+    <li><b>Dimensiones:</b> ROLAP crece a muchísimas; MOLAP anda bien con diez o menos.</li>
+    <li><b>Volumen:</b> ROLAP soporta grandes volúmenes de datos elementales; MOLAP se comporta bien con volúmenes reducidos (menos de 5 Gb).</li>
+    <li><b>Alcance:</b> ROLAP es una arquitectura flexible y general; MOLAP es una solución particular, de nivel departamental.</li>
+  </ul>
+
+  <h2><span class="num">06</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 5 · OLTP o OLAP</span>
+    <p class="quiz__q">
+      Un banco procesa miles de retiros y depósitos por segundo, con respuesta en milisegundos,
+      las 24 horas. ¿Qué tipo de sistema es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="OLTP: procesa una gran cantidad de transacciones simples (inserciones, actualizaciones, eliminaciones), con respuesta en milisegundos y disponibilidad 24/7.">Un sistema OLTP, transaccional</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="OLAP lee grandes volúmenes para analizarlos (tendencias, informes complejos). No procesa transacciones simples a razón de milisegundos.">Un sistema OLAP, analítico</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un data mart es un repositorio departamental de datos para análisis, no el sistema que registra las operaciones del día.">Un data mart departamental</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 5 · Características</span>
+    <p class="quiz__q">
+      ¿Cuál de estas NO figura entre las características del Data Warehouse del deck?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Volátil es lo opuesto: el DW es no volátil / histórico. Los datos se cargan y se conservan; no se pisan como en una base operativa.">Volátil: sus datos se reescriben</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí figura: el DW es orientado a temas o foco, organizado por temas del negocio.">Orientado a temas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí figura: el DW es variante en el tiempo, porque guarda cómo eran los datos en cada momento.">Variante en el tiempo</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 5 · El cubo</span>
+    <p class="quiz__q">
+      ¿Qué es un cubo OLAP, según el deck?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Información pre-agregada con todas las combinaciones posibles de las perspectivas, para visualizar las métricas que interesan al usuario.">Información pre-agregada con todas las combinaciones de perspectivas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso describe una base OLTP. El cubo no registra transacciones: guarda resultados ya calculados para consultar rápido.">Un registro detallado de cada transacción diaria</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La tabla normalizada es de un esquema relacional (ROLAP). El cubo es una estructura multidimensional, con dimensiones y métricas.">Una tabla normalizada en tercera forma</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 5 · ROLAP</span>
+    <p class="quiz__q">
+      Un sistema guarda datos detallados en tablas normalizadas de una base relacional, sobre un
+      esquema estrella. ¿Cuál es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="ROLAP: datos en una base relacional, detallados, sin agregaciones y normalizados; los esquemas típicos son estrella o copo de nieve.">ROLAP</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="MOLAP guarda los datos en una estructura multidimensional con resúmenes precalculados, no en tablas relacionales.">MOLAP</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="HOLAP es el híbrido: detalle en la relacional y agregados en una multidimensional aparte. Acá no hay agregados separados.">HOLAP</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 5 · Ventajas</span>
+    <p class="quiz__q">
+      Un MOLAP ofrece un mayor desempeño en las consultas. ¿Qué desventaja tiene frente al ROLAP?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El tamaño del cubo es limitado, y los datos que están dentro no se pueden acceder directamente. Es el precio del precálculo.">Tamaño limitado para la arquitectura del cubo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las consultas más lentas son una desventaja del ROLAP, no del MOLAP, que es rápido justamente porque precalcula.">Consultas más lentas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Construcción cara es desventaja del ROLAP. El MOLAP tiene el costo de compilación, pero la lista del deck dice otra cosa.">Construcción cara</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Deck <code>raw/Intro Datawarehouse .pptx</code>: slides 13–15 (BI), 19–21 (qué es un DW y
+      sus características), 44–48 (OLTP, OLAP, cubo y HOLAP) y 50–52 (MOLAP, ROLAP y su
+      comparación). Los cuadros de ventajas y desventajas de MOLAP y ROLAP son imágenes del deck.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Escribime de memoria las cinco características del DW y, al lado,
+      una diferencia entre OLTP y OLAP. Te las corrijo contra el deck.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0041-transacciones-y-acid.html">Anterior: 0041 · Transacciones y ACID</a>
+    <a href="0050-componentes-de-un-dw.html">Siguiente: 0050 · Componentes de un DW</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

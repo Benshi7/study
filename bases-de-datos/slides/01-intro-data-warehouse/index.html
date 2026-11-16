@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intro Data Warehouse · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<!-- Deck de estudio sobre el PPT "Intro Datawarehouse" de la cátedra. El contenido sigue al deck;
+     el orden, los diagramas y los recuadros "En criollo" / "Ojo en el choice" son interpretación nuestra. -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ah"/></marker>
+  <marker id="arA" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahA"/></marker>
+</defs></svg>
+
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · teoría para el 2.º parcial</p>
+    <h1 class="h1" style="font-size:112px;line-height:1">Introducción al<br><span class="gradient-text">Data Warehouse</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Del dato a la decisión: BI, DW, data marts, OLTP y OLAP.</p>
+    <p class="small">Basado en el PPT de la cátedra. Los recuadros “En criollo” y “Ojo en el choice” son explicación nuestra.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="slide" data-title="Mapa del deck">
+  <p class="kicker">Mapa</p>
+  <h2 class="h2">Cinco preguntas que responde este deck</h2>
+  <div class="four" style="grid-template-columns:repeat(5,1fr);margin-top:24px">
+    <div class="card card-accent"><div class="src">1 · El problema</div><p>¿Por qué tener muchos datos no alcanza?</p></div>
+    <div class="card card-accent"><div class="src">2 · BI</div><p>¿Qué es Business Intelligence y qué no es?</p></div>
+    <div class="card card-accent"><div class="src">3 · DW</div><p>¿Qué es un Data Warehouse y cómo se arma?</p></div>
+    <div class="card card-accent"><div class="src">4 · Modelos</div><p>Inmon o Kimball, estrella o copo, DW o data mart</p></div>
+    <div class="card card-accent"><div class="src">5 · Consulta</div><p>OLTP vs. OLAP, cubos, MOLAP / ROLAP / HOLAP</p></div>
+  </div>
+  <div class="crio"><span class="lbl">Cómo usarlo</span><p>Leé el contenido de cada slide, después el recuadro <b>En criollo</b>. Los recuadros <b>Ojo en el choice</b> marcan lo que se confunde. Al final hay una <b>autoevaluación</b>.</p></div>
+</section>
+
+<!-- ============ 1 · EL PROBLEMA ============ -->
+<section class="slide" data-title="Datos, información, conocimiento">
+  <p class="kicker">1 · El problema</p>
+  <h2 class="h2">Del dato a la decisión</h2>
+  <svg class="dg" viewBox="0 0 1728 560" role="img" aria-labelledby="dikw-title dikw-desc">
+    <title id="dikw-title">Pirámide datos, información, conocimiento, sabiduría</title>
+    <desc id="dikw-desc">Cuatro niveles de abajo hacia arriba: datos, información, conocimiento y sabiduría. Los dos de abajo son Business Operations; los dos de arriba, Business Intelligence, que termina en decisión y acción.</desc>
+    <line x1="1000" y1="16" x2="1000" y2="248" class="lnA bar"/>
+    <line x1="1000" y1="256" x2="1000" y2="488" class="ln bar"/>
+    <polygon points="440,16 520,16 600,128 360,128" class="foc"/>
+    <polygon points="356,136 604,136 684,248 276,248" class="foc"/>
+    <polygon points="268,256 692,256 768,368 192,368" class="store"/>
+    <polygon points="184,376 776,376 856,488 104,488" class="store"/>
+    <text x="480" y="84" class="nm-s" text-anchor="middle">Sabiduría</text>
+    <text x="480" y="200" class="nm" text-anchor="middle">Conocimiento</text>
+    <text x="480" y="320" class="nm" text-anchor="middle">Información</text>
+    <text x="480" y="440" class="nm" text-anchor="middle">Datos</text>
+    <text x="1032" y="64" class="nm-s">Evaluación e internalización del conocimiento</text>
+    <text x="1032" y="96" class="tx2">→ decisión, acción</text>
+    <text x="1032" y="188" class="nm-s">Aplicación mental</text>
+    <text x="1032" y="220" class="tx2">de los datos y la información</text>
+    <text x="1032" y="308" class="nm-s">Datos procesados</text>
+    <text x="1032" y="340" class="tx2">para ser útiles</text>
+    <text x="1032" y="428" class="nm-s">Elementos discontinuos</text>
+    <text x="1032" y="460" class="tx2">que representan hechos</text>
+    <line x1="0" y1="516" x2="1728" y2="516" stroke="var(--border)" stroke-width="1"/>
+    <rect x="0" y="532" width="20" height="20" rx="4" class="foc"/><text x="32" y="549" class="lb">BUSINESS INTELLIGENCE</text>
+    <rect x="320" y="532" width="20" height="20" rx="4" class="store"/><text x="352" y="549" class="lb">BUSINESS OPERATIONS</text>
+    <text x="1728" y="549" class="lb" text-anchor="end">Fuente: Hey, J. The Data, Information, Knowledge, Wisdom Chain</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Un <b>dato</b> suelto (“37”) no dice nada. Con contexto es <b>información</b> (“37 ventas en marzo”). Interpretado es <b>conocimiento</b> (“marzo vendió menos”). Decidir qué hacer es <b>sabiduría</b>. La operación diaria vive abajo; el BI sube.</p></div>
+</section>
+
+<section class="slide" data-title="Ubicación de los sistemas de información">
+  <p class="kicker">1 · El problema</p>
+  <h2 class="h2">Cada nivel de la organización usa otros sistemas</h2>
+  <svg class="dg" viewBox="0 0 1728 520" role="img" aria-labelledby="laudon-title laudon-desc">
+    <title id="laudon-title">Ubicación de los sistemas de información</title>
+    <desc id="laudon-desc">Pirámide de cuatro niveles: operativo, cognitivo, gestión administrativa y estratégico, con quiénes trabajan en cada uno y qué sistemas usan. El Data Warehouse está en gestión administrativa.</desc>
+    <text x="540" y="24" class="ey" text-anchor="end">QUIÉNES</text>
+    <text x="864" y="24" class="ey" text-anchor="middle">NIVEL</text>
+    <text x="1188" y="24" class="ey">SISTEMAS</text>
+    <g transform="translate(0,40)">
+      <polygon points="804,16 924,16 980,120 748,120" class="store"/>
+      <polygon points="744,128 984,128 1040,232 688,232" class="foc"/>
+      <polygon points="680,240 1048,240 1104,344 624,344" class="store"/>
+      <polygon points="620,352 1108,352 1164,456 564,456" class="store"/>
+      <text x="864" y="76" class="nm-s" text-anchor="middle">Estratégico</text>
+      <text x="864" y="174" class="nm-s" text-anchor="middle">Gestión</text>
+      <text x="864" y="204" class="nm-s" text-anchor="middle">administrativa</text>
+      <text x="864" y="300" class="nm-s" text-anchor="middle">Cognitivo</text>
+      <text x="864" y="412" class="nm-s" text-anchor="middle">Operativo</text>
+      <text x="540" y="76" class="tx" text-anchor="end">CEO / Directores</text>
+      <text x="540" y="172" class="tx" text-anchor="end">Gerentes y mandos medios</text>
+      <text x="540" y="204" class="tx2" text-anchor="end">analistas de negocio</text>
+      <text x="540" y="284" class="tx" text-anchor="end">Profesionales especializados</text>
+      <text x="540" y="316" class="tx2" text-anchor="end">diseñadores</text>
+      <text x="540" y="412" class="tx" text-anchor="end">Gerentes operativos · supervisores</text>
+      <text x="1188" y="76" class="tx">Tablero de Mando Integral · BSC · EIS</text>
+      <text x="1188" y="188" class="tx">Data mining · OLAP · <tspan class="acc" font-weight="700">DW</tspan> · DSS</text>
+      <text x="1188" y="284" class="tx">Oficina · workflow</text>
+      <text x="1188" y="316" class="tx2">CAD · modelo de BD</text>
+      <text x="1188" y="396" class="tx">TPS: ventas, finanzas,</text>
+      <text x="1188" y="428" class="tx2">despacho, cobranzas</text>
+    </g>
+  </svg>
+  <p class="small" style="margin:0 0 10px">Basado en Laudon K. y Laudon J. (2004)</p>
+  <div class="crio"><span class="lbl">En criollo</span><p>Abajo, mucha gente y mucho detalle: los <b>TPS</b> (sistemas transaccionales) registran cada operación y son la <b>fuente</b> del DW. Arriba, pocas personas y poco detalle. El <b>DW</b> y el <b>OLAP</b> trabajan en el medio, para la gestión.</p></div>
+</section>
+
+<section class="slide" data-title="Información según rol y contenido">
+  <p class="kicker">1 · El problema</p>
+  <h2 class="h2">Cada rol pide otra información</h2>
+  <div class="four" style="margin-top:10px">
+    <div class="card" style="border-top:5px solid var(--accent)"><h4>Director</h4><ul><li>Indicadores, semáforos, alertas</li><li>Pocos números, significativos</li></ul></div>
+    <div class="card" style="border-top:5px solid var(--note)"><h4>Analista</h4><ul><li>Tablas dinámicas</li><li>Análisis multidimensional</li><li>Publicar resultados</li></ul></div>
+    <div class="card" style="border-top:5px solid var(--warn)"><h4>Gerente</h4><ul><li>Acceso a todos los datos</li><li>Libertad de análisis</li></ul></div>
+    <div class="card" style="border-top:5px solid var(--good)"><h4>Supervisor</h4><ul><li>Reportes predefinidos y precalculados</li><li>Acceso con restricciones de seguridad</li></ul></div>
+  </div>
+  <table class="t head" style="margin-top:22px;font-size:26px">
+    <thead><tr><th style="width:20%">Contenido</th><th>Características</th><th style="width:34%">Deseable</th></tr></thead>
+    <tbody>
+      <tr><td>Ejecutiva</td><td>Todo el negocio · visión integral · poco detalle</td><td>Sólo por excepción · en cualquier lugar</td></tr>
+      <tr><td>Departamental</td><td>Foco en su área · evolución · análisis a largo plazo · consultas libres</td><td>Historia completa y de libre acceso</td></tr>
+      <tr><td>Operativa</td><td>Minuto a minuto · poca historia (1 o 2 meses) · consultas fijas</td><td>En tiempo real · mínimo detalle</td></tr>
+    </tbody>
+  </table>
+  <div class="crio"><span class="lbl">En criollo</span><p>La información <b>operativa</b> guarda 1 o 2 meses; la <b>departamental</b> necesita toda la historia. Por eso los sistemas operativos no alcanzan para analizar.</p></div>
+</section>
+
+<section class="slide" data-title="Muchos datos, poca información">
+  <p class="kicker">1 · El problema</p>
+  <h2 class="h2">Muchos datos, poca información</h2>
+  <div style="display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;margin-top:10px;align-items:start">
+    <div>
+      <p class="quote" style="font-size:40px;border-left-width:7px">“Una organización que no pueda identificar, categorizar y resumir los datos puede ser rica en datos pero será pobre en información.”</p>
+      <p class="small" style="padding-left:30px">Stuart Madnick, 1993</p>
+      <p style="font-size:30px;line-height:1.45;margin-top:24px">Las organizaciones tienen <b>muchos sistemas operacionales</b> y generan cada vez más datos, pero los datos <b>por sí solos</b> no informan a la dirección.</p>
+    </div>
+    <div class="card card-soft"><h4>Problemas comunes: la información está…</h4><ul>
+      <li><b>Dispersa</b> en distintas plataformas y sistemas</li>
+      <li><b>Duplicada e inconsistente</b> entre sistemas</li>
+      <li><b>Sin perspectiva temporal</b>: no deja ver tendencias</li>
+      <li>Fuera de plazo o <b>no disponible</b> cuando se necesita</li>
+      <li>En <b>altos volúmenes</b>, sin capacidad para analizarla</li>
+      <li>“IT dice que está disponible, pero no la encuentro”</li></ul></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Casi todos los problemas son el mismo: datos <b>dispersos, repetidos y sin historia</b>. El DW existe para juntarlos, limpiarlos y agregarles el tiempo.</p></div>
+</section>
+
+<section class="slide" data-title="Lo que pregunta y lo que dice la gerencia">
+  <p class="kicker">1 · El problema</p>
+  <h2 class="h2">Lo que pregunta la gerencia, y lo que se escucha</h2>
+  <div class="two" style="margin-top:10px">
+    <div class="card card-accent"><h4>Preguntas difíciles de responder</h4><ul>
+      <li>¿Cuál es la mejor mezcla de productos para los clientes de mi zona?</li>
+      <li>¿Estoy cerca del punto de equilibrio?</li>
+      <li>¿Qué canales de venta son más efectivos?</li>
+      <li>¿Cuál es el patrón de conducta de mis clientes?</li>
+      <li>¿Cómo influyó mi última campaña en los resultados del año?</li>
+      <li>¿Estoy cumpliendo los objetivos estratégicos?</li></ul></div>
+    <div>
+      <p class="quote">“Tenemos montañas de datos pero no podemos accederlos”</p>
+      <p class="quote">“Sólo muéstrenme lo que es importante”</p>
+      <p class="quote">“No puede ser que dos personas tengan el mismo indicador con distintos valores”</p>
+      <p class="quote">“El área X tiene la información pero no me la brinda”</p>
+      <p class="quote">“Hace más de un año que trabajan y no vi nada…”</p>
+    </div>
+  </div>
+  <p class="small" style="margin-top:auto">La dirección necesita estas respuestas para evaluar, decidir, planificar y actuar con la menor incertidumbre posible.</p>
+</section>
+
+<section class="slide" data-title="Qué es deseable">
+  <p class="kicker">1 · El problema</p>
+  <h2 class="h2">¿Qué debería tener la información?</h2>
+  <div class="two" style="margin-top:8px">
+    <ul class="bl sm" style="margin:0">
+      <li><b>Confiabilidad</b> <small>Estado máximo de seguridad en las decisiones</small></li>
+      <li><b>Oportunidad</b> <small>Cuando la necesitan</small></li>
+      <li><b>Integridad</b> <small>Completitud y exactitud</small></li>
+      <li><b>Confidencialidad</b> <small>Sólo veo lo que me corresponde</small></li>
+      <li><b>Utilidad</b> <small>Lo que analizo sirve para algo</small></li>
+    </ul>
+    <ul class="bl sm" style="margin:0">
+      <li>Datos organizados según los <b>términos del negocio</b></li>
+      <li>Acceso directo a <b>grandes volúmenes</b></li>
+      <li>Consolidar información <b>interna y externa</b></li>
+      <li>Responder sin <b>desarrollar aplicaciones especiales</b></li>
+      <li>Relacionar operaciones con resultados; compararse con la competencia</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 2 · BI ============ -->
+<section class="slide" data-title="Qué es Business Intelligence">
+  <p class="kicker">2 · Business Intelligence</p>
+  <h2 class="h2">¿Qué es BI? Depende de quién lo diga, y cuándo</h2>
+  <div class="two" style="margin-top:12px">
+    <div class="card card-accent"><div class="src">Gartner, 2013</div><p><i>“An umbrella term that includes the applications, infrastructure and tools, and best practices that enable access to and analysis of information to improve and optimize decisions and performance.”</i></p></div>
+    <div class="card card-accent"><div class="src">Académico, 2019</div><p>Una <b>práctica</b> que permite usar el activo de los datos para tomar mejores decisiones. Un <b>proceso</b>: entender el problema → descubrir conocimiento → evaluar alternativas → decidir → actuar → monitorear el impacto → <b>realimentar</b>.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>No hay una definición única. Gartner lo ve como un <b>paraguas</b> de aplicaciones, herramientas y prácticas; la académica, como un <b>ciclo</b> que vuelve a empezar con cada decisión.</p></div>
+</section>
+
+<section class="slide" data-title="Qué no es BI">
+  <p class="kicker">2 · Business Intelligence</p>
+  <h2 class="h2">Lo que BI <span style="color:var(--accent)">no</span> es</h2>
+  <div style="margin-top:14px">
+    <span class="pill-lg">Una marca</span><span class="pill-lg">Un producto</span><span class="pill-lg">Un sistema</span><span class="pill-lg">Una base de datos</span><span class="pill-lg">Una empresa</span><span class="pill-lg">Una ciencia</span>
+  </div>
+  <div class="card card-accent" style="margin-top:22px"><div class="src">Lo que sí es (resumen del deck)</div><p style="font-size:32px">Una <b>arquitectura</b>: una colección integrada de datos operacionales, aplicaciones para la toma de decisión y bases de datos que, con técnicas específicas, dan a una comunidad de usuarios <b>fácil acceso a datos de negocio</b>.</p></div>
+  <div class="two" style="margin-top:22px">
+    <div class="card card-soft"><h4>Características</h4><ul><li>Accesibilidad a datos e información</li><li>Apoyo a la toma de decisiones</li><li>Orientación al usuario final</li></ul></div>
+    <div class="card card-soft"><h4>Técnicas y salidas</h4><ul><li>Consultas e informes</li><li>Análisis OLAP</li><li>Analytics (data / text mining)</li><li>Previsión (forecasting, predictivo)</li></ul></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>“BI no se compra, se construye.”</b> Si una opción dice que BI es un producto, una marca o una base de datos, está mal.</p></div>
+</section>
+
+<section class="slide" data-title="BI y la capa lógica">
+  <p class="kicker">2 · Business Intelligence</p>
+  <h2 class="h2">Las herramientas no leen tablas: leen una capa lógica</h2>
+  <svg class="dg" viewBox="0 0 1728 176" role="img" aria-labelledby="capa-title capa-desc" style="margin-top:6px">
+    <title id="capa-title">Capa lógica entre el DW y la herramienta de BI</title>
+    <desc id="capa-desc">La tabla Customer del DW pasa por la vista Clientes, que renombra columnas y calcula el indicador Ind_Staff, y la herramienta de BI consulta esa vista.</desc>
+    <line x1="488" y1="96" x2="640" y2="96" class="ln" marker-end="url(#ar)"/>
+    <line x1="1084" y1="96" x2="1236" y2="96" class="ln" marker-end="url(#ar)"/>
+    <rect x="516" y="60" width="96" height="20" class="mask"/><text x="564" y="75" class="lb" text-anchor="middle">SELECT</text>
+    <rect x="1108" y="60" width="104" height="20" class="mask"/><text x="1160" y="75" class="lb" text-anchor="middle">CONSULTA</text>
+    <rect x="48" y="32" width="440" height="128" rx="8" class="store"/>
+    <text x="72" y="64" class="ey">DW · TABLA</text><text x="72" y="104" class="nm">Customer</text><text x="72" y="140" class="sb">Customer_Name · Income_Amt</text>
+    <rect x="644" y="32" width="440" height="128" rx="8" class="foc"/>
+    <text x="668" y="64" class="eyA">CAPA LÓGICA · VISTA</text><text x="668" y="104" class="nm">Clientes</text><text x="668" y="140" class="sb">Nombre · Sueldo · Ind_Staff</text>
+    <rect x="1240" y="32" width="440" height="128" rx="8" class="box"/>
+    <text x="1264" y="64" class="ey">FRONT END</text><text x="1264" y="104" class="nm">Herramienta de BI</text><text x="1264" y="140" class="sb">reportes · tableros</text>
+  </svg>
+  <pre class="code"><span class="k">CREATE VIEW</span> Clientes <span class="k">AS</span>
+<span class="k">SELECT</span> Customer <span class="k">AS</span> Cliente, Customer_Name <span class="k">AS</span> Nombre, Income_Amt <span class="k">AS</span> Sueldo,
+       <span class="k">CASE WHEN</span> branch = 1 <span class="k">THEN</span> 'Propio' <span class="k">ELSE</span> 'Externo' <span class="k">END AS</span> Ind_Staff
+<span class="k">FROM</span> Customer;</pre>
+  <p class="small" style="margin:8px 0 10px">El deck escribe <code>ranch=1</code>; parece un error de tipeo de <code>branch</code>.</p>
+  <div class="crio"><span class="lbl">En criollo</span><p>La vista traduce al <b>idioma del negocio</b> (<code>AS</code>) y calcula <b>indicadores</b> (<code>CASE</code>). Es lo que el profe toma en el parcial: crear la vista y después consultarla. Práctica en la lección 0039.</p></div>
+</section>
+
+<!-- ============ 3 · DATA WAREHOUSE ============ -->
+<section class="slide" data-title="De los viejos problemas a la promesa">
+  <p class="kicker">3 · Data Warehouse</p>
+  <h2 class="h2">De los viejos problemas a la promesa del DW</h2>
+  <div class="two" style="margin-top:10px;grid-template-columns:1fr 80px 1fr;gap:0">
+    <div class="card" style="border-top:5px solid var(--bad)"><h4>Viejos problemas</h4><ul>
+      <li>Silos de información</li><li>Acceso sin control ni tracking</li><li>Definiciones ambiguas del negocio</li><li>Visión parcial para la gestión</li><li>Reportes armados a mano, cada vez</li><li>Falta o sobra detalle; atajos</li></ul></div>
+    <div style="display:flex;align-items:center;justify-content:center;font-size:56px;color:var(--text-3)">→</div>
+    <div class="card" style="border-top:5px solid var(--good)"><h4>La promesa del DW</h4><ul>
+      <li>Hacer <b>accesible</b> la información de la empresa</li><li>Brindar información <b>consistente</b></li><li>Ser la <b>fuente única</b> para la toma de decisión</li><li>Contener información <b>estática e histórica</b></li><li>Ser dinámico: seguir los cambios de la empresa</li></ul></div>
+  </div>
+  <p class="small" style="margin-top:16px">La organización espera: acceso a información corporativa, consistencia, completitud e integridad, herramientas para consultar y presentar, y usar la información para conocer y después cambiar.</p>
+</section>
+
+<section class="slide" data-title="Definición de Data Warehouse">
+  <p class="kicker">3 · Data Warehouse</p>
+  <h2 class="h2">¿Qué es un Data Warehouse?</h2>
+  <div class="card" style="background:var(--accent-tint);border-color:var(--accent);margin:6px 0 18px"><p style="font-size:33px;font-weight:700;margin:0">Un soporte para que la organización gestione bien sus datos, tome decisiones estratégicas y tácticas, y tenga una plataforma ideal para extraer información.</p></div>
+  <ul class="bl sm">
+    <li>Un <b>almacén de datos categorizados</b> que concentra la información de interés para toda la organización, distribuida con herramientas de consulta e informes <i>orientadas a la toma de decisiones</i>.</li>
+    <li>Una <b>copia de datos transaccionales</b> estructurada para consultas y reportes <span class="small">(Ralph Kimball)</span>.</li>
+    <li>Una <b>vista consolidada</b> de datos corporativos: copia sumarizada de transacciones y datos no transaccionales, optimizada para reportes y análisis.</li>
+  </ul>
+  <p class="small" style="margin-top:auto">El deck cierra con “Varios… muchos”: hay muchas definiciones y todas dicen lo mismo con otras palabras.</p>
+</section>
+
+<section class="slide" data-title="Propiedades del DW">
+  <p class="kicker">3 · Data Warehouse</p>
+  <h2 class="h2">Una colección de datos que es…</h2>
+  <div class="four" style="margin-top:6px">
+    <div class="card card-accent"><h4>Orientada a temas</h4><p>Por foco del negocio (ventas, clientes), no por aplicación.</p></div>
+    <div class="card card-accent"><h4>Integrada</h4><p>Varias fuentes, un formato consistente.</p></div>
+    <div class="card card-accent"><h4>Variante en el tiempo</h4><p>Cada dato lleva su fecha: hay historia.</p></div>
+    <div class="card card-accent"><h4>No volátil</h4><p>Se carga y se conserva; no se pisa.</p></div>
+  </div>
+  <svg class="dg" viewBox="0 0 1728 264" role="img" aria-labelledby="novol-title novol-desc" style="margin-top:22px">
+    <title id="novol-title">Base operativa contra Data Warehouse ante un cambio</title>
+    <desc id="novol-desc">Cuando el cliente cambia de oficial, la base operativa actualiza la única fila y pierde el valor anterior; el Data Warehouse agrega una fila nueva con fechas y conserva la vieja.</desc>
+    <text x="0" y="20" class="ey">BASE OPERATIVA (OLTP) · UPDATE PISA</text>
+    <rect x="0" y="40" width="720" height="48" rx="6" class="hd"/>
+    <text x="24" y="72" class="hdT">Cliente</text><text x="264" y="72" class="hdT">Oficial</text>
+    <rect x="0" y="88" width="720" height="52" class="box"/>
+    <text x="24" y="122" class="row">125269</text><text x="264" y="122" class="row"><tspan text-decoration="line-through" fill="var(--text-3)">25</tspan>  30</text>
+    <text x="0" y="184" class="tx2">El 25 se perdió: no hay forma de saber qué oficial tenía antes.</text>
+    <text x="864" y="20" class="eyA">DATA WAREHOUSE · AGREGA UNA FOTO</text>
+    <rect x="864" y="40" width="864" height="48" rx="6" class="hd"/>
+    <text x="888" y="72" class="hdT">Cliente</text><text x="1072" y="72" class="hdT">Oficial</text><text x="1232" y="72" class="hdT">Desde</text><text x="1480" y="72" class="hdT">Hasta</text>
+    <rect x="864" y="88" width="864" height="52" class="box"/>
+    <text x="888" y="122" class="row">125269</text><text x="1072" y="122" class="row">25</text><text x="1232" y="122" class="row">2019-01-01</text><text x="1480" y="122" class="row">2021-06-30</text>
+    <rect x="864" y="140" width="864" height="52" class="foc"/>
+    <text x="888" y="174" class="rowK">125269</text><text x="1072" y="174" class="rowK">30</text><text x="1232" y="174" class="rowK">2021-07-01</text><text x="1480" y="174" class="rowK">2100-12-31</text>
+    <text x="864" y="236" class="tx2">Las dos fotos quedan. La vigente cierra en 2100-12-31 (Slow Change Dimension).</text>
+  </svg>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>No volátil</b> no significa “nunca cambia”: significa que los datos <b>no se actualizan ni se borran</b>, se agrega historia. Los valores del ejemplo son inventados.</p></div>
+</section>
+
+<section class="slide" data-title="DW: esquema genérico">
+  <p class="kicker">3 · Data Warehouse</p>
+  <h2 class="h2">El esquema más simple: cuatro bloques</h2>
+  <svg class="dg" viewBox="0 0 1728 432" role="img" aria-labelledby="gen-title gen-desc" style="margin-top:8px">
+    <title id="gen-title">Esquema genérico de un Data Warehouse</title>
+    <desc id="gen-desc">Cuatro sistemas fuente alimentan el proceso ETL, que carga el Data Warehouse; las herramientas de front end consultan el DW.</desc>
+    <line x1="304" y1="60" x2="428" y2="60" class="ln" marker-end="url(#ar)"/>
+    <line x1="304" y1="148" x2="428" y2="148" class="ln" marker-end="url(#ar)"/>
+    <line x1="304" y1="236" x2="428" y2="236" class="ln" marker-end="url(#ar)"/>
+    <line x1="304" y1="324" x2="428" y2="324" class="ln" marker-end="url(#ar)"/>
+    <line x1="752" y1="192" x2="876" y2="192" class="lnA" marker-end="url(#arA)"/>
+    <line x1="1328" y1="192" x2="1204" y2="192" class="ln" marker-end="url(#ar)"/>
+    <rect x="770" y="152" width="88" height="20" class="mask"/><text x="814" y="167" class="lb" text-anchor="middle">CARGA</text>
+    <rect x="1218" y="152" width="96" height="20" class="mask"/><text x="1266" y="167" class="lb" text-anchor="middle">CONSULTA</text>
+    <rect x="24" y="24" width="280" height="72" rx="6" class="store"/><text x="164" y="68" class="nm-s" text-anchor="middle">Sistema 1</text>
+    <rect x="24" y="112" width="280" height="72" rx="6" class="store"/><text x="164" y="156" class="nm-s" text-anchor="middle">Sistema 2</text>
+    <rect x="24" y="200" width="280" height="72" rx="6" class="store"/><text x="164" y="244" class="nm-s" text-anchor="middle">Sistema 3</text>
+    <rect x="24" y="288" width="280" height="72" rx="6" class="store"/><text x="164" y="332" class="nm-s" text-anchor="middle">Sistema 4</text>
+    <rect x="432" y="24" width="320" height="336" rx="8" class="box"/>
+    <text x="592" y="72" class="nm" text-anchor="middle">ETL</text>
+    <text x="592" y="124" class="tx2" text-anchor="middle">Extracción</text><text x="592" y="160" class="tx2" text-anchor="middle">Limpieza</text>
+    <text x="592" y="196" class="tx2" text-anchor="middle">Integración</text><text x="592" y="232" class="tx2" text-anchor="middle">Depuración</text>
+    <text x="592" y="268" class="tx2" text-anchor="middle">Transformación</text><text x="592" y="304" class="tx2" text-anchor="middle">Carga</text>
+    <rect x="880" y="96" width="320" height="192" rx="8" class="foc"/>
+    <text x="1040" y="168" class="nm" text-anchor="middle">Data Warehouse</text>
+    <text x="1040" y="208" class="sb" text-anchor="middle">modelo de datos</text>
+    <text x="1040" y="240" class="sb" text-anchor="middle">detalles + agregaciones</text>
+    <rect x="1328" y="24" width="376" height="336" rx="8" class="box"/>
+    <text x="1516" y="72" class="nm" text-anchor="middle">Front end</text>
+    <text x="1516" y="124" class="tx2" text-anchor="middle">Aplicaciones analíticas</text><text x="1516" y="160" class="tx2" text-anchor="middle">Análisis ad-hoc</text>
+    <text x="1516" y="196" class="tx2" text-anchor="middle">Gráficos y tablas</text><text x="1516" y="232" class="tx2" text-anchor="middle">Semáforos y alertas</text>
+    <text x="1516" y="268" class="tx2" text-anchor="middle">Queries ad-hoc</text>
+    <text x="164" y="412" class="ey" text-anchor="middle">FUENTES</text><text x="592" y="412" class="ey" text-anchor="middle">ETL</text>
+    <text x="1040" y="412" class="eyA" text-anchor="middle">DW</text><text x="1516" y="412" class="ey" text-anchor="middle">FRONT END</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Las <b>fuentes</b> son los sistemas operativos. El <b>ETL</b> extrae, limpia y carga. El usuario consulta desde el <b>front end</b>. Si te piden “graficar los componentes genéricos de un DW”, arrancá por este dibujo y detallalo con el de dos slides más adelante.</p></div>
+</section>
+
+<section class="slide" data-title="Antes de construir: consideraciones y metodologías">
+  <p class="kicker">3 · Data Warehouse</p>
+  <h2 class="h2">Antes de construir: requerimientos y metodología</h2>
+  <div class="two" style="margin-top:6px">
+    <div class="card card-soft"><h4>Primeras consideraciones</h4><ul>
+      <li>¿Necesidad, oportunidad o deseo?</li><li>Qué quiero vs. <i>para qué lo quiero</i></li>
+      <li>Desarrollo integral o <i>incremental</i></li><li>¿Requerimientos claros y completos?</li></ul></div>
+    <div class="card card-soft"><h4>Requerimientos: preguntas</h4><ul>
+      <li>¿Entiendo el negocio o es una orden de mi jefe?</li><li>¿Distingo lo que se quiere de lo que se necesita?</li>
+      <li>¿Se puede medir? ¿Ya existe algo?</li><li>¿Cómo dejo constancia?</li></ul></div>
+  </div>
+  <svg class="dg" viewBox="0 0 1728 336" role="img" aria-labelledby="met-title met-desc" style="margin-top:20px">
+    <title id="met-title">Metodología en cascada contra metodología cíclica</title>
+    <desc id="met-desc">La cascada recorre requerimientos, diseño, implementación, verificación y mantenimiento una sola vez. La cíclica repite requerimientos, diseño, programación, testing e integración en cada vuelta.</desc>
+    <text x="0" y="20" class="ey">TRADICIONAL (CASCADA) · UNA SOLA VEZ</text>
+    <line x1="288" y1="76" x2="356" y2="76" class="ln" marker-end="url(#ar)"/>
+    <line x1="648" y1="76" x2="716" y2="76" class="ln" marker-end="url(#ar)"/>
+    <line x1="1008" y1="76" x2="1076" y2="76" class="ln" marker-end="url(#ar)"/>
+    <line x1="1368" y1="76" x2="1436" y2="76" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="40" width="288" height="72" rx="6" class="box"/><text x="144" y="84" class="nm-s" text-anchor="middle">Requerimientos</text>
+    <rect x="360" y="40" width="288" height="72" rx="6" class="box"/><text x="504" y="84" class="nm-s" text-anchor="middle">Diseño</text>
+    <rect x="720" y="40" width="288" height="72" rx="6" class="box"/><text x="864" y="84" class="nm-s" text-anchor="middle">Implementación</text>
+    <rect x="1080" y="40" width="288" height="72" rx="6" class="box"/><text x="1224" y="84" class="nm-s" text-anchor="middle">Verificación</text>
+    <rect x="1440" y="40" width="288" height="72" rx="6" class="box"/><text x="1584" y="84" class="nm-s" text-anchor="middle">Mantenimiento</text>
+    <text x="0" y="168" class="eyA">CÍCLICA / ÁGIL · SE REPITE POR ENTREGABLE</text>
+    <line x1="288" y1="220" x2="356" y2="220" class="ln" marker-end="url(#ar)"/>
+    <line x1="648" y1="220" x2="716" y2="220" class="ln" marker-end="url(#ar)"/>
+    <line x1="1008" y1="220" x2="1076" y2="220" class="ln" marker-end="url(#ar)"/>
+    <line x1="1368" y1="220" x2="1436" y2="220" class="ln" marker-end="url(#ar)"/>
+    <path d="M1584,256 V288 Q1584,296 1576,296 H152 Q144,296 144,288 V260" class="lnA" marker-end="url(#arA)"/>
+    <rect x="788" y="304" width="152" height="20" class="mask"/><text x="864" y="319" class="lb" text-anchor="middle">OTRA VUELTA</text>
+    <rect x="0" y="184" width="288" height="72" rx="6" class="box"/><text x="144" y="228" class="nm-s" text-anchor="middle">Requerimientos</text>
+    <rect x="360" y="184" width="288" height="72" rx="6" class="box"/><text x="504" y="228" class="nm-s" text-anchor="middle">Diseño</text>
+    <rect x="720" y="184" width="288" height="72" rx="6" class="box"/><text x="864" y="228" class="nm-s" text-anchor="middle">Programación</text>
+    <rect x="1080" y="184" width="288" height="72" rx="6" class="box"/><text x="1224" y="228" class="nm-s" text-anchor="middle">Testing</text>
+    <rect x="1440" y="184" width="288" height="72" rx="6" class="box"/><text x="1584" y="228" class="nm-s" text-anchor="middle">Integración</text>
+  </svg>
+  <p class="small" style="margin-top:auto">El deck nombra tres: cascada, cíclica y espiralada. También pregunta: ¿rígida o ágil?, ¿qué entregables materializo?, ¿qué roles necesito?</p>
+</section>
+
+<!-- ============ 4 · ARQUITECTURAS Y MODELOS ============ -->
+<section class="slide" data-title="Componentes genéricos de un DW">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Componentes genéricos: seis etapas</h2>
+  <svg class="dg" viewBox="0 0 1728 568" role="img" aria-labelledby="comp-title comp-desc" style="margin-top:4px">
+    <title id="comp-title">Componentes genéricos de un Data Warehouse</title>
+    <desc id="comp-desc">Seis etapas: recopilación desde CRM, ERP y datos externos; limpieza en el ETL con staging, ODS, MDM y DQ; el Data Warehouse por áreas; modelos analíticos como data marts, cubos y asociaciones; presentación en gráficos, tablas, semáforos e informes; y explotación por el negocio. La metadata acompaña todo.</desc>
+    <text x="120" y="20" class="ey" text-anchor="middle">1 · RECOPILACIÓN</text>
+    <text x="430" y="20" class="ey" text-anchor="middle">2 · LIMPIEZA</text>
+    <text x="752" y="20" class="eyA" text-anchor="middle">3 · ALMACÉN</text>
+    <text x="1064" y="20" class="ey" text-anchor="middle">4 · MODELOS</text>
+    <text x="1360" y="20" class="ey" text-anchor="middle">5 · PRESENTACIÓN</text>
+    <text x="1620" y="20" class="ey" text-anchor="middle">6 · EXPLOTACIÓN</text>
+    <line x1="240" y1="252" x2="276" y2="252" class="ln" marker-end="url(#ar)"/>
+    <line x1="580" y1="252" x2="616" y2="252" class="ln" marker-end="url(#ar)"/>
+    <line x1="884" y1="252" x2="920" y2="252" class="ln" marker-end="url(#ar)"/>
+    <line x1="1204" y1="252" x2="1240" y2="252" class="ln" marker-end="url(#ar)"/>
+    <line x1="1476" y1="252" x2="1512" y2="252" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="40" width="240" height="416" rx="8" class="zone"/>
+    <rect x="20" y="72" width="200" height="96" rx="6" class="store"/><text x="120" y="114" class="nm-s" text-anchor="middle">CRM</text><text x="120" y="144" class="sb" text-anchor="middle">operacional</text>
+    <rect x="20" y="192" width="200" height="96" rx="6" class="store"/><text x="120" y="234" class="nm-s" text-anchor="middle">ERP</text><text x="120" y="264" class="sb" text-anchor="middle">operacional</text>
+    <rect x="20" y="312" width="200" height="96" rx="6" class="soft"/><text x="120" y="354" class="nm-s" text-anchor="middle">Externos</text><text x="120" y="384" class="sb" text-anchor="middle">Excel, otros</text>
+    <rect x="280" y="40" width="300" height="416" rx="8" class="zoneD"/>
+    <rect x="304" y="64" width="252" height="72" rx="6" class="box"/><text x="430" y="108" class="nm-s" text-anchor="middle">Tablas staging</text>
+    <rect x="304" y="152" width="252" height="72" rx="6" class="box"/><text x="430" y="196" class="nm-s" text-anchor="middle">ODS</text>
+    <rect x="304" y="240" width="252" height="72" rx="6" class="box"/><text x="430" y="284" class="nm-s" text-anchor="middle">MDM</text>
+    <rect x="304" y="328" width="252" height="72" rx="6" class="box"/><text x="430" y="372" class="nm-s" text-anchor="middle">DQ</text>
+    <text x="430" y="436" class="lb" text-anchor="middle">ETL</text>
+    <rect x="620" y="40" width="264" height="416" rx="8" class="foc"/>
+    <text x="752" y="92" class="nm" text-anchor="middle">Data</text><text x="752" y="124" class="nm" text-anchor="middle">Warehouse</text>
+    <rect x="644" y="160" width="216" height="72" rx="6" class="box"/><text x="752" y="204" class="nm-s" text-anchor="middle">Ventas</text>
+    <rect x="644" y="256" width="216" height="72" rx="6" class="box"/><text x="752" y="300" class="nm-s" text-anchor="middle">Finanzas</text>
+    <rect x="644" y="352" width="216" height="72" rx="6" class="box"/><text x="752" y="396" class="nm-s" text-anchor="middle">Operaciones</text>
+    <rect x="924" y="40" width="280" height="416" rx="8" class="zone"/>
+    <rect x="944" y="72" width="240" height="96" rx="6" class="box"/><text x="1064" y="114" class="nm-s" text-anchor="middle">Data mart</text><text x="1064" y="144" class="sb" text-anchor="middle">departamental</text>
+    <rect x="944" y="192" width="240" height="96" rx="6" class="cube"/><text x="1064" y="234" class="nm-s" text-anchor="middle">Cubo OLAP</text><text x="1064" y="264" class="sb" text-anchor="middle">pre-agregado</text>
+    <rect x="944" y="312" width="240" height="96" rx="6" class="box"/><text x="1064" y="354" class="nm-s" text-anchor="middle">Asociaciones</text><text x="1064" y="384" class="sb" text-anchor="middle">data mining</text>
+    <rect x="1244" y="40" width="232" height="416" rx="8" class="zone"/>
+    <rect x="1264" y="64" width="192" height="72" rx="6" class="box"/><text x="1360" y="108" class="nm-s" text-anchor="middle">Gráficos</text>
+    <rect x="1264" y="152" width="192" height="72" rx="6" class="box"/><text x="1360" y="196" class="nm-s" text-anchor="middle">Tablas</text>
+    <rect x="1264" y="240" width="192" height="72" rx="6" class="box"/><text x="1360" y="284" class="nm-s" text-anchor="middle">Semáforos</text>
+    <rect x="1264" y="328" width="192" height="72" rx="6" class="box"/><text x="1360" y="372" class="nm-s" text-anchor="middle">Informes</text>
+    <rect x="1516" y="40" width="212" height="416" rx="8" class="zone"/>
+    <text x="1622" y="244" class="nm" text-anchor="middle">Negocio</text><text x="1622" y="276" class="sb" text-anchor="middle">usuarios</text>
+    <rect x="0" y="488" width="1728" height="64" rx="8" class="soft"/>
+    <text x="864" y="528" class="nm-s" text-anchor="middle" style="letter-spacing:.3em">METADATA</text>
+    <text x="1704" y="528" class="sb" text-anchor="end">acompaña a todas las etapas</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Recopilar → <b>limpiar</b> (staging, ODS, MDM y DQ viven dentro del ETL) → <b>almacenar</b> → modelar → presentar → explotar. Es el dibujo que pide el modelo de parcial 1a; practicalo en la lección 0050.</p></div>
+</section>
+
+<section class="slide" data-title="MDM, ODS y DQ">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Tres siglas de la etapa de limpieza</h2>
+  <div class="three" style="margin-top:10px">
+    <div class="card card-accent"><div class="src">MDM · Master Data Management</div><p>Gestión de <b>datos maestros</b>: procesos, políticas, servicios y tecnologías para gestionar, generar y mantener los datos de las <b>entidades centrales</b> del negocio.</p></div>
+    <div class="card card-accent"><div class="src">ODS · almacén operacional</div><p><b>Área lógica provisional</b> antes del DW. Ahí los datos se <b>borran, se arreglan por redundancia y se revisan</b> contra las reglas del negocio.</p></div>
+    <div class="card card-accent"><div class="src">DQ · Data quality</div><p>Un conjunto de <b>reglas</b> que asegura un mínimo de calidad en los datos recibidos, para que los resultados sean fiables.</p></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>MDM</b> = datos maestros. <b>ODS</b> = zona provisional donde se limpia. <b>DQ</b> = reglas de calidad. Las tres están en la etapa 2, dentro del ETL.</p></div>
+</section>
+
+<section class="slide" data-title="Top-down vs bottom-up">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Dos formas de construirlo: Inmon y Kimball</h2>
+  <svg class="dg" viewBox="0 0 1728 560" role="img" aria-labelledby="ik-title ik-desc" style="margin-top:4px">
+    <title id="ik-title">Arquitectura top-down de Inmon contra bottom-up de Kimball</title>
+    <desc id="ik-desc">Inmon: fuentes, ETL y un DW central normalizado del que salen los data marts. Kimball: fuentes, ETL y data marts en estrella por área que juntos forman el DW.</desc>
+    <line x1="440" y1="136" x2="476" y2="136" class="ln" marker-end="url(#ar)"/>
+    <line x1="680" y1="136" x2="716" y2="136" class="ln" marker-end="url(#ar)"/>
+    <path d="M960,112 H992 Q1000,112 1000,104 V68 Q1000,60 1008,60 H1036" class="ln" marker-end="url(#ar)"/>
+    <line x1="960" y1="136" x2="1036" y2="136" class="ln" marker-end="url(#ar)"/>
+    <path d="M960,160 H992 Q1000,160 1000,168 V204 Q1000,212 1008,212 H1036" class="ln" marker-end="url(#ar)"/>
+    <text x="0" y="128" class="nm">Inmon</text><text x="0" y="160" class="sb">top-down</text>
+    <rect x="240" y="88" width="200" height="96" rx="6" class="store"/><text x="340" y="144" class="nm-s" text-anchor="middle">Fuentes</text>
+    <rect x="480" y="88" width="200" height="96" rx="6" class="box"/><text x="580" y="144" class="nm-s" text-anchor="middle">ETL</text>
+    <rect x="720" y="88" width="240" height="96" rx="6" class="foc"/><text x="840" y="128" class="nm-s" text-anchor="middle">DW central</text><text x="840" y="160" class="sb" text-anchor="middle">normalizado · 3FN</text>
+    <rect x="1040" y="28" width="240" height="64" rx="6" class="box"/><text x="1160" y="68" class="tx" text-anchor="middle">Data mart</text>
+    <rect x="1040" y="104" width="240" height="64" rx="6" class="box"/><text x="1160" y="144" class="tx" text-anchor="middle">Data mart</text>
+    <rect x="1040" y="180" width="240" height="64" rx="6" class="box"/><text x="1160" y="220" class="tx" text-anchor="middle">Data mart</text>
+    <text x="1336" y="112" class="tx">Primero el DW global.</text>
+    <text x="1336" y="148" class="tx2">Los data marts salen de él</text>
+    <text x="1336" y="180" class="tx2">(vistas dimensionales).</text>
+    <line x1="0" y1="280" x2="1728" y2="280" stroke="var(--border)" stroke-width="1.5"/>
+    <line x1="440" y1="440" x2="476" y2="440" class="ln" marker-end="url(#ar)"/>
+    <path d="M680,416 H692 Q700,416 700,408 V372 Q700,364 708,364 H716" class="ln" marker-end="url(#ar)"/>
+    <line x1="680" y1="440" x2="716" y2="440" class="ln" marker-end="url(#ar)"/>
+    <path d="M680,464 H692 Q700,464 700,472 V508 Q700,516 708,516 H716" class="ln" marker-end="url(#ar)"/>
+    <path d="M960,364 H992 Q1000,364 1000,372 V408 Q1000,416 1008,416 H1036" class="ln" marker-end="url(#ar)"/>
+    <line x1="960" y1="440" x2="1036" y2="440" class="ln" marker-end="url(#ar)"/>
+    <path d="M960,516 H992 Q1000,516 1000,508 V472 Q1000,464 1008,464 H1036" class="ln" marker-end="url(#ar)"/>
+    <text x="0" y="432" class="nm">Kimball</text><text x="0" y="464" class="sb">bottom-up</text>
+    <rect x="240" y="392" width="200" height="96" rx="6" class="store"/><text x="340" y="448" class="nm-s" text-anchor="middle">Fuentes</text>
+    <rect x="480" y="392" width="200" height="96" rx="6" class="box"/><text x="580" y="448" class="nm-s" text-anchor="middle">ETL</text>
+    <rect x="720" y="332" width="240" height="64" rx="6" class="box"/><text x="840" y="372" class="tx" text-anchor="middle">Ventas ★</text>
+    <rect x="720" y="408" width="240" height="64" rx="6" class="box"/><text x="840" y="448" class="tx" text-anchor="middle">Finanzas ★</text>
+    <rect x="720" y="484" width="240" height="64" rx="6" class="box"/><text x="840" y="524" class="tx" text-anchor="middle">Operaciones ★</text>
+    <rect x="1040" y="392" width="240" height="96" rx="6" class="foc"/><text x="1160" y="432" class="nm-s" text-anchor="middle">DW</text><text x="1160" y="464" class="sb" text-anchor="middle">unión de las áreas</text>
+    <text x="1336" y="416" class="tx">Primero los data marts,</text>
+    <text x="1336" y="452" class="tx2">uno por área, en estrella (★).</text>
+    <text x="1336" y="484" class="tx2">Juntos forman el DW.</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Mirá <b>dónde está el DW</b> en cada fila: en Inmon va <b>antes</b> que los data marts; en Kimball, <b>después</b>. Todo lo demás (fuentes, ETL, metadata) es igual.</p></div>
+</section>
+
+<section class="slide" data-title="Inmon vs Kimball: comparación">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Inmon vs. Kimball: cuándo conviene cada uno</h2>
+  <table class="t head" style="margin-top:8px">
+    <thead><tr><th style="width:20%"></th><th>Inmon · top-down</th><th>Kimball · bottom-up</th></tr></thead>
+    <tbody>
+      <tr><td>Idea</td><td>Repositorio central único; de lo global a lo departamental</td><td>Parte de la necesidad de un departamento; se suman data marts a medida que aparecen</td></tr>
+      <tr><td>Estructura</td><td><b>Normalizada</b> (3 formas normales)</td><td><b>Desnormalizada</b></td></tr>
+      <tr><td>Ventaja</td><td>Toda la empresa tiene la misma estructura</td><td>Cada departamento es independiente (con un estándar común)</td></tr>
+      <tr><td>Desventaja</td><td>Hay que amoldarse a la estructura global</td><td>Los data marts pueden diferir en lo que podría ser común</td></tr>
+      <tr><td>Conviene si…</td><td>Se quiere visión global y cuidar la integridad</td><td>Se analiza diferenciando los departamentos</td></tr>
+    </tbody>
+  </table>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>Inmon</b> = top-down = normalizado = repositorio único. <b>Kimball</b> = bottom-up = desnormalizado (estrella) = data marts que se unen. Los dos buscan lo mismo: responder todas las preguntas de la empresa.</p></div>
+</section>
+
+<section class="slide" data-title="Modelo estrella">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Modelo estrella</h2>
+  <svg class="dg" viewBox="0 0 1728 516" role="img" aria-labelledby="star-title star-desc">
+    <title id="star-title">Esquema en estrella</title>
+    <desc id="star-desc">La tabla de hechos Revenue en el centro, con clave compuesta por las claves de cuatro dimensiones: Dealer, Branch, Product y Date, cada una con clave primaria simple.</desc>
+    <path d="M416,136 H552 Q560,136 560,144 V204 Q560,212 568,212 H700" class="ln"/>
+    <path d="M416,396 H552 Q560,396 560,388 V316 Q560,308 568,308 H700" class="ln"/>
+    <path d="M1028,212 H1160 Q1168,212 1168,204 V128 Q1168,120 1176,120 H1312" class="ln"/>
+    <path d="M1028,308 H1160 Q1168,308 1168,316 V368 Q1168,376 1176,376 H1312" class="ln"/>
+    <g transform="translate(96,16)"><rect width="320" height="244" rx="6" class="box"/><rect width="320" height="48" rx="6" class="hd"/><text x="20" y="32" class="hdT">Dealer</text>
+      <text x="20" y="84" class="rowK">Dealer_ID</text><text x="300" y="84" class="tag" text-anchor="end">PK</text><text x="20" y="120" class="row">Location_ID</text><text x="20" y="156" class="row">Country_ID</text><text x="20" y="192" class="row">Dealer_NM</text><text x="20" y="228" class="row">Dealer_CNTCT</text></g>
+    <g transform="translate(96,292)"><rect width="320" height="208" rx="6" class="box"/><rect width="320" height="48" rx="6" class="hd"/><text x="20" y="32" class="hdT">Branch</text>
+      <text x="20" y="84" class="rowK">Branch_ID</text><text x="300" y="84" class="tag" text-anchor="end">PK</text><text x="20" y="120" class="row">Name</text><text x="20" y="156" class="row">Address</text><text x="20" y="192" class="row">Country</text></g>
+    <g transform="translate(704,120)"><rect width="320" height="280" rx="6" class="foc"/><rect width="320" height="48" rx="6" class="hdA"/><text x="20" y="32" class="hdAT">Hechos · Revenue</text>
+      <text x="20" y="84" class="rowK">Dealer_ID</text><text x="20" y="120" class="rowK">Model_ID</text><text x="20" y="156" class="rowK">Branch_ID</text><text x="20" y="192" class="rowK">Date_ID</text>
+      <text x="300" y="84" class="tag" text-anchor="end">PK·FK</text><text x="300" y="120" class="tag" text-anchor="end">PK·FK</text><text x="300" y="156" class="tag" text-anchor="end">PK·FK</text><text x="300" y="192" class="tag" text-anchor="end">PK·FK</text>
+      <text x="20" y="232" class="row">Units_Sold</text><text x="20" y="264" class="row">Revenue</text><text x="300" y="248" class="sb" text-anchor="end">métricas</text></g>
+    <g transform="translate(1312,16)"><rect width="320" height="208" rx="6" class="box"/><rect width="320" height="48" rx="6" class="hd"/><text x="20" y="32" class="hdT">Product</text>
+      <text x="20" y="84" class="rowK">Product_ID</text><text x="300" y="84" class="tag" text-anchor="end">PK</text><text x="20" y="120" class="row">Product_Name</text><text x="20" y="156" class="row">Model_ID</text><text x="20" y="192" class="row">Variant</text></g>
+    <g transform="translate(1312,256)"><rect width="320" height="244" rx="6" class="box"/><rect width="320" height="48" rx="6" class="hd"/><text x="20" y="32" class="hdT">Date</text>
+      <text x="20" y="84" class="rowK">Date_ID</text><text x="300" y="84" class="tag" text-anchor="end">PK</text><text x="20" y="120" class="row">Year</text><text x="20" y="156" class="row">Month</text><text x="20" y="192" class="row">Quarter</text><text x="20" y="228" class="row">Date</text></g>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>En el centro, la <b>tabla de hechos</b>: lo que se mide (unidades, ingresos). Alrededor, las <b>dimensiones</b>: por dónde se mira (concesionaria, sucursal, producto, fecha). Es el esquema más simple (<i>Star Join Schema</i>) y está optimizado para consultar grandes volúmenes.</p></div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p>Cada <b>dimensión</b> tiene <b>PK simple</b>. La PK de la <b>tabla de hechos</b> es <b>compuesta</b> por las claves de todas las dimensiones.</p></div>
+</section>
+
+<section class="slide" data-title="Modelo copo de nieve">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Modelo copo de nieve: la estrella normalizada</h2>
+  <svg class="dg" viewBox="0 0 1728 516" role="img" aria-labelledby="snow-title snow-desc">
+    <title id="snow-title">Esquema copo de nieve</title>
+    <desc id="snow-desc">La misma estrella, pero la dimensión Dealer se normaliza en Location y Country, y Product en Variant: hay más tablas y más uniones.</desc>
+    <line x1="224" y1="84" x2="304" y2="84" class="lnD"/>
+    <path d="M224,252 H256 Q264,252 264,244 V208 Q264,200 272,200 H304" class="lnD"/>
+    <path d="M592,136 H648 Q656,136 656,144 V204 Q656,212 664,212 H720" class="ln"/>
+    <path d="M592,396 H648 Q656,396 656,388 V316 Q656,308 664,308 H720" class="ln"/>
+    <path d="M1020,212 H1076 Q1084,212 1084,204 V128 Q1084,120 1092,120 H1144" class="ln"/>
+    <path d="M1020,308 H1076 Q1084,308 1084,316 V368 Q1084,376 1092,376 H1144" class="ln"/>
+    <line x1="1432" y1="120" x2="1504" y2="120" class="lnD"/>
+    <g transform="translate(0,16)"><rect width="224" height="136" rx="6" class="soft"/><text x="16" y="32" class="rowK">Location</text><line x1="0" y1="48" x2="224" y2="48" stroke="var(--text-3)"/><text x="16" y="84" class="rowK">Location_ID</text><text x="16" y="120" class="row">Region</text></g>
+    <g transform="translate(0,184)"><rect width="224" height="136" rx="6" class="soft"/><text x="16" y="32" class="rowK">Country</text><line x1="0" y1="48" x2="224" y2="48" stroke="var(--text-3)"/><text x="16" y="84" class="rowK">Country_ID</text><text x="16" y="120" class="row">Country_Name</text></g>
+    <g transform="translate(304,16)"><rect width="288" height="244" rx="6" class="box"/><rect width="288" height="48" rx="6" class="hd"/><text x="16" y="32" class="hdT">Dealer</text>
+      <text x="16" y="84" class="rowK">Dealer_ID</text><text x="16" y="120" class="row">Location_ID</text><text x="16" y="156" class="row">Country_ID</text><text x="16" y="192" class="row">Dealer_NM</text><text x="16" y="228" class="row">Dealer_CNTCT</text>
+      <text x="272" y="120" class="tag" text-anchor="end">FK</text><text x="272" y="156" class="tag" text-anchor="end">FK</text></g>
+    <g transform="translate(304,292)"><rect width="288" height="208" rx="6" class="box"/><rect width="288" height="48" rx="6" class="hd"/><text x="16" y="32" class="hdT">Branch</text>
+      <text x="16" y="84" class="rowK">Branch_ID</text><text x="16" y="120" class="row">Name</text><text x="16" y="156" class="row">Address</text><text x="16" y="192" class="row">Country</text></g>
+    <g transform="translate(720,120)"><rect width="300" height="280" rx="6" class="foc"/><rect width="300" height="48" rx="6" class="hdA"/><text x="16" y="32" class="hdAT">Hechos · Revenue</text>
+      <text x="16" y="84" class="rowK">Dealer_ID</text><text x="16" y="120" class="rowK">Model_ID</text><text x="16" y="156" class="rowK">Branch_ID</text><text x="16" y="192" class="rowK">Date_ID</text><text x="16" y="232" class="row">Units_Sold</text><text x="16" y="264" class="row">Revenue</text></g>
+    <g transform="translate(1144,16)"><rect width="288" height="208" rx="6" class="box"/><rect width="288" height="48" rx="6" class="hd"/><text x="16" y="32" class="hdT">Product</text>
+      <text x="16" y="84" class="rowK">Product_ID</text><text x="16" y="120" class="row">Product_Name</text><text x="16" y="156" class="row">Model_ID</text><text x="16" y="192" class="row">Variant_ID</text><text x="272" y="192" class="tag" text-anchor="end">FK</text></g>
+    <g transform="translate(1144,256)"><rect width="288" height="244" rx="6" class="box"/><rect width="288" height="48" rx="6" class="hd"/><text x="16" y="32" class="hdT">Date</text>
+      <text x="16" y="84" class="rowK">Date_ID</text><text x="16" y="120" class="row">Year</text><text x="16" y="156" class="row">Month</text><text x="16" y="192" class="row">Quarter</text><text x="16" y="228" class="row">Date</text></g>
+    <g transform="translate(1504,40)"><rect width="224" height="172" rx="6" class="soft"/><text x="16" y="32" class="rowK">Variant</text><line x1="0" y1="48" x2="224" y2="48" stroke="var(--text-3)"/><text x="16" y="84" class="rowK">Variant_ID</text><text x="16" y="120" class="row">Variant_Name</text><text x="16" y="156" class="row">Fuel_Type</text></g>
+  </svg>
+  <div class="legend"><span><i style="border-color:var(--text-1)"></i>tabla de la estrella</span><span><i style="border-color:var(--text-3);border-style:dashed"></i>tabla nueva al normalizar</span></div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>Estrella</b> = desnormalizada, simple y rápida. <b>Copo de nieve</b> = normaliza las dimensiones: menos espacio y menos redundancia, pero <b>más tablas y más JOINs</b>, peor rendimiento.</p></div>
+</section>
+
+<section class="slide" data-title="Elementos que no pueden faltar">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Tres cosas que un DW no puede no tener</h2>
+  <div class="three" style="margin-top:20px;grid-template-columns:1fr 1.2fr 1fr">
+    <div class="card card-accent"><div class="src">1</div><h4>El proceso de ETL</h4><p>Extracción, transformación y carga.</p></div>
+    <div class="card card-accent"><div class="src">2</div><h4>La arquitectura</h4><ul><li>Interacción entre componentes (dependencias)</li><li>Repositorios de información</li><li>Procesos</li></ul></div>
+    <div class="card card-accent"><div class="src">3</div><h4>La explotación</h4><p>Cómo se consulta y se usa el DW.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Son las tres partes del dibujo de componentes: el <b>ETL</b> (etapas 1 y 2), la <b>arquitectura</b> (etapas 3 y 4) y la <b>explotación</b> (etapas 5 y 6).</p></div>
+</section>
+
+<section class="slide" data-title="DW vs Data Mart">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">Data Warehouse vs. Data Mart</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="dm-title dm-desc" style="margin-top:8px">
+    <title id="dm-title">Un Data Warehouse contiene data marts departamentales</title>
+    <desc id="dm-desc">El Data Warehouse es corporativo y de visión homogénea; dentro hay data marts de ventas, finanzas y recursos humanos, cada uno departamental y de visión parcial.</desc>
+    <rect x="0" y="8" width="1100" height="284" rx="10" class="foc"/>
+    <text x="32" y="52" class="eyA">DATA WAREHOUSE</text><text x="32" y="88" class="nm">Corporativo · visión homogénea</text>
+    <rect x="32" y="124" width="320" height="140" rx="8" class="box"/><text x="56" y="160" class="ey">DATA MART</text><text x="56" y="200" class="nm">Ventas</text><text x="56" y="236" class="sb">departamental</text>
+    <rect x="388" y="124" width="320" height="140" rx="8" class="box"/><text x="412" y="160" class="ey">DATA MART</text><text x="412" y="200" class="nm">Finanzas</text><text x="412" y="236" class="sb">departamental</text>
+    <rect x="744" y="124" width="320" height="140" rx="8" class="box"/><text x="768" y="160" class="ey">DATA MART</text><text x="768" y="200" class="nm">RRHH</text><text x="768" y="236" class="sb">departamental</text>
+    <text x="1160" y="100" class="nm">DW = toda la empresa</text>
+    <text x="1160" y="140" class="tx2">una sola visión, homogénea</text>
+    <text x="1160" y="212" class="nm">Data mart = un área</text>
+    <text x="1160" y="252" class="tx2">visión parcial de su parte</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Un data mart es <b>un pedazo</b> del DW pensado para un departamento. En Inmon se saca del DW; en Kimball, los data marts se construyen primero y juntos forman el DW. Las áreas del dibujo son ejemplos.</p></div>
+</section>
+
+<section class="slide" data-title="DW vs Data Mart: detalle">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">DW vs. Data Mart: el detalle que se pregunta</h2>
+  <table class="t head" style="margin-top:6px;font-size:26px">
+    <thead><tr><th style="width:18%"></th><th>Data Warehouse</th><th>Data Mart</th></tr></thead>
+    <tbody>
+      <tr><td>Alcance</td><td>Neutral a las aplicaciones · centralizado · cruza toda la empresa</td><td>Para una aplicación específica · departamental · orientado a procesos · BD con datos redundantes</td></tr>
+      <tr><td>Datos</td><td>Detallados e históricos · poca sumarización · <b>suavemente</b> desnormalizado</td><td>Detallado (algo de historia) · sumarizado · <b>fuertemente</b> desnormalizado</td></tr>
+      <tr><td>Temas</td><td>Múltiples áreas temáticas</td><td>Una o pocas áreas parciales · snapshot de fuentes</td></tr>
+      <tr><td>Fuentes</td><td>Muchas: operacionales y externas</td><td>Pocas: operacionales, externas, snapshot de BD OLTP</td></tr>
+      <tr><td>Implementación</td><td><b>9 a 18 meses</b> la 1.ª etapa (2 o 3 áreas), en varias etapas</td><td><b>4 a 12 meses</b></td></tr>
+      <tr><td>Carácter</td><td>Flexible, extensible · <b>durable / estratégico</b> · orientado a los <b>datos</b></td><td>Restrictivo, no extensible · <b>corta vida / táctico</b> · orientado al <b>proyecto</b></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="slide" data-title="CRM y ERP">
+  <p class="kicker">4 · Arquitecturas y modelos</p>
+  <h2 class="h2">CRM y ERP: dos fuentes típicas del DW</h2>
+  <svg class="dg" viewBox="0 0 1728 264" role="img" aria-labelledby="crm-title crm-desc" style="margin-top:6px">
+    <title id="crm-title">CRM y ERP como fuentes del Data Warehouse</title>
+    <desc id="crm-desc">El CRM mira al cliente y el ERP mira los procesos internos; los dos son sistemas operacionales que alimentan al Data Warehouse.</desc>
+    <path d="M520,64 H752 Q760,64 760,72 V104 Q760,112 768,112 H1096" class="ln" marker-end="url(#ar)"/>
+    <path d="M520,200 H752 Q760,200 760,192 V160 Q760,152 768,152 H1096" class="ln" marker-end="url(#ar)"/>
+    <rect x="556" y="28" width="168" height="20" class="mask"/><text x="640" y="43" class="lb" text-anchor="middle">OPERACIONAL</text>
+    <rect x="0" y="16" width="520" height="104" rx="8" class="box"/><text x="24" y="56" class="nm">CRM · mira al cliente</text><text x="24" y="92" class="sb">ventas · marketing · atención</text>
+    <rect x="0" y="148" width="520" height="104" rx="8" class="box"/><text x="24" y="188" class="nm">ERP · mira adentro</text><text x="24" y="224" class="sb">finanzas · facturas · planificación</text>
+    <rect x="1100" y="72" width="360" height="120" rx="8" class="foc"/><text x="1280" y="124" class="nm" text-anchor="middle">Data Warehouse</text><text x="1280" y="160" class="sb" text-anchor="middle">fuente única para decidir</text>
+  </svg>
+  <div class="two" style="margin-top:18px">
+    <div class="card card-soft"><div class="src">CRM · Customer Relationship Management</div><p>Centraliza en <b>una sola base</b> toda la información e interacciones con clientes, partners y stakeholders: <b>visión única del cliente</b>. Objetivo: conseguir y <b>retener</b> clientes. Funciones: contactos, interacciones, oportunidades, documentos, canales, automatización, informes, predicciones, <b>omnicanalidad</b>, correo.</p></div>
+    <div class="card card-soft"><div class="src">ERP · Enterprise Resource Planning</div><p>Gestiona los <b>procesos organizacionales</b>, sobre todo financieros: cuentas a pagar, facturas, planificación. <b>Conecta los flujos de información</b> de la empresa, saca cuellos de botella y da información estratégica a todos los sectores.</p></div>
+  </div>
+  <p class="small" style="margin-top:auto">Omnicanalidad, el ejemplo del deck: empiezo un trámite en home banking y lo termino por teléfono o en una sucursal.</p>
+</section>
+
+<!-- ============ 5 · CONSULTA ============ -->
+<section class="slide" data-title="OLTP y OLAP">
+  <p class="kicker">5 · Consulta</p>
+  <h2 class="h2">OLTP escribe; OLAP analiza</h2>
+  <svg class="dg" viewBox="0 0 1728 168" role="img" aria-labelledby="ol-title ol-desc" style="margin-top:4px">
+    <title id="ol-title">Del OLTP al OLAP</title>
+    <desc id="ol-desc">Los sistemas OLTP registran transacciones; el ETL las extrae al Data Warehouse, y el OLAP las analiza.</desc>
+    <line x1="400" y1="96" x2="508" y2="96" class="ln" marker-end="url(#ar)"/>
+    <line x1="752" y1="96" x2="860" y2="96" class="ln" marker-end="url(#ar)"/>
+    <line x1="1184" y1="96" x2="1292" y2="96" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="32" width="400" height="128" rx="8" class="foc"/><text x="24" y="76" class="nm">OLTP</text><text x="24" y="112" class="sb">transaccional · escribe</text><text x="24" y="140" class="sb">cajeros · e-commerce</text>
+    <rect x="512" y="56" width="240" height="80" rx="8" class="box"/><text x="632" y="104" class="nm-s" text-anchor="middle">ETL</text>
+    <rect x="864" y="56" width="320" height="80" rx="8" class="store"/><text x="1024" y="104" class="nm-s" text-anchor="middle">DW / data mart</text>
+    <rect x="1296" y="32" width="432" height="128" rx="8" class="foc"/><text x="1320" y="76" class="nm">OLAP</text><text x="1320" y="112" class="sb">analítico · lee mucho</text><text x="1320" y="140" class="sb">analistas · gerencia</text>
+  </svg>
+  <table class="t head" style="margin-top:18px;font-size:26px">
+    <thead><tr><th style="width:20%"></th><th>OLTP · On-Line Transactional Processing</th><th>OLAP · On-Line Analytical Processing</th></tr></thead>
+    <tbody>
+      <tr><td>Hace</td><td>Muchas transacciones <b>simples y simultáneas</b>: insertar, actualizar, eliminar</td><td>Análisis <b>multidimensional</b> leyendo grandes volúmenes</td></tr>
+      <tr><td>Rinde en</td><td>Respuesta en <b>milisegundos</b>, 24/7, backups incrementales</td><td>Alta velocidad sobre mucha historia; tendencias, informes complejos</td></tr>
+      <tr><td>Ejemplos</td><td>Banca en línea, compras, pedidos, mensajes</td><td>Presupuestos, previsión de ventas, análisis financiero</td></tr>
+      <tr><td>Sus datos</td><td>Son la fuente</td><td>Vienen de un <b>data mart o un DW</b></td></tr>
+    </tbody>
+  </table>
+  <div class="crio"><span class="lbl">En criollo</span><p>El ejemplo del deck: dos personas con cuenta conjunta sacan el total desde dos cajeros a la vez; el <b>OLTP</b> garantiza que no retiren más de lo que hay. Está hecho para la <b>transacción</b>, no para el análisis.</p></div>
+</section>
+
+<section class="slide" data-title="Cubo OLAP">
+  <p class="kicker">5 · Consulta</p>
+  <h2 class="h2">El cubo OLAP</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:4px">
+    <div>
+      <p style="font-size:31px;line-height:1.45;margin:0 0 16px"><b>Información pre-agregada</b> con todas las combinaciones de las perspectivas incluidas, para ver las métricas que le interesan al usuario.</p>
+      <p style="font-size:31px;line-height:1.45;margin:0 0 22px">Se compone de <b>dimensiones</b> (por dónde miro) y <b>métricas</b> (qué mido). Las dimensiones tienen <b>jerarquías y niveles</b>:</p>
+      <svg class="dg" viewBox="0 0 800 160" role="img" aria-labelledby="jer-title jer-desc">
+        <title id="jer-title">Jerarquía de la dimensión geográfica</title>
+        <desc id="jer-desc">Continente contiene países, que contienen estados, que contienen municipios: del nivel más resumido al más detallado.</desc>
+        <line x1="164" y1="60" x2="208" y2="60" class="ln" marker-end="url(#ar)"/>
+        <line x1="376" y1="60" x2="420" y2="60" class="ln" marker-end="url(#ar)"/>
+        <line x1="588" y1="60" x2="632" y2="60" class="ln" marker-end="url(#ar)"/>
+        <rect x="0" y="20" width="164" height="80" rx="6" class="foc"/><text x="82" y="68" class="nm-s" text-anchor="middle">Continente</text>
+        <rect x="212" y="20" width="164" height="80" rx="6" class="box"/><text x="294" y="68" class="nm-s" text-anchor="middle">País</text>
+        <rect x="424" y="20" width="164" height="80" rx="6" class="box"/><text x="506" y="68" class="nm-s" text-anchor="middle">Estado</text>
+        <rect x="636" y="20" width="164" height="80" rx="6" class="box"/><text x="718" y="68" class="nm-s" text-anchor="middle">Municipio</text>
+        <text x="0" y="140" class="ey">MÁS RESUMEN</text><text x="800" y="140" class="ey" text-anchor="end">MÁS DETALLE</text>
+      </svg>
+    </div>
+    <div><img class="img-fit" src="img/cubo.png" alt="Cubo con ejes productos, clientes y fechas; cada celda responde una pregunta" style="margin-bottom:14px;max-height:400px;width:auto"><img class="img-fit" src="img/cortes.png" alt="Tres cortes del cubo: producto por región, región por tiempo, producto por tiempo" style="max-height:230px;width:auto"></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Cada celdita del cubo ya tiene la respuesta calculada: “¿cuántas muñecas se vendieron a Toyland?”. Cortar el cubo es elegir dos dimensiones y mirar esa cara.</p></div>
+</section>
+
+<section class="slide" data-title="MOLAP, ROLAP, HOLAP">
+  <p class="kicker">5 · Consulta</p>
+  <h2 class="h2">MOLAP, ROLAP, HOLAP: dónde vive cada cosa</h2>
+  <svg class="dg" viewBox="0 0 1728 404" role="img" aria-labelledby="xolap-title xolap-desc" style="margin-top:4px">
+    <title id="xolap-title">Dónde guarda el detalle y los agregados cada modelo OLAP</title>
+    <desc id="xolap-desc">MOLAP guarda detalle y agregados en un cubo multidimensional; ROLAP guarda los dos en una base relacional; HOLAP guarda el detalle en la relacional y los agregados en el cubo.</desc>
+    <text x="0" y="40" class="nm">MOLAP</text><text x="0" y="72" class="sb">multidimensional</text>
+    <text x="592" y="40" class="nm">ROLAP</text><text x="592" y="72" class="sb">relacional</text>
+    <text x="1184" y="40" class="nm acc">HOLAP</text><text x="1184" y="72" class="sb">híbrido</text>
+    <text x="0" y="116" class="ey">DETALLE</text><text x="592" y="116" class="ey">DETALLE</text><text x="1184" y="116" class="ey">DETALLE</text>
+    <rect x="0" y="128" width="544" height="88" rx="8" class="cube"/><text x="272" y="180" class="nm-s" text-anchor="middle">Cubo multidimensional</text>
+    <rect x="592" y="128" width="544" height="88" rx="8" class="store"/><text x="864" y="180" class="nm-s" text-anchor="middle">Base relacional</text>
+    <rect x="1184" y="128" width="544" height="88" rx="8" class="store"/><text x="1456" y="180" class="nm-s" text-anchor="middle">Base relacional</text>
+    <text x="0" y="260" class="ey">AGREGADOS</text><text x="592" y="260" class="ey">AGREGADOS</text><text x="1184" y="260" class="ey">AGREGADOS</text>
+    <rect x="0" y="272" width="544" height="88" rx="8" class="cube"/><text x="272" y="324" class="nm-s" text-anchor="middle">Cubo, precalculados</text>
+    <rect x="592" y="272" width="544" height="88" rx="8" class="store"/><text x="864" y="324" class="nm-s" text-anchor="middle">Relacional, al consultar</text>
+    <rect x="1184" y="272" width="544" height="88" rx="8" class="cube"/><text x="1456" y="324" class="nm-s" text-anchor="middle">Cubo multidimensional</text>
+    <text x="272" y="396" class="tx2" text-anchor="middle">rápido · tamaño limitado</text>
+    <text x="864" y="396" class="tx2" text-anchor="middle">escalable · más lento</text>
+    <text x="1456" y="396" class="tx2" text-anchor="middle">lo mejor de los dos</text>
+  </svg>
+  <div class="legend"><span><i style="border-color:var(--note);background:color-mix(in srgb,var(--note) 10%,transparent)"></i>estructura multidimensional (cubo)</span><span><i style="border-color:var(--text-2);background:var(--surface-2)"></i>base de datos relacional</span></div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Para no confundirlas, preguntate <b>dónde está el detalle y dónde los resúmenes</b>. MOLAP: todo en el cubo. ROLAP: todo en tablas (estrella o copo de nieve). HOLAP: detalle en tablas, resúmenes en el cubo.</p></div>
+</section>
+
+<section class="slide" data-title="MOLAP y ROLAP: ventajas">
+  <p class="kicker">5 · Consulta</p>
+  <h2 class="h2">MOLAP y ROLAP: ventajas y desventajas</h2>
+  <div class="two" style="margin-top:6px">
+    <div>
+      <p class="sub" style="margin-bottom:12px"><b>MOLAP</b>: estructura multidimensional; los resúmenes se calculan <b>por adelantado</b> (compilación intensiva; a veces comprime).</p>
+      <div class="card adv" style="margin-bottom:14px"><h4>Ventajas</h4><ul><li>Mayor desempeño en consultas</li><li>Puede escribir sobre las bases</li><li>Cálculos más complicados</li></ul></div>
+      <div class="card dis"><h4>Desventajas</h4><ul><li>Tamaño limitado del cubo</li><li>No se accede a los datos del cubo</li><li>No explota el paralelismo de la base</li></ul></div>
+    </div>
+    <div>
+      <p class="sub" style="margin-bottom:12px"><b>ROLAP</b>: base relacional, datos detallados y normalizados; esquemas estrella o copo de nieve.</p>
+      <div class="card adv" style="margin-bottom:14px"><h4>Ventajas</h4><ul><li>Toda la seguridad e integridad de la base</li><li>Escalable a grandes volúmenes</li><li>Datos compartidos con SQL; estructuras dinámicas</li></ul></div>
+      <div class="card dis"><h4>Desventajas</h4><ul><li>Consultas más lentas</li><li>Construcción cara</li><li>Cálculos limitados a las funciones de la base</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="ROLAP vs MOLAP">
+  <p class="kicker">5 · Consulta</p>
+  <h2 class="h2">ROLAP vs. MOLAP: cuándo elegir cada uno</h2>
+  <table class="t head" style="margin-top:6px;font-size:27px">
+    <thead><tr><th style="width:20%"></th><th>MOLAP</th><th>ROLAP</th></tr></thead>
+    <tbody>
+      <tr><td>Batch</td><td>Necesita bases precompiladas: más proceso batch</td><td>El balance respuesta / batch lo decide el diseño</td></tr>
+      <tr><td>Reglas que cambian</td><td>Orientado a consolidaciones batch</td><td>Soporta bien la consolidación dinámica ad-hoc</td></tr>
+      <tr><td>Dimensiones</td><td>Diez o menos</td><td>Puede crecer a muchas</td></tr>
+      <tr><td>Volumen</td><td>Volúmenes chicos (menos de 5 Gb)</td><td>Grandes volúmenes de datos elementales</td></tr>
+      <tr><td>Alcance</td><td>Solución particular, departamental</td><td>Arquitectura flexible y general</td></tr>
+    </tbody>
+  </table>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>MOLAP</b> = rápido, chico, precalculado, departamental. <b>ROLAP</b> = escalable, flexible, más lento. <b>HOLAP</b> = detalle relacional + resumen multidimensional.</p></div>
+</section>
+
+<!-- ============ AUTOEVALUACIÓN ============ -->
+<section class="slide" data-title="Autoevaluación">
+  <p class="kicker">Autoevaluación</p>
+  <h2 class="h2">¿Lo tenés? Tocá cada pregunta para ver la respuesta</h2>
+  <div class="qz">
+    <details><summary>BI ¿es un producto que se compra?</summary><p>No. BI es una arquitectura: “no se compra, se construye”.</p></details>
+    <details><summary>¿Quién propone un DW normalizado (3FN) y top-down?</summary><p>Inmon. Kimball es bottom-up y desnormalizado.</p></details>
+    <details><summary>¿Cuál tiene más JOINs: estrella o copo de nieve?</summary><p>Copo de nieve: normaliza las dimensiones y rinde peor.</p></details>
+    <details><summary>¿Cómo es la PK de la tabla de hechos?</summary><p>Compuesta por las claves de todas las dimensiones.</p></details>
+    <details><summary>¿Qué es táctico, de corta vida y orientado al proyecto?</summary><p>El data mart (4 a 12 meses). El DW es estratégico y orientado a los datos.</p></details>
+    <details><summary>¿Qué es el ODS?</summary><p>Un área lógica provisional donde los datos se limpian y se revisan antes del DW.</p></details>
+    <details><summary>Muchas dimensiones y grandes volúmenes: ¿MOLAP o ROLAP?</summary><p>ROLAP. MOLAP rinde con diez dimensiones o menos y volúmenes chicos.</p></details>
+    <details><summary>¿Qué significa que el DW sea no volátil?</summary><p>Que los datos no se actualizan ni se borran: se agrega historia.</p></details>
+  </div>
+  <p class="small" style="margin-top:auto">Siguiente: el repaso de la lección 0053 (choice) y la lección 0050 (dibujar los componentes). Próximo deck: Slow Change Dimension.</p>
+</section>
+
+<div class="deck-footer"><span class="dim2">Intro Data Warehouse</span><span class="slide-number" data-current="1" data-total="32"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" width="760" height="540"
+     role="img" aria-labelledby="espc-title espc-desc">
+  <title id="espc-title">Cuántos registros tiene el supertipo en cada combinación</title>
+  <desc id="espc-desc">Cuatro diagramas de conjuntos. El supertipo Persona es un rectángulo y los subtipos Alumno con treinta registros y Docente con veinte son círculos dentro de él. Si la especialización es total y exclusiva, los círculos no se tocan y no queda nadie afuera: el supertipo tiene exactamente cincuenta registros. Si es total y solapada, los círculos pueden superponerse y nadie queda afuera: entre treinta y cincuenta. Si es parcial y exclusiva, los círculos no se tocan pero queda gente afuera: cincuenta o más. Si es parcial y solapada, los círculos pueden superponerse y queda gente afuera: treinta o más.</desc>
+
+  <style>
+    .ec-paper { fill: #fffef9; }
+    .ec-panel { fill: none; stroke: rgba(26,26,23,0.14); stroke-width: 1; }
+    .ec-sup   { fill: rgba(26,26,23,0.035); stroke: #1a1a17; stroke-width: 1.3; }
+    .ec-sub   { fill: rgba(122,46,14,0.10); stroke: #7a2e0e; stroke-width: 1.4; }
+    .ec-dot   { fill: #56544c; }
+    .ec-name  { fill: #1a1a17; font: 600 11px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .ec-supn  { fill: #56544c; font: 600 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.12em; }
+    .ec-tag   { fill: #7a2e0e; font: 600 10px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.12em; text-anchor: middle; }
+    .ec-ans   { fill: #1a1a17; font: 700 15px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .ec-why   { fill: #56544c; font: 400 10px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .ec-note  { fill: #56544c; font: 400 9px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; font-style: italic; }
+
+    @media (prefers-color-scheme: dark) {
+      .ec-paper { fill: #16161a; }
+      .ec-panel { stroke: rgba(232,228,217,0.16); }
+      .ec-sup   { fill: rgba(232,228,217,0.05); stroke: #e8e4d9; }
+      .ec-sub   { fill: rgba(224,138,92,0.16); stroke: #e08a5c; }
+      .ec-dot   { fill: #a8a498; }
+      .ec-name  { fill: #e8e4d9; }
+      .ec-supn  { fill: #a8a498; }
+      .ec-tag   { fill: #e08a5c; }
+      .ec-ans   { fill: #e8e4d9; }
+      .ec-why   { fill: #a8a498; }
+      .ec-note  { fill: #a8a498; }
+    }
+  </style>
+
+  <rect class="ec-paper" x="0" y="0" width="760" height="540"/>
+
+  <text class="ec-why" x="380" y="22">Supertipo PERSONA. Subtipos: ALUMNO = 30 registros, DOCENTE = 20 registros. ¿Cuántas personas hay?</text>
+
+  <!-- ===== P1 · total + exclusiva ===== -->
+  <g>
+    <rect class="ec-panel" x="24" y="38" width="348" height="226" rx="3"/>
+    <text class="ec-tag" x="198" y="60">TOTAL  ·  EXCLUSIVA</text>
+    <rect class="ec-sup" x="52" y="72" width="292" height="108" rx="8"/>
+    <text class="ec-supn" x="58" y="86">PERSONA</text>
+    <circle class="ec-sub" cx="128" cy="130" r="42"/>
+    <text class="ec-name" x="128" y="127">Alumno</text>
+    <text class="ec-name" x="128" y="142">30</text>
+    <circle class="ec-sub" cx="262" cy="130" r="42"/>
+    <text class="ec-name" x="262" y="127">Docente</text>
+    <text class="ec-name" x="262" y="142">20</text>
+    <text class="ec-note" x="198" y="196">no se tocan · no sobra nadie</text>
+    <text class="ec-ans" x="198" y="224">exactamente 50</text>
+    <text class="ec-why" x="198" y="242">Σ de los subtipos. Es el único caso con número exacto.</text>
+  </g>
+
+  <!-- ===== P2 · total + solapada ===== -->
+  <g>
+    <rect class="ec-panel" x="388" y="38" width="348" height="226" rx="3"/>
+    <text class="ec-tag" x="562" y="60">TOTAL  ·  SOLAPADA</text>
+    <rect class="ec-sup" x="416" y="72" width="292" height="108" rx="8"/>
+    <text class="ec-supn" x="422" y="86">PERSONA</text>
+    <circle class="ec-sub" cx="522" cy="130" r="46"/>
+    <text class="ec-name" x="500" y="134">Alumno 30</text>
+    <circle class="ec-sub" cx="606" cy="130" r="42"/>
+    <text class="ec-name" x="632" y="134">Doc. 20</text>
+    <text class="ec-note" x="562" y="196">pueden pisarse · no sobra nadie</text>
+    <text class="ec-ans" x="562" y="224">entre 30 y 50</text>
+    <text class="ec-why" x="562" y="242">Mínimo: los 20 docentes son también alumnos.</text>
+  </g>
+
+  <!-- ===== P3 · parcial + exclusiva ===== -->
+  <g>
+    <rect class="ec-panel" x="24" y="282" width="348" height="226" rx="3"/>
+    <text class="ec-tag" x="198" y="304">PARCIAL  ·  EXCLUSIVA</text>
+    <rect class="ec-sup" x="52" y="316" width="292" height="108" rx="8"/>
+    <text class="ec-supn" x="58" y="330">PERSONA</text>
+    <circle class="ec-sub" cx="122" cy="376" r="40"/>
+    <text class="ec-name" x="122" y="373">Alumno</text>
+    <text class="ec-name" x="122" y="388">30</text>
+    <circle class="ec-sub" cx="232" cy="376" r="40"/>
+    <text class="ec-name" x="232" y="373">Docente</text>
+    <text class="ec-name" x="232" y="388">20</text>
+    <circle class="ec-dot" cx="296" cy="348" r="2.6"/>
+    <circle class="ec-dot" cx="312" cy="362" r="2.6"/>
+    <circle class="ec-dot" cx="300" cy="380" r="2.6"/>
+    <circle class="ec-dot" cx="318" cy="396" r="2.6"/>
+    <circle class="ec-dot" cx="290" cy="404" r="2.6"/>
+    <text class="ec-note" x="198" y="440">no se tocan · sobran los del rincón</text>
+    <text class="ec-ans" x="198" y="468">50 o más</text>
+    <text class="ec-why" x="198" y="486">Sin tope: los administrativos pueden ser cualquier cantidad.</text>
+  </g>
+
+  <!-- ===== P4 · parcial + solapada ===== -->
+  <g>
+    <rect class="ec-panel" x="388" y="282" width="348" height="226" rx="3"/>
+    <text class="ec-tag" x="562" y="304">PARCIAL  ·  SOLAPADA</text>
+    <rect class="ec-sup" x="416" y="316" width="292" height="108" rx="8"/>
+    <text class="ec-supn" x="422" y="330">PERSONA</text>
+    <circle class="ec-sub" cx="508" cy="376" r="44"/>
+    <text class="ec-name" x="488" y="380">Alumno 30</text>
+    <circle class="ec-sub" cx="588" cy="376" r="40"/>
+    <text class="ec-name" x="612" y="380">Doc. 20</text>
+    <circle class="ec-dot" cx="662" cy="348" r="2.6"/>
+    <circle class="ec-dot" cx="678" cy="362" r="2.6"/>
+    <circle class="ec-dot" cx="666" cy="380" r="2.6"/>
+    <circle class="ec-dot" cx="684" cy="396" r="2.6"/>
+    <circle class="ec-dot" cx="656" cy="404" r="2.6"/>
+    <text class="ec-note" x="562" y="440">pueden pisarse · sobran los del rincón</text>
+    <text class="ec-ans" x="562" y="468">30 o más</text>
+    <text class="ec-why" x="562" y="486">El caso más flojo: sólo garantiza el subtipo más grande.</text>
+  </g>
+
+</svg>

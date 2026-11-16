@@ -1,0 +1,4080 @@
+[
+  {
+    "id": "p1-001",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "TP1 ej 1c",
+    "stem": "En 30 comercios se registró la cantidad de ventiladores vendidos en la última semana. Un tramo de la tabla de frecuencias es:<table><thead><tr><th>x (unidades)</th><th>f</th><th>F</th><th>h</th></tr></thead><tbody><tr><td>6</td><td>7</td><td>17</td><td>0,2333</td></tr><tr><td>7</td><td>4</td><td>21</td><td>0,1333</td></tr><tr><td>8</td><td>5</td><td>26</td><td>0,1667</td></tr></tbody></table>¿Cuál es la interpretación correcta de la frecuencia absoluta acumulada F = 21 de la fila x = 7?",
+    "options": [
+      "En 21 comercios se vendieron por lo menos 7 ventiladores.",
+      "En 21 comercios se vendieron como máximo 7 ventiladores.",
+      "En 21 comercios se vendieron exactamente 7 ventiladores.",
+      "El 21% de los comercios vendió 7 ventiladores.",
+      "Entre todos los comercios se vendieron 21 ventiladores en total."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "F es la frecuencia absoluta acumulada por izquierda: suma las f de todos los valores ≤ x.",
+        "formula": "F(7) = 2 + 3 + 5 + 7 + 4 = 21"
+      },
+      {
+        "label": "Traducir",
+        "text": "Se cuentan comercios (no unidades): 21 comercios vendieron 7 o menos."
+      },
+      {
+        "label": "Leer",
+        "text": "f = 4 son los comercios que vendieron exactamente 7; h = 0,1333 es la proporción."
+      }
+    ],
+    "why": "F(x) cuenta las observaciones menores o iguales a x, así que F = 21 significa 21 comercios con 7 unidades vendidas como máximo.",
+    "traps": [
+      "Invierte el sentido de la acumulación: F acumula desde los valores menores (por izquierda), no por derecha.",
+      "",
+      "Confunde la frecuencia acumulada F con la absoluta f (que vale 4).",
+      "Mezcla la frecuencia acumulada (un conteo) con un porcentaje; el porcentaje sería h·100 = 13,33%.",
+      "Confunde conteo de comercios con unidades vendidas; la variable es x, no F."
+    ]
+  },
+  {
+    "id": "p1-002",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP1 ej 2",
+    "stem": "Se midieron los tiempos de espera (minutos) en dos bancos. Resultados: <table><thead><tr><th></th><th>Banco Río (una fila única)</th><th>Banco Galicia (una fila por caja)</th></tr></thead><tbody><tr><td>Promedio</td><td>7,15</td><td>7,15</td></tr><tr><td>Mediana</td><td>7,2</td><td>7,2</td></tr><tr><td>Moda</td><td>7,7</td><td>7,7</td></tr><tr><td>Desvío estándar</td><td>0,4767</td><td>1,8216</td></tr></tbody></table>Las tres medidas de posición coinciden. ¿Qué conclusión sobre la dispersión es correcta y cuál banco conviene según esta información?",
+    "options": [
+      "Banco Río: su desvío de 0,4767 es mayor que el de Galicia, por lo que es más variable.",
+      "Banco Galicia: su CV de 25,48% supera el 20%, lo que indica datos homogéneos.",
+      "Banco Río: CV = 6,67% frente a 25,48% de Galicia; con la misma media, los tiempos son más parejos.",
+      "Banco Galicia: tiene mayor desvío estándar, así que ofrece más variedad de tiempos y mejor atención.",
+      "Es indistinto: promedio, mediana y moda son iguales en ambos bancos."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "Misma media: se compara la variabilidad relativa con el coeficiente de variación.",
+        "formula": "CV = s / x̄ · 100"
+      },
+      {
+        "label": "Calcular",
+        "text": "Río: 0,4767 / 7,15 = 6,67%. Galicia: 1,8216 / 7,15 = 25,48%."
+      },
+      {
+        "label": "Concluir",
+        "text": "Río es homogéneo (CV < 20%) y Galicia no (CV > 20%): conviene Río, tiempos de espera más previsibles."
+      }
+    ],
+    "why": "Con igual media el banco con menor CV tiene la distribución más pareja; Río (CV ≈ 6,67%) frente a Galicia (≈ 25,48%).",
+    "traps": [
+      "Compara mal los desvíos: 0,4767 < 1,8216, entonces Río es menos variable, no más.",
+      "Invierte el criterio: un CV mayor al 20% indica datos NO homogéneos, y eso no favorece a Galicia.",
+      "",
+      "Interpreta la mayor dispersión como algo positivo; en tiempos de espera más variabilidad significa menos previsibilidad.",
+      "Ignora que las medidas de posición no describen la dispersión; con igual media se decide por el CV."
+    ]
+  },
+  {
+    "id": "p1-003",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "TP1 ej 3",
+    "stem": "Se relevó la edad de 15 lectores de una revista infantil: 8-9-7-8-9-10-12-11-8-9-7-6-8-9-9. Se obtienen x̄ = 8,67 años, Me = 9 años y Mo = 9 años. ¿Qué tipo de asimetría presenta la distribución según el criterio de la cátedra?",
+    "options": [
+      "No puede determinarse sin calcular la curtosis.",
+      "Simétrica, porque la mediana y la moda coinciden en 9.",
+      "Asimetría positiva, porque Mo = 9 > x̄ = 8,67.",
+      "Asimetría positiva, porque el valor extremo 12 está a la derecha.",
+      "Asimetría negativa, porque Mo = 9 > x̄ = 8,67."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Calcular",
+        "text": "Con las 15 edades se obtiene la media; la edad más repetida (5 veces) es la moda.",
+        "formula": "x̄ = 8,67 ; Mo = 9",
+        "calc": "MENU→6 Estadística→1 Una variable: columna x con 6…12 y columna FREQ con 1,2,4,5,1,1,1 (SETUP→Estadística→Frecuencia: Sí) → OPTN→1 Cálculo 1 variable → x̄ = 8,6667; la moda se lee de la tabla (mayor FREQ: 9)"
+      },
+      {
+        "label": "Comparar",
+        "text": "Se compara la moda con la media: Mo > x̄.",
+        "formula": "9 > 8,67"
+      },
+      {
+        "label": "Concluir",
+        "text": "Mo > x̄ ⇒ asimetría negativa (las mayores frecuencias están en los valores altos; la cola larga queda a la izquierda)."
+      }
+    ],
+    "why": "Regla de la cátedra: Mo > x̄ ⇒ asimetría negativa; Mo < x̄ ⇒ positiva; Mo = x̄ ⇒ simétrica.",
+    "traps": [
+      "La curtosis mide el apuntamiento, no el sentido de la asimetría.",
+      "Para simetría hace falta que la media también coincida con Mo y Me; acá x̄ = 8,67 ≠ 9.",
+      "Invierte la regla: Mo > x̄ implica cola larga a la izquierda, es decir asimetría negativa.",
+      "Un valor extremo no define el signo por sí solo; el criterio compara Mo con x̄.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-004",
+    "topic": "descriptiva",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "TP1 ej 5",
+    "stem": "En una distribución de seis valores: −10, 3, a, 10, 1, 0, la desviación típica es igual al coeficiente de variación de Pearson. ¿Cuánto vale a?",
+    "options": [
+      "a = −3",
+      "a = 1",
+      "a = 6",
+      "a = 2",
+      "a = −4"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Planteo",
+        "text": "Como CV = s/x̄ y s = CV, resulta s/x̄ = s.",
+        "formula": "s / x̄ = s"
+      },
+      {
+        "label": "Simplificar",
+        "text": "s ≠ 0 porque los valores son distintos, entonces se puede dividir por s.",
+        "formula": "x̄ = 1"
+      },
+      {
+        "label": "Despejar",
+        "text": "Con n = 6, la suma de los valores debe ser 6.",
+        "formula": "(−10 + 3 + a + 10 + 1 + 0)/6 = 1 → 4 + a = 6"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se despeja a.",
+        "formula": "a = 2"
+      }
+    ],
+    "why": "Si s = s/x̄ y s ≠ 0, entonces x̄ = 1; con n = 6 la suma debe ser 6 y como los demás valores suman 4, a = 2.",
+    "traps": [
+      "Toma x̄ = 1 pero iguala la SUMA (no la media) a 1: 4 + a = 1.",
+      "Divide por 5 en lugar de 6: (4 + a)/5 = 1.",
+      "Iguala la suma total a 6 pero se olvida de los otros cinco valores, que suman 4.",
+      "",
+      "Deduce x̄ = 0 en vez de x̄ = 1; con x̄ = 0 el CV ni siquiera estaría definido."
+    ]
+  },
+  {
+    "id": "p1-005",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP1 ej 6b",
+    "stem": "Una consultora relevó el número de despidos mensuales de una empresa en los últimos doce meses: 18-15-14-23-20-18-17-18-16-20-18-15. Se obtiene x̄ = 17,67 despidos y s = 2,53 despidos (muestra). ¿Los datos son homogéneos?",
+    "options": [
+      "Sí: CV = 14,3% < 20%.",
+      "No: CV = 14,3% > 10%.",
+      "No se puede decidir sin conocer la mediana.",
+      "Sí: el desvío (2,53) es mucho menor que la media (17,67).",
+      "No: CV = x̄/s ≈ 698%, muy superior a 20%."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Fórmula",
+        "text": "Coeficiente de variación.",
+        "formula": "CV = s / x̄ · 100"
+      },
+      {
+        "label": "Calcular",
+        "text": "La calculadora da x̄ y el desvío MUESTRAL (sx); el CV se arma a mano.",
+        "formula": "CV = 2,53 / 17,67 · 100 = 14,3%",
+        "calc": "MENU→6 Estadística→1 Una variable: cargar x = 14,15,16,17,18,20,23 con FREQ = 1,2,1,1,4,2,1 → OPTN→1 Cálculo 1 variable → x̄ = 17,6667 ; sx = 2,5346 (sx y no σx, porque es muestra) → CV = sx/x̄"
+      },
+      {
+        "label": "Comparar",
+        "text": "Umbral de homogeneidad de la cátedra: 20%.",
+        "formula": "14,3% < 20%"
+      }
+    ],
+    "why": "El CV de 14,3% está por debajo del 20%, por lo que los datos son homogéneos.",
+    "traps": [
+      "",
+      "Aplica el umbral de representatividad de la media (10%) en lugar del de homogeneidad (20%).",
+      "El criterio de homogeneidad usa el CV, no la mediana.",
+      "Compara desvío con media en valor absoluto sin calcular el cociente ni usar un umbral.",
+      "Invierte la fórmula del CV (calcula x̄/s en lugar de s/x̄)."
+    ]
+  },
+  {
+    "id": "p1-006",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP1 ej 7b",
+    "stem": "El peso de una partida de 200 paquetes de pastillas se distribuye así:<table><thead><tr><th>Peso (g)</th><th>Paquetes</th></tr></thead><tbody><tr><td>30-32</td><td>28</td></tr><tr><td>32-34</td><td>36</td></tr><tr><td>34-36</td><td>43</td></tr><tr><td>36-38</td><td>51</td></tr><tr><td>38-40</td><td>27</td></tr><tr><td>40-42</td><td>11</td></tr><tr><td>42-44</td><td>4</td></tr></tbody></table>¿Cuál es la moda (peso más frecuente), calculada con datos agrupados?",
+    "options": [
+      "35,67 g",
+      "36,50 g",
+      "37,50 g",
+      "37,00 g",
+      "37,23 g"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Intervalo modal",
+        "text": "El de mayor frecuencia: [36 ; 38) con f = 51."
+      },
+      {
+        "label": "Diferencias",
+        "text": "Δ1 = 51 − 43 = 8 ; Δ2 = 51 − 27 = 24."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Fórmula de la moda con amplitud i = 2.",
+        "formula": "Mo = 36 + 8/(8+24) · 2 = 36,5"
+      }
+    ],
+    "why": "Mo = L + Δ1/(Δ1+Δ2)·i con intervalo modal [36;38) da 36,5 g.",
+    "traps": [
+      "Calcula la mediana en lugar de la moda.",
+      "",
+      "Intercambia Δ1 y Δ2 en la fórmula (pone el de la derecha en el numerador).",
+      "Usa la marca de clase del intervalo modal en lugar de interpolar con Δ1 y Δ2.",
+      "Usa las frecuencias f vecinas en lugar de las diferencias Δ1 = 51−43 y Δ2 = 51−27."
+    ]
+  },
+  {
+    "id": "p1-007",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP1 ej 7b",
+    "stem": "El peso de una partida de 200 paquetes de pastillas se distribuye así:<table><thead><tr><th>Peso (g)</th><th>Paquetes</th></tr></thead><tbody><tr><td>30-32</td><td>28</td></tr><tr><td>32-34</td><td>36</td></tr><tr><td>34-36</td><td>43</td></tr><tr><td>36-38</td><td>51</td></tr><tr><td>38-40</td><td>27</td></tr><tr><td>40-42</td><td>11</td></tr><tr><td>42-44</td><td>4</td></tr></tbody></table>¿Cuál es la mediana del peso?",
+    "options": [
+      "33,67 g",
+      "35,62 g",
+      "35,67 g",
+      "35,00 g",
+      "36,50 g"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Posición",
+        "text": "n/2 = 100; el primer F ≥ 100 es 107 → intervalo [34 ; 36)."
+      },
+      {
+        "label": "Datos",
+        "text": "L = 34, F anterior = 64, f = 43, i = 2."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Se aplica la fórmula con los datos del enunciado.",
+        "formula": "Me = 34 + (100 − 64)/43 · 2 = 35,67"
+      }
+    ],
+    "why": "La mediana está en [34;36) y la interpolación (100−64)/43·2 la ubica en 35,67 g.",
+    "traps": [
+      "Usa la frecuencia acumulada del propio intervalo (107) en lugar de la anterior (64).",
+      "Entrega la media en lugar de la mediana.",
+      "",
+      "Toma el punto medio del intervalo mediano [34;36) sin interpolar.",
+      "Entrega la moda en lugar de la mediana."
+    ]
+  },
+  {
+    "id": "p1-008",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP1 ej 7d",
+    "stem": "El peso de una partida de 200 paquetes de pastillas se distribuye así:<table><thead><tr><th>Peso (g)</th><th>Paquetes</th></tr></thead><tbody><tr><td>30-32</td><td>28</td></tr><tr><td>32-34</td><td>36</td></tr><tr><td>34-36</td><td>43</td></tr><tr><td>36-38</td><td>51</td></tr><tr><td>38-40</td><td>27</td></tr><tr><td>40-42</td><td>11</td></tr><tr><td>42-44</td><td>4</td></tr></tbody></table>¿Cuál es el peso no superado por el 20% de los paquetes?",
+    "options": [
+      "32,88 g",
+      "32,00 g",
+      "38,15 g",
+      "32,67 g",
+      "31,43 g"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "No superado por el 20% ⇒ deja 20% por debajo ⇒ P20."
+      },
+      {
+        "label": "Posición",
+        "text": "k·n/100 = 20·200/100 = 40; F = 28, 64 ⇒ intervalo [32 ; 34), F anterior = 28, f = 36."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Se aplica la fórmula con los datos del enunciado.",
+        "formula": "P20 = 32 + (40 − 28)/36 · 2 = 32,67"
+      }
+    ],
+    "why": "El percentil es el valor que deja a su izquierda el k% de los datos; 'no superado por el 20%' es P20 = 32,67 g.",
+    "traps": [
+      "Aplica la fórmula con el intervalo equivocado ([34;36)) cuando la posición 40 cae en [32;34).",
+      "Se queda con el límite inferior del intervalo sin interpolar.",
+      "Calcula P80 en lugar de P20: confunde el lado del percentil.",
+      "",
+      "Usa la posición 20 (el valor de k) en lugar de k·n/100 = 40."
+    ]
+  },
+  {
+    "id": "p1-009",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP1 ej 7e",
+    "stem": "El peso de una partida de 200 paquetes de pastillas se distribuye así:<table><thead><tr><th>Peso (g)</th><th>Paquetes</th></tr></thead><tbody><tr><td>30-32</td><td>28</td></tr><tr><td>32-34</td><td>36</td></tr><tr><td>34-36</td><td>43</td></tr><tr><td>36-38</td><td>51</td></tr><tr><td>38-40</td><td>27</td></tr><tr><td>40-42</td><td>11</td></tr><tr><td>42-44</td><td>4</td></tr></tbody></table>¿Cuál es el peso sólo superado por el 10% de los paquetes?",
+    "options": [
+      "35,21 g",
+      "40,00 g",
+      "31,43 g",
+      "39,00 g",
+      "39,63 g"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "Superado por el 10% ⇒ el 90% queda por debajo ⇒ P90."
+      },
+      {
+        "label": "Posición",
+        "text": "90·200/100 = 180; F = 158, 185 ⇒ intervalo [38 ; 40), F anterior = 158, f = 27."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Se aplica la fórmula con los datos del enunciado.",
+        "formula": "P90 = 38 + (180 − 158)/27 · 2 = 39,63"
+      }
+    ],
+    "why": "Si solo el 10% supera al valor, el 90% queda por debajo: es P90 = 39,63 g.",
+    "traps": [
+      "Usa la posición 90 (el valor de k) en lugar de 180.",
+      "Toma el límite superior del intervalo en lugar de interpolar.",
+      "Calcula P10 en lugar de P90: lee 'superado por el 10%' como 'deja el 10% abajo'.",
+      "Toma el punto medio del intervalo [38;40) sin interpolar.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-010",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP1 ej 7f",
+    "stem": "El peso de una partida de 200 paquetes de pastillas se distribuye así:<table><thead><tr><th>Peso (g)</th><th>Paquetes</th></tr></thead><tbody><tr><td>30-32</td><td>28</td></tr><tr><td>32-34</td><td>36</td></tr><tr><td>34-36</td><td>43</td></tr><tr><td>36-38</td><td>51</td></tr><tr><td>38-40</td><td>27</td></tr><tr><td>40-42</td><td>11</td></tr><tr><td>42-44</td><td>4</td></tr></tbody></table>¿Qué porcentaje de los paquetes pesa por lo menos 34 gramos?",
+    "options": [
+      "68%",
+      "34%",
+      "32%",
+      "31,5%",
+      "21,5%"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Contar",
+        "text": "34 g es un límite de clase: hasta 34 hay 28 + 36 = 64 paquetes."
+      },
+      {
+        "label": "Complemento",
+        "text": "Por lo menos 34 g es el resto: 200 − 64 = 136 paquetes."
+      },
+      {
+        "label": "Porcentaje",
+        "text": "Se pasa el conteo a porcentaje.",
+        "formula": "136/200 · 100 = 68%"
+      }
+    ],
+    "why": "Como 34 g es límite de clase se cuenta directo: 136 de 200 paquetes pesan 34 g o más, es decir 68%.",
+    "traps": [
+      "",
+      "Confunde el valor 34 g con el número de percentil.",
+      "Calcula el porcentaje que pesa MENOS de 34 g (64/200) y no su complemento.",
+      "Resta mal: 100 − 68,5 en lugar de 100 − 32.",
+      "Toma solo la frecuencia del intervalo [34;36) (43/200)."
+    ]
+  },
+  {
+    "id": "p1-011",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP1 ej 8",
+    "stem": "Horas de estudio semanales de 27 alumnos:<table><thead><tr><th>Horas</th><th>Alumnos</th></tr></thead><tbody><tr><td>0-2</td><td>3</td></tr><tr><td>2-4</td><td>6</td></tr><tr><td>4-6</td><td>9</td></tr><tr><td>6-8</td><td>6</td></tr><tr><td>8-10</td><td>3</td></tr></tbody></table>Se obtiene x̄ = Me = Mo = 5 horas, Q1 = 3,25 y Q3 = 6,75. ¿Cuál afirmación es correcta?",
+    "options": [
+      "La distribución es simétrica y el 50% central estudia entre 0 y 10 horas.",
+      "La distribución es simétrica y el 50% central de los alumnos estudia entre 3,25 y 6,75 horas (RIC = 3,5).",
+      "La distribución es simétrica y el RIC es 5 horas, es decir Q2.",
+      "La distribución es asimétrica positiva porque hay alumnos con 8 a 10 horas.",
+      "No puede afirmarse simetría porque la dispersión (CV ≈ 47%) es alta."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Forma",
+        "text": "Mo = Me = x̄ = 5 ⇒ simetría."
+      },
+      {
+        "label": "Posición",
+        "text": "Q1 deja el 25% debajo y Q3 el 75%: entre ambos queda el 50% central.",
+        "formula": "RIC = Q3 − Q1 = 6,75 − 3,25 = 3,5"
+      },
+      {
+        "label": "Concluir",
+        "text": "Simétrica y el 50% central abarca 3,5 horas, entre 3,25 y 6,75."
+      }
+    ],
+    "why": "Con Mo = Me = x̄ la distribución es simétrica, y entre Q1 y Q3 está el 50% central de los datos.",
+    "traps": [
+      "Confunde el rango total con el rango del 50% central (de Q1 a Q3).",
+      "",
+      "Confunde el RIC (Q3 − Q1) con la mediana.",
+      "Las frecuencias son simétricas (3-6-9-6-3); Mo = x̄ indica simetría.",
+      "Mezcla forma y dispersión: la simetría depende de Mo, Me y x̄, no del CV."
+    ]
+  },
+  {
+    "id": "p1-012",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP1 ej 9a",
+    "stem": "Una empresa informó los kilómetros recorridos por la totalidad de sus camiones:<table><thead><tr><th>Km recorridos</th><th>Camiones</th></tr></thead><tbody><tr><td>600-800</td><td>6</td></tr><tr><td>800-1000</td><td>8</td></tr><tr><td>1000-1200</td><td>5</td></tr><tr><td>1200-1400</td><td>3</td></tr><tr><td>1400-1600</td><td>2</td></tr><tr><td>1600-1800</td><td>1</td></tr></tbody></table>Se obtiene μ = 1020 km y σ = 277,13 km. ¿Es representativa la media aritmética (umbral de representatividad de la cátedra: 10%)?",
+    "options": [
+      "Sí: CV = 27,17% < 20%, los datos son homogéneos y por eso la media es representativa.",
+      "Sí: la media 1020 está dentro del rango de datos (600–1800).",
+      "Sí: CV = 27,17% < 100%.",
+      "No: CV = 277,13/1020 = 0,2717, y 0,2717 < 1 indica falta de representatividad.",
+      "No: CV = 27,17% > 10%."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Fórmula",
+        "text": "Fórmula a utilizar.",
+        "formula": "CV = σ / μ · 100"
+      },
+      {
+        "label": "Calcular",
+        "text": "Al ser la totalidad de los camiones se usa el desvío POBLACIONAL σx.",
+        "formula": "CV = 277,13 / 1020 · 100 = 27,17%",
+        "calc": "MENU→6 Estadística→1 Una variable: x = 700, 900, 1100, 1300, 1500, 1700 ; FREQ = 6, 8, 5, 3, 2, 1 → OPTN→1 Cálculo 1 variable → x̄ = 1020 ; σx = 277,1281 (población)"
+      },
+      {
+        "label": "Comparar",
+        "text": "Representatividad: CV ≤ 10%. Como 27,17% > 10%, la media no representa bien al conjunto."
+      }
+    ],
+    "why": "Un CV de 27,17% supera el 10%, así que la media no es representativa (y tampoco hay homogeneidad, al pasar el 20%).",
+    "traps": [
+      "Usa el umbral de homogeneidad y además ni siquiera se cumple: 27,17% > 20%.",
+      "Que la media esté dentro del rango no garantiza que sea representativa.",
+      "Compara contra 100%, que no es ningún criterio de la cátedra.",
+      "Interpreta un CV menor que 1 como falta de representatividad sin aplicar el umbral de 10%.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-013",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original (variante TP1 ej 9a)",
+    "stem": "Dos analistas calculan el CV de una variable y obtienen 15%. Con los criterios de la cátedra (homogeneidad: CV < 20%; representatividad de la media: CV < 10%), ¿qué se concluye?",
+    "options": [
+      "Los datos no son homogéneos, pero la media es representativa.",
+      "Los datos no son homogéneos y la media no es representativa.",
+      "No se puede concluir nada sin conocer el desvío estándar.",
+      "Los datos son homogéneos, pero la media no es una medida representativa.",
+      "Los datos son homogéneos y la media es representativa."
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Umbrales",
+        "text": "Homogeneidad: CV < 20%. Representatividad de la media: CV < 10%."
+      },
+      {
+        "label": "Comparar",
+        "text": "15% < 20% ⇒ homogéneo. 15% > 10% ⇒ la media no es representativa."
+      }
+    ],
+    "why": "El umbral de representatividad (10%) es más estricto que el de homogeneidad (20%), y 15% queda entre ambos.",
+    "traps": [
+      "Invierte los umbrales: la representatividad es más exigente (10%) que la homogeneidad (20%).",
+      "Aplica el umbral del 10% a la homogeneidad.",
+      "El CV ya incorpora el desvío relativo a la media; basta con compararlo con los umbrales.",
+      "",
+      "Aplica solo el umbral de 20% y asume que también implica representatividad."
+    ]
+  },
+  {
+    "id": "p1-014",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP1 ej 9c",
+    "stem": "Kilómetros recorridos por la totalidad de camiones de una empresa:<table><thead><tr><th>Km recorridos</th><th>Camiones</th></tr></thead><tbody><tr><td>600-800</td><td>6</td></tr><tr><td>800-1000</td><td>8</td></tr><tr><td>1000-1200</td><td>5</td></tr><tr><td>1200-1400</td><td>3</td></tr><tr><td>1400-1600</td><td>2</td></tr><tr><td>1600-1800</td><td>1</td></tr></tbody></table>¿Qué significa, correctamente, que P90 = 1450 km?",
+    "options": [
+      "El 90% de los camiones recorrió 1450 km o más.",
+      "El 10% de los camiones recorrió exactamente 1450 km.",
+      "El 90% de los camiones recorrió 1450 km o menos; solo el 10% recorrió más.",
+      "1450 km es el 90% del recorrido máximo (1800 km).",
+      "Los camiones recorrieron en promedio 1450 km en el 90% de los casos."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Posición",
+        "text": "k·n/100 = 90·25/100 = 22,5 ⇒ intervalo [1400;1600), F anterior = 22, f = 2."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Se aplica la fórmula con los datos del enunciado.",
+        "formula": "P90 = 1400 + (22,5 − 22)/2 · 200 = 1450"
+      },
+      {
+        "label": "Interpretar",
+        "text": "P90 deja el 90% de los datos por debajo y el 10% por encima."
+      }
+    ],
+    "why": "Un percentil Pk es el valor que deja el k% por debajo; P90 = 1450 km quiere decir que solo el 10% de los camiones lo supera.",
+    "traps": [
+      "Invierte el sentido: P90 deja el 90% por debajo, no por encima.",
+      "Interpreta el percentil como una frecuencia puntual.",
+      "",
+      "Confunde percentil con un porcentaje del valor máximo.",
+      "Mezcla percentil con promedio."
+    ]
+  },
+  {
+    "id": "p1-015",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP1 ej 13d",
+    "stem": "Juan gana un bono si en el 25% de los días (o más) vendió 85 botellas o más. En una muestra de 26 días, en 8 días vendió 85 botellas o más y en los otros 18 días menos de 85. ¿Ganó el bono?",
+    "options": [
+      "Sí: 8/26 = 30,77% de los días con 85 o más, que supera el 25% exigido.",
+      "Sí: 18/26 = 69,23% de los días vendió 85 botellas o más.",
+      "No: sólo 8 días de 26 llegaron a 85 botellas, menos de la mitad de los días.",
+      "No: 8/26 = 30,77%, que es menor que el 75% restante.",
+      "No se puede saber sin calcular el promedio de botellas diarias."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "Cumplir = vender 85 o más: x ≥ 85."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "P(x ≥ 85) = 8/26 · 100 = 30,77%"
+      },
+      {
+        "label": "Comparar",
+        "text": "30,77% > 25% ⇒ gana el bono."
+      }
+    ],
+    "why": "El porcentaje de días con x ≥ 85 (30,77%) supera el 25% requerido; los 18 días restantes son el 69,23% con menos de 85.",
+    "traps": [
+      "",
+      "Toma el complemento (69,23% vendió MENOS de 85) como si fuera el cumplimiento.",
+      "Usa el 50% como umbral cuando la regla pide el 25%.",
+      "Compara contra el 75% (el complemento de la exigencia) sin sentido.",
+      "El bono depende de la frecuencia de días con ≥ 85, no del promedio."
+    ]
+  },
+  {
+    "id": "p1-016",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP1 ej 14",
+    "stem": "Se registró el atraso (minutos) de 45 buses: mínimo −6, Q1 = 14, mediana = 24, Q3 = 36, máximo 40. ¿Cuál de las siguientes lecturas del diagrama de caja y bigotes es correcta?",
+    "options": [
+      "El 50% central de los buses salió con atrasos entre 24 y 40 minutos.",
+      "La caja mide la dispersión total: 40 − (−6) = 46 minutos.",
+      "La mediana (24) es el promedio entre Q1 y Q3.",
+      "El 25% de los buses tuvo un atraso de entre 14 y 36 minutos.",
+      "El 50% central de los buses salió con atrasos entre 14 y 36 minutos; el 25% más puntual, con menos de 14."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Interpretar",
+        "text": "Q1 deja 25% debajo; Q3 deja 75% debajo; entre ambos hay 50%."
+      },
+      {
+        "label": "Caja",
+        "text": "RIC = 36 − 14 = 22 min contiene al 50% central.",
+        "formula": "RIC = Q3 − Q1"
+      },
+      {
+        "label": "Bigotes",
+        "text": "Van de −6 a 14 (25% inferior) y de 36 a 40 (25% superior)."
+      }
+    ],
+    "why": "La caja encierra del Q1 al Q3 (el 50% central); los bigotes cubren los dos cuartos extremos.",
+    "traps": [
+      "Toma de la mediana al máximo, que es el 50% superior y no el central.",
+      "Confunde la longitud de la caja (RIC = Q3 − Q1 = 22) con el rango total.",
+      "(14 + 36)/2 = 25 ≠ 24, y la mediana no se calcula promediando cuartiles.",
+      "Confunde cuartos con mitades: entre Q1 y Q3 está el 50% de los datos, no el 25%.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-017",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP1 ej 15c",
+    "stem": "Notas de dos cursos de Estadística. Curso diurno: Q1 = 50, Me = 71, Q3 = 82,5. Curso nocturno: Q1 = 72, Me = 80,5, Q3 = 88,5. ¿Qué curso tiene mayor dispersión en el 50% central de los datos y qué significa?",
+    "options": [
+      "El nocturno: Q3 = 88,5 es más alto que el del diurno.",
+      "El diurno: RIC = 82,5 + 50 = 132,5.",
+      "El diurno: RIC = 32,5 contra 16,5 del nocturno; las notas centrales del diurno están más desparramadas.",
+      "Ambos tienen igual dispersión porque comparten el mismo 50% de datos en la caja.",
+      "El nocturno: su mediana (80,5) es mayor."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Fórmula",
+        "text": "Fórmula a utilizar.",
+        "formula": "RIC = Q3 − Q1"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "Diurno: 82,5 − 50 = 32,5 ; Nocturno: 88,5 − 72 = 16,5"
+      },
+      {
+        "label": "Interpretar",
+        "text": "La caja del diurno es más ancha: su 50% central está más disperso (notas más heterogéneas)."
+      }
+    ],
+    "why": "El RIC mide la amplitud del 50% central; el del curso diurno (32,5) duplica al del nocturno (16,5).",
+    "traps": [
+      "Compara un cuartil aislado en lugar de la diferencia Q3 − Q1.",
+      "Suma los cuartiles en lugar de restarlos.",
+      "",
+      "Que la caja contenga al 50% en ambos no significa que su ancho sea igual.",
+      "Confunde posición (mediana) con dispersión."
+    ]
+  },
+  {
+    "id": "p1-018",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "Recuperatorio 1er parcial ej 1a",
+    "stem": "Costos de reparación de 120 órdenes de servicio:<table><thead><tr><th>Costo ($)</th><th>Órdenes</th></tr></thead><tbody><tr><td>2000-6000</td><td>25</td></tr><tr><td>6000-10000</td><td>30</td></tr><tr><td>10000-14000</td><td>45</td></tr><tr><td>14000-18000</td><td>20</td></tr></tbody></table>Se calcula x̄ = $10.000 y el intervalo modal es [10000;14000), con Mo = $11.500. ¿El costo promedio es menor al costo más frecuente y qué forma tiene la distribución?",
+    "options": [
+      "Sí: x̄ = 10.000 < Mo = 11.500, la distribución tiene asimetría negativa.",
+      "No: el promedio y la moda no son comparables entre sí.",
+      "No: x̄ = 10.000 es mayor que la mediana 10.444, así que x̄ > Mo.",
+      "Sí: x̄ = 10.000 < Mo = 11.500, la distribución tiene asimetría positiva.",
+      "No: el costo más frecuente es el punto medio 12.000, mayor que el promedio, y la distribución es simétrica."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Calcular x̄",
+        "text": "Se cargan las marcas de clase con sus frecuencias.",
+        "formula": "x̄ = 10.000",
+        "calc": "MENU→6 Estadística→1 Una variable: x = 4000, 8000, 12000, 16000 ; FREQ = 25, 30, 45, 20 → OPTN→1 Cálculo 1 variable → x̄ = 10000"
+      },
+      {
+        "label": "Calcular Mo",
+        "text": "Intervalo modal [10000;14000): Δ1 = 15, Δ2 = 25.",
+        "formula": "Mo = 10000 + 15/40 · 4000 = 11.500"
+      },
+      {
+        "label": "Comparar",
+        "text": "Mo > x̄ ⇒ asimetría negativa."
+      }
+    ],
+    "why": "La moda (11.500) supera al promedio (10.000), de modo que la distribución es asimétrica negativa.",
+    "traps": [
+      "",
+      "Ambas son medidas de tendencia central en la misma escala y se comparan para analizar la forma.",
+      "Comparación inventada; la mediana es 10.444 > x̄ y la moda 11.500 > x̄.",
+      "Detecta bien la desigualdad pero le asigna el signo opuesto; Mo > x̄ es asimetría negativa.",
+      "Usa la marca de clase como moda y concluye simetría sin comparar Mo con x̄."
+    ]
+  },
+  {
+    "id": "p1-019",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Recuperatorio 1er parcial ej 1b",
+    "stem": "Costos de reparación de 120 órdenes de servicio:<table><thead><tr><th>Costo ($)</th><th>Órdenes</th></tr></thead><tbody><tr><td>2000-6000</td><td>25</td></tr><tr><td>6000-10000</td><td>30</td></tr><tr><td>10000-14000</td><td>45</td></tr><tr><td>14000-18000</td><td>20</td></tr></tbody></table>Se bonifica a las órdenes cuyo costo sea superior al 15% de los costos más altos. ¿Cuál es el monto mínimo para obtener la bonificación?",
+    "options": [
+      "$ 15.000",
+      "$ 14.400",
+      "$ 14.000",
+      "$ 10.000",
+      "$ 4.880"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "El 15% más alto ⇒ deja 85% por debajo ⇒ P85."
+      },
+      {
+        "label": "Posición",
+        "text": "85·120/100 = 102; F = 25, 55, 100, 120 ⇒ intervalo [14000;18000), F anterior = 100, f = 20."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Se aplica la fórmula con los datos del enunciado.",
+        "formula": "P85 = 14000 + (102 − 100)/20 · 4000 = 14.400"
+      }
+    ],
+    "why": "'15% de los costos más altos' ⇒ P85 = $14.400.",
+    "traps": [
+      "Usa el punto medio entre 14.000 y 16.000, sin criterio de percentil.",
+      "",
+      "Toma el límite inferior del último intervalo; solo 20 de 120 órdenes (16,67%) lo superan, no el 15%.",
+      "Usa el promedio como umbral en lugar de un percentil de la cola superior.",
+      "Calcula P15 (el 15% más barato) en lugar de P85."
+    ]
+  },
+  {
+    "id": "p1-020",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 3,
+    "source": "Práctica 1er parcial ej 1b",
+    "stem": "Sueldos brutos de 75 empleados:<table><thead><tr><th>Sueldo bruto (u$s)</th><th>Empleados</th></tr></thead><tbody><tr><td>800-1000</td><td>30</td></tr><tr><td>1000-1200</td><td>25</td></tr><tr><td>1200-1400</td><td>8</td></tr><tr><td>1400-1600</td><td>10</td></tr><tr><td>1600-1800</td><td>2</td></tr></tbody></table>Afirmación: 'la remuneración más habitual supera a la remuneración promedio'. ¿Es verdadera?",
+    "options": [
+      "Verdadera: Mo = u$s 1110,67 > x̄ = u$s 971,43.",
+      "No se puede evaluar: la moda de datos agrupados no está definida.",
+      "Verdadera: el intervalo modal [800;1000) tiene la mayor frecuencia, así que la moda supera al promedio.",
+      "Falsa: Mo = u$s 971,43 < x̄ = u$s 1110,67.",
+      "Falsa: la moda es u$s 1050 y el promedio u$s 1110,67."
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Calcular Mo",
+        "text": "Intervalo modal [800;1000): Δ1 = 30 − 0 = 30, Δ2 = 30 − 25 = 5.",
+        "formula": "Mo = 800 + 30/35 · 200 = 971,43"
+      },
+      {
+        "label": "Calcular x̄",
+        "text": "Se cargan las marcas de clase con sus frecuencias.",
+        "formula": "x̄ = 1110,67",
+        "calc": "MENU→6 Estadística→1 Una variable: x = 900, 1100, 1300, 1500, 1700 ; FREQ = 30, 25, 8, 10, 2 → OPTN→1 Cálculo 1 variable → x̄ = 1110,6667 ; sx = 227,5447"
+      },
+      {
+        "label": "Comparar",
+        "text": "Mo < x̄ ⇒ la afirmación es falsa (asimetría positiva)."
+      }
+    ],
+    "why": "Mo = 971,43 < x̄ = 1110,67, así que la moda no supera al promedio; la afirmación es falsa.",
+    "traps": [
+      "Intercambia los valores calculados de la moda y la media.",
+      "La moda agrupada se estima con L + Δ1/(Δ1+Δ2)·i.",
+      "Confunde 'intervalo más poblado' con 'valor más alto'; hay que calcular y comparar Mo y x̄.",
+      "",
+      "Usa un valor inventado de moda en lugar de aplicar la fórmula con Δ1 y Δ2."
+    ]
+  },
+  {
+    "id": "p1-021",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 3,
+    "source": "Práctica 1er parcial ej 1c-d",
+    "stem": "Sueldos brutos de 75 empleados:<table><thead><tr><th>Sueldo bruto (u$s)</th><th>Empleados</th></tr></thead><tbody><tr><td>800-1000</td><td>30</td></tr><tr><td>1000-1200</td><td>25</td></tr><tr><td>1200-1400</td><td>8</td></tr><tr><td>1400-1600</td><td>10</td></tr><tr><td>1600-1800</td><td>2</td></tr></tbody></table>Se obtiene x̄ = 1110,67 y s = 227,54 (muestra); Mo = 971,43. ¿Qué se concluye sobre homogeneidad y forma?",
+    "options": [
+      "CV = 20,49% > 20%: no homogéneos; Mo < x̄ ⇒ asimetría negativa.",
+      "CV = 20,49% > 20%: no homogéneos, pero la forma no puede determinarse.",
+      "CV = 227,54%: no homogéneos; Mo < x̄ ⇒ asimetría positiva.",
+      "CV = 20,49% < 100%: homogéneos; Mo < x̄ ⇒ asimetría positiva.",
+      "CV = 20,49% > 20%: no homogéneos; Mo < x̄ ⇒ asimetría positiva."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "CV",
+        "text": "Se divide el desvío por la media.",
+        "formula": "CV = 227,54 / 1110,67 · 100 = 20,49%"
+      },
+      {
+        "label": "Homogeneidad",
+        "text": "20,49% supera el umbral del 20% ⇒ no homogéneos (justo por encima)."
+      },
+      {
+        "label": "Forma",
+        "text": "Mo = 971,43 < x̄ = 1110,67 ⇒ asimetría positiva."
+      }
+    ],
+    "why": "El CV apenas supera 20% (no homogéneo) y como Mo < x̄ la asimetría es positiva.",
+    "traps": [
+      "Concluye bien la homogeneidad pero invierte el signo de la asimetría.",
+      "Con Mo y x̄ ya se determina la forma por el criterio de la cátedra.",
+      "Toma el desvío como CV, sin dividir por la media.",
+      "Compara el CV contra 100% en lugar de contra el 20% de la cátedra.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-022",
+    "topic": "descriptiva",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Práctica U1 y U2 primer parcial ej 2",
+    "stem": "Contenido de 100 recipientes:<table><thead><tr><th>Mililitros</th><th>Recipientes</th></tr></thead><tbody><tr><td>60-62</td><td>25</td></tr><tr><td>62-64</td><td>16</td></tr><tr><td>64-66</td><td>15</td></tr><tr><td>66-68</td><td>28</td></tr><tr><td>68-70</td><td>16</td></tr></tbody></table>El 5% de los recipientes con menor cantidad de mililitros será revisado por control de calidad. ¿Qué contenido tiene que tener un recipiente para ser revisado?",
+    "options": [
+      "Menos de 65 ml",
+      "Menos de 61 ml",
+      "Menos de 60,4 ml",
+      "Menos de 62 ml",
+      "Menos de 69,375 ml"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "El 5% con menos ⇒ P5."
+      },
+      {
+        "label": "Posición",
+        "text": "5·100/100 = 5 ⇒ primer intervalo [60;62), F anterior = 0, f = 25."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Se aplica la fórmula con los datos del enunciado.",
+        "formula": "P5 = 60 + (5 − 0)/25 · 2 = 60,4"
+      }
+    ],
+    "why": "El 5% inferior corresponde a P5 = 60,4 ml, calculado con interpolación en el primer intervalo.",
+    "traps": [
+      "Toma la media aproximada de la variable, sin criterio de percentil.",
+      "Usa la marca de clase del primer intervalo en lugar de interpolar.",
+      "",
+      "Usa el límite superior del primer intervalo (que concentra el 25%, no el 5%).",
+      "Calcula P95 en lugar de P5."
+    ]
+  },
+  {
+    "id": "p1-023",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "original",
+    "stem": "En una encuesta, 'el 30% de los alumnos obtuvo más de 7'. ¿Qué percentil corresponde a la nota 7?",
+    "options": [
+      "P60",
+      "P7",
+      "P100",
+      "P70",
+      "P30"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Principio",
+        "text": "El percentil Pk deja el k% de los datos por debajo."
+      },
+      {
+        "label": "Traducir",
+        "text": "Si el 30% está por encima de 7, el 70% está por debajo (o igual)."
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "P70 = 7"
+      }
+    ],
+    "why": "Si el 30% supera 7, el 70% queda por debajo o igual: 7 es el percentil 70.",
+    "traps": [
+      "Resta 10 por error (pasa de 70 a 60 sin criterio).",
+      "Confunde el valor de la nota con el índice del percentil.",
+      "Piensa que 7 es el máximo; Pk siempre deja k% por debajo, no por encima.",
+      "",
+      "Lee el porcentaje del enunciado como número de percentil, sin pasar al lado de abajo."
+    ]
+  },
+  {
+    "id": "p1-024",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "original",
+    "stem": "Los ingresos de 7 empleados (en miles de $) son 80, 85, 90, 90, 95, 100 y 900. Si se desea describir el ingreso 'típico', ¿qué conviene?",
+    "options": [
+      "La mediana (90) o la moda, porque el valor extremo 900 distorsiona fuertemente la media.",
+      "La media, porque usa todos los datos y por lo tanto es la más representativa.",
+      "El rango, porque resume la dispersión del grupo.",
+      "La varianza, porque es la única medida que considera el 900.",
+      "La media, porque con n = 7 la mediana no está definida."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Calcular",
+        "text": "Media = 1440/7 ≈ 205,7 mientras que 6 de los 7 ganan 100 o menos."
+      },
+      {
+        "label": "Evaluar",
+        "text": "La mediana es el dato central ordenado: el 4º valor.",
+        "formula": "Me = 90"
+      },
+      {
+        "label": "Concluir",
+        "text": "Con un valor extremo conviene la mediana (o la moda) y el RIC como dispersión."
+      }
+    ],
+    "why": "La media es sensible a extremos; la mediana (90) describe mejor al empleado típico.",
+    "traps": [
+      "",
+      "Usar todos los datos es justo lo que la hace sensible a valores extremos.",
+      "El rango mide dispersión, no tendencia central.",
+      "La varianza es dispersión y además se infla por el extremo; no describe el valor típico.",
+      "La mediana siempre está definida; para n impar es el dato central."
+    ]
+  },
+  {
+    "id": "p1-025",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "A todos los sueldos de una empresa se les suma un adicional fijo de $100.000. ¿Qué ocurre con la media, el desvío estándar y el CV?",
+    "options": [
+      "La media aumenta $100.000, el desvío aumenta $100.000 y el CV no cambia.",
+      "La media aumenta $100.000, el desvío no cambia y el CV disminuye.",
+      "La media no cambia, el desvío aumenta y el CV aumenta.",
+      "La media y el desvío se multiplican por 100.000.",
+      "La media aumenta $100.000, el desvío no cambia y el CV no cambia."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Media",
+        "text": "μ(x + k) = μ(x) + k."
+      },
+      {
+        "label": "Desvío",
+        "text": "σ(x + k) = σ(x): sumar una constante no cambia la dispersión."
+      },
+      {
+        "label": "CV",
+        "text": "CV = σ/μ: el mismo σ dividido por una media mayor da un CV menor."
+      }
+    ],
+    "why": "Sumar una constante desplaza la media pero no la dispersión; por eso σ/μ disminuye.",
+    "traps": [
+      "Cree que la constante también corre la dispersión; sumar constantes no modifica el desvío.",
+      "",
+      "Invierte los efectos: la constante desplaza la media, no la dispersión.",
+      "Confunde sumar una constante con multiplicar por ella.",
+      "El desvío igual, pero el denominador del CV (la media) crece: el CV baja."
+    ]
+  },
+  {
+    "id": "p1-026",
+    "topic": "descriptiva",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "Para hallar el percentil Pk en una tabla de datos agrupados en intervalos, el planteo correcto es:",
+    "options": [
+      "Posición = k·n; buscar el intervalo central; aplicar Pk = (L + Ls)/2.",
+      "Posición = k/100; buscar el intervalo con F igual a k; aplicar Pk = L + Δ1/(Δ1+Δ2)·i.",
+      "Posición = k·n/100; buscar el primer intervalo cuya F acumulada iguale o supere esa posición; aplicar Pk = L + (k·n/100 − F anterior)/f · i.",
+      "Posición = k·n/100; buscar el intervalo con mayor f; aplicar Pk = L + (k·n/100 − F anterior)/f · i.",
+      "Posición = k·n/100; buscar el primer intervalo cuya F iguale o supere la posición; aplicar Pk = L + (k·n/100 − f)/F · i."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Posición",
+        "text": "Se calcula la posición k·n/100 y se ubica el intervalo.",
+        "formula": "pos = k·n / 100"
+      },
+      {
+        "label": "Intervalo",
+        "text": "Primer F acumulada ≥ pos."
+      },
+      {
+        "label": "Interpolar",
+        "text": "Con L = límite inferior, F anterior = acumulada antes del intervalo, f = frecuencia del intervalo, i = amplitud.",
+        "formula": "Pk = L + (pos − F_ant)/f · i"
+      }
+    ],
+    "why": "El percentil usa la posición k·n/100, se ubica con F acumulada y se interpola con f e i.",
+    "traps": [
+      "Se queda con el punto medio del intervalo, descartando la interpolación.",
+      "Mezcla la fórmula del percentil con la de la moda.",
+      "",
+      "Elige el intervalo por la frecuencia simple f (como se hace con la moda) en lugar de por F acumulada.",
+      "Intercambia los roles de f (absoluta) y F (acumulada anterior) en la fórmula."
+    ]
+  },
+  {
+    "id": "p1-027",
+    "topic": "descriptiva",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "Una variable se mide en centímetros (estatura, media 170 cm, s = 8 cm) y otra en kilogramos (peso, media 70 kg, s = 10 kg). ¿Cuál tiene mayor variabilidad relativa y por qué se puede comparar?",
+    "options": [
+      "No se pueden comparar: el CV mantiene las unidades originales.",
+      "La estatura, porque 8 cm es una dispersión menor que 10 kg.",
+      "La estatura: CV = 170/8 = 21,25%, mayor que el del peso (7%).",
+      "El peso, porque 10 > 8; los desvíos sí son comparables directamente.",
+      "El peso: CV = 14,3% frente a 4,7% de la estatura; el CV es adimensional y permite comparar variables con distintas unidades."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Fórmula",
+        "text": "Fórmula a utilizar.",
+        "formula": "CV = s / x̄ · 100"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "Estatura: 8/170 = 4,7% ; Peso: 10/70 = 14,3%"
+      },
+      {
+        "label": "Comparar",
+        "text": "El CV es un cociente sin unidades, por eso sirve para comparar variabilidad entre variables distintas."
+      }
+    ],
+    "why": "El CV elimina las unidades; el peso (14,3%) varía más, en términos relativos, que la estatura (4,7%).",
+    "traps": [
+      "El CV es un cociente de dos magnitudes con la misma unidad: es adimensional.",
+      "Compara desvíos con unidades distintas: 8 cm y 10 kg no son comparables.",
+      "Invierte el cociente (media/desvío).",
+      "Llega a la misma conclusión por una razón inválida: los desvíos tienen unidades distintas.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-028",
+    "topic": "descriptiva",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "Se tiene una tabla de frecuencias con intervalos de clase (por ejemplo, 30–32: 28 paquetes; 32–34: 36 paquetes; …). Para calcular x̄ y s con la Casio fx-991EX, ¿qué se carga en modo Estadística 1 variable?",
+    "options": [
+      "En x las marcas de clase (31, 33, …) y en FREQ las frecuencias absolutas.",
+      "En x las marcas de clase, con FREQ = 1, repitiendo la tabla una sola vez.",
+      "En x las frecuencias y en FREQ las marcas de clase.",
+      "En x los límites superiores (32, 34, …) y en FREQ las frecuencias acumuladas.",
+      "En x los límites inferiores (30, 32, …) y en FREQ las frecuencias."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Representante",
+        "text": "Cada intervalo se representa por su marca de clase (punto medio).",
+        "formula": "x_m = (L_inf + L_sup)/2"
+      },
+      {
+        "label": "Peso",
+        "text": "FREQ = frecuencia absoluta del intervalo."
+      },
+      {
+        "label": "Leer",
+        "text": "Se lee el resultado.",
+        "formula": "x̄ = 35,62 ; sx = 3,0101",
+        "calc": "MENU→6 Estadística→1 Una variable (Frecuencia: Sí): x = 31, 33, 35, 37, 39, 41, 43 ; FREQ = 28, 36, 43, 51, 27, 11, 4 → OPTN→1 Cálculo 1 variable → x̄ ; sx"
+      }
+    ],
+    "why": "Con datos agrupados la calculadora necesita marcas de clase como x y frecuencias absolutas como FREQ.",
+    "traps": [
+      "",
+      "Cada intervalo quedaría con el mismo peso, sin considerar cuántos paquetes tiene.",
+      "Invierte las columnas.",
+      "Usa límites superiores y acumuladas: ambos son datos equivocados para la media.",
+      "El límite inferior sesga la media hacia abajo; hay que usar el punto medio del intervalo."
+    ]
+  },
+  {
+    "id": "p1-029",
+    "topic": "descriptiva",
+    "kind": "planteo",
+    "difficulty": 1,
+    "source": "original (calculadora)",
+    "stem": "Los 12 meses de despidos de una empresa son una MUESTRA de su historia, mientras que los kilómetros de TODOS los camiones de una flota son una POBLACIÓN. En la salida de 1-Variable Calc, ¿qué desvío corresponde usar en cada caso?",
+    "options": [
+      "Ambos casos: sx, porque siempre conviene corregir por n − 1.",
+      "Muestra de 12 meses: sx (n − 1); todos los camiones: σx (n).",
+      "Muestra de 12 meses: σx; todos los camiones: sx.",
+      "Ambos casos: σx, porque es el que muestra primero la pantalla.",
+      "Muestra: x̄; población: μ, sin usar desvíos."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Criterio",
+        "text": "Muestra ⇒ divisor n − 1 ; población ⇒ divisor n.",
+        "formula": "s = √[Σ(x − x̄)²/(n−1)] ; σ = √[Σ(x − μ)²/n]"
+      },
+      {
+        "label": "En la calculadora",
+        "text": "OPTN→1 Cálculo 1 variable muestra σx, sx (σx = poblacional, sx = muestral)."
+      }
+    ],
+    "why": "sx divide por n − 1 (muestra) y σx por n (población); se elige según lo que representen los datos.",
+    "traps": [
+      "La corrección es para estimar desde una muestra, no para una población completa.",
+      "",
+      "Invierte los desvíos: la muestra lleva n − 1 (sx) y la población n (σx).",
+      "El criterio depende de si los datos son muestra o población.",
+      "x̄ y μ son medias, no desvíos."
+    ]
+  },
+  {
+    "id": "p1-030",
+    "topic": "probabilidad",
+    "kind": "numeric",
+    "difficulty": 1,
+    "source": "TP2 ej 1d",
+    "stem": "Un contenedor tiene 8 pelotas rojas, 2 pelotas blancas, 10 cubos rojos y 6 cubos blancos (26 juguetes). Se elige uno al azar. ¿Cuál es la probabilidad de que sea un cubo o un juguete blanco?",
+    "options": [
+      "0,1893",
+      "0,2308",
+      "0,9231",
+      "0,6923",
+      "0,3846"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "'O' ⇒ unión; cubo y blanco no son excluyentes (existen cubos blancos)."
+      },
+      {
+        "label": "Datos",
+        "text": "P(cubo) = 16/26 ; P(blanco) = 8/26 ; P(cubo ∩ blanco) = 6/26."
+      },
+      {
+        "label": "Aplicar",
+        "text": "Regla de la suma restando la intersección.",
+        "formula": "P(C ∪ B) = 16/26 + 8/26 − 6/26 = 18/26 = 0,6923"
+      }
+    ],
+    "why": "Como hay cubos blancos, los sucesos no son excluyentes y hay que restar la intersección: 18/26 = 0,6923.",
+    "traps": [
+      "Multiplica las probabilidades como si 'o' fuera 'y' con independencia.",
+      "Calcula solo la intersección (cubo blanco) en lugar de la unión.",
+      "Suma P(cubo) + P(blanco) sin restar la intersección (cubos blancos, contados dos veces).",
+      "",
+      "Cuenta los cubos rojos (el complemento de la unión dentro de los cubos) y no la unión."
+    ]
+  },
+  {
+    "id": "p1-031",
+    "topic": "probabilidad",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP2 ej 1e",
+    "stem": "Un contenedor tiene 8 pelotas rojas, 2 pelotas blancas, 10 cubos rojos y 6 cubos blancos (26 juguetes). Se elige uno al azar. ¿Son independientes los sucesos 'cubo' y 'juguete rojo'?",
+    "options": [
+      "No: P(C ∩ R) = 10/26 = 0,3846 ≠ P(C)·P(R) = 0,6154 · 0,6923 = 0,4260.",
+      "No: son mutuamente excluyentes porque un cubo no puede ser pelota.",
+      "Sí: P(C ∩ R) = 0,3846 y P(C) + P(R) − P(C ∩ R) = 0,9231, valores razonables.",
+      "Sí: son independientes porque pueden ocurrir a la vez (hay cubos rojos).",
+      "No se puede determinar sin conocer cuántos juguetes hay de cada tipo."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Criterio",
+        "text": "A y B son independientes si P(A ∩ B) = P(A)·P(B)."
+      },
+      {
+        "label": "Calcular",
+        "text": "P(C) = 16/26 = 0,6154 ; P(R) = 18/26 = 0,6923 ; P(C ∩ R) = 10/26 = 0,3846.",
+        "formula": "P(C)·P(R) = 0,4260"
+      },
+      {
+        "label": "Comparar",
+        "text": "0,3846 ≠ 0,4260 ⇒ NO son independientes."
+      }
+    ],
+    "why": "La independencia se verifica con P(A∩B) = P(A)·P(B); acá 0,3846 ≠ 0,4260, entonces hay dependencia.",
+    "traps": [
+      "",
+      "Cubo y rojo no son excluyentes (hay 10 cubos rojos); además excluyente no es lo mismo que dependiente.",
+      "Verifica la unión, que no sirve para probar independencia.",
+      "Confunde independencia con 'no ser excluyentes'.",
+      "Los datos ya están dados en el enunciado."
+    ]
+  },
+  {
+    "id": "p1-032",
+    "topic": "probabilidad",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 3a",
+    "stem": "Sean A y B sucesos independientes con P(A) = 0,40 y P(B) igual al doble de P(A). ¿Cuánto vale P(A ∪ B)?",
+    "options": [
+      "0,32",
+      "0,52",
+      "0,88",
+      "1,20",
+      "0,80"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Datos",
+        "text": "P(B) = 2·0,40 = 0,80."
+      },
+      {
+        "label": "Intersección",
+        "text": "Por independencia, P(A ∩ B) = P(A)·P(B).",
+        "formula": "= 0,40 · 0,80 = 0,32"
+      },
+      {
+        "label": "Unión",
+        "text": "Se aplica la regla de la suma restando la intersección.",
+        "formula": "P(A ∪ B) = 0,40 + 0,80 − 0,32 = 0,88"
+      }
+    ],
+    "why": "Con independencia la intersección es el producto (0,32) y la unión es 0,40 + 0,80 − 0,32 = 0,88.",
+    "traps": [
+      "Calcula la intersección P(A)·P(B) en lugar de la unión.",
+      "Interpreta al revés 'el doble': toma P(B) = 0,20 y obtiene 0,40 + 0,20 − 0,08.",
+      "",
+      "Suma las probabilidades sin restar la intersección (resultado imposible, mayor que 1).",
+      "Supone que A está contenido en B y resta P(A) como intersección."
+    ]
+  },
+  {
+    "id": "p1-033",
+    "topic": "probabilidad",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 3b",
+    "stem": "Sean A y B sucesos NO independientes con P(A) = 0,40, P(B) igual al doble de P(A) y P(B/A) = 0,60. ¿Cuánto vale P(A ∪ B)?",
+    "options": [
+      "0,88",
+      "0,96",
+      "1,20",
+      "0,60",
+      "0,72"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Datos",
+        "text": "P(A) = 0,40 ; P(B) = 0,80 ; P(B/A) = 0,60."
+      },
+      {
+        "label": "Intersección",
+        "text": "Regla del producto con condicional.",
+        "formula": "P(A ∩ B) = P(A)·P(B/A) = 0,40 · 0,60 = 0,24"
+      },
+      {
+        "label": "Unión",
+        "text": "Se aplica la regla de la suma restando la intersección.",
+        "formula": "P(A ∪ B) = 0,40 + 0,80 − 0,24 = 0,96"
+      }
+    ],
+    "why": "Sin independencia la intersección es P(A)·P(B/A) = 0,24, y la unión queda en 0,96.",
+    "traps": [
+      "Supone independencia (P(A∩B) = P(A)·P(B)) a pesar de que el enunciado dice que no lo son.",
+      "",
+      "Suma las probabilidades sin restar la intersección.",
+      "Usa P(B/A) = 0,60 directamente como si fuera la intersección.",
+      "Calcula la intersección como P(B/A)·P(B) en vez de P(A)·P(B/A)."
+    ]
+  },
+  {
+    "id": "p1-034",
+    "topic": "probabilidad",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "TP2 ej 4",
+    "stem": "Los sucesos A y B son independientes, con P(A) = h, P(B) = 0,2 y P(A ∪ B) = 0,6. ¿Qué planteo permite hallar h y cuál es su valor?",
+    "options": [
+      "h + 0,2 − 0,6 = 0, de donde h = 0,4, y como son independientes se divide por 2: h = 0,2.",
+      "h + 0,2 = 0,6, de donde h = 0,4.",
+      "h · 0,2 = 0,6, de donde h = 3.",
+      "h + 0,2 − h·0,2 = 0,6, de donde h = 0,5.",
+      "h + 0,2 + h·0,2 = 0,6, de donde h = 0,33."
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Regla de la suma",
+        "text": "Se escribe la regla de la suma.",
+        "formula": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)"
+      },
+      {
+        "label": "Independencia",
+        "text": "Se reemplaza la intersección por el producto.",
+        "formula": "h + 0,2 − 0,2h = 0,6"
+      },
+      {
+        "label": "Despejar",
+        "text": "Se despeja la incógnita.",
+        "formula": "0,8h = 0,4 ⇒ h = 0,5"
+      }
+    ],
+    "why": "Independencia ⇒ P(A∩B) = h·0,2; con la regla de la suma resulta 0,8h = 0,4 y h = 0,5.",
+    "traps": [
+      "Mezcla planteos sin criterio; la independencia se usa para P(A ∩ B) = h·0,2, no para dividir.",
+      "Ignora la intersección en la regla de la suma.",
+      "Iguala la unión al producto; el resultado (h > 1) es imposible.",
+      "",
+      "Suma la intersección en lugar de restarla."
+    ]
+  },
+  {
+    "id": "p1-035",
+    "topic": "probabilidad",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "original",
+    "stem": "Dos sucesos A y B tienen P(A) = 0,3, P(B) = 0,4 y P(A ∩ B) = 0 (son mutuamente excluyentes). ¿Son independientes?",
+    "options": [
+      "Sí: P(A ∪ B) = 0,3 + 0,4 = 0,7 es la suma de ambas, lo que prueba independencia.",
+      "No se puede decir nada sin conocer P(A/B).",
+      "Sí: como no tienen elementos en común, uno no influye en el otro.",
+      "No: no pueden ser independientes porque P(A) + P(B) < 1.",
+      "No: P(A ∩ B) = 0 ≠ P(A)·P(B) = 0,12; si ocurre uno, el otro no puede ocurrir."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Criterio",
+        "text": "Independientes ⇔ P(A ∩ B) = P(A)·P(B)."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "P(A)·P(B) = 0,3 · 0,4 = 0,12 ≠ 0"
+      },
+      {
+        "label": "Concluir",
+        "text": "Excluyentes con probabilidades positivas siempre son dependientes: P(A/B) = 0 ≠ P(A)."
+      }
+    ],
+    "why": "Dos sucesos excluyentes con probabilidad positiva nunca son independientes porque P(A/B) = 0 ≠ P(A).",
+    "traps": [
+      "La suma simple vale para excluyentes y no prueba independencia.",
+      "Alcanza con comparar P(A∩B) con P(A)·P(B), que ya están dados.",
+      "Confunde excluyentes con independientes: justamente la exclusión hace que uno determine al otro.",
+      "La suma de probabilidades menor a 1 no tiene relación con la independencia.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-036",
+    "topic": "probabilidad",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP2 ej 13d",
+    "stem": "En una población, 25 de 80 padres fueron a la universidad. Se seleccionan 3 padres al azar sin reposición. ¿Cuál es la probabilidad de que los tres hayan sido universitarios?",
+    "options": [
+      "0,028",
+      "0,938",
+      "0,027",
+      "0,312",
+      "0,031"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Modelo",
+        "text": "Sin reposición: cada extracción cambia el universo (regla de la multiplicación)."
+      },
+      {
+        "label": "Planteo",
+        "text": "Se plantea la expresión de la probabilidad pedida.",
+        "formula": "P = 25/80 · 24/79 · 23/78"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "= 0,028"
+      }
+    ],
+    "why": "Sin reposición, cada extracción reduce numerador y denominador: 25/80 · 24/79 · 23/78 ≈ 0,028.",
+    "traps": [
+      "",
+      "Suma las tres probabilidades en vez de multiplicarlas.",
+      "Baja el numerador pero no el denominador (mezcla de ambos esquemas).",
+      "Usa solo la probabilidad de la primera extracción.",
+      "Usa reposición (denominadores 80 y numeradores 25 constantes) cuando el enunciado implica sin reposición."
+    ]
+  },
+  {
+    "id": "p1-037",
+    "topic": "probabilidad",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 14d",
+    "stem": "Un fabricante compra microchips: 30% a Electronic, 20% a Crown y 50% a Componentes CC. Los chips se mezclan en un depósito muy grande. Si se extraen dos al azar, ¿cuál es la probabilidad de que ambos sean del mismo proveedor?",
+    "options": [
+      "0,030",
+      "1,00",
+      "0,38",
+      "0,09",
+      "0,62"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Casos",
+        "text": "Ambos de Electronic, o ambos de Crown, o ambos de CC (excluyentes entre sí)."
+      },
+      {
+        "label": "Independencia",
+        "text": "Depósito grande ⇒ extracciones independientes."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "0,3² + 0,2² + 0,5² = 0,09 + 0,04 + 0,25 = 0,38"
+      }
+    ],
+    "why": "Se suman los tres casos excluyentes 'ambos del proveedor i': 0,3² + 0,2² + 0,5² = 0,38.",
+    "traps": [
+      "Multiplica los tres proveedores: mide algo imposible con solo dos chips.",
+      "Suma las tres proporciones: eso es la probabilidad de que el primero sea de alguno de los tres.",
+      "",
+      "Considera solo uno de los tres proveedores.",
+      "Calcula la probabilidad de que sean de proveedores DISTINTOS."
+    ]
+  },
+  {
+    "id": "p1-038",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 8d",
+    "stem": "En una zona rural el 3% de los habitantes contrae una enfermedad. Un análisis da positivo en el 90% de los enfermos y en el 8% de los sanos. Si se analiza a una persona al azar, ¿cuál es la probabilidad de que esté enferma o que el resultado sea negativo?",
+    "options": [
+      "0,9730",
+      "0,0269",
+      "0,9254",
+      "0,9224",
+      "0,9000"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Enferma o negativo' ⇒ su complemento es 'sana y positivo'.",
+        "formula": "P(E ∪ N) = 1 − P(S ∩ P)"
+      },
+      {
+        "label": "Intersección",
+        "text": "Se calcula la intersección con la regla del producto.",
+        "formula": "P(S ∩ P) = 0,97 · 0,08 = 0,0776"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "1 − 0,0776 = 0,9224"
+      }
+    ],
+    "why": "El complemento de 'enferma o negativo' es 'sana y positivo' (0,0776), así que la unión vale 0,9224.",
+    "traps": [
+      "Usa el complemento de 'enferma y positivo' (que es la unión 'sana o negativo').",
+      "Multiplica P(E)·P(neg), es decir, trata 'o' como 'y' independiente.",
+      "Suma P(E) + P(neg) sin restar la intersección.",
+      "",
+      "Entrega P(positivo/enferma), una condicional."
+    ]
+  },
+  {
+    "id": "p1-039",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP2 ej 8 (variante Bayes)",
+    "stem": "En una zona rural el 3% de los habitantes contrae una enfermedad. Un análisis da positivo en el 90% de los enfermos y en el 8% de los sanos. Si el análisis de una persona al azar dio positivo, ¿cuál es la probabilidad de que realmente esté enferma?",
+    "options": [
+      "0,0302",
+      "0,3375",
+      "0,9000",
+      "0,0270",
+      "0,2581"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "Se conoce el resultado y se busca la causa ⇒ Bayes.",
+        "formula": "P(E/P) = P(E ∩ P) / P(P)"
+      },
+      {
+        "label": "Numerador",
+        "text": "Probabilidad conjunta del suceso buscado y el dato.",
+        "formula": "P(E ∩ P) = 0,03 · 0,90 = 0,027"
+      },
+      {
+        "label": "Denominador",
+        "text": "Probabilidad total de positivo.",
+        "formula": "P(P) = 0,027 + 0,97 · 0,08 = 0,1046"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "0,027 / 0,1046 = 0,2581"
+      }
+    ],
+    "why": "Aunque P(P/E) = 0,9, la enfermedad es rara, entonces P(E/P) = 0,027/0,1046 = 0,2581.",
+    "traps": [
+      "Divide por P(negativo) en vez de P(positivo).",
+      "Divide por la tasa de falsos positivos en lugar de por P(positivo) total.",
+      "Entrega P(positivo/enferma): invierte la condicional (falacia de la probabilidad inversa).",
+      "Entrega la conjunta P(enferma ∩ positivo), sin dividir por P(positivo).",
+      ""
+    ]
+  },
+  {
+    "id": "p1-040",
+    "topic": "condicional-bayes",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "Un test detecta correctamente al 90% de los enfermos (P(+/E) = 0,90). El resultado de una persona fue positivo. ¿Qué afirmación es correcta?",
+    "options": [
+      "La probabilidad de estar sana es 0,90 porque el test es confiable.",
+      "No se puede afirmar que P(E/+) = 0,90; hace falta la prevalencia y la tasa de falsos positivos (Bayes).",
+      "La probabilidad de estar enferma es 0,90, porque el test acierta el 90%.",
+      "La probabilidad de estar enferma es 0,10, el complemento de la sensibilidad.",
+      "No se puede calcular nada: la probabilidad condicional no se invierte nunca."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Distinguir",
+        "text": "P(+/E) responde 'si está enferma, ¿cuál es la chance de positivo?'. P(E/+) responde lo inverso."
+      },
+      {
+        "label": "Teorema",
+        "text": "Teorema de Bayes.",
+        "formula": "P(E/+) = P(E)·P(+/E) / [P(E)·P(+/E) + P(Eᶜ)·P(+/Eᶜ)]"
+      },
+      {
+        "label": "Conclusión",
+        "text": "Faltan P(E) y P(+/Eᶜ)."
+      }
+    ],
+    "why": "P(A/B) y P(B/A) son distintas; para invertir hace falta Bayes con la probabilidad a priori.",
+    "traps": [
+      "Mezcla las probabilidades del test con la condición de la persona.",
+      "",
+      "Invierte la condicional: P(+/E) no es P(E/+).",
+      "El complemento de P(+/E) es P(−/E), no tiene que ver con P(E/+).",
+      "Se invierte con Bayes, pero necesita más datos."
+    ]
+  },
+  {
+    "id": "p1-041",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP2 ej 9a",
+    "stem": "El 60% de los estudiantes cursa carreras de Económicas (E). De estos, el 70% trabaja en administración (A). Además, el 75% estudia Económicas o trabaja en administración. ¿Cuál es la probabilidad de que NO estudie Económicas y trabaje en administración?",
+    "options": [
+      "0,57",
+      "0,15",
+      "0,228",
+      "0,42",
+      "0,25"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Intersección",
+        "text": "Regla del producto con la condicional dada.",
+        "formula": "P(E ∩ A) = 0,60 · 0,70 = 0,42"
+      },
+      {
+        "label": "Hallar P(A)",
+        "text": "De la regla de la suma.",
+        "formula": "0,75 = 0,60 + P(A) − 0,42 ⇒ P(A) = 0,57"
+      },
+      {
+        "label": "Pedido",
+        "text": "Solo-administración = P(A) − P(E ∩ A).",
+        "formula": "P(Eᶜ ∩ A) = 0,57 − 0,42 = 0,15"
+      }
+    ],
+    "why": "Con P(E∩A) = 0,42 se despeja P(A) = 0,57 y P(Eᶜ∩A) = 0,57 − 0,42 = 0,15.",
+    "traps": [
+      "Entrega P(A) completo, incluyendo a quienes sí estudian Económicas.",
+      "",
+      "Multiplica P(Eᶜ)·P(A) como si fueran independientes.",
+      "Entrega P(E ∩ A) en lugar de P(Eᶜ ∩ A).",
+      "Entrega el complemento de la unión (ni Económicas ni administración)."
+    ]
+  },
+  {
+    "id": "p1-042",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP2 ej 9b",
+    "stem": "El 60% de los estudiantes cursa carreras de Económicas (E). De estos, el 70% trabaja en administración (A). Además, el 75% estudia Económicas o trabaja en administración. De quienes trabajan en administración, ¿qué proporción estudia Económicas?",
+    "options": [
+      "0,7368",
+      "0,5600",
+      "0,60",
+      "0,70",
+      "0,42"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "'De quienes trabajan en administración' ⇒ el universo es A: se condiciona a A.",
+        "formula": "P(E/A) = P(E ∩ A) / P(A)"
+      },
+      {
+        "label": "Datos",
+        "text": "P(E ∩ A) = 0,42 ; P(A) = 0,57."
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "0,42 / 0,57 = 0,7368"
+      }
+    ],
+    "why": "La frase 'de quienes trabajan en administración' fija el denominador P(A): 0,42/0,57 = 0,7368.",
+    "traps": [
+      "",
+      "Divide por P(E ∪ A) = 0,75 en lugar de por P(A) = 0,57.",
+      "Entrega P(E) sin condicionar.",
+      "Entrega P(A/E) = 0,70, que es la condicional inversa.",
+      "Entrega la conjunta sin dividir por P(A)."
+    ]
+  },
+  {
+    "id": "p1-043",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 10c",
+    "stem": "En una universidad el 20% de los profesores son titulares y el resto adjuntos. El 70% de los titulares tiene dedicación exclusiva y solo el 15% de los adjuntos. ¿Qué proporción de los profesores SIN dedicación exclusiva son adjuntos?",
+    "options": [
+      "2,6154",
+      "0,8500",
+      "0,8000",
+      "0,9189",
+      "0,6800"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "Se conoce la categoría de dedicación y se busca la causa (titular/adjunto) ⇒ Bayes."
+      },
+      {
+        "label": "Total",
+        "text": "P(sin exclusiva) = 0,2·0,30 + 0,8·0,85 = 0,06 + 0,68 = 0,74."
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "P(Adj/sin) = 0,68 / 0,74 = 0,9189"
+      }
+    ],
+    "why": "P(adjunto ∩ sin exclusiva) = 0,68 y P(sin exclusiva) = 0,74, así que la condicional vale 0,9189.",
+    "traps": [
+      "Divide por P(con exclusiva) = 0,26 en vez de por P(sin exclusiva) = 0,74.",
+      "Entrega P(sin exclusiva / adjunto) = 0,85, la condicional inversa.",
+      "Entrega la proporción de adjuntos, sin condicionar.",
+      "",
+      "Entrega la conjunta (adjunto y sin exclusiva) sin dividir por P(sin exclusiva)."
+    ]
+  },
+  {
+    "id": "p1-044",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 11c",
+    "stem": "Una empresa recibe partes de dos proveedores: 65% de A y 35% de B. La probabilidad de que una parte sea mala es 2% si viene de A y 5% si viene de B. Si una parte resulta mala, ¿cuál es la probabilidad de que provenga de B?",
+    "options": [
+      "0,05",
+      "0,4262",
+      "0,35",
+      "0,0175",
+      "0,5738"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "Se conoce el efecto (parte mala) y se busca la causa (proveedor) ⇒ Bayes.",
+        "formula": "P(B/M) = P(B)·P(M/B) / P(M)"
+      },
+      {
+        "label": "Probabilidad total",
+        "text": "Se pondera cada rama por su probabilidad.",
+        "formula": "P(M) = 0,65·0,02 + 0,35·0,05 = 0,013 + 0,0175 = 0,0305"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "0,0175 / 0,0305 = 0,5738"
+      }
+    ],
+    "why": "Bayes: P(B/M) = 0,0175/0,0305 = 0,5738; el proveedor B aporta más partes malas aunque entregue menos.",
+    "traps": [
+      "Entrega P(mala/B) = 0,05, la condicional inversa.",
+      "Calcula la probabilidad de que provenga de A en lugar de B.",
+      "Entrega la probabilidad a priori de B, ignorando la información de que la parte es mala.",
+      "Entrega la conjunta P(B ∩ mala) sin dividir por P(mala).",
+      ""
+    ]
+  },
+  {
+    "id": "p1-045",
+    "topic": "condicional-bayes",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "TP2 ej 11b",
+    "stem": "Un proveedor A entrega el 65% de las partes (2% malas) y un proveedor B el 35% restante (5% malas). Se elige una parte al azar. ¿Cuál es el planteo correcto para P(parte mala)?",
+    "options": [
+      "P(M) = 0,65·0,05 + 0,35·0,02 = 0,0395",
+      "P(M) = (0,02 + 0,05)/2 = 0,035",
+      "P(M) = 0,65·0,02 + 0,35·0,05 = 0,0305 (probabilidad total).",
+      "P(M) = 0,02 + 0,05 = 0,07",
+      "P(M) = 0,0175/0,0305 = 0,5738"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Partición",
+        "text": "A y B son exhaustivos y excluyentes."
+      },
+      {
+        "label": "Teorema",
+        "text": "Probabilidad total.",
+        "formula": "P(M) = P(A)·P(M/A) + P(B)·P(M/B)"
+      },
+      {
+        "label": "Reemplazar",
+        "text": "Se reemplazan los datos.",
+        "formula": "= 0,65·0,02 + 0,35·0,05 = 0,0305"
+      }
+    ],
+    "why": "Probabilidad total: se pondera cada tasa de falla por la participación de su proveedor.",
+    "traps": [
+      "Cruza las ponderaciones: asigna la tasa de B a la participación de A y viceversa.",
+      "Promedia simple las tasas en lugar de ponderar por 65% y 35%.",
+      "",
+      "Suma las tasas de falla sin ponderar por la participación de cada proveedor.",
+      "Es P(B/M) (Bayes), no la probabilidad total de que una parte sea mala."
+    ]
+  },
+  {
+    "id": "p1-046",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 14c",
+    "stem": "Un fabricante compra chips a tres proveedores: 30% a Electronic (3% defectuosos), 20% a Crown (5%) y 50% a Componentes CC (4%). Un chip extraído al azar es defectuoso. ¿Cuál es la probabilidad de que sea de Componentes CC?",
+    "options": [
+      "0,5128",
+      "0,50",
+      "0,04",
+      "0,2308",
+      "0,0200"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "Bayes: se conoce el resultado (defectuoso) y se busca el proveedor."
+      },
+      {
+        "label": "Total",
+        "text": "Probabilidad total del dato observado.",
+        "formula": "P(D) = 0,3·0,03 + 0,2·0,05 + 0,5·0,04 = 0,039"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "P(CC/D) = 0,02 / 0,039 = 0,5128"
+      }
+    ],
+    "why": "El aporte de CC al total de defectuosos es 0,02 de 0,039: 0,5128.",
+    "traps": [
+      "",
+      "Entrega la probabilidad a priori de CC, sin usar que el chip es defectuoso.",
+      "Entrega P(defectuoso/CC) = 0,04, la condicional inversa.",
+      "Calcula la probabilidad de que sea de Electronic.",
+      "Entrega la conjunta P(CC ∩ defectuoso) = 0,02."
+    ]
+  },
+  {
+    "id": "p1-047",
+    "topic": "condicional-bayes",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "Práctica 1er parcial ej 2a",
+    "stem": "En una empresa el 30% de los empleados tiene título universitario (U). De ellos, el 40% trabaja en atención al cliente (A). Además, el 72% de todos los empleados trabaja en atención al cliente. Si un empleado NO es universitario, ¿cuál es la probabilidad de que trabaje en atención al cliente?",
+    "options": [
+      "0,720",
+      "0,400",
+      "0,600",
+      "0,857",
+      "0,833"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Intersección U∩A",
+        "text": "Se aplica la regla del producto con la condicional dada.",
+        "formula": "P(U ∩ A) = 0,30·0,40 = 0,12"
+      },
+      {
+        "label": "Intersección Uᶜ∩A",
+        "text": "A en total es 0,72.",
+        "formula": "P(Uᶜ ∩ A) = 0,72 − 0,12 = 0,60"
+      },
+      {
+        "label": "Condicional",
+        "text": "El universo es Uᶜ: 0,70.",
+        "formula": "P(A/Uᶜ) = 0,60/0,70 = 0,857"
+      }
+    ],
+    "why": "Se condiciona a los no universitarios (70%): 0,60/0,70 = 0,857.",
+    "traps": [
+      "Entrega P(A) sin condicionar.",
+      "Entrega P(A/U) = 0,40: condiciona al grupo equivocado.",
+      "Entrega la conjunta P(A ∩ Uᶜ) = 0,60 sin dividir por P(Uᶜ).",
+      "",
+      "Divide por P(A): calcula P(Uᶜ/A) en lugar de P(A/Uᶜ)."
+    ]
+  },
+  {
+    "id": "p1-048",
+    "topic": "contingencia",
+    "kind": "numeric",
+    "difficulty": 1,
+    "source": "TP2 ej 5b",
+    "stem": "En un centro de atención al cliente se registraron 90 clientes según género y edad:<table><thead><tr><th></th><th>Masculino</th><th>Femenino</th></tr></thead><tbody><tr><td>Menos de 30 años</td><td>20</td><td>15</td></tr><tr><td>30 años o más</td><td>30</td><td>25</td></tr></tbody></table>Si se elige un cliente al azar, ¿cuál es la probabilidad de que sea de género femenino o tenga menos de 30 años?",
+    "options": [
+      "0,5556",
+      "0,6667",
+      "0,8333",
+      "0,1667",
+      "0,1728"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Marginales",
+        "text": "Femenino = 15 + 25 = 40 ; menos de 30 = 20 + 15 = 35 ; ambas = 15."
+      },
+      {
+        "label": "Contar",
+        "text": "Unión por conteo.",
+        "formula": "40 + 35 − 15 = 60"
+      },
+      {
+        "label": "Probabilidad",
+        "text": "Se pasa de conteos a probabilidad.",
+        "formula": "60/90 = 0,6667"
+      }
+    ],
+    "why": "Con la tabla se cuenta la unión sin repetir la celda compartida: 60 de 90 = 0,6667.",
+    "traps": [
+      "Entrega solo P(masculino), el complemento de 'femenino'.",
+      "",
+      "Suma 40 (femenino) + 35 (menos de 30) sin restar los 15 que cumplen ambas.",
+      "Entrega la intersección (femenino y menor de 30).",
+      "Multiplica P(F)·P(<30), es decir la intersección bajo independencia."
+    ]
+  },
+  {
+    "id": "p1-049",
+    "topic": "contingencia",
+    "kind": "numeric",
+    "difficulty": 1,
+    "source": "TP2 ej 5d",
+    "stem": "En un centro de atención al cliente se registraron 90 clientes según género y edad:<table><thead><tr><th></th><th>Masculino</th><th>Femenino</th></tr></thead><tbody><tr><td>Menos de 30 años</td><td>20</td><td>15</td></tr><tr><td>30 años o más</td><td>30</td><td>25</td></tr></tbody></table>Si el cliente elegido tiene menos de 30 años, ¿cuál es la probabilidad de que sea de género masculino?",
+    "options": [
+      "0,5556",
+      "0,4000",
+      "0,5714",
+      "0,3333",
+      "0,2222"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "'Si tiene menos de 30' ⇒ el universo es la fila 'menos de 30'."
+      },
+      {
+        "label": "Contar",
+        "text": "Fila: 20 masculinos + 15 femeninos = 35."
+      },
+      {
+        "label": "Probabilidad",
+        "text": "Se pasa de conteos a probabilidad.",
+        "formula": "P(M/<30) = 20/35 = 0,5714"
+      }
+    ],
+    "why": "La condición reduce el universo a la fila (35 personas); 20 de ellas son masculinas.",
+    "traps": [
+      "Entrega P(masculino) sin condicionar.",
+      "Divide por el total de masculinos: calcula P(<30 / M).",
+      "",
+      "Divide por la unión femenino ∪ menos de 30 (60) en lugar de por el total de menores de 30.",
+      "Divide por el total de la tabla (90): es la conjunta P(M ∩ <30)."
+    ]
+  },
+  {
+    "id": "p1-050",
+    "topic": "contingencia",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP2 ej 13a-c",
+    "stem": "En 80 familias se relevó la escolaridad de padres e hijos:<table><thead><tr><th>Padres \\ Hijos</th><th>Hijo fue a la universidad</th><th>Hijo no fue</th><th>Total</th></tr></thead><tbody><tr><td>Padre fue</td><td>18</td><td>7</td><td>25</td></tr><tr><td>Padre no fue</td><td>22</td><td>33</td><td>55</td></tr><tr><td>Total</td><td>40</td><td>40</td><td>80</td></tr></tbody></table>¿Es independiente la asistencia del hijo a la universidad de que el padre haya asistido?",
+    "options": [
+      "No: P(H ∩ P) = 18/80 = 0,225, que es distinto de 0,5.",
+      "No se puede saber, porque la tabla no tiene probabilidades sino frecuencias.",
+      "Sí: la mitad de los hijos asiste (40/80), sin importar los padres.",
+      "Sí: P(H) = 40/80 = 0,50, que está entre 0,72 y 0,40.",
+      "No: P(H/P) = 18/25 = 0,72 ≠ P(H/Pᶜ) = 22/55 = 0,40 (y ambos difieren de P(H) = 0,50)."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Criterio",
+        "text": "Independencia ⇔ P(H/P) = P(H) (o P(H ∩ P) = P(H)·P(P))."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "P(H/P) = 18/25 = 0,72 ; P(H/Pᶜ) = 22/55 = 0,40 ; P(H) = 0,50"
+      },
+      {
+        "label": "Concluir",
+        "text": "0,72 ≠ 0,50 ⇒ dependientes: haber ido el padre aumenta la chance de que el hijo también vaya."
+      }
+    ],
+    "why": "Si fueran independientes P(H/P) sería igual a P(H); acá 0,72 ≠ 0,50.",
+    "traps": [
+      "Compara la conjunta con P(H), una comparación que no corresponde al criterio de independencia.",
+      "Las frecuencias permiten calcular todas las probabilidades por cociente.",
+      "Mira solo el total de hijos; no compara con la tasa dentro de cada grupo de padres.",
+      "Que P(H) quede entre ambas condicionales no prueba independencia: debería ser igual a las dos.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-051",
+    "topic": "contingencia",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "Práctica U1 y U2 primer parcial ej 9d",
+    "stem": "De 100 envases de alcohol en gel se clasificó la tapa y si sufrieron roturas en menos de un mes:<table><thead><tr><th></th><th>Dosificador</th><th>Flip top</th><th>Total</th></tr></thead><tbody><tr><td>Roturas</td><td>6</td><td>28</td><td>34</td></tr><tr><td>Sin roturas</td><td>24</td><td>42</td><td>66</td></tr><tr><td>Total</td><td>30</td><td>70</td><td>100</td></tr></tbody></table>Si un envase no presenta ninguna rotura, ¿cuál es la probabilidad de que su tapa sea flip top?",
+    "options": [
+      "0,60",
+      "0,42",
+      "0,6364",
+      "0,8235",
+      "0,70"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "'Si no presenta rotura' ⇒ universo = fila 'sin roturas' (66)."
+      },
+      {
+        "label": "Contar",
+        "text": "De 66 sin roturas, 42 tienen tapa flip top."
+      },
+      {
+        "label": "Probabilidad",
+        "text": "Se pasa de conteos a probabilidad.",
+        "formula": "42/66 = 0,6364"
+      }
+    ],
+    "why": "La condición 'sin rotura' limita el universo a 66 envases; 42 son flip top.",
+    "traps": [
+      "Divide por el total de flip top: calcula P(sin roturas / flip top).",
+      "Entrega la conjunta (sin roturas y flip top) sin dividir por P(sin roturas).",
+      "",
+      "Condiciona a 'con roturas' en vez de 'sin roturas'.",
+      "Entrega P(flip top) sin condicionar."
+    ]
+  },
+  {
+    "id": "p1-052",
+    "topic": "contingencia",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "Práctica U1 y U2 primer parcial ej 9d (2)",
+    "stem": "De 100 envases de alcohol en gel se clasificó la tapa y si sufrieron roturas en menos de un mes:<table><thead><tr><th></th><th>Dosificador</th><th>Flip top</th><th>Total</th></tr></thead><tbody><tr><td>Roturas</td><td>6</td><td>28</td><td>34</td></tr><tr><td>Sin roturas</td><td>24</td><td>42</td><td>66</td></tr><tr><td>Total</td><td>30</td><td>70</td><td>100</td></tr></tbody></table>Entre los envases con roturas, ¿qué proporción tiene tapa con dosificador?",
+    "options": [
+      "0,20",
+      "0,06",
+      "0,0909",
+      "0,30",
+      "0,1765"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "'Entre los envases con roturas' ⇒ universo = fila 'roturas' (34)."
+      },
+      {
+        "label": "Contar",
+        "text": "De 34 con roturas, 6 son dosificador."
+      },
+      {
+        "label": "Probabilidad",
+        "text": "Se pasa de conteos a probabilidad.",
+        "formula": "6/34 = 0,1765"
+      }
+    ],
+    "why": "El universo es 'con roturas' (34 envases); 6 de ellos tienen dosificador.",
+    "traps": [
+      "Divide por el total de dosificadores: calcula P(roturas/dosificador).",
+      "Entrega la conjunta P(dosificador ∩ roturas).",
+      "Divide por los envases SIN roturas.",
+      "Entrega P(dosificador) sin condicionar.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-053",
+    "topic": "contingencia",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "Práctica U1 y U2 primer parcial ej 9 (independencia)",
+    "stem": "En la tabla de 100 envases:<table><thead><tr><th></th><th>Dosificador</th><th>Flip top</th><th>Total</th></tr></thead><tbody><tr><td>Roturas</td><td>6</td><td>28</td><td>34</td></tr><tr><td>Sin roturas</td><td>24</td><td>42</td><td>66</td></tr><tr><td>Total</td><td>30</td><td>70</td><td>100</td></tr></tbody></table>¿Son independientes 'tener tapa con dosificador' y 'sufrir roturas'?",
+    "options": [
+      "Sí: ambos sucesos pueden ocurrir a la vez (hay 6 envases con ambos).",
+      "No: P(D) = 0,30 pero P(D/R) = 6/34 = 0,1765; la rotura cambia la probabilidad de dosificador.",
+      "No: son mutuamente excluyentes porque un envase no puede ser dosificador y tener roturas.",
+      "Sí: P(D ∩ R) = 0,06 es un valor pequeño, lo que indica que casi no se relacionan.",
+      "Sí: P(D/R) = 6/34 y P(R/D) = 6/30 suman 0,3765 < 1."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Criterio",
+        "text": "Independientes ⇔ P(D ∩ R) = P(D)·P(R)."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "P(D)·P(R) = 0,30 · 0,34 = 0,102 ≠ P(D ∩ R) = 0,06"
+      },
+      {
+        "label": "Concluir",
+        "text": "Son dependientes: con roturas, la proporción de dosificadores baja de 0,30 a 0,1765."
+      }
+    ],
+    "why": "0,06 ≠ 0,30·0,34 = 0,102, de modo que los sucesos son dependientes.",
+    "traps": [
+      "Poder ocurrir juntos (no ser excluyentes) no implica independencia.",
+      "",
+      "Hay 6 envases con ambas características; no son excluyentes.",
+      "Una conjunta pequeña no prueba independencia; hay que comparar con P(D)·P(R) = 0,102.",
+      "Esa suma no tiene interpretación probabilística para decidir independencia."
+    ]
+  },
+  {
+    "id": "p1-054",
+    "topic": "contingencia",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Recuperatorio 1er parcial ej 2b",
+    "stem": "El 55% de las órdenes se asigna a un técnico Senior (S), el 65% proviene de clientes frecuentes (F) y el 20% corresponde a un técnico Senior con cliente no frecuente. ¿Qué porcentaje de las órdenes fue atendido por un técnico Senior Y proviene de un cliente frecuente?",
+    "options": [
+      "35%",
+      "65%",
+      "55% · 65% = 35,75%",
+      "45%",
+      "20%"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Armar la tabla",
+        "text": "Fila S: total 0,55, de los cuales S ∩ Fᶜ = 0,20."
+      },
+      {
+        "label": "Completar",
+        "text": "El resto de la fila es S ∩ F.",
+        "formula": "P(S ∩ F) = 0,55 − 0,20 = 0,35"
+      },
+      {
+        "label": "Resultado",
+        "text": "35%."
+      }
+    ],
+    "why": "Dentro de la fila Senior (55%), lo que no es no-frecuente es frecuente: 55% − 20% = 35%.",
+    "traps": [
+      "",
+      "Entrega P(F), la marginal.",
+      "Multiplica los marginales asumiendo independencia, que el enunciado no autoriza.",
+      "Toma el complemento de S (no Senior) en lugar de P(S ∩ F).",
+      "Entrega el dato 'Senior y no frecuente' en lugar de completar la celda pedida."
+    ]
+  },
+  {
+    "id": "p1-055",
+    "topic": "contingencia",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Recuperatorio 1er parcial ej 2c",
+    "stem": "El 55% de las órdenes es de un técnico Senior (S), el 65% de clientes frecuentes (F) y el 20% de órdenes es de técnico Senior con cliente no frecuente. Sabiendo que una orden proviene de un cliente NO frecuente, ¿cuál es la probabilidad de que no haya sido atendida por un técnico Senior?",
+    "options": [
+      "0,3333",
+      "0,45",
+      "0,5714",
+      "0,4286",
+      "0,15"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Marginal",
+        "text": "P(Fᶜ) = 1 − 0,65 = 0,35."
+      },
+      {
+        "label": "Celda",
+        "text": "P(Sᶜ ∩ Fᶜ) = P(Fᶜ) − P(S ∩ Fᶜ).",
+        "formula": "= 0,35 − 0,20 = 0,15"
+      },
+      {
+        "label": "Condicional",
+        "text": "Se divide la conjunta por la probabilidad del evento condicionante.",
+        "formula": "P(Sᶜ/Fᶜ) = 0,15/0,35 = 0,4286"
+      }
+    ],
+    "why": "El universo es 'no frecuente' (0,35): 0,15 de eso no es Senior, o sea 0,4286.",
+    "traps": [
+      "Divide por P(no Senior) = 0,45: calcula P(no frecuente / no Senior).",
+      "Entrega P(no Senior) sin condicionar.",
+      "Calcula P(Senior / no frecuente) en lugar de su complemento.",
+      "",
+      "Entrega la conjunta (no Senior y no frecuente) sin dividir por P(no frecuente)."
+    ]
+  },
+  {
+    "id": "p1-056",
+    "topic": "va-discreta",
+    "kind": "numeric",
+    "difficulty": 1,
+    "source": "TP3 ej 1a",
+    "stem": "El número de errores por hora de un administrativo tiene esta distribución:<table><thead><tr><th>Errores por hora (X)</th><th>0</th><th>1</th><th>2</th><th>3</th></tr></thead><tbody><tr><td>P(X)</td><td>0,4</td><td>0,3</td><td>0,2</td><td>0,1</td></tr></tbody></table>¿Cuál es la esperanza E(X)?",
+    "options": [
+      "0,6 errores por hora",
+      "0,25 errores por hora",
+      "2,0 errores por hora",
+      "1 error por hora",
+      "1,5 errores por hora"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Fórmula",
+        "text": "Esperanza de una v.a. discreta: cada valor ponderado por su probabilidad.",
+        "formula": "E(X) = Σ x·P(x)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se carga X en la columna x y las probabilidades en FREQ; la media x̄ es E(X).",
+        "formula": "0·0,4 + 1·0,3 + 2·0,2 + 3·0,1 = 1",
+        "calc": "MENU→6 Estadística→1 Una variable (SETUP→Estadística→Frecuencia: Sí): x = 0,1,2,3 ; FREQ = 0,4 ; 0,3 ; 0,2 ; 0,1 → OPTN→1 Cálculo 1 variable → x̄ = 1 (esto es E(X))"
+      },
+      {
+        "label": "Interpretar",
+        "text": "En promedio, 1 error por hora a largo plazo."
+      }
+    ],
+    "why": "E(X) = Σ x·P(x) = 1; es un promedio ponderado, no un promedio simple de los valores.",
+    "traps": [
+      "Entrega P(X ≥ 1) = 0,6, una probabilidad, no la esperanza.",
+      "Promedia las probabilidades (1/4 de cada una) en vez de los valores.",
+      "Calcula E(X²) = Σ x²·P(x) en lugar de E(X).",
+      "",
+      "Promedia simple los valores 0, 1, 2, 3 sin ponderar por sus probabilidades."
+    ]
+  },
+  {
+    "id": "p1-057",
+    "topic": "va-discreta",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP3 ej 2b",
+    "stem": "Un vendedor tiene la siguiente distribución de autos vendidos un sábado:<table><thead><tr><th>Autos vendidos (X)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>P(X)</td><td>0,1</td><td>0,2</td><td>0,3</td><td>0,3</td><td>0,1</td></tr></tbody></table>Se obtiene E(X) = 2,1 autos y σ = 1,136 autos. ¿Cuál es la variabilidad relativa y qué indica con el criterio de la cátedra (baja fluctuación si CV < 0,2)?",
+    "options": [
+      "CV = 0,54: alta fluctuación, porque supera 0,2.",
+      "CV = 1,29: alta fluctuación, porque es mayor que 0,2.",
+      "CV = 1,85: alta fluctuación, porque es mayor que 0,2.",
+      "CV = 1,136: es la variabilidad relativa y es mayor que 0,2.",
+      "CV = 0,54: baja fluctuación, porque es menor que 1."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Fórmula",
+        "text": "Variabilidad relativa de una v.a.",
+        "formula": "CV = σ / E(X)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Con X en x y las probabilidades en FREQ, σx (poblacional) es el desvío de la v.a.",
+        "formula": "CV = 1,1358/2,1 = 0,5408",
+        "calc": "MENU→6 Estadística→1 Una variable: x = 0..4 ; FREQ = 0,1 ; 0,2 ; 0,3 ; 0,3 ; 0,1 → OPTN→1 Cálculo 1 variable → x̄ = 2,1 ; σx = 1,1358 (usar σx, no sx: es la v.a. completa)"
+      },
+      {
+        "label": "Concluir",
+        "text": "CV > 0,2 ⇒ la variable tiene alta fluctuación (el promedio no es muy representativo)."
+      }
+    ],
+    "why": "El CV = σ/E(X) ≈ 0,54 supera 0,2: hay alta fluctuación.",
+    "traps": [
+      "",
+      "Usa la varianza en lugar del desvío para el cociente.",
+      "Invierte el cociente (E/σ en lugar de σ/E).",
+      "Toma el desvío (variabilidad absoluta) como si fuera el CV.",
+      "Usa el umbral 1 en lugar de 0,2 de la cátedra."
+    ]
+  },
+  {
+    "id": "p1-058",
+    "topic": "va-discreta",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "TP3 ej 3a",
+    "stem": "Una empresa tiene dos empleados: A falta el 10% de las veces y B el 8% (independientes). Si concurre A se procesan 50 facturas; si concurre solo B, 25; si faltan ambos, 0. ¿Cuál es la probabilidad de que se procesen exactamente 25 facturas en un día?",
+    "options": [
+      "0,08",
+      "0,828",
+      "0,092",
+      "0,008",
+      "0,90"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "25 facturas ⇔ A falta Y B concurre."
+      },
+      {
+        "label": "Independencia",
+        "text": "Se reemplaza la intersección por el producto de las probabilidades.",
+        "formula": "P(25) = P(A falta)·P(B concurre) = 0,10·0,92"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "0,092"
+      }
+    ],
+    "why": "Para procesar 25 facturas A debe faltar (0,10) y B concurrir (0,92): 0,092.",
+    "traps": [
+      "Entrega P(B falta), sin considerar que A debe faltar y B debe concurrir.",
+      "Calcula P(concurren ambos), que procesa 50 facturas.",
+      "",
+      "Entrega P(faltan ambos) = P(0 facturas).",
+      "Entrega P(A concurre) = P(50 facturas)."
+    ]
+  },
+  {
+    "id": "p1-059",
+    "topic": "va-discreta",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 3b",
+    "stem": "La cantidad de facturas procesadas por día tiene P(0) = 0,008; P(25) = 0,092; P(50) = 0,9. ¿Cuál es la esperanza y qué se concluye sobre la fluctuación (baja si CV < 0,2)?",
+    "options": [
+      "E(X) = 25 facturas (el valor central); CV = 0,18: baja fluctuación.",
+      "E(X) = 47,3 facturas; CV = 0,18 < 0,2: baja fluctuación.",
+      "E(X) = 47,3 facturas; CV = 0,18 > 0,1: alta fluctuación.",
+      "E(X) = 47,3 facturas; σ = 8,38, que supera 0,2: alta fluctuación.",
+      "E(X) = 75 facturas (suma de valores); CV = 0,18: baja fluctuación."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Esperanza",
+        "text": "Valores ponderados por sus probabilidades.",
+        "formula": "E(X) = 0·0,008 + 25·0,092 + 50·0,9 = 47,3",
+        "calc": "MENU→6 Estadística→1 Una variable: x = 0, 25, 50 ; FREQ = 0,008 ; 0,092 ; 0,9 → OPTN→1 Cálculo 1 variable → x̄ = 47,3 ; σx = 8,3792 → CV = σx/x̄ = 0,177"
+      },
+      {
+        "label": "CV",
+        "text": "Se divide el desvío por la media.",
+        "formula": "CV = 8,38 / 47,3 = 0,177 ≈ 0,18"
+      },
+      {
+        "label": "Concluir",
+        "text": "0,18 < 0,2 ⇒ baja fluctuación: 47,3 es un valor representativo de la facturación diaria."
+      }
+    ],
+    "why": "E(X) = 47,3 y CV ≈ 0,18 < 0,2: la facturación diaria tiene baja fluctuación.",
+    "traps": [
+      "Toma el valor central de la lista en lugar de ponderar por probabilidades.",
+      "",
+      "Compara con 0,1 (umbral de representatividad) en lugar de 0,2 de v.a. discretas.",
+      "Compara el desvío absoluto con 0,2: hay que usar el CV.",
+      "Suma los valores posibles en lugar de ponderarlos."
+    ]
+  },
+  {
+    "id": "p1-060",
+    "topic": "va-discreta",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 5",
+    "stem": "Una caja tiene 3 bolillas numeradas 3, 4 y 5. Se extraen dos y se define X = suma de los números. Si la extracción es SIN reposición, ¿cuánto valen E(X) y V(X)?",
+    "options": [
+      "E(X) = 8 ; V(X) = 0,82",
+      "E(X) = 4 ; V(X) = 0,67",
+      "E(X) = 8 ; V(X) = 2,00",
+      "E(X) = 8 ; V(X) = 1,33",
+      "E(X) = 8 ; V(X) = 0,67"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Espacio",
+        "text": "Sin reposición: pares {3,4}, {3,5}, {4,5} equiprobables ⇒ sumas 7, 8, 9 con P = 1/3."
+      },
+      {
+        "label": "Esperanza",
+        "text": "Valores ponderados por sus probabilidades.",
+        "formula": "E(X) = (7 + 8 + 9)/3 = 8",
+        "calc": "MENU→6 Estadística→1 Una variable: x = 7, 8, 9 ; FREQ = 1/3 cada una → x̄ = 8 ; σx = 0,8165 (σ² = 0,6667)"
+      },
+      {
+        "label": "Varianza",
+        "text": "Se calcula la dispersión respecto de la media ponderada.",
+        "formula": "V(X) = [(7−8)² + 0 + (9−8)²]/3 = 0,67"
+      }
+    ],
+    "why": "Sin reposición hay 3 sumas equiprobables (7, 8, 9): E = 8 y V = 2/3 ≈ 0,67; con reposición la varianza sube a 1,33.",
+    "traps": [
+      "Entrega el desvío en lugar de la varianza.",
+      "Toma la esperanza de una sola bolilla.",
+      "Suma los cuadrados de los desvíos (1 + 0 + 1) sin dividir por 3.",
+      "Usa la varianza de la extracción CON reposición (2·σ² = 2·0,67).",
+      ""
+    ]
+  },
+  {
+    "id": "p1-061",
+    "topic": "va-discreta",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "Si V(X) = 4 y se define Y = 3X − 2, ¿cuánto vale V(Y)?",
+    "options": [
+      "34",
+      "12",
+      "36",
+      "10",
+      "4"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Propiedad",
+        "text": "V(aX + b) = a²·V(X): la constante b no afecta; el coeficiente se eleva al cuadrado."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "V(Y) = 3²·4 = 36"
+      }
+    ],
+    "why": "Sumar o restar una constante no cambia la varianza; multiplicar por a la multiplica por a².",
+    "traps": [
+      "Eleva el coeficiente al cuadrado pero también resta la constante: 9·4 − 2.",
+      "Multiplica por 3 (sin elevar al cuadrado) y no suma la constante: 3·4.",
+      "",
+      "Aplica la transformación a la varianza como si fuera la media: 3·4 − 2.",
+      "Cree que la varianza no cambia con una transformación lineal (solo vale para sumar constantes)."
+    ]
+  },
+  {
+    "id": "p1-062",
+    "topic": "va-discreta",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "X e Y son variables aleatorias independientes con V(X) = 5 y V(Y) = 3. ¿Cuánto vale V(X − Y)?",
+    "options": [
+      "√8 ≈ 2,83",
+      "8",
+      "4",
+      "2",
+      "64"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Propiedad",
+        "text": "Para independientes la varianza de una suma o diferencia siempre suma.",
+        "formula": "V(X ± Y) = V(X) + V(Y)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "V(X − Y) = 5 + 3 = 8"
+      }
+    ],
+    "why": "Las varianzas se suman aunque las variables se resten (V(−Y) = (−1)²V(Y) = V(Y)).",
+    "traps": [
+      "Entrega el desvío en lugar de la varianza.",
+      "",
+      "Promedia las varianzas.",
+      "Resta las varianzas, como si el signo de la combinación pasara a la varianza.",
+      "Eleva al cuadrado la suma de las varianzas: (5 + 3)²."
+    ]
+  },
+  {
+    "id": "p1-063",
+    "topic": "va-discreta",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "original",
+    "stem": "Un vendedor tiene E(X) = 2,1 autos por sábado. ¿Qué significa correctamente este valor?",
+    "options": [
+      "Es el promedio a largo plazo de autos vendidos por sábado; no tiene por qué ser un valor posible de X.",
+      "La probabilidad de vender 2,1 autos es máxima.",
+      "La mitad de los sábados venderá menos de 2,1 autos.",
+      "El valor más probable de X es 2,1.",
+      "En cada sábado venderá exactamente 2,1 autos."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Definición",
+        "text": "E(X) = Σ x·P(x) es el promedio ponderado a largo plazo."
+      },
+      {
+        "label": "Interpretar",
+        "text": "Si se repite muchos sábados, el promedio de ventas se acerca a 2,1."
+      }
+    ],
+    "why": "La esperanza es el promedio teórico a largo plazo; puede no coincidir con ningún valor posible.",
+    "traps": [
+      "",
+      "X solo toma valores enteros; P(X = 2,1) = 0.",
+      "Eso describiría una mediana, no la esperanza.",
+      "El valor más probable es la moda, que se lee de la tabla (2 o 3).",
+      "La esperanza no es un valor garantizado ni siquiera posible (2,1 no es entero)."
+    ]
+  },
+  {
+    "id": "p1-064",
+    "topic": "va-discreta",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "Con la Casio fx-991EX se quiere obtener E(X) y σ de una variable aleatoria discreta dada por una tabla de valores x y probabilidades P(x). ¿Cómo se hace en modo Estadística (1 variable)?",
+    "options": [
+      "Cargar las probabilidades en x y los valores en FREQ; leer x̄.",
+      "Cargar solo los valores en x (FREQ = 1) y leer x̄.",
+      "Cargar los valores en x y las probabilidades en FREQ; leer x̄ y sx.",
+      "Usar Distribución → Binomial CD con los valores como x.",
+      "Cargar los valores en la columna x y las probabilidades en FREQ (Frecuencia activada); leer x̄ = E(X) y σx."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Preparar",
+        "text": "Activar la columna FREQ en el SETUP de Estadística."
+      },
+      {
+        "label": "Cargar",
+        "text": "La media ponderada por FREQ es Σ x·P(x) = E(X) cuando ΣP = 1."
+      },
+      {
+        "label": "Leer",
+        "text": "Para la v.a. completa se usa σx.",
+        "formula": "E(X) = x̄ ; σ = σx",
+        "calc": "SHIFT→MENU (SETUP)→Estadística→Frecuencia: Sí ; MENU→6 Estadística→1 Una variable: x = valores ; FREQ = probabilidades → OPTN→1 Cálculo 1 variable → x̄ = E(X) ; σx = σ(X)"
+      }
+    ],
+    "why": "Con las probabilidades como FREQ, x̄ es E(X) y σx es el desvío de la variable aleatoria.",
+    "traps": [
+      "Invierte las columnas: x̄ sería el promedio de las probabilidades.",
+      "Ignora las probabilidades: da un promedio simple, no ponderado.",
+      "Con la v.a. completa corresponde el desvío poblacional σx; sx (n−1) lo infla.",
+      "La v.a. de la tabla no es necesariamente binomial y la CD da probabilidades acumuladas, no E(X).",
+      ""
+    ]
+  },
+  {
+    "id": "p1-065",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 1,
+    "source": "TP3 ej 6a",
+    "stem": "Se sabe que el 60% de los productos similares tiene aceptación. Si se toma una muestra de 20 personas, ¿cuál es la probabilidad de que exactamente 10 compren el producto?",
+    "options": [
+      "0,07099",
+      "0,24466",
+      "0,00605",
+      "0,11714",
+      "0,87248"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Identificar",
+        "text": "n = 20 personas independientes, éxito = compra (p = 0,6): binomial. Pide un valor exacto ⇒ función puntual (PD).",
+        "formula": "X ~ Bin(n = 20, p = 0,6) ; P(X = 10)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Usar Binomial PD.",
+        "formula": "P(X = 10) = C(20,10)·0,6¹⁰·0,4¹⁰ = 0,11714",
+        "calc": "MENU→7 Distribución→Binomial PD: x=10, N=20, p=0,6 → P(X=10)=0,11714"
+      }
+    ],
+    "why": "Un valor exacto de una binomial se calcula con la función de probabilidad puntual (PD), no con la acumulada.",
+    "traps": [
+      "Confunde 'exactamente 10' con x = 9: carga mal el valor de x en la función puntual.",
+      "Usa la acumulada P(X ≤ 10) en lugar de la puntual.",
+      "Elevan p^10 sin factor combinatorio ni (1−p)^10.",
+      "",
+      "Calcula P(X ≥ 10) en lugar de P(X = 10)."
+    ]
+  },
+  {
+    "id": "p1-066",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 6c",
+    "stem": "El 60% de las personas compra un producto. En una muestra de 20, ¿cuál es la probabilidad de que MÁS de 9 personas NO lo adquieran?<br><em>Datos: Y = número de personas que NO compran, Y ~ Bin(20; 0,4); P(Y ≤ 9) = 0,75534; P(Y ≤ 10) = 0,87248; P(Y = 10) = 0,11714.</em> ",
+    "options": [
+      "0,24466",
+      "0,87248",
+      "0,11714",
+      "0,75534",
+      "0,12752"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "Éxito = NO comprar ⇒ p = 0,4. 'Más de 9' ⇒ Y ≥ 10.",
+        "formula": "Y ~ Bin(20; 0,4) ; P(Y > 9) = 1 − P(Y ≤ 9)"
+      },
+      {
+        "label": "Elegir el dato",
+        "text": "Hace falta la acumulada en 9 (no en 10)."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,75534 = 0,24466",
+        "calc": "MENU→7 Distribución→Binomial CD: x=9, N=20, p=0,4 → P(Y≤9)=0,75534 ; pedimos P(Y>9) = 1 − 0,75534"
+      }
+    ],
+    "why": "'Más de 9' es Y ≥ 10, entonces se resta a 1 la acumulada hasta 9.",
+    "traps": [
+      "",
+      "Entrega P(Y ≤ 10), mezclando desigualdad y complemento.",
+      "Toma solo el valor puntual Y = 10.",
+      "Entrega P(Y ≤ 9), el complemento de lo pedido.",
+      "Interpreta 'más de 9' como Y > 10 (usa P(Y ≤ 10))."
+    ]
+  },
+  {
+    "id": "p1-067",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 7b",
+    "stem": "El 30% de los alumnos trabaja más de 4 horas por día. Se eligen 10 alumnos al azar. ¿Cuál es la probabilidad de hallar más de 2 que trabajen más de 4 horas?<br><em>Datos: X ~ Bin(10; 0,3); P(X ≤ 2) = 0,38278; P(X ≤ 3) = 0,64961; P(X = 2) = 0,23347.</em> ",
+    "options": [
+      "0,76653",
+      "0,61722",
+      "0,64961",
+      "0,38278",
+      "0,35039"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Más de 2' ⇒ X ≥ 3 ⇒ complemento de X ≤ 2.",
+        "formula": "P(X > 2) = 1 − P(X ≤ 2)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,38278 = 0,61722",
+        "calc": "MENU→7 Distribución→Binomial CD: x=2, N=10, p=0,3 → P(X≤2)=0,38278 ; luego 1 − 0,38278"
+      }
+    ],
+    "why": "'Más de 2' deja afuera al 2: P(X>2) = 1 − P(X≤2) = 0,61722.",
+    "traps": [
+      "Resta solo el caso X = 2 en vez de todos los casos X ≤ 2.",
+      "",
+      "Entrega P(X ≤ 3), que tampoco corresponde a 'más de 2'.",
+      "Entrega P(X ≤ 2), el complemento de lo pedido.",
+      "Interpreta 'más de 2' como X > 3 (usa P(X ≤ 3))."
+    ]
+  },
+  {
+    "id": "p1-068",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "TP3 ej 10b",
+    "stem": "El 20% de los cheques rechazados es irrecuperable; llegan 9 cheques rechazados. Para calcular la probabilidad de recuperar al menos la tercera parte de ellos, ¿qué planteo es correcto?",
+    "options": [
+      "X ~ Bin(9; 0,2): P(X ≥ 6), porque 'tercera parte' de irrecuperables son 6.",
+      "X ~ Bin(9; 0,2): P(X ≥ 3), porque 'tercera parte' son 3 cheques.",
+      "Y = recuperables ~ Bin(9; 0,8): P(Y ≥ 3) = 1 − P(Y ≤ 2); equivale a X = irrecuperables ~ Bin(9; 0,2): P(X ≤ 6).",
+      "Y ~ Bin(9; 0,8): P(Y = 3), porque la tercera parte es exactamente 3.",
+      "Y ~ Bin(9; 0,8): P(Y ≤ 3), porque 'al menos' se resuelve con la acumulada directa."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Definir éxito",
+        "text": "Se pide recuperar ⇒ éxito = recuperable, p = 0,8.",
+        "formula": "Y ~ Bin(9; 0,8)"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Al menos la tercera parte' ⇒ Y ≥ 9/3 = 3.",
+        "formula": "P(Y ≥ 3) = 1 − P(Y ≤ 2)"
+      },
+      {
+        "label": "Calculadora",
+        "text": "Con p = 0,8 o, equivalentemente, con p = 0,2 hasta 6.",
+        "formula": "P = 0,99969",
+        "calc": "MENU→7 Distribución→Binomial CD: x=2, N=9, p=0,8 → P(Y≤2)=0,00031 ; pedimos 1 − 0,00031 = 0,99969"
+      }
+    ],
+    "why": "Si el éxito es 'recuperar' el p es 0,8; 'al menos 3' es Y ≥ 3 y se resuelve por complemento.",
+    "traps": [
+      "Confunde la cantidad: recuperar ≥ 3 equivale a irrecuperables ≤ 6, no ≥ 6.",
+      "Usa p = 0,2 (irrecuperables) para un evento sobre recuperables.",
+      "",
+      "Convierte 'al menos' en un valor puntual.",
+      "Usa la acumulada hacia el lado equivocado: 'al menos 3' es Y ≥ 3."
+    ]
+  },
+  {
+    "id": "p1-069",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 12a",
+    "stem": "La probabilidad de que un vendedor ambulante logre una venta en una casa es 0,15. Si ofrece su producto en 18 casas, ¿cuál es la probabilidad de que logre por lo menos una venta?<br><em>Datos: X ~ Bin(18; 0,15); P(X = 0) = 0,05365; P(X = 1) = 0,17041; P(X ≤ 1) = 0,22405.</em> ",
+    "options": [
+      "0,15000",
+      "0,17041",
+      "0,77595",
+      "0,94635",
+      "0,05365"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Por lo menos una' ⇒ X ≥ 1 ⇒ complemento de X = 0.",
+        "formula": "P(X ≥ 1) = 1 − P(X = 0)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,05365 = 0,94635",
+        "calc": "MENU→7 Distribución→Binomial PD: x=0, N=18, p=0,15 → P(X=0)=0,05365 ; pedimos 1 − 0,05365"
+      }
+    ],
+    "why": "'Por lo menos una' = 1 − P(ninguna) = 1 − 0,85¹⁸ = 1 − 0,05365 = 0,94635.",
+    "traps": [
+      "Entrega p = 0,15, la probabilidad en una sola casa.",
+      "Toma solo X = 1.",
+      "Interpreta 'por lo menos una' como 'más de una' (resta P(X ≤ 1)).",
+      "",
+      "Entrega P(X = 0), el complemento de lo pedido."
+    ]
+  },
+  {
+    "id": "p1-070",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "TP3 ej 12b",
+    "stem": "X ~ Bin(18; 0,15). Para hallar P(4 ≤ X ≤ 8) usando solo la función acumulada de la calculadora, ¿qué expresión es correcta?<br><em>Datos: P(X ≤ 3) = 0,72024; P(X ≤ 4) = 0,87944; P(X ≤ 8) = 0,99949; P(X ≤ 9) = 0,99992.</em> ",
+    "options": [
+      "P(X ≤ 9) − P(X ≤ 3) = 0,27969",
+      "P(X ≤ 8) + P(X ≤ 3) = 1,71972",
+      "P(X ≤ 8) − P(X ≤ 4) = 0,12005",
+      "P(X ≤ 4) − P(X ≤ 8) = -0,12005",
+      "P(X ≤ 8) − P(X ≤ 3) = 0,27925"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "Intervalo con extremos incluidos: 4, 5, 6, 7, 8.",
+        "formula": "P(4 ≤ X ≤ 8) = P(X ≤ 8) − P(X ≤ 3)"
+      },
+      {
+        "label": "Por qué 3",
+        "text": "Hay que restar lo que queda por debajo del 4, es decir hasta 3."
+      },
+      {
+        "label": "Calculadora",
+        "text": "Dos veces Binomial CD con N = 18 y p = 0,15.",
+        "formula": "0,99949 − 0,72024 = 0,27925",
+        "calc": "MENU→7 Distribución→Binomial CD: x=8, N=18, p=0,15 → 0,99949 ; x=3 → 0,72024 ; restar"
+      }
+    ],
+    "why": "Para un intervalo [a, b] con extremos incluidos: P(X ≤ b) − P(X ≤ a−1).",
+    "traps": [
+      "Usa 9 como cota superior, incluyendo X = 9.",
+      "Suma las acumuladas en lugar de restarlas.",
+      "Resta la acumulada en 4, que deja afuera el valor X = 4 (extremo incluido).",
+      "Resta en el orden inverso: da una probabilidad negativa.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-071",
+    "topic": "binomial",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "TP3 ej 12c",
+    "stem": "Sea X = número de ventas en 18 casas, con X ~ Bin(18; 0,15). ¿Qué tipo de asimetría tiene la distribución?",
+    "options": [
+      "Asimetría negativa: p < 0,5 favorece los valores altos de X.",
+      "Asimetría positiva: p < 0,5 concentra la masa en valores bajos y la cola larga queda a la derecha.",
+      "Simétrica: la binomial siempre es simétrica.",
+      "No se puede saber sin calcular la media y la moda.",
+      "Asimetría negativa: p < 0,5 concentra la masa en valores bajos, cola a la izquierda."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Criterio",
+        "text": "Binomial: p < 0,5 ⇒ asimétrica positiva; p = 0,5 ⇒ simétrica; p > 0,5 ⇒ asimétrica negativa."
+      },
+      {
+        "label": "Aplicar",
+        "text": "p = 0,15 < 0,5 ⇒ la moda (2) queda a la izquierda de la media 2,7 (Mo < x̄).",
+        "formula": "E(X) = 18·0,15 = 2,7"
+      }
+    ],
+    "why": "Con p < 0,5 la moda está por debajo de la media: asimetría positiva.",
+    "traps": [
+      "Invierte el efecto de p: con p chica, X toma valores chicos.",
+      "",
+      "Solo es simétrica cuando p = 0,5.",
+      "Para la binomial alcanza con comparar p con 0,5.",
+      "Confunde el sentido de la cola: la cola larga está del lado de los valores altos."
+    ]
+  },
+  {
+    "id": "p1-072",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "TP3 ej 14b",
+    "stem": "El 90% de las pruebas de auditoría son válidas; hay 15 pruebas. ¿Qué planteo corresponde a 'menos de 8 pruebas NO válidas'?",
+    "options": [
+      "N ~ Bin(15; 0,1): P(N ≤ 8), porque 'menos de 8' incluye al 8.",
+      "N ~ Bin(15; 0,9): P(N < 8), usando el mismo p.",
+      "N ~ Bin(15; 0,1): P(N ≥ 8).",
+      "V ~ Bin(15; 0,9): P(V ≤ 7).",
+      "N = no válidas ~ Bin(15; 0,1): P(N < 8) = P(N ≤ 7). Equivale a V = válidas ~ Bin(15; 0,9): P(V ≥ 8)."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Definir éxito",
+        "text": "Se cuentan las NO válidas ⇒ p = 1 − 0,9 = 0,1.",
+        "formula": "N ~ Bin(15; 0,1)"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Menos de 8' ⇒ N ≤ 7.",
+        "formula": "P(N ≤ 7)"
+      },
+      {
+        "label": "Calculadora",
+        "text": "Un solo Binomial CD.",
+        "formula": "P = 0,99997",
+        "calc": "MENU→7 Distribución→Binomial CD: x=7, N=15, p=0,1 → P(N≤7)=0,99997"
+      }
+    ],
+    "why": "Al contar 'no válidas' el éxito cambia a p = 0,1 y 'menos de 8' es N ≤ 7.",
+    "traps": [
+      "Interpreta 'menos de' como 'a lo sumo' (incluye el extremo).",
+      "No cambia p al redefinir el éxito como 'no válida'.",
+      "Invierte la desigualdad: 'menos de' es cola izquierda.",
+      "Mantiene p = 0,9 y copia la desigualdad sin invertirla al pasar a válidas.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-073",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 16c",
+    "stem": "Un comerciante afirma que el 40% de sus ventas son a plazos mayores a 3 meses. Entre las próximas 10 ventas, ¿cuántas espera que sean a más de 3 meses y con qué desvío?",
+    "options": [
+      "E(X) = 0,4 ventas ; σ = 0,49 ventas",
+      "E(X) = 4 ventas ; σ = 2,40 ventas",
+      "E(X) = 6 ventas ; σ = 1,55 ventas",
+      "E(X) = 4 ventas ; σ = 1,55 ventas",
+      "E(X) = 4 ventas ; σ = 4 ventas"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Modelo",
+        "text": "Se identifica la distribución y sus parámetros.",
+        "formula": "X ~ Bin(10; 0,4)"
+      },
+      {
+        "label": "Esperanza",
+        "text": "Valores ponderados por sus probabilidades.",
+        "formula": "E(X) = n·p = 10·0,4 = 4"
+      },
+      {
+        "label": "Desvío",
+        "text": "La varianza es n·p·q; el desvío es su raíz.",
+        "formula": "σ = √(n·p·q) = √(10·0,4·0,6) = √2,4 = 1,55"
+      }
+    ],
+    "why": "E(X) = np = 4 y σ = √(npq) = √2,4 = 1,55 (la varianza es 2,4).",
+    "traps": [
+      "Usa p como esperanza y √(pq) como desvío, olvidando multiplicar por n.",
+      "Entrega la varianza n·p·q = 2,4 como si fuera el desvío.",
+      "Usa q = 0,6 como probabilidad de éxito para la esperanza.",
+      "",
+      "Toma σ = n·p, confundiendo desvío con esperanza."
+    ]
+  },
+  {
+    "id": "p1-074",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 1,
+    "source": "TP2 ej 15",
+    "stem": "La probabilidad de aprobar Estadística I es 0,7. Si se eligen 4 alumnos al azar, ¿cuál es la probabilidad de que exactamente 2 aprueben y los otros 2 no?",
+    "options": [
+      "0,3483",
+      "0,2100",
+      "0,2646",
+      "0,0441",
+      "0,4900"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Modelo",
+        "text": "n = 4 alumnos, éxito = aprobar (p = 0,7).",
+        "formula": "X ~ Bin(4; 0,7)"
+      },
+      {
+        "label": "Planteo",
+        "text": "Hay C(4,2) = 6 ordenamientos posibles.",
+        "formula": "P(X = 2) = C(4,2)·0,7²·0,3²"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "= 6 · 0,49 · 0,09 = 0,2646",
+        "calc": "MENU→7 Distribución→Binomial PD: x=2, N=4, p=0,7 → 0,2646"
+      }
+    ],
+    "why": "Sin el factor combinatorio solo se cuenta un orden; el correcto es C(4,2)·0,7²·0,3² = 0,2646.",
+    "traps": [
+      "Entrega la acumulada P(X ≤ 2).",
+      "Considera solo un alumno aprobando y otro desaprobando.",
+      "",
+      "Olvida el factor C(4,2) = 6: cuenta una sola ordenación de aprobados y desaprobados.",
+      "Considera solo que 2 aprueban, sin exigir que los otros 2 no aprueben."
+    ]
+  },
+  {
+    "id": "p1-075",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Recuperatorio 1er parcial ej 2d",
+    "stem": "El 55% de las órdenes de un centro técnico es de técnico Senior (S), el 65% de clientes frecuentes (F), y el 20% es Senior con cliente no frecuente. Se eligen 10 órdenes al azar. ¿Cuál es la probabilidad de que exactamente 4 no hayan sido atendidas por un Senior y no provengan de un cliente frecuente?",
+    "options": [
+      "0,0401",
+      "0,2377",
+      "0,0881",
+      "0,0462",
+      "0,9901"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Hallar p",
+        "text": "P(Fᶜ) = 0,35 y P(S ∩ Fᶜ) = 0,20, entonces la celda pedida es la diferencia.",
+        "formula": "p = P(Sᶜ ∩ Fᶜ) = 0,35 − 0,20 = 0,15"
+      },
+      {
+        "label": "Modelo",
+        "text": "10 órdenes independientes, éxito = 'no Senior y no frecuente'.",
+        "formula": "X ~ Bin(10; 0,15) ; P(X = 4)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "P(X = 4) = 0,04010",
+        "calc": "MENU→7 Distribución→Binomial PD: x=4, N=10, p=0,15 → 0,04010"
+      }
+    ],
+    "why": "Primero se obtiene p de la tabla de contingencia (0,15) y luego se aplica la binomial puntual.",
+    "traps": [
+      "",
+      "Usa p = 0,35 (P(S ∩ F)) o P(Fᶜ).",
+      "Usa p = 0,20 (Senior y no frecuente) en lugar de la celda 'no Senior y no frecuente'.",
+      "Multiplica los marginales P(Sᶜ)·P(Fᶜ) asumiendo independencia.",
+      "Usa la acumulada P(X ≤ 4) en lugar del valor exacto."
+    ]
+  },
+  {
+    "id": "p1-076",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Práctica 1er parcial ej 2c",
+    "stem": "El 30% de los empleados tiene título universitario. En una muestra de 20 empleados, ¿cuál es la probabilidad de que más de la mitad NO tenga título?<br><em>Datos: X = sin título ~ Bin(20; 0,70); P(X ≤ 9) = 0,01714; P(X ≤ 10) = 0,04796; P(X = 10) = 0,03082.</em> ",
+    "options": [
+      "0,03082",
+      "0,98286",
+      "0,01714",
+      "0,04796",
+      "0,95204"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "Éxito = sin título ⇒ p = 0,70. 'Más de la mitad' de 20 ⇒ X > 10 ⇒ X ≥ 11.",
+        "formula": "P(X > 10) = 1 − P(X ≤ 10)"
+      },
+      {
+        "label": "Elegir el dato",
+        "text": "Acumulada en 10, no en 9."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,04796 = 0,95204",
+        "calc": "MENU→7 Distribución→Binomial CD: x=10, N=20, p=0,7 → 0,04796 ; pedimos 1 − 0,04796"
+      }
+    ],
+    "why": "'Más de la mitad' de 20 es más de 10: se resta a 1 la acumulada en 10.",
+    "traps": [
+      "Toma solo X = 10.",
+      "Interpreta 'más de la mitad' como X ≥ 10 (incluye el 10).",
+      "Usa p = 0,30 (con título) para un evento sobre los que no tienen título.",
+      "Entrega P(X ≤ 10), el complemento de lo pedido.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-077",
+    "topic": "binomial",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "Práctica 1er parcial ej 2d",
+    "stem": "El 30% de los empleados tiene título universitario y, de estos, el 40% trabaja en atención al cliente. En una muestra de 16 empleados, ¿cuántos se espera que sean universitarios Y trabajen en atención al cliente?",
+    "options": [
+      "11,52 empleados",
+      "1,92 empleados",
+      "6,4 empleados",
+      "1,30 empleados",
+      "4,8 empleados"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Hallar p",
+        "text": "Probabilidad de la intersección: 0,30 · 0,40.",
+        "formula": "p = P(U ∩ A) = 0,12"
+      },
+      {
+        "label": "Modelo",
+        "text": "Se identifica la distribución y sus parámetros.",
+        "formula": "X ~ Bin(16; 0,12)"
+      },
+      {
+        "label": "Esperanza",
+        "text": "Valores ponderados por sus probabilidades.",
+        "formula": "E(X) = n·p = 16 · 0,12 = 1,92"
+      }
+    ],
+    "why": "Primero se calcula la probabilidad conjunta (0,12); la esperanza binomial es n·p = 1,92.",
+    "traps": [
+      "Usa p = 0,72 (atención al cliente en general).",
+      "",
+      "Usa p = 0,40 (atención al cliente entre universitarios) como si fuera sobre todos.",
+      "Entrega el desvío √(n·p·q) en lugar de la esperanza.",
+      "Usa solo p = 0,30 (universitarios), ignorando la condición de atención al cliente."
+    ]
+  },
+  {
+    "id": "p1-078",
+    "topic": "binomial",
+    "kind": "concept",
+    "difficulty": 1,
+    "source": "original",
+    "stem": "¿En cuál de estas situaciones es adecuada la distribución Binomial?",
+    "options": [
+      "Número de clientes que compran, entre 12 clientes independientes, cada uno con probabilidad 0,25 de comprar.",
+      "Número de llamadas que llegan a una central entre las 10 y las 11 h, con un promedio de 5 por minuto.",
+      "Cantidad de goles por partido con un promedio de 2,6.",
+      "Tiempo (en minutos) que demora un cliente en ser atendido.",
+      "Número de cartas rojas obtenidas al extraer 5 cartas SIN reposición de un mazo."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Condiciones",
+        "text": "Binomial: n pruebas fijas, independientes, dos resultados y p constante."
+      },
+      {
+        "label": "Aplicar",
+        "text": "12 clientes independientes, éxito = comprar, p = 0,25 ⇒ X ~ Bin(12; 0,25)."
+      }
+    ],
+    "why": "Binomial exige n fijo, independencia y p constante; las otras opciones son Poisson, hipergeométrica o continua.",
+    "traps": [
+      "",
+      "Es un conteo de eventos en un continuo (tiempo) sin n fijo: corresponde a Poisson.",
+      "Es un conteo con tasa media, sin n pruebas ni p: Poisson.",
+      "Es una variable continua, no un conteo de éxitos.",
+      "Sin reposición p cambia de una extracción a otra: no es binomial (es hipergeométrica)."
+    ]
+  },
+  {
+    "id": "p1-079",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "X ~ Bin(N = 10, p = 0,3). Se pide P(X ≥ 3) con la Casio fx-991EX en modo Distribución. ¿Qué carga es correcta?",
+    "options": [
+      "Binomial CD con x = 10, N = 3, p = 0,3, y luego 1 − resultado.",
+      "Binomial CD con x = 3, N = 10, p = 0,3, sin complemento.",
+      "Binomial CD con x = 2, N = 10, p = 0,3, y luego 1 − resultado.",
+      "Binomial PD con x = 3, N = 10, p = 0,3.",
+      "Binomial CD con x = 3, N = 10, p = 0,3, y luego 1 − resultado."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'X ≥ 3' es la cola derecha; la CD siempre acumula hacia la izquierda (X ≤ x).",
+        "formula": "P(X ≥ 3) = 1 − P(X ≤ 2)"
+      },
+      {
+        "label": "Parámetros",
+        "text": "x = 2 (el valor justo antes del 3), N = 10 pruebas, p = 0,3."
+      },
+      {
+        "label": "Cargar",
+        "text": "Se carga la función con los parámetros indicados y se lee el resultado.",
+        "formula": "1 − 0,38278 = 0,61722",
+        "calc": "MENU→7 Distribución→Binomial CD: x=2, N=10, p=0,3 → P(X≤2)=0,38278 ; luego 1 − 0,38278 = 0,61722"
+      }
+    ],
+    "why": "La función CD de la calculadora es P(X ≤ x); para X ≥ 3 se usa x = 2 y se pasa al complemento.",
+    "traps": [
+      "Intercambia x y N: en la pantalla N es la cantidad de pruebas (10).",
+      "Da P(X ≤ 3), la cola izquierda.",
+      "",
+      "Da P(X = 3), un valor puntual.",
+      "Eso da P(X > 3): la CD acumula hasta x inclusive, así que para 'X ≥ 3' hay que restar la acumulada en 2."
+    ]
+  },
+  {
+    "id": "p1-080",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "original (calculadora)",
+    "stem": "X ~ Bin(N = 15, p = 0,4). Se pide P(3 < X ≤ 7). ¿Qué combinación de acumuladas es correcta?",
+    "options": [
+      "Binomial CD(x = 7) − Binomial CD(x = 4).",
+      "Binomial CD(x = 6) − Binomial CD(x = 3).",
+      "Binomial CD(x = 7) + Binomial CD(x = 3).",
+      "Binomial CD(x = 7) − Binomial CD(x = 3).",
+      "Binomial CD(x = 7) − Binomial CD(x = 2)."
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Valores",
+        "text": "3 < X ≤ 7 ⇒ X ∈ {4, 5, 6, 7}."
+      },
+      {
+        "label": "Planteo",
+        "text": "Cota superior inclusive menos la acumulada del último valor excluido.",
+        "formula": "P = P(X ≤ 7) − P(X ≤ 3)"
+      },
+      {
+        "label": "Cargar",
+        "text": "Se carga la función con los parámetros indicados y se lee el resultado.",
+        "formula": "0,78690 − 0,09050 = 0,69639",
+        "calc": "MENU→7 Distribución→Binomial CD: x=7, N=15, p=0,4 → 0,78690 ; x=3 → 0,09050 ; restar"
+      }
+    ],
+    "why": "El intervalo (3, 7] corresponde a CD(7) − CD(3).",
+    "traps": [
+      "Excluye el X = 4, que sí pertenece al intervalo (4, 5, 6, 7).",
+      "Excluye el 7, pero '≤ 7' lo incluye.",
+      "Suma en lugar de restar las acumuladas.",
+      "",
+      "Incluye el valor X = 3, pero '3 < X' lo excluye."
+    ]
+  },
+  {
+    "id": "p1-081",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "En n = 15 pruebas independientes la probabilidad de éxito es 0,2. ¿Cómo se calcula P(al menos un éxito) con la calculadora?",
+    "options": [
+      "Binomial PD con x = 0, N = 15, p = 0,2, y luego 1 − resultado.",
+      "Binomial PD con x = 1, N = 15, p = 0,2.",
+      "Binomial CD con x = 1, N = 15, p = 0,2, y luego 1 − resultado.",
+      "Binomial PD con x = 0, N = 15, p = 0,2, sin complemento.",
+      "Binomial CD con x = 1, N = 15, p = 0,2, sin complemento."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Al menos uno' ⇒ X ≥ 1 ⇒ complemento de X = 0.",
+        "formula": "P(X ≥ 1) = 1 − P(X = 0) = 1 − 0,8¹⁵"
+      },
+      {
+        "label": "Cargar",
+        "text": "Con x = 0 la PD y la CD coinciden.",
+        "formula": "1 − 0,03518 = 0,96482",
+        "calc": "MENU→7 Distribución→Binomial PD: x=0, N=15, p=0,2 → 0,03518 ; luego 1 − 0,03518"
+      }
+    ],
+    "why": "'Al menos uno' siempre se resuelve como 1 − P(X = 0).",
+    "traps": [
+      "",
+      "Da P(X = 1), solo un valor, no 'al menos uno'.",
+      "Da P(X > 1) ('más de uno'), porque resta la acumulada en 1.",
+      "Da P(ninguno), el complemento de lo pedido.",
+      "Da P(X ≤ 1): 'a lo sumo uno'."
+    ]
+  },
+  {
+    "id": "p1-082",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 3,
+    "source": "original (calculadora)",
+    "stem": "X ~ Bin(N = 12, p = 0,3) es el número de éxitos. Se pide la probabilidad de que haya MÁS DE 5 fracasos. ¿Qué carga en Binomial CD es correcta?",
+    "options": [
+      "x = 5, N = 12, p = 0,7, sin complemento.",
+      "x = 6, N = 12, p = 0,7, y luego 1 − resultado.",
+      "x = 5, N = 12, p = 0,3, y luego 1 − resultado.",
+      "x = 5, N = 12, p = 0,3, sin complemento.",
+      "x = 5, N = 12, p = 0,7, y luego 1 − resultado (se redefine el éxito como fracaso)."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Redefinir",
+        "text": "Contando fracasos, el 'éxito' tiene probabilidad q = 0,7.",
+        "formula": "Y ~ Bin(12; 0,7)"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Más de 5' ⇒ Y ≥ 6 ⇒ 1 − P(Y ≤ 5)."
+      },
+      {
+        "label": "Cargar",
+        "text": "Se carga la función con los parámetros indicados y se lee el resultado.",
+        "formula": "1 − 0,03860 = 0,96140",
+        "calc": "MENU→7 Distribución→Binomial CD: x=5, N=12, p=0,7 → 0,03860 ; luego 1 − 0,03860"
+      }
+    ],
+    "why": "Al contar fracasos p pasa a 0,7; 'más de 5' se resuelve como 1 − CD(5).",
+    "traps": [
+      "Da P(fracasos ≤ 5): la cola contraria.",
+      "Eso da P(fracasos > 6): 'más de 5' empieza en 6, por lo tanto se resta la acumulada en 5.",
+      "No cambia p: con p = 0,3 se está contando éxitos, no fracasos.",
+      "Mezcla p de éxitos con una acumulada que no corresponde a lo pedido.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-083",
+    "topic": "binomial",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "X ~ Bin(N = 20, p = 0,5). Se pide P(X < 8). ¿Cuál es la carga correcta en Binomial CD?",
+    "options": [
+      "x = 7, N = 20, p = 0,5, y luego 1 − resultado.",
+      "x = 8, N = 20, p = 0,5, sin complemento.",
+      "x = 7, N = 20, p = 0,5, sin complemento.",
+      "x = 7, N = 20, p = 0,5 en Binomial PD.",
+      "x = 8, N = 20, p = 0,5, y luego 1 − resultado."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Menos de 8' ⇒ X ≤ 7 (discreta).",
+        "formula": "P(X < 8) = P(X ≤ 7)"
+      },
+      {
+        "label": "Cargar",
+        "text": "La CD ya acumula por izquierda: no hace falta complemento.",
+        "formula": "= 0,13159",
+        "calc": "MENU→7 Distribución→Binomial CD: x=7, N=20, p=0,5 → 0,13159"
+      }
+    ],
+    "why": "En una v.a. discreta 'X < 8' equivale a 'X ≤ 7', y la CD lo da directamente.",
+    "traps": [
+      "Da P(X ≥ 8), el complemento.",
+      "Da P(X ≤ 8), que incluye al 8 aunque la desigualdad es estricta.",
+      "",
+      "Da P(X = 7), solo un valor.",
+      "Da P(X > 8): la cola contraria con cota equivocada."
+    ]
+  },
+  {
+    "id": "p1-084",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 8",
+    "stem": "En un bingo sale el premio mayor, en promedio, una vez cada 2,5 horas. En un lapso de 6 horas, ¿cuál es la probabilidad de que el premio mayor salga por lo menos 3 veces?<br><em>Datos: X ~ Poisson(λ = 2,4); P(X ≤ 2) = 0,56971; P(X ≤ 3) = 0,77872; P(X = 3) = 0,20901.</em> ",
+    "options": [
+      "0,20901",
+      "0,43029",
+      "0,00793",
+      "0,22128",
+      "0,56971"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Hallar λ",
+        "text": "La tasa es 1 cada 2,5 h ⇒ 0,4 por hora; en 6 horas se escala.",
+        "formula": "λ = 0,4 · 6 = 2,4"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Por lo menos 3' ⇒ X ≥ 3 ⇒ complemento de X ≤ 2.",
+        "formula": "P(X ≥ 3) = 1 − P(X ≤ 2)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,56971 = 0,43029",
+        "calc": "MENU→7 Distribución→Poisson CD: x=2, λ=2,4 → P(X≤2)=0,56971 ; pedimos 1 − 0,56971"
+      }
+    ],
+    "why": "λ se escala a la ventana de 6 h (2,4) y 'por lo menos 3' se resuelve con 1 − P(X ≤ 2).",
+    "traps": [
+      "Toma solo X = 3.",
+      "",
+      "Usa λ = 1/2,5 = 0,4 sin escalar a las 6 horas.",
+      "Interpreta 'por lo menos 3' como 'más de 3' (resta P(X ≤ 3)).",
+      "Entrega P(X ≤ 2), el complemento de lo pedido."
+    ]
+  },
+  {
+    "id": "p1-085",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 9c",
+    "stem": "Por una esquina transitan en promedio 15 autos por minuto. ¿Cuál es la probabilidad de que durante 30 segundos pasen exactamente 7 autos?<br><em>Datos: P(X = 7) con λ = 15: 0,01037; P(X = 7) con λ = 7,5: 0,14648; P(X = 7) con λ = 30: 0,00000.</em> ",
+    "options": [
+      "0,14900",
+      "0,52464",
+      "0,00000",
+      "0,14648",
+      "0,01037"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Escalar λ",
+        "text": "30 segundos = 0,5 minutos; λ se ajusta a la ventana de interés.",
+        "formula": "λ = 15 · 0,5 = 7,5"
+      },
+      {
+        "label": "Elegir el dato",
+        "text": "De los datos, corresponde el calculado con λ = 7,5."
+      },
+      {
+        "label": "Calculadora",
+        "text": "Se carga la función de la calculadora con los parámetros indicados.",
+        "formula": "P(X = 7) = 0,14648",
+        "calc": "MENU→7 Distribución→Poisson PD: x=7, λ=7,5 → 0,14648"
+      }
+    ],
+    "why": "λ debe corresponder a la ventana de 30 segundos: 15·0,5 = 7,5.",
+    "traps": [
+      "Usa λ = 7 (el valor pedido) en lugar de la tasa escalada.",
+      "Usa la acumulada con λ correcto: calcula P(X ≤ 7).",
+      "Escala al revés: multiplica por 2 en vez de dividir por 2.",
+      "",
+      "Usa λ = 15 sin escalar a 30 segundos."
+    ]
+  },
+  {
+    "id": "p1-086",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 9b",
+    "stem": "En una esquina transitan en promedio 15 autos por minuto (X ~ Poisson(15) en un minuto). ¿Cuál es la probabilidad de que en un minuto pasen más de 12 autos?<br><em>Datos: P(X ≤ 12) = 0,26761; P(X ≤ 13) = 0,36322; P(X = 12) = 0,08286.</em> ",
+    "options": [
+      "0,26761",
+      "0,81525",
+      "0,63678",
+      "0,73239",
+      "0,08286"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Más de 12' ⇒ X ≥ 13 ⇒ 1 − P(X ≤ 12).",
+        "formula": "P(X > 12) = 1 − P(X ≤ 12)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,26761 = 0,73239",
+        "calc": "MENU→7 Distribución→Poisson CD: x=12, λ=15 → 0,26761 ; pedimos 1 − 0,26761"
+      }
+    ],
+    "why": "'Más de 12' excluye al 12: se resta a 1 la acumulada hasta 12.",
+    "traps": [
+      "Entrega P(X ≤ 12), el complemento de lo pedido.",
+      "Interpreta 'más de 12' como 'por lo menos 12' (resta P(X ≤ 11)).",
+      "Interpreta 'más de 12' como X > 13.",
+      "",
+      "Toma solo X = 12."
+    ]
+  },
+  {
+    "id": "p1-087",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 11b",
+    "stem": "Una central telefónica recibe en promedio 5 llamadas por minuto. ¿Cuál es la probabilidad de que en 2 minutos se reciban más de 8 llamadas?<br><em>Datos: P(X ≤ 8 | λ = 10) = 0,33282; P(X ≤ 9 | λ = 10) = 0,45793; P(X ≤ 8 | λ = 5) = 0,93191.</em> ",
+    "options": [
+      "0,66718",
+      "0,06809",
+      "0,45793",
+      "0,54207",
+      "0,33282"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Escalar λ",
+        "text": "Ventana de 2 minutos.",
+        "formula": "λ = 5 · 2 = 10"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Más de 8' ⇒ 1 − P(X ≤ 8), con el dato de λ = 10."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,33282 = 0,66718",
+        "calc": "MENU→7 Distribución→Poisson CD: x=8, λ=10 → 0,33282 ; pedimos 1 − 0,33282"
+      }
+    ],
+    "why": "λ = 10 para 2 minutos; 'más de 8' = 1 − P(X ≤ 8).",
+    "traps": [
+      "",
+      "Usa λ = 5 (por minuto) en lugar de escalarlo a 2 minutos.",
+      "Mezcla los errores: acumulada hasta 9 y sin complemento.",
+      "Interpreta 'más de 8' como X > 9.",
+      "Entrega P(X ≤ 8), el complemento de lo pedido."
+    ]
+  },
+  {
+    "id": "p1-088",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 13b",
+    "stem": "El número de ingresos diarios a una unidad de cuidados intensivos tiene distribución de Poisson con media 5. ¿Cuál es la probabilidad de que en un día ingresen a lo sumo 2 personas?<br><em>Datos: P(X = 0) = 0,00674; P(X = 1) = 0,03369; P(X = 2) = 0,08422; P(X = 3) = 0,14037.</em> ",
+    "options": [
+      "0,08422",
+      "0,12465",
+      "0,26503",
+      "0,87535",
+      "0,04043"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'A lo sumo 2' ⇒ X ≤ 2 ⇒ sumar P(0) + P(1) + P(2).",
+        "formula": "P(X ≤ 2) = P(0) + P(1) + P(2)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "0,00674 + 0,03369 + 0,08422 = 0,12465",
+        "calc": "MENU→7 Distribución→Poisson CD: x=2, λ=5 → 0,12465"
+      }
+    ],
+    "why": "'A lo sumo 2' incluye 0, 1 y 2: 0,12465.",
+    "traps": [
+      "Toma solo X = 2 (puntual) en lugar de acumular.",
+      "",
+      "Suma hasta X = 3, interpretando 'a lo sumo 2' como 'menos de 3 incluyendo 3'.",
+      "Entrega P(X > 2), el complemento.",
+      "Interpreta 'a lo sumo 2' como 'menos de 2'."
+    ]
+  },
+  {
+    "id": "p1-089",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 15b",
+    "stem": "Una cajera atiende, en promedio, a 3 personas cada 5 minutos. ¿Cuál es la probabilidad de que en la próxima media hora atienda a lo sumo a 20 personas?",
+    "options": [
+      "0,26928",
+      "0,65092",
+      "0,73072",
+      "0,00000",
+      "1,00000"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Hallar λ",
+        "text": "Tasa 3 cada 5 min = 0,6 por minuto; ventana 30 min.",
+        "formula": "λ = (3/5)·30 = 18"
+      },
+      {
+        "label": "Traducir",
+        "text": "'A lo sumo 20' ⇒ X ≤ 20 ⇒ acumulada directa."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "P(X ≤ 20) = 0,73072",
+        "calc": "MENU→7 Distribución→Poisson CD: x=20, λ=18 → 0,73072"
+      }
+    ],
+    "why": "λ = 0,6·30 = 18 y 'a lo sumo 20' se lee directo de la acumulada.",
+    "traps": [
+      "Entrega P(X > 20), el complemento.",
+      "Interpreta 'a lo sumo 20' como 'menos de 20'.",
+      "",
+      "Escala con 30 minutos sin dividir por 5 (λ = 3·30 = 90).",
+      "Usa λ = 3 sin escalar a la ventana pedida."
+    ]
+  },
+  {
+    "id": "p1-090",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP3 ej 15c",
+    "stem": "Una cajera atiende en promedio a 3 personas cada 5 minutos. ¿Cuál es la probabilidad de que en los próximos 3 minutos no atienda a nadie?",
+    "options": [
+      "0,54881",
+      "0,04979",
+      "0,83470",
+      "0,00452",
+      "0,16530"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Hallar λ",
+        "text": "Tasa 0,6 por minuto, ventana 3 minutos.",
+        "formula": "λ = 0,6 · 3 = 1,8"
+      },
+      {
+        "label": "Traducir",
+        "text": "'No atienda a nadie' ⇒ X = 0 ⇒ PD.",
+        "formula": "P(X = 0) = e⁻¹·⁸"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "= 0,16530",
+        "calc": "MENU→7 Distribución→Poisson PD: x=0, λ=1,8 → 0,16530"
+      }
+    ],
+    "why": "λ = 1,8 para 3 minutos y 'ninguno' es X = 0: e^(−1,8) = 0,16530.",
+    "traps": [
+      "Usa λ = 0,6 (tasa por minuto) sin multiplicar por 3 minutos.",
+      "Usa λ = 3 (la tasa por 5 minutos) en lugar de escalar a 3 minutos.",
+      "Entrega P(X ≥ 1), el complemento.",
+      "Escala con 3·3·0,6: confunde tasa y tiempo.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-091",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP3 ej 18a",
+    "stem": "Una máquina expendedora entrega un boleto, en promedio, cada 6 segundos. ¿Cuál es la probabilidad de que entregue más de 5 boletos en los próximos 15 segundos?<br><em>Datos: P(X ≤ 5 | λ = 2,5) = 0,95798; P(X ≤ 6 | λ = 2,5) = 0,98581; P(X ≤ 5 | λ = 6) = 0,44568; P(X ≤ 5 | λ = 90) = 0,00000.</em> ",
+    "options": [
+      "0,95798",
+      "1,00000",
+      "0,04202",
+      "0,01419",
+      "0,55432"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Hallar λ",
+        "text": "El dato es tiempo por boleto (6 s/boleto): la tasa es su inversa, 1/6 boletos por segundo.",
+        "formula": "λ = 15/6 = 2,5"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Más de 5' ⇒ X ≥ 6 ⇒ 1 − P(X ≤ 5)."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,95798 = 0,04202",
+        "calc": "MENU→7 Distribución→Poisson CD: x=5, λ=2,5 → 0,95798 ; pedimos 1 − 0,95798"
+      }
+    ],
+    "why": "El promedio dado es tiempo por evento, no eventos por tiempo: λ = 15/6 = 2,5.",
+    "traps": [
+      "Entrega P(X ≤ 5), el complemento.",
+      "Multiplica 6·15 en lugar de dividir 15/6: invierte el sentido de la tasa.",
+      "",
+      "Interpreta 'más de 5' como X > 6.",
+      "Toma λ = 6 (los segundos entre boletos) como si fuera la tasa."
+    ]
+  },
+  {
+    "id": "p1-092",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "Práctica 1er parcial ej 3",
+    "stem": "Un empleado realiza en promedio tres llamadas cada 15 minutos. ¿Cuál es la probabilidad de que en una jornada de 6 horas realice más de 60 llamadas?<br><em>Datos: P(X ≤ 60 | λ = 72) = 0,08476; P(X ≤ 61 | λ = 72) = 0,10578; P(X ≤ 60 | λ = 18) = 1,00000.</em> ",
+    "options": [
+      "0,89422",
+      "0,08476",
+      "0,00000",
+      "0,91524",
+      "0,10578"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Hallar λ",
+        "text": "Tasa 3/15 = 0,2 por minuto; 6 h = 360 min.",
+        "formula": "λ = (3/15)·360 = 72"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Más de 60' ⇒ X ≥ 61 ⇒ 1 − P(X ≤ 60)."
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "1 − 0,08476 = 0,91524",
+        "calc": "MENU→7 Distribución→Poisson CD: x=60, λ=72 → 0,08476 ; pedimos 1 − 0,08476"
+      }
+    ],
+    "why": "Se pasa todo a minutos (λ = 72) y se usa el complemento de X ≤ 60.",
+    "traps": [
+      "Interpreta 'más de 60' como X > 61.",
+      "Entrega P(X ≤ 60), el complemento de lo pedido.",
+      "Usa λ = 3·6 = 18 mezclando 'tres llamadas' con 'seis horas' sin pasar a minutos.",
+      "",
+      "Usa la acumulada hasta 61 sin complemento."
+    ]
+  },
+  {
+    "id": "p1-093",
+    "topic": "poisson",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "Recuperatorio 1er parcial ej 1e",
+    "stem": "Las solicitudes de servicio llegan a una tasa promedio de 9 cada 30 minutos. ¿Cuál es la probabilidad de que en 15 minutos no llegue ninguna solicitud?",
+    "options": [
+      "0,74082",
+      "0,00000",
+      "0,98889",
+      "0,00012",
+      "0,01111"
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Hallar λ",
+        "text": "9 cada 30 min ⇒ 4,5 en 15 min.",
+        "formula": "λ = 9 · 15/30 = 4,5"
+      },
+      {
+        "label": "Traducir",
+        "text": "'Ninguna' ⇒ X = 0.",
+        "formula": "P(X = 0) = e⁻⁴·⁵"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "= 0,01111",
+        "calc": "MENU→7 Distribución→Poisson PD: x=0, λ=4,5 → 0,01111"
+      }
+    ],
+    "why": "λ = 4,5 para 15 minutos; 'ninguna' es e^(−4,5) = 0,01111.",
+    "traps": [
+      "Usa λ = 0,3 (solicitudes por minuto) sin multiplicar por 15.",
+      "Escala al revés: duplica la tasa en lugar de reducirla a la mitad.",
+      "Entrega P(X ≥ 1), el complemento.",
+      "Usa λ = 9 sin escalar a 15 minutos.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-094",
+    "topic": "poisson",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original (TP3 ej 8 vs ej 12)",
+    "stem": "¿Qué distribución corresponde a cada situación? (I) Número de ventas logradas al ofrecer un producto en 18 casas, con probabilidad 0,15 de venta en cada una. (II) Número de veces que sale el premio mayor de un bingo en 6 horas, a razón de 1 cada 2,5 horas.",
+    "options": [
+      "(I) Binomial con n = 18 y p = 0,15; (II) Poisson con λ = 2,4.",
+      "(I) Poisson; (II) Poisson con λ = 2,4.",
+      "(I) Binomial; (II) Binomial con n = 6 y p = 1/2,5.",
+      "(I) Normal; (II) Binomial.",
+      "(I) Poisson con λ = 2,7; (II) Binomial con n = 6 y p = 0,4."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Binomial",
+        "text": "Hay n pruebas fijas, éxito/fracaso con p constante.",
+        "formula": "(I): n = 18, p = 0,15"
+      },
+      {
+        "label": "Poisson",
+        "text": "Se cuentan sucesos en un continuo (tiempo) con tasa media; λ = tasa·tiempo.",
+        "formula": "(II): λ = (1/2,5)·6 = 2,4"
+      }
+    ],
+    "why": "Con n y p conocidos es Binomial; con una tasa por unidad de tiempo y sin n es Poisson.",
+    "traps": [
+      "",
+      "(I) tiene n = 18 pruebas independientes con p constante.",
+      "Fuerza una binomial en (II), donde no hay n de ensayos fijo.",
+      "Ambas son variables de conteo discretas, no normales.",
+      "Invierte los modelos: (I) tiene n fijo y p; (II) no tiene n de pruebas."
+    ]
+  },
+  {
+    "id": "p1-095",
+    "topic": "poisson",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "Si X ~ Poisson(λ = 9), ¿cuál afirmación es correcta?",
+    "options": [
+      "E(X) = 3 y V(X) = 9; el desvío estándar es 3.",
+      "E(X) = 9 y V(X) = 9; el desvío estándar es 3.",
+      "E(X) = 9 y V(X) = 9·q, con q = 1 − p.",
+      "E(X) = 9 y V(X) = 3; el desvío estándar es √3.",
+      "E(X) = 9 y V(X) = 81; el desvío estándar es 9."
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Propiedad",
+        "text": "En Poisson, esperanza y varianza son iguales a λ.",
+        "formula": "E(X) = V(X) = λ = 9"
+      },
+      {
+        "label": "Desvío",
+        "text": "El desvío es la raíz de la varianza.",
+        "formula": "σ = √9 = 3"
+      }
+    ],
+    "why": "La Poisson tiene E(X) = V(X) = λ, por lo tanto σ = √λ.",
+    "traps": [
+      "Confunde la esperanza con el desvío.",
+      "",
+      "Mezcla la fórmula de la binomial (n·p·q) con la de Poisson, que no tiene p.",
+      "Confunde el desvío con la varianza: en Poisson la varianza es λ.",
+      "Eleva al cuadrado la media como si la varianza fuera λ²."
+    ]
+  },
+  {
+    "id": "p1-096",
+    "topic": "poisson",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "A un local llegan en promedio 12 clientes por hora. Se pide la probabilidad de que en 10 minutos lleguen exactamente 2 clientes. ¿Qué carga es correcta en Distribución → Poisson?",
+    "options": [
+      "Poisson CD con x = 2, λ = 2.",
+      "Poisson PD con x = 2, λ = 120.",
+      "Poisson PD con x = 2, λ = 12.",
+      "Poisson PD con x = 10, λ = 12.",
+      "Poisson PD con x = 2, λ = 2."
+    ],
+    "answer": 4,
+    "steps": [
+      {
+        "label": "Escalar",
+        "text": "10 min = 1/6 de hora.",
+        "formula": "λ = 12 · 1/6 = 2"
+      },
+      {
+        "label": "Elegir función",
+        "text": "'Exactamente 2' ⇒ puntual (PD)."
+      },
+      {
+        "label": "Cargar",
+        "text": "Se carga la función con los parámetros indicados y se lee el resultado.",
+        "formula": "P(X = 2) = 0,27067",
+        "calc": "MENU→7 Distribución→Poisson PD: x=2, λ=2 → 0,27067"
+      }
+    ],
+    "why": "Primero se escala λ a la ventana (2) y después se usa PD para un valor exacto.",
+    "traps": [
+      "La CD acumula (P(X ≤ 2)); 'exactamente' pide la puntual.",
+      "Multiplica 12·10 sin convertir 10 minutos a horas.",
+      "No escala λ a la ventana de 10 minutos.",
+      "Usa los 10 minutos como valor de x: x es la cantidad de clientes, no el tiempo.",
+      ""
+    ]
+  },
+  {
+    "id": "p1-097",
+    "topic": "poisson",
+    "kind": "planteo",
+    "difficulty": 2,
+    "source": "original (calculadora)",
+    "stem": "X ~ Poisson(λ = 3,5). Se pide P(X > 4). ¿Qué hay que cargar?",
+    "options": [
+      "Poisson CD con x = 4, λ = 3,5, y luego 1 − resultado.",
+      "Poisson CD con x = 4, λ = 3,5, sin complemento.",
+      "Poisson CD con x = 5, λ = 3,5, y luego 1 − resultado.",
+      "Poisson PD con x = 5, λ = 3,5.",
+      "Poisson PD con x = 4, λ = 3,5."
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Traducir",
+        "text": "'Más de 4' ⇒ X ≥ 5 ⇒ complemento de X ≤ 4.",
+        "formula": "P(X > 4) = 1 − P(X ≤ 4)"
+      },
+      {
+        "label": "Cargar",
+        "text": "Se carga la función con los parámetros indicados y se lee el resultado.",
+        "formula": "1 − 0,72544 = 0,27456",
+        "calc": "MENU→7 Distribución→Poisson CD: x=4, λ=3,5 → 0,72544 ; luego 1 − 0,72544"
+      }
+    ],
+    "why": "Para una cola derecha estricta (> k) se usa CD en k y complemento.",
+    "traps": [
+      "",
+      "Da P(X ≤ 4): la cola opuesta.",
+      "Eso da P(X > 5): 'más de 4' arranca en 5, por lo que se resta la acumulada en 4.",
+      "Da P(X = 5): solo un término de la cola.",
+      "Da P(X = 4): un único valor."
+    ]
+  },
+  {
+    "id": "p1-098",
+    "topic": "hipergeometrica",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 2a",
+    "stem": "Un paquete tiene 9 caramelos de naranja, 12 de ananá y 4 de frambuesa (25 en total). Un cliente elige dos al azar, sin devolverlos. ¿Cuál es la probabilidad de que elija uno de ananá y otro de frambuesa?",
+    "options": [
+      "0,84",
+      "0,16",
+      "0,64",
+      "0,1536",
+      "0,08"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Casos",
+        "text": "Dos órdenes posibles, excluyentes entre sí: (ananá, frambuesa) y (frambuesa, ananá)."
+      },
+      {
+        "label": "Producto",
+        "text": "Sin reposición el segundo denominador baja a 24.",
+        "formula": "P = 12/25·4/24 + 4/25·12/24"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "= 0,08 + 0,08 = 0,16"
+      }
+    ],
+    "why": "Hay que sumar los dos órdenes y bajar el denominador de la segunda extracción: 0,16.",
+    "traps": [
+      "Entrega el complemento del suceso pedido.",
+      "",
+      "Suma las probabilidades en lugar de multiplicar.",
+      "Usa denominador 25 en ambas extracciones (con reposición) cuando es sin reposición.",
+      "Considera un solo orden (ananá primero) y olvida el orden inverso (frambuesa primero)."
+    ]
+  },
+  {
+    "id": "p1-099",
+    "topic": "hipergeometrica",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "TP2 ej 2b",
+    "stem": "Un paquete tiene 9 caramelos de naranja, 12 de ananá y 4 de frambuesa (25 en total). Un cliente elige dos al azar, sin devolverlos. ¿Cuál es la probabilidad de que los dos caramelos sean del mismo sabor?",
+    "options": [
+      "0,3856",
+      "0,0276",
+      "0,64",
+      "0,36",
+      "0,34"
+    ],
+    "answer": 3,
+    "steps": [
+      {
+        "label": "Casos",
+        "text": "Excluyentes: ambos naranja, ambos ananá, ambos frambuesa."
+      },
+      {
+        "label": "Sin reposición",
+        "text": "Cada extracción cambia el universo de la siguiente.",
+        "formula": "9/25·8/24 + 12/25·11/24 + 4/25·3/24"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "(72 + 132 + 12)/600 = 0,36"
+      }
+    ],
+    "why": "Se suman los tres casos de 'mismo sabor' con denominadores 25 y 24: 216/600 = 0,36.",
+    "traps": [
+      "Usa reposición (denominador 25 en las dos extracciones).",
+      "Multiplica los tres sabores, un suceso que con dos caramelos no existe.",
+      "Entrega el complemento: sabores distintos.",
+      "",
+      "Olvida uno de los tres casos (frambuesa-frambuesa)."
+    ]
+  },
+  {
+    "id": "p1-100",
+    "topic": "hipergeometrica",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 2c",
+    "stem": "Un paquete tiene 9 caramelos de naranja, 12 de ananá y 4 de frambuesa (25 en total). Un cliente elige dos al azar, sin devolverlos. ¿Cuál es la probabilidad de que al menos uno de los dos sea de naranja?",
+    "options": [
+      "0,72",
+      "0,40",
+      "0,60",
+      "0,5904",
+      "0,735"
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Estrategia",
+        "text": "'Al menos uno' ⇒ complemento de 'ninguno'.",
+        "formula": "P = 1 − P(ninguno naranja)"
+      },
+      {
+        "label": "Ninguno",
+        "text": "Sin reposición: 16 no naranja de 25, luego 15 de 24.",
+        "formula": "16/25 · 15/24 = 0,4"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "1 − 0,4 = 0,6"
+      }
+    ],
+    "why": "Para 'al menos uno' se usa el complemento de 'ninguno', respetando que no hay reposición: 1 − 0,4 = 0,6.",
+    "traps": [
+      "Duplica P(naranja) sin considerar que ambos pueden ser naranja.",
+      "Entrega la probabilidad de NINGÚN naranja, el complemento.",
+      "",
+      "Usa el complemento con reposición.",
+      "Suma P(primero naranja) + P(segundo naranja) sin restar la intersección."
+    ]
+  },
+  {
+    "id": "p1-101",
+    "topic": "hipergeometrica",
+    "kind": "numeric",
+    "difficulty": 2,
+    "source": "TP2 ej 5e",
+    "stem": "En un centro de atención hay 90 clientes, 40 de género femenino. Se seleccionan dos clientes al azar (sin reposición). ¿Cuál es la probabilidad de que ambos sean de género femenino?",
+    "options": [
+      "0,4382",
+      "0,1948",
+      "0,1975",
+      "0,8826",
+      "0,4444"
+    ],
+    "answer": 1,
+    "steps": [
+      {
+        "label": "Modelo",
+        "text": "Sin reposición: la segunda extracción es condicional a la primera."
+      },
+      {
+        "label": "Planteo",
+        "text": "Se plantea la expresión de la probabilidad pedida.",
+        "formula": "P = 40/90 · 39/89"
+      },
+      {
+        "label": "Resultado",
+        "text": "Se obtiene el valor pedido.",
+        "formula": "0,1948"
+      }
+    ],
+    "why": "La regla del producto con condicional: 40/90 · 39/89 = 0,1948.",
+    "traps": [
+      "Entrega solo la condicional de la segunda extracción.",
+      "",
+      "Usa reposición: mantiene 40/90 en la segunda extracción.",
+      "Suma las dos probabilidades en lugar de multiplicarlas.",
+      "Entrega la probabilidad de la primera extracción solamente."
+    ]
+  },
+  {
+    "id": "p1-102",
+    "topic": "hipergeometrica",
+    "kind": "numeric",
+    "difficulty": 3,
+    "source": "original",
+    "stem": "Un lote tiene 20 piezas, de las cuales 6 son defectuosas. Se extraen 4 piezas al azar sin reposición. ¿Cuál es la probabilidad de que exactamente 2 sean defectuosas?",
+    "options": [
+      "0,2817",
+      "0,3426",
+      "0,0031",
+      "0,2646",
+      "0,0441"
+    ],
+    "answer": 0,
+    "steps": [
+      {
+        "label": "Modelo",
+        "text": "Población finita, sin reposición, dos clases ⇒ hipergeométrica: N = 20, K = 6, n = 4."
+      },
+      {
+        "label": "Planteo",
+        "text": "Casos favorables: 2 de las 6 defectuosas y 2 de las 14 buenas; casos posibles: 4 de las 20.",
+        "formula": "P = C(6,2)·C(14,2) / C(20,4)"
+      },
+      {
+        "label": "Calcular",
+        "text": "Se reemplazan los datos y se opera.",
+        "formula": "= 15 · 91 / 4845",
+        "calc": "Usar la tecla nCr (SHIFT ÷): 6 nCr 2 = 15 ; 14 nCr 2 = 91 ; 20 nCr 4 = 4845 → 15×91÷4845 = 0,2817"
+      }
+    ],
+    "why": "En muestreo sin reposición de un lote finito, la probabilidad se arma con combinaciones: C(6,2)·C(14,2)/C(20,4) = 0,2817.",
+    "traps": [
+      "",
+      "Entrega P(X ≥ 2) (al menos 2) en vez de exactamente 2.",
+      "Cuenta solo las formas de elegir las 2 defectuosas y olvida las 2 buenas.",
+      "Aplica Binomial con p = 6/20 constante: ignora que sin reposición p cambia en cada extracción.",
+      "Multiplica p²q² sin el factor combinatorio de ordenar los 2 éxitos."
+    ]
+  },
+  {
+    "id": "p1-103",
+    "topic": "hipergeometrica",
+    "kind": "concept",
+    "difficulty": 2,
+    "source": "original",
+    "stem": "De un lote de 50 piezas con 8 defectuosas se extraen 5 sin reposición. Sea X = cantidad de piezas defectuosas en la muestra. ¿Qué distribución describe exactamente a X?",
+    "options": [
+      "Poisson con λ = 5·8/50, porque se cuentan defectuosas.",
+      "Geométrica, porque se extrae hasta hallar una defectuosa.",
+      "Hipergeométrica: la población es finita, no hay reposición y la probabilidad de éxito cambia en cada extracción.",
+      "Normal, porque n = 5 es una muestra.",
+      "Binomial con n = 5 y p = 8/50, porque cada pieza es defectuosa o no."
+    ],
+    "answer": 2,
+    "steps": [
+      {
+        "label": "Rasgos",
+        "text": "Lote finito (N = 50), K = 8 defectuosas, n = 5, SIN reposición."
+      },
+      {
+        "label": "Modelo",
+        "text": "Éxitos en n extracciones sin reposición ⇒ hipergeométrica.",
+        "formula": "P(X = x) = C(8,x)·C(42,5−x) / C(50,5)"
+      },
+      {
+        "label": "Convención",
+        "text": "Si el enunciado no aclara reposición, la cátedra asume sin reposición."
+      }
+    ],
+    "why": "Sin reposición la probabilidad de éxito varía; el modelo exacto es la hipergeométrica.",
+    "traps": [
+      "Poisson cuenta sucesos en un continuo, no éxitos en n pruebas de un lote finito.",
+      "La geométrica cuenta pruebas hasta el primer éxito; acá el tamaño de muestra está fijo en 5.",
+      "",
+      "La normal es continua y n = 5 no justifica ninguna aproximación.",
+      "La binomial exige pruebas independientes con p constante; sin reposición p cambia."
+    ]
+  }
+]

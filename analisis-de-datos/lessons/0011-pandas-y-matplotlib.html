@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pandas y Matplotlib</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0011 · Bloque 3: Python</div>
+
+<div class="kicker">Lección 0011</div>
+<h1>Pandas y Matplotlib: de la tabla al gráfico</h1>
+<p class="lede">La segunda mitad del notebook de la clase 2, con <code>ventas.csv</code>. Es el "taller de Python orientado a datos" del programa (Tema 3). El flujo que propone la cátedra es: <strong>pregunta → transformación → resumen → visualización</strong>.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la 0010: ¿qué excepción da <code>int("cuarenta")</code>? ¿Cuántas vueltas da <code>range(1, 101)</code>?</p>
+</div>
+
+<h2>Las dos estructuras</h2>
+<div class="table-wrap">
+<table>
+  <tr><th></th><th>Series</th><th>DataFrame</th></tr>
+  <tr><td>Forma</td><td>1 dimensión: una columna con un <strong>índice</strong> (etiquetas)</td><td>2 dimensiones: tabla de filas (observaciones) y columnas (variables)</td></tr>
+  <tr><td>Frente a una lista</td><td>Tiene etiquetas y operaciones vectorizadas. Las listas son más simples y admiten tipos mezclados</td><td>Cada columna de un DataFrame es una Series</td></tr>
+</table>
+</div>
+
+<h2>Las operaciones del notebook</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Para…</th><th>Código</th></tr>
+  <tr><td>Leer un CSV</td><td><code>df = pd.read_csv("ventas.csv")</code></td></tr>
+  <tr><td>Conocer la tabla</td><td><code>df.shape</code> (filas, columnas) · <code>df.columns</code> · <code>df.dtypes</code> · <code>df.head()</code></td></tr>
+  <tr><td>Seleccionar</td><td><code>df["col"]</code> una columna · <code>df.iloc[0]</code> primera fila <em>por posición</em> · <code>df.loc[condición]</code> filas que cumplen</td></tr>
+  <tr><td>Filtrar</td><td><code>df[df["total"] &gt; 500]</code></td></tr>
+  <tr><td>Agrupar</td><td><code>df.groupby("categoria")["total"].sum()</code> (también <code>mean()</code> y <code>count()</code>)</td></tr>
+  <tr><td>Columna nueva</td><td><code>df["total_calc"] = df["cantidad"] * df["precio_unitario"]</code></td></tr>
+  <tr><td>Fechas</td><td><code>pd.to_datetime(df["fecha"])</code> y después <code>.dt.day</code></td></tr>
+  <tr><td>Faltantes</td><td><code>df.isna().sum()</code> cuenta faltantes <strong>por columna</strong>. Un faltante <strong>no es automáticamente 0</strong>.</td></tr>
+  <tr><td>Duplicados</td><td><code>df.duplicated().sum()</code> · <code>df.drop_duplicates()</code></td></tr>
+  <tr><td>Tabla dinámica</td><td><code>pd.pivot_table(df, values=, index=, columns=, aggfunc=)</code></td></tr>
+  <tr><td>Correlación</td><td><code>df[[...]].corr()</code>: <strong>1</strong> positiva fuerte · <strong>-1</strong> negativa fuerte · <strong>0</strong> poca relación lineal</td></tr>
+</table>
+</div>
+<span class="sidenote">Fuente: notebook "CLASE_2_Introduccion_a_PYTHON_AUTOGUIADA", secciones 2 a 8 de Pandas y 1 a 5 de Matplotlib. El dataset está en <code>raw/notebooks/ventas (1).csv</code>.</span>
+
+<h2>Qué gráfico para qué pregunta</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Gráfico</th><th>Matplotlib</th><th>Responde…</th></tr>
+  <tr><td><strong>Líneas</strong></td><td><code>plt.plot()</code></td><td>Tendencias en el tiempo</td></tr>
+  <tr><td><strong>Barras</strong></td><td><code>plt.bar()</code></td><td>Comparaciones entre categorías</td></tr>
+  <tr><td><strong>Histograma</strong></td><td><code>plt.hist()</code></td><td>Distribuciones (concentración, dispersión, forma)</td></tr>
+  <tr><td><strong>Dispersión</strong></td><td><code>plt.scatter()</code></td><td>Relaciones entre dos variables</td></tr>
+</table>
+</div>
+<!-- diagram:graficos -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 400" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="graficos-title graficos-desc" xmlns="http://www.w3.org/2000/svg"><title id="graficos-title">Qué gráfico para qué pregunta</title><desc id="graficos-desc">Cuatro tarjetas con un mini gráfico de ejemplo: líneas para evolución en el tiempo, barras para comparar categorías, histograma (destacado) para ver cómo se distribuye una variable, y dispersión para ver si dos variables se asocian; cada una con sus palabras pista y una pregunta tipo.</desc><defs><marker id="graficos-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="graficos-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="graficos-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><rect class="mask" x="24" y="24" width="176" height="308" rx="6"/><rect class="node" x="24" y="24" width="176" height="308" rx="6"/><text class="name" x="40" y="46" text-anchor="start">Líneas</text><text class="sub" x="40" y="62" text-anchor="start">plt.plot()</text><path class="axis" d="M44,80 L44,160 L184,160"/><polyline class="series" points="54,140 71,128 88,133.6 105,116 122,120 139,104 156,100.8 173,86.4"/><circle class="mark" cx="54" cy="140" r="2.2"/><circle class="mark" cx="71" cy="128" r="2.2"/><circle class="mark" cx="88" cy="133.6" r="2.2"/><circle class="mark" cx="105" cy="116" r="2.2"/><circle class="mark" cx="122" cy="120" r="2.2"/><circle class="mark" cx="139" cy="104" r="2.2"/><circle class="mark" cx="156" cy="100.8" r="2.2"/><circle class="mark" cx="173" cy="86.4" r="2.2"/><text class="label" x="184" y="171" text-anchor="end">tiempo →</text><text class="eyebrow" x="40" y="190" text-anchor="start">PALABRAS PISTA</text><text class="field" x="40" y="206" text-anchor="start">evolución</text><text class="field" x="40" y="220" text-anchor="start">tendencia</text><text class="field" x="40" y="234" text-anchor="start">en el tiempo</text><text class="field" x="40" y="248" text-anchor="start">día por día / por mes</text><line class="rule" x1="40" y1="268" x2="184" y2="268"/><text class="eyebrow" x="40" y="284" text-anchor="start">PREGUNTA TIPO</text><foreignObject x="40" y="290" width="144" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">Mostrar la evolución de las ventas día por día.</div></foreignObject><rect class="mask" x="216" y="24" width="176" height="308" rx="6"/><rect class="node" x="216" y="24" width="176" height="308" rx="6"/><text class="name" x="232" y="46" text-anchor="start">Barras</text><text class="sub" x="232" y="62" text-anchor="start">plt.bar()</text><path class="axis" d="M236,80 L236,160 L376,160"/><rect class="mark" x="248" y="112" width="20" height="48"/><text class="label" x="258" y="171" text-anchor="middle">A</text><rect class="mark" x="280" y="86.4" width="20" height="73.6"/><text class="label" x="290" y="171" text-anchor="middle">B</text><rect class="mark" x="312" y="128" width="20" height="32"/><text class="label" x="322" y="171" text-anchor="middle">C</text><rect class="mark" x="344" y="100" width="20" height="60"/><text class="label" x="354" y="171" text-anchor="middle">D</text><text class="eyebrow" x="232" y="190" text-anchor="start">PALABRAS PISTA</text><text class="field" x="232" y="206" text-anchor="start">comparar</text><text class="field" x="232" y="220" text-anchor="start">por categoría</text><text class="field" x="232" y="234" text-anchor="start">cuál es mayor / menor</text><text class="field" x="232" y="248" text-anchor="start">por producto</text><line class="rule" x1="232" y1="268" x2="376" y2="268"/><text class="eyebrow" x="232" y="284" text-anchor="start">PREGUNTA TIPO</text><foreignObject x="232" y="290" width="144" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">Comparar el total vendido por producto.</div></foreignObject><rect class="mask" x="408" y="24" width="176" height="308" rx="6"/><rect class="focal" x="408" y="24" width="176" height="308" rx="6"/><text class="name" x="424" y="46" text-anchor="start">Histograma</text><text class="sub-accent" x="424" y="62" text-anchor="start">plt.hist()</text><path class="axis" d="M428,80 L428,160 L568,160"/><rect class="mark-accent" x="434" y="150.4" width="16" height="9.6" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="450" y="136" width="16" height="24" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="466" y="113.6" width="16" height="46.4" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="482" y="88" width="16" height="72" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="498" y="80" width="16" height="80" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="514" y="105.6" width="16" height="54.4" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="530" y="131.2" width="16" height="28.8" style="stroke: var(--dg-paper); stroke-width: 1"/><rect class="mark-accent" x="546" y="148.8" width="16" height="11.2" style="stroke: var(--dg-paper); stroke-width: 1"/><text class="label" x="568" y="171" text-anchor="end">edad (intervalos) →</text><text class="eyebrow" x="424" y="190" text-anchor="start">PALABRAS PISTA</text><text class="sub-accent" x="424" y="206" text-anchor="start">cómo se distribuye</text><text class="field" x="424" y="220" text-anchor="start">concentración</text><text class="field" x="424" y="234" text-anchor="start">forma</text><text class="field" x="424" y="248" text-anchor="start">intervalos (bins)</text><line class="rule" x1="424" y1="268" x2="568" y2="268"/><text class="eyebrow" x="424" y="284" text-anchor="start">PREGUNTA TIPO</text><foreignObject x="424" y="290" width="144" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">Ver cómo se distribuyen las edades de los alumnos.</div></foreignObject><rect class="mask" x="600" y="24" width="176" height="308" rx="6"/><rect class="node" x="600" y="24" width="176" height="308" rx="6"/><text class="name" x="616" y="46" text-anchor="start">Dispersión</text><text class="sub" x="616" y="62" text-anchor="start">plt.scatter()</text><path class="axis" d="M620,80 L620,160 L760,160"/><circle class="mark" cx="631.2" cy="144" r="2.6"/><circle class="mark" cx="641" cy="150.4" r="2.6"/><circle class="mark" cx="648" cy="136" r="2.6"/><circle class="mark" cx="659.2" cy="139.2" r="2.6"/><circle class="mark" cx="669" cy="126.4" r="2.6"/><circle class="mark" cx="678.8" cy="132.8" r="2.6"/><circle class="mark" cx="690" cy="120" r="2.6"/><circle class="mark" cx="698.4" cy="112" r="2.6"/><circle class="mark" cx="708.2" cy="118.4" r="2.6"/><circle class="mark" cx="718" cy="104" r="2.6"/><circle class="mark" cx="729.2" cy="107.2" r="2.6"/><circle class="mark" cx="739" cy="92.8" r="2.6"/><circle class="mark" cx="748.8" cy="97.6" r="2.6"/><text class="label" x="760" y="171" text-anchor="end">horas →</text><text class="label" x="624" y="84" text-anchor="start">notas</text><text class="eyebrow" x="616" y="190" text-anchor="start">PALABRAS PISTA</text><text class="field" x="616" y="206" text-anchor="start">se asocia / relación</text><text class="field" x="616" y="220" text-anchor="start">dos variables</text><text class="field" x="616" y="234" text-anchor="start">correlación</text><text class="field" x="616" y="248" text-anchor="start">¿más X, más Y?</text><line class="rule" x1="616" y1="268" x2="760" y2="268"/><text class="eyebrow" x="616" y="284" text-anchor="start">PREGUNTA TIPO</text><foreignObject x="616" y="290" width="144" height="56"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">¿Más horas de estudio se asocian con mejores notas?</div></foreignObject><text class="note" x="400" y="360" text-anchor="middle">Barras = categorías separadas · histograma = intervalos numéricos pegados.</text><text class="note" x="400" y="380" text-anchor="middle">Trampa: “dispersión” de UNA variable (qué tan desparramada está) es histograma; dos variables es scatter.</text></svg></div><figcaption>Cada gráfico con su palabra pista y una pregunta tipo del parcial. <a href="../diagrams/graficos.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:graficos -->
+<p>Anatomía de un gráfico: título (<code>plt.title</code>), etiquetas de ejes (<code>plt.xlabel</code>/<code>ylabel</code>), leyenda y grilla. Para guardarlo: <code>plt.savefig("archivo.png")</code>. Pandas prepara y resume los datos; Matplotlib los representa (<code>df.plot(kind="bar")</code>).</p>
+
+<h2>Práctica</h2>
+<p class="muted">Las preguntas de código usan este DataFrame:</p>
+<pre class="code">df = pd.DataFrame({
+    "producto": ["A", "B", "C", "A", "B"],
+    "ventas":   [120, 150, 90, 180, 130],
+    "region":   ["Norte", "Sur", "Norte", "Sur", "Norte"]
+})</pre>
+
+<div class="quiz" data-quiz-id="0011-pandas-y-matplotlib"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Qué devuelve <code>df.shape</code>?",
+   "options": ["(5, 3)", "(3, 5)", "(5, 1)", "(1, 3)"], "answer": 0,
+   "why": "(filas, columnas): 5 filas y 3 columnas."},
+  {"q": "¿Qué estructura de pandas tiene una sola dimensión?",
+   "options": ["Series", "DataFrame", "Lista", "Diccionario"], "answer": 0,
+   "why": "Series = 1 dimensión con índice; DataFrame = 2 dimensiones."},
+  {"q": "¿Qué valor corresponde a A en <code>df.groupby(\"producto\")[\"ventas\"].sum()</code>?",
+   "options": ["300", "150", "120", "180"], "answer": 0,
+   "why": "A aparece dos veces: 120 + 180 = 300."},
+  {"q": "¿Cuántas filas devuelve <code>df[df[\"ventas\"] &gt; 125]</code>?",
+   "options": ["3", "2", "4", "5"], "answer": 0,
+   "why": "150, 180 y 130 superan 125. Los que quedan afuera son 120 y 90."},
+  {"q": "¿Qué devuelve <code>df.iloc[0]</code>?",
+   "options": ["La primera fila", "La primera columna", "La columna índice", "La última fila"], "answer": 0,
+   "why": "<code>iloc</code> selecciona por posición de fila. Una columna se selecciona con <code>df[\"col\"]</code>."},
+  {"q": "¿Qué devuelve <code>df.isna().sum()</code>?",
+   "options": ["Cantidad de faltantes por columna", "Cantidad de filas duplicadas totales", "Suma de todos los valores", "Promedio de cada columna numérica"], "answer": 0,
+   "why": "<code>isna()</code> marca True en cada faltante y <code>sum()</code> los cuenta por columna."},
+  {"q": "\"Un valor faltante significa automáticamente 0.\"",
+   "options": ["Falso", "Verdadero"], "answer": 0,
+   "why": "El notebook lo remarca: faltante no significa cero. Reemplazarlo por 0 es una decisión de negocio."},
+  {"q": "Una correlación de <code>-1</code> entre dos columnas indica…",
+   "options": ["Relación negativa fuerte", "Relación positiva fuerte", "Poca relación lineal", "Error de cálculo"], "answer": 0,
+   "why": "1 = positiva fuerte · -1 = negativa fuerte · 0 = poca relación lineal."},
+  {"q": "¿Qué función lee un archivo CSV?",
+   "options": ["pd.read_csv()", "pd.open_csv()", "pd.load_csv()", "pd.import_csv()"], "answer": 0,
+   "why": "<code>pd.read_csv(\"ventas.csv\")</code> devuelve un DataFrame."},
+  {"q": "Querés mostrar la evolución de las ventas día por día. ¿Qué gráfico usás?",
+   "options": ["Líneas", "Barras", "Histograma", "Dispersión"], "answer": 0,
+   "why": "Tendencias en el tiempo → líneas."},
+  {"q": "Querés ver cómo se distribuyen las edades de los alumnos. ¿Qué gráfico usás?",
+   "options": ["Histograma", "Líneas", "Barras", "Dispersión"], "answer": 0,
+   "why": "Distribución (concentración, dispersión, forma) → histograma."},
+  {"q": "Querés ver si más horas de estudio se asocian con mejores notas. ¿Qué gráfico usás?",
+   "options": ["Dispersión", "Histograma", "Barras", "Líneas"], "answer": 0,
+   "why": "Relación entre dos variables numéricas → dispersión (scatter)."},
+  {"q": "Querés comparar el total vendido por producto. ¿Qué gráfico usás?",
+   "options": ["Barras", "Dispersión", "Histograma", "Líneas"], "answer": 0,
+   "why": "Comparación entre categorías → barras."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Leés cualquier operación de Pandas del notebook y sabés qué devuelve, y elegís el gráfico correcto según la pregunta.</p>
+</div>
+
+<div class="box recall">
+  <span class="label">Sigue en el bloque 4 (EDA)</span>
+  <p>El histograma y la correlación de esta lección se profundizan en los notebooks del profe de EDA: cuántos bins usar (regla de Rice) y cómo leer la asimetría en la <a href="0018-histogramas-y-asimetria.html">0018</a>; Pearson vs Spearman y el heatmap en la <a href="0020-relaciones-y-correlacion.html">0020</a>. Ojo: con pandas 2.x, <code>df.corr()</code> necesita <code>numeric_only=True</code> si hay columnas de texto.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>El notebook de la clase 2 desde la sección "Instalación". Si podés, ejecutalo en Colab con <code>ventas.csv</code>: ver las salidas reales fija mucho más que leerlas. Resumen: <a href="../reference/python.html">Referencia · Python</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Como DE seguramente usás Spark o SQL para esto. Si querés, armamos en el chat la equivalencia groupby ↔ GROUP BY; también te sirve para el bloque de SQL.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0010-errores-y-bucles.html">← 0010 · Errores, bucles e imports</a>
+  <a href="../index.html">Índice →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

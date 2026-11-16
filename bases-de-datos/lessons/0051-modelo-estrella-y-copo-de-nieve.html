@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 51 · Modelo estrella y copo de nieve</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 51 · Unidad 9 · Data warehouse</p>
+    <h1 class="masthead__title">Modelo estrella, copo de nieve, Inmon y Kimball</h1>
+    <p class="masthead__standfirst">
+      Cómo se diseñan las tablas de un DW: una tabla de hechos en el centro, dimensiones a su
+      alrededor, y dos escuelas que discuten cuánto normalizar.
+    </p>
+    <p class="masthead__meta">
+      <span>~20 minutos</span>
+      <span>Deck "Intro Datawarehouse", slides 29–34</span>
+      <span>Prioridad para el 2do parcial: alta (teoría choice)</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Relación con lo que ya sabés</span>
+    <p>
+      Un esquema en estrella es un caso del modelo relacional con claves foráneas (lecciones
+      <a href="0005-claves-e-integridad.html">0005</a> y <a href="0034-joins.html">0034</a>): consultarlo
+      es hacer JOIN del hecho con cada dimensión. Y el copo de nieve es aplicar normalización
+      (<a href="0023-tercera-forma-normal.html">0023</a>) a las dimensiones.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>El esquema en estrella</h2>
+
+  <blockquote class="callout">
+    "En el esquema de estrella, el centro de la estrella puede tener una <b>tabla de hechos</b> y
+    varias <b>tablas de dimensiones</b> asociadas. Se conoce como esquema estelar ya que su
+    estructura se asemeja a una estrella. Es el tipo más simple de esquema de Data Warehouse.
+    También se conoce como <b>Star Join Schema</b> y está optimizado para consultar grandes
+    conjuntos de datos."
+  </blockquote>
+
+  <figure class="full">
+    <img src="../assets/diagrams/esquema-estrella.svg"
+         alt="A la izquierda, un esquema en estrella: la tabla de hechos Ventas en el centro, unida directamente a las dimensiones Cliente, Producto, Fecha y Sucursal. A la derecha, el copo de nieve: Producto se normaliza en Familia y Rubro, y Sucursal en Ciudad.">
+    <figcaption>
+      <b>La diferencia es cuántas uniones separan al hecho de un dato.</b> En la estrella, una;
+      en el copo de nieve, varias.
+    </figcaption>
+  </figure>
+
+  <h3>La regla de las claves</h3>
+
+  <blockquote class="callout">
+    "Las tablas de dimensiones tendrán siempre una <b>clave primaria simple</b>, mientras que en
+    la tabla de hechos, la clave principal estará <b>compuesta por las claves principales de las
+    tablas dimensionales</b>."
+  </blockquote>
+
+<pre><code>CLIENTE  (<u>Id_Cliente</u>, Nombre, Ciudad)
+PRODUCTO (<u>Id_Producto</u>, Nombre, Familia, Rubro)
+FECHA    (<u>Id_Fecha</u>, Anio, Mes, Trimestre)
+VENTAS   (<u>Id_Cliente</u>, <u>Id_Producto</u>, <u>Id_Fecha</u>, Unidades, Importe)   -- hechos</code></pre>
+
+  <p>
+    Fijate que las claves de <code>VENTAS</code> son <b>a la vez</b> su clave primaria y claves
+    foráneas hacia cada dimensión. Lo que no es clave en el hecho (<code>Unidades</code>,
+    <code>Importe</code>) son las <b>métricas</b>, lo que se suma y se promedia. Es la misma
+    estructura que ya viste como tabla asociativa de una relación N:N (lección
+    <a href="0024-donde-vive-el-precio.html">0024</a>).
+  </p>
+
+  <h2><span class="num">02</span>El copo de nieve</h2>
+
+  <blockquote class="callout">
+    "Un esquema de copo de nieve es una extensión de un esquema de estrella y <b>agrega
+    dimensiones adicionales</b>. La finalidad es <b>normalizar</b> las tablas y así reducir el
+    espacio de almacenamiento al eliminar la redundancia de datos, pero tiene la contrapartida de
+    generar <b>peores rendimientos</b> al tener que crear más tablas de dimensiones y más
+    relaciones (JOINs)."
+  </blockquote>
+
+<pre><code>PRODUCTO (<u>Id_Producto</u>, Nombre, Id_Familia)      ← ahora apunta a FAMILIA
+FAMILIA  (<u>Id_Familia</u>, Nombre, Id_Rubro)
+RUBRO    (<u>Id_Rubro</u>, Nombre)</code></pre>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>Estrella</th><th>Copo de nieve</th></tr></thead>
+      <tbody>
+        <tr><td><b>Dimensiones</b></td><td>Una tabla por dimensión, desnormalizada</td><td>Divididas en varias tablas, normalizadas</td></tr>
+        <tr><td><b>Espacio</b></td><td>Más, por la redundancia</td><td>Menos: elimina la redundancia</td></tr>
+        <tr><td><b>Consultas</b></td><td>Más rápidas, menos JOINs</td><td>Más lentas, más JOINs</td></tr>
+        <tr><td><b>Complejidad</b></td><td>La más simple</td><td>Extensión de la estrella</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Las dos aparecen en la lección <a href="0049-oltp-olap-y-data-warehouse.html">0049</a> como
+    esquemas típicos de un sistema <b>ROLAP</b>.
+  </p>
+
+  <h2><span class="num">03</span>Inmon contra Kimball</h2>
+
+  <p>
+    Dos formas de construir el DW, y el deck las llama <b>arquitecturas</b>: top-down (Inmon) y
+    bottom-up (Kimball).
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>Inmon · top-down</th><th>Kimball · bottom-up</th></tr></thead>
+      <tbody>
+        <tr><td><b>Punto de partida</b></td><td>Un <b>repositorio central único</b>: se construye un DW global y de ahí se nutren los Data Marts.</td><td>La necesidad de <b>un departamento</b>: se arman Data Marts a medida y se unen para formar el DW de la empresa.</td></tr>
+        <tr><td><b>Dirección</b></td><td>De lo global a lo departamental.</td><td>Del detalle de cada parte al sistema completo.</td></tr>
+        <tr><td><b>Modelo</b></td><td><b>Normalizado</b>, con las tres formas normales.</td><td><b>Desnormalizado</b> (esquema estrella).</td></tr>
+        <tr><td><b>Ventaja</b></td><td>Toda la empresa tiene la misma estructura; evita inconsistencias entre departamentos.</td><td>Cada departamento tiene independencia para crear su Data Mart, siguiendo un estándar común.</td></tr>
+        <tr><td><b>Riesgo</b></td><td>Hay que amoldarse a la estructura global.</td><td>Los Data Marts pueden diferir entre sí en aspectos que podrían ser comunes.</td></tr>
+        <tr><td><b>Conviene si…</b></td><td>Se quiere una visión global y hay que cuidar la integridad de los datos.</td><td>Se quiere analizar diferenciando los departamentos de la compañía.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote class="callout">
+    "A pesar de las diferencias las dos visiones tienen un mismo objetivo: tener un sistema de
+    almacenamiento capaz de responder a todas las posibles respuestas que puedan surgir en la
+    empresa."
+  </blockquote>
+
+  <p>
+    En los diagramas del deck, Inmon dibuja <i>Fuentes → ETL → Data Warehouse (normalizado,
+    "CIF") → Data Marts → cubos</i>; Kimball dibuja <i>Fuentes → ETL → estrellas por área
+    (ventas, finanzas, operaciones) → cubos</i>, sin un almacén central normalizado.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 4 · Las claves</span>
+    <p class="quiz__q">
+      En un esquema en estrella, ¿cómo es la clave primaria de la tabla de hechos?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Compuesta por las claves primarias de las tablas de dimensiones. Cada una es además foránea hacia su dimensión.">Compuesta por las claves de las dimensiones</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso sería una clave artificial propia. En el modelo del deck, la clave del hecho se arma con las claves de las dimensiones.">Un número correlativo propio del hecho</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al revés: las dimensiones tienen clave primaria simple; la compuesta es la del hecho.">Simple, igual que la de las dimensiones</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 4 · El trade-off</span>
+    <p class="quiz__q">
+      El copo de nieve ahorra espacio al normalizar las dimensiones. ¿Qué cuesta a cambio?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Peor rendimiento: hay más tablas de dimensiones y más relaciones, así que cada consulta necesita más JOINs.">Más JOINs y peor rendimiento de consulta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al contrario: normalizar reduce la redundancia y el espacio. Ese es justamente el beneficio, no el costo.">Más redundancia de datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El copo de nieve sigue teniendo tabla de hechos. Lo que cambia es la forma de las dimensiones.">Pierde la tabla de hechos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 4 · Quién es quién</span>
+    <p class="quiz__q">
+      Una metodología arranca con un almacén de datos global y normalizado, del que se nutren los
+      data marts. ¿De quién es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Inmon: top-down, un repositorio central único normalizado en tres formas normales; los Data Marts salen de ahí.">Inmon, top-down</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Kimball es bottom-up: arranca de los data marts departamentales y los une; usa un modelo desnormalizado en estrella.">Kimball, bottom-up</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Codd planteó el modelo relacional, no una metodología de DW. El deck contrapone a Inmon y Kimball.">Codd, relacional</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 4 · Cuál elegir</span>
+    <p class="quiz__q">
+      Una empresa quiere una visión global y cuidar especialmente la integridad de los datos.
+      ¿Qué enfoque conviene según el deck?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Inmon: toda la empresa comparte la misma estructura normalizada, y eso protege la integridad entre departamentos.">El de Inmon</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Kimball conviene para analizar diferenciando departamentos, con la independencia de cada data mart. No es el que prioriza la integridad global.">El de Kimball</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El deck dice que la elección depende de las necesidades: hay un enfoque más adecuado para cada caso, no da igual.">Cualquiera: es indistinto</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Deck <code>raw/Intro Datawarehouse .pptx</code>: slides 29–32 (arquitecturas top-down y
+      bottom-up, Inmon y Kimball), 33 (modelo estrella) y 34 (copo de nieve). Las figuras
+      comparten el ejemplo de ventas por concesionario del deck; las tablas de arriba son una
+      versión mínima propia.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Dibujá la estrella de un negocio que conozcas (ventas, turnos,
+      envíos) con su tabla de hechos y tres dimensiones, y marcá las claves. Pasámela y la reviso.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0050-componentes-de-un-dw.html">Anterior: 0050 · Componentes de un DW</a>
+    <a href="0052-slow-change-dimension.html">Siguiente: 0052 · Slow Change Dimension</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

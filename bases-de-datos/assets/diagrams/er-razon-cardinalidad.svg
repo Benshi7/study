@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 192" width="720" height="192"
+     role="img" aria-labelledby="er-razon-cardinalidad-title er-razon-cardinalidad-desc">
+  <title id="er-razon-cardinalidad-title">Razón de cardinalidad 1:N en notación de Chen</title>
+  <desc id="er-razon-cardinalidad-desc">Fragmento de diagrama entidad-relación: la entidad Laboratorio se une por el rombo Crea a la entidad Medicamento. El 1 está escrito sobre el tramo del lado Laboratorio y la N sobre el tramo del lado Medicamento. Cada marca se lee cruzada: el 1 junto a Laboratorio significa un laboratorio por cada medicamento, y la N junto a Medicamento significa N medicamentos por cada laboratorio.</desc>
+
+  <style>
+    .dg-paper  { fill: #fffef9; }
+    .dg-box    { fill: #fffef9; stroke: #1a1a17; stroke-width: 1; }
+    .dg-name   { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dg-line   { stroke: #56544c; stroke-width: 1; fill: none; }
+    .dg-leader { stroke: #8a877c; stroke-width: 1; stroke-dasharray: 4 3; fill: none; }
+    .dg-mark   { fill: #7a2e0e; font: 600 12px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .dg-head   { fill: #7a2e0e; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; letter-spacing: 0.04em; }
+    .dg-sub    { fill: #56544c; font: italic 12px "Iowan Old Style", Palatino, Georgia, serif; }
+
+    @media (prefers-color-scheme: dark) {
+      .dg-paper  { fill: #16161a; }
+      .dg-box    { fill: #16161a; stroke: #e8e4d9; }
+      .dg-name   { fill: #e8e4d9; }
+      .dg-line   { stroke: #a8a498; }
+      .dg-leader { stroke: #77746a; }
+      .dg-mark   { fill: #e08a5c; }
+      .dg-head   { fill: #e08a5c; }
+      .dg-sub    { fill: #a8a498; }
+    }
+  </style>
+
+  <rect width="720" height="192" class="dg-paper"/>
+
+  <!-- Connectors first, so nodes paint over them. Both endpoints share y=60,
+       so a straight line is the correct primitive here (no elbow needed). -->
+  <line x1="216" y1="60" x2="280" y2="60" class="dg-line"/>
+  <line x1="440" y1="60" x2="504" y2="60" class="dg-line"/>
+
+  <!-- Entity: Laboratorio -->
+  <rect x="40" y="32" width="176" height="56" class="dg-box"/>
+  <text x="128" y="64" class="dg-name" text-anchor="middle">Laboratorio</text>
+
+  <!-- Relationship: Crea -->
+  <polygon points="280,60 360,20 440,60 360,100" class="dg-box"/>
+  <text x="360" y="64" class="dg-name" text-anchor="middle">Crea</text>
+
+  <!-- Entity: Medicamento -->
+  <rect x="504" y="32" width="176" height="56" class="dg-box"/>
+  <text x="592" y="64" class="dg-name" text-anchor="middle">Medicamento</text>
+
+  <!-- Cardinality marks. Masked, and sitting 8px clear of the stroke so the
+       connector stays traceable. These are the two focal elements. -->
+  <rect x="236" y="68" width="24" height="16" rx="2" class="dg-paper"/>
+  <text x="248" y="80" class="dg-mark" text-anchor="middle">1</text>
+
+  <rect x="460" y="68" width="24" height="16" rx="2" class="dg-paper"/>
+  <text x="472" y="80" class="dg-mark" text-anchor="middle">N</text>
+
+  <!-- Leaders down to the reading of each mark -->
+  <line x1="248" y1="88" x2="248" y2="132" class="dg-leader"/>
+  <line x1="472" y1="88" x2="472" y2="132" class="dg-leader"/>
+
+  <text x="248" y="152" class="dg-head" text-anchor="middle">1 LABORATORIO</text>
+  <text x="248" y="172" class="dg-sub"  text-anchor="middle">por cada medicamento</text>
+
+  <text x="472" y="152" class="dg-head" text-anchor="middle">N MEDICAMENTOS</text>
+  <text x="472" y="172" class="dg-sub"  text-anchor="middle">por cada laboratorio</text>
+</svg>

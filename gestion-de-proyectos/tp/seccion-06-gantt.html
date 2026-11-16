@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sección 6 · Gantt del proyecto completo</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">TP · Sección 6</p>
+  <h1>Gantt del proyecto completo</h1>
+  <p class="subtitle">¿Qué tareas, en qué orden y cuánto duran?</p>
+  <p class="meta"><span>Fuente: Clase 3 (p23–56)</span><span><span class="chip ok">Guía lista</span></span></p>
+</header>
+
+<div class="win">
+  <strong>Qué tiene que quedar escrito</strong>
+  Todas las actividades del proyecto, de inicio a cierre, con su orden, sus duraciones estimadas y el <strong>camino crítico</strong>. Sus duraciones son la entrada del costo de mano de obra.
+</div>
+
+<h2>Qué espera la cátedra</h2>
+<p>El camino de la cátedra es: EDT hasta paquetes de trabajo (p23–26) → actividades con verbos y hitos (p29) → relaciones entre actividades: final a comienzo, final a final y comienzo a comienzo (p30–35) → estimación de duraciones (p36–38) → camino crítico (p45) → Gantt (p40–43) → línea base (p52–56).</p>
+<ul>
+  <li><strong>Duración esperada con tres estimaciones:</strong> (O + 4·M + P) / 6, con O optimista, M más probable y P pesimista (p38). En Sheets: <code>=(D2+4*E2+F2)/6</code> si O, M y P están en D, E y F.</li>
+  <li><strong>Camino crítico:</strong> la secuencia de tareas de mayor duración total; cualquier retraso en ellas retrasa todo el proyecto (p45). Holgura = cuánto puede atrasarse una tarea sin mover la fecha final.</li>
+  <li><strong>«Proyecto completo»:</strong> la consigna pide todo el proyecto, no solo el desarrollo. Las cinco fases del ciclo de vida de la Clase 3 (inicio, planificación, ejecución, monitoreo y control, cierre; p9) sirven para no olvidar tramos.</li>
+  <li><strong>Herramientas que menciona la cátedra (p50):</strong> MS Project (pago), ProjectLibre y GanttProject (gratuitas) y Excel o Google Sheets para Gantt simples.</li>
+</ul>
+
+<h2>Punto de partida del equipo</h2>
+<ul>
+  <li>Los <strong>hitos</strong> y el alcance vienen del Charter: el Gantt tiene que cumplirlos, no reinventarlos.</li>
+  <li>Las actividades concretas <em>todavía no están definidas</em>: dependen de qué entra en el alcance (decisión pendiente) y de qué integraciones se hagan.</li>
+  <li>Punto de control sobre las APIs: el GCBA lista 14 APIs oficiales; la cifra de 80 APIs no está verificada, así que no conviene usarla para dimensionar las integraciones.</li>
+</ul>
+
+<h2>Plantilla para copiar</h2>
+<p class="hint">Lo que no está confirmado figura como <code>[completar]</code>. Lo marcado con <span class="tag-propuesta">propuesta para votar</span> todavía no lo decidió el equipo.</p>
+<pre class="tpl" id="tpl" tabindex="0">&gt; Frase puente: El Charter fijó los hitos [completar] y un alcance de [completar]. Para cumplirlos, este Gantt descompone el trabajo en [completar] actividades en las cinco fases del proyecto.
+
+# Gantt — Modernización del Mapa Interactivo de la Ciudad
+
+## EDT resumida
+- Fase 1 · Inicio: [completar entregables]
+- Fase 2 · Planificación: [completar]
+- Fase 3 · Ejecución: [completar]
+- Fase 4 · Monitoreo y control: [completar]
+- Fase 5 · Cierre: [completar]
+
+## Actividades
+| ID | Actividad (con verbo) | Predecesoras (tipo) | O | M | P | Duración esperada (O+4M+P)/6 | Responsable | ¿Hito? |
+|----|-----------------------|---------------------|---|---|---|------------------------------|-------------|--------|
+| A  | [completar]           | —                   |   |   |   | [calcular]                   | [completar] |        |
+| B  | [completar]           | A (FS)              |   |   |   | [calcular]                   | [completar] |        |
+| C  | [completar]           | [completar]         |   |   |   | [calcular]                   | [completar] |        |
+
+## Camino crítico
+- Ruta: [completar]
+- Duración total: [completar] (debe caber en el cronograma de alto nivel del Charter)
+- Actividades con holgura y cuánta: [completar]
+
+## Hitos (deben coincidir con el Charter, sección 5)
+| Hito | Fecha en el Gantt | Fecha en el Charter |
+|------|-------------------|---------------------|
+| [completar] | [completar] | [completar] |</pre>
+<div class="btn-row"><button type="button" class="btn" data-copy="#tpl">Copiar plantilla</button></div>
+
+<h2>De dónde viene y a dónde va</h2>
+<div class="pair">
+  <div class="connect"><strong>Viene de</strong><p>Sección 5 (Charter): hitos, alcance y restricciones. Clase 3: EDT, actividades y relaciones.</p></div>
+  <div class="connect"><strong>Va a</strong><ul>
+  <li>Sección 10: duración de cada actividad × personas × tarifa = mano de obra.</li>
+  <li>Sección 9: un retraso en el camino crítico es un riesgo de cronograma.</li>
+  <li>Sección 8: los hitos fijan cuándo se comunica el avance.</li>
+</ul></div>
+</div>
+
+<h2>Frase puente</h2>
+<p class="note"><strong>Para abrir la sección</strong>
+Citar los <strong>hitos y el alcance del Charter</strong>: «El Charter fijó [hito] para [fecha]. Para cumplirlo, el Gantt…».</p>
+
+<h2>Checklist de la sección</h2>
+<ul class="todo-list">
+  <li>Cada actividad empieza con un verbo y tiene responsable.</li>
+  <li>Toda actividad tiene duración con O, M y P (o una justificación de por qué no).</li>
+  <li>El camino crítico está calculado con una pasada hacia adelante y una hacia atrás.</li>
+  <li>La duración total coincide con el cronograma de alto nivel del Charter.</li>
+  <li>Cubre las cinco fases, incluido el cierre.</li>
+</ul>
+<p class="hint">El estado de la sección, el responsable y el revisor se registran en el <a href="avance.html">tablero de avance</a>.</p>
+
+<div class="decisions-here">
+  <strong>Decisiones abiertas que afectan esta sección</strong>
+  <ul>
+    <li><a href="decisiones.html?d=herramienta-gantt">¿En qué herramienta armamos el Gantt?</a></li>
+    <li><a href="decisiones.html?d=alcance-mvp">¿Qué entra en el alcance del proyecto?</a></li>
+  </ul>
+</div>
+
+<div class="source">
+  <strong>Fuente</strong>
+  Clase 3, p23–56. Concepto de fondo: <a class="local-only" title="Solo disponible en la copia completa" href="../clases/03b-cronograma-camino-critico.html">lección Cronograma y camino crítico</a>, con un ejemplo resuelto de red de actividades.
+</div>
+
+<nav class="nav">
+  <a href="seccion-05-charter.html">← Sección 5 · Charter</a>
+  <a href="seccion-07-stakeholders.html">Sección 7 · Stakeholders →</a>
+</nav>
+</main>
+<script src="assets/tp-data.js"></script>
+<script src="assets/tp-common.js"></script>
+</body>
+</html>

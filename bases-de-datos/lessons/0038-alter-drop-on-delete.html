@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 38 · ALTER, DROP y ON DELETE</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 38 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">Cambiar la estructura, y qué pasa al borrar un padre</h1>
+    <p class="masthead__standfirst">
+      ALTER modifica una tabla que ya existe; DROP la elimina. Y ON DELETE decide qué les
+      pasa a los hijos cuando se borra el registro del que dependen.
+    </p>
+    <p class="masthead__meta">
+      <span>~12 minutos</span>
+      <span>Deck "DDL, SP, Triggers", slides 10–11 y 14–16</span>
+      <span>Prioridad para el 2do parcial: alta</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Esto ya lo tomaron, textual</span>
+    <p>
+      <a href="../raw/Examen1.webp">Examen1</a>, pregunta 6: <b>"Eliminar el campo duración
+      de la tabla Curso y agregar el campo Sueldo."</b> Es el ejemplo del slide 15, con un
+      campo cambiado. Es el primer ejercicio de abajo.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>ALTER TABLE</h2>
+
+  <p>"Se pueden agregar/quitar/modificar campos a una tabla, modificar el tipo de un campo, agregar/quitar índices, agregar o eliminar restricciones." Los ejemplos del deck:</p>
+
+<pre><code><span class="k">ALTER TABLE</span> Curso <span class="k">ADD</span> comentario CHAR(40) NOT NULL;
+<span class="k">ALTER TABLE</span> Curso <span class="k">DROP</span> duracion;
+<span class="k">ALTER TABLE</span> Curso <span class="k">ADD CONSTRAINT</span> ck_cod_empresa <span class="k">CHECK</span> (codigo_empresa &gt; 1);
+<span class="k">ALTER TABLE</span> Curso <span class="k">DROP CONSTRAINT</span> fk_curso_requisito;
+<span class="k">ALTER TABLE</span> Curso <span class="k">ADD CONSTRAINT</span> fk_curso_requisito
+      <span class="k">FOREIGN KEY</span> (codigo_curso_requisito) <span class="k">REFERENCES</span> Curso (codigo_curso);</code></pre>
+
+  <p>
+    La última línea es una FK de <code>Curso</code> a sí misma: un curso que es requisito de
+    otro. Es la misma relación unaria que <code>Cod_Jefe</code> en <code>PROFESIONAL</code>.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Para la hoja, la sintaxis del deck; en SQLite, menos</span>
+    <p>
+      SQLite sólo acepta <code>ADD</code>, <code>DROP COLUMN</code> y <code>RENAME</code>: no
+      deja agregar ni quitar restricciones con ALTER. Además, una columna nueva
+      <code>NOT NULL</code> necesita un <code>DEFAULT</code>, porque las filas que ya
+      existen tienen que tener algún valor. En el parcial escribí la forma del deck.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>DROP TABLE, y el orden</h2>
+
+  <p>
+    <code>DROP TABLE Curso</code> elimina la tabla con su estructura y sus datos.
+    <code>DELETE FROM Curso</code> borra las filas y deja la tabla vacía. Son cosas distintas:
+    una es DDL y la otra es DML.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Primero los hijos, después los padres</span>
+    <p>
+      Si la integridad referencial está activa, no se puede tirar una tabla padre mientras
+      haya hijos que la referencian. El script del TP5 tiene que borrar en el <b>orden inverso</b>
+      al de creación. El orden de creación es padres primero; el de borrado, hijos primero.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>ON DELETE: CASCADE o SET NULL</h2>
+
+  <p>
+    "Cuando se intenta eliminar un registro de una tabla Padre que participa en una clave
+    foránea, el motor de base datos validará que no exista ningún registro dependiente." Si
+    existe, por defecto el borrado <b>falla</b>. El modificador de la FK cambia eso:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Opción</th><th>Acción, según el deck</th><th>Cuándo tiene sentido</th></tr></thead>
+      <tbody>
+        <tr><td><code>CASCADE</code></td><td>Elimina automáticamente los registros dependientes de la tabla hija.</td><td>El hijo no existe sin el padre: los teléfonos de un paciente, las consultas de su historia clínica (entidad débil).</td></tr>
+        <tr><td><code>SET NULL</code></td><td>Pone en NULL los campos de los registros dependientes.</td><td>El hijo sobrevive sin el padre: si se va el jefe, el profesional queda sin jefe.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="sqlbox">
+    <span class="sqlbox__label">1 de 3 · Examen1, pregunta 6</span>
+    <p class="sqlbox__task">
+      Eliminá el campo <code>duracion</code> de la tabla <code>Curso</code> y agregá el campo
+      <code>sueldo</code> (decimal). La tabla ya existe: mirala con <b>Tablas</b>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE Curso (
+  codigo_curso     INT PRIMARY KEY,
+  nombre           CHAR(40) NOT NULL,
+  descripcion      CHAR(40) NOT NULL,
+  duracion         INT,
+  codigo_categoria INT NOT NULL
+);
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+ALTER TABLE Curso DROP COLUMN duracion;
+ALTER TABLE Curso ADD sueldo DECIMAL(10,2);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT name FROM pragma_table_info('Curso') ORDER BY cid;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 3 · El orden del DROP</span>
+    <p class="sqlbox__task">Eliminá las tablas <code>CONSULTORIO</code> y <code>SERVICIO_CONSULTORIO</code>. El código de abajo falla: ¿por qué?</p>
+    <textarea class="sqlbox__code" spellcheck="false">DROP TABLE CONSULTORIO;
+DROP TABLE SERVICIO_CONSULTORIO;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+DROP TABLE SERVICIO_CONSULTORIO;
+DROP TABLE CONSULTORIO;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT COUNT(*) FROM sqlite_master WHERE name IN ('CONSULTORIO', 'SERVICIO_CONSULTORIO');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 3 · ON DELETE CASCADE</span>
+    <p class="sqlbox__task">
+      Creá <code>PACIENTE_ALERGIA(Cod_Paciente, Alergia)</code>, con PK de las dos columnas y
+      FK a <code>PACIENTE</code>, de modo que al borrar un paciente se borren sus alergias.
+      La comprobación carga un paciente con una alergia y después borra al paciente.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE PACIENTE_ALERGIA (
+  Cod_Paciente INT NOT NULL REFERENCES PACIENTE (Cod_Paciente),
+  Alergia      VARCHAR(40) NOT NULL,
+  PRIMARY KEY (Cod_Paciente, Alergia)
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE PACIENTE_ALERGIA (
+  Cod_Paciente INT NOT NULL REFERENCES PACIENTE (Cod_Paciente) ON DELETE CASCADE,
+  Alergia      VARCHAR(40) NOT NULL,
+  PRIMARY KEY (Cod_Paciente, Alergia)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO PACIENTE VALUES (11, 'Paciente de prueba', '2000-01-01', NULL);
+INSERT INTO PACIENTE_ALERGIA VALUES (11, 'Penicilina');
+DELETE FROM PACIENTE WHERE Cod_Paciente = 11;
+SELECT COUNT(*) AS Alergias_Huerfanas FROM PACIENTE_ALERGIA;
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Elegir la opción</span>
+    <p class="quiz__q">
+      En <code>PROFESIONAL</code>, <code>Cod_Jefe</code> referencia a otro profesional. Si se
+      borra un jefe, ¿qué conviene declarar en esa FK?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="SET NULL. Los profesionales a cargo siguen trabajando en la clínica: lo único que se pierde es el vínculo con el jefe que se fue. La columna ya admite NULL, porque los jefes no tienen jefe.">ON DELETE SET NULL en la FK</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="CASCADE borraría a todo el equipo junto con el jefe: el profesional depende del jefe en el organigrama, pero no existe gracias a él.">ON DELETE CASCADE en la FK</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sin modificador, el borrado del jefe falla mientras tenga gente a cargo. Es seguro, pero obliga a reasignar a mano antes de cada baja.">Ningún modificador en la FK</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Quitar un campo</span>
+    <p class="quiz__q">Pregunta 6 del Examen1: eliminar el campo <code>duracion</code> de la tabla <code>Curso</code>.</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Eso elimina la tabla entera. DROP es para objetos; un campo se quita modificando la estructura con ALTER."><code>DROP TABLE Curso;</code></button></li>
+      <li><button class="quiz__opt"
+          data-feedback="DELETE es DML: borra filas, no columnas."><code>DELETE duracion FROM Curso;</code></button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 15. Para agregar el sueldo: &lt;code&gt;ALTER TABLE Curso ADD sueldo DECIMAL(10,2);&lt;/code&gt;."><code>ALTER TABLE Curso DROP duracion;</code></button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Sin ON DELETE</span>
+    <p class="quiz__q">La FK no tiene <code>ON DELETE</code>. Borrás un padre que tiene hijos. ¿Qué pasa?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Eso es ON DELETE CASCADE, que hay que declarar.">Se borran los hijos</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 11: el motor &quot;validará que no exista ningún registro dependiente&quot; en la tabla hija. El modificador ON DELETE no es obligatorio.">El motor rechaza el borrado</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es ON DELETE SET NULL, la otra opción del modificador.">Los hijos quedan con la FK en NULL</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DDL, SP, Triggers"</b>, slides 10–11 (FK y ON DELETE) y 14–16 (ALTER, DROP).
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.2 (p. 209), sobre las acciones de
+      integridad referencial, y §8.3 "Sentencias de SQL para cambiar el esquema" (p. 212).
+    </p>
+    <p>
+      <a href="https://www.sqlite.org/lang_altertable.html">SQLite — ALTER TABLE</a> y
+      <a href="https://www.sqlite.org/foreignkeys.html#fk_actions">SQLite — ON DELETE actions</a>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Para cada FK de la Clínica, ¿CASCADE, SET NULL o nada?
+      Mandame tu lista y la discutimos.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0037-dml-insert-update-delete.html">Anterior: 0037 · INSERT, UPDATE, DELETE</a>
+    <a href="0039-vistas.html">Siguiente: 0039 · Vistas</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+/* theme: consultora — sobrio, azul marino + verde petróleo (confianza, protección) */
+:root{
+  --bg:#ffffff;--bg-soft:#f4f7f8;--surface:#ffffff;--surface-2:#eef3f4;
+  --border:rgba(11,37,69,.12);--border-strong:rgba(11,37,69,.3);
+  --text-1:#0b2545;--text-2:#3d5368;--text-3:#7d8fa0;
+  --accent:#0b2545;--accent-2:#13706b;--accent-3:#7d8fa0;
+  --accent-ink:#ffffff;
+  --good:#13706b;--warn:#c47a10;--bad:#b3261e;
+  --grad:linear-gradient(135deg,#0b2545,#13706b);
+  --grad-soft:linear-gradient(135deg,#eef3f4,#f7fafa);
+  --radius:4px;--radius-sm:2px;--radius-lg:6px;
+  --shadow:0 1px 2px rgba(11,37,69,.06);
+  --shadow-lg:0 8px 24px rgba(11,37,69,.08);
+  --font-sans:'Inter',system-ui,sans-serif;
+  --font-display:'Source Serif 4',Georgia,serif;
+}
+.card{border:1px solid var(--border)}
+.card-accent{border-top:3px solid var(--accent-2)}
+.divider-accent{background:var(--accent-2);height:3px;width:56px}
+.kicker{color:var(--accent-2)}
+.h1,.h2,h1.title,h2.title{font-family:var(--font-display);font-weight:600;color:var(--accent);letter-spacing:-.01em}
+.gradient-text{background:none;-webkit-text-fill-color:var(--accent-2);color:var(--accent-2)}
+.big{color:var(--accent-2)}

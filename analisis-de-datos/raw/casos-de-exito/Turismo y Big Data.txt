@@ -1,0 +1,14 @@
+https://www.youtube.com/watch?v=bd_Nc1w5zVY
+
+Este video presenta LUCA Tourism, una solución de Big Data de Telefónica diseñada para transformar la industria turística mediante el análisis avanzado de datos. A través de la red móvil, la herramienta ofrece una visión integral sobre el comportamiento de los visitantes para mejorar la toma de decisiones.
+
+Características clave de LUCA Tourism:
+
+Análisis detallado de visitantes: Permite conocer el origen (nacional o extranjero), los intereses, las áreas más frecuentadas y los patrones de comportamiento de los turistas (0:10-0:33).
+Optimización de oferta: Utiliza variables sociodemográficas para ayudar a las empresas a adaptar sus servicios y personalizar campañas de marketing de forma dinámica (0:38-0:57).
+Inteligencia Artificial aplicada: La integración con IA permite predecir picos de demanda, medir el impacto de eventos específicos y planificar la gestión de recursos de manera mucho más eficiente (1:00-1:14).
+En resumen, la plataforma ayuda a los destinos y empresas turísticas a entender mejor a sus clientes para descubrir nuevas oportunidades de negocio y mejorar la experiencia global del visitante.
+
+
+
+

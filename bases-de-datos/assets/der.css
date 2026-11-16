@@ -1,0 +1,199 @@
+/* ============================================================================
+   der.css — styles for the interactive DER/MER drills.
+
+   Companion to assets/der.js. Loaded AFTER course.css, whose tokens it reuses.
+   Everything is namespaced `.dx-` / `.dx__` so it cannot collide with a lesson.
+
+   Diagram convention (see NOTES.md): the cátedra draws Chen — rectangle,
+   rhombus, ellipse, ISA triangle. The diagram-design RULES are applied over
+   those primitives: 4px grid, orthogonal connectors, and an accessible SVG
+   contract (role + <title>). Shapes stroke with currentColor so they theme
+   themselves in light and dark without a second asset.
+   ========================================================================== */
+
+.dx {
+  margin: 2rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper-sunk);
+  padding: 1.1rem 1.2rem 1.3rem;
+}
+
+.dx__label {
+  font: 600 0.68rem/1 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.dx__hint { font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 1rem; }
+.dx__hint:last-child { margin-bottom: 0; }
+
+.dx__bar { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0 0 1rem; }
+
+.dx__btn {
+  font: 600 0.82rem/1 var(--sans);
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+.dx__btn:hover:not(:disabled) { border-color: var(--accent); }
+.dx__btn[aria-pressed="true"] {
+  background: var(--accent); border-color: var(--accent); color: var(--paper);
+}
+.dx__btn:disabled { opacity: 0.45; cursor: default; }
+
+/* --- shape figures ------------------------------------------------------- */
+
+.dx__forma { display: block; width: 100%; height: auto; color: var(--ink); }
+.dx__forma .fill  { fill: var(--paper); }
+.dx__forma .line  { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.dx__forma .dash  { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 6 4; }
+.dx__forma .txt   {
+  fill: currentColor; font: 600 13px var(--sans); text-anchor: middle;
+  dominant-baseline: middle;
+}
+.dx__forma .txt--sm { font-size: 11px; font-weight: 400; }
+.dx__forma .sub { text-decoration: underline; }
+
+/* --- glossary ------------------------------------------------------------ */
+
+.dx__glosario {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+}
+.dx__glosario li {
+  margin: 0; padding: 0.7rem; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 3px;
+}
+.dx__glosario h4 { margin: 0.5rem 0 0.2rem; font: 600 0.84rem/1.3 var(--sans); }
+.dx__glosario p  { margin: 0; font: 0.76rem/1.45 var(--sans); color: var(--ink-soft); }
+
+/* --- symbol drill -------------------------------------------------------- */
+
+.dx__opciones {
+  list-style: none; padding: 0; margin: 0.9rem 0 0;
+  display: grid; gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+.dx__opciones li { margin: 0; }
+
+.dx__opt {
+  width: 100%; padding: 0.5rem; cursor: pointer;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 3px;
+  color: var(--ink);
+}
+.dx__opt:hover:not(:disabled) { border-color: var(--accent); }
+.dx__opt:disabled { cursor: default; }
+.dx__opt.ok  { border-color: var(--good); background: var(--good-soft); }
+.dx__opt.mal { border-color: var(--bad);  background: var(--bad-soft); }
+.dx__opt.perdida { border-color: var(--good); border-style: dashed; }
+.dx__opt span {
+  display: block; margin-top: 0.35rem;
+  font: 0.74rem/1.3 var(--sans); color: var(--ink-soft);
+}
+
+.dx__q { font-weight: 600; margin: 0 0 0.2rem; font-size: 0.98rem; }
+.dx__paso { font: 0.74rem var(--sans); color: var(--ink-faint); margin: 0; }
+
+.dx__fb {
+  margin: 0.9rem 0 0; padding: 0.6rem 0.8rem; font-size: 0.88rem;
+  background: var(--paper); border-left: 3px solid var(--rule); border-radius: 0 3px 3px 0;
+}
+.dx__fb[hidden] { display: none; }
+.dx__fb.ok  { border-left-color: var(--good); }
+.dx__fb.mal { border-left-color: var(--bad); }
+.dx__fb b { font-weight: 600; }
+
+/* --- specialization explorer --------------------------------------------- */
+
+.dx__ejes { display: grid; gap: 0.6rem; margin-bottom: 1rem; }
+.dx__eje { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
+.dx__eje > b { font: 600 0.74rem/1 var(--sans); min-width: 6.5rem; color: var(--ink-soft); }
+
+.dx__panelesp {
+  display: grid; gap: 1.2rem; align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+@media (max-width: 38rem) { .dx__panelesp { grid-template-columns: 1fr; } }
+
+.dx__lienzo {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 3px; padding: 0.6rem;
+}
+
+.dx__veredicto {
+  font: 600 0.95rem/1.4 var(--sans); margin: 0 0 0.5rem; color: var(--accent);
+}
+.dx__catedra {
+  font: 0.84rem/1.5 var(--sans); margin: 0 0 0.8rem;
+  padding: 0.55rem 0.7rem; background: var(--note-soft);
+  border-left: 3px solid var(--note); border-radius: 0 3px 3px 0;
+}
+
+.dx__estados { margin: 0.7rem 0 0; }
+.dx__estados table { border-collapse: collapse; font: 0.8rem/1.4 var(--mono); width: 100%; }
+.dx__estados td { padding: 0.22rem 0.5rem 0.22rem 0; border-bottom: 1px solid var(--rule); }
+.dx__estados td:last-child { text-align: right; color: var(--ink-faint); }
+.dx__estados .no { color: var(--ink-faint); text-decoration: line-through; }
+
+.dx__formula {
+  font: 0.9rem/1.5 var(--mono); margin: 0.7rem 0 0;
+  padding: 0.5rem 0.7rem; background: var(--accent-soft); border-radius: 3px;
+}
+.dx__formula b { color: var(--accent); }
+
+.dx__k { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.8rem; font: 0.8rem var(--sans); }
+.dx__k input { flex: 1; }
+
+/* --- mapping drill ------------------------------------------------------- */
+
+.dx__mapa { display: grid; gap: 0.55rem; margin: 0 0 1rem; }
+
+.dx__item {
+  display: grid; gap: 0.4rem 0.8rem; align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 15rem);
+  padding: 0.55rem 0.7rem; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 3px;
+}
+@media (max-width: 34rem) { .dx__item { grid-template-columns: 1fr; } }
+
+.dx__item > p { margin: 0; font-size: 0.88rem; }
+.dx__item > p em { font-style: normal; color: var(--ink-faint); font-size: 0.8rem; display: block; }
+.dx__item code { font: 0.86em var(--mono); }
+
+.dx__sel {
+  font: 0.78rem var(--sans); padding: 0.35rem;
+  border: 1px solid var(--rule); border-radius: 3px;
+  background: var(--paper-sunk); color: var(--ink); width: 100%;
+}
+.dx__sel.ok  { border-color: var(--good); background: var(--good-soft); }
+.dx__sel.mal { border-color: var(--bad);  background: var(--bad-soft); }
+
+.dx__marcador {
+  font: 600 0.92rem/1.4 var(--sans); margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 3px;
+}
+.dx__marcador[hidden] { display: none; }
+.dx__marcador ul { margin: 0.6rem 0 0; padding-left: 1.1rem; font: 400 0.85rem/1.5 var(--sans); }
+.dx__marcador li { margin: 0 0 0.35rem; }
+
+.dx__esquema { margin-top: 1rem; display: grid; gap: 0.35rem; }
+.dx__esquema[hidden] { display: none; }
+.dx__rel {
+  font: 0.85rem/1.6 var(--mono); padding: 0.4rem 0.65rem;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 3px;
+}
+.dx__rel u { text-decoration: none; border-bottom: 2px solid var(--accent); }
+.dx__rel i { font-style: normal; color: var(--note); }
+
+@media (max-width: 40rem) {
+  .dx { padding: 0.9rem 0.8rem 1.1rem; }
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 5 · Claves e integridad</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 05 · Unidad 1 · Sistemas de Gestión de Base de Datos</p>
+    <h1 class="masthead__title">Claves e integridad</h1>
+    <p class="masthead__standfirst">
+      Superclave, clave candidata, clave primaria, clave foránea. Son cuatro conceptos
+      encadenados, y cada uno se define exactamente sobre el anterior.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Elmasri &amp; Navathe, cap. 5</span>
+      <span>Cierra la Unidad 1</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La cadena, en orden</h2>
+
+  <p>
+    Recordá de la <a href="0004-estructura-relacional.html">lección anterior</a>: una relación
+    es un conjunto, y un conjunto no tiene elementos repetidos. Entonces
+    <b>siempre existe alguna forma de distinguir una tupla de otra</b>. Formalizar esa idea
+    da la cadena entera.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Concepto</th><th>Definición</th><th>Sobre ESTUDIANTE(Legajo, DNI, Nombre, Año)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Superclave</b></td>
+          <td>Cualquier conjunto de atributos que <b>no se repite</b> en dos tuplas distintas.</td>
+          <td><code>{Legajo}</code>, <code>{DNI}</code>, <code>{Legajo, Nombre}</code>, <code>{DNI, Año}</code>… y todos sus supraconjuntos.</td>
+        </tr>
+        <tr>
+          <td><b>Clave</b></td>
+          <td>Una superclave <b>mínima</b>: si le sacás cualquier atributo, deja de ser superclave.</td>
+          <td><code>{Legajo}</code> y <code>{DNI}</code>. <code>{Legajo, Nombre}</code> no: sacando Nombre sigue siendo superclave.</td>
+        </tr>
+        <tr>
+          <td><b>Clave candidata</b></td>
+          <td>Cada una de las claves, cuando hay más de una.</td>
+          <td><code>{Legajo}</code> y <code>{DNI}</code> son las dos candidatas.</td>
+        </tr>
+        <tr>
+          <td><b>Clave primaria</b></td>
+          <td>La candidata que <b>elegís vos</b> para identificar las tuplas.</td>
+          <td>Elegís <code>{Legajo}</code>. <code>{DNI}</code> queda como <b>clave alternativa</b>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La bisagra: minimalidad</span>
+    <p>
+      Toda clave es superclave; no toda superclave es clave. Lo único que las separa es la
+      <b>minimalidad</b>. Elmasri: una clave es <q>una superclave de la cual no podemos
+      eliminar ningún atributo y seguiremos teniendo almacenada la restricción de exclusividad</q>.
+    </p>
+    <p>
+      Y hay un caso extremo que se pregunta: <b>toda relación tiene al menos una superclave
+      predeterminada</b> — el conjunto de <b>todos</b> sus atributos. Es inútil, pero
+      demuestra que nunca faltan superclaves.
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Elegir la primaria no es un trámite</span>
+    <p>
+      Entre <code>Legajo</code> y <code>DNI</code>, ¿cuál elegís? Los dos identifican.
+      Pero el DNI lo emite un tercero, puede venir con errores de carga, y hay casos donde
+      no lo tenés todavía. El legajo lo controlás vos y existe desde el momento cero.
+      <b>Se prefiere la clave que sea estable, corta y bajo tu control.</b>
+      Esa preferencia es la que justifica los <code>Id_Farmacia</code> e
+      <code>Id_Medicamento</code> de la resolución del TP1.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Las dos integridades</h2>
+
+  <p>
+    Elmasri separa cuatro tipos de restricción en el modelo relacional: de <b>dominio</b>,
+    de <b>clave</b>, de <b>NOT NULL</b>, y dos más que tienen nombre propio porque son las
+    que sostienen la coherencia entre tuplas:
+  </p>
+
+  <h3>Integridad de entidad</h3>
+
+  <blockquote class="callout">
+    "Las restricciones de integridad de entidad declaran que el valor de ninguna clave
+    principal puede ser NULL."
+  </blockquote>
+
+  <p>
+    La razón es puro sentido común llevado a regla: la clave primaria sirve para identificar
+    tuplas. Si vale NULL, no identifica nada — y NULL significa "desconocido", así que dos
+    tuplas con clave NULL ni siquiera se pueden comparar entre sí.
+  </p>
+
+  <h3>Integridad referencial</h3>
+
+  <blockquote class="callout">
+    "Una tupla de una relación que hace referencia a otra relación debe hacer referencia a
+    una tupla existente de esa relación."
+  </blockquote>
+
+  <p>
+    El mecanismo es la <em class="term">clave foránea</em>: un conjunto de atributos de
+    <code>R1</code> que tiene <b>el mismo dominio</b> que la clave primaria de <code>R2</code>,
+    y cuyo valor debe existir en <code>R2</code> — o ser NULL, si el diseño lo permite.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Cómo lo escribe la cátedra</span>
+    <p>
+      En la Clase 2, slide 35, la notación es ésta:
+    </p>
+    <p>
+      <code>PEDIDO(<b>#NRO_PEDIDO</b>, FECHA, (FK)ID_PROVEEDOR, (FK)ID_DEPARTAMENTO)</code>
+    </p>
+    <p>
+      El <code>#</code> marca la clave primaria; <code>(FK)</code> marca la foránea. Y cuando
+      la primaria es compuesta, se marcan <b>todos</b> sus atributos:
+      <code>PEDIDO_MATERIAL(<b>#NRO_PEDIDO, #ID_MATERIAL</b>, CANTIDAD)</code>.
+      Usá esa notación en las entregas, aunque el libro use otra.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Minimalidad</span>
+    <p class="quiz__q">
+      En <code>ESTUDIANTE(Legajo, DNI, Nombre, Año)</code> con Legajo y DNI únicos,
+      ¿qué es <code>{DNI, Año}</code>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="No se repite en dos tuplas, así que es superclave. Pero no es mínima: sacándole Año, {DNI} sigue identificando. Le sobra un atributo, y eso la descalifica como clave.">Superclave, pero no es clave</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Para ser clave tendría que ser mínima, y no lo es: si quitás Año, {DNI} sigue siendo superclave. Una clave no admite atributos de sobra.">Clave candidata de la relación</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí identifica: como DNI es único, cualquier conjunto que lo contenga también lo es. El problema no es que no identifique, es que le sobra Año.">No identifica: Año se repite</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Integridad de entidad</span>
+    <p class="quiz__q">
+      Insertás una farmacia sin completar <code>Id_Farmacia</code>, que es su clave primaria.
+      ¿Qué restricción se viola?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Integridad de entidad: ninguna clave primaria puede ser NULL. Con la clave en NULL la tupla no es identificable, y como NULL significa 'desconocido', ni siquiera se puede comparar contra otra clave NULL.">Integridad de entidad, por el NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La referencial es sobre claves FORÁNEAS: que lo referenciado exista. Acá el problema está dentro de la propia tupla, en su clave primaria — no hay ninguna referencia a otra relación.">Integridad referencial, por el NULL</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Referencial</span>
+    <p class="quiz__q">
+      Borrás la ciudad <i>Rosario</i>. Existen tres farmacias cuya clave foránea apunta a ella.
+      ¿Qué pasa?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto: quedarían tres referencias apuntando a una tupla inexistente, que es exactamente lo que la integridad referencial prohíbe. Qué hace el motor al respecto — rechazar, propagar el borrado o poner NULL — se declara con ON DELETE, y lo vemos en la lección 0036.">Se viola la integridad referencial</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las farmacias no se borran solas por defecto. Ese comportamiento existe, se llama borrado en cascada, pero hay que pedirlo explícitamente con ON DELETE CASCADE. Sin declararlo, el motor rechaza la operación.">Se borran las tres farmacias también</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí hay problema. Tres tuplas quedarían referenciando una ciudad que ya no existe, y eso rompe la coherencia de las referencias entre relaciones.">No pasa nada: son tablas distintas</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cierre de la Unidad 1</span>
+    <p>
+      Con esto tenés el piso completo: qué es un dato y una base, qué hace un DBMS,
+      cómo se organiza en tres niveles, y cuál es la estructura relacional con sus claves.
+      <b>La Unidad 2 arranca yendo hacia atrás</b>: antes de que existan tablas y claves,
+      hay un enunciado en prosa y hay que sacarle un modelo. Eso es el DER.
+    </p>
+  </div>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — secciones 5.2.1 a 5.2.4:
+      restricciones de dominio y de clave, valores NULL, integridad de entidad e
+      integridad referencial. Páginas 130 a 134
+      (páginas 156 a 160 del PDF en <code>raw/</code>).
+    </p>
+    <p>
+      Al final del capítulo hay preguntas de repaso; dos de ellas —
+      <i>"¿Cuál es la diferencia entre una clave y una superclave?"</i> y
+      <i>"Comente las restricciones de integridad de entidad y referencial"</i> —
+      son literalmente preguntas de parcial. Escribí las respuestas a mano.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si escribís esas dos respuestas y me las pasás, te las corrijo
+      con el criterio con el que se corrigen en un final.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0004-estructura-relacional.html">Anterior: 0004</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0006-ciclo-de-vida.html">Siguiente: 0006 · Ciclo de vida</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

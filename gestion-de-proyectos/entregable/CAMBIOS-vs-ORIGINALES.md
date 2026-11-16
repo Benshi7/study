@@ -1,0 +1,102 @@
+# Cambios respecto de los originales
+
+Todo lo que el documento consolidado hace distinto de los archivos de `trabajo-grupal/` (que no se modificaron: hash verificado por `npm test`). Las citas son fragmentos de hasta 20 palabras. «F1» = `Proyect Charter y demas puntos.docx`; «F2» = `Proyecto Integrador…docx`; «F3» = `TP Grupo 01.docx`.
+
+## A. Eliminado (restos que no son contenido)
+
+| # | Dónde | Antes | Después | Motivo |
+|---|---|---|---|---|
+| 1 | F1 §5.4 (Objetivos) | «NOTA: Para el TP, yo los mantendría porque están bien conectados con el proyecto, pero después podemos agruparlos en 4 grandes resultados» | Quitado el bloque completo: la nota, su tabla «Objetivos / Resultado» (4 filas) y los dos párrafos siguientes («Y eso nos va a servir muchísimo cuando hagamos el Gantt…» y «Además, hay una diferencia importante respecto de lo que tenían originalmente…») | Conversación interna del equipo dentro del documento (132 palabras) |
+| 2 | F1, índice manual | Líneas «Canvas del proyecto ……… pág. 3», …, «Anexos ……… pág. 26 (sujeto a aprobació» | Índice automático de Word (punto 2) | El índice manual tenía números de página falsos y estaba cortado |
+| 3 | F1 §6.2 | Objeto incrustado `image1.emf` bajo «Anexo Cronograma Detallado de Trabajo y Diagrama de Gantt…» | Quitado el objeto (no es renderizable); se conserva el rótulo y el detalle va en el Anexo A | El objeto no se puede convertir ni incluir en el docx |
+| 4 | F2, sección final | Sección «Resumen y borrador» (resumen en viñetas del propio documento) | No se incluye | Es un borrador de resumen duplicado, no un punto de la consigna |
+| 5 | F2 | Versiones resumidas de Charter, Gantt, Stakeholders, Comunicación, Riesgos y Presupuesto | No se incluyen; se usan las de F1 (y el PDF para 7 y 8) | Duplican con menos detalle a F1 |
+| 6 | F1/F2 carátula | Imagen con la nómina de integrantes y la foto del Obelisco/plantilla gráfica de F3 | Texto «[Integrantes del grupo]» y logo | Se pegan los nombres a mano; la foto de F3 es decorativa |
+| 7 | Deck de Design Thinking, diapositiva del prototipo | «MAQUETA CONCEPTUAL · ESTADOS DE EJEMPLO → Cambiarla» | «Maqueta conceptual con estados de ejemplo» | «→ Cambiarla» parece una nota de edición que quedó |
+
+## B. Modificado
+
+| # | Dónde | Antes | Después | Motivo |
+|---|---|---|---|---|
+| 8 | Design Thinking (todo el capítulo 4) | Deck: «Técnica aplicada · entrevistas semiestructuradas 10 vecinos de CABA · muestra por conveniencia». F2: «Se realizaron entrevistas y observaciones con vecinos y turistas» | Se mantiene lo que dicen el deck y F2: entrevistas realizadas dentro del proyecto simulado de la cátedra. Se quita la nota «investigación simulada» que se había agregado | Decisión del equipo (12/10): el proyecto es un ejercicio de simulación, por lo que las entrevistas se presentan como parte del caso. La persona Lucía se rotula como arquetipo ficticio |
+| 9 | Design Thinking | Deck de 8 slides en Figma | Capítulo con texto + tabla de fases + 5 figuras en HTML→PNG | La consigna pide un único documento |
+| 10 | Títulos de nivel 1 | «5. PROJECT CHARTER», «6. GANTT DEL PROYECTO COMPLETO», «9. GESTIÓN DE RIESGOS - MATRIZ DE RIESGOS», «10. Gestión de Costos - Presupuesto», «7. Matriz de Stakeholders», «8. Plan de Comunicación» | «5. Project Charter», «6. Gantt del proyecto completo», «9. Gestión de riesgos - Matriz de riesgos», «10. Gestión de costos - Presupuesto», «7. Matriz de stakeholders», «8. Plan de comunicación» | Mismos nombres que la consigna |
+| 11 | Subtítulos de F1 | Líneas en negrita «**5.1. Identificación del proyecto**» y encabezados mixtos | Títulos reales de nivel 2 y 3, con el número sin el punto final («5.1 Identificación del proyecto») | Permite el índice automático; las palabras son las mismas |
+| 12 | F2 | Párrafos escritos como títulos («## El presente trabajo…») | Párrafos normales | Formato |
+| 13 | Excel | Títulos «6.4 Análisis del camino crítico» y «6.5 Hitos del proyecto» de la hoja «Anexo Punto 6» | Se conservan como líneas en negrita dentro de A.4 | Chocan con la numeración 6.4/6.5 de F1 (Relación entre fases / Hitos de control); no se renumeraron |
+
+## C. Agregado
+
+| # | Qué | Detalle |
+|---|---|---|
+| 14 | Carátula | Armada con datos de F1/F2/F3: universidad, materia, título, docentes, Grupo 01, fecha 14/10/2026; logo recortado de la imagen de F1 (sin la línea de ciclo/licenciatura que figuraba debajo) |
+| 15 | Resumen ejecutivo y Conclusión general | Texto de F2, sin numeración, entre el índice y el punto 3 y después del punto 10 |
+| 16 | Punto 3, figura | Business Model Canvas de la Opción B generado desde `tp/assets/canvas-data.js` (los 9 bloques con el texto del taller); el texto de F2 se conserva debajo |
+| 17 | Punto 4 | Tabla de fases, 5 figuras (recorrido de Lucía, punto de vista, perfil, ideas, prototipo), tabla del test, párrafo introductorio y nota sobre el método (texto del equipo reorganizado) |
+| 18 | Punto 6 | Recuadro «Resumen del cronograma» con datos tomados del Excel (40 actividades, 8 fases, 23 actividades con holgura cero, 8 hitos) y referencia al Anexo A |
+| 19 | Anexo A | Cuatro hojas del Excel como tablas (40 + 40 + 8 + 23 + 8 filas), sin cambios de valores; una oración introductoria propia; encabezados A.1 a A.4 |
+| 20 | Formato | Leyendas numeradas «Tabla n» y «Figura n», encabezado y pie «Página X de Y», estilos, anchos de tabla, hoja horizontal para el Anexo A |
+
+## D. Erratas y rarezas de los originales que se dejaron tal cual
+
+- F1 §5.11.7: «Res.ponsables de canales digitales».
+- F1 §6.3: la primera columna de la tabla de hitos se llama «Matriz» (parece «Hito»).
+- F1 §6.5 lista 7 puntos de control (Gate 1 a 7) frente a los 8 hitos de §6.3 y del Excel.
+- Texto del Canvas de F2 (segmentos, ingresos) y tablero de la Opción B de la figura no coinciden palabra por palabra.
+- El deck de Design Thinking de `trabajo-grupal/` sigue diciendo «Hogares con chicos × áreas del GCBA» (el original no se toca); en el documento consolidado ya se aplicó la decisión del grupo, ver E.21 y E.22.
+- El logo recortado conserva su resolución original (337 px de ancho).
+
+## E. Cambios posteriores (revisión de correlación)
+
+| # | Dónde | Antes | Después | Motivo |
+|---|---|---|---|---|
+| 21 | Punto 4, párrafo introductorio y figuras (Canvas, historia de usuario) | «hogares con chicos × áreas del GCBA»; «hogares con chicos en edad escolar» (Canvas, segmentos); «un hogar con chicos» (historia de usuario) | «hogares de la Ciudad × áreas del GCBA»; «hogares de la Ciudad, cada uno con su propia realidad»; «un hogar de la Ciudad» | Decisión del grupo: el segmento son los hogares de la Ciudad en general. La persona Lucía (ficticia) conserva sus rasgos como ejemplo de un hogar |
+| 22 | Figuras `canvas-b.png` y `dt-persona.png` | Texto anterior | Figuras regeneradas desde `img-src/` | Reflejar E.21 |
+| 23 | Inicio del punto 4 | Sin frase puente desde el Canvas | Párrafo nuevo (Canvas → hipótesis → Design Thinking) | La consigna pide continuidad entre los puntos |
+| 24 | Inicio de los puntos 8 y 9 | Frases de enlace genéricas | Frase del punto 8 nombra las cuatro estrategias de la matriz; frase del punto 9 enlaza con el plan de comunicación y con R04 y R06 | Idem |
+
+
+## F. Decisiones del equipo del 12/10 (fechas, USD, Charter)
+
+| # | Dónde | Antes | Después | Motivo |
+|---|---|---|---|---|
+| 25 | Punto 6.1 y Anexo A (final) | «dejando octubre para la consolidación y entrega académica […] noviembre para la instancia de defensa»; «Hitos académicos: entrega del TP 14/10/2026 y defensa 18/11/2026»; «cronograma actual» | Quitado; «en este cronograma». La fecha de entrega figura solo en la carátula | El documento no debe referirse al momento de la entrega; es un proyecto simulado |
+| 26 | Charter 5.1 (duración, inicio, fin) | «6 meses (24 semanas)»; inicio «10 de abril de 2026 (o la fecha exacta de Aprobación del Charter)»; fin «(o la fecha del hito final de cierre)» | «6 meses (del 01/04 al 30/09/2026; camino crítico de 126 días hábiles, unas 25 semanas)»; inicio 01/04/2026; el Charter se aprueba el 10/04 (primer hito); fin 30/09/2026 | Unificar con el Gantt del Excel (inicio 01/04, 126 días hábiles en el camino crítico) |
+| 27 | Punto 6.1, 6.3 | Hito «Charter aprobado: Inicio formal del proyecto»; sin duración total | «Project Charter formalizado y firmado» (texto del Excel); resumen con «camino crítico de 126 días hábiles, unas 25 semanas» | Coherencia con la nueva fecha de inicio y con el Anexo A |
+| 28 | Punto 10 completo | Importes en ARS (base $313.000.000, contingencia $31.300.000, total $344.300.000) | Importes en USD a ARS 1.560 por USD, redondeo de cada línea a USD enteros: base USD 200.633, contingencia 10 % USD 20.063, total USD 220.696 | Pedido del equipo: todos los precios en USD. Diferencia con la conversión directa (USD 220.705): 0,004 %, solo redondeo; la propuesta de presupuesto (`_propuestas`) muestra USD 220.700 para el total del equipo porque convierte cada rol de una vez, sin pasar por el costo mensual. El tipo de cambio es un supuesto a confirmar |
+| 29 | Punto 10.1, 10.2, 10.7, 10.8 | Sin metodología de estimación, sin costo mensual, sin fórmula | Párrafos de metodología bottom-up y criterio anti-duplicación; columna «Costo mensual supuesto» (USD); fórmula con el ejemplo del PM (6 × USD 5.128 = USD 30.768); mantenimiento de 2 meses con nota sobre el cierre; uso de la contingencia solo ante riesgos materializados; fila «Presupuesto base» en 10.9 | Pedido de la cátedra («cómo se construyen los números»). Redacción tomada de la versión final de la compañera; los importes se mantienen. La columna de costo mensual estaba en esa versión y no en F1: conviene que ella confirme su origen |
+| 30 | Charter 5.8.5 (nuevo) | Solo categorías de costos, sin cifra | Tabla de presupuesto de alto nivel en USD con remisión al punto 10 (la antigua 5.8.5 pasa a 5.8.6) | Elemento «presupuesto de alto nivel» del Charter de la cátedra (Clase 3 p13–16) |
+| 31 | Charter 5.11.2 | Solo responsabilidades del Director | Se agrega «Autoridad asignada» (4 atribuciones tomadas de 5.9.2, 10.8 y 5.11.1); los umbrales cuantitativos quedan «[a confirmar]» | Elemento «autoridad del Director» del Charter de la cátedra. No se inventaron montos ni roles nuevos |
+| 32 | Charter 5.13 (nuevo) y 5.1 | Sin requisitos de aprobación ni firmas; metodología sin justificación | 5.13: requisitos de aprobación (remite a 5.4–5.12 y al Gate 1) y tabla de firmas de Sponsor y Director, con nombres «[a completar]». 5.1: «Justificación de la metodología» (cascada: alcance y requisitos definidos desde el inicio, entorno regulado, entrega única; ventajas y desventaja según la cátedra) | Completar los elementos del Charter de la cátedra y justificar la elección de cascada. Solo usa roles ya presentes en los documentos del equipo |
+| 33 | 6.5 Hitos de control y encabezado de 6.3 | 7 gates (Gate 4 unía desarrollo e integraciones); la tabla 6.3 titulaba la columna «Matriz» | 8 gates, uno por hito (Gate 4 desarrollo, Gate 5 integraciones, Gate 6 pruebas, Gate 7 producción, Gate 8 cierre); columna «Hito» | Decisión del equipo (12/10): unificar en los 8 hitos del Gantt, el Charter y el Excel. La numeración de Gate 1–3 no cambia |
+| 34 | Charter 5.9.1 (introducción) | «se identifican los siguientes riesgos principales» (12), mientras el punto 9 tiene 15 | «riesgos iniciales»; remite al punto 9, que los analiza, prioriza y amplía | La lista del Charter no es un subconjunto de la matriz (R11 a R14 con puntaje 12 no figuran; «Baja adopción por parte de comercios» no tiene riesgo equivalente), por lo que «principales» no era exacto. La adopción de comercios se incorporó a R15 (decisión del equipo, 12/10) |
+| 35 | Punto 9, R15 | R15 solo cubría la confusión entre contenido oficial y comercial | R15 incluye también la baja adopción por parte de comercios (nombre, causa, consecuencia y plan preventivo) | Cerrar la diferencia con el Charter 5.9.1 sin crear un riesgo nuevo ni cambiar probabilidad e impacto |
+| 36 | Punto 3, segmentos (listado y figura) | F2: «Vecinos de CABA, visitantes/turistas, usuarios del transporte público, actores culturales y áreas operativas»; figura: «hogares con chicos en edad escolar» | Principal: hogares de la Ciudad; institucional: áreas operativas del GCBA; secundarios: visitantes y turistas (consultan sin reportar); opcional: socios. Transporte y cultura pasan a ser socios y contenido del mapa, no segmentos | Decisión del equipo (12/10): el diseño es para hogares, pero cualquiera que visite la Ciudad se beneficia del mapa |
+| 37 | Punto 7, nota bajo la matriz | «La matriz está alineada con el Canvas y el Project Charter: incluye […]» | «[…] alineada con el Canvas y el Project Charter, y ampliada con los actores identificados en el análisis de stakeholders: incluye […]» | La matriz incluye actores (p. ej. Hacienda) que el Charter no nombra; la frase original no lo reflejaba |
+| 38 | Punto 10.7 Mantenimiento inicial | Dos meses «posteriores a la puesta en producción» (09/09) con cierre el 30/09; no se explicaba cómo conviven | Se divide en soporte pre-cierre (21 días, USD 6.179) y post-cierre (40 días, USD 11.769), prorrateado por días corridos; total sin cambios (USD 17.948) | Decisión del equipo (12/10): soporte antes del cierre y un tramo posterior. El prorrateo por días es un criterio nuestro |
+| 39 | Punto 9.7 (nuevo) | La matriz no tenía valores monetarios | Cuantificación de los 15 riesgos: conversión de escalas a probabilidad (10/30/50/70/90 %) e impacto en USD por bandas, impacto de cada riesgo con fórmula y rubro del presupuesto, probabilidad residual según la respuesta y EMV inicial y residual. Total EMV residual USD 41.206 | Decisión del equipo (12/10): calcular la contingencia desde los riesgos (EMV = P × I, criterio de la cátedra). Los porcentajes, las bandas, el costo semanal del equipo (USD 4.833) y los cálculos de impacto son supuestos nuestros a validar; la matriz 9.2 y sus P e I no se modificaron |
+| 40 | Punto 10.8 y 10.9 | Contingencia igual al 10 % plano del presupuesto base (USD 20.063); total USD 220.696 | Contingencia = Σ EMV residual (USD 41.206, 20,5 % de los costos como dato); línea base de costos USD 241.839 = total estimado. Reserva de gestión descrita como concepto de la cátedra, fuera del total y como decisión pendiente | Responde a Clase 4 (reserva de contingencia vinculada a riesgos cuantificados) y Clase 5 (EMV genera la reserva). El 10 % del equipo queda reemplazado, no sumado |
+| 41 | Charter 5.8.5, resumen ejecutivo, Canvas (estructura de costos), 10.1 y metodología de 10 | «reserva del 10 %», «Contingencia (10 %) USD 20.063», total USD 220.696 | Se reemplazan por la reserva calculada a partir de los riesgos y por el total USD 241.839; el texto de conversión aclara que el presupuesto base (USD 200.633) sigue coincidiendo con la conversión del original | Propagar la decisión. La propuesta previa de `_propuestas/` (04-riesgos y 03-presupuesto) queda superada en este punto: usaba otro método de impactos y un presupuesto con escenario B |
+| 42 | Punto 9.4 y estrategia de R15 | 9.4 nombraba 8 de los 13 riesgos alto o crítico (omitía R03, R07, R10, R13, R14) y R15 figuraba como «Evitar / Mitigar» | 9.4 se rehace con el mapa de calor de riesgos (tabla de zonas por probabilidad e impacto): inaceptable R01, R02, R04, R05, R08, R10; aceptable con atención R03, R06, R07, R09, R11 a R14; aceptable R15. R15 pasa a estrategia «Aceptar» (9.2, 9.3 y 9.7.3: sin reducción de probabilidad residual). El EMV residual de R15 sube de USD 385 a USD 1.154: contingencia USD 41.206 (20,5 % de los costos) y total USD 241.839 | Decisión del equipo (12/10): priorizar por zonas y aceptar el único riesgo de zona aceptable. El criterio de zonas es el del mapa de calor de riesgos de la materia, sin citarlo en el documento |
+| 43 | Anexo A, encabezados de tablas | Encabezados partidos en mitad de palabra («Duració/n», «Dependenci/as», «Responsab/le») | Ancho mínimo de columna calculado con el encabezado en negrita (25 % más ancho); no cambia el contenido | Corrección de formato detectada en la revisión visual del PDF |
+
+## G. Gantt corregido y apoyos visuales
+
+El Excel del equipo no se modificó. El libro corregido es `dist/Gantt_corregido_TP_Cascada.xlsx` (hoja «Correcciones» con cada cambio) y los datos viven en `data/gantt.json`. Se regeneran con `tools/gen-gantt-corregido.py` y `tools/gen-annex.py`.
+
+| # | Dónde | Original | Ahora | Motivo |
+|---|---|---|---|---|
+| 44 | Anexo A.1 y 6.2: fechas del cronograma | 7 actividades empezaban antes de que terminara su predecesora (2, 3, 8, 9, 14, 15 y 16, entre 1 y 3 días) | Cada actividad empieza el día hábil siguiente al fin de su última predecesora, o en su fecha original si ya es posterior; las duraciones no cambian. Cambian las fechas de 26 actividades por el efecto en cadena | Una dependencia fin a inicio no admite superposición. Corregir las 7 obliga a desplazar a las sucesoras |
+| 45 | 6.3 Hitos, Anexo A.3 y A.4, Charter (fecha de aprobación) | Hitos 1 a 5: 10/04, 01/05, 26/05, 02/07, 21/07 | 14/04, 07/05, 08/06, 15/07, 03/08. Los hitos 6, 7 y 8 (27/08, 09/09, 30/09) no cambian | No se pudo mantener las fechas de los hitos 1 a 5 sin acortar duraciones; los 5 días de holgura del cierre absorben el desplazamiento antes del hito 6 |
+| 46 | Anexo A, columna Dependencias | «1-3», «5-7», «10-14», «18-23»… (ambiguo: rango o extremos) | «1, 3», «5, 7», «10, 14», «18, 23»… | El CPM del equipo se calcula con los extremos (como ya escribía la hoja del anexo); se dejó explícito. No cambia ninguna predecesora |
+| 47 | Anexo A, columna Responsable | Vacía en las 40 actividades | Un rol por actividad, tomado de los perfiles del presupuesto; Sponsor en las aprobaciones | Completar la columna. Los roles son una propuesta del equipo de redacción, a revisar |
+| 48 | 6.1, 6.2, Charter 5.1 y Anexo | «126 días hábiles, unas 25 semanas» junto a las fechas 01/04 al 30/09 | «Camino crítico de 126 días hábiles dentro de una ventana de 131»; los 5 días restantes son holgura del cierre | Del 01/04 al 30/09 hay 131 días hábiles; la diferencia con el camino crítico estaba sin explicar |
+| 49 | Anexo A, texto introductorio y nota final | «Reproduce, sin modificaciones, las hojas del Excel»; línea de hitos académicos | Texto que describe las adaptaciones; se quita la línea de hitos académicos | El anexo ya no es una copia literal; el documento no hace referencia a fechas de entrega |
+| 50 | 6.2 | Imagen del Gantt de F1 (con las fechas anteriores) | Gráfico nuevo generado desde `data/gantt.json`: 40 actividades por fase, camino crítico resaltado y 8 hitos | La imagen anterior no coincidía con las fechas corregidas |
+| 51 | 6.3 | Solo tabla | Se agrega la línea de tiempo de los 8 hitos sobre las fases | Apoyo visual |
+| 52 | 6.4 | Lista vertical de fases con flechas | Diagrama horizontal de las 8 fases con fechas e hitos, y las actividades de Diseño que se desarrollan en paralelo | Apoyo visual; muestra el paralelismo dentro de Diseño y el solapamiento entre Integración y Pruebas |
+| 53 | 7.2 | Solo la lista de clasificación | Se agrega el gráfico de interés e influencia con los 15 stakeholders de la matriz | Apoyo visual con datos de la matriz |
+| 54 | 9.4 | Tabla del mapa de calor y listas por zona | Se agrega el mapa de calor 5 x 5 con R01 a R15 ubicados | Apoyo visual con los datos de la matriz 9.2 |
+| 55 | 10.9 | Solo la tabla del presupuesto total | Se agrega el gráfico de composición del presupuesto en USD | Apoyo visual con los montos de la tabla |
+| 56 | Punto 3, Socios Clave (listado) | Ministerio de Modernización, Transporte, Cultura, comunas, prestadores de transporte y Boti/BAX | Áreas dueñas del dato (Transporte y Cultura), Modernización como sponsor, USIG e Innovación/ASI, Boti, BAX y DisfrutemosBA, Banco Ciudad y Pase Cultural; se conservan comunas y prestadores de transporte | Alinear el listado con la figura del Canvas |
+| 44 | Punto 10 (RR.HH.), aclaración de dedicaciones | «La estimación contempla dedicaciones parciales o específicas según la etapa» | Se agrega que los meses son dedicación efectiva, con participación transversal en varias fases, y que pueden superar la ventana de las actividades principales del rol en el Gantt | Decisión del equipo (13/10): aclarar sin cambiar los meses ni los montos, ante la diferencia entre meses presupuestados y ventanas del Gantt (analistas, QA, infraestructura) |

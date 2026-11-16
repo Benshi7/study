@@ -1,0 +1,11 @@
+https://www.youtube.com/watch?v=3proO1AtUhE
+
+Este video explica las diferencias fundamentales entre los roles de CIO (Director de Información) y CTO (Director de Tecnología), aclarando por qué a menudo se confunden en las empresas.
+
+Diferencias clave:
+CIO (Chief Information Officer): Su enfoque principal es la infraestructura empresarial y la gestión de la información (0:52 - 1:18). No se centra en la tecnología en sí, sino en utilizarla para mantener el negocio en funcionamiento. Es el encargado del departamento de IT.
+CTO (Chief Technology Officer): Es, en esencia, un Director de Ingeniería. Su responsabilidad es diseñar y construir productos tecnológicos (1:46 - 2:27), ya sean para uso interno o comercial. Gestiona equipos de desarrolladores y programadores.
+Conclusión:
+El departamento de IT (dirigido por el CIO) se dedica a la administración y operación de sistemas (2:34 - 2:41).
+El departamento de ingeniería (dirigido por el CTO) se dedica a la creación de productos (2:46 - 2:52).
+Aunque a veces los roles se fusionan por desconocimiento o por el tamaño de la empresa, el autor enfatiza que son funciones claramente distintas con objetivos diferentes (3:05 - 3:25).

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Índices y transacciones · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<!-- Deck de estudio sobre el PPT "Clase Indices y Txn" de la cátedra (Clase 4). El contenido sigue al deck;
+     el orden, los diagramas, los ejemplos y los recuadros "En criollo" / "Ojo en el choice" son interpretación nuestra. -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ah"/></marker>
+  <marker id="arA" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahA"/></marker>
+  <marker id="arB" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahB"/></marker>
+</defs></svg>
+
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · Clase 4 · teoría para el 2.º parcial</p>
+    <h1 class="h1" style="font-size:112px;line-height:1">Índices y<br><span class="gradient-text">transacciones</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Dónde viven los datos, cómo se encuentran rápido y cómo se cambian sin romper nada.</p>
+    <p class="small">Basado en el PPT de la cátedra. Los recuadros “En criollo” y “Ojo en el choice” son explicación nuestra.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="slide" data-title="Mapa del deck">
+  <p class="kicker">Mapa</p>
+  <h2 class="h2">Tres preguntas, en este orden</h2>
+  <div class="three" style="grid-template-columns:repeat(3,1fr);margin-top:24px">
+    <div class="card card-accent"><div class="src">1 · Almacenamiento</div><h4>¿Dónde viven los datos?</h4><p>Memoria, disco, cinta. La CPU no toca el disco: todo hay que traerlo a memoria.</p></div>
+    <div class="card card-accent"><div class="src">2 · Índices</div><h4>¿Cómo se encuentran rápido?</h4><p>Principal, agrupado y secundario. Cuál ordena físicamente: <b>el agrupado</b>.</p></div>
+    <div class="card card-accent"><div class="src">3 · Transacciones</div><h4>¿Cómo se cambian sin romper nada?</h4><p>Todo o nada, y las cuatro letras de <b>ACID</b>.</p></div>
+  </div>
+  <div class="ojo"><span class="lbl">Lo que el profe toma</span><p>“¿Cuál de todos los índices <b>ordena físicamente</b>? Justifique.” · Nombre de cada tipo y <b>qué beneficio</b> tiene · Las definiciones de <b>ACID</b>.</p></div>
+</section>
+
+<!-- ============ 1 · ALMACENAMIENTO ============ -->
+<section class="slide" data-title="Jerarquía de almacenamiento">
+  <p class="kicker">1 · Almacenamiento</p>
+  <h2 class="h2">La escalera del almacenamiento</h2>
+  <svg class="dg" viewBox="0 0 1728 488" role="img" aria-labelledby="mem-title mem-desc">
+    <title id="mem-title">Jerarquía de almacenamiento</title>
+    <desc id="mem-desc">De más rápido y caro a más lento y barato: caché y DRAM son almacenamiento principal, la flash está en el medio, el disco es secundario y la cinta terciaria. La CPU sólo opera sobre el almacenamiento principal.</desc>
+    <text x="240" y="24" class="ey">↑ MÁS RÁPIDO · MÁS CARO · MENOS CAPACIDAD</text>
+    <rect x="240" y="40" width="960" height="72" rx="6" class="foc"/><text x="272" y="86" class="nm-s">Caché</text>
+    <rect x="240" y="124" width="960" height="72" rx="6" class="foc"/><text x="272" y="170" class="nm-s">DRAM · memoria principal</text>
+    <line x1="240" y1="206" x2="1200" y2="206" class="lnA" stroke-dasharray="10 6"/>
+    <rect x="240" y="216" width="960" height="72" rx="6" class="box"/><text x="272" y="262" class="nm-s">Memoria flash</text>
+    <rect x="240" y="300" width="960" height="72" rx="6" class="store"/><text x="272" y="346" class="nm-s">Disco magnético</text>
+    <rect x="240" y="384" width="960" height="72" rx="6" class="soft"/><text x="272" y="430" class="nm-s">Cinta magnética</text>
+    <text x="216" y="122" class="eyA" text-anchor="end">PRINCIPAL</text>
+    <text x="216" y="258" class="ey" text-anchor="end">INTERMEDIA</text>
+    <text x="216" y="342" class="ey" text-anchor="end">SECUNDARIO</text>
+    <text x="216" y="426" class="ey" text-anchor="end">TERCIARIO</text>
+    <text x="1176" y="86" class="sb" text-anchor="end">la usa la CPU para acelerar programas</text>
+    <text x="1176" y="170" class="sb" text-anchor="end">área de trabajo · barata, volátil</text>
+    <text x="1176" y="262" class="sb" text-anchor="end">alta densidad · tecnología EEPROM</text>
+    <text x="1176" y="346" class="sb" text-anchor="end">online · acceso directo</text>
+    <text x="1176" y="430" class="sb" text-anchor="end">offline · backups · la más barata</text>
+    <text x="1240" y="196" class="lbBad" style="fill:var(--accent)">HASTA ACÁ OPERA LA CPU</text>
+    <text x="1240" y="228" class="tx2">Lo de abajo hay que copiarlo</text>
+    <text x="1240" y="260" class="tx2">a la memoria principal.</text>
+    <text x="240" y="484" class="ey">↓ MÁS LENTO · MÁS BARATO · MÁS CAPACIDAD</text>
+  </svg>
+  <div class="ojo"><span class="lbl">Frase de memoria</span><p>“La CPU <b>no puede procesar directamente</b> los datos almacenados en un almacenamiento secundario o terciario; <b>primero deben copiarse</b> en el almacenamiento principal.”</p></div>
+</section>
+
+<section class="slide" data-title="Disco y cinta">
+  <p class="kicker">1 · Almacenamiento</p>
+  <h2 class="h2">Disco online, cinta offline</h2>
+  <div class="two" style="margin-top:10px">
+    <div class="card card-accent"><div class="src">Disco · secundario</div><h4>Online</h4><p>Se puede acceder <b>directamente en cualquier momento</b>. Gran capacidad, cuesta poco, pero es más lento que la memoria principal.</p></div>
+    <div class="card card-accent"><div class="src">Cinta · terciario</div><h4>Offline</h4><p>Se usa para <b>copias de seguridad</b>: es incluso más barata que el disco, pero el acceso es bastante más lento. Para leerla hace falta que un operador (o un cargador automático) <b>monte la cinta</b>.</p></div>
+  </div>
+  <p class="sub" style="margin-top:26px">Los diseñadores de bases de datos y el <b>DBA</b> tienen que conocer las ventajas y los inconvenientes de cada medio cuando diseñan, implementan y operan una base en un DBMS concreto.</p>
+  <div class="crio"><span class="lbl">En criollo</span><p>Los medios <b>removibles</b> (cinta, discos ópticos) son terciarios; el disco rígido es secundario. Lo que define la categoría es si la CPU puede trabajar con el dato sin copiarlo antes.</p></div>
+</section>
+
+<section class="slide" data-title="El viaje del dato">
+  <p class="kicker">1 · Almacenamiento</p>
+  <h2 class="h2">El viaje de cada dato que se usa</h2>
+  <svg class="dg" viewBox="0 0 1728 240" role="img" aria-labelledby="viaje-title viaje-desc" style="margin-top:6px">
+    <title id="viaje-title">Del disco a la memoria y de vuelta</title>
+    <desc id="viaje-desc">El dato se busca en el disco, se copia a la memoria principal, la CPU lo procesa y, si cambió, se reescribe en el disco.</desc>
+    <line x1="360" y1="100" x2="580" y2="100" class="ln" marker-end="url(#ar)"/>
+    <line x1="944" y1="100" x2="1164" y2="100" class="ln" marker-end="url(#ar)"/>
+    <path d="M764,160 V196 Q764,204 756,204 H188 Q180,204 180,196 V164" class="lnA" marker-end="url(#arA)"/>
+    <rect x="384" y="64" width="172" height="20" class="mask"/><text x="470" y="79" class="lb" text-anchor="middle">BUSCAR Y COPIAR</text>
+    <rect x="996" y="64" width="116" height="20" class="mask"/><text x="1054" y="79" class="lb" text-anchor="middle">PROCESAR</text>
+    <rect x="368" y="212" width="224" height="20" class="mask"/><text x="480" y="227" class="lb" text-anchor="middle" style="fill:var(--accent)">REESCRIBIR SI CAMBIÓ</text>
+    <rect x="0" y="40" width="360" height="120" rx="8" class="store"/><text x="180" y="96" class="nm" text-anchor="middle">Disco</text><text x="180" y="132" class="sb" text-anchor="middle">ficheros de registros</text>
+    <rect x="584" y="40" width="360" height="120" rx="8" class="box"/><text x="764" y="96" class="nm" text-anchor="middle">Memoria principal</text><text x="764" y="132" class="sb" text-anchor="middle">una porción por vez</text>
+    <rect x="1168" y="40" width="360" height="120" rx="8" class="foc"/><text x="1348" y="96" class="nm" text-anchor="middle">CPU</text><text x="1348" y="132" class="sb" text-anchor="middle">opera sobre la memoria</text>
+  </svg>
+  <ul class="bl sm" style="margin-top:26px">
+    <li>Una aplicación típica procesa <b>una pequeña porción</b> de la base en cada momento.</li>
+    <li>En el disco, los datos se organizan como <b>ficheros de registros</b>. Un <b>registro</b> es una colección de valores que representan hechos sobre entidades, sus atributos y sus relaciones.</li>
+    <li>Los registros se guardan de forma que se puedan <b>localizar de la forma más eficaz</b>.</li>
+  </ul>
+  <div class="crio"><span class="lbl">En criollo</span><p>El viaje disco ↔ memoria es lo caro. Todo lo que sigue (los índices) existe para hacer <b>menos viajes</b>: encontrar el registro sin leer todo el fichero.</p></div>
+</section>
+
+<section class="slide" data-title="Archivos tradicionales vs base de datos">
+  <p class="kicker">1 · Almacenamiento</p>
+  <h2 class="h2">Planillas sueltas: cuatro problemas</h2>
+  <p class="sub">En el enfoque de archivos tradicionales, cada aplicación guarda sus datos en sus propios archivos. Son una fuente de errores y se actualizan más lento.</p>
+  <div class="four">
+    <div class="card" style="border-top:5px solid var(--bad)"><h4>Redundancia</h4><p>Sin control del ingreso, los registros se duplican.</p></div>
+    <div class="card" style="border-top:5px solid var(--bad)"><h4>Error de ingreso</h4><p>Errores de tipeo, ortografía, números mal cargados.</p></div>
+    <div class="card" style="border-top:5px solid var(--bad)"><h4>Estandarización</h4><p>El más común: <code>21-12-2021</code>, <code>21/02/2021</code>, <code>21/2/2021</code>.</p></div>
+    <div class="card" style="border-top:5px solid var(--bad)"><h4>Seguridad</h4><p>No hay control de acceso por usuario, sólo al archivo.</p></div>
+  </div>
+  <div class="two" style="margin-top:22px">
+    <div class="card card-accent"><h4>La base de datos permite <span style="color:var(--accent)">integrar</span></h4><p>Los archivos se organizan lógicamente para <b>reducir la redundancia</b> y facilitar el acceso.</p></div>
+    <div class="card card-accent"><h4>…y <span style="color:var(--accent)">compartir</span></h4><p>Todos los usuarios calificados acceden a <b>los mismos datos</b> para distintas actividades.</p></div>
+  </div>
+</section>
+
+<!-- ============ 2 · ÍNDICES ============ -->
+<section class="slide" data-title="Qué es un índice">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">Un índice evita leer todo el fichero</h2>
+  <svg class="dg" viewBox="0 0 1728 268" role="img" aria-labelledby="idx-title idx-desc" style="margin-top:6px">
+    <title id="idx-title">Búsqueda secuencial contra búsqueda con índice</title>
+    <desc id="idx-desc">Sin índice hay que leer bloque por bloque hasta encontrar el registro. Con índice se busca primero en el índice, que dice en qué bloque está, y se va directo a ese bloque.</desc>
+    <text x="0" y="24" class="ey">SIN ÍNDICE · BÚSQUEDA SECUENCIAL</text>
+    <path d="M40,168 V196 Q40,204 48,204 H608 Q616,204 616,196 V172" class="lnA" marker-end="url(#arA)"/>
+    <rect x="236" y="212" width="248" height="20" class="mask"/><text x="360" y="227" class="lb" text-anchor="middle" style="fill:var(--accent)">LEE BLOQUE POR BLOQUE</text>
+    <rect x="0" y="100" width="80" height="64" rx="6" class="store"/><rect x="96" y="100" width="80" height="64" rx="6" class="store"/>
+    <rect x="192" y="100" width="80" height="64" rx="6" class="store"/><rect x="288" y="100" width="80" height="64" rx="6" class="store"/>
+    <rect x="384" y="100" width="80" height="64" rx="6" class="store"/><rect x="480" y="100" width="80" height="64" rx="6" class="store"/>
+    <rect x="576" y="100" width="80" height="64" rx="6" class="foc"/><rect x="672" y="100" width="80" height="64" rx="6" class="store"/>
+    <text x="616" y="140" class="nm-s" text-anchor="middle">✓</text>
+    <text x="0" y="72" class="tx2">7 lecturas para encontrarlo</text>
+    <text x="880" y="24" class="eyA">CON ÍNDICE · VA DIRECTO</text>
+    <line x1="1080" y1="176" x2="1356" y2="176" class="lnA" marker-end="url(#arA)"/>
+    <rect x="1124" y="140" width="184" height="20" class="mask"/><text x="1216" y="155" class="lb" text-anchor="middle" style="fill:var(--accent)">“N–S: BLOQUE 3”</text>
+    <rect x="880" y="56" width="200" height="192" rx="6" class="box"/>
+    <text x="900" y="88" class="tx">A–F → 1</text><text x="900" y="136" class="tx">G–M → 2</text>
+    <rect x="884" y="152" width="192" height="48" class="grp"/><text x="900" y="184" class="tx" font-weight="700">N–S → 3</text><text x="900" y="232" class="tx">T–Z → 4</text>
+    <rect x="1360" y="60" width="280" height="40" rx="6" class="store"/><text x="1500" y="88" class="tx2" text-anchor="middle">bloque 1</text>
+    <rect x="1360" y="108" width="280" height="40" rx="6" class="store"/><text x="1500" y="136" class="tx2" text-anchor="middle">bloque 2</text>
+    <rect x="1360" y="156" width="280" height="40" rx="6" class="foc"/><text x="1500" y="184" class="tx" font-weight="700" text-anchor="middle">bloque 3 ✓</text>
+    <rect x="1360" y="204" width="280" height="40" rx="6" class="store"/><text x="1500" y="232" class="tx2" text-anchor="middle">bloque 4</text>
+  </svg>
+  <div class="card card-accent" style="margin-top:22px"><p style="font-size:31px">“Un índice es una <b>estructura de datos</b> que mapea los valores de una o más columnas de una tabla a las filas correspondientes. Esto permite un acceso más rápido y eficiente a los datos <b>en lugar de realizar una búsqueda secuencial</b>.”</p></div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Como el índice de un libro: no leés todas las páginas, mirás el índice y vas a la página. Si te preguntan <b>para qué sirve</b> un índice: “para evitar la búsqueda secuencial”.</p></div>
+</section>
+
+<section class="slide" data-title="Los tres tipos">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">Tres tipos, y una sola pregunta que los separa</h2>
+  <p class="sub">¿El índice <b>cambia el orden físico</b> de las filas en el disco?</p>
+  <div class="three" style="grid-template-columns:1fr 1.1fr 1fr">
+    <div class="card" style="border-top:5px solid var(--text-2)"><div class="src" style="color:var(--text-3)">No lo cambia</div><h4>Principal</h4><p>Sobre la <b>clave primaria</b>. Uno solo por tabla. Garantiza <b>unicidad</b>.</p></div>
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">Sí: ordena el fichero</div><h4>Agrupado</h4><p>Sobre el <b>campo agrupado</b>. Las filas se guardan <b>en el mismo orden que el índice</b>: los valores iguales quedan juntos en disco.</p></div>
+    <div class="card" style="border-top:5px solid var(--text-2)"><div class="src" style="color:var(--text-3)">No lo cambia</div><h4>Secundario</h4><p>Sobre columnas que <b>no son la clave primaria</b>. Es una <b>estructura aparte</b>.</p></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p>“¿Cuál de todos los índices <b>ordena físicamente</b> los campos?” → <b>el agrupado</b>, porque “las filas de la tabla se ordenan en el mismo orden que el índice” y quedan “físicamente almacenadas juntas en el disco”.</p></div>
+</section>
+
+<section class="slide" data-title="Índice principal">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">Índice principal (o primario)</h2>
+  <div style="display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start;margin-top:6px">
+    <div>
+      <p style="font-size:30px;line-height:1.45;margin:0 0 16px">Se crea sobre la columna o columnas de la <b>clave primaria</b>. <b>Sólo puede haber uno</b> por tabla, “ya que la clave primaria es única en la tabla”.</p>
+      <ul class="bl sm" style="margin:0">
+        <li><b>Unicidad</b> <small>no puede haber dos filas con la misma clave</small></li>
+        <li><b>Búsqueda eficiente</b> <small>rápida por clave primaria</small></li>
+        <li><b>Integridad referencial</b> <small>es la base de las restricciones</small></li>
+      </ul>
+    </div>
+    <svg class="dg" viewBox="0 0 1032 488" role="img" aria-labelledby="pri-title pri-desc">
+      <title id="pri-title">Índice principal con una entrada por bloque</title>
+      <desc id="pri-desc">El fichero de índice tiene una entrada por bloque, con el primer valor de clave de cada bloque y un puntero a ese bloque del fichero de datos, que está ordenado por la clave.</desc>
+      <text x="0" y="24" class="ey">FICHERO DE ÍNDICE</text>
+      <text x="520" y="24" class="ey">FICHERO DE DATOS (ordenado por la clave)</text>
+      <path d="M300,140 H372 Q380,140 380,132 V64 Q380,56 388,56 H516" class="ln" marker-end="url(#ar)"/>
+      <path d="M300,196 H412 Q420,196 420,188 V176 Q420,168 428,168 H516" class="ln" marker-end="url(#ar)"/>
+      <path d="M300,252 H452 Q460,252 460,260 V272 Q460,280 468,280 H516" class="ln" marker-end="url(#ar)"/>
+      <path d="M300,308 H492 Q500,308 500,316 V384 Q500,392 508,392 H516" class="ln" marker-end="url(#ar)"/>
+      <rect x="0" y="112" width="300" height="56" class="box"/><text x="20" y="148" class="row">Aaron, Ed</text><circle cx="276" cy="140" r="5" class="acc"/>
+      <rect x="0" y="168" width="300" height="56" class="box"/><text x="20" y="204" class="row">Adams, John</text><circle cx="276" cy="196" r="5" class="acc"/>
+      <rect x="0" y="224" width="300" height="56" class="box"/><text x="20" y="260" class="row">Alexander, Ed</text><circle cx="276" cy="252" r="5" class="acc"/>
+      <rect x="0" y="280" width="300" height="56" class="box"/><text x="20" y="316" class="row">Allen, Troy</text><circle cx="276" cy="308" r="5" class="acc"/>
+      <text x="0" y="372" class="sb">una entrada por bloque:</text><text x="0" y="400" class="sb">la primera clave + puntero</text>
+      <g transform="translate(520,40)"><rect width="512" height="96" rx="6" class="store"/><rect width="512" height="32" rx="6" class="grp"/><text x="16" y="24" class="rowK">Aaron, Ed</text><text x="16" y="56" class="row">Abbot, Diane</text><text x="16" y="88" class="row">Acosta, Marc</text></g>
+      <g transform="translate(520,152)"><rect width="512" height="96" rx="6" class="store"/><rect width="512" height="32" rx="6" class="grp"/><text x="16" y="24" class="rowK">Adams, John</text><text x="16" y="56" class="row">Adams, Robin</text><text x="16" y="88" class="row">Akers, Jan</text></g>
+      <g transform="translate(520,264)"><rect width="512" height="96" rx="6" class="store"/><rect width="512" height="32" rx="6" class="grp"/><text x="16" y="24" class="rowK">Alexander, Ed</text><text x="16" y="56" class="row">Alfred, Bob</text><text x="16" y="88" class="row">Allen, Sam</text></g>
+      <g transform="translate(520,376)"><rect width="512" height="96" rx="6" class="store"/><rect width="512" height="32" rx="6" class="grp"/><text x="16" y="24" class="rowK">Allen, Troy</text><text x="16" y="56" class="row">Anders, Keith</text><text x="16" y="88" class="row">Anderson, Rob</text></g>
+    </svg>
+  </div>
+  <p class="small" style="margin-top:8px">Dibujo basado en la figura del deck (Elmasri, fig. 14.1), simplificado.</p>
+</section>
+
+<section class="slide" data-title="Denso y no denso">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">Denso y no denso: ¿a qué apunta cada entrada?</h2>
+  <svg class="dg" viewBox="0 0 1728 372" role="img" aria-labelledby="den-title den-desc" style="margin-top:6px">
+    <title id="den-title">Índice no denso contra índice denso</title>
+    <desc id="den-desc">El índice no denso tiene una entrada por bloque y apunta al primer registro de cada bloque. El índice denso tiene una entrada por cada registro.</desc>
+    <text x="0" y="24" class="eyA">NO DENSO (ESCASO) · UNA ENTRADA POR BLOQUE</text>
+    <line x1="160" y1="80" x2="356" y2="80" class="ln" marker-end="url(#ar)"/>
+    <line x1="160" y1="224" x2="356" y2="224" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="60" width="160" height="40" class="foc"/><text x="80" y="88" class="rowK" text-anchor="middle">1</text>
+    <rect x="0" y="204" width="160" height="40" class="foc"/><text x="80" y="232" class="rowK" text-anchor="middle">4</text>
+    <g transform="translate(360,60)"><rect width="360" height="120" rx="6" class="store"/><text x="20" y="28" class="rowK">1</text><text x="20" y="68" class="row">2</text><text x="20" y="108" class="row">3</text><text x="340" y="68" class="sb" text-anchor="end">bloque 1</text></g>
+    <g transform="translate(360,204)"><rect width="360" height="120" rx="6" class="store"/><text x="20" y="28" class="rowK">4</text><text x="20" y="68" class="row">5</text><text x="20" y="108" class="row">6</text><text x="340" y="68" class="sb" text-anchor="end">bloque 2</text></g>
+    <text x="960" y="24" class="ey">DENSO · UNA ENTRADA POR REGISTRO</text>
+    <line x1="1120" y1="80" x2="1316" y2="80" class="ln" marker-end="url(#ar)"/>
+    <line x1="1120" y1="120" x2="1316" y2="120" class="ln" marker-end="url(#ar)"/>
+    <line x1="1120" y1="160" x2="1316" y2="160" class="ln" marker-end="url(#ar)"/>
+    <line x1="1120" y1="224" x2="1316" y2="224" class="ln" marker-end="url(#ar)"/>
+    <line x1="1120" y1="264" x2="1316" y2="264" class="ln" marker-end="url(#ar)"/>
+    <line x1="1120" y1="304" x2="1316" y2="304" class="ln" marker-end="url(#ar)"/>
+    <rect x="960" y="60" width="160" height="120" class="box"/><text x="1040" y="88" class="row" text-anchor="middle">1</text><text x="1040" y="128" class="row" text-anchor="middle">2</text><text x="1040" y="168" class="row" text-anchor="middle">3</text>
+    <rect x="960" y="204" width="160" height="120" class="box"/><text x="1040" y="232" class="row" text-anchor="middle">4</text><text x="1040" y="272" class="row" text-anchor="middle">5</text><text x="1040" y="312" class="row" text-anchor="middle">6</text>
+    <g transform="translate(1320,60)"><rect width="360" height="120" rx="6" class="store"/><text x="20" y="28" class="row">1</text><text x="20" y="68" class="row">2</text><text x="20" y="108" class="row">3</text><text x="340" y="68" class="sb" text-anchor="end">bloque 1</text></g>
+    <g transform="translate(1320,204)"><rect width="360" height="120" rx="6" class="store"/><text x="20" y="28" class="row">4</text><text x="20" y="68" class="row">5</text><text x="20" y="108" class="row">6</text><text x="340" y="68" class="sb" text-anchor="end">bloque 2</text></g>
+  </svg>
+  <div class="two" style="margin-top:14px">
+    <div class="card card-soft"><p><b>Denso:</b> “tiene una entrada de índice por cada valor de la clave de búsqueda (y, por tanto, cada registro)”.</p></div>
+    <div class="card card-soft"><p><b>No denso:</b> “sólo tiene entradas para algunos de los valores de búsqueda”. El deck dice que el <b>principal</b> es no denso: una entrada por bloque.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>No hace falta memorizarlo: mirá <b>a qué apunta</b> cada entrada. ¿A un bloque? No denso. ¿A cada registro? Denso.</p></div>
+</section>
+
+<section class="slide" data-title="Índice agrupado">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">Índice agrupado: el que ordena el disco</h2>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start;margin-top:6px">
+    <svg class="dg" viewBox="0 0 1000 420" role="img" aria-labelledby="agr-title agr-desc">
+      <title id="agr-title">Índice agrupado sobre el número de departamento</title>
+      <desc id="agr-desc">Las filas de empleados están guardadas ordenadas por departamento, así las del mismo departamento quedan juntas; el índice apunta al primer empleado de cada departamento.</desc>
+      <text x="0" y="24" class="ey">ÍNDICE · NumDpto</text>
+      <text x="320" y="24" class="eyA">FICHERO DE DATOS · ORDENADO POR NumDpto</text>
+      <line x1="200" y1="76" x2="316" y2="76" class="ln" marker-end="url(#ar)"/>
+      <line x1="200" y1="212" x2="316" y2="212" class="ln" marker-end="url(#ar)"/>
+      <line x1="200" y1="308" x2="316" y2="308" class="ln" marker-end="url(#ar)"/>
+      <rect x="0" y="56" width="200" height="40" class="box"/><text x="100" y="84" class="rowK" text-anchor="middle">1</text>
+      <rect x="0" y="192" width="200" height="40" class="box"/><text x="100" y="220" class="rowK" text-anchor="middle">2</text>
+      <rect x="0" y="288" width="200" height="40" class="box"/><text x="100" y="316" class="rowK" text-anchor="middle">3</text>
+      <rect x="320" y="56" width="680" height="120" rx="6" class="foc"/>
+      <text x="344" y="84" class="rowK">1</text><text x="464" y="84" class="row">empleado A</text>
+      <text x="344" y="124" class="rowK">1</text><text x="464" y="124" class="row">empleado B</text>
+      <text x="344" y="164" class="rowK">1</text><text x="464" y="164" class="row">empleado C</text>
+      <text x="976" y="124" class="sb" text-anchor="end">juntos en disco</text>
+      <rect x="320" y="192" width="680" height="80" rx="6" class="store"/>
+      <text x="344" y="220" class="rowK">2</text><text x="464" y="220" class="row">empleado D</text>
+      <text x="344" y="260" class="rowK">2</text><text x="464" y="260" class="row">empleado E</text>
+      <rect x="320" y="288" width="680" height="120" rx="6" class="store"/>
+      <text x="344" y="316" class="rowK">3</text><text x="464" y="316" class="row">empleado F</text>
+      <text x="344" y="356" class="rowK">3</text><text x="464" y="356" class="row">empleado G</text>
+      <text x="344" y="396" class="rowK">3</text><text x="464" y="396" class="row">empleado H</text>
+    </svg>
+    <div>
+      <p style="font-size:29px;line-height:1.45;margin:0 0 14px">Acelera la recuperación de los registros que tienen <b>el mismo valor</b> en el campo agrupado. “Las filas de la tabla se ordenan <b>en el mismo orden que el índice</b>.”</p>
+      <div class="card adv" style="margin-bottom:12px"><h4>A favor</h4><ul><li>Ordenamiento físico</li><li>Búsqueda eficiente</li><li>Ahorro de espacio</li></ul></div>
+      <div class="card dis"><h4>En contra</h4><ul><li>Limitaciones al modificar datos</li></ul></div>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Si pedís “todos los empleados del departamento 1”, están <b>uno al lado del otro</b>: se leen juntos. Por eso conviene en un campo con <b>valores repetidos</b>. Modificar cuesta porque hay que mantener el orden.</p></div>
+</section>
+
+<section class="slide" data-title="Índice secundario">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">Índice secundario: una estructura aparte</h2>
+  <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start;margin-top:6px">
+    <svg class="dg" viewBox="0 0 1000 404" role="img" aria-labelledby="sec-title sec-desc">
+      <title id="sec-title">Índice secundario sobre la fecha de la factura</title>
+      <desc id="sec-desc">El fichero de facturas sigue ordenado por número de factura. El índice secundario, aparte, lista las fechas ordenadas y para cada una dice en qué bloque está la fila.</desc>
+      <text x="0" y="24" class="eyA">ÍNDICE SECUNDARIO · Fecha</text>
+      <text x="520" y="24" class="ey">FICHERO DE DATOS · SIGUE ORDENADO POR NFact</text>
+      <rect x="0" y="40" width="440" height="48" rx="6" class="hd"/><text x="20" y="72" class="hdT">Fecha</text><text x="420" y="72" class="hdT" text-anchor="end">dónde está</text>
+      <rect x="0" y="88" width="440" height="300" class="foc"/>
+      <text x="20" y="124" class="row">2026-01-03</text><text x="420" y="124" class="tag" text-anchor="end">→ bloque 2</text>
+      <text x="20" y="184" class="row">2026-01-15</text><text x="420" y="184" class="tag" text-anchor="end">→ bloque 1</text>
+      <text x="20" y="244" class="row">2026-01-28</text><text x="420" y="244" class="tag" text-anchor="end">→ bloque 3</text>
+      <text x="20" y="304" class="row">2026-02-20</text><text x="420" y="304" class="tag" text-anchor="end">→ bloque 2</text>
+      <text x="20" y="364" class="row">2026-03-02</text><text x="420" y="364" class="tag" text-anchor="end">→ bloque 1</text>
+      <rect x="520" y="40" width="480" height="48" rx="6" class="hd"/><text x="540" y="72" class="hdT">NFact</text><text x="720" y="72" class="hdT">Fecha</text>
+      <g transform="translate(520,96)"><rect width="480" height="88" rx="6" class="store"/><text x="20" y="34" class="rowK">4318</text><text x="200" y="34" class="row">2026-01-15</text><text x="20" y="72" class="rowK">4319</text><text x="200" y="72" class="row">2026-03-02</text><text x="460" y="54" class="sb" text-anchor="end">bloque 1</text></g>
+      <g transform="translate(520,200)"><rect width="480" height="88" rx="6" class="store"/><text x="20" y="34" class="rowK">4320</text><text x="200" y="34" class="row">2026-01-03</text><text x="20" y="72" class="rowK">4321</text><text x="200" y="72" class="row">2026-02-20</text><text x="460" y="54" class="sb" text-anchor="end">bloque 2</text></g>
+      <g transform="translate(520,304)"><rect width="480" height="88" rx="6" class="store"/><text x="20" y="34" class="rowK">4322</text><text x="200" y="34" class="row">2026-01-28</text><text x="20" y="72" class="rowK">4323</text><text x="200" y="72" class="row">2026-04-11</text><text x="460" y="54" class="sb" text-anchor="end">bloque 3</text></g>
+    </svg>
+    <div>
+      <p style="font-size:29px;line-height:1.45;margin:0 0 14px">Se crea sobre columnas que <b>no son la clave primaria</b>. No toca el orden físico: arma una <b>estructura de índice separada</b>.</p>
+      <div class="card adv" style="margin-bottom:12px"><h4>A favor</h4><ul><li>No afecta el orden físico</li><li>Búsqueda eficiente</li><li>Mayor flexibilidad</li></ul></div>
+      <div class="card dis"><h4>En contra</h4><ul><li>Más espacio de almacenamiento</li><li>Usar demasiados degrada el rendimiento</li></ul></div>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>El fichero no se mueve; el índice es una <b>lista aparte</b> que dice dónde está cada fila. Por eso ocupa más espacio y, si ponés muchos, cada INSERT o UPDATE tiene que actualizarlos todos. Hay que <b>planificar</b> cuáles crear. (Datos de ejemplo inventados.)</p></div>
+</section>
+
+<section class="slide" data-title="Un ejemplo de cada uno">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">“Dé un ejemplo”: los tres sobre la misma tabla</h2>
+  <p class="sub">Tabla <code>CabeceraFact (NFact, Fecha, CodCli)</code>, con <code>NFact</code> como clave primaria.</p>
+  <table class="t head">
+    <thead><tr><th style="width:17%">Tipo</th><th style="width:30%">Sobre qué columna</th><th>Qué consulta acelera</th></tr></thead>
+    <tbody>
+      <tr><td>Principal</td><td><code>NFact</code>, la clave primaria</td><td>“Traeme la factura 4318”. Y garantiza que no haya dos facturas 4318.</td></tr>
+      <tr><td>Agrupado</td><td><code>CodCli</code>: las facturas del mismo cliente quedan juntas</td><td>“Traeme todas las facturas del cliente 3”: se leen de bloques contiguos.</td></tr>
+      <tr><td>Secundario</td><td><code>Fecha</code>, que no es clave</td><td>“Traeme las facturas de enero”, sin tocar el orden físico.</td></tr>
+    </tbody>
+  </table>
+  <div class="crio"><span class="lbl">En criollo</span><p>Es el mismo ejemplo de la lección 0028. El modelo de parcial 1a pide: “Explique cada tipo de índices: agrupados, principal y secundarios. <b>Dé un ejemplo</b>”.</p></div>
+</section>
+
+<section class="slide" data-title="La trampa del material">
+  <p class="kicker">2 · Índices</p>
+  <h2 class="h2">La trampa: el material mezcla dos libros</h2>
+  <div class="two" style="margin-top:10px">
+    <div class="card card-soft"><div class="src">Páginas de los tipos (cátedra)</div><p>El <b>principal</b> es el de la clave primaria y da <b>unicidad</b>. El <b>orden físico</b> se lo dan al <b>agrupado</b>.</p></div>
+    <div class="card card-soft"><div class="src">Página de denso / no denso (Elmasri)</div><p>Dice que el principal tiene “una entrada por cada <b>bloque</b>”, cosa que sólo tiene sentido si el fichero está ordenado por esa clave.</p></div>
+  </div>
+  <div class="card" style="margin-top:24px;border:2.5px solid var(--accent);background:var(--accent-tint)"><p style="font-size:34px;margin:0"><b>En el parcial:</b> “¿cuál ordena físicamente?” → <b style="color:var(--accent)">el agrupado</b>. Justificá con las palabras del deck: “las filas de la tabla se ordenan en el mismo orden que el índice” y “están físicamente almacenadas juntas en el disco”.</p></div>
+  <div class="ojo"><span class="lbl">Ojo</span><p>No razones desde el párrafo de densidad ni le corrijas el material al docente en la hoja: cuando Elmasri y la cátedra difieren, <b>gana la cátedra</b>.</p></div>
+</section>
+
+<!-- ============ 3 · TRANSACCIONES ============ -->
+<section class="slide" data-title="Qué es una transacción">
+  <p class="kicker">3 · Transacciones</p>
+  <h2 class="h2">Una transacción: varias operaciones, un solo bloque</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="txn-title txn-desc" style="margin-top:6px">
+    <title id="txn-title">Una transferencia como transacción</title>
+    <desc id="txn-desc">Entre begin transaction y end transaction se descuentan 100 de la cuenta A y se suman 100 a la cuenta B. Si algo falla en el medio, se deshace todo y la base queda como estaba.</desc>
+    <line x1="240" y1="88" x2="340" y2="88" class="ln" marker-end="url(#ar)"/>
+    <line x1="704" y1="88" x2="804" y2="88" class="ln" marker-end="url(#ar)"/>
+    <line x1="1168" y1="88" x2="1268" y2="88" class="lnA" marker-end="url(#arA)"/>
+    <path d="M524,136 V228 Q524,236 532,236 H1268" class="lnBad" marker-end="url(#arB)"/>
+    <rect x="808" y="204" width="200" height="20" class="mask"/><text x="908" y="219" class="lbBad" text-anchor="middle">SI ALGO FALLA</text>
+    <rect x="0" y="40" width="240" height="96" rx="8" class="box"/><text x="120" y="84" class="nm-s" text-anchor="middle">begin</text><text x="120" y="112" class="sb" text-anchor="middle">transaction</text>
+    <rect x="344" y="40" width="360" height="96" rx="8" class="store"/><text x="524" y="84" class="nm-s" text-anchor="middle">Cuenta A − 100</text><text x="524" y="112" class="sb" text-anchor="middle">UPDATE</text>
+    <rect x="808" y="40" width="360" height="96" rx="8" class="store"/><text x="988" y="84" class="nm-s" text-anchor="middle">Cuenta B + 100</text><text x="988" y="112" class="sb" text-anchor="middle">UPDATE</text>
+    <rect x="1272" y="40" width="456" height="96" rx="8" class="foc"/><text x="1500" y="84" class="nm-s" text-anchor="middle">end transaction</text><text x="1500" y="112" class="sb" text-anchor="middle">los cambios quedan</text>
+    <rect x="1272" y="196" width="456" height="80" rx="8" class="bad"/><text x="1500" y="232" class="nm-s" text-anchor="middle">Se deshace todo</text><text x="1500" y="260" class="sb" text-anchor="middle">la base queda como estaba</text>
+  </svg>
+  <ul class="bl sm" style="margin-top:18px">
+    <li>Incluye <b>una o más</b> operaciones de acceso: <b>inserción, eliminación, modificación o recuperación</b>.</li>
+    <li>Sus límites se marcan con <code>begin transaction</code> y <code>end transaction</code>.</li>
+    <li>Si sólo <b>recupera</b> datos y no actualiza nada, es una transacción <b>de sólo lectura</b>.</li>
+  </ul>
+  <p class="small" style="margin-top:auto">La transferencia es un ejemplo nuestro; las definiciones son del deck.</p>
+</section>
+
+<section class="slide" data-title="ACID">
+  <p class="kicker">3 · Transacciones</p>
+  <h2 class="h2">Las cuatro propiedades ACID</h2>
+  <div class="two" style="margin-top:6px;gap:22px">
+    <div class="card card-accent"><div class="src">A · Atomicidad</div><p>“Una transacción es una <b>unidad atómica</b> de procesamiento; o se ejecuta <b>en su totalidad</b> o no se ejecuta en absoluto.”</p><p class="small" style="margin-top:8px">Se descuentan y se suman los 100, o no pasa nada.</p></div>
+    <div class="card card-accent"><div class="src">C · Conservación de la consistencia</div><p>“Su ejecución completa lleva a la base de datos <b>de un estado consistente a otro</b>.”</p><p class="small" style="margin-top:8px">Antes y después, el total de plata entre A y B es el mismo.</p></div>
+    <div class="card card-accent"><div class="src">I · Aislamiento</div><p>“Debe aparecer como si estuviera ejecutándose <b>de forma aislada</b>: no debe interferir con ninguna otra transacción simultánea.”</p><p class="small" style="margin-top:8px">Nadie ve la cuenta A descontada y la B todavía sin sumar.</p></div>
+    <div class="card card-accent"><div class="src">D · Durabilidad</div><p>“Los cambios de una transacción <b>confirmada</b> deben persistir. No deben perderse por culpa de un fallo.”</p><p class="small" style="margin-top:8px">Si se corta la luz después de confirmar, la transferencia sigue hecha.</p></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p>La C del material es “<b>conservación</b> de la consistencia”: la transacción no crea la consistencia, la <b>conserva</b>. Usá ese nombre en la hoja.</p></div>
+</section>
+
+<!-- ============ AUTOEVALUACIÓN ============ -->
+<section class="slide" data-title="Autoevaluación">
+  <p class="kicker">Autoevaluación</p>
+  <h2 class="h2">¿Lo tenés? Tocá cada pregunta para ver la respuesta</h2>
+  <div class="qz">
+    <details><summary>¿Cuál de todos los índices ordena físicamente los campos?</summary><p>El agrupado: las filas se ordenan en el mismo orden que el índice y quedan juntas en disco.</p></details>
+    <details><summary>¿Por qué hay un solo índice principal por tabla?</summary><p>Porque la clave primaria es única en la tabla.</p></details>
+    <details><summary>¿Qué índice cuesta más espacio de almacenamiento?</summary><p>El secundario, porque es una estructura de índice separada.</p></details>
+    <details><summary>¿Qué beneficio le da el índice principal a la integridad referencial?</summary><p>Es la base sobre la que se establecen sus restricciones.</p></details>
+    <details><summary>Una entrada por bloque: ¿denso o no denso?</summary><p>No denso (escaso). Denso es una entrada por registro.</p></details>
+    <details><summary>¿Puede la CPU procesar un dato que está en disco?</summary><p>No: primero hay que copiarlo al almacenamiento principal.</p></details>
+    <details><summary>“O se ejecuta entera o no se ejecuta”: ¿qué letra de ACID es?</summary><p>A, atomicidad.</p></details>
+    <details><summary>Una transacción que sólo lee, ¿es transacción?</summary><p>Sí: es una transacción de sólo lectura.</p></details>
+  </div>
+  <p class="small" style="margin-top:auto">Para practicar más: lecciones 0027, 0028 y 0041, y la referencia de índices y transacciones.</p>
+</section>
+
+<div class="deck-footer"><span class="dim2">Índices y transacciones</span><span class="slide-number" data-current="1" data-total="17"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

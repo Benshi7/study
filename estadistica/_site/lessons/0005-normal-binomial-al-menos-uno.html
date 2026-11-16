@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 5 — Combinar Normal y Binomial: "Al Menos Uno"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidades 4–5 · Distribuciones · Lección 1 / n</span>
+<h1>Combinar Normal y Binomial: "Al Menos Uno"</h1>
+<p class="subtitle">Este es un patrón que ya te generó dudas en un examen anterior (harina, ejercicio 6.c) — vale la pena fijarlo bien.</p>
+
+<div class="box">
+Encontré esta trampa en tu propio material de exámenes previos: en el ejercicio de los paquetes de harina anotaste "OJO: acá la igualdad importa!" junto al cálculo de P(Y≥1). Esta lección apunta directo a esa duda.
+</div>
+
+<h2>El patrón: dos distribuciones encadenadas</h2>
+<p>Un ítem de multiple choice puede combinar la Normal y la Binomial en un mismo ejercicio, en dos pasos:</p>
+<ol>
+  <li><strong>Paso 1 — Normal:</strong> una variable continua X sigue una distribución Normal. Estandarizás y buscás en la tabla Z para obtener una probabilidad puntual, que se convierte en el parámetro <span class="formula">p</span> de éxito.</li>
+  <li><strong>Paso 2 — Binomial:</strong> ese <span class="formula">p</span> se usa para armar una nueva variable discreta <span class="formula">Y ~ Bi(n, p)</span>, que cuenta "cuántos de los n casos cumplen la condición".</li>
+</ol>
+
+<h2>Ejemplo — paquetes de harina</h2>
+<div class="example">
+Peso de paquetes de harina: <span class="formula">X ~ N(950, 47)</span>. Se toma una muestra de 5 paquetes. Se pregunta: ¿cuál es la probabilidad de que <strong>alguno</strong> pese menos de 900 g?<br><br>
+<strong>Paso 1 — Normal:</strong> hallar p = P(X&lt;900).<br>
+<span class="formula">Z = (900−950)/47 = −1,06</span> → P(X&lt;900) = P(Z&lt;−1,06) ≈ <strong>0,1446</strong> (valor de la tabla Z)<br><br>
+<strong>Paso 2 — Binomial:</strong> con ese p, se define <span class="formula">Y ~ Bi(5 ; 0,1446)</span>, donde Y = "cantidad de paquetes que pesan menos de 900 g" entre los 5.<br>
+Se pide P(Y≥1) — "alguno pese menos de 900g" es "al menos uno".
+</div>
+
+<h2>La trampa: "al menos uno" no es lo mismo que "más de uno"</h2>
+<div class="warn">
+"Alguno" / "al menos uno" se traduce como <span class="formula">P(Y≥1)</span>, que incluye el caso de exactamente uno. Es <strong>distinto</strong> de <span class="formula">P(Y&gt;1)</span>, que exige dos o más y excluye el caso de exactamente uno. Confundir ≥ con &gt; en este punto es el error que marcaste vos mismo en el examen anterior.
+</div>
+<p>La forma más simple de calcular "al menos uno" es con la <strong>regla del complemento</strong>: en vez de sumar P(Y=1)+P(Y=2)+P(Y=3)+P(Y=4)+P(Y=5), es mucho más rápido calcular el complemento (que nadie cumpla la condición) y restarlo de 1.</p>
+<p class="source">Fuente: <a href="https://www.mathsisfun.com/data/probability-complement.html" target="_blank">Math is Fun — The Complement Rule</a>: "a veces es más fácil calcular primero el complemento" cuando el suceso directo requiere sumar muchos casos.</p>
+
+<div class="box">
+<span class="formula">P(Y≥1) = 1 − P(Y=0)</span>
+</div>
+<div class="example">
+Continuando el ejemplo: <span class="formula">P(Y=0) = (1−0,1446)⁵ = 0,8554⁵ ≈ 0,458</span><br>
+<span class="formula">P(Y≥1) = 1 − 0,458 = 0,542</span><br><br>
+Si en cambio pidieran P(Y&gt;1) ("más de uno"), habría que restar TAMBIÉN el caso Y=1:<br>
+<span class="formula">P(Y=1) = 5·0,1446·0,8554⁴ ≈ 0,387</span><br>
+<span class="formula">P(Y&gt;1) = 1 − P(Y=0) − P(Y=1) = 1 − 0,458 − 0,387 = 0,155</span><br><br>
+<em>Nota de redondeo:</em> estos valores usan p = 0,1446, el que sale de redondear z a −1,06 para leer la tabla. Con z exacto (−1,0638) sería p = 0,1437 y P(Y≥1) = 0,540. Si una calculadora o app te da un valor apenas distinto, elegí la opción más cercana.<br><br>
+Los dos resultados (0,542 y 0,155) son muy distintos — por eso "la igualdad importa": usar &gt; en vez de ≥ (o viceversa) te lleva a una opción de multiple choice completamente diferente.
+</div>
+
+<h2>Checklist para este tipo de ítem</h2>
+<table>
+<tr><th>Paso</th><th>Qué hacer</th></tr>
+<tr><td>1</td><td>Identificar la variable continua Normal y estandarizar (Z) para hallar p</td></tr>
+<tr><td>2</td><td>Armar la Binomial: n = tamaño de la muestra, p = probabilidad hallada en el paso 1</td></tr>
+<tr><td>3</td><td>Traducir con cuidado la frase del enunciado ("alguno" = ≥1, "ninguno" = 0, "todos" = n)</td></tr>
+<tr><td>4</td><td>Si conviene, usar el complemento: P(Y≥1) = 1−P(Y=0)</td></tr>
+</table>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. De una Normal se obtuvo p = P(defecto) = 0,1. En una muestra de 4 piezas, ¿cómo se traduce "ninguna pieza tiene defecto"?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> P(Y≥1) = 1−0,9⁴</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> P(Y=4) = 0,1⁴</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', true)"> P(Y=0) = 0,9⁴</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> P(Y&gt;0)</label>
+<div id="q1a" class="feedback wrong">Eso es "al menos una CON defecto" — la pregunta opuesta a "ninguna".</div>
+<div id="q1b" class="feedback wrong">Eso sería "las 4 con defecto", no "ninguna con defecto".</div>
+<div id="q1c" class="feedback correct">"Ninguna con defecto" es Y=0: las 4 piezas deben ser "sin defecto" (probabilidad 0,9 cada una), multiplicadas: 0,9⁴.</div>
+<div id="q1d" class="feedback wrong">P(Y&gt;0) es "al menos una con defecto" — de nuevo, lo opuesto a lo que se pide.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Con la misma Binomial Y~Bi(5; 0,1446) del ejemplo de harina, ¿qué representa 1 − P(Y=0) − P(Y=1)?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> P(Y≥1)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', true)"> P(Y&gt;1)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> P(Y=1)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> P(Y≤1)</label>
+<div id="q2a" class="feedback wrong">P(Y≥1) solo resta P(Y=0), no también P(Y=1) — acá se están restando ambos casos.</div>
+<div id="q2b" class="feedback correct">Al restar tanto Y=0 como Y=1 del total, lo que queda es "2 o más" — es decir, P(Y&gt;1), estrictamente más de uno.</div>
+<div id="q2c" class="feedback wrong">Esa expresión no aísla un solo valor, resta dos casos del total.</div>
+<div id="q2d" class="feedback wrong">P(Y≤1) sería P(Y=0)+P(Y=1) directamente, sin restar de 1.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. En un ejercicio, la Normal te da p = P(X&lt;cierto valor) = 0,3. Te piden P(exactamente 2 de 6 casos cumplen la condición). ¿Qué distribución usás en el segundo paso y con qué parámetros?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', true)"> Binomial con n=6, p=0,3</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', false)"> Normal con μ=6, σ=0,3</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> Binomial con n=0,3, p=6</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> Poisson con λ=0,3</label>
+<div id="q3a" class="feedback correct">El segundo paso siempre es Binomial: n es el tamaño de la muestra (6) y p es la probabilidad que salió de la Normal en el primer paso (0,3).</div>
+<div id="q3b" class="feedback wrong">La Normal ya se usó en el paso 1 para hallar p — el paso 2 es discreto (cuenta cuántos casos cumplen), eso es Binomial, no Normal.</div>
+<div id="q3c" class="feedback wrong">n y p están invertidos — n debe ser el tamaño de muestra (entero), p la probabilidad (entre 0 y 1).</div>
+<div id="q3d" class="feedback wrong">Poisson se usa con una tasa promedio por unidad de tiempo/espacio, no con un n fijo de pruebas y una p — este patrón siempre cierra en Binomial.</div>
+</div>
+
+<div class="ask">
+¿Alguna trampa te generó dudas? Decime cuál y armamos otro ejemplo con distintos números.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/probability-complement.html" target="_blank">Math is Fun — The Complement Rule</a>.
+<div class="nav-row">
+  <span>← <a href="0004-exhaustivos-y-traduccion-enunciados.html">Lección 4 — Exhaustivos y traducción de enunciados</a></span>
+  <span>Siguiente → <a href="0006-binomial-vs-poisson-cuando-usar.html">Lección 6 — Binomial vs. Poisson: cuál usar</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

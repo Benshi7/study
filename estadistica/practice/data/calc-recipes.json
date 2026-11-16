@@ -1,0 +1,763 @@
+[
+  {
+    "id": "setup-freq",
+    "topic": "estadistica-descriptiva",
+    "title": "Activar la columna Freq (frecuencias)",
+    "when": "Antes de cargar una tabla de frecuencias (valor + frecuencia) o datos agrupados con marcas de clase.",
+    "keys": ["SHIFT MENU (SETUP)", "▼", "3 (Statistics)", "1 (On)"],
+    "inputs": [{"name": "Statistics", "meaning": "On agrega la columna Freq al editor; Off la quita."}],
+    "output_meaning": "El editor muestra columnas x y Freq. Cambiar este ajuste borra los datos del editor, por eso se hace antes de cargarlos.",
+    "traps": [
+      "Si se activa despues de cargar los datos, estos se borran (manual p. 22).",
+      "Si se deja Freq en On para una regresion de 2 variables, hay una tercera columna de frecuencia.",
+      "n es la suma de las frecuencias, no la cantidad de filas."
+    ],
+    "example": {"inputs": {"ajuste": "Statistics = On"}, "output": "Editor con columnas x | Freq"}
+  },
+  {
+    "id": "stats-1var",
+    "topic": "estadistica-descriptiva",
+    "title": "Media, desvio y n de una variable con frecuencias",
+    "when": "Datos simples o tabla de frecuencias; piden media, desvio, n, suma, minimo, maximo o cuartiles.",
+    "keys": [
+      "SHIFT MENU 3 (Statistics) 1 (On) (si hay frecuencias)",
+      "MENU 6 (Statistics) =",
+      "1 (1-Variable)",
+      "cargar cada x con = ; luego ▼ ▶ y cargar cada frecuencia con =",
+      "OPTN 3 (1-Variable Calc)",
+      "▼ para recorrer las medidas"
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "valor de la variable (o marca de clase en datos agrupados)"},
+      {"name": "Freq", "meaning": "frecuencia absoluta de cada x"}
+    ],
+    "output_meaning": "x̄ = media; σx = desvio poblacional (divide por n); sx = desvio muestral (divide por n-1); n = suma de frecuencias; Σx y Σx² ponderadas; minX, Q1, Med, Q3, maxX.",
+    "traps": [
+      "Datos de una muestra: usar sx. Solo usar σx si los datos son toda la poblacion.",
+      "sx es siempre mayor que σx.",
+      "En datos agrupados x̄ y desvio son aproximados (marcas de clase).",
+      "Los cuartiles de la calculadora no son los percentiles interpolados Pk de la catedra.",
+      "Salir del modo o cambiar entre 1 y 2 variables borra los datos."
+    ],
+    "example": {
+      "inputs": {"x": [1, 2, 3, 4, 5], "Freq": [1, 2, 3, 2, 1]},
+      "output": "x̄ = 3; n = 9; Σx = 27; Σx² = 93; σx = 1.154700538; sx = 1.224744871; minX = 1; maxX = 5"
+    }
+  },
+  {
+    "id": "stats-grouped-cv",
+    "topic": "estadistica-descriptiva",
+    "title": "Datos agrupados y coeficiente de variacion",
+    "when": "Tabla por intervalos; piden media, desvio y CV para decidir homogeneidad.",
+    "keys": [
+      "Statistics On (Freq)",
+      "MENU 6 1 (1-Variable)",
+      "x = marca de clase, Freq = f",
+      "OPTN 3 (1-Variable Calc)",
+      "MENU 1: sx ÷ x̄ × 100"
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "marca de clase (punto medio del intervalo)"},
+      {"name": "Freq", "meaning": "frecuencia del intervalo"}
+    ],
+    "output_meaning": "CV = (sx / x̄) · 100 %. Con el umbral de la catedra, CV < 20 % indica datos homogeneos.",
+    "traps": [
+      "Cargar los limites del intervalo en vez de la marca de clase da una media equivocada.",
+      "Usar sx (muestra) salvo que el enunciado diga poblacion.",
+      "Me, Mo y percentiles de datos agrupados se calculan con la formula, no con la calculadora."
+    ],
+    "example": {
+      "inputs": {"x": [31, 33, 35, 37, 39], "Freq": [10, 30, 80, 60, 20]},
+      "output": "n = 200; x̄ = 35.5; σx = 1.987460691; sx = 1.992448054; CV = 5.61 %"
+    }
+  },
+  {
+    "id": "stats-va-discreta",
+    "topic": "variable-aleatoria-discreta",
+    "title": "E(X) y desvio de una VA discreta con la calculadora",
+    "when": "Tabla x, P(x) y piden esperanza y desvio sin hacer la cuenta a mano.",
+    "keys": [
+      "Statistics On (Freq)",
+      "MENU 6 1 (1-Variable)",
+      "x = valores de la VA, Freq = P × 100 (enteros)",
+      "OPTN 3 (1-Variable Calc)",
+      "leer x̄ (= E(X)) y σx (= desvio de X)"
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "valores de la variable aleatoria"},
+      {"name": "Freq", "meaning": "probabilidades convertidas a enteros (P × 100)"}
+    ],
+    "output_meaning": "x̄ = E(X); σx = desvio estandar de la variable (la tabla completa es toda la distribucion, por eso corresponde σx).",
+    "traps": [
+      "Usar sx en lugar de σx da un valor levemente mayor y distinto de la opcion correcta.",
+      "La calculadora no acepta probabilidades decimales como Freq de forma documentada: escalar a enteros.",
+      "Verificar que la suma de P sea 1 antes de cargar."
+    ],
+    "example": {
+      "inputs": {"x": [0, 1, 2, 3], "P": [0.1, 0.3, 0.4, 0.2], "Freq cargada": [10, 30, 40, 20]},
+      "output": "n = 100; x̄ = 1.7 = E(X); σx = 0.9 (no sx = 0.9045)"
+    }
+  },
+  {
+    "id": "regression-linear",
+    "topic": "regresion-correlacion",
+    "title": "Recta de regresion y correlacion",
+    "when": "Pares (x, y); piden a, b, r, R² o la ecuacion de la recta.",
+    "keys": [
+      "MENU 6 (Statistics) =",
+      "2 (y=a+bx)",
+      "cargar los x con =, ▼ ▶ y cargar los y con =",
+      "OPTN 4 (Regression Calc)"
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "variable independiente (predictora)"},
+      {"name": "y", "meaning": "variable dependiente"}
+    ],
+    "output_meaning": "a = ordenada; b = pendiente (cambio medio de y por unidad de x); r = correlacion lineal (mismo signo que b); R² = r² = proporcion de la variacion de y explicada por la recta.",
+    "traps": [
+      "Confundir x e y: la recta es de y sobre x.",
+      "r cerca de 1 no prueba causalidad ni linealidad.",
+      "Elegir mal el tipo de regresion (2 es lineal, 4 es logaritmica).",
+      "R² se obtiene elevando r al cuadrado, la calculadora no lo muestra."
+    ],
+    "example": {
+      "inputs": {"x": [20, 22, 24, 27, 30, 33], "y": [48, 53, 57, 66, 71, 80]},
+      "output": "a = -0.5819672131; b = 2.426229508; r = 0.9976854256; R² = 0.9953762"
+    }
+  },
+  {
+    "id": "regression-predict",
+    "topic": "regresion-correlacion",
+    "title": "Valor estimado ŷ y x̂",
+    "when": "Piden predecir y para un x dado (o x para un y dado) con la recta ya cargada.",
+    "keys": [
+      "AC",
+      "escribir el valor de x",
+      "OPTN ▼ 4 (Regression)",
+      "5 (ŷ)",
+      "="
+    ],
+    "inputs": [
+      {"name": "valor", "meaning": "x para obtener ŷ (tecla 5), o y para obtener x̂ (tecla 4), escrito antes de la tecla"}
+    ],
+    "output_meaning": "ŷ = a + b·x en el x dado. x̂ resuelve y = a + bx para x (no es la regresion de x sobre y).",
+    "traps": [
+      "x̂ NO es la regresion de x sobre y: si piden esa, hay que intercambiar las columnas.",
+      "Extrapolar fuera del rango de x no tiene respaldo.",
+      "El valor se escribe antes de la tecla ŷ/x̂, no despues."
+    ],
+    "example": {
+      "inputs": {"datos": "los de regression-linear", "x": 25, "y": 60},
+      "output": "ŷ(25) = 60.07377049; x̂(60) = 24.96959459"
+    }
+  },
+  {
+    "id": "normal-cd-interval",
+    "topic": "distribucion-normal",
+    "title": "Normal CD: probabilidad entre dos valores",
+    "when": "X normal con μ y σ conocidos; piden P(a < X < b).",
+    "keys": [
+      "MENU 7 (Distribution) =",
+      "2 (Normal CD)",
+      "Lower = a =",
+      "Upper = b =",
+      "σ = ... =",
+      "μ = ... =",
+      "="
+    ],
+    "inputs": [
+      {"name": "Lower", "meaning": "limite inferior a"},
+      {"name": "Upper", "meaning": "limite superior b"},
+      {"name": "σ", "meaning": "desvio estandar de la variable (no la varianza)"},
+      {"name": "μ", "meaning": "media de la variable"}
+    ],
+    "output_meaning": "p = P(Lower < X < Upper), el area bajo la curva normal entre los dos limites.",
+    "traps": [
+      "σ va antes que μ en la pantalla.",
+      "Los campos recuerdan los valores del ejercicio anterior: revisar los cuatro.",
+      "Se ingresa el desvio σ, no la varianza.",
+      "El resultado queda en Ans."
+    ],
+    "example": {
+      "inputs": {"Lower": 85, "Upper": 120, "σ": 15, "μ": 100},
+      "output": "p = 0.750134"
+    }
+  },
+  {
+    "id": "normal-cd-tail",
+    "topic": "distribucion-normal",
+    "title": "Normal CD: colas P(X > a) y P(X < b)",
+    "when": "Piden una probabilidad de cola con la normal.",
+    "keys": [
+      "MENU 7 =",
+      "2 (Normal CD)",
+      "Cola derecha: Lower = a, Upper = 1E99 (1 ×10ˣ 99)",
+      "Cola izquierda: Lower = -1E99, Upper = b",
+      "σ, μ ; ="
+    ],
+    "inputs": [
+      {"name": "Lower / Upper", "meaning": "uno de los limites es el valor a o b; el otro es ±1E99 para simular infinito"},
+      {"name": "σ, μ", "meaning": "parametros de la variable"}
+    ],
+    "output_meaning": "p = probabilidad de la cola pedida.",
+    "traps": [
+      "Dejar Upper en 0 o en un valor viejo da una probabilidad de intervalo, no de cola.",
+      "El uso de ±1E99 es convencion habitual; alternativa segura: μ ± 10σ.",
+      "P(X > a) = 1 - P(X < a): comprobar que ambas dan 1 al sumarse."
+    ],
+    "example": {
+      "inputs": {"X": "N(100, 15)", "P(X > 120)": "Lower = 120, Upper = 1E99", "P(X < 85)": "Lower = -1E99, Upper = 85"},
+      "output": "P(X > 120) = 0.0912112; P(X < 85) = 0.158655"
+    }
+  },
+  {
+    "id": "normal-pd",
+    "topic": "distribucion-normal",
+    "title": "Normal PD: densidad en un punto",
+    "when": "Piden la altura de la curva normal en x (casi nunca en el final).",
+    "keys": ["MENU 7 =", "1 (Normal PD)", "x = ... =", "σ = ... =", "μ = ... =", "="],
+    "inputs": [
+      {"name": "x", "meaning": "punto donde se evalua la densidad"},
+      {"name": "σ", "meaning": "desvio estandar"},
+      {"name": "μ", "meaning": "media"}
+    ],
+    "output_meaning": "p = f(x), la densidad. No es una probabilidad: en una variable continua P(X = x) = 0.",
+    "traps": [
+      "No usar PD para calcular probabilidades.",
+      "Orden de campos x, σ, μ (distinto al de Normal CD)."
+    ],
+    "example": {
+      "inputs": {"x": 36, "σ": 2, "μ": 35},
+      "output": "p = 0.1760326634 (ejemplo del manual p. 34)"
+    }
+  },
+  {
+    "id": "normal-inverse-percentile",
+    "topic": "distribucion-normal",
+    "title": "Normal inversa: percentil o valor de corte",
+    "when": "Dada un area (probabilidad) piden el valor de X: percentil, 'el 10% superior', busqueda de parametros.",
+    "keys": [
+      "MENU 7 =",
+      "3 (Inverse Normal)",
+      "Area = ... =",
+      "σ = ... =",
+      "μ = ... =",
+      "="
+    ],
+    "inputs": [
+      {"name": "Area", "meaning": "probabilidad acumulada a la IZQUIERDA del valor buscado (0 a 1)"},
+      {"name": "σ", "meaning": "desvio estandar"},
+      {"name": "μ", "meaning": "media"}
+    ],
+    "output_meaning": "x tal que P(X ≤ x) = Area. La cola es siempre izquierda (manual p. 33).",
+    "traps": [
+      "Para 'el 10% superior' ingresar Area = 0.90, no 0.10.",
+      "Para P(X > x) = p ingresar Area = 1 - p.",
+      "No hay opcion de cola derecha ni central."
+    ],
+    "example": {
+      "inputs": {"Area": 0.9, "σ": 15, "μ": 100},
+      "output": "x = 119.223 (el 10 % superior de N(100, 15) supera 119.223)"
+    }
+  },
+  {
+    "id": "normal-inverse-z",
+    "topic": "intervalos-de-confianza",
+    "title": "Z critico para un intervalo de confianza",
+    "when": "Necesito Z para un IC bilateral del nivel (1 - α).",
+    "keys": [
+      "MENU 7 =",
+      "3 (Inverse Normal)",
+      "Area = 1 - α/2 =",
+      "σ = 1 =",
+      "μ = 0 =",
+      "="
+    ],
+    "inputs": [
+      {"name": "Area", "meaning": "1 - α/2 (95% → 0.975; 90% → 0.95; 99% → 0.995)"},
+      {"name": "σ", "meaning": "1 (normal estandar)"},
+      {"name": "μ", "meaning": "0 (normal estandar)"}
+    ],
+    "output_meaning": "Z crítico tal que P(-Z < Z < Z) = 1 - α.",
+    "traps": [
+      "Area = 0.95 para un IC al 95% devuelve 1.645 (el valor del 90%).",
+      "Verificar que σ = 1 y μ = 0 (los campos recuerdan el valor anterior).",
+      "El resultado se guarda en Ans y se puede usar en la cuenta del margen de error."
+    ],
+    "example": {
+      "inputs": {"confianza": "95 %", "Area": 0.975, "σ": 1, "μ": 0},
+      "output": "1.95996 (otros: 90 % → 1.64485; 99 % → 2.57583)"
+    }
+  },
+  {
+    "id": "sampling-mean",
+    "topic": "distribucion-muestral",
+    "title": "Probabilidad sobre un promedio de muestra",
+    "when": "Piden P(x̄ > a) o P(x̄ < b) con muestra de tamaño n.",
+    "keys": [
+      "MENU 1: calcular σ ÷ √n y guardarlo (SHIFT RCL (STO) variable) o anotarlo",
+      "MENU 7 =",
+      "2 (Normal CD)",
+      "Lower, Upper segun la cola (1E99 como infinito)",
+      "σ = σ/√n =",
+      "μ = μ ="
+    ],
+    "inputs": [
+      {"name": "σ (campo)", "meaning": "el error estandar σ/√n, NO el desvio de la variable"},
+      {"name": "μ (campo)", "meaning": "la media poblacional (la media de x̄ es μ)"}
+    ],
+    "output_meaning": "Probabilidad sobre el promedio de la muestra, no sobre un individuo.",
+    "traps": [
+      "Ingresar σ en vez de σ/√n: error clasico, da una probabilidad mucho mas cercana a la individual.",
+      "TCL: si la poblacion no es normal se exige n ≥ 30."
+    ],
+    "example": {
+      "inputs": {"μ": 50, "σ": 12, "n": 36, "σ/√n": 2, "P(x̄ > 52)": "Lower = 52, Upper = 1E99"},
+      "output": "p = 0.158655 (con el error σ = 12 daria 0.433816)"
+    }
+  },
+  {
+    "id": "sampling-sum",
+    "topic": "distribucion-muestral",
+    "title": "Probabilidad sobre una suma de n variables",
+    "when": "Piden P(W > w) con W = suma de n variables independientes (por ejemplo produccion de 50 dias).",
+    "keys": [
+      "MENU 1: calcular μ_W = n·μ y σ_W = σ·√n",
+      "MENU 7 = 2 (Normal CD)",
+      "Lower, Upper segun la cola",
+      "σ = σ_W =",
+      "μ = μ_W ="
+    ],
+    "inputs": [
+      {"name": "σ (campo)", "meaning": "σ_W = σ√n"},
+      {"name": "μ (campo)", "meaning": "μ_W = nμ"}
+    ],
+    "output_meaning": "Probabilidad sobre la suma total.",
+    "traps": [
+      "Usar σ/√n (promedio) en lugar de σ√n (suma).",
+      "Olvidar multiplicar la media por n."
+    ],
+    "example": {
+      "inputs": {"n": 50, "μ": 5, "σ": 2, "μ_W": 250, "σ_W": 14.1421, "P(W > 260)": "Lower = 260, Upper = 1E99"},
+      "output": "p = 0.239750"
+    }
+  },
+  {
+    "id": "ci-mean-z",
+    "topic": "intervalos-de-confianza",
+    "title": "IC para la media con σ conocido (Z)",
+    "when": "σ poblacional conocido; piden el intervalo o el margen de error de la media.",
+    "keys": [
+      "MENU 7 = 3 (Inverse Normal): Area = 0.975, σ = 1, μ = 0, =",
+      "MENU 1",
+      "Ans × σ ÷ √n =  (margen de error E)",
+      "x̄ - E y x̄ + E"
+    ],
+    "inputs": [
+      {"name": "x̄", "meaning": "media muestral"},
+      {"name": "σ", "meaning": "desvio poblacional conocido"},
+      {"name": "n", "meaning": "tamaño de muestra"},
+      {"name": "Z", "meaning": "valor de Inverse Normal con Area = 1 - α/2"}
+    ],
+    "output_meaning": "E es el margen de error; el IC es (x̄ - E ; x̄ + E). La amplitud total es 2E. La confianza es del procedimiento, no del 95% de los datos.",
+    "traps": [
+      "Area = 0.975, no 0.95, para 95%.",
+      "Dividir por √n, no por n.",
+      "La calculadora no tiene un modo de IC: es aritmetica con Z."
+    ],
+    "example": {
+      "inputs": {"x̄": 82.4, "σ": 9, "n": 36, "confianza": "95 %"},
+      "output": "Z = 1.95996; E = 2.93994; IC = (79.46 ; 85.34)"
+    }
+  },
+  {
+    "id": "ci-mean-t",
+    "topic": "intervalos-de-confianza",
+    "title": "IC para la media con σ desconocido (t, valor de tabla)",
+    "when": "Se desconoce σ y se usa el desvio muestral s; el valor t sale de la tabla.",
+    "keys": [
+      "Statistics: obtener x̄ y sx con OPTN 3 (1-Variable Calc) (o usar los datos del enunciado)",
+      "Buscar t en la TABLA con ν = n - 1 y α/2 (la calculadora no lo calcula)",
+      "MENU 1: t × sx ÷ √n = (E)",
+      "x̄ ± E"
+    ],
+    "inputs": [
+      {"name": "sx", "meaning": "desvio muestral (n-1), no σx"},
+      {"name": "n", "meaning": "tamaño de muestra; ν = n - 1 para la tabla"},
+      {"name": "t", "meaning": "valor critico de tabla t de Student"}
+    ],
+    "output_meaning": "E = t·s/√n es el margen de error; IC = x̄ ± E.",
+    "traps": [
+      "La fx-991EX no tiene distribucion t: ni valores criticos ni probabilidades (manual p. 32-33).",
+      "Entrar a la tabla con ν = n - 1, no con n.",
+      "Usar sx, no σx.",
+      "Con s muestral corresponde t aunque n sea grande."
+    ],
+    "example": {
+      "inputs": {"x̄": 50.35, "s": 8.5733, "n": 20, "t (tabla, ν = 19)": 2.093},
+      "output": "E = 4.01238; IC = (46.34 ; 54.36)"
+    }
+  },
+  {
+    "id": "ci-proportion",
+    "topic": "intervalos-de-confianza",
+    "title": "IC para una proporcion",
+    "when": "Hay una proporcion muestral p̂; piden el IC o el margen de error.",
+    "keys": [
+      "MENU 7 = 3 (Inverse Normal): Area = 1 - α/2, σ = 1, μ = 0",
+      "MENU 1",
+      "Ans × √(p̂ × (1 - p̂) ÷ n) = (E)",
+      "p̂ ± E"
+    ],
+    "inputs": [
+      {"name": "p̂", "meaning": "proporcion muestral"},
+      {"name": "n", "meaning": "tamaño de muestra"},
+      {"name": "Z", "meaning": "Inverse Normal con Area = 1 - α/2"}
+    ],
+    "output_meaning": "E = Z·√(p̂q̂/n); IC = (p̂ - E ; p̂ + E).",
+    "traps": [
+      "Cerrar bien el paréntesis de la raiz (√).",
+      "q = 1 - p̂.",
+      "E es el semi-ancho del intervalo."
+    ],
+    "example": {
+      "inputs": {"p̂": 0.3, "n": 200, "confianza": "95 %"},
+      "output": "E = 0.0635101; IC = (0.2365 ; 0.3635)"
+    }
+  },
+  {
+    "id": "sample-size",
+    "topic": "tamano-de-muestra",
+    "title": "Tamaño de muestra",
+    "when": "Piden n para lograr un margen de error E con una confianza dada.",
+    "keys": [
+      "Z con Inverse Normal (Area = 1 - α/2)",
+      "MENU 1",
+      "media: (Z × σ ÷ E) x²",
+      "proporcion: Z² × p̂ × (1 - p̂) ÷ E² (peor caso p̂ = 0.5)",
+      "redondear SIEMPRE hacia arriba"
+    ],
+    "inputs": [
+      {"name": "σ o p̂", "meaning": "desvio conocido (media) o proporcion estimada (0.5 si no hay estimacion)"},
+      {"name": "E", "meaning": "margen de error deseado (semi-ancho)"},
+      {"name": "Z", "meaning": "valor de Inverse Normal"}
+    ],
+    "output_meaning": "n minimo de observaciones para cumplir E con la confianza dada.",
+    "traps": [
+      "Redondear hacia arriba: 138.29 → 139; 150.06 → 151.",
+      "Con σ desconocido hay que iterar con t y la calculadora no ayuda con t.",
+      "No confundir el ancho total del intervalo con E (ancho = 2E)."
+    ],
+    "example": {
+      "inputs": {"σ": 12, "E": 2, "confianza": "95 %"},
+      "output": "(1.95996 × 12 ÷ 2)² = 138.2925 → n = 139"
+    }
+  },
+  {
+    "id": "binomial-pd",
+    "topic": "distribucion-binomial",
+    "title": "Binomial PD: P(X = k)",
+    "when": "n ensayos independientes, p constante; piden la probabilidad de exactamente k exitos.",
+    "keys": [
+      "MENU 7 =",
+      "4 (Binomial PD)",
+      "2 (Variable)  (1 = List para varios x)",
+      "x = k =",
+      "N = n =",
+      "p = ... =",
+      "="
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "numero de exitos k (entero entre 0 y N)"},
+      {"name": "N", "meaning": "numero de ensayos"},
+      {"name": "p", "meaning": "probabilidad de exito en cada ensayo (0 a 1)"}
+    ],
+    "output_meaning": "p = P(X = k).",
+    "traps": [
+      "N y p se conservan del calculo anterior: reingresarlos siempre.",
+      "x fuera de 0..N produce ERROR.",
+      "En la pantalla de lista los resultados se ven truncados a 4 decimales (manual p. 34); usar Variable para precision."
+    ],
+    "example": {
+      "inputs": {"x": 3, "N": 10, "p": 0.3},
+      "output": "p = 0.266828"
+    }
+  },
+  {
+    "id": "binomial-cd-atmost",
+    "topic": "distribucion-binomial",
+    "title": "Binomial CD: P(X ≤ k) y P(X < k)",
+    "when": "Piden 'como maximo k', 'a lo sumo k', 'menos de k'.",
+    "keys": [
+      "MENU 7 =",
+      "▼ 1 (Binomial CD)",
+      "2 (Variable)",
+      "x = k =",
+      "N = ... =",
+      "p = ... =",
+      "="
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "k, el limite superior incluido"},
+      {"name": "N", "meaning": "numero de ensayos"},
+      {"name": "p", "meaning": "probabilidad de exito"}
+    ],
+    "output_meaning": "p = P(X ≤ k): acumulada desde 0 hasta k inclusive (convencion habitual; el manual solo dice 'distribucion acumulada').",
+    "traps": [
+      "P(X < k) = CD(k - 1), no CD(k).",
+      "Control de sanidad: CD(x = N) debe dar 1.",
+      "Con 'como maximo' usar CD(k) directo."
+    ],
+    "example": {
+      "inputs": {"N": 10, "p": 0.3, "P(X ≤ 3)": "x = 3", "P(X < 3)": "x = 2"},
+      "output": "P(X ≤ 3) = 0.649611; P(X < 3) = 0.382783"
+    }
+  },
+  {
+    "id": "binomial-cd-atleast",
+    "topic": "distribucion-binomial",
+    "title": "Binomial: P(X ≥ k) y 'al menos uno'",
+    "when": "Piden 'al menos k', 'k o mas', 'mas de k', 'al menos uno'.",
+    "keys": [
+      "MENU 7 = ▼ 1 (Binomial CD)",
+      "x = k - 1 (para P(X ≥ k)) o x = k (para P(X > k)), N, p, =",
+      "1 - Ans ="
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "k - 1 para 'al menos k'; k para 'mas de k'; 0 para 'al menos uno'"},
+      {"name": "N, p", "meaning": "parametros de la binomial"}
+    ],
+    "output_meaning": "1 - Ans es la cola derecha pedida.",
+    "traps": [
+      "P(X ≥ k) = 1 - CD(k - 1), NO 1 - CD(k).",
+      "P(X > k) = 1 - CD(k).",
+      "'Al menos uno' = 1 - PD(0) = 1 - CD(0)."
+    ],
+    "example": {
+      "inputs": {"N": 10, "p": 0.3, "P(X ≥ 4)": "CD(x = 3) luego 1 - Ans", "al menos uno": "1 - PD(x = 0)"},
+      "output": "P(X ≥ 4) = 0.350389; P(al menos uno) = 0.971752"
+    }
+  },
+  {
+    "id": "binomial-cd-range",
+    "topic": "distribucion-binomial",
+    "title": "Binomial: P(a ≤ X ≤ b)",
+    "when": "Piden 'entre a y b inclusive'.",
+    "keys": [
+      "Binomial CD con x = b, N, p, =  → anotar (STO)",
+      "Binomial CD con x = a - 1, N, p, =",
+      "restar: CD(b) - CD(a - 1)"
+    ],
+    "inputs": [
+      {"name": "x (1ra corrida)", "meaning": "b, limite superior"},
+      {"name": "x (2da corrida)", "meaning": "a - 1, justo antes del limite inferior"}
+    ],
+    "output_meaning": "P(a ≤ X ≤ b) = CD(b) - CD(a - 1).",
+    "traps": [
+      "Restar CD(a), no CD(a - 1), da P(a < X ≤ b) (excluye a).",
+      "El segundo calculo pisa Ans: guardar el primero con STO antes."
+    ],
+    "example": {
+      "inputs": {"N": 10, "p": 0.3, "a": 2, "b": 5},
+      "output": "CD(5) - CD(1) = 0.803343"
+    }
+  },
+  {
+    "id": "poisson-pd",
+    "topic": "distribucion-poisson",
+    "title": "Poisson PD: P(X = k)",
+    "when": "Conteo de eventos en un intervalo con tasa constante; piden exactamente k eventos.",
+    "keys": [
+      "MENU 7 =",
+      "▼ 2 (Poisson PD)",
+      "2 (Variable)",
+      "x = k =",
+      "λ = ... =",
+      "="
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "numero de eventos k"},
+      {"name": "λ", "meaning": "media de eventos en el intervalo pedido (tasa × tiempo)"}
+    ],
+    "output_meaning": "p = P(X = k).",
+    "traps": [
+      "Escalar λ al intervalo: tasa 3/hora y 2 horas → λ = 6.",
+      "No hay campo N ni p: si el problema los tiene, es binomial.",
+      "E(X) = Var(X) = λ."
+    ],
+    "example": {
+      "inputs": {"x": 4, "λ": 6},
+      "output": "p = 0.133853"
+    }
+  },
+  {
+    "id": "poisson-cd",
+    "topic": "distribucion-poisson",
+    "title": "Poisson CD: P(X ≤ k) y P(X ≥ k)",
+    "when": "Piden 'a lo sumo k', 'menos de k', 'al menos k'.",
+    "keys": [
+      "MENU 7 =",
+      "▼ 3 (Poisson CD)",
+      "2 (Variable)",
+      "x = k =",
+      "λ = ... =",
+      "=",
+      "para cola derecha: 1 - Ans ="
+    ],
+    "inputs": [
+      {"name": "x", "meaning": "k, o k - 1 para 'al menos k'"},
+      {"name": "λ", "meaning": "media escalada al intervalo"}
+    ],
+    "output_meaning": "p = P(X ≤ k) acumulada; 1 - Ans = cola derecha.",
+    "traps": [
+      "P(X ≥ k) = 1 - CD(k - 1).",
+      "P(X < k) = CD(k - 1).",
+      "Revisar que λ corresponda al intervalo de la pregunta (no al de la tasa)."
+    ],
+    "example": {
+      "inputs": {"λ": 6, "P(X ≤ 4)": "x = 4", "P(X ≥ 5)": "1 - CD(x = 4)"},
+      "output": "P(X ≤ 4) = 0.285057; P(X ≥ 5) = 0.714943"
+    }
+  },
+  {
+    "id": "combinatorics",
+    "topic": "calculo-basico",
+    "title": "Combinaciones, permutaciones y factorial",
+    "when": "Contar formas de elegir (nCr), ordenar (nPr) o factorial.",
+    "keys": [
+      "MENU 1 (Calculate)",
+      "n SHIFT ÷ (nCr) r =",
+      "n SHIFT × (nPr) r =",
+      "n SHIFT x⁻¹ (x!) ="
+    ],
+    "inputs": [
+      {"name": "n", "meaning": "total de elementos"},
+      {"name": "r", "meaning": "cantidad elegida"}
+    ],
+    "output_meaning": "nCr = combinaciones (el orden no importa); nPr = permutaciones (el orden importa); n! = factorial.",
+    "traps": [
+      "nCr no es nPr: elegir un grupo vs. ordenar.",
+      "El operando n se escribe antes de la tecla SHIFT.",
+      "Los resultados enormes pueden salir en notacion cientifica."
+    ],
+    "example": {
+      "inputs": {"n": 10, "r": 4},
+      "output": "10 nCr 4 = 210; 10 nPr 4 = 5040; 5! = 120 (manual p. 17)"
+    }
+  },
+  {
+    "id": "fraction-decimal",
+    "topic": "calculo-basico",
+    "title": "Fraccion a decimal y formato de resultados",
+    "when": "El resultado aparece como fraccion y se lo necesita en decimal, o se quiere fijar los decimales.",
+    "keys": [
+      "S⇔D (con el resultado en pantalla)",
+      "SHIFT MENU 1 (Input/Output) 2 (MathI/DecimalO)  → siempre decimal",
+      "SHIFT MENU 3 (Number Format) 1 (Fix) N  → N decimales"
+    ],
+    "inputs": [
+      {"name": "Input/Output", "meaning": "MathI/MathO muestra fracciones; MathI/DecimalO muestra decimales"},
+      {"name": "Fix N", "meaning": "cantidad de decimales mostrados (redondeo de pantalla)"}
+    ],
+    "output_meaning": "S⇔D alterna entre fraccion y decimal. Fix N solo cambia la pantalla, el valor interno no se redondea.",
+    "traps": [
+      "Fix 2 en pantalla no redondea el valor interno: sirve para leer, no para encadenar cuentas con valores ya redondeados.",
+      "Un resultado en fraccion no es un error: apretar S⇔D."
+    ],
+    "example": {
+      "inputs": {"calculo": "4/5 + 2/3"},
+      "output": "22/15 → S⇔D → 1.466666667 (manual p. 6)"
+    }
+  },
+  {
+    "id": "memory-ans",
+    "topic": "calculo-basico",
+    "title": "Ans y variables para encadenar cuentas",
+    "when": "Usar el ultimo resultado (por ejemplo 1 - P) o guardar un valor intermedio (λ, σ/√n, p).",
+    "keys": [
+      "Ans: tecla Ans",
+      "Guardar: SHIFT RCL (STO) y la tecla de la variable (A, B, C, D, E, F, M, x, y)",
+      "Recuperar: ALPHA + variable, o RCL",
+      "Despues de Binomial/Poisson/Normal en modo Variable, el resultado queda en Ans"
+    ],
+    "inputs": [
+      {"name": "Ans", "meaning": "ultimo resultado calculado"},
+      {"name": "A..F, M", "meaning": "variables donde guardar un valor"}
+    ],
+    "output_meaning": "Permite 1 - Ans para colas derechas y usar Z o p en la cuenta siguiente sin retipear.",
+    "traps": [
+      "Un calculo nuevo pisa Ans: guardar con STO el valor que se va a necesitar despues.",
+      "Ans, M y variables se conservan al cambiar de modo y al apagar (manual p. 13).",
+      "En modo List de Distribution el resultado no se guarda en Ans (p. 33)."
+    ],
+    "example": {
+      "inputs": {"Binomial CD": "x = 3, N = 10, p = 0.3", "luego": "1 - Ans"},
+      "output": "0.649611 → 1 - Ans = 0.350389"
+    }
+  },
+  {
+    "id": "reset",
+    "topic": "calculo-basico",
+    "title": "Reiniciar la calculadora",
+    "when": "La calculadora quedo con ajustes raros (Fix, Freq, Input/Output) o con memoria sucia.",
+    "keys": [
+      "SHIFT 9 (RESET)",
+      "1 (Setup Data) = (Yes)  → vuelve la configuracion a fabrica",
+      "2 (Memory) = (Yes)  → borra Ans, M y variables",
+      "3 (Initialize All) = (Yes)  → borra todo"
+    ],
+    "inputs": [{"name": "opcion", "meaning": "Setup Data, Memory o Initialize All"}],
+    "output_meaning": "Setup Data restaura el formato (MathI/MathO, Norm 1, Statistics Off) sin tocar la memoria; Initialize All borra todo.",
+    "traps": [
+      "Initialize All borra variables y memorias: hacerlo antes del examen, no durante un calculo.",
+      "Tras reiniciar hay que volver a activar Freq si se necesita.",
+      "El orden 2 y 3 del menu RESET no esta escrito en el manual (solo los nombres)."
+    ],
+    "example": {
+      "inputs": {"objetivo": "volver a ajustes de fabrica"},
+      "output": "SHIFT 9 → 1 → = (Yes)"
+    }
+  },
+  {
+    "id": "table-mode",
+    "topic": "distribucion-binomial",
+    "title": "Modo Table para ver toda una distribucion",
+    "when": "Se quiere ver P(X = x) para varios x de una vez (opcional, no necesario en el examen).",
+    "keys": [
+      "MENU 9 (Table)",
+      "f(x) = 10 nCr x × 0.3^x × 0.7^(10 - x)",
+      "= ; Start 0 = ; End 10 = ; Step 1 =",
+      "="
+    ],
+    "inputs": [
+      {"name": "f(x)", "meaning": "formula de la probabilidad en funcion de x"},
+      {"name": "Start / End / Step", "meaning": "rango y paso de la tabla"}
+    ],
+    "output_meaning": "Columna de valores f(x), uno por cada x del rango.",
+    "traps": [
+      "Armar f(x) con nCr no esta en el manual; controlar contra Binomial PD.",
+      "Modo opcional: Binomial PD en lista da lo mismo."
+    ],
+    "example": {
+      "inputs": {"X": "Bin(10, 0.3)", "x": "0..10"},
+      "output": "0.0282, 0.1211, 0.2335, 0.2668, 0.2001, 0.1029, 0.0368, 0.0090, 0.0014, 0.0001, 0.0000"
+    }
+  },
+  {
+    "id": "no-t-distribution",
+    "topic": "limitaciones",
+    "title": "La fx-991EX no tiene distribucion t de Student",
+    "when": "Se necesita un valor critico t o una probabilidad de la t.",
+    "keys": ["MENU 7 (Distribution)  → hay solo 7 tipos", "usar la TABLA t con ν = n - 1"],
+    "inputs": [{"name": "ν", "meaning": "grados de libertad = n - 1"}],
+    "output_meaning": "El modo Distribution ofrece exactamente: Normal PD, Normal CD, Inverse Normal, Binomial PD, Binomial CD, Poisson PD, Poisson CD (manual p. 32-33). No hay t, χ² ni F.",
+    "traps": [
+      "No improvisar con Z cuando el enunciado pide t, salvo que n sea muy grande y el enunciado lo permita.",
+      "La calculadora no elige la distribucion ni interpreta el resultado."
+    ],
+    "example": {
+      "inputs": {"pedido": "t critico para ν = 19, α/2 = 0.025"},
+      "output": "No se puede con la calculadora; tabla t: 2.093"
+    }
+  }
+]

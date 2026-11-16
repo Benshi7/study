@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 4 — Exhaustivos, Complementarios y Traducción de Enunciados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Probabilidad Básica · Lección 4 / n</span>
+<h1>Exhaustivos, Complementarios y Traducción de Enunciados</h1>
+<p class="subtitle">Dos trampas más chicas, pero igual de frecuentes en el multiple choice. Cierre del bloque de Probabilidad Básica.</p>
+
+<h2>Exhaustivos vs. complementarios</h2>
+<p>Estos dos términos se parecen porque ambos hablan de "cubrir" el espacio muestral, pero exigen condiciones distintas:</p>
+<table>
+<tr><th>Término</th><th>Condición</th></tr>
+<tr><td class="term">Exhaustivos</td><td>Alcanza con que la unión sea E: <span class="formula">A∪B = E</span> (pueden solaparse)</td></tr>
+<tr><td class="term">Complementarios</td><td>Exigen DOS condiciones a la vez: ser exhaustivos <strong>Y</strong> ser mutuamente excluyentes</td></tr>
+</table>
+<div class="box">
+Todo par de complementarios (A, Ā) es automáticamente exhaustivo y excluyente. Pero no todo par exhaustivo es complementario — podrían solaparse.
+</div>
+<div class="example">
+A = "número par" al tirar un dado, Ā = "número impar". Son <strong>complementarios</strong>: A∪Ā = E (cubren todo) Y A∩Ā = ∅ (no se solapan).<br><br>
+En cambio, si B = "número ≤ 4" y C = "número ≥ 3" en el mismo dado: B∪C = {1,2,3,4,5,6} = E, así que son <strong>exhaustivos</strong>. Pero B∩C = {3,4} ≠ ∅ — se solapan, así que <strong>no</strong> son complementarios.
+</div>
+
+<h2>Traducción de enunciados a notación</h2>
+<p>El glosario de la cátedra fija estas equivalencias — memorizarlas evita perder tiempo traduciendo el enunciado a mitad del examen:</p>
+<table>
+<tr><th>Frase del enunciado</th><th>Notación</th></tr>
+<tr><td>"como máximo k" / "a lo sumo k"</td><td class="formula">P(x ≤ k)</td></tr>
+<tr><td>"como mínimo k" / "por lo menos k"</td><td class="formula">P(x ≥ k)</td></tr>
+<tr><td>"más de la mitad"</td><td class="formula">P(x &gt; n/2)</td></tr>
+<tr><td>"menos de la mitad"</td><td class="formula">P(x &lt; n/2)</td></tr>
+<tr><td>"ninguno"</td><td class="formula">P(x = 0)</td></tr>
+<tr><td>"alguno"</td><td class="formula">P(x ≥ 1)</td></tr>
+<tr><td>"entre a y b"</td><td class="formula">P(a ≤ x ≤ b) = P(x≤b) − P(x≤a−1)</td></tr>
+</table>
+
+<div class="warn">
+La trampa típica: confundir <strong>"más de la mitad"</strong> (estricto, con <span class="formula">&gt;</span>) con <strong>"por lo menos la mitad"</strong> (con <span class="formula">≥</span>, incluye el valor exacto de la mitad). Un multiple choice bien armado pone las dos opciones juntas para ver si leíste con cuidado.
+</div>
+
+<h2>Fracciones de n que no dan entero</h2>
+<p>Cuando la fracción de n no es un número entero, X solo toma valores enteros: se traduce a la desigualdad sobre enteros que la respeta.</p>
+<table>
+<tr><th>Frase (con n concreto)</th><th>Cuenta</th><th>Se lee como</th></tr>
+<tr><td>"a lo sumo la tercera parte de 10"</td><td>10/3 = 3,33</td><td class="formula">X ≤ 3</td></tr>
+<tr><td>"menos de la tercera parte de 10"</td><td>X &lt; 3,33</td><td class="formula">X ≤ 3</td></tr>
+<tr><td>"al menos la tercera parte de 9"</td><td>9/3 = 3 (entero)</td><td class="formula">X ≥ 3</td></tr>
+<tr><td>"más de la tercera parte de 9"</td><td>X &gt; 3</td><td class="formula">X ≥ 4</td></tr>
+<tr><td>"menos de la mitad de 9"</td><td>X &lt; 4,5</td><td class="formula">X ≤ 4</td></tr>
+<tr><td>"más de la mitad de 9"</td><td>X &gt; 4,5</td><td class="formula">X ≥ 5</td></tr>
+</table>
+<div class="box">
+Antes de elegir la opción, escribí tres cosas: <strong>n</strong>, <strong>p</strong> (¿cuál es el "éxito" en la frase? Si dice "irrecuperable" en vez de "recupera", cambia p por 1−p) y la <strong>desigualdad</strong> sobre enteros.
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. En un dado, A = "sale 1, 2 o 3" y B = "sale 3, 4, 5 o 6". ¿Qué relación tienen A y B?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> Complementarios</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> Mutuamente excluyentes</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> Ninguna relación en particular</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', true)"> Exhaustivos, pero no complementarios</label>
+<div id="q1a" class="feedback wrong">Para ser complementarios necesitan además ser excluyentes — y acá el 3 está en ambos sucesos, así que se solapan.</div>
+<div id="q1b" class="feedback wrong">El 3 pertenece a los dos sucesos a la vez, así que sí pueden ocurrir juntos: no son excluyentes.</div>
+<div id="q1c" class="feedback wrong">Sí hay una relación clara: cubren todo el espacio muestral (exhaustivos), aunque se solapen.</div>
+<div id="q1d" class="feedback correct">A∪B = {1,2,3,4,5,6} = E, así que son exhaustivos. Pero A∩B = {3} ≠ ∅, se solapan — por eso no son complementarios.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Un enunciado dice: "la probabilidad de que aprueben como máximo 4 de los 10 alumnos rendidos". ¿Cómo se traduce?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', true)"> P(x ≤ 4)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> P(x ≥ 4)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> P(x &lt; 4)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> P(x = 4)</label>
+<div id="q2a" class="feedback correct">"Como máximo" / "a lo sumo" se traduce como P(x ≤ k): esa cantidad o menos.</div>
+<div id="q2b" class="feedback wrong">Eso sería "como mínimo" o "por lo menos" — la dirección opuesta.</div>
+<div id="q2c" class="feedback wrong">"Como máximo 4" incluye el 4 exacto (≤), no lo excluye (&lt;).</div>
+<div id="q2d" class="feedback wrong">Eso sería solo el valor exacto, sin incluir menos de 4.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. "Más de la mitad de los 20 clientes encuestados prefiere el producto A". ¿Cuál es la notación correcta, con n=20?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> P(x ≥ 10)</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', false)"> P(x ≤ 10)</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', true)"> P(x > 10)</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> P(x = 10)</label>
+<div id="q3a" class="feedback wrong">Esa sería "por lo menos la mitad", que SÍ incluye el 10 exacto. "Más de la mitad" es estricto y excluye el 10.</div>
+<div id="q3b" class="feedback wrong">Esa notación va en la dirección opuesta ("menos de la mitad" sería &lt;, no ≤).</div>
+<div id="q3c" class="feedback correct">"Más de la mitad" es estricto: no alcanza con llegar exactamente a la mitad (10), hay que superarla. Por eso es &gt; y no ≥.</div>
+<div id="q3d" class="feedback wrong">Eso sería exactamente la mitad, no más que la mitad.</div>
+</div>
+
+<div class="ask">
+¿Alguna trampa te generó dudas? Decime cuál y la repasamos con otro ejemplo numérico.
+</div>
+
+<footer>
+Cierre del bloque 01 — Probabilidad Básica. Las 4 lecciones cubrieron las trampas centrales: independencia/exclusión mutua, condicional/conjunta, Bayes/probabilidad total, y exhaustivos/traducción de enunciados.
+<div class="nav-row">
+  <span>← <a href="0003-bayes-vs-probabilidad-total.html">Lección 3 — Bayes vs. probabilidad total</a></span>
+  <span>Ver también → <a href="../reference/glosario-probabilidad-basica.html">Glosario de referencia</a></span>
+  <span>Siguiente → <a href="0005-normal-binomial-al-menos-uno.html">Lección 5 — Normal + Binomial ("al menos uno")</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

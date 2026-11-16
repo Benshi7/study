@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 1 · Qué problema resuelve una base de datos</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 01 · Unidad 1 · Sistemas de Gestión de Base de Datos</p>
+    <h1 class="masthead__title">Qué problema resuelve una base de datos</h1>
+    <p class="masthead__standfirst">
+      Antes de modelar nada, hay que poder responder para qué existe esto. Y la respuesta
+      no es "para guardar datos" — para eso alcanza un archivo.
+    </p>
+    <p class="masthead__meta">
+      <span>~8 minutos</span>
+      <span>Elmasri &amp; Navathe, cap. 1</span>
+      <span>Clase 1 de la cátedra</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>De dato a información</h2>
+
+  <p>
+    La Clase 1 arranca con una escalera que vale la pena mirar despacio, porque es la
+    definición operativa que vas a necesitar:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Se ve</th><th>Qué es</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>25</code></td><td>Un dato suelto. No podés hacer nada con él.</td></tr>
+        <tr><td><code>25 kilos</code></td><td>Ya tiene unidad. Sigue sin decir de qué.</td></tr>
+        <tr><td><code>25 kilos de papas</code></td><td>Ahora hay un sujeto.</td></tr>
+        <tr><td><code>25 kilos de papas en el mercado de Concepción</code></td><td>Con esto se puede <b>decidir</b> algo.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La distinción que se evalúa</span>
+    <p>
+      Un <em class="term">dato</em> es un hecho registrado. La <em class="term">información</em>
+      son datos organizados de una forma que sirve para <b>tomar decisiones</b>.
+      El salto no lo da el volumen: lo da el <b>contexto</b>. Y ese contexto es exactamente
+      lo que una base de datos guarda junto con los datos.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Qué es una base de datos, en serio</h2>
+
+  <p>Elmasri arranca con una definición deliberadamente amplia:</p>
+
+  <blockquote class="callout">
+    "Una base de datos es una colección de datos relacionados. Con la palabra datos nos
+    referimos a los hechos conocidos que se pueden grabar y que tienen un significado
+    implícito."
+  </blockquote>
+
+  <p>
+    Tan amplia que, como él mismo admite, el texto de esta página calificaría. Por eso
+    agrega <b>tres propiedades</b> que sí acotan el término. Estas tres son las que
+    conviene tener de memoria:
+  </p>
+
+  <ol>
+    <li>
+      <b>Representa un minimundo.</b> Un recorte del mundo real — también llamado
+      <em class="term">universo de discurso</em>. Y lo persigue: si cambia el minimundo,
+      cambia la base.
+    </li>
+    <li>
+      <b>Es lógicamente coherente.</b> Tiene un significado inherente.
+      Un surtido aleatorio de datos no es una base de datos.
+    </li>
+    <li>
+      <b>Tiene propósito y público.</b> Se diseña y se llena <em>para algo</em>,
+      con un grupo de usuarios previsto.
+    </li>
+  </ol>
+
+  <p>
+    Fijate lo que sale de ahí: una base de datos no es un depósito. Es un
+    <b>modelo de una porción de la realidad</b>, que se compromete a mantenerse fiel a ella.
+    Todo lo demás de la materia — el DER, la normalización, la integridad, las transacciones —
+    existe para sostener esa promesa.
+  </p>
+
+  <h2><span class="num">03</span>Contra qué se inventó: el procesamiento de archivos</h2>
+
+  <p>
+    Para entender qué gana una base de datos, mirá el mundo anterior. Elmasri usa este
+    ejemplo, y es el que mejor lo muestra:
+  </p>
+
+  <blockquote class="callout">
+    En una universidad, la oficina de calificaciones mantiene su archivo de estudiantes
+    y sus notas, con sus propios programas. La oficina de contabilidad mantiene <em>otro</em>
+    archivo de estudiantes, con sus cuotas y pagos, con <em>otros</em> programas.
+    Ambas oficinas necesitan datos del estudiante. Ninguna usa el archivo de la otra.
+  </blockquote>
+
+  <p>Ese arreglo tiene tres heridas, y las tres tienen nombre:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Problema</th><th>Qué pasa concretamente</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Redundancia</b></td>
+          <td>El nombre y la dirección del estudiante están guardados dos veces.
+              Se derrocha espacio, y se duplica el trabajo de mantenerlos al día.</td>
+        </tr>
+        <tr>
+          <td><b>Inconsistencia</b></td>
+          <td>El estudiante se muda y avisa en una sola oficina. Ahora hay
+              <b>dos verdades distintas</b> sobre la misma persona, y el sistema no
+              tiene forma de saber cuál vale.</td>
+        </tr>
+        <tr>
+          <td><b>Dependencia programa–datos</b></td>
+          <td>La estructura del archivo está incrustada en cada programa. Si agregás un
+              campo, hay que tocar todos los programas que abren ese archivo.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Hay un cuarto problema, más silencioso: cada aplicación bautiza los datos como quiere.
+    Lo que en un archivo es <code>nom_alu</code>, en el otro es <code>NombreEstudiante</code>.
+    En la metodología de bases de datos, en cambio, se mantiene
+    <b>un único almacén, definido una sola vez</b>, y los nombres se definen una vez y los
+    usan todas las consultas, transacciones y aplicaciones.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Ojo con esta confusión</span>
+    <p>
+      Redundancia e inconsistencia <b>no son lo mismo</b>. La redundancia es el dato
+      repetido — molesta, pero por sí sola no rompe nada. La inconsistencia es lo que pasa
+      cuando <b>una de las copias se actualiza y la otra no</b>. La redundancia es la causa;
+      la inconsistencia es el daño. Ese par vuelve en la Unidad 3, cuando normalicemos.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 2 · Dato e información</span>
+    <p class="quiz__q">
+      Un sensor registra <code>38.4</code> cada minuto durante un año, en un archivo.
+      ¿Eso es información?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Son datos: hechos registrados, sin el contexto que permita decidir. Falta saber qué mide, de quién, en qué unidad y en qué momento. Y fijate que el volumen no ayudó en nada — medio millón de mediciones sin contexto siguen sin ser información.">No, son datos sin contexto suficiente</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El volumen no convierte datos en información. Un año de mediciones sin saber qué se midió ni de quién no sirve para decidir nada. El salto lo da el contexto, no la cantidad.">Sí, hay volumen y frecuencia altos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 2 · La definición</span>
+    <p class="quiz__q">
+      Guardás en una carpeta todas las fotos, facturas y PDFs que fuiste juntando en cinco
+      años. ¿Es una base de datos según Elmasri?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Falla la segunda propiedad: la coherencia lógica. Elmasri es explícito — no es correcto denominar base de datos a un surtido aleatorio de datos. Tampoco hay un propósito específico ni un público previsto.">No: le falta coherencia lógica</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Está guardado y es una colección, pero eso no alcanza. De las tres propiedades sólo cumpliría, con suerte, la primera. Sin significado inherente ni propósito, es un depósito.">Sí: es una colección guardada</button></li>
+    </ul>
+  </div>
+
+  <h2><span class="num">05</span>Aplicalo al TP</h2>
+
+  <p>
+    El TP1 arranca así: <i>"Usted ha sido contratado con el motivo de diseñar una base de
+    datos para una cadena de farmacias."</i> Antes de dibujar una sola entidad, respondé
+    las tres propiedades para ese caso. Pensalo y después abrí.
+  </p>
+
+  <details class="reveal">
+    <summary>Ver cómo se responden las tres</summary>
+    <div class="reveal__body">
+      <ul>
+        <li>
+          <b>Minimundo:</b> la operación de una cadena de farmacias — sucursales en distintas
+          ciudades, su personal, y el stock de medicamentos. <b>Todo lo que quede afuera de
+          ese recorte no se modela</b>, por más real que sea. Las ventas, los clientes y los
+          proveedores existen en el mundo, pero no están en el enunciado: no van al modelo.
+        </li>
+        <li>
+          <b>Coherencia:</b> las entidades tienen que colgar unas de otras con sentido.
+          Farmacia, Ciudad, Empleado, Medicamento forman un todo; una entidad suelta que no
+          se relaciona con nada es señal de que la leíste mal.
+        </li>
+        <li>
+          <b>Propósito y público:</b> el enunciado <b>te lo dice explícitamente</b> al final,
+          y es la parte que más gente saltea. Lista cuatro consultas que el modelo debe poder
+          responder — cantidad de farmacias por ciudad, empleados según código postal, stock
+          por laboratorio y stock por presentación. Ese es el criterio de aceptación.
+          <b>Si tu modelo no puede responder esas cuatro, está mal, aunque el diagrama sea
+          impecable.</b>
+        </li>
+      </ul>
+    </div>
+  </details>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — secciones 1.1 "Introducción" y 1.3
+      "Características de la metodología de bases de datos", páginas 4 a 11
+      (páginas 30 a 37 del PDF en <code>raw/</code>).
+    </p>
+    <p>
+      Son siete páginas y se leen de un tirón. Es la única parte del libro que justifica
+      <em>por qué</em> existe todo lo demás.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si algo no cerró, preguntame en el chat.
+      Y si querés practicar más, pedime que te tire un caso para separar dato de información.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="../RESOURCES.md">Recursos</a>
+    <a href="0002-el-dbms.html">Siguiente: 0002 · El DBMS por dentro</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

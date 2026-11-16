@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 44 · Estados, fallos y recuperación</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 44 · Unidad 6 · Administración de transacciones · Opcional</p>
+    <h1 class="masthead__title">Cuando algo falla: estados, log, UNDO y REDO</h1>
+    <p class="masthead__standfirst">
+      Qué puede fallar, en qué estados pasa una transacción, y cómo el log deja volver a un estado
+      consistente.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Clase de transacciones (capturas)</span>
+      <span>Prioridad para el parcial: opcional</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Lección opcional</span>
+    <p>
+      No está en lo que el docente nombró para el 2do parcial; queda para conceptos sueltos del
+      choice. También cubre los "tipos de falla" de la Unidad 8.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Tipos de fallos</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tipo (slide)</th><th>Ejemplos</th></tr></thead>
+      <tbody>
+        <tr><td><b>Fallos de sistema</b></td><td>Corte de energía, error de hardware, caída del sistema operativo</td></tr>
+        <tr><td><b>Error de transacción</b></td><td>División por cero, error lógico, parámetros incorrectos</td></tr>
+        <tr><td><b>Excepciones</b></td><td>Datos inexistentes, saldo insuficiente</td></tr>
+        <tr><td><b>Problemas de concurrencia</b></td><td>Deadlocks, violación de la serialización</td></tr>
+        <tr><td><b>Catástrofes</b></td><td>Incendio, robo, sabotaje</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cómo clasificar un ejemplo</span>
+    <p>
+      Preguntate <b>de dónde viene</b>: del entorno físico (sistema), de un error en el cálculo de la
+      transacción (error de transacción), de una regla del negocio que no se cumple (excepción), de
+      otra transacción (concurrencia) o de un desastre que destruye el equipo (catástrofe). "Saldo
+      insuficiente" no es un error del programa: es una <b>excepción</b> que la transacción detecta.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Estados de una transacción</h2>
+
+  <figure class="full">
+    <img src="../assets/diagrams/txn-estados.png" alt="Diagrama de estados: Activa, Parcialmente confirmada, Confirmada, Fallo y Terminar.">
+    <figcaption>Captura de la clase. Cinco estados; "abortar" es una <b>flecha</b>, no un estado.</figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Estado</th><th>Qué significa</th><th>Se llega por</th></tr></thead>
+      <tbody>
+        <tr><td><b>Activa</b></td><td>Está ejecutando sus lecturas y escrituras</td><td>Inicio de transacción</td></tr>
+        <tr><td><b>Parcialmente confirmada</b></td><td>Terminó su última operación, pero todavía no confirmó</td><td>Fin de la transacción</td></tr>
+        <tr><td><b>Confirmada</b></td><td>Hizo COMMIT: sus cambios ya son permanentes</td><td>Confirmar</td></tr>
+        <tr><td><b>Fallo</b></td><td>No puede seguir; sus cambios hay que deshacerlos</td><td>Abortar, desde Activa o desde Parcialmente confirmada</td></tr>
+        <tr><td><b>Terminar</b></td><td>Sale del sistema</td><td>Desde Confirmada o desde Fallo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">El resumen del audio no coincide con el slide</span>
+    <p>
+      El resumen lista "Activa, Parcialmente confirmada, Fallida, <b>Abortada</b>, Terminada" y no
+      menciona <b>Confirmada</b>. El diagrama de la clase tiene <b>Confirmada</b> como estado y
+      "Abortar" sólo como transición hacia Fallo. Si en el choice aparece "abortada" como estado,
+      desconfiá.
+    </p>
+  </div>
+
+  <h3>Fallo de la base o fallo del negocio</h3>
+
+  <p>
+    El ejemplo del cajero automático, dado en clase: pedís $2000, la base descuenta los $2000 y hace
+    COMMIT. Después el cajero se traba y entrega sólo $1000. <b>La base no tiene ninguna
+    inconsistencia</b>: la transacción se confirmó bien. El problema es físico, del cajero.
+  </p>
+  <p>
+    Como ya hubo COMMIT, no se puede hacer ROLLBACK. Lo resuelve un <b>proceso de conciliación</b>
+    (por ejemplo, nocturno) que compara el log de la base con el registro del cajero y genera una
+    <b>transacción nueva</b> que devuelve los $1000.
+  </p>
+
+  <h2><span class="num">03</span>El log: UNDO y REDO</h2>
+
+  <blockquote class="callout">
+    "Para garantizar la recuperación frente a fallos, los sistemas gestores de bases de datos
+    mantienen un <b>registro o log</b> que almacena información sobre las operaciones realizadas por
+    las transacciones. Este registro contiene eventos como el inicio de una transacción, lecturas,
+    escrituras, confirmaciones y cancelaciones."
+  </blockquote>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>UNDO (deshacer)</th><th>REDO (rehacer)</th></tr></thead>
+      <tbody>
+        <tr><td><b>A quién se aplica</b></td><td>Transacciones que <b>no llegaron a confirmarse</b></td><td>Transacciones <b>confirmadas</b> cuyos cambios aún no estaban grabados en la base</td></tr>
+        <tr><td><b>Qué hace</b></td><td>Devuelve los datos a su valor anterior</td><td>Vuelve a aplicar las modificaciones</td></tr>
+        <tr><td><b>Qué propiedad cuida</b></td><td>Atomicidad: todo o nada</td><td>Durabilidad: lo confirmado no se pierde</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Para poder hacer las dos cosas, cada escritura queda en el log con el <b>valor anterior</b> (para
+    el UNDO) y el <b>valor nuevo</b> (para el REDO). El resumen del audio menciona además el
+    <b>checkpoint</b> (punto de control): una marca en el log a partir de la cual empieza la
+    recuperación, para no recorrer el log entero. No está en las capturas.
+  </p>
+
+  <h2><span class="num">04</span>Recuperabilidad de planificaciones</h2>
+
+  <blockquote class="callout">
+    "Es la propiedad que garantiza que, tras un fallo, la base de datos puede volver a un estado
+    consistente."
+  </blockquote>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Planificación</th><th>Regla (slide)</th><th>Qué evita</th></tr></thead>
+      <tbody>
+        <tr><td><b>Recuperable</b></td><td>Una transacción sólo se confirma una vez que todas las transacciones cuyos datos leyó también se confirmaron.</td><td>Confirmar algo basado en un dato que después se deshace</td></tr>
+        <tr><td><b>Sin cascada</b></td><td>Una transacción no puede leer datos no confirmados de otra.</td><td>El "efecto dominó": que el fallo de una obligue a deshacer muchas otras</td></tr>
+        <tr><td><b>Estricta</b></td><td>Una transacción no puede leer <b>ni escribir</b> un dato hasta que la transacción previa que lo modificó se confirme por completo.</td><td>Todo lo anterior; es "el estándar de oro"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Cada una exige más que la anterior</span>
+    <p>
+      Toda planificación estricta es sin cascada, y toda sin cascada es recuperable. La
+      diferencia entre las dos últimas es una palabra: sin cascada prohíbe <b>leer</b> lo no
+      confirmado; estricta prohíbe <b>leer y escribir</b>. El resumen del audio dice que la estricta
+      es "la unión" de las otras dos: no es así, es <b>la más restrictiva</b> de las tres.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 6 · Tipos de fallo</span>
+    <p class="quiz__q">Una transacción de extracción detecta "saldo insuficiente" y se cancela. Según el slide, ¿qué tipo de fallo es?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Excepción: el slide pone saldo insuficiente y datos inexistentes en esa categoría. Es una condición del negocio que la transacción detecta.">Excepción</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Los errores de transacción del slide son división por cero, error lógico o parámetros incorrectos: fallas del cálculo. El saldo insuficiente está en Excepciones.">Error de transacción</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Fallo de sistema es corte de energía, hardware o sistema operativo: algo del entorno, no del saldo.">Fallo de sistema</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 6 · Tipos de fallo</span>
+    <p class="quiz__q">¿En qué categoría pone el slide al deadlock?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Problemas de concurrencia, junto con la violación de la serialización: los dos aparecen porque hay varias transacciones a la vez.">Problemas de concurrencia</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El deadlock no es un error del cálculo de una transacción: aparece entre dos transacciones que se esperan mutuamente.">Error de transacción</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El sistema funciona perfecto en un deadlock: el problema es la espera circular entre transacciones.">Fallos de sistema</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 6 · Estados</span>
+    <p class="quiz__q">Una transacción ejecutó su última operación pero todavía no hizo COMMIT. ¿En qué estado está?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Parcialmente confirmada: terminó de operar, pero desde ahí todavía puede confirmar o abortar.">Parcialmente confirmada</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Confirmada es después del COMMIT. Antes de confirmar todavía puede fallar.">Confirmada</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Terminar es el último estado, al que se llega desde Confirmada o desde Fallo.">Terminada</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 6 · UNDO o REDO</span>
+    <p class="quiz__q">Se corta la luz. Una transacción había hecho COMMIT pero sus cambios no estaban grabados en disco. ¿Qué aplica la recuperación?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="REDO: estaba confirmada, así que sus cambios tienen que quedar (durabilidad). Se vuelven a aplicar desde el log.">REDO, para volver a aplicar sus cambios</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="UNDO es para las que no llegaron a confirmarse. Deshacer una confirmada violaría la durabilidad.">UNDO, para deshacer sus cambios</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí hay que hacer algo: el log tiene sus cambios y la base no. Sin REDO se perderían cambios confirmados.">Nada, porque la transacción ya terminó</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 6 · Recuperabilidad</span>
+    <p class="quiz__q">¿Qué planificación evita el "efecto dominó" de deshacer muchas transacciones por el fallo de una?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Sin cascada: como nadie lee datos no confirmados, si una falla no arrastra a otras. La estricta también lo evita, pero la que se define por eso es la sin cascada.">Planificación sin cascada</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La recuperable sólo exige un orden en los COMMIT. Todavía permite leer datos no confirmados, así que el fallo de una puede obligar a deshacer otras.">Planificación recuperable</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Una planificación en serie no intercala, pero la pregunta es sobre las tres de recuperabilidad del slide.">Planificación en serie</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">6 de 6 · El cajero</span>
+    <p class="quiz__q">El cajero descontó $2000 con COMMIT pero entregó sólo $1000. ¿Cómo se corrige?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Con una transacción nueva, compensatoria, que acredita los $1000. La original ya está confirmada y no se puede deshacer: la base nunca estuvo inconsistente.">Con una nueva transacción que acredite los $1000</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Después del COMMIT ya no hay ROLLBACK: la transacción es durable. Por eso se compensa con otra.">Con un ROLLBACK de la transacción original</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El UNDO es para transacciones no confirmadas al momento de un fallo. Esta se confirmó bien: el problema fue el hardware del cajero.">Con el UNDO del log al reiniciar el motor</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Capturas de la clase (<code>raw/Clase Transacciones (capturas)/</code>, 05, 06, 10, 11 y 15).
+      El ejemplo del cajero y el checkpoint salen del resumen del audio de la clase. El diagrama de
+      estados es el de <b>Elmasri &amp; Navathe</b>, cap. 17.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0043-planificaciones-y-serializacion.html">Anterior: 0043 · Planificaciones y serialización</a>
+    <a href="0047-control-de-acceso.html">Siguiente: 0047 · Control de acceso</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

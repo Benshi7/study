@@ -1,0 +1,179 @@
+/* ===========================================================================
+   widgets.css — styles for the reusable interactive components:
+   the retrieval quiz (quiz.js) and the practice timer (timer.js).
+   Depends on the custom properties defined in course.css.
+   =========================================================================== */
+
+/* --- retrieval quiz ------------------------------------------------------ */
+
+.quiz {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.4rem 1.4rem 1.2rem;
+  margin: 2.5rem 0;
+  font-family: var(--sans);
+}
+
+.quiz__kicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+}
+
+.quiz__progress {
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  float: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz__question {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  margin: 0 0 1.1rem;
+}
+
+.quiz__options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quiz__option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.7rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+.quiz__option:hover:not(:disabled) { border-color: var(--ink-faint); }
+.quiz__option:disabled { cursor: default; }
+
+.quiz__option--correct {
+  border-color: var(--good);
+  background: color-mix(in srgb, var(--good) 12%, transparent);
+}
+.quiz__option--wrong {
+  border-color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 12%, transparent);
+}
+.quiz__option--muted { opacity: 0.45; }
+
+.quiz__feedback {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+.quiz__feedback strong { color: var(--ink); }
+
+.quiz__next {
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--accent);
+  border: 0;
+  border-radius: 3px;
+  padding: 0.55rem 1.1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.quiz__done {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+/* --- practice timer ------------------------------------------------------ */
+
+.timer {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1.8rem 1.4rem;
+  margin: 2.5rem 0;
+  text-align: center;
+  font-family: var(--sans);
+}
+
+.timer__display {
+  font-family: var(--mono);
+  font-size: 3.2rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.timer__caption {
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  min-height: 1.4em;
+  margin-bottom: 1.3rem;
+}
+
+.timer__controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.timer__btn {
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+}
+.timer__btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+/* the rep counter — the number that actually matters in lesson 1 */
+.timer__reps {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+}
+.timer__reps-count {
+  font-family: var(--mono);
+  font-size: 1.9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  line-height: 1;
+}
+.timer__reps-label {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  margin-top: 0.4rem;
+}
+
+@media print {
+  .timer, .quiz__option, .quiz__next { display: none; }
+}

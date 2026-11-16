@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulacro inventado</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Simulacro inventado</div>
+
+<div class="kicker">Práctica de transferencia</div>
+<h1>Simulacro inventado: 38 preguntas nuevas</h1>
+<p class="lede">Los mismos conceptos, con casos y tablas <strong>que no viste</strong>. No mide si te acordás de la pregunta, sino si reconocés el concepto en otro contexto, que es lo que va a pasar el lunes. No forma parte del banco de la suite.</p>
+
+<div class="box">
+  <span class="label">Cómo hacerlo</span>
+  <p>Sin lecciones abiertas. Leé cada enunciado dos veces y mirá qué opción marcaste antes de seguir. Las salidas de SQL y Python están verificadas ejecutando el código (SQLite y Python 3).</p>
+</div>
+
+<h2>Bloque 1 · Introducción a los datos</h2>
+<div class="quiz" data-quiz-id="simulacro-inventado-b1"></div>
+<script type="application/json" class="quiz-data">
+[
+ {
+  "q": "Un sensor marca 38 °C en una sala donde la temperatura real es 21 °C. ¿Qué dimensión de calidad falla?",
+  "options": [
+   "Precisión",
+   "Tempestividad",
+   "Completitud",
+   "Consistencia"
+  ],
+  "answer": 0,
+  "why": "El dato no refleja la realidad: es <strong>precisión</strong>. No es tempestividad, porque no hay nada que llegue tarde."
+ },
+ {
+  "q": "El informe de ventas del mes llega el viernes, pero la reunión de decisión fue el jueves. Los números eran correctos. ¿Qué dimensión falla?",
+  "options": [
+   "Tempestividad",
+   "Precisión",
+   "Integridad",
+   "Configuración"
+  ],
+  "answer": 0,
+  "why": "El dato era correcto pero no estuvo disponible <strong>a tiempo</strong>: tempestividad."
+ },
+ {
+  "q": "El estándar de la empresa exige cargar el DNI solo con números, pero en el CRM hay registros como \"12.345.678\". ¿Qué dimensión falla?",
+  "options": [
+   "Configuración",
+   "Integridad",
+   "Duplicados",
+   "Consistencia"
+  ],
+  "answer": 0,
+  "why": "El dato <strong>nació</strong> sin cumplir el estándar definido: configuración. La palabra clave es \"el estándar exige\"."
+ },
+ {
+  "q": "Un archivo salió completo del ERP, pero al llegar al Data Warehouse le faltan los últimos 200 registros. ¿Qué dimensión falla?",
+  "options": [
+   "Integridad",
+   "Configuración",
+   "Tempestividad",
+   "Precisión"
+  ],
+  "answer": 0,
+  "why": "Estuvo bien en el origen y <strong>se rompió en el viaje</strong>: integridad. Pregunta clave: ¿estuvo bien alguna vez? Sí."
+ },
+ {
+  "q": "Antes de corregir nada, un equipo mide qué porcentaje de emails no tiene arroba. ¿Qué proceso está haciendo?",
+  "options": [
+   "Data profiling",
+   "Data cleansing",
+   "Data governance",
+   "Data mining"
+  ],
+  "answer": 0,
+  "why": "Medir y evaluar la calidad es <strong>profiling</strong>. Corregir o eliminar sería cleansing."
+ },
+ {
+  "q": "\"El 60% de las bajas del último trimestre se explica por demoras en la atención.\" ¿Qué tipo de análisis es?",
+  "options": [
+   "Diagnóstico",
+   "Descriptivo",
+   "Predictivo",
+   "Prescriptivo"
+  ],
+  "answer": 0,
+  "why": "Explica una <strong>causa</strong> (\"se explica por\"): diagnóstico."
+ },
+ {
+  "q": "\"Con el histórico de cinco años, estimamos que en diciembre se venderán 12.000 unidades.\" ¿Qué tipo de análisis es?",
+  "options": [
+   "Predictivo",
+   "Descriptivo",
+   "Diagnóstico",
+   "Exploratorio"
+  ],
+  "answer": 0,
+  "why": "Habla del <strong>futuro</strong> a partir de datos actuales e históricos: predictivo."
+ },
+ {
+  "q": "\"Recomendamos bajar el precio del plan básico para reducir la fuga de clientes.\" ¿Qué tipo de análisis es?",
+  "options": [
+   "Prescriptivo",
+   "Predictivo",
+   "Diagnóstico",
+   "Descriptivo"
+  ],
+  "answer": 0,
+  "why": "Dice <strong>qué hacer</strong>: prescriptivo."
+ },
+ {
+  "q": "¿Qué tipo de dato es la cantidad de hijos de una persona?",
+  "options": [
+   "Cuantitativo discreto",
+   "Cuantitativo continuo",
+   "Cualitativo ordinal",
+   "Cualitativo nominal"
+  ],
+  "answer": 0,
+  "why": "Es un número entero e indivisible: cuantitativo <strong>discreto</strong>. Es el ejemplo del slide."
+ },
+ {
+  "q": "¿Qué tipo de dato es el talle de una remera (S, M, L, XL)?",
+  "options": [
+   "Cualitativo ordinal",
+   "Cualitativo nominal",
+   "Cuantitativo discreto",
+   "Cualitativo binario"
+  ],
+  "answer": 0,
+  "why": "Es una categoría con <strong>orden</strong>: cualitativo ordinal."
+ },
+ {
+  "q": "Roban servidores del datacenter de la empresa. ¿Qué rol C-level es responsable de ese riesgo?",
+  "options": [
+   "CSO",
+   "CISO",
+   "CIO",
+   "CDO"
+  ],
+  "answer": 0,
+  "why": "El CSO cubre la seguridad <strong>en general</strong>, incluida la física. El CISO cubre solo la seguridad de la información."
+ },
+ {
+  "q": "¿Quién diseña y construye los pipelines que dejan los datos listos para usarse en producción?",
+  "options": [
+   "Data Engineer",
+   "Data Analyst",
+   "Business Analyst",
+   "Data Scientist"
+  ],
+  "answer": 0,
+  "why": "Palabra clave: <strong>pipelines</strong>. Es el Data Engineer."
+ },
+ {
+  "q": "Una empresa combina posteos de redes sociales, imágenes y logs de servidores. ¿Qué V de Big Data describe esto?",
+  "options": [
+   "Variedad",
+   "Volumen",
+   "Velocidad",
+   "Veracidad"
+  ],
+  "answer": 0,
+  "why": "Distintos <strong>tipos y formatos</strong> de datos: variedad."
+ }
+]
+</script>
+
+<h2>Bloque 2 · SQL y bases de datos</h2>
+<p class="muted">Las preguntas con código usan tablas nuevas (<code>empleados</code> y <code>areas</code>), que vienen incluidas en cada enunciado.</p>
+<div class="quiz" data-quiz-id="simulacro-inventado-b2"></div>
+<script type="application/json" class="quiz-data">
+[
+ {
+  "q": "<pre class=\"code\">empleados                          areas\nid | nombre | area   | sueldo      nombre | piso\n1  | Lu     | Ventas | 500         Ventas | 1\n2  | Mati   | Ventas | 700         IT     | 2\n3  | Nico   | IT     | 900         RRHH   | 3\n4  | Oli    | NULL   | 400\n5  | Pau    | IT     | 900</pre>¿Qué devuelve?<pre class=\"code\">SELECT COUNT(area), COUNT(*) FROM empleados;</pre>",
+  "options": [
+   "4 y 5",
+   "5 y 5",
+   "4 y 4",
+   "5 y 4"
+  ],
+  "answer": 0,
+  "why": "<code>COUNT(area)</code> no cuenta el NULL de Oli (4); <code>COUNT(*)</code> cuenta todas las filas (5)."
+ },
+ {
+  "q": "<pre class=\"code\">empleados                          areas\nid | nombre | area   | sueldo      nombre | piso\n1  | Lu     | Ventas | 500         Ventas | 1\n2  | Mati   | Ventas | 700         IT     | 2\n3  | Nico   | IT     | 900         RRHH   | 3\n4  | Oli    | NULL   | 400\n5  | Pau    | IT     | 900</pre>¿Cuántas filas devuelve?<pre class=\"code\">SELECT area, AVG(sueldo)\nFROM empleados\nGROUP BY area;</pre>",
+  "options": [
+   "3",
+   "2",
+   "5",
+   "Error"
+  ],
+  "answer": 0,
+  "why": "Ventas, IT y un grupo más para <strong>NULL</strong> (Oli). GROUP BY forma un grupo con los NULL."
+ },
+ {
+  "q": "<pre class=\"code\">empleados                          areas\nid | nombre | area   | sueldo      nombre | piso\n1  | Lu     | Ventas | 500         Ventas | 1\n2  | Mati   | Ventas | 700         IT     | 2\n3  | Nico   | IT     | 900         RRHH   | 3\n4  | Oli    | NULL   | 400\n5  | Pau    | IT     | 900</pre>¿Cuántas filas devuelve?<pre class=\"code\">SELECT e.nombre\nFROM empleados e\nINNER JOIN areas a ON e.area = a.nombre;</pre>",
+  "options": [
+   "4",
+   "5",
+   "3",
+   "6"
+  ],
+  "answer": 0,
+  "why": "Solo las filas con pareja: Oli (área NULL) queda afuera. RRHH no tiene empleados, así que tampoco suma."
+ },
+ {
+  "q": "<pre class=\"code\">empleados                          areas\nid | nombre | area   | sueldo      nombre | piso\n1  | Lu     | Ventas | 500         Ventas | 1\n2  | Mati   | Ventas | 700         IT     | 2\n3  | Nico   | IT     | 900         RRHH   | 3\n4  | Oli    | NULL   | 400\n5  | Pau    | IT     | 900</pre>¿Qué devuelve?<pre class=\"code\">SELECT a.nombre\nFROM areas a\nLEFT JOIN empleados e ON e.area = a.nombre\nWHERE e.id IS NULL;</pre>",
+  "options": [
+   "RRHH",
+   "Oli",
+   "IT",
+   "Nada"
+  ],
+  "answer": 0,
+  "why": "Áreas sin empleados. Ojo: acá la tabla de la izquierda es <strong>areas</strong>, por eso sale RRHH y no Oli."
+ },
+ {
+  "q": "<pre class=\"code\">empleados                          areas\nid | nombre | area   | sueldo      nombre | piso\n1  | Lu     | Ventas | 500         Ventas | 1\n2  | Mati   | Ventas | 700         IT     | 2\n3  | Nico   | IT     | 900         RRHH   | 3\n4  | Oli    | NULL   | 400\n5  | Pau    | IT     | 900</pre>¿Qué valor da <code>RANK() OVER (ORDER BY sueldo DESC)</code> para Mati?",
+  "options": [
+   "3",
+   "2",
+   "1",
+   "4"
+  ],
+  "answer": 0,
+  "why": "Nico y Pau empatan en 900 y los dos quedan 1°. RANK <strong>salta</strong> el 2, así que Mati (700) queda 3°."
+ },
+ {
+  "q": "<pre class=\"code\">empleados                          areas\nid | nombre | area   | sueldo      nombre | piso\n1  | Lu     | Ventas | 500         Ventas | 1\n2  | Mati   | Ventas | 700         IT     | 2\n3  | Nico   | IT     | 900         RRHH   | 3\n4  | Oli    | NULL   | 400\n5  | Pau    | IT     | 900</pre>¿Qué devuelve?<pre class=\"code\">SELECT area FROM empleados\nWHERE sueldo &gt; 600\nGROUP BY area\nHAVING COUNT(*) &gt; 1;</pre>",
+  "options": [
+   "Solo IT",
+   "Solo Ventas",
+   "IT, Ventas",
+   "Ninguna área"
+  ],
+  "answer": 0,
+  "why": "WHERE deja a Mati (Ventas), Nico y Pau (IT). HAVING se queda con los grupos de más de una fila: solo IT."
+ },
+ {
+  "q": "Quitarle a un usuario el permiso de consultar una tabla. ¿A qué sublenguaje pertenece?",
+  "options": [
+   "DCL",
+   "DDL",
+   "DML",
+   "TCL"
+  ],
+  "answer": 0,
+  "why": "Es <code>REVOKE</code>, que junto con GRANT forma el DCL."
+ },
+ {
+  "q": "Deshacer los cambios de una transacción que falló a mitad de camino. ¿A qué sublenguaje pertenece?",
+  "options": [
+   "TCL",
+   "DCL",
+   "DML",
+   "DDL"
+  ],
+  "answer": 0,
+  "why": "Es <code>ROLLBACK</code>: TCL, junto con COMMIT y SAVEPOINT."
+ },
+ {
+  "q": "Guardar la lectura de un medidor de luz cada 15 segundos. ¿Qué tipo de base de datos?",
+  "options": [
+   "Time series",
+   "Documental NoSQL",
+   "Grafos Neo4j",
+   "Clave-valor Redis"
+  ],
+  "answer": 0,
+  "why": "Datos que se registran a lo largo del tiempo, como sensores y métricas: <strong>time series</strong>."
+ },
+ {
+  "q": "Un cajero registra una venta en el sistema del supermercado. ¿OLTP u OLAP?",
+  "options": [
+   "OLTP",
+   "OLAP",
+   "Ambos",
+   "Ninguno"
+  ],
+  "answer": 0,
+  "why": "Es una operación del <strong>día a día</strong> (un INSERT): OLTP."
+ },
+ {
+  "q": "Archivos JSON de una API, guardados tal cual llegaron y sin validar. ¿En qué capa Medallion están?",
+  "options": [
+   "Bronze",
+   "Silver",
+   "Gold",
+   "Staging"
+  ],
+  "answer": 0,
+  "why": "Crudo y sin transformar: <strong>Bronze</strong>."
+ },
+ {
+  "q": "En un esquema estrella, ¿en qué tabla guardás el monto y la cantidad de cada venta?",
+  "options": [
+   "Fact",
+   "Dimensión",
+   "Intermedia",
+   "Temporal"
+  ],
+  "answer": 0,
+  "why": "Las métricas van en la <strong>fact</strong>; las dimensiones aportan el contexto."
+ }
+]
+</script>
+
+<h2>Bloque 3 · Python</h2>
+<div class="quiz" data-quiz-id="simulacro-inventado-b3"></div>
+<script type="application/json" class="quiz-data">
+[
+ {
+  "q": "El usuario escribe 20. ¿Qué imprime?<pre class=\"code\">x = input(\"Edad: \")\nprint(x * 2)</pre>",
+  "options": [
+   "2020",
+   "40",
+   "Error",
+   "20"
+  ],
+  "answer": 0,
+  "why": "<code>input()</code> devuelve un <strong>str</strong>, y un string por 2 se repite: \"2020\"."
+ },
+ {
+  "q": "¿Qué imprime?<pre class=\"code\">lista = [5, 2, 5, 9]\nlista.remove(5)\nprint(lista)</pre>",
+  "options": [
+   "[2, 5, 9]",
+   "[2, 9] (todos)",
+   "[5, 2, 9]",
+   "[5, 5, 9]"
+  ],
+  "answer": 0,
+  "why": "<code>remove</code> saca solo la <strong>primera</strong> aparición del valor 5."
+ },
+ {
+  "q": "¿Cuántos números imprime?<pre class=\"code\">for i in range(2, 10, 3):\n    print(i)</pre>",
+  "options": [
+   "3",
+   "8",
+   "4",
+   "2"
+  ],
+  "answer": 0,
+  "why": "Imprime 2, 5 y 8: el 11 ya se pasa del límite y el 10 nunca se incluye."
+ },
+ {
+  "q": "¿Qué imprime, en orden?<pre class=\"code\">try:\n    print(\"a\")\n    int(\"x\")\n    print(\"b\")\nexcept ValueError:\n    print(\"c\")\nprint(\"d\")</pre>",
+  "options": [
+   "a c d",
+   "a b d",
+   "b c d",
+   "a b c"
+  ],
+  "answer": 0,
+  "why": "<code>int(\"x\")</code> falla: \"b\" no se ejecuta, salta al except (\"c\") y el programa sigue (\"d\")."
+ },
+ {
+  "q": "¿Qué imprime?<pre class=\"code\">def doble(n):\n    return n * 2\n\nprint(doble(\"ab\"))</pre>",
+  "options": [
+   "abab",
+   "None",
+   "Error",
+   "ab2"
+  ],
+  "answer": 0,
+  "why": "Tiene <code>return</code>, y <code>\"ab\" * 2</code> repite el string."
+ },
+ {
+  "q": "¿Qué imprime?<pre class=\"code\">print(7 // 2, 7 % 2)</pre>",
+  "options": [
+   "3 1",
+   "3.5 1",
+   "3 3.5",
+   "1 3"
+  ],
+  "answer": 0,
+  "why": "<code>//</code> es la división entera (3) y <code>%</code> el resto (1). La coma separa con un espacio."
+ },
+ {
+  "q": "¿Qué imprime?<pre class=\"code\">s = \"Python\"\nprint(s[-1], s[0:2])</pre>",
+  "options": [
+   "n Py",
+   "n Pyt",
+   "P Py",
+   "n yt"
+  ],
+  "answer": 0,
+  "why": "<code>-1</code> es el último caracter. El slice <code>0:2</code> no incluye el 2: \"Py\"."
+ },
+ {
+  "q": "¿Qué imprime?<pre class=\"code\">d = {\"a\": 1}\nprint(d.get(\"b\"))</pre>",
+  "options": [
+   "None",
+   "KeyError",
+   "0",
+   "b"
+  ],
+  "answer": 0,
+  "why": "<code>get</code> no falla si falta la clave: devuelve None. <code>d[\"b\"]</code> sí daría KeyError."
+ },
+ {
+  "q": "¿Qué imprime?<pre class=\"code\">a = [1, 2]\nb = a\nb.append(3)\nprint(a)</pre>",
+  "options": [
+   "[1, 2, 3]",
+   "[1, 2] intacta",
+   "solo [3] agregado",
+   "TypeError por alias"
+  ],
+  "answer": 0,
+  "why": "<code>b = a</code> no copia: son dos nombres para la <strong>misma</strong> lista. Hace falta <code>.copy()</code>."
+ },
+ {
+  "q": "Un DataFrame tiene 120 filas y 6 columnas. ¿Qué devuelve <code>df.shape</code>?",
+  "options": [
+   "(120, 6)",
+   "(6, 120)",
+   "720 celdas",
+   "120 filas"
+  ],
+  "answer": 0,
+  "why": "<code>shape</code> es una tupla (filas, columnas)."
+ },
+ {
+  "q": "¿Qué operación de SQL equivale a <code>df.groupby(\"area\")[\"sueldo\"].mean()</code>?",
+  "options": [
+   "GROUP BY",
+   "ORDER BY",
+   "INNER JOIN",
+   "LEFT JOIN"
+  ],
+  "answer": 0,
+  "why": "Agrupar y agregar por grupo es el GROUP BY, con AVG."
+ },
+ {
+  "q": "Querés mostrar cuántas personas hay en cada rango de ingresos. ¿Qué gráfico usás?",
+  "options": [
+   "Histograma",
+   "Barras",
+   "Dispersión",
+   "Líneas"
+  ],
+  "answer": 0,
+  "why": "Palabra pista: \"cada <strong>rango</strong>\" de una variable numérica son intervalos, o sea un histograma."
+ },
+ {
+  "q": "Querés comparar la cantidad de alumnos por carrera. ¿Qué gráfico usás?",
+  "options": [
+   "Barras",
+   "Histograma",
+   "Líneas",
+   "Dispersión"
+  ],
+  "answer": 0,
+  "why": "Palabra pista: <strong>comparar por categoría</strong>. Las carreras son categorías, así que son barras."
+ }
+]
+</script>
+
+<nav class="lesson-nav">
+  <a href="../index.html">← Índice</a>
+  <a href="../suite/index.html">Suite de estudio →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

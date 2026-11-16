@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 36 · Subconsultas, EXISTS y UNION</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 36 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">Subconsultas: una pregunta adentro de otra</h1>
+    <p class="masthead__standfirst">
+      IN y EXISTS preguntan "¿está en este otro conjunto?". Con eso se resuelven los
+      "los que no…" y los "mayor que el promedio", que son las consultas que más toman.
+    </p>
+    <p class="masthead__meta">
+      <span>~18 minutos</span>
+      <span>Deck "DML", slides 11–12 y 32–33</span>
+      <span>Prioridad para el 2do parcial: muy alta</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Esto ya lo tomaron</span>
+    <p>
+      <a href="../raw/Material_Examen/bd parcial 1a.jpg">bd parcial 1a</a>, pregunta 3:
+      <b>"Explique para qué sirve la instrucción EXISTS de SQL. Dé un ejemplo."</b> Y la hoja
+      de atrás (<a href="../raw/Material_Examen/bd parcial 1b.jpg">1b</a>) pide dos consultas
+      que se resuelven con subconsultas. Las dos están al final de esta lección.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>IN con subconsulta</h2>
+
+<pre><code><span class="k">SELECT</span> Nombre
+<span class="k">FROM</span>   PACIENTE
+<span class="k">WHERE</span>  Cod_Paciente <span class="k">IN</span> (<span class="k">SELECT</span> Cod_Paciente
+                        <span class="k">FROM</span>   HISTORIA_CLINICA
+                        <span class="k">WHERE</span>  Cod_Servicio = 2);</code></pre>
+
+  <p>
+    La subconsulta devuelve <b>una columna</b>, y el <code>IN</code> pregunta si el valor
+    está en ella. Primero se resuelve la de adentro, después la de afuera.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">IN no duplica; JOIN sí</span>
+    <p>
+      Tomás tiene dos consultas de Pediatría. Con un <code>JOIN</code> a
+      <code>HISTORIA_CLINICA</code> aparece dos veces y hace falta un <code>DISTINCT</code>.
+      Con <code>IN</code> aparece una vez, porque cada paciente se evalúa una sola vez.
+      Cuando la pregunta es "¿cuáles cumplen?", la subconsulta da la forma correcta sin parches.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>EXISTS: ¿hay al menos una fila?</h2>
+
+  <p>
+    El deck: "El operador EXISTS comprueba la existencia de ciertas filas. El resultado es
+    verdadero sólo si el número de filas especificadas mediante la selección completa
+    <b>no es cero</b>. <b>Solo se puede utilizar con subconsultas</b>, mientras que el
+    operador IN se puede utilizar en subconsultas y lista de valores."
+  </p>
+
+<pre><code><span class="k">SELECT</span> J.Nombre
+<span class="k">FROM</span>   PROFESIONAL J
+<span class="k">WHERE</span>  <span class="k">EXISTS</span> (<span class="k">SELECT</span> *
+               <span class="k">FROM</span>   PROFESIONAL M
+               <span class="k">WHERE</span>  M.Cod_Jefe = J.Cod_Profesional);</code></pre>
+
+  <p>
+    Fijate en <code>J.Cod_Profesional</code> adentro de la subconsulta: hace referencia a la
+    fila de <b>afuera</b>. Eso la vuelve <em class="term">correlacionada</em>: se evalúa una
+    vez por cada profesional <code>J</code>. Lo que devuelve el <code>SELECT</code> de adentro
+    no importa (por eso <code>SELECT *</code>); importa si hay filas o no.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">"No es jefe" no es "tiene jefe"</span>
+    <p>
+      La consigna del TP5 pide "los médicos que no son jefes". La tentación es
+      <code>WHERE Cod_Jefe IS NOT NULL</code>. Pero eso responde "los que <b>tienen</b> jefe".
+      Sofía Luna no tiene jefe <b>y</b> no tiene a nadie a cargo: no es jefa, y esa consulta
+      la pierde. "Ser jefe" es que <b>exista</b> alguien con tu código en <code>Cod_Jefe</code>.
+      La negación es <code>NOT EXISTS</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>UNION y UNION ALL</h2>
+
+  <p>
+    Pegan los resultados de dos <code>SELECT</code> uno debajo del otro. Los dos tienen que
+    devolver la misma cantidad de columnas, de tipos compatibles. <code>UNION</code> elimina
+    duplicados; <code>UNION ALL</code> no, y por eso es más barato.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 5 · Consigna TP5, pedido 1</span>
+    <p class="sqlbox__task">Listar los pacientes que se atendieron en el servicio de Pediatría. Buscá el servicio por nombre.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Nombre
+FROM PACIENTE
+WHERE Cod_Paciente IN (
+
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Nombre
+FROM PACIENTE
+WHERE Cod_Paciente IN (SELECT H.Cod_Paciente
+                       FROM HISTORIA_CLINICA H
+                       JOIN SERVICIO S ON S.Cod_Servicio = H.Cod_Servicio
+                       WHERE S.Nombre = 'Pediatría');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 5 · EXISTS</span>
+    <p class="sqlbox__task">Los profesionales que son jefes: tienen al menos un profesional a cargo.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT J.Nombre
+FROM PROFESIONAL J
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT J.Nombre
+FROM PROFESIONAL J
+WHERE EXISTS (SELECT * FROM PROFESIONAL M WHERE M.Cod_Jefe = J.Cod_Profesional);
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 5 · Consigna TP5, pedido 5</span>
+    <p class="sqlbox__task">
+      Listar los médicos que no son jefes y su especialidad (nombre del médico, nombre de la especialidad).
+      El código de abajo pierde a alguien.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT M.Nombre, E.Nombre
+FROM PROFESIONAL M
+JOIN ESPECIALIDAD E ON E.Cod_Especialidad = M.Cod_Especialidad
+WHERE M.Cod_Jefe IS NOT NULL;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT M.Nombre, E.Nombre
+FROM PROFESIONAL M
+JOIN ESPECIALIDAD E ON E.Cod_Especialidad = M.Cod_Especialidad
+WHERE NOT EXISTS (SELECT * FROM PROFESIONAL S WHERE S.Cod_Jefe = M.Cod_Profesional);
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="envios">
+    <span class="sqlbox__label">4 de 5 · bd parcial 1b, ejercicio a</span>
+    <p class="sqlbox__task">
+      "Seleccionar los nombres, ciudad y cantidad suministrada de los proveedores que hayan
+      realizado algún envío con cantidad mayor que la media de los envíos realizados para el
+      componente de color ROJO." Una fila por envío que supere la media.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT P.PNOMBRE, P.CIUDAD, E.CANTIDAD
+FROM PROVEEDORES P
+JOIN ENVIOS E ON E.P = P.P
+WHERE E.CANTIDAD > (
+
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.PNOMBRE, P.CIUDAD, E.CANTIDAD
+FROM PROVEEDORES P
+JOIN ENVIOS E ON E.P = P.P
+WHERE E.CANTIDAD > (SELECT AVG(E2.CANTIDAD)
+                    FROM ENVIOS E2
+                    WHERE E2.C IN (SELECT C FROM COMPONENTES WHERE COLOR = 'ROJO'));
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="envios">
+    <span class="sqlbox__label">5 de 5 · bd parcial 1b, ejercicio b</span>
+    <p class="sqlbox__task">
+      "Seleccionar los nombres de los componentes y su código que suministren ambos artículos 'T1' y 'T2'."
+      Cuidado: ningún envío es a la vez de T1 y de T2.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT CNOMBRE, C
+FROM COMPONENTES
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT CNOMBRE, C
+FROM COMPONENTES
+WHERE C IN (SELECT C FROM ENVIOS WHERE T = 'T1')
+  AND C IN (SELECT C FROM ENVIOS WHERE T = 'T2');
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Para la hoja</span>
+    <p class="quiz__q">¿Qué diferencia marca el deck entre EXISTS e IN?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es la frase textual del slide 12: EXISTS sólo se puede usar con subconsultas, mientras que IN se puede usar con subconsultas y con listas de valores.">EXISTS sólo admite subconsultas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es al revés: IN es el que acepta una lista de valores escrita a mano, como IN (2, 3). EXISTS necesita siempre una subconsulta.">EXISTS sólo admite una lista</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="EXISTS no compara valores: sólo pregunta si la subconsulta devuelve al menos una fila. Por eso da igual qué columnas tenga su SELECT.">EXISTS compara valor por valor</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Leer el enunciado</span>
+    <p class="quiz__q">
+      En el ejercicio b, ¿por qué no sirve <code>WHERE T = 'T1' AND T = 'T2'</code> sobre ENVIOS?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="WHERE evalúa una fila por vez, y una fila tiene un solo T. «Ambos» habla de dos filas distintas del mismo componente, por eso hace falta preguntar dos veces: IN para T1 y IN para T2.">Una fila tiene un solo artículo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="AND entre condiciones de texto es perfectamente válido. El problema es lógico: ninguna fila puede tener T igual a dos valores a la vez.">AND no se usa con columnas texto</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí está permitido comparar la misma columna dos veces. Lo que pasa es que la condición nunca puede ser verdadera para una sola fila.">No se repite una columna en WHERE</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Cuándo es verdadero</span>
+    <p class="quiz__q">Según el deck, ¿cuándo es verdadero <code>EXISTS (subconsulta)</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 12: &quot;El resultado es verdadero sólo si el número de filas especificadas mediante la selección completa no es cero&quot;. No importa qué columnas traiga: por eso se escribe SELECT *.">Cuando la subconsulta devuelve al menos una fila</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es IN, que además acepta listas de valores. EXISTS sólo acepta subconsultas.">Cuando el valor está en la lista</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="EXISTS no mira valores, cuenta filas. Por eso NOT EXISTS no cae en la trampa del NULL que sí tiene NOT IN.">Cuando la subconsulta no tiene NULL</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b>, slides 11–12 (IN, EXISTS) y 32–33 (UNION). <b>Elmasri &amp; Navathe,
+      5ª ed.</b> — §8.5.2 "Consultas anidadas", §8.5.3 "Consultas anidadas correlacionadas" y
+      §8.5.4 "Las funciones EXISTS y UNIQUE en SQL".
+    </p>
+    <p><a href="https://www.sqlite.org/lang_expr.html#the_exists_operator">SQLite — The EXISTS operator</a>.</p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Escribime tu respuesta a "explique para qué sirve EXISTS, dé un
+      ejemplo", como si fuera el parcial, y te la corrijo.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0035-group-by-having.html">Anterior: 0035 · GROUP BY</a>
+    <a href="0037-dml-insert-update-delete.html">Siguiente: 0037 · INSERT, UPDATE, DELETE</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/seeds/envios.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

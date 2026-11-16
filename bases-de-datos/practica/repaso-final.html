@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso final · 1er parcial</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body data-repaso-key="parcial1">
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Repaso final · Jueves 24/09, 18:30 · Una hora, en papel</p>
+    <h1 class="masthead__title">Qué responder en cada pregunta</h1>
+    <p class="masthead__standfirst">
+      Una tarjeta por pregunta probable. Cada una trae <b>las palabras clave que tienen que
+      aparecer en tu respuesta</b> y una respuesta modelo de tres o cuatro líneas. No es
+      para volverte experto: es para que el jueves sepas exactamente qué escribir.
+    </p>
+    <p class="masthead__meta">
+      <span>Orden de prioridad, no de temario</span>
+      <span>Fuente: <a href="../raw/PAUTAS_EXAMEN.md">PAUTAS_EXAMEN.md</a> + los PPTX</span>
+    </p>
+  </header>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Cómo se usa</span>
+    <p>
+      <b>Primera pasada:</b> apretá <b>Modo examen</b>. Se esconden las palabras clave y las
+      respuestas. Leé la pregunta, respondé en voz alta o en papel, recién ahí apagá el modo
+      y comparate. Marcá <b>La sé</b> o <b>Repasar</b>.
+    </p>
+    <p>
+      <b>Segunda pasada:</b> apretá <b>Ocultar las que sé</b>. Te quedan sólo las que
+      marcaste. Repetí hasta que la lista esté vacía. <b>Leer la respuesta primero no sirve
+      para nada</b> &mdash; te va a dar la sensación de saberla y no la vas a poder escribir.
+    </p>
+  </blockquote>
+
+  <div class="toolbar" data-toolbar>
+    <button class="toolbar__btn" data-toggle="exam-mode">Modo examen</button>
+    <button class="toolbar__btn" data-toggle="hide-known">Ocultar las que sé</button>
+    <button class="toolbar__btn" data-reset>Reiniciar</button>
+    <span class="toolbar__count" data-count></span>
+  </div>
+
+  <h2><span class="num">01</span>Bloque rojo — lo que el docente dijo que toma</h2>
+
+  <p>
+    Estas doce salen de <code>PAUTAS_EXAMEN.md</code>, que es lo que dictó en clase el 17/09.
+    Si te sabés este bloque, la teoría está aprobada. <b>Empezá por acá y no negocies.</b>
+  </p>
+
+  <!-- ===================== ÍNDICES ===================== -->
+
+  <article class="card" data-card="idx-tipos">
+    <div class="card__head">
+      <span class="card__tag">Índices</span>
+      <span class="card__conf card__conf--alta">Triple confirmación</span>
+    </div>
+    <p class="card__q">Explique cada tipo de índice: agrupado, principal y secundario. Para qué sirve y qué beneficio tiene cada uno. Dé un ejemplo.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">evitar búsqueda secuencial</li>
+      <li class="chip chip--must">clave primaria</li>
+      <li class="chip chip--must">orden físico</li>
+      <li class="chip chip--must">uno por tabla</li>
+      <li class="chip">estructura separada</li>
+      <li class="chip">espacio de almacenamiento</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Un índice es una estructura que mapea los valores de una o más columnas a las filas
+          correspondientes, y sirve para <b>evitar la búsqueda secuencial</b>.
+        </p>
+        <ul>
+          <li><b>Principal (o primario):</b> se crea sobre la <b>clave primaria</b>. Hay
+            <b>uno solo por tabla</b>, porque la clave primaria es única. Beneficio:
+            garantiza unicidad, búsqueda eficiente y sostiene la integridad referencial.
+            <i>Ej.: el índice sobre <code>CodCli</code> en la tabla Cliente.</i></li>
+          <li><b>Agrupado:</b> las filas de la tabla <b>se ordenan físicamente en el disco</b>
+            en el mismo orden que el índice. Beneficio: recuperación por rango muy rápida y
+            ahorro de espacio. Costo: limita las modificaciones, porque reordenar cuesta.
+            <i>Ej.: facturas ordenadas por fecha.</i></li>
+          <li><b>Secundario:</b> se crea sobre columnas que <b>no</b> son clave primaria.
+            <b>No afecta el orden físico</b>: crea una estructura separada. Beneficio:
+            flexibilidad, podés tener varios. Costo: ocupa más espacio y, usados en exceso,
+            degradan el rendimiento de las escrituras.
+            <i>Ej.: un índice por apellido.</i></li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="idx-fisico">
+    <div class="card__head">
+      <span class="card__tag">Índices</span>
+      <span class="card__conf card__conf--alta">La dio textual</span>
+    </div>
+    <p class="card__q">¿Cuál de todos los índices ordena físicamente los campos? Justifique.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">el AGRUPADO</li>
+      <li class="chip chip--must">mismo orden que el índice</li>
+      <li class="chip">físicamente juntas en el disco</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          <b>El agrupado.</b> Porque las filas de la tabla <b>se ordenan en el mismo orden
+          que el índice</b> y quedan <b>físicamente almacenadas juntas en el disco</b>. El
+          principal y el secundario mantienen una estructura aparte y no tocan el orden
+          físico de los datos.
+        </p>
+        <p class="callout callout--trap">
+          <span class="callout__label">No razones desde Elmasri acá</span>
+          El libro dice que el índice principal implica orden físico. <b>La cátedra dice
+          agrupado, y la cátedra es la que corrige.</b>
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="idx-denso">
+    <div class="card__head">
+      <span class="card__tag">Índices</span>
+      <span class="card__conf">Probable</span>
+    </div>
+    <p class="card__q">¿Qué diferencia hay entre un índice denso y uno no denso?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">una entrada por cada valor</li>
+      <li class="chip chip--must">sólo algunos valores</li>
+      <li class="chip">bloque de disco</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          <b>Denso:</b> tiene <b>una entrada por cada valor</b> de la clave de búsqueda, o
+          sea por cada registro del fichero.<br>
+          <b>No denso:</b> sólo tiene entradas para <b>algunos</b> de los valores.
+        </p>
+        <p>
+          El <b>principal es no denso</b>, porque incluye una entrada por cada
+          <b>bloque de disco</b> en lugar de una por cada registro.
+        </p>
+        <p><b>Regla:</b> apunta a bloques → no denso. Apunta a registros uno por uno → denso.</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== ACID ===================== -->
+
+  <article class="card" data-card="acid">
+    <div class="card__head">
+      <span class="card__tag">Transacciones</span>
+      <span class="card__conf card__conf--alta">Lo nombró</span>
+    </div>
+    <p class="card__q">Defina las propiedades ACID de una transacción.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">unidad atómica / en su totalidad o no se ejecuta</li>
+      <li class="chip chip--must">de un estado consistente a otro</li>
+      <li class="chip chip--must">aislada / no interferir / simultánea</li>
+      <li class="chip chip--must">confirmada / persistir / fallo</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>Atomicidad.</b> Una transacción es una <b>unidad atómica de procesamiento</b>:
+            o se ejecuta <b>en su totalidad</b> o <b>no se ejecuta en absoluto</b>.</li>
+          <li><b>Conservación de la consistencia.</b> Su ejecución completa lleva a la base
+            <b>de un estado consistente a otro</b>.</li>
+          <li><b>Aislamiento.</b> Debe <b>aparecer como si se ejecutara aislada</b> de las
+            demás; no debe interferir con ninguna otra transacción <b>simultánea</b>.</li>
+          <li><b>Durabilidad.</b> Los cambios de una transacción <b>confirmada</b> deben
+            <b>persistir</b>, y no perderse por culpa de un <b>fallo</b>.</li>
+        </ul>
+        <p class="callout callout--trap">
+          <span class="callout__label">Tu error de la semana pasada</span>
+          <b>Atomicidad</b> mira si la transacción <b>se completó</b>.
+          <b>Consistencia</b> mira si el estado que dejó <b>es válido</b>.
+          Plata que sale de A y no llega a B → atomicidad. Transferencia entera que cambia el
+          total del banco → consistencia.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="txn-def">
+    <div class="card__head">
+      <span class="card__tag">Transacciones</span>
+      <span class="card__conf">Probable</span>
+    </div>
+    <p class="card__q">¿Qué es una transacción?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">una o más operaciones</li>
+      <li class="chip chip--must">inserción, eliminación, modificación o recuperación</li>
+      <li class="chip">begin / end transaction</li>
+      <li class="chip">sólo lectura</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Una transacción incluye <b>una o más operaciones</b> de acceso a la base de datos
+          &mdash; <b>inserción, eliminación, modificación o recuperación</b>. Sus límites se
+          especifican con <code>begin transaction</code> y <code>end transaction</code>.
+          Si sus operaciones únicamente recuperan datos y no actualizan nada, se dice que es
+          una transacción <b>de sólo lectura</b>.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== NORMALIZACIÓN ===================== -->
+
+  <article class="card" data-card="fn-nombres">
+    <div class="card__head">
+      <span class="card__tag">Normalización</span>
+      <span class="card__conf card__conf--alta">Lo nombró</span>
+    </div>
+    <p class="card__q">Nombre las tres formas normales y defina cada una.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">repetirse para la misma clave primaria</li>
+      <li class="chip chip--must">totalidad de la clave primaria</li>
+      <li class="chip chip--must">dependencia transitiva</li>
+      <li class="chip">campo no clave</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Las tres, en la definición textual de la cátedra (Clase 3, slide 12):</p>
+        <ul>
+          <li><b>1FN:</b> si <b>no posee atributos que puedan repetirse para la misma clave
+            primaria</b>. <i>Enemigo: el grupo repetitivo.</i></li>
+          <li><b>2FN:</b> si está en 1FN <b>y todos sus atributos dependen funcionalmente de
+            la totalidad de la clave primaria</b>. <i>Enemigo: la dependencia parcial.</i></li>
+          <li><b>3FN:</b> si está en 2FN <b>y no existe dependencia transitiva</b> &mdash;
+            ninguno de sus atributos depende de un <b>campo no clave</b>.
+            <i>Enemigo: la dependencia transitiva.</i></li>
+        </ul>
+        <p>Cada una <b>presupone la anterior</b>: no se puede estar en 3FN sin estar en 2FN.</p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="fn-fin">
+    <div class="card__head">
+      <span class="card__tag">Normalización</span>
+      <span class="card__conf card__conf--alta">Lo nombró</span>
+    </div>
+    <p class="card__q">¿Cuál es el fin que busca la normalización?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">eliminar la redundancia</li>
+      <li class="chip chip--must">anomalías</li>
+      <li class="chip chip--must">integridad / consistencia de los datos</li>
+      <li class="chip">un dato en un solo lugar</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          <b>Eliminar la redundancia</b> para evitar las <b>anomalías</b> que ésta produce y
+          preservar la <b>integridad de los datos</b>. La idea es que cada dato viva
+          <b>en un solo lugar</b>: si está repetido, tarde o temprano dos copias dicen cosas
+          distintas.
+        </p>
+        <p>Si te piden ejemplos, son los del ejemplo de facturación de la Clase 3:</p>
+        <ul>
+          <li>La misma factura con <b>dos fechas</b> distintas.</li>
+          <li>El mismo <code>CodCli</code> con <b>dos nombres</b> distintos (Carlos y Carlitos).</li>
+          <li>El mismo <code>CProd</code> con <b>dos descripciones</b> distintas.</li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <!-- ===================== MER ===================== -->
+
+  <article class="card" data-card="derivable">
+    <div class="card__head">
+      <span class="card__tag">MER</span>
+      <span class="card__conf card__conf--alta">Lo nombró · error nº1</span>
+    </div>
+    <p class="card__q">Atributo derivable: ¿qué es y para qué se usa?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">obtenido a través de un cálculo</li>
+      <li class="chip chip--must">a partir de otro atributo que conocemos</li>
+      <li class="chip chip--must">elipse punteada</li>
+      <li class="chip chip--must">NO se guarda como columna</li>
+      <li class="chip">evita redundancia</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          <b>Qué es:</b> un atributo que <b>puede ser obtenido a través de un cálculo
+          realizado a partir de otro atributo que conocemos</b>. Ej.: la <b>edad</b> se
+          obtiene de la fecha de nacimiento; la <b>antigüedad</b>, de la fecha de ingreso.
+          Se dibuja con <b>elipse punteada</b>.
+        </p>
+        <p><b>Para qué se usa</b> &mdash; contestá las tres:</p>
+        <ul>
+          <li>Documenta un requerimiento del usuario <b>sin duplicar el dato</b>.</li>
+          <li>Deja asentado <b>de qué otro atributo se obtiene</b>.</li>
+          <li><b>Evita la redundancia y la anomalía de actualización</b>: si lo guardaras
+            como columna, mañana estaría desactualizado. Se calcula al consultar.</li>
+        </ul>
+        <p class="callout callout--trap">
+          <span class="callout__label">La trampa tiene dos mitades opuestas</span>
+          <b>En el DER: SÍ se dibuja</b>, punteado. <b>En las tablas normalizadas: NO va.</b>
+          Palabras del docente: <i>"si lo ponen, está mal"</i>.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="unarias">
+    <div class="card__head">
+      <span class="card__tag">MER</span>
+      <span class="card__conf card__conf--alta">Lo nombró</span>
+    </div>
+    <p class="card__q">Explique las relaciones unarias y binarias.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">grado de la relación</li>
+      <li class="chip chip--must">unaria = una sola entidad</li>
+      <li class="chip chip--must">binaria = dos entidades</li>
+      <li class="chip">también tienen cardinalidad</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Una relación puede vincular una, dos o más entidades. A la cantidad de entidades que
+          relaciona se la llama <b>grado de la relación</b>.
+        </p>
+        <ul>
+          <li><b>Unaria</b> (o de grado uno): vincula <b>una sola entidad consigo misma</b>.
+            Ejemplos de la cátedra: <i>"Tiene por jefe"</i> sobre Empleado, que es
+            <b>1:1</b> porque un empleado tiene un solo jefe; y <i>"Tiene por límite"</i>
+            sobre País, que es <b>1:N</b> porque un país puede tener 0 (Cuba), 1 (Portugal)
+            o muchos (Argentina) países limítrofes.</li>
+          <li><b>Binaria</b> (o de grado dos): vincula <b>dos entidades</b>. Es el caso más
+            común. Ej.: Laboratorio <i>produce</i> Medicamento, 1:N.</li>
+        </ul>
+        <p>
+          <b>Las unarias también tienen cardinalidad</b>, y es lo que suelen olvidarse.
+          Si te piden dibujarla: un rectángulo con una línea que sale y vuelve al mismo
+          rectángulo, pasando por el rombo.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="historicidad">
+    <div class="card__head">
+      <span class="card__tag">MER</span>
+      <span class="card__conf card__conf--alta">Lo nombró</span>
+    </div>
+    <p class="card__q">¿Qué es la historicidad y cómo se modela? (histórico de precios)</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">no depende sólo del producto</li>
+      <li class="chip chip--must">sino del lapso / del tiempo</li>
+      <li class="chip chip--must">tabla nueva</li>
+      <li class="chip chip--must">la fecha entra en la clave primaria</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Cuando queremos conservar los valores a lo largo del tiempo &mdash; el
+          <b>histórico de precios</b> &mdash; el precio <b>ya no depende únicamente del
+          producto, sino además del lapso</b> en el que ese producto mantuvo ese precio.
+          Habrá tantos precios como veces se haya modificado.
+        </p>
+        <p>
+          Se modela con una <b>tabla nueva</b> en la que <b>la fecha forma parte de la clave
+          primaria</b>:
+        </p>
+        <p><code>Prod (#CodProd, Descripcion)</code><br>
+           <code>PrecioProd (#CodProd, #FechaDesde, Precio)</code></p>
+        <p>
+          <b>El test de una sola pregunta:</b> ¿el valor cambia con el tiempo y me interesa
+          el pasado? → tabla aparte con la fecha en la clave. ¿Sólo me importa el valor de
+          hoy? → columna en el producto.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="especializacion">
+    <div class="card__head">
+      <span class="card__tag">Especialización</span>
+      <span class="card__conf card__conf--alta">Dijo que es clave</span>
+    </div>
+    <p class="card__q">Especialización: explique exclusiva y solapada, y la parte de exclusividad.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">supertipo / subtipo</li>
+      <li class="chip chip--must">ISA</li>
+      <li class="chip chip--must">exclusiva = un solo subtipo</li>
+      <li class="chip chip--must">solapada = varios a la vez</li>
+      <li class="chip chip--must">total = círculo</li>
+      <li class="chip chip--must">exclusiva = arco</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          La especialización parte una entidad (el <b>supertipo</b>) en subconjuntos (los
+          <b>subtipos</b>) que comparten sus atributos y además tienen atributos propios. El
+          vínculo se llama <b>ISA</b> (<i>"es un"</i>) y se dibuja con un triángulo.
+        </p>
+        <p>Sobre él van <b>dos restricciones independientes</b>:</p>
+        <ul>
+          <li><b>Exclusiva</b> (disjunta): un registro del supertipo cae en <b>un solo</b>
+            subtipo. Se dibuja con un <b>arco</b> cruzando las patas.
+            <i>Ej.: una ficha es del tipo autor o del tipo tema.</i></li>
+          <li><b>Solapada:</b> puede caer en <b>varios a la vez</b>. <b>Sin arco</b>.
+            <i>Ej.: un jugador puede jugar de delantero y de defensor.</i></li>
+          <li><b>Total:</b> todo registro del supertipo cae en algún subtipo.
+            <b>Círculo</b> entre el supertipo y el triángulo.</li>
+          <li><b>Parcial:</b> puede haber registros afuera. <b>Sin círculo</b>.</li>
+        </ul>
+        <p>
+          <b>Cómo justificar:</b> total/parcial hablando del <b>conjunto</b>
+          ("sólo hay 2 tipos"); exclusiva/solapada hablando de <b>un individuo</b>
+          ("un empleado sólo realiza una tarea").
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="esp-conteo">
+    <div class="card__head">
+      <span class="card__tag">Especialización</span>
+      <span class="card__conf card__conf--alta">Pregunta suya</span>
+    </div>
+    <p class="card__q">Dados los subtipos A=30 y B=20, ¿cuántos registros tiene el supertipo? Contemple todas las posibilidades.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">mínimo y máximo, no un número</li>
+      <li class="chip chip--must">total da el máximo</li>
+      <li class="chip chip--must">exclusiva da el mínimo</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>Total + exclusiva:</b> exactamente <b>50</b>. Único caso con número cerrado.</li>
+          <li><b>Total + solapada:</b> entre <b>30 y 50</b>. El piso es el subtipo más grande.</li>
+          <li><b>Parcial + exclusiva:</b> <b>50 o más</b>. Sin techo.</li>
+          <li><b>Parcial + solapada:</b> <b>30 o más</b>. Sin techo, y el piso es el mayor.</li>
+        </ul>
+        <p>
+          <b>Total da el máximo. Exclusiva da el mínimo.</b> Y siempre escribí
+          <b>el escenario que produce cada extremo</b>, no sólo el número.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="notacion">
+    <div class="card__head">
+      <span class="card__tag">Notación</span>
+      <span class="card__conf card__conf--alta">Lo nombró</span>
+    </div>
+    <p class="card__q">Dibuje de memoria: multivaluado, derivado, compuesto, entidad débil, cardinalidad 1:1 y 1:N, y dónde va la pata de gallo.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">doble elipse = multivaluado</li>
+      <li class="chip chip--must">elipse punteada = derivado</li>
+      <li class="chip chip--must">rectángulo doble + rombo doble = débil</li>
+      <li class="chip chip--must">subrayado = clave</li>
+      <li class="chip chip--must">pata toca el lado de los muchos</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Está entera en <a href="../reference/0004-notacion-der-a-mano.html">la hoja de notación</a>. Lo mínimo:</p>
+        <ul>
+          <li>Entidad fuerte: rectángulo. <b>Débil: rectángulo doble</b>, y siempre con
+            <b>rombo doble</b> (relación identificativa). Van en par.</li>
+          <li>Atributo: elipse. <b>Clave: nombre subrayado.</b>
+            <b>Multivaluado: elipse doble.</b> <b>Derivado: elipse punteada.</b>
+            Compuesto: elipses hijas colgando de la madre.</li>
+          <li>Cardinalidad: <code>1</code> y <code>N</code> escritos sobre las líneas, a cada
+            lado del rombo.</li>
+          <li><b>Pata de gallo:</b> las tres puntas <b>tocan la entidad del lado de los
+            muchos</b>; un trazo perpendicular simple significa "uno".</li>
+        </ul>
+        <p>
+          <b>Dibujá en Chen</b> (rectángulo / rombo / elipse). La pata de gallo la tenés que
+          reconocer, no diagramar en ella.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <h2><span class="num">02</span>Bloque ámbar — no los nombró, pero están en los PPT</h2>
+
+  <p>
+    "Todo lo visto desde la clase 1 hasta la de hoy, y sale de los PPT." Estas seis son las
+    que más chances tienen dentro de lo no confirmado. <b>Hacelas después del bloque rojo,
+    y si te queda poco tiempo, leé sólo las palabras clave.</b>
+  </p>
+
+  <article class="card" data-card="ciclo-vida">
+    <div class="card__head">
+      <span class="card__tag">Unidad 1</span>
+      <span class="card__conf">Salió en un parcial</span>
+    </div>
+    <p class="card__q">Grafique y explique el ciclo de vida de una base de datos.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">Análisis</li>
+      <li class="chip chip--must">Diseño</li>
+      <li class="chip chip--must">Implementación</li>
+      <li class="chip chip--must">Captura</li>
+      <li class="chip">es un ciclo, no una lista</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>Cuatro etapas, dibujadas <b>en círculo</b> con flechas:</p>
+        <ul>
+          <li><b>Análisis:</b> se relevan los requerimientos con los usuarios.</li>
+          <li><b>Diseño y modelamiento:</b> conceptual (DER), lógico (tablas) y físico.</li>
+          <li><b>Implementación:</b> se crea la base en el DBMS.</li>
+          <li><b>Captura y operación:</b> se carga y se usa.</li>
+        </ul>
+        <p>
+          <b>Y decí por qué es un ciclo:</b> porque de la operación surgen requerimientos
+          nuevos y problemas de calidad de datos, que devuelven el proceso al análisis.
+          Si lo dibujás como una lista recta, perdés la mitad del punto.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="nn">
+    <div class="card__head">
+      <span class="card__tag">MER</span>
+      <span class="card__conf">Probable</span>
+    </div>
+    <p class="card__q">¿Qué pasa con las relaciones N:N al pasar al modelo normalizado?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">NO existen en el modelo normalizado</li>
+      <li class="chip chip--must">tabla asociativa o relacional</li>
+      <li class="chip chip--must">vincular las dos tablas de origen</li>
+      <li class="chip">PK compuesta por las dos FK</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Textual de la cátedra: <i>"En el modelo normalizado las relaciones muchos a muchos
+          <b>NO existen</b>; este tipo de relaciones, que sí existen en el DER producto del
+          diseño conceptual, en un modelo normalizado <b>se transforman en una nueva tabla</b>
+          que se conoce con el nombre de <b>tabla asociativa o relacional</b>, cuya finalidad
+          es la de <b>vincular a las dos tablas</b> que dieron origen a la relación N:N."</i>
+        </p>
+        <p>
+          Su <b>clave primaria es la combinación de las dos claves foráneas</b>. Y si la
+          relación tenía atributos propios, esos atributos <b>van en esa tabla</b>.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="debil">
+    <div class="card__head">
+      <span class="card__tag">MER</span>
+      <span class="card__conf">Probable</span>
+    </div>
+    <p class="card__q">¿Qué es una entidad débil?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">depende de la existencia previa de otra</li>
+      <li class="chip chip--must">no tiene atributos suficientes para su clave</li>
+      <li class="chip chip--must">hereda la clave primaria de la fuerte</li>
+      <li class="chip">relación débil</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <p>
+          Textual: <i>"Es una entidad cuya existencia <b>depende de la existencia previa de
+          otra entidad</b>, la que recibe el nombre de entidad fuerte. Individualmente la
+          entidad débil <b>no posee los suficientes atributos para formar su clave
+          primaria</b>, por lo que debe complementarla <b>heredando la clave primaria de la
+          entidad de la que depende</b>. Una relación que une una entidad fuerte con una
+          débil se denomina <b>relación débil</b>."</i>
+        </p>
+        <p>
+          Se dibuja con <b>rectángulo doble</b>, y la relación con <b>rombo doble</b>.
+          Ejemplo de la cátedra: Empleado —1— <i>Tiene por</i> —N— Hijo.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="niveles">
+    <div class="card__head">
+      <span class="card__tag">Unidad 2</span>
+      <span class="card__conf">Probable</span>
+    </div>
+    <p class="card__q">Explique los tres niveles de abstracción de datos.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">físico: cómo se almacena internamente</li>
+      <li class="chip chip--must">lógico: tablas, atributos, relaciones</li>
+      <li class="chip chip--must">vistas: subconjuntos por usuario</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>Nivel físico:</b> cómo los datos <b>se almacenan y organizan internamente</b>
+            &mdash; estructura de almacenamiento, índices, acceso a disco.</li>
+          <li><b>Nivel lógico:</b> visión estructurada que se abstrae de la implementación
+            física. Acá se definen <b>tablas, atributos, relaciones y restricciones de
+            integridad</b>.</li>
+          <li><b>Nivel de vistas:</b> <b>vistas personalizadas</b> para grupos específicos de
+            usuarios; subconjuntos lógicos que facilitan la personalización de roles.</li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="disenio">
+    <div class="card__head">
+      <span class="card__tag">Unidad 2</span>
+      <span class="card__conf">Probable</span>
+    </div>
+    <p class="card__q">¿Cuáles son las etapas del proceso de diseño de una base de datos?</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">recopilación de requisitos</li>
+      <li class="chip chip--must">diseño conceptual</li>
+      <li class="chip chip--must">diseño lógico</li>
+      <li class="chip chip--must">diseño físico</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>Recopilación de requisitos y análisis:</b> se entrevista a los usuarios para
+            comprender y documentar los requisitos de datos.</li>
+          <li><b>Diseño conceptual:</b> esquema de alto nivel con tipos de entidades,
+            relaciones y restricciones. <b>Sin detalles de implementación.</b></li>
+          <li><b>Diseño lógico:</b> el esquema conceptual se transforma al modelo de
+            implementación del DBMS.</li>
+          <li><b>Diseño físico:</b> estructuras de almacenamiento internas, índices y rutas
+            de acceso.</li>
+        </ul>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <article class="card" data-card="almacenamiento">
+    <div class="card__head">
+      <span class="card__tag">Unidad 4</span>
+      <span class="card__conf">Baja</span>
+    </div>
+    <p class="card__q">Diferencie almacenamiento primario, secundario y terciario.</p>
+    <ul class="chips">
+      <span class="chips__label">Tienen que aparecer</span>
+      <li class="chip chip--must">la CPU puede operar directamente</li>
+      <li class="chip chip--must">rápido pero capacidad limitada</li>
+      <li class="chip chip--must">debe copiarse al principal primero</li>
+    </ul>
+    <details class="reveal">
+      <summary>Respuesta modelo</summary>
+      <div class="reveal__body">
+        <ul>
+          <li><b>Primario:</b> medios sobre los que <b>la CPU puede operar directamente</b>
+            &mdash; memoria principal y caché. Acceso rápido, <b>capacidad limitada</b>.</li>
+          <li><b>Secundario:</b> discos magnéticos (discos duros). Gran capacidad, bajo
+            costo, acceso más lento.</li>
+          <li><b>Terciario:</b> medios removibles &mdash; ópticos, cintas.</li>
+        </ul>
+        <p>
+          <b>El dato clave:</b> la CPU <b>no puede procesar directamente</b> lo que está en
+          secundario o terciario; <b>primero debe copiarse al almacenamiento principal</b>.
+        </p>
+      </div>
+    </details>
+    <div class="card__mark">
+      <button class="mark" data-mark="ok">La sé</button>
+      <button class="mark" data-mark="rev">Repasar</button>
+    </div>
+  </article>
+
+  <h2><span class="num">03</span>Práctica — los dos ejercicios de cajón</h2>
+
+  <p>
+    Acá no hay palabras clave: hay <b>procedimiento</b>. Seguilo en orden y no te saltees
+    pasos, que es donde se pierden los puntos fáciles.
+  </p>
+
+  <h3>Ejercicio 1 · DER desde un enunciado</h3>
+
+  <ol class="paso">
+    <li><b>Subrayá los sustantivos</b> del enunciado. Candidatos a entidad.</li>
+    <li><b>Subrayá los verbos</b> que unen dos sustantivos. Candidatos a relación.</li>
+    <li><b>Colgá los atributos</b> de cada entidad y <b>subrayá la clave</b> de cada una.</li>
+    <li><b>Marcá los especiales:</b> multivaluado (doble elipse), derivado (punteada),
+      compuesto (hijas). Los tres aparecen en casi todos los enunciados de esta cátedra.</li>
+    <li><b>Escribí la cardinalidad en los DOS extremos</b> de cada relación. Buscá la fórmula
+      <i>"un único / un solo / muchos… pero"</i>.</li>
+    <li><b>¿Hay especialización?</b> Si una entidad tiene datos que sólo valen para algunos,
+      sí. Poné el triángulo ISA, el círculo y el arco, y <b>justificá al margen</b>.</li>
+    <li><b>Releé la lista de consultas del final.</b> Ahí se esconden atributos obligatorios
+      &mdash; en el TP1 el <b>código postal</b> aparece sólo ahí.</li>
+    <li><b>Buscá la viñeta que reubica un dato.</b> Un dato se presenta pegado a una entidad y
+      una viñeta posterior (o una nota al pie) lo manda a otra. En el TP1, el farmacéutico
+      parece colgar de la farmacia y después lo mandan a <b>Ciudad</b>.</li>
+    <li><b>Escribí tus supuestos al margen.</b> Un supuesto escrito es defendible; uno
+      silencioso parece un error.</li>
+  </ol>
+
+  <h3>Ejercicio 2 · Normalización de una tabla</h3>
+
+  <ol class="paso">
+    <li><b>Tachá los campos calculados.</b> Precio renglón = cantidad × precio unitario, total,
+      edad, antigüedad, fecha esperada de devolución. <b>No van como columna.</b></li>
+    <li><b>1FN:</b> separá el grupo repetitivo. Cabecera por un lado, renglones por otro.</li>
+    <li><b>2FN:</b> por cada campo no clave preguntate si depende de <b>toda</b> la clave o
+      sólo de una parte. El que depende de una parte se va a tabla propia.</li>
+    <li><b>3FN:</b> buscá el campo que depende de <b>otro campo no clave</b>. Ése se va con su
+      determinante a una tabla nueva.</li>
+    <li><b>Poné la clave primaria de CADA tabla.</b> Es el error nº2 del docente.</li>
+    <li><b>Marcá las foráneas</b> y verificá que cada tabla se pueda reconstruir con joins.</li>
+  </ol>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Los tres errores que el docente dijo que marca siempre</span>
+    <ol>
+      <li><b>Modelar los campos calculados.</b> <i>"Si lo ponen, está mal."</i></li>
+      <li><b>No poner las claves primarias</b> de las tablas resultantes.</li>
+      <li><b>En teoría, no acordarse para qué sirve cada tipo de índice.</b></li>
+    </ol>
+  </blockquote>
+
+  <h2><span class="num">04</span>Los 60 segundos antes de entregar</h2>
+
+  <ol class="paso">
+    <li>¿Cada tabla del relacional tiene su <b>clave primaria</b> escrita?</li>
+    <li>¿Quedó algún <b>campo calculado</b> como columna? Tachalo.</li>
+    <li>¿Cada relación del DER tiene <b>cardinalidad en los dos extremos</b>?</li>
+    <li>¿Cada <b>entidad débil</b> tiene su <b>rombo doble</b>?</li>
+    <li>¿Los <b>multivaluados</b> están en doble elipse, y los <b>derivados</b> punteados?</li>
+    <li>¿Cada <b>ISA</b> tiene decidido el círculo y el arco?</li>
+    <li>En las teóricas que decían <b>"justifique"</b>, ¿justificaste? Media respuesta sin el
+      porqué vale la mitad.</li>
+    <li>¿Contestaste <b>algo</b> en todas? Teoría y práctica se aprueban <b>por separado</b>:
+      una práctica perfecta con la teoría en blanco es un aplazo.</li>
+  </ol>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">De dónde sale cada respuesta</span>
+    <p>
+      Las definiciones entrecomilladas son <b>textuales de los PPTX de la cátedra</b>:
+      Clase 1 y 2 (<code>B Clase 2 Diseño Conceptual Udeci.pptx</code>), Clase 3
+      (normalización) y <code>Clase Indices y Txn .pptx</code>. Las preguntas y su prioridad
+      salen de <a href="../raw/PAUTAS_EXAMEN.md">PAUTAS_EXAMEN.md</a>, que es lo que el
+      docente dictó en clase el 17/09.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Cuando termines la primera pasada, decime cuáles quedaron en
+      "Repasar" y las desarmamos una por una.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../reference/0004-notacion-der-a-mano.html">Notación a mano</a>
+    <a href="../reference/0002-normalizacion.html">Referencia: normalización</a>
+    <a href="../reference/0003-indices-y-transacciones.html">Referencia: índices y ACID</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/repaso.js"></script>
+</body>
+</html>

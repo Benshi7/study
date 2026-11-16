@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 55 · La clase del parcial</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+<style>
+  .moves { counter-reset: mv; list-style: none; padding: 0; margin: 1.2rem 0 0; }
+  .moves li { counter-increment: mv; padding: 0.35rem 0; }
+  .moves li::before { content: counter(mv) " · "; font-family: var(--mono); color: var(--accent); }
+  .moves a { text-decoration: none; }
+  .tema { font-family: var(--mono); font-size: 0.9rem; color: var(--ink-soft); margin: -0.4rem 0 1rem; }
+
+  /* Diagramas inline: todo sale de los tokens del tema, así siguen rosa/sepia y claro/oscuro. */
+  figure.dg { margin: 1.8rem 0; }
+  figure.dg svg { display: block; width: 100%; max-width: 40rem; height: auto; margin: 0 auto; }
+  .dg-box   { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1; }
+  .dg-hi    { fill: var(--paper-sunk); stroke: var(--ink); stroke-width: 1.5; }
+  .dg-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+  .dg-set   { fill: var(--ink); fill-opacity: 0.06; stroke: var(--ink-soft); stroke-width: 1.2; }
+  .dg-rule  { stroke: var(--rule); stroke-width: 1; }
+  .dg-line  { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+  .dg-acc   { stroke: var(--accent); }
+  .dg-arr   { fill: var(--ink-soft); }
+  .dg-mask  { fill: var(--paper); }
+  .dg-name  { fill: var(--ink); font: 600 12px var(--sans); }
+  .dg-big   { fill: var(--ink); font: 700 16px var(--sans); }
+  .dg-mono  { fill: var(--ink-soft); font: 12px var(--mono); }
+  .dg-sub   { fill: var(--ink-faint); font: 10px var(--mono); }
+  .dg-card  { fill: var(--ink); font: 600 10px var(--mono); }
+  .dg-ink   { fill: var(--ink); }
+  .dg-t-acc { fill: var(--accent); }
+</style>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 55 · Repaso final · 2do parcial</p>
+    <h1 class="masthead__title">La clase del parcial</h1>
+    <p class="masthead__standfirst">
+      Siete bloques de diez minutos. En cada uno: la consigna como la dice el docente, la
+      plantilla, <b>un solo ejercicio</b> para tipear y la trampa. No hay nada nuevo: es lo que
+      más se repite en los modelos de parcial, ordenado por cuánto pesa.
+    </p>
+    <p class="masthead__meta">
+      <span>~90 minutos</span>
+      <span>Jueves 12/11, 18:30</span>
+      <span>Hacé un bloque y pará 2 minutos</span>
+    </p>
+  </header>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cómo usarla</span>
+    <p>
+      Un bloque por vez. <b>Tipeá la consulta, no la leas.</b> Si te trabás, abrí "Ver la
+      solución", copiala, borrá, y escribila de memoria. Si el bloque entero se te hace
+      cuesta arriba, el enlace "si te trabás" te lleva a la lección larga.
+    </p>
+  </div>
+
+  <ol class="moves">
+    <li><a href="#b1">SCD: lo actual y la vista en castellano</a></li>
+    <li><a href="#b2">El indicador (CASE) y pegarle a la vista</a></li>
+    <li><a href="#b3">SCD a una fecha, y sumas sobre la historia</a></li>
+    <li><a href="#b4">La anteúltima foto</a></li>
+    <li><a href="#b5">SUMINISTROS: los 4 moldes</a></li>
+    <li><a href="#b6">Conjuntos: A − B y uno solo de los dos</a></li>
+    <li><a href="#b7">DDL, DML y la teoría del choice</a></li>
+  </ol>
+
+  <!-- ===================================================== 1 -->
+  <h2 id="b1"><span class="num">01</span>SCD: lo actual y la vista en castellano</h2>
+  <p class="tema">Seguro sale · aparece en los tres modelos · 10 min</p>
+
+  <p>
+    <b>La consigna:</b> "Generar una vista con la información <b>actual</b>, con los campos en
+    castellano."
+  </p>
+  <p>
+    Cada fila de <code>CUSTOMER_GROUP</code> es una <b>foto</b> con <code>Start_Dt</code> y
+    <code>End_Dt</code>. La foto vigente es la que termina en <code>'2100-12-31'</code>.
+    Todo "actual" es ese filtro y nada más.
+  </p>
+
+  <figure class="dg">
+    <svg viewBox="0 0 632 276" role="img" aria-labelledby="l55-scd-t l55-scd-d">
+      <title id="l55-scd-t">Las fotos de un cliente en CUSTOMER_GROUP</title>
+      <desc id="l55-scd-d">Cuatro fotos consecutivas del cliente 125269, de la 5 a la 8. Cada una empieza el día siguiente a que termina la anterior. La foto 5 contiene el 31/01/2021, la 7 es la anteúltima y la 8 es la actual, con End_Dt 2100-12-31. Una flecha lleva del Start_Dt de la vigente, menos un día, al End_Dt de la anteúltima.</desc>
+      <defs>
+        <marker id="l55-scd-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon class="dg-arr" points="0 0,8 3,0 6"/>
+        </marker>
+      </defs>
+
+      <!-- conectores primero -->
+      <path class="dg-line" d="M154 60V104"/>
+      <path class="dg-line" d="M418 60V104"/>
+      <path class="dg-line dg-acc" d="M550 60V104"/>
+      <path class="dg-line" d="M508 180V204A8 8 0 0 1 500 212H468A8 8 0 0 1 460 204V181" marker-end="url(#l55-scd-arr)"/>
+      <rect class="dg-mask" x="460" y="218" width="48" height="16" rx="2"/>
+      <text class="dg-name" x="484" y="231" text-anchor="middle">− 1 día</text>
+
+      <!-- encabezados de fila -->
+      <text class="dg-sub" x="84" y="152" text-anchor="end">Start_Dt</text>
+      <text class="dg-sub" x="84" y="170" text-anchor="end">End_Dt</text>
+
+      <!-- fotos 5 a 8 -->
+      <rect class="dg-hi"    x="96"  y="108" width="116" height="72" rx="6"/>
+      <rect class="dg-box"   x="228" y="108" width="116" height="72" rx="6"/>
+      <rect class="dg-hi"    x="360" y="108" width="116" height="72" rx="6"/>
+      <rect class="dg-focal" x="492" y="108" width="116" height="72" rx="6"/>
+
+      <g text-anchor="middle">
+        <text class="dg-name" x="154" y="130">Foto 5</text>
+        <text class="dg-mono" x="154" y="152">2016-12-02</text>
+        <text class="dg-mono" x="154" y="170">2021-12-01</text>
+
+        <text class="dg-name" x="286" y="130">Foto 6</text>
+        <text class="dg-mono" x="286" y="152">2021-12-02</text>
+        <text class="dg-mono" x="286" y="170">2022-02-01</text>
+
+        <text class="dg-name" x="418" y="130">Foto 7</text>
+        <text class="dg-mono" x="418" y="152">2022-02-02</text>
+        <text class="dg-mono" x="418" y="170">2023-02-01</text>
+
+        <text class="dg-name" x="550" y="130">Foto 8</text>
+        <text class="dg-mono" x="550" y="152">2023-02-02</text>
+        <text class="dg-mono" x="550" y="170">2100-12-31</text>
+
+        <!-- llamadas -->
+        <text class="dg-name" x="154" y="36">al 31/01/2021</text>
+        <text class="dg-sub"  x="154" y="52">BETWEEN Start_Dt AND End_Dt</text>
+        <text class="dg-name" x="418" y="36">anteúltima</text>
+        <text class="dg-sub"  x="418" y="52">bloque 4</text>
+        <text class="dg-name dg-t-acc" x="550" y="36">actual</text>
+        <text class="dg-sub dg-t-acc"  x="550" y="52">End_Dt = '2100-12-31'</text>
+      </g>
+      <circle class="dg-ink" cx="154" cy="108" r="4"/>
+      <circle class="dg-ink" cx="418" cy="108" r="4"/>
+      <circle class="dg-t-acc" cx="550" cy="108" r="4"/>
+
+      <text class="dg-sub" x="24" y="268">Fotos 5 a 8 de las 8 del cliente 125269 · sin escala de tiempo</text>
+    </svg>
+    <figcaption>
+      <b>Las fotos de un cliente.</b> Cada una empieza el día después de que termina la
+      anterior. Por eso <code>Start_Dt − 1 día</code> de la vigente es el <code>End_Dt</code>
+      de la anteúltima (la flecha de abajo, que vas a usar en el bloque 4).
+    </figcaption>
+  </figure>
+
+  <p>
+    <b>Cómo lo armó el docente en la extra clase:</b> <b>dos vistas</b>. La <b>histórica</b> es la
+    tabla entera con los campos en castellano, <b>sin <code>WHERE</code></b>. La <b>actual</b> se
+    arma <b>sobre la histórica</b> (no sobre la tabla), sin las fechas, y sólo filtra la foto
+    vigente.
+  </p>
+
+<pre><code>CREATE VIEW Vista_Clientes_Hist AS
+SELECT Customer_Group_Id       AS Id_Cliente,
+       Start_Dt                AS Fecha_Inicio,
+       SIC_Cd                  AS Cod_Actividad,
+       CG_Begin_Dt             AS Fecha_Alta,
+       Officer_Id              AS Id_Oficial,
+       Banking_Group_Id        AS Id_Banca,
+       Telephone_Ind           AS Ind_Telefono,
+       CG_Type_Cd              AS Cod_Tipo,
+       Customer_Group_Assoc_Id AS Id_Asociado,
+       End_Dt                  AS Fecha_Fin
+FROM   CUSTOMER_GROUP;                     -- sin WHERE: toda la historia
+
+CREATE VIEW Vista_Clientes AS
+SELECT Id_Cliente, Cod_Actividad, Fecha_Alta, Id_Oficial,
+       Id_Banca, Ind_Telefono, Cod_Tipo, Id_Asociado
+FROM   Vista_Clientes_Hist                 -- ← la histórica, no la tabla
+WHERE  Fecha_Fin = '2100-12-31';           -- ← lo actual</code></pre>
+
+  <p>
+    En la histórica, a la izquierda del <code>AS</code> va el nombre <b>en inglés de la tabla</b>.
+    En la actual ya no existe ese nombre: se usan los de <b>castellano</b> (por eso el filtro es
+    <code>Fecha_Fin</code>, no <code>End_Dt</code>). Si piden además el nombre del cliente,
+    se suma <code>JOIN CUSTOMER_NAME N ON N.CG_Id = H.Id_Cliente</code>.
+  </p>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">1 de 7 · Histórica y actual</span>
+    <p class="sqlbox__task">
+      Creá <code>Vista_Clientes_Hist</code> (las 10 columnas en castellano, sin <code>WHERE</code>)
+      y <code>Vista_Clientes</code> <b>sobre la histórica</b>: sin <code>Fecha_Inicio</code> ni
+      <code>Fecha_Fin</code>, sólo la foto vigente. Terminá con un <code>SELECT *</code> sobre
+      <code>Vista_Clientes</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Vista_Clientes_Hist AS
+SELECT Customer_Group_Id AS Id_Cliente,
+       Start_Dt          AS Fecha_Inicio,
+FROM CUSTOMER_GROUP;
+
+CREATE VIEW Vista_Clientes AS
+SELECT Id_Cliente,
+FROM
+
+
+SELECT * FROM Vista_Clientes;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Vista_Clientes_Hist AS
+SELECT Customer_Group_Id       AS Id_Cliente,
+       Start_Dt                AS Fecha_Inicio,
+       SIC_Cd                  AS Cod_Actividad,
+       CG_Begin_Dt             AS Fecha_Alta,
+       Officer_Id              AS Id_Oficial,
+       Banking_Group_Id        AS Id_Banca,
+       Telephone_Ind           AS Ind_Telefono,
+       CG_Type_Cd              AS Cod_Tipo,
+       Customer_Group_Assoc_Id AS Id_Asociado,
+       End_Dt                  AS Fecha_Fin
+FROM CUSTOMER_GROUP;
+
+CREATE VIEW Vista_Clientes AS
+SELECT Id_Cliente, Cod_Actividad, Fecha_Alta, Id_Oficial,
+       Id_Banca, Ind_Telefono, Cod_Tipo, Id_Asociado
+FROM Vista_Clientes_Hist
+WHERE Fecha_Fin = '2100-12-31';
+
+SELECT * FROM Vista_Clientes;
+</script>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La trampa</span>
+    <p>
+      Copiá la fecha de fin abierta <b>que traiga la tabla del examen</b> (acá
+      <code>2100-12-31</code>). Y que los campos estén en castellano: es lo que corrigen. Si la actual
+      la armás sobre la histórica, acordate de que ahí ya no existen los nombres en inglés.
+    </p>
+  </div>
+  <p>Si te trabás: <a href="0052-slow-change-dimension.html">0052 · secciones 04 y 05</a>.</p>
+
+  <!-- ===================================================== 2 -->
+  <h2 id="b2"><span class="num">02</span>El indicador (CASE) y pegarle a la vista</h2>
+  <p class="tema">Seguro sale · es el punto (b) del modelo 1a · 10 min</p>
+
+  <p>
+    <b>La consigna:</b> "Agregá un indicador <b>Externo</b> si el oficial es menor a 21
+    <b>y</b> la banca mayor a 4; <b>Propio</b> en los demás casos." Después: "usá la vista
+    para…".
+  </p>
+  <p>
+    El indicador va <b>adentro de la vista</b>, como una columna más, y <b>siempre con
+    <code>ELSE</code></b>. Después se le "pega" a la vista como si fuera una tabla.
+  </p>
+
+<pre><code>CASE WHEN condición1 AND condición2 THEN 'Externo'
+     ELSE 'Propio'
+END AS Indicador</code></pre>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">2 de 7 · Indicador + usar la vista</span>
+    <p class="sqlbox__task">
+      Creá <code>Clientes_Ind</code> (<code>Id_Cliente</code>, <code>Nombre</code>,
+      <code>Indicador</code>, sólo foto vigente). Después, <b>usando la vista</b>, mostrá el
+      nombre de los clientes <b>Externos</b>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Clientes_Ind AS
+SELECT G.Customer_Group_Id AS Id_Cliente,
+       N.CG_Name AS Nombre,
+       CASE
+FROM CUSTOMER_GROUP G
+JOIN CUSTOMER_NAME N ON N.CG_Id = G.Customer_Group_Id
+WHERE G.End_Dt = '2100-12-31';
+
+SELECT </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Clientes_Ind AS
+SELECT G.Customer_Group_Id AS Id_Cliente,
+       N.CG_Name AS Nombre,
+       CASE WHEN G.Officer_Id < 21 AND G.Banking_Group_Id > 4
+            THEN 'Externo'
+            ELSE 'Propio'
+       END AS Indicador
+FROM CUSTOMER_GROUP G
+JOIN CUSTOMER_NAME N ON N.CG_Id = G.Customer_Group_Id
+WHERE G.End_Dt = '2100-12-31';
+
+SELECT Nombre FROM Clientes_Ind WHERE Indicador = 'Externo';
+</script>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La trampa</span>
+    <p>
+      Un <code>SELECT</code> suelto con el <code>CASE</code> no es una vista con indicador.
+      Y <code>AND</code> exige las dos condiciones a la vez; si la consigna dice "o", es
+      <code>OR</code>.
+    </p>
+  </div>
+  <p>Si te trabás: <a href="0039-vistas.html">0039 · Vistas</a>.</p>
+
+  <!-- ===================================================== 3 -->
+  <h2 id="b3"><span class="num">03</span>SCD a una fecha, y sumas sobre la historia</h2>
+  <p class="tema">Seguro sale · es el punto (c) del modelo 1a · 10 min</p>
+
+  <p>
+    <b>La consigna:</b> "Todos los clientes <b>al 31/01/2021</b>." La fecha se escribe
+    <b>a la izquierda</b> y siempre queda <b>una sola foto</b> por cliente:
+  </p>
+
+<pre><code>WHERE 'AAAA-MM-DD' BETWEEN Start_Dt AND End_Dt</code></pre>
+  <p>En el dibujo del bloque 1, el 31/01/2021 cae adentro de la foto 5 y de ninguna otra. Y si ya armaste la histórica, la consulta va sobre
+    ella, con sus nombres en castellano: <code>WHERE '2021-01-31' BETWEEN Fecha_Inicio AND Fecha_Fin</code>.</p>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">3 de 7 · Al 31/01/2021</span>
+    <p class="sqlbox__task">
+      Mostrá el nombre y el oficial de todos los clientes <b>al 31 de enero de 2021</b>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT N.CG_Name, G.Officer_Id
+FROM CUSTOMER_GROUP G
+JOIN CUSTOMER_NAME N ON N.CG_Id = G.Customer_Group_Id
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT N.CG_Name, G.Officer_Id
+FROM CUSTOMER_GROUP G
+JOIN CUSTOMER_NAME N ON N.CG_Id = G.Customer_Group_Id
+WHERE '2021-01-31' BETWEEN G.Start_Dt AND G.End_Dt;
+</script>
+  </div>
+
+  <p>Y si piden sumar o promediar sobre la historia, lo primero es <b>qué filas entran</b>:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>El enunciado dice</th><th>WHERE</th></tr></thead>
+      <tbody>
+        <tr><td>"histórico", "a lo largo del tiempo"</td><td>ninguno (todas las fotos)</td></tr>
+        <tr><td>"actual", "vigente"</td><td><code>End_Dt = '2100-12-31'</code></td></tr>
+        <tr><td>"al 31/12/2021"</td><td><code>'2021-12-31' BETWEEN Start_Dt AND End_Dt</code></td></tr>
+        <tr><td>"hasta el 31/12/2021"</td><td><code>Start_Dt &lt;= '2021-12-31'</code></td></tr>
+        <tr><td>"anteriores a la actual"</td><td><code>End_Dt &lt;&gt; '2100-12-31'</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La trampa</span>
+    <p>
+      La historia <b>ya incluye</b> la foto actual: no la sumes aparte. Y las fechas van como
+      <code>AAAA-MM-DD</code>: mezclar formatos compara mal sin avisarte.
+    </p>
+  </div>
+  <p>Si te trabás: <a href="0052-slow-change-dimension.html">0052 · secciones 04 y 06</a>.</p>
+
+  <!-- ===================================================== 4 -->
+  <h2 id="b4"><span class="num">04</span>La anteúltima foto</h2>
+  <p class="tema">El docente lo repitió varias veces · 10 min</p>
+
+  <p>
+    <b>La consigna:</b> "Mostrá toda la información de la <b>anteúltima</b> foto del cliente
+    125269." Una sola forma, la que hizo el docente en la extra clase:
+  </p>
+  <ol>
+    <li>Buscás la foto <b>vigente</b> de cada cliente.</li>
+    <li>Le restás un día a su <code>Start_Dt</code>: ese es el <code>End_Dt</code> de la foto anterior.</li>
+    <li>Unís la tabla consigo misma por cliente y por esa fecha.</li>
+  </ol>
+  <p>Es la flecha "− 1 día" del dibujo del bloque 1: de la foto 8 a la foto 7.</p>
+
+<pre><code>SELECT C.*
+FROM   CUSTOMER_GROUP C
+JOIN  (SELECT Customer_Group_Id, date(Start_Dt, '-1 days') AS Fin_Anterior
+       FROM CUSTOMER_GROUP
+       WHERE End_Dt = '2100-12-31') T
+  ON   T.Customer_Group_Id = C.Customer_Group_Id
+ AND   T.Fin_Anterior      = C.End_Dt</code></pre>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">4 de 7 · Anteúltima</span>
+    <p class="sqlbox__task">
+      Toda la información de la anteúltima foto del cliente <b>125269</b>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT C.*
+FROM CUSTOMER_GROUP C
+JOIN (SELECT Customer_Group_Id, date(Start_Dt, '-1 days') AS Fin_Anterior
+      FROM CUSTOMER_GROUP
+      WHERE End_Dt = '2100-12-31') T
+  ON </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT C.*
+FROM CUSTOMER_GROUP C
+JOIN (SELECT Customer_Group_Id, date(Start_Dt, '-1 days') AS Fin_Anterior
+      FROM CUSTOMER_GROUP
+      WHERE End_Dt = '2100-12-31') T
+  ON T.Customer_Group_Id = C.Customer_Group_Id
+ AND T.Fin_Anterior = C.End_Dt
+WHERE C.Customer_Group_Id = 125269;
+</script>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La trampa</span>
+    <p>
+      Un cliente con <b>una sola foto</b> no tiene anteúltima: no aparece en el resultado, y
+      está bien. Lo que se compara es el <b>fin</b> de la foto anterior (el inicio de la
+      vigente menos un día), no su inicio. Esto funciona porque cada foto empieza el día
+      después de que termina la anterior.
+    </p>
+  </div>
+  <p>Si te trabás: <a href="0052-slow-change-dimension.html">0052 · sección 07</a> (ahí están las otras dos formas).</p>
+
+  <!-- ===================================================== 5 -->
+  <h2 id="b5"><span class="num">05</span>SUMINISTROS: los 4 moldes</h2>
+  <p class="tema">"Dos de la dificultad de SUMINISTROS" · 10 min</p>
+
+  <p>
+    Las consultas se parecen mucho entre sí. Si reconocés el molde, el resto es cambiar
+    nombres. <code>ENVIOS</code> está en el medio de todo: cada <code>JOIN</code> recorre una
+    clave foránea.
+  </p>
+
+  <figure class="dg">
+    <svg viewBox="0 0 640 292" role="img" aria-labelledby="l55-er-t l55-er-d">
+      <title id="l55-er-t">SUMINISTROS: ENVIOS en el medio</title>
+      <desc id="l55-er-d">La tabla ENVIOS está en el centro y se une con tres tablas por clave foránea: PROVEEDORES por P_Id, COMPONENTES por C_Id y ARTICULOS por T_Id. Cada fila de ENVIOS pertenece a un proveedor, un componente y un artículo.</desc>
+
+      <!-- relaciones primero -->
+      <path class="dg-line" d="M320 116V172"/>
+      <path class="dg-line" d="M184 224H240"/>
+      <path class="dg-line" d="M400 224H456"/>
+
+      <!-- etiquetas de clave -->
+      <rect class="dg-mask" x="326" y="138" width="32" height="14" rx="2"/>
+      <text class="dg-sub" x="330" y="148">C_Id</text>
+      <rect class="dg-mask" x="196" y="205" width="32" height="12" rx="2"/>
+      <text class="dg-sub" x="212" y="215" text-anchor="middle">P_Id</text>
+      <rect class="dg-mask" x="412" y="205" width="32" height="12" rx="2"/>
+      <text class="dg-sub" x="428" y="215" text-anchor="middle">T_Id</text>
+
+      <!-- cardinalidades: 1 del lado de la tabla chica, N del lado de ENVIOS -->
+      <text class="dg-card" x="312" y="132" text-anchor="end">1</text>
+      <text class="dg-card" x="312" y="164" text-anchor="end">N</text>
+      <text class="dg-card" x="192" y="240" text-anchor="middle">1</text>
+      <text class="dg-card" x="232" y="240" text-anchor="middle">N</text>
+      <text class="dg-card" x="408" y="240" text-anchor="middle">N</text>
+      <text class="dg-card" x="448" y="240" text-anchor="middle">1</text>
+
+      <!-- COMPONENTES -->
+      <rect class="dg-box" x="240" y="12" width="160" height="104" rx="6"/>
+      <line class="dg-rule" x1="240" y1="40" x2="400" y2="40"/>
+      <text class="dg-name" x="252" y="31">COMPONENTES</text>
+      <g class="dg-mono">
+        <text x="252" y="58">#C_Id</text>
+        <text x="252" y="74">CNombre</text>
+        <text x="252" y="90">Color</text>
+        <text x="252" y="106">Peso</text>
+      </g>
+
+      <!-- PROVEEDORES -->
+      <rect class="dg-box" x="24" y="188" width="160" height="72" rx="6"/>
+      <line class="dg-rule" x1="24" y1="216" x2="184" y2="216"/>
+      <text class="dg-name" x="36" y="207">PROVEEDORES</text>
+      <g class="dg-mono">
+        <text x="36" y="234">#P_Id</text>
+        <text x="36" y="250">PNombre</text>
+      </g>
+
+      <!-- ARTICULOS -->
+      <rect class="dg-box" x="456" y="188" width="160" height="72" rx="6"/>
+      <line class="dg-rule" x1="456" y1="216" x2="616" y2="216"/>
+      <text class="dg-name" x="468" y="207">ARTICULOS</text>
+      <g class="dg-mono">
+        <text x="468" y="234">#T_Id</text>
+        <text x="468" y="250">TNombre</text>
+      </g>
+
+      <!-- ENVIOS (foco) -->
+      <rect class="dg-focal" x="240" y="172" width="160" height="104" rx="6"/>
+      <line class="dg-rule" x1="240" y1="200" x2="400" y2="200"/>
+      <text class="dg-name" x="252" y="191">ENVIOS</text>
+      <g class="dg-mono">
+        <text x="252" y="218">#→ P_Id</text>
+        <text x="252" y="234">#→ C_Id</text>
+        <text x="252" y="250">#→ T_Id</text>
+        <text x="252" y="266">Cantidad</text>
+      </g>
+    </svg>
+    <figcaption>
+      <b>ENVIOS en el medio.</b> <code>#</code> es parte de la clave primaria, <code>→</code>
+      es clave foránea. Cada <code>JOIN … ON</code> recorre una de las tres líneas; la clave
+      de <code>ENVIOS</code> es <code>(P_Id, C_Id, T_Id)</code>.
+    </figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>El enunciado dice</th><th>Molde</th></tr></thead>
+      <tbody>
+        <tr><td>"Peso <b>total</b> mayor a…", "cantidad total…"</td><td><code>GROUP BY</code> la clave + <code>HAVING SUM(…) &gt; n</code></td></tr>
+        <tr><td>"<b>Ambos</b> T1 y T2"</td><td>dos subconsultas con <code>IN</code> unidas por <code>AND</code></td></tr>
+        <tr><td>"<b>Ningún</b>", "que <b>no</b> enviaron…"</td><td><code>NOT EXISTS</code> con la subconsulta que mira la fila de afuera</td></tr>
+        <tr><td>"<b>Mayor que la media</b> de…"</td><td><code>WHERE x &gt; (SELECT AVG(…) …)</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">5 de 7 · a · HAVING</span>
+    <p class="sqlbox__task">
+      Nombre del proveedor y del componente, con el <b>peso total</b> enviado
+      (<code>Peso × Cantidad</code>), sólo si pasa de <b>20000</b>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT P.PNombre, C.CNombre, SUM(C.Peso * E.Cantidad) AS Peso_Total
+FROM ENVIOS E
+JOIN PROVEEDORES P ON P.P_Id = E.P_Id
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+GROUP BY
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.PNombre, C.CNombre, SUM(C.Peso * E.Cantidad) AS Peso_Total
+FROM ENVIOS E
+JOIN PROVEEDORES P ON P.P_Id = E.P_Id
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+GROUP BY P.P_Id, P.PNombre, C.C_Id, C.CNombre
+HAVING SUM(C.Peso * E.Cantidad) > 20000;
+</script>
+  </div>
+  <p class="tema">Trampa: C3 y C4 se llaman los dos "C4B". Agrupá por la <b>clave</b> (<code>C_Id</code>), no sólo por el nombre. Y un total sobre un agregado va en <code>HAVING</code>, no en <code>WHERE</code>.</p>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">5 de 7 · b · Ambos</span>
+    <p class="sqlbox__task">
+      Nombre de los proveedores que enviaron algo para el artículo <b>T1</b> <b>y también</b>
+      para el <b>T2</b>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT PNombre
+FROM PROVEEDORES
+WHERE P_Id IN (SELECT P_Id FROM ENVIOS WHERE T_Id = 'T1')
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT PNombre
+FROM PROVEEDORES
+WHERE P_Id IN (SELECT P_Id FROM ENVIOS WHERE T_Id = 'T1')
+  AND P_Id IN (SELECT P_Id FROM ENVIOS WHERE T_Id = 'T2');
+</script>
+  </div>
+  <p class="tema">Trampa: <code>WHERE T_Id = 'T1' AND T_Id = 'T2'</code> da vacío (ninguna fila es las dos cosas), y <code>IN ('T1','T2')</code> es un OR. "Ambos" = dos subconsultas.</p>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">5 de 7 · c · NOT EXISTS</span>
+    <p class="sqlbox__task">
+      Nombre de los proveedores que <b>no</b> enviaron ningún componente de color
+      <code>ROJO</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT P.PNombre
+FROM PROVEEDORES P
+WHERE NOT EXISTS (
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.PNombre
+FROM PROVEEDORES P
+WHERE NOT EXISTS (SELECT *
+                  FROM ENVIOS E
+                  JOIN COMPONENTES C ON C.C_Id = E.C_Id
+                  WHERE E.P_Id = P.P_Id
+                    AND C.Color = 'ROJO');
+</script>
+  </div>
+  <p class="tema">Trampa: la subconsulta tiene que mirar la fila de afuera (<code>E.P_Id = P.P_Id</code>). Sin eso no devuelve lo que pensás.</p>
+
+  <p>
+    El cuarto molde (la media) no lleva ejercicio: es
+    <code>WHERE E.Cantidad &gt; (SELECT AVG(E2.Cantidad) FROM ENVIOS E2 JOIN COMPONENTES C ON C.C_Id = E2.C_Id WHERE C.Color = 'ROJO')</code>.
+    La subconsulta devuelve <b>un solo número</b> y no depende de la fila de afuera.
+  </p>
+  <p>Si te trabás: <a href="../reference/0007-plantillas-sql.html">plantillas 0007</a> y <a href="../practica/suministros.html">la práctica de SUMINISTROS</a>.</p>
+
+  <!-- ===================================================== 6 -->
+  <h2 id="b6"><span class="num">06</span>Conjuntos: A − B y uno solo de los dos</h2>
+  <p class="tema">Lo pidió con "dos soluciones" · 10 min</p>
+
+  <p>
+    Con dos conjuntos hay <b>tres regiones</b>: sólo A, los dos, sólo B. El <code>LEFT JOIN</code>
+    deja NULL del lado derecho cuando no hay pareja; preguntar <code>IS NULL</code> es
+    preguntar "¿no está en B?". El docente prefiere <b>JOIN + WHERE</b>.
+  </p>
+
+  <figure class="dg">
+    <svg viewBox="0 0 560 304" role="img" aria-labelledby="l55-venn-t l55-venn-d">
+      <title id="l55-venn-t">Las tres regiones de dos conjuntos</title>
+      <desc id="l55-venn-d">Dos conjuntos que se superponen: A con los elementos 1 a 6 y B con los elementos 4 a 8. Sólo A, o A menos B, tiene 1, 2 y 3. La intersección tiene 4, 5 y 6. Sólo B, o B menos A, tiene 7 y 8. El ejercicio a pide la región sólo A. El ejercicio b pide las dos regiones de los costados, es decir, los que están en uno solo de los dos.</desc>
+
+      <circle class="dg-set" cx="224" cy="128" r="88"/>
+      <circle class="dg-set" cx="336" cy="128" r="88"/>
+
+      <text class="dg-big" x="140" y="44">A</text>
+      <text class="dg-big" x="412" y="44">B</text>
+
+      <g text-anchor="middle">
+        <text class="dg-mono" x="192" y="124">1 2 3</text>
+        <text class="dg-name" x="192" y="144">A − B</text>
+        <text class="dg-mono" x="280" y="124">4 5 6</text>
+        <text class="dg-name" x="280" y="144">A ∩ B</text>
+        <text class="dg-mono" x="368" y="124">7 8</text>
+        <text class="dg-name" x="368" y="144">B − A</text>
+      </g>
+
+      <!-- a: sólo A -->
+      <path class="dg-line" d="M140 224V228A4 4 0 0 0 144 232H240A4 4 0 0 0 244 228V224"/>
+      <text class="dg-name" x="192" y="252" text-anchor="middle">a · A − B</text>
+
+      <!-- b: las dos de los costados -->
+      <path class="dg-line dg-acc" d="M140 264V268A4 4 0 0 0 144 272H240A4 4 0 0 0 244 268V264"/>
+      <path class="dg-line dg-acc" d="M316 264V268A4 4 0 0 0 320 272H416A4 4 0 0 0 420 268V264"/>
+      <text class="dg-big dg-t-acc" x="280" y="274" text-anchor="middle">+</text>
+      <text class="dg-name dg-t-acc" x="280" y="294" text-anchor="middle">b · uno solo de los dos</text>
+    </svg>
+    <figcaption>
+      <b>Tres regiones.</b> El ejercicio <b>a</b> pide la de la izquierda; el <b>b</b> pide las
+      dos de los costados y deja afuera el medio.
+    </figcaption>
+  </figure>
+
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">6 de 7 · a · A − B</span>
+    <p class="sqlbox__task">Los <code>Id_Art</code> que están en A y <b>no</b> en B.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT A.Id_Art
+FROM A
+LEFT JOIN B ON </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT A.Id_Art
+FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL;
+</script>
+  </div>
+  <p class="tema">Segunda solución para el examen: <code>SELECT Id_Art FROM A WHERE Id_Art NOT IN (SELECT Id_Art FROM B)</code>. Trampa: el <code>IS NULL</code> va en el <code>WHERE</code>, no en el <code>ON</code>.</p>
+
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">6 de 7 · b · (A ∪ B) − (A ∩ B)</span>
+    <p class="sqlbox__task">
+      Los <code>Id_Art</code> que están en <b>uno solo</b> de los dos conjuntos. Con
+      <code>FULL JOIN</code> y un WHERE; mostrá el que no es NULL.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT CASE WHEN A.Id_Art IS NULL THEN B.Id_Art ELSE A.Id_Art END AS Id_Art
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT CASE WHEN A.Id_Art IS NULL THEN B.Id_Art
+            ELSE A.Id_Art
+       END AS Id_Art
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art
+WHERE A.Id_Art IS NULL
+   OR B.Id_Art IS NULL;
+</script>
+  </div>
+  <p class="tema">Segunda solución: dos <code>LEFT JOIN … IS NULL</code> (A−B y B−A) unidos con <code>UNION</code>. Trampa: <code>SELECT A.Id_Art</code> solo deja NULL en las filas de "sólo B".</p>
+  <p>Si te trabás: <a href="0054-conjuntos-en-sql.html">0054 · Conjuntos</a>.</p>
+
+  <!-- ===================================================== 7 -->
+  <h2 id="b7"><span class="num">07</span>DDL, DML y la teoría del choice</h2>
+  <p class="tema">El choice son definiciones y diferencias · 10 min</p>
+
+  <p><b>Esqueletos de SQL</b> (se piden en la práctica y son fáciles de olvidar):</p>
+
+<pre><code>CREATE TABLE ENVIOS (
+  P_Id     CHAR(2) NOT NULL,
+  Cantidad INT     NOT NULL CHECK (Cantidad &gt; 0),
+  PRIMARY KEY (P_Id, T_Id),                              -- compuesta: a nivel tabla
+  FOREIGN KEY (P_Id) REFERENCES PROVEEDORES (P_Id)
+);
+INSERT INTO T (a, b) VALUES (1, 'x');
+UPDATE T SET b = 'y' WHERE a = 1;       -- sin WHERE cambia todo
+DELETE FROM T WHERE a = 1;              -- sin WHERE borra todo
+ALTER TABLE T ADD columna INT;          ALTER TABLE T DROP COLUMN columna;</code></pre>
+
+  <div class="sqlbox">
+    <span class="sqlbox__label">7 de 7 · Una tabla que rechace lo malo</span>
+    <p class="sqlbox__task">
+      Creá <code>CURSO</code> con <code>Cod_Curso</code> (clave primaria), <code>Nombre</code>
+      (obligatorio) y <code>Horas</code> (obligatorio y mayor que 0). La comprobación intenta
+      cargar un curso con <b>-5 horas</b>: tu tabla tiene que rechazarlo.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE CURSO (
+  Cod_Curso INT PRIMARY KEY,
+  Nombre    VARCHAR(40) NOT NULL,
+  Horas
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE CURSO (
+  Cod_Curso INT PRIMARY KEY,
+  Nombre    VARCHAR(40) NOT NULL,
+  Horas     INT NOT NULL CHECK (Horas > 0)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO CURSO VALUES (1, 'SQL', -5);
+</script>
+  </div>
+
+  <p><b>Teoría, una línea por concepto</b> (para el choice):</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Concepto</th><th>La idea</th></tr></thead>
+      <tbody>
+        <tr><td>OLTP · OLAP</td><td>OLTP: muchas transacciones simples, el día a día. OLAP: análisis multidimensional de grandes volúmenes.</td></tr>
+        <tr><td>DW · Data Mart</td><td>DW: corporativo, visión homogénea. Data Mart: departamental, visión parcial.</td></tr>
+        <tr><td>Inmon · Kimball</td><td>Inmon: top-down, DW normalizado (3FN). Kimball: bottom-up, data marts dimensionales (estrella).</td></tr>
+        <tr><td>Estrella · copo de nieve</td><td>Dimensiones desnormalizadas (una unión) contra normalizadas (más uniones, menos espacio).</td></tr>
+        <tr><td>ODS · MDM · DQ</td><td>ODS: área provisional donde se limpian los datos. MDM: datos maestros. DQ: reglas de calidad. Viven en el ETL.</td></tr>
+        <tr><td>MOLAP · ROLAP · HOLAP</td><td>Multidimensional con precálculo; relacional con detalle; híbrido.</td></tr>
+        <tr><td>SCD tipo 1 · tipo 2</td><td>Tipo 1 sobrescribe el valor (sin historia). Tipo 2 agrega una fila con inicio y fin.</td></tr>
+        <tr><td>Índice agrupado</td><td>Ordena <b>físicamente</b> las filas como el índice. Principal: sobre la PK. Secundario: otras columnas, estructura aparte.</td></tr>
+        <tr><td>EXISTS</td><td>Verdadero si la subconsulta devuelve al menos una fila. Sólo con subconsultas.</td></tr>
+        <tr><td>LEFT JOIN</td><td>Todas las filas de la izquierda; NULL a la derecha donde no hay pareja.</td></tr>
+        <tr><td>ACID</td><td>Atomicidad, Consistencia, Aislamiento, Durabilidad: las cuatro propiedades de una transacción.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <b>"Graficá los componentes de un DW":</b> seis cajas en fila y una barra debajo.
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/componentes-dw.svg"
+         alt="Seis etapas de izquierda a derecha: recopilación (CRM, ERP y datos externos), limpieza y homogeneización dentro del ETL (tablas staging, ODS, MDM y DQ), almacén de datos (Data Warehouse con ventas, finanzas y operaciones), modelos analíticos (data mart, cubo OLAP, asociaciones), presentación (gráficos, tablas, semáforos, informes) y explotación por el negocio. Debajo de todo, una banda de metadata.">
+    <figcaption>
+      <b>Seis etapas y una banda de metadata.</b> Las tareas de limpieza viven dentro del ETL.
+    </figcaption>
+  </figure>
+  <p>
+    Así está en la slide 27 del PPT "Algunos componentes genéricos". El <b>Data Mart</b> sale
+    del DW y alimenta al OLAP; <b>Asociaciones</b> y <b>Cubo</b> salen directo del DW.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La trampa</span>
+    <p>
+      Del dibujo se olvidan la <b>metadata</b>. Y en los índices, el error que más marca el
+      profe: no acordarse <b>para qué sirve cada uno</b>.
+    </p>
+  </div>
+
+  <p>
+    Si te trabás: <a href="0053-repaso-unidad-9.html">0053 · Repaso de la unidad 9</a>,
+    <a href="0028-indices.html">0028 · Índices</a> y
+    <a href="../practica/repaso-teoria-parcial2.html">las tarjetas de teoría</a>.
+  </p>
+
+  <!-- ===================================================== cierre -->
+  <h2><span class="num">08</span>Mini-simulacro en papel</h2>
+
+  <p>
+    Cerrá la compu. Con lápiz, <b>una hora</b>, sin mirar. Después comparás con los bloques
+    de arriba.
+  </p>
+  <ol>
+    <li>Graficá los componentes genéricos de un DW.</li>
+    <li>Con <code>CUSTOMER_GROUP</code>: creá la vista de la información actual, en castellano, con un indicador <b>Externo/Propio</b>.</li>
+    <li>Con la misma tabla: todos los clientes <b>al 31/01/2021</b>, y la <b>anteúltima</b> foto del cliente 125269.</li>
+    <li>Con SUMINISTROS: proveedores que enviaron para <b>ambos</b> T1 y T2, y los que <b>no</b> enviaron componentes rojos.</li>
+  </ol>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Antes de entregar</span>
+    <p>
+      ¿"Actual" es <code>End_Dt = '2100-12-31'</code>? · ¿"Al día X" es
+      <code>'X' BETWEEN inicio AND fin</code>? · ¿La vista está en castellano, la actual sale de la histórica y el indicador
+      tiene <code>ELSE</code>? · ¿"Total" va en <code>HAVING</code>? · ¿"Ambos" son dos
+      subconsultas con <code>AND</code>? · ¿Cada tabla tiene alias y cada <code>JOIN</code> su
+      <code>ON</code>? · ¿El dibujo del DW tiene la metadata?
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Los tips del docente (<code>PARCIAL2.md</code>), la extra clase del 03/11
+      (<code>raw/Clase Extra DML_DDL_SCD_2026-11-03.txt</code>), los modelos de parcial 1a y 1b
+      y el parcial del 12/06/2025. Las soluciones están probadas en SQLite 3.45 sobre los mismos
+      datos que usa cada ejercicio.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Mandame tu resolución del mini-simulacro (foto o texto) y te
+      digo qué te sacaría el docente.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0054-conjuntos-en-sql.html">Anterior: 0054 · Conjuntos en SQL</a>
+    <a href="0052-slow-change-dimension.html">SCD completo: 0052</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/scd.js"></script>
+<script src="../assets/seeds/suministros.js"></script>
+<script src="../assets/seeds/conjuntos.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

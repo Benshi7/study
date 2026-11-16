@@ -1,0 +1,16 @@
+{
+  "name": "TP freMTPL2",
+  "dataColors": ["#2F5D8A", "#C0504D", "#9AA0A6", "#E0A030", "#4F81BD", "#6B8E7F", "#7A5C99", "#B8860B"],
+  "background": "#FFFFFF",
+  "foreground": "#1F2933",
+  "tableAccent": "#2F5D8A",
+  "good": "#4F81BD",
+  "bad": "#C0504D",
+  "neutral": "#9AA0A6",
+  "textClasses": {
+    "title":   { "fontFace": "Segoe UI Semibold", "fontSize": 14, "color": "#1F2933" },
+    "label":   { "fontFace": "Segoe UI", "fontSize": 10, "color": "#52606D" },
+    "callout": { "fontFace": "Segoe UI Semibold", "fontSize": 28, "color": "#1F2933" }
+  },
+  "visualStyles": { "*": { "*": { "title": [{ "show": true, "fontSize": 12 }] } } }
+}

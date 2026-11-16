@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 580" width="760" height="580"
+     role="img" aria-labelledby="esp4-title esp4-desc">
+  <title id="esp4-title">Las cuatro combinaciones de especialización en la notación de la cátedra</title>
+  <desc id="esp4-desc">Cuatro paneles en grilla de dos por dos, uno por cada combinación de restricciones de especialización, con los mismos ejemplos que usa la cátedra. Arriba a la izquierda, Empleado de restaurante se especializa en Camarero, Cocinero y Lavaplatos: parcial y exclusiva, se dibuja sin círculo y con arco. Arriba a la derecha, Participantes de película se especializa en Productor, Director y Actores: parcial y solapada, sin círculo y sin arco. Abajo a la izquierda, Ficha se especializa en Ficha autor y Ficha tema: total y exclusiva, con círculo y con arco. Abajo a la derecha, Equipo de fútbol se especializa en Delantero, Defensa y Portero: total y solapada, con círculo y sin arco. La regla es que el círculo entre el supertipo y el triángulo significa total, y el arco que cruza las patas significa exclusiva.</desc>
+
+  <style>
+    .e4-paper { fill: #fffef9; }
+    .e4-panel { fill: none; stroke: rgba(26,26,23,0.14); stroke-width: 1; }
+    .e4-box   { fill: rgba(26,26,23,0.04); stroke: #1a1a17; stroke-width: 1.2; }
+    .e4-line  { fill: none; stroke: #1a1a17; stroke-width: 1.2; }
+    .e4-tri   { fill: none; stroke: #1a1a17; stroke-width: 1.6; stroke-linejoin: round; }
+    .e4-mark  { fill: #fffef9; stroke: #7a2e0e; stroke-width: 2; }
+    .e4-arc   { fill: none; stroke: #7a2e0e; stroke-width: 2; stroke-linecap: round; }
+    .e4-name  { fill: #1a1a17; font: 600 11px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .e4-isa   { fill: #1a1a17; font: 600 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; text-anchor: middle; letter-spacing: 0.08em; }
+    .e4-verd  { fill: #7a2e0e; font: 600 11px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; text-anchor: middle; letter-spacing: 0.1em; }
+    .e4-rule  { fill: #56544c; font: 400 10px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; text-anchor: middle; }
+    .e4-hd    { fill: #7a2e0e; font: 600 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.16em; text-anchor: middle; }
+    .e4-hdr   { fill: #56544c; font: 600 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.16em; text-anchor: middle; }
+
+    @media (prefers-color-scheme: dark) {
+      .e4-paper { fill: #16161a; }
+      .e4-panel { stroke: rgba(232,228,217,0.16); }
+      .e4-box   { fill: rgba(232,228,217,0.06); stroke: #e8e4d9; }
+      .e4-line  { stroke: #e8e4d9; }
+      .e4-tri   { stroke: #e8e4d9; }
+      .e4-mark  { fill: #16161a; stroke: #e08a5c; }
+      .e4-arc   { stroke: #e08a5c; }
+      .e4-name  { fill: #e8e4d9; }
+      .e4-isa   { fill: #e8e4d9; }
+      .e4-verd  { fill: #e08a5c; }
+      .e4-rule  { fill: #a8a498; }
+      .e4-hd    { fill: #e08a5c; }
+      .e4-hdr   { fill: #a8a498; }
+    }
+  </style>
+
+  <rect class="e4-paper" x="0" y="0" width="760" height="580"/>
+
+  <!-- column headers -->
+  <text class="e4-hd"  x="216" y="26">EXCLUSIVA  ·  CON ARCO</text>
+  <text class="e4-hd"  x="556" y="26">SOLAPADA  ·  SIN ARCO</text>
+  <!-- row headers -->
+  <text class="e4-hdr" x="24" y="160" transform="rotate(-90 24 160)">PARCIAL · SIN CÍRCULO</text>
+  <text class="e4-hdr" x="24" y="420" transform="rotate(-90 24 420)">TOTAL · CON CÍRCULO</text>
+
+  <!-- ============ PANEL 1 · parcial + exclusiva ============ -->
+  <g>
+    <rect class="e4-panel" x="46" y="38" width="340" height="242" rx="3"/>
+    <rect class="e4-box" x="156" y="58" width="120" height="26" rx="2"/>
+    <text class="e4-name" x="216" y="75">Empleado_Rest.</text>
+    <!-- no circle: parcial -->
+    <path class="e4-line" d="M216 84 L216 112"/>
+    <path class="e4-tri"  d="M194 112 L238 112 L216 146 Z"/>
+    <text class="e4-isa"  x="216" y="126">ISA</text>
+    <path class="e4-line" d="M216 146 L108 196"/>
+    <path class="e4-line" d="M216 146 L216 196"/>
+    <path class="e4-line" d="M216 146 L324 196"/>
+    <!-- arc: exclusiva -->
+    <path class="e4-arc"  d="M160 158 Q216 196 272 158"/>
+    <rect class="e4-box" x="62" y="196" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="108" y="212">Camarero</text>
+    <rect class="e4-box" x="170" y="196" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="216" y="212">Cocinero</text>
+    <rect class="e4-box" x="278" y="196" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="324" y="212">Lava_platos</text>
+    <text class="e4-verd" x="216" y="248">PARCIAL  ·  EXCLUSIVA</text>
+    <text class="e4-rule" x="216" y="266">Puede haber más empleados; cada uno hace una sola tarea.</text>
+  </g>
+
+  <!-- ============ PANEL 2 · parcial + solapada ============ -->
+  <g>
+    <rect class="e4-panel" x="386" y="38" width="340" height="242" rx="3"/>
+    <rect class="e4-box" x="496" y="58" width="120" height="26" rx="2"/>
+    <text class="e4-name" x="556" y="75">Particip_Pelic.</text>
+    <!-- no circle: parcial -->
+    <path class="e4-line" d="M556 84 L556 112"/>
+    <path class="e4-tri"  d="M534 112 L578 112 L556 146 Z"/>
+    <text class="e4-isa"  x="556" y="126">ISA</text>
+    <path class="e4-line" d="M556 146 L448 196"/>
+    <path class="e4-line" d="M556 146 L556 196"/>
+    <path class="e4-line" d="M556 146 L664 196"/>
+    <!-- no arc: solapada -->
+    <rect class="e4-box" x="402" y="196" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="448" y="212">Productor</text>
+    <rect class="e4-box" x="510" y="196" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="556" y="212">Director</text>
+    <rect class="e4-box" x="618" y="196" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="664" y="212">Actores</text>
+    <text class="e4-verd" x="556" y="248">PARCIAL  ·  SOLAPADA</text>
+    <text class="e4-rule" x="556" y="266">Puede haber más participantes; uno puede ser actor y director.</text>
+  </g>
+
+  <!-- ============ PANEL 3 · total + exclusiva ============ -->
+  <g>
+    <rect class="e4-panel" x="46" y="298" width="340" height="242" rx="3"/>
+    <rect class="e4-box" x="156" y="318" width="120" height="26" rx="2"/>
+    <text class="e4-name" x="216" y="335">Ficha</text>
+    <path class="e4-line" d="M216 344 L216 356"/>
+    <!-- circle: total -->
+    <circle class="e4-mark" cx="216" cy="363" r="7"/>
+    <path class="e4-line" d="M216 370 L216 372"/>
+    <path class="e4-tri"  d="M194 372 L238 372 L216 406 Z"/>
+    <text class="e4-isa"  x="216" y="386">ISA</text>
+    <path class="e4-line" d="M216 406 L140 456"/>
+    <path class="e4-line" d="M216 406 L292 456"/>
+    <!-- arc: exclusiva -->
+    <path class="e4-arc"  d="M168 418 Q216 456 264 418"/>
+    <rect class="e4-box" x="90" y="456" width="100" height="24" rx="2"/>
+    <text class="e4-name" x="140" y="472">Ficha_autor</text>
+    <rect class="e4-box" x="242" y="456" width="100" height="24" rx="2"/>
+    <text class="e4-name" x="292" y="472">Ficha_tema</text>
+    <text class="e4-verd" x="216" y="508">TOTAL  ·  EXCLUSIVA</text>
+    <text class="e4-rule" x="216" y="526">Sólo hay 2 tipos de ficha; una ficha es de autor o de tema.</text>
+  </g>
+
+  <!-- ============ PANEL 4 · total + solapada ============ -->
+  <g>
+    <rect class="e4-panel" x="386" y="298" width="340" height="242" rx="3"/>
+    <rect class="e4-box" x="496" y="318" width="120" height="26" rx="2"/>
+    <text class="e4-name" x="556" y="335">Equipo_futbol</text>
+    <path class="e4-line" d="M556 344 L556 356"/>
+    <!-- circle: total -->
+    <circle class="e4-mark" cx="556" cy="363" r="7"/>
+    <path class="e4-line" d="M556 370 L556 372"/>
+    <path class="e4-tri"  d="M534 372 L578 372 L556 406 Z"/>
+    <text class="e4-isa"  x="556" y="386">ISA</text>
+    <path class="e4-line" d="M556 406 L448 456"/>
+    <path class="e4-line" d="M556 406 L556 456"/>
+    <path class="e4-line" d="M556 406 L664 456"/>
+    <!-- no arc: solapada -->
+    <rect class="e4-box" x="402" y="456" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="448" y="472">Delantero</text>
+    <rect class="e4-box" x="510" y="456" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="556" y="472">Defensa</text>
+    <rect class="e4-box" x="618" y="456" width="92" height="24" rx="2"/>
+    <text class="e4-name" x="664" y="472">Portero</text>
+    <text class="e4-verd" x="556" y="508">TOTAL  ·  SOLAPADA</text>
+    <text class="e4-rule" x="556" y="526">Sólo hay esos tipos; uno juega de delantero y de defensor.</text>
+  </g>
+
+</svg>

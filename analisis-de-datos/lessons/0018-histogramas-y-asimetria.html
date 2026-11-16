@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Histogramas y asimetría</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0018 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0018 · Notebook 2 (en equipo)</div>
+<h1>Leer la forma de una distribución en un histograma</h1>
+<p class="lede">Pasamos de los números de <code>describe()</code> a los gráficos. La habilidad: mirar un histograma y decir dónde se concentran los datos, si tiene cola y qué medida describe mejor el valor típico.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>En la <a href="0017-conocer-los-datos.html">0017</a>, <code>mean area</code> tenía media 661,5 y mediana 556,7. ¿Qué te decía eso sobre la forma, antes de ver ningún gráfico?</p>
+</div>
+
+<h2>Qué es un histograma</h2>
+<p>Un gráfico de <strong>barras contiguas</strong> que muestra la distribución de <strong>una variable numérica</strong>. Agrupa los valores en <strong>intervalos de igual amplitud (bins)</strong>, y la altura de cada barra es la <strong>frecuencia</strong>: cuántas observaciones caen en ese intervalo.</p>
+<ul>
+  <li><strong>Frecuencia absoluta</strong>: cantidad de datos en el intervalo.</li>
+  <li><strong>Frecuencia relativa</strong>: el porcentaje respecto del total.</li>
+</ul>
+<p>Lo que permite ver (lámina 13): <strong>concentración</strong> (dónde se agrupa la mayoría), <strong>dispersión</strong> (qué tan desparramados), <strong>forma</strong> (simétrica o con cola) y <strong>valores atípicos</strong> (barras aisladas).</p>
+
+<div class="box trap">
+  <span class="label">Histograma vs barras</span>
+  <p>El histograma es para <strong>numéricas</strong>, con barras pegadas porque los intervalos son continuos. Para <strong>categóricas</strong> se usa un <strong>gráfico de barras</strong> hecho desde <code>value_counts()</code>, con barras separadas. Hacer un histograma de <code>target</code> es posible, pero engañoso: dibuja dos barras en 0 y 1 como si fueran números.</p>
+</div>
+
+<h2>Cuántos bins: la regla de Rice</h2>
+<p>Pocos bins dan una vista demasiado general (se pierde, por ejemplo, un segundo pico). Muchos bins llenan el gráfico de ruido. La <strong>regla de Rice</strong> propone:</p>
+<p style="text-align:center; font-size:1.2em"><strong>k = ⌈ 2 · n<sup>1/3</sup> ⌉</strong></p>
+<p>n es la cantidad de valores <strong>no nulos</strong> y ⌈ ⌉ significa redondear hacia arriba. Para <code>mean radius</code>: n = 482, 482<sup>1/3</sup> ≈ 7,84, 2 × 7,84 = 15,68 → <strong>16 bins</strong>. Pandas lo calcula solo con <code>bins="rice"</code>.</p>
+<span class="sidenote">En el notebook 8 el dataset original no tiene faltantes: n = 569 → 17 bins.</span>
+
+<h2>Media, mediana y asimetría</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Forma</th><th>Relación</th><th>Ejemplo de la lámina</th></tr>
+  <tr><td><strong>Simétrica</strong></td><td>media ≈ mediana ≈ moda</td><td>Altura de personas, puntajes de un examen</td></tr>
+  <tr><td><strong>Asimetría positiva</strong> (cola a la derecha)</td><td><strong>media &gt; mediana &gt; moda</strong></td><td>Ingresos, precios de propiedades, tiempo de espera</td></tr>
+  <tr><td><strong>Asimetría negativa</strong> (cola a la izquierda)</td><td><strong>media &lt; mediana &lt; moda</strong></td><td>Puntajes con tope, edad de jubilación, vida útil</td></tr>
+</table>
+</div>
+<p>La media <strong>se deja arrastrar</strong> por los extremos; la mediana no. Por eso, <strong>en distribuciones asimétricas la mediana representa mejor el valor típico</strong>. Truco para recordar el nombre: la asimetría se llama por el lado de la <strong>cola</strong>, no por donde está el pico.</p>
+<p><code>df[var].skew()</code> lo mide con un número: ≈ 0 simétrica, &gt; 0 cola a la derecha, &lt; 0 cola a la izquierda.</p>
+
+<h2>Los comandos del notebook</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Código</th><th>Qué hace</th></tr>
+  <tr><td><code>df.hist(figsize=(20, 16))</code></td><td>Un histograma por cada columna numérica (ignora texto y NaN)</td></tr>
+  <tr><td><code>df["mean radius"].hist(bins=b, ax=ax)</code></td><td>Una variable con <code>b</code> bins, dibujada en el subgráfico <code>ax</code></td></tr>
+  <tr><td><code>fig, axes = plt.subplots(1, 3)</code></td><td>Figura con 3 gráficos en una fila</td></tr>
+  <tr><td><code>ax.axvline(media, color="red", linestyle="--")</code></td><td>Línea vertical (la usa para marcar media y mediana)</td></tr>
+  <tr><td><code>df.skew(numeric_only=True)</code></td><td>Asimetría de todas las numéricas</td></tr>
+  <tr><td><code>plt.hist(s.dropna(), bins=[6, 8, …, 30])</code></td><td>Bins personalizados con una lista de bordes. <code>plt.hist</code> no acepta NaN</td></tr>
+  <tr><td><code>df.loc[df["target"] == 0, var].hist(alpha=0.5)</code></td><td>Histograma solo de malignos, semitransparente para superponer</td></tr>
+</table>
+</div>
+
+<h2>Respuestas guía</h2>
+<p class="muted">Calculadas sobre <code>sample_dataset.csv</code>. Intentá cada una antes de abrirla.</p>
+
+<details class="answers"><summary>§1 · Dos simétricas, dos con cola a la derecha, y el histograma de <code>target</code></summary>
+<p><strong>Aproximadamente simétricas</strong> (skew más bajo): <code>mean smoothness</code> (0,46), <code>worst smoothness</code> (0,42), <code>worst concave points</code> (0,48), <code>mean texture</code> (0,66).</p>
+<p><strong>Cola larga a la derecha</strong>: todas las <code>… error</code> (<code>fractal dimension error</code> 3,99, <code>concavity error</code> 3,92, <code>radius error</code> 3,38) y las de área (<code>mean area</code> 1,74, <code>worst area</code> 1,81).</p>
+<p><strong><code>target</code></strong>: salen dos barras, en 0 y en 1. No tiene sentido como histograma porque es categórica: corresponde un gráfico de barras (§5).</p>
+</details>
+
+<details class="answers"><summary>§2 · 5 bins vs Rice (16) vs 100 bins</summary>
+<p>Con 5 bins se ve solo un bloque "alto en el medio": se pierden la cola derecha y el detalle de dónde está el pico. Con 100 bins hay barras que suben y bajan sin patrón (ruido) y muchos intervalos quedan vacíos. Rice (16) muestra la forma: un pico alrededor de 12–14 y una cola hacia la derecha. Es el más útil para describir la variable.</p>
+</details>
+
+<details class="answers"><summary>§3 · ¿Qué distribución tiene <code>mean area</code>? ¿Media o mediana?</summary>
+<p><strong>Asimetría positiva</strong> (skew = 1,74): media 661,5 &gt; mediana 556,7, con una cola de tumores grandes hasta 2501. Para el área "típica" conviene la <strong>mediana</strong>, porque no se deja arrastrar por esos valores extremos.</p>
+<p>El ranking del extra incluye <code>target</code> con −0,53: ignoralo, la asimetría de una variable categórica no significa nada.</p>
+</details>
+
+<details class="answers"><summary>§4 · Bins personalizados de amplitud 2</summary>
+<p>El intervalo con más muestras es <strong>[12, 14)</strong>, con 141, seguido de [10, 12) con 106. Desde <strong>22</strong> las barras se vuelven muy bajas: 5, 4, 1, 1. Coincide con el límite superior de outliers que vas a calcular en el notebook 3 (21,85).</p>
+</details>
+
+<details class="answers"><summary>§5 · ¿Por qué barras y no histograma? Balance de clases</summary>
+<p>Porque <code>area error</code> y <code>target</code> son <strong>categóricas</strong>: cada barra es una categoría, no un intervalo numérico. El gráfico de <code>target</code> muestra 357 benignos y 212 malignos: <strong>no está balanceado</strong> (63/37).</p>
+</details>
+
+<details class="answers"><summary>§6 · ¿Qué variable separa mejor los diagnósticos?</summary>
+<p><strong>Separan bien</strong>: <code>mean radius</code> (mediana 17,3 en malignos vs 12,2 en benignos) y sobre todo <code>worst concave points</code> (0,183 vs 0,074), con los histogramas casi uno al lado del otro.</p>
+<p><strong>Se superponen casi por completo</strong>: <code>mean fractal dimension</code> (mediana 0,061 en los dos grupos). <code>mean smoothness</code> y <code>mean texture</code> quedan en un punto intermedio.</p>
+<p>Para la pregunta guía: el tamaño y la concavidad de los núcleos diferencian malignos de benignos; la dimensión fractal, no. Es una <strong>hipótesis</strong> del EDA, no una prueba.</p>
+</details>
+
+<div class="box trap">
+  <span class="label">Celda con COMPLETAR</span>
+  <p><code>hist_por_diagnostico(COMPLETAR)</code> espera el nombre de la columna <strong>entre comillas</strong>: <code>hist_por_diagnostico("worst concave points")</code>. Sin comillas da <code>NameError</code>.</p>
+</div>
+
+<h2>Práctica</h2>
+<div class="quiz" data-quiz-id="0018-histogramas-y-asimetria"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Para qué tipo de variable se usa un histograma?",
+   "options": ["Numérica", "Categórica nominal", "Categórica ordinal", "Cualquier variable binaria"], "answer": 0,
+   "why": "Muestra la distribución de una variable numérica en intervalos. Para categóricas: gráfico de barras."},
+  {"q": "En un histograma, ¿qué representa la altura de cada barra?",
+   "options": ["La frecuencia del intervalo", "El valor medio del intervalo", "El ancho del intervalo", "La mediana de la variable"], "answer": 0,
+   "why": "Cuántas observaciones caen en ese intervalo (frecuencia absoluta)."},
+  {"q": "Con la regla de Rice, ¿cuántos bins corresponden a n = 125?",
+   "options": ["10", "5", "11", "25"], "answer": 0,
+   "why": "125<sup>1/3</sup> = 5 → 2 · 5 = 10. Ya es entero, así que el redondeo hacia arriba no cambia nada."},
+  {"q": "¿Qué problema aparece si usás demasiados bins?",
+   "options": ["Ruido sin patrón claro", "Se pierden los dos picos", "La media queda mal calculada", "Desaparecen los valores atípicos"], "answer": 0,
+   "why": "Con muchos bins las barras suben y bajan al azar. Con pocos, en cambio, se pierden detalles como un segundo pico."},
+  {"q": "Una variable tiene media 50 y mediana 38. ¿Qué forma tiene?",
+   "options": ["Asimetría positiva", "Asimetría negativa", "Simétrica", "Uniforme"], "answer": 0,
+   "why": "Media &gt; mediana: los valores altos arrastran la media, cola a la derecha."},
+  {"q": "Puntajes de un examen con tope de 100, donde casi todos sacan nota alta. ¿Qué forma esperás?",
+   "options": ["Asimetría negativa", "Asimetría positiva", "Simétrica", "Uniforme"], "answer": 0,
+   "why": "Muchos valores altos y algunos bajos: la cola queda a la izquierda. Es el ejemplo de la lámina."},
+  {"q": "En una distribución con cola larga a la derecha, ¿qué medida representa mejor el valor típico?",
+   "options": ["La mediana", "La media", "El máximo", "El rango"], "answer": 0,
+   "why": "La mediana no se deja arrastrar por los extremos. Lámina 14."},
+  {"q": "<code>df[\"x\"].skew()</code> devuelve 3,9. ¿Qué indica?",
+   "options": ["Cola larga hacia la derecha", "Cola larga hacia la izquierda", "Distribución casi simétrica", "Que hay 3,9% de faltantes"], "answer": 0,
+   "why": "Skew positivo y grande: asimetría positiva fuerte. ≈ 0 sería simétrica."},
+  {"q": "En <code>plt.hist(s, bins=[6, 8, 10])</code>, ¿qué pasa con un valor 15?",
+   "options": ["No se dibuja", "Va al último intervalo", "Se crea otro intervalo", "Da un error de tipo"], "answer": 0,
+   "why": "Los valores fuera del primer y del último borde no se dibujan. Por eso los bordes tienen que cubrir del mínimo al máximo."},
+  {"q": "Superponés los histogramas de malignos y benignos de una variable y casi no se superponen. ¿Qué concluís?",
+   "options": ["La variable ayuda a diferenciarlos", "La variable causa el diagnóstico", "La variable tiene muchos faltantes", "La variable no sirve para nada"], "answer": 0,
+   "why": "Grupos separados indican que la variable diferencia diagnósticos. Es una asociación, no una causa."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Mirás un histograma y decís en una oración su concentración, su forma y qué medida usar para el valor típico, y elegís una cantidad de bins razonable.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>Notebook <code>2_CIA_EDA</code> y las láminas 13 y 14 del <a href="../material_eda/1-Teoría-Conceptual/003_ANALISIS_EXPLORATORIO_Data_Science_RESUMIDO_2_2026.pdf">PDF de teoría</a>. Para profundizar en la elección de bins: <a href="https://numpy.org/doc/stable/reference/generated/numpy.histogram_bin_edges.html">numpy · histogram_bin_edges</a>, que lista Rice, Sturges y otras reglas.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si en clase sale un histograma que no sabés leer, sacale captura y traémelo.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0017-conocer-los-datos.html">← 0017 · Notebooks 0 y 1</a>
+  <a href="0019-boxplots-y-outliers.html">0019 · Notebook 3 →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

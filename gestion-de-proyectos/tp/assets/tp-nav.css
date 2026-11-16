@@ -1,0 +1,27 @@
+/* Top navigation and toast shared by every tp/ page (kept separate so pages with their own form styles, like canvas-taller, can load it alone).
+   Uses the tokens from course.css. Lives only in tp/assets/. */
+
+/* ── Top navigation ── */
+.tp-top { display: flex; flex-wrap: wrap; gap: .4rem; margin: -1.2rem 3rem 1.2rem 0; font-family: var(--sans); font-size: .72rem; }
+.tp-top a {
+  padding: .3rem .75rem; border: 1px solid var(--rule); border-radius: 99px; text-decoration: none;
+  color: var(--fg); background: var(--card);
+}
+.tp-top a:hover { border-color: var(--accent); }
+.tp-top a[aria-current="page"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+
+/* ── Toast ── */
+.tp-toast {
+  position: fixed; left: 50%; bottom: 16px; transform: translate(-50%, 20px); z-index: 60;
+  background: var(--fg); color: var(--bg); font-family: var(--sans); font-size: .78rem;
+  padding: .55rem 1rem; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+  max-width: calc(100vw - 32px);
+}
+.tp-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 30rem) {
+  .tp-top { margin-right: 2.6rem; }
+}
+@media print {
+  .tp-top, .tp-toast { display: none; }
+}

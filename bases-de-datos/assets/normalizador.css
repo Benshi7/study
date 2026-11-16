@@ -1,0 +1,263 @@
+/* ============================================================================
+   normalizador.css — styles for the interactive normalization drill.
+
+   Companion to assets/normalizador.js. Loaded AFTER course.css, whose tokens
+   (--ink, --paper, --accent, --good, --bad, --note, --rule) it reuses.
+   Only the amber "partial dependency" hue is new, because course.css has no
+   warning colour of its own.
+
+   Every selector is namespaced `.nx-` so this file can never collide with a
+   lesson's markup.
+   ========================================================================== */
+
+:root {
+  --nx-warn:      #8a5a00;
+  --nx-warn-soft: #f7ecd4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --nx-warn:      #e0b45c;
+    --nx-warn-soft: #2e2617;
+  }
+}
+:root[data-theme="dark"] {
+  --nx-warn:      #e0b45c;
+  --nx-warn-soft: #2e2617;
+}
+
+/* --- shared chrome ------------------------------------------------------- */
+
+.nx {
+  margin: 2rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper-sunk);
+  padding: 1.1rem 1.2rem 1.3rem;
+}
+
+.nx__label {
+  font: 600 0.68rem/1 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.nx__hint {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+}
+
+.nx__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+}
+
+.nx__btn {
+  font: 600 0.82rem/1 var(--sans);
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.nx__btn:hover:not(:disabled) { border-color: var(--accent); }
+.nx__btn[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+.nx__btn:disabled { opacity: 0.45; cursor: default; }
+
+/* --- the data table ------------------------------------------------------ */
+
+.nx__scroll { overflow-x: auto; margin: 0 -0.3rem; padding: 0 0.3rem; }
+
+.nx__tabla {
+  border-collapse: collapse;
+  font: 0.78rem/1.4 var(--mono);
+  width: 100%;
+}
+
+.nx__tabla th,
+.nx__tabla td {
+  padding: 0.32rem 0.55rem;
+  border: 1px solid var(--rule);
+  white-space: nowrap;
+  text-align: left;
+}
+
+.nx__tabla thead th { background: var(--paper); vertical-align: bottom; }
+
+.nx__col {
+  display: block;
+  width: 100%;
+  font: 600 0.74rem/1.3 var(--sans);
+  background: none;
+  border: 0;
+  padding: 0.15rem 0;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nx__col:hover { color: var(--accent); }
+.nx__col::after {
+  content: "";
+  display: block;
+  height: 3px;
+  margin-top: 0.3rem;
+  border-radius: 2px;
+  background: var(--rule);
+}
+
+/* Dependency classes, applied to the <th> and every <td> of one column. */
+.is-clave      { background: var(--accent-soft); }
+.is-total      { background: var(--good-soft); }
+.is-parcial    { background: var(--nx-warn-soft); }
+.is-transitiva { background: var(--note-soft); }
+.is-derivado   { background: var(--bad-soft); }
+
+.is-clave      .nx__col::after { background: var(--accent); }
+.is-total      .nx__col::after { background: var(--good); }
+.is-parcial    .nx__col::after { background: var(--nx-warn); }
+.is-transitiva .nx__col::after { background: var(--note); }
+.is-derivado   .nx__col::after { background: var(--bad); }
+
+.is-derivado td, .is-derivado .nx__col { text-decoration: line-through; }
+.nx__tabla td.is-derivado { text-decoration: line-through; }
+
+/* Focus ring for the column currently being explained. */
+.nx__tabla .is-foco { outline: 2px solid var(--accent); outline-offset: -2px; }
+.nx__tabla .is-fuente { outline: 2px dashed var(--note); outline-offset: -2px; }
+
+/* --- legend -------------------------------------------------------------- */
+
+.nx__leyenda {
+  list-style: none;
+  padding: 0;
+  margin: 0.9rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  font: 0.76rem/1.4 var(--sans);
+  color: var(--ink-soft);
+}
+
+.nx__leyenda li { margin: 0; display: flex; align-items: center; gap: 0.4rem; }
+
+/* The swatch needs the SATURATED hue, not the pale cell tint, or the five
+   entries are indistinguishable from each other. */
+.nx__swatch {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 2px;
+  flex: none;
+  border: 1px solid var(--rule);
+}
+.nx__swatch.is-clave      { background: var(--accent); }
+.nx__swatch.is-total      { background: var(--good); }
+.nx__swatch.is-parcial    { background: var(--nx-warn); }
+.nx__swatch.is-transitiva { background: var(--note); }
+.nx__swatch.is-derivado   { background: var(--bad); }
+
+/* --- explanation panel --------------------------------------------------- */
+
+.nx__panel {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--rule);
+  background: var(--paper);
+  font-size: 0.9rem;
+}
+
+.nx__panel[hidden] { display: none; }
+
+/* One heading rule for every widget sub-panel, not just the explanation one. */
+.nx__panel h4,
+.nx__prueba h4,
+.nx__resultado h4 { margin: 0 0 0.4rem; font: 600 0.95rem/1.3 var(--sans); color: var(--accent); }
+
+.nx__panel p  { margin: 0 0 0.5rem; }
+.nx__panel p:last-child { margin-bottom: 0; }
+.nx__panel code { font: 0.86em var(--mono); }
+
+.nx__panel.tipo-clave      { border-left-color: var(--accent); }
+.nx__panel.tipo-total      { border-left-color: var(--good); }
+.nx__panel.tipo-parcial    { border-left-color: var(--nx-warn); }
+.nx__panel.tipo-transitiva { border-left-color: var(--note); }
+.nx__panel.tipo-derivado   { border-left-color: var(--bad); }
+
+.nx__cadena {
+  font: 0.86rem/1.5 var(--mono);
+  background: var(--paper-sunk);
+  padding: 0.5rem 0.7rem;
+  border-radius: 3px;
+  margin: 0 0 0.6rem;
+}
+.nx__cadena b { color: var(--accent); font-weight: 600; }
+.nx__cadena i { color: var(--note); font-style: normal; font-weight: 600; }
+
+/* --- exam mode ----------------------------------------------------------- */
+
+.nx__sel {
+  font: 0.74rem var(--sans);
+  padding: 0.2rem 0.25rem;
+  margin-top: 0.35rem;
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.nx__sel.ok   { border-color: var(--good); background: var(--good-soft); }
+.nx__sel.mal  { border-color: var(--bad);  background: var(--bad-soft); }
+
+.nx__marcador {
+  font: 600 0.9rem/1.4 var(--sans);
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 3px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+}
+.nx__marcador[hidden] { display: none; }
+
+.nx__errores { margin: 0.6rem 0 0; padding-left: 1.1rem; font: 0.86rem/1.5 var(--sans); }
+.nx__errores li { margin: 0 0 0.35rem; }
+
+/* --- derived-attribute proof --------------------------------------------- */
+
+.nx__prueba { margin-top: 1rem; }
+.nx__prueba[hidden] { display: none; }
+.nx__prueba table { border-collapse: collapse; font: 0.8rem/1.4 var(--mono); }
+.nx__prueba td { padding: 0.25rem 0.7rem 0.25rem 0; }
+.nx__prueba .ok { color: var(--good); font-weight: 600; }
+
+/* --- result tables ------------------------------------------------------- */
+
+.nx__resultado { margin-top: 1rem; display: grid; gap: 0.5rem; }
+.nx__resultado[hidden] { display: none; }
+
+.nx__rel {
+  font: 0.88rem/1.6 var(--mono);
+  padding: 0.45rem 0.7rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+.nx__rel b { color: var(--accent); font-weight: 600; }
+.nx__rel u { text-decoration: none; border-bottom: 2px solid var(--accent); }
+
+@media (max-width: 40rem) {
+  .nx { padding: 0.9rem 0.8rem 1.1rem; }
+  .nx__tabla { font-size: 0.7rem; }
+}

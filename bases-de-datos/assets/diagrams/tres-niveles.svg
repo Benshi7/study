@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" width="720" height="400"
+     role="img" aria-labelledby="tres-niveles-title tres-niveles-desc">
+  <title id="tres-niveles-title">Arquitectura de tres esquemas</title>
+  <desc id="tres-niveles-desc">Pila de cuatro bandas. Arriba, el nivel externo con tres vistas distintas — Contaduría, Secretaría y Cátedra — apoyadas sobre una única banda de nivel conceptual, que a su vez se apoya sobre una única banda de nivel interno, y ésta sobre la base de datos almacenada. Entre el nivel externo y el conceptual está el mapeo externo/conceptual, que es donde vive la independencia lógica. Entre el conceptual y el interno está el mapeo conceptual/interno, donde vive la independencia física.</desc>
+
+  <style>
+    .dg-paper { fill: #fffef9; }
+    .dg-box   { fill: #fffef9; stroke: #1a1a17; stroke-width: 1; }
+    .dg-store { fill: rgba(26,26,23,0.05); stroke: #56544c; stroke-width: 1; stroke-dasharray: 4 3; }
+    .dg-name  { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dg-sub   { fill: #56544c; font: 400 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .dg-eyeb  { fill: #8a877c; font: 500 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; }
+    .dg-map   { fill: #56544c; font: 500 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; }
+    .dg-acc   { fill: #7a2e0e; font: italic 12px "Iowan Old Style", Palatino, Georgia, serif; }
+
+    @media (prefers-color-scheme: dark) {
+      .dg-paper { fill: #16161a; }
+      .dg-box   { fill: #16161a; stroke: #e8e4d9; }
+      .dg-store { fill: rgba(232,228,217,0.05); stroke: #a8a498; }
+      .dg-name  { fill: #e8e4d9; }
+      .dg-sub   { fill: #a8a498; }
+      .dg-eyeb  { fill: #77746a; }
+      .dg-map   { fill: #a8a498; }
+      .dg-acc   { fill: #e08a5c; }
+    }
+  </style>
+
+  <rect width="720" height="400" class="dg-paper"/>
+
+  <!-- ─── Nivel externo: tres vistas sobre un mismo esquema conceptual ─── -->
+  <text x="40" y="36" class="dg-eyeb">NIVEL EXTERNO</text>
+
+  <rect x="40"  y="48" width="200" height="48" rx="6" class="dg-box"/>
+  <text x="140" y="70" class="dg-name" text-anchor="middle">Vista · Contaduría</text>
+  <text x="140" y="86" class="dg-sub"  text-anchor="middle">cuotas, pagos</text>
+
+  <rect x="260" y="48" width="200" height="48" rx="6" class="dg-box"/>
+  <text x="360" y="70" class="dg-name" text-anchor="middle">Vista · Secretaría</text>
+  <text x="360" y="86" class="dg-sub"  text-anchor="middle">inscripciones</text>
+
+  <rect x="480" y="48" width="200" height="48" rx="6" class="dg-box"/>
+  <text x="580" y="70" class="dg-name" text-anchor="middle">Vista · Cátedra</text>
+  <text x="580" y="86" class="dg-sub"  text-anchor="middle">notas, asistencia</text>
+
+  <!-- Frontera externo/conceptual -->
+  <text x="360" y="120" class="dg-map" text-anchor="middle">MAPEO EXTERNO / CONCEPTUAL</text>
+  <text x="360" y="140" class="dg-acc" text-anchor="middle">acá vive la independencia lógica</text>
+
+  <!-- ─── Nivel conceptual ─── -->
+  <text x="40" y="140" class="dg-eyeb">NIVEL CONCEPTUAL</text>
+
+  <rect x="40" y="152" width="640" height="56" rx="6" class="dg-box"/>
+  <text x="360" y="180" class="dg-name" text-anchor="middle">Esquema conceptual — toda la base, para toda la comunidad</text>
+  <text x="360" y="196" class="dg-sub"  text-anchor="middle">entidades · atributos · relaciones · restricciones</text>
+
+  <!-- Frontera conceptual/interno -->
+  <text x="360" y="228" class="dg-map" text-anchor="middle">MAPEO CONCEPTUAL / INTERNO</text>
+  <text x="360" y="248" class="dg-acc" text-anchor="middle">acá vive la independencia física</text>
+
+  <!-- ─── Nivel interno ─── -->
+  <text x="40" y="252" class="dg-eyeb">NIVEL INTERNO</text>
+
+  <rect x="40" y="264" width="640" height="56" rx="6" class="dg-box"/>
+  <text x="360" y="292" class="dg-name" text-anchor="middle">Esquema interno — cómo se guarda de verdad</text>
+  <text x="360" y="308" class="dg-sub"  text-anchor="middle">estructuras de almacenamiento · índices · rutas de acceso</text>
+
+  <!-- ─── Los datos reales ─── -->
+  <rect x="40" y="344" width="640" height="40" rx="6" class="dg-store"/>
+  <text x="360" y="368" class="dg-name" text-anchor="middle">Base de datos almacenada</text>
+</svg>

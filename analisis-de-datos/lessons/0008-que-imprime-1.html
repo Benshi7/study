@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Qué imprime? I</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0008 · Bloque 3: Python</div>
+
+<div class="kicker">Lección 0008</div>
+<h1>¿Qué imprime? (I): tipos, strings, listas y condicionales</h1>
+<p class="lede">Cada bloque del notebook "Kahoot interactivo, parte 1" desbloqueaba una pregunta. El formato probable es <strong>"¿qué imprime este código?"</strong>. Todas las salidas de esta lección se verificaron ejecutando el código.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>¿Qué dan <code>17 / 5</code>, <code>17 // 5</code> y <code>17 % 5</code>? ¿Y <code>"PYTHON"[2]</code>?</p>
+</div>
+
+<h2>Lo que cubren los 10 bloques del notebook</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Bloque</th><th>Lo que tenés que saber</th></tr>
+  <tr><td>Variables</td><td>Reasignar reemplaza el valor anterior. <code>numero = numero + 4</code> usa el valor actual.</td></tr>
+  <tr><td>Tipos</td><td><code>25</code> → <code>int</code> · <code>25.0</code> → <code>float</code> · <code>"25"</code> → <code>str</code> · <code>True</code> → <code>bool</code>. Se consultan con <code>type()</code>.</td></tr>
+  <tr><td>Strings</td><td>Los índices empiezan en <strong>0</strong>; <code>-1</code> es el último. <code>len()</code>, <code>.upper()</code>, <code>.strip()</code> (saca espacios de los extremos), <code>.replace()</code>. Los métodos <strong>devuelven un string nuevo</strong>.</td></tr>
+  <tr><td>Operadores</td><td><code>/</code> división (siempre float) · <code>//</code> división entera · <code>%</code> resto · <code>**</code> potencia</td></tr>
+  <tr><td>Booleanos</td><td><code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;=</code>… · <code>and</code> exige las dos · <code>or</code> alcanza con una</td></tr>
+  <tr><td>Listas</td><td><code>append(x)</code> agrega al final · <code>remove(x)</code> saca por <strong>valor</strong> · <code>sort()</code> ordena ascendente <em>en el lugar</em></td></tr>
+  <tr><td>Diccionarios</td><td>Pares clave:valor. <code>d["k"] = v</code> modifica o agrega · <code>pop("k")</code> elimina</td></tr>
+  <tr><td><code>input()</code></td><td>Devuelve <strong>str</strong>. <code>"20" * 2</code> da <code>"2020"</code>; <code>"20" + 5</code> da <code>TypeError</code>.</td></tr>
+  <tr><td><code>if/elif/else</code></td><td>Se evalúa <strong>de arriba hacia abajo</strong>; ejecuta el <strong>primer</strong> bloque verdadero y no mira el resto.</td></tr>
+</table>
+</div>
+<span class="sidenote">Fuente: <a href="../raw/notebooks/">notebook "(Clase_1)_1_Colab_Introduccion_Python_Kahoot_Interactivo"</a>, bloques 1 a 10.</span>
+
+<div class="box trap">
+  <span class="label">Trampas típicas</span>
+  <p><strong>Bordes:</strong> <code>20 &lt; 20</code> es <code>False</code> y <code>18 &gt;= 18</code> es <code>True</code>. <strong>remove vs pop:</strong> <code>remove(3)</code> saca el <em>valor</em> 3, no la posición 3. <strong>Métodos de string:</strong> <code>texto.upper()</code> no modifica <code>texto</code>, devuelve uno nuevo.</p>
+</div>
+
+<h2>Práctica</h2>
+<p class="muted">Leé el código, decidí la salida en tu cabeza y recién después elegí.</p>
+
+<div class="quiz" data-quiz-id="0008-que-imprime-1"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Qué imprime?<pre class=\"code\">numero = 10\nnumero = 5\nnumero = 2\nnumero = numero + 4\nprint(numero)</pre>",
+   "options": ["6", "2", "4", "10"], "answer": 0,
+   "why": "Cada asignación reemplaza el valor anterior: al final numero vale 2, y 2 + 4 = 6."},
+  {"q": "¿Qué imprime?<pre class=\"code\">dato = 25.0\nprint(type(dato))</pre>",
+   "options": ["<class 'float'>", "<class 'int'>", "<class 'str'>", "<class 'bool'>"], "answer": 0,
+   "why": "El punto decimal lo convierte en float, aunque el valor sea \"entero\"."},
+  {"q": "¿Qué imprime?<pre class=\"code\">texto = \"PYTHON\"\nprint(texto[2])</pre>",
+   "options": ["T", "Y", "P", "H"], "answer": 0,
+   "why": "Los índices empiezan en 0: P=0, Y=1, T=2."},
+  {"q": "¿Qué imprime? (el texto tiene 2 espacios a cada lado)<pre class=\"code\">texto = \"  hola python  \"\nprint(len(texto.strip()))</pre>",
+   "options": ["11", "15", "13", "10"], "answer": 0,
+   "why": "<code>strip()</code> elimina los espacios de los dos extremos y deja \"hola python\" (11 caracteres; el espacio del medio queda). Sin strip serían 15."},
+  {"q": "¿Qué imprime?<pre class=\"code\">a = 17\nb = 5\nprint(a // b, a % b)</pre>",
+   "options": ["3 2", "3.4 2", "3 3.4", "2 3"], "answer": 0,
+   "why": "<code>//</code> es la división entera (3) y <code>%</code> el resto (2). La división común <code>/</code> daría 3.4."},
+  {"q": "¿Qué imprime?<pre class=\"code\">print(17 / 5)</pre>",
+   "options": ["3.4", "3", "2", "3.0"], "answer": 0,
+   "why": "<code>/</code> siempre devuelve un float con la división exacta."},
+  {"q": "¿Qué imprime?<pre class=\"code\">edad = 20\nprint(edad &lt; 20)</pre>",
+   "options": ["False", "True", "None", "20"], "answer": 0,
+   "why": "20 no es menor que 20. Es la trampa del borde (en el notebook, resultado_3)."},
+  {"q": "¿Qué imprime?<pre class=\"code\">edad = 20\nnota = 7\nprint(edad &gt;= 18 and nota == 10)</pre>",
+   "options": ["False", "True", "None", "Error"], "answer": 0,
+   "why": "<code>and</code> exige que las dos condiciones sean verdaderas; <code>nota == 10</code> es False. Con <code>or</code> daría True."},
+  {"q": "¿Qué imprime?<pre class=\"code\">numeros = [8, 3, 6]\nnumeros.append(10)\nnumeros.remove(3)\nnumeros.sort()\nprint(numeros)</pre>",
+   "options": ["[6, 8, 10]", "[3, 6, 8]", "[8, 6, 10]", "[10, 8, 6]"], "answer": 0,
+   "why": "<code>remove(3)</code> saca el VALOR 3 (no la posición 3). Queda [8, 6, 10] y <code>sort()</code> lo ordena ascendente."},
+  {"q": "¿Qué claves quedan en el diccionario?<pre class=\"code\">persona = {\"nombre\": \"Lucía\", \"edad\": 22, \"ciudad\": \"Córdoba\"}\npersona[\"edad\"] = 23\npersona[\"curso\"] = \"Python\"\npersona.pop(\"ciudad\")</pre>",
+   "options": ["nombre, edad, curso", "nombre, edad, ciudad", "nombre, ciudad, curso", "edad, ciudad, curso"], "answer": 0,
+   "why": "Asignar a una clave existente la modifica (edad) y a una nueva la agrega (curso). <code>pop</code> elimina ciudad."},
+  {"q": "El usuario escribe <code>20</code>. ¿Qué imprime?<pre class=\"code\">edad = input(\"Edad: \")\nprint(edad * 2)</pre>",
+   "options": ["2020", "40", "Error", "None"], "answer": 0,
+   "why": "<code>edad</code> es el string \"20\", y string × 2 repite el texto."},
+  {"q": "El usuario escribe <code>20</code>. ¿Qué pasa?<pre class=\"code\">edad = input(\"Edad: \")\nprint(edad + 5)</pre>",
+   "options": ["TypeError", "25", "205", "ValueError"], "answer": 0,
+   "why": "No se puede sumar str + int. Solución: <code>edad = int(input(\"Edad: \"))</code>."},
+  {"q": "¿Qué bloque se ejecuta?<pre class=\"code\">nota = 70\nif nota &gt;= 90:\n    print(\"Excelente\")\nelif nota &gt;= 70:\n    print(\"Bueno\")\nelse:\n    print(\"Necesitas mejorar\")</pre>",
+   "options": ["El elif", "El if", "El else", "Ningún bloque"], "answer": 0,
+   "why": "70 &gt;= 90 es False; 70 &gt;= 70 es True. Se ejecuta el primer bloque verdadero y el resto se ignora."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Predecís la salida de los 10 bloques del notebook 1 sin ejecutarlos, incluidas las trampas de borde, de <code>remove</code> y de <code>input()</code>.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>El notebook de la clase: <code>raw/notebooks/(Clase_1)_1_Colab_Introduccion_Python_Kahoot_Interactivo_[Alumnos].ipynb</code>. Si dudás de una salida, ejecutá la celda en Colab. Resumen: <a href="../reference/python.html">Referencia · Python</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si alguna salida te sorprendió, pegá el código en el chat y lo recorremos línea por línea.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0007-python-y-su-ecosistema.html">← 0007 · Python y su ecosistema</a>
+  <a href="0009-que-imprime-2.html">0009 · ¿Qué imprime? (II) →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

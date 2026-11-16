@@ -1,0 +1,244 @@
+/* ===========================================================================
+   course.css — shared stylesheet for every lesson and reference document.
+   Tufte-inspired: generous measure, sidenotes, restrained palette.
+   Works in light and dark, and prints cleanly on A4.
+   =========================================================================== */
+
+:root {
+  --bg: #fffdf8;
+  --ink: #1b1a17;
+  --ink-soft: #57534a;
+  --ink-faint: #8b8578;
+  --rule: #e0dbd0;
+  --accent: #7a4b2a;
+  --accent-soft: #f2e7dc;
+  --good: #2f6b47;
+  --bad: #9b3a2e;
+  --measure: 38rem;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Charter, Georgia, serif;
+  --sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14130f;
+    --ink: #ece7dc;
+    --ink-soft: #b3ab9c;
+    --ink-faint: #7d7669;
+    --rule: #34312a;
+    --accent: #d9a273;
+    --accent-soft: #2a231b;
+    --good: #7fc39a;
+    --bad: #e08b7d;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14130f;
+  --ink: #ece7dc;
+  --ink-soft: #b3ab9c;
+  --ink-faint: #7d7669;
+  --rule: #34312a;
+  --accent: #d9a273;
+  --accent-soft: #2a231b;
+  --good: #7fc39a;
+  --bad: #e08b7d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 4rem 1.5rem 7rem;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-weight: 400;
+  font-size: 2.3rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.6rem;
+}
+
+.standfirst {
+  font-size: 1.08rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 2.5rem;
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 1.45rem;
+  line-height: 1.25;
+  margin: 3rem 0 0.9rem;
+}
+
+h3 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 2.2rem 0 0.6rem;
+}
+
+p { margin: 0 0 1.15rem; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+a:hover { border-bottom-color: var(--accent); }
+
+strong { font-weight: 600; }
+
+em.term {
+  font-style: normal;
+  font-weight: 600;
+  border-bottom: 1px dotted var(--ink-faint);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 3rem 0;
+}
+
+ul, ol { padding-left: 1.3rem; margin: 0 0 1.15rem; }
+li { margin-bottom: 0.5rem; }
+
+/* --- sidenotes ----------------------------------------------------------- */
+
+.note {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  border-left: 2px solid var(--rule);
+  padding: 0.1rem 0 0.1rem 1rem;
+  margin: 1.5rem 0;
+}
+
+.cite {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+}
+
+/* --- callouts ------------------------------------------------------------ */
+
+.callout {
+  background: var(--accent-soft);
+  border-radius: 3px;
+  padding: 1.1rem 1.3rem;
+  margin: 1.8rem 0;
+  font-size: 0.95rem;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout .label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+/* --- figures / diagrams -------------------------------------------------- */
+
+figure { margin: 2.2rem 0; }
+figure svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+figcaption {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-top: 0.7rem;
+}
+
+/* --- data table ---------------------------------------------------------- */
+
+.table-wrap { overflow-x: auto; margin: 1.8rem 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+th {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom-width: 2px;
+}
+
+/* --- footer nav ---------------------------------------------------------- */
+
+.footer-nav {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.footer-nav ul { list-style: none; padding: 0; }
+.footer-nav li { margin-bottom: 0.4rem; }
+
+.ask {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  background: var(--accent-soft);
+  border-radius: 3px;
+  padding: 0.9rem 1.1rem;
+  margin-top: 2.5rem;
+}
+.ask p:last-child { margin-bottom: 0; }
+
+/* --- print --------------------------------------------------------------- */
+
+@media print {
+  :root { --bg: #fff; --ink: #000; --ink-soft: #333; --ink-faint: #666; --rule: #ccc; }
+  body { font-size: 11pt; }
+  .page { padding: 0; max-width: none; }
+  .no-print { display: none !important; }
+  a { border-bottom: none; }
+  h2 { break-after: avoid; }
+  .callout, .quiz, figure { break-inside: avoid; }
+}

@@ -1,0 +1,10 @@
+/* GENERATED from theme.json by build/figures.mjs. Do not edit. */
+:root {
+  --c-text: #222222; --c-muted: #5F6670; --c-heading: #1F3A5F; --c-accent: #1F3A5F;
+  --c-accent-soft: #E8ECF1; --c-rule: #BFC5CC; --c-card: #F7F8FA; --c-bg: #FFFFFF;
+  --c-ok: #2E7D4F; --c-warn: #B3402E; --c-ink: #222222;
+  --p1: #5F6670; --p2: #3E6FA3; --p3: #2A7F7F; --p4: #1F3A5F; --p5: #6B4C93; --p6: #B08A1E; --p7: #4C8C4A; --p8: #8A5A44;
+  --z-red: #F3C5BF; --z-yellow: #FBEFB5; --z-green: #CDE7D2;
+  --z-red-ink: #8A2A1C; --z-yellow-ink: #6B5200; --z-green-ink: #1E5B35;
+  --font-body: "Calibri", Carlito, "Liberation Sans", Arial, sans-serif; --font-heading: "Calibri", Carlito, "Liberation Sans", Arial, sans-serif;
+}

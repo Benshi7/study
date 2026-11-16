@@ -1,0 +1,1151 @@
+{
+ "generated_by": "tools/gen-gantt-corregido.py",
+ "calendar": "lunes a viernes, sin feriados",
+ "project_start": "01/04/2026",
+ "project_end": "30/09/2026",
+ "cp_days": 126,
+ "window_days": 131,
+ "idle_days": 5,
+ "critical_count": 23,
+ "overlaps_original": [
+  2,
+  3,
+  8,
+  9,
+  14,
+  15,
+  16
+ ],
+ "phases": [
+  "Inicio",
+  "Análisis",
+  "Diseño",
+  "Desarrollo",
+  "Integración",
+  "Pruebas",
+  "Implementación",
+  "Cierre"
+ ],
+ "tasks": [
+  {
+   "id": 1,
+   "fase": "Inicio",
+   "act": "Definición del proyecto y alcance",
+   "start": "01/04/26",
+   "end": "03/04/26",
+   "start_original": "01/04/26",
+   "end_original": "03/04/26",
+   "dur": 3,
+   "deps": [],
+   "deps_text": "-",
+   "resp": "Project Manager",
+   "ent": "Project Charter",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 2,
+   "fase": "Inicio",
+   "act": "Identificación inicial de stakeholders",
+   "start": "06/04/26",
+   "end": "08/04/26",
+   "start_original": "02/04/26",
+   "end_original": "06/04/26",
+   "dur": 3,
+   "deps": [
+    1
+   ],
+   "deps_text": "1",
+   "resp": "Project Manager",
+   "ent": "Registro inicial",
+   "slack": 120,
+   "critical": false
+  },
+  {
+   "id": 3,
+   "fase": "Inicio",
+   "act": "Relevamiento preliminar de sistemas y fuentes",
+   "start": "06/04/26",
+   "end": "09/04/26",
+   "start_original": "02/04/26",
+   "end_original": "07/04/26",
+   "dur": 4,
+   "deps": [
+    1
+   ],
+   "deps_text": "1",
+   "resp": "Analistas funcionales",
+   "ent": "Relevamiento inicial",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 4,
+   "fase": "Inicio",
+   "act": "Aprobación del Charter",
+   "start": "10/04/26",
+   "end": "14/04/26",
+   "start_original": "08/04/26",
+   "end_original": "10/04/26",
+   "dur": 3,
+   "deps": [
+    1,
+    3
+   ],
+   "deps_text": "1, 3",
+   "resp": "Sponsor",
+   "ent": "Charter aprobado",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 5,
+   "fase": "Análisis",
+   "act": "Relevamiento de necesidades de vecinos",
+   "start": "15/04/26",
+   "end": "21/04/26",
+   "start_original": "13/04/26",
+   "end_original": "17/04/26",
+   "dur": 5,
+   "deps": [
+    4
+   ],
+   "deps_text": "4",
+   "resp": "Analistas funcionales",
+   "ent": "Requerimientos de usuario",
+   "slack": 2,
+   "critical": false
+  },
+  {
+   "id": 6,
+   "fase": "Análisis",
+   "act": "Relevamiento de necesidades de áreas de gobierno",
+   "start": "15/04/26",
+   "end": "21/04/26",
+   "start_original": "13/04/26",
+   "end_original": "17/04/26",
+   "dur": 5,
+   "deps": [
+    4
+   ],
+   "deps_text": "4",
+   "resp": "Analistas funcionales",
+   "ent": "Requerimientos internos",
+   "slack": 111,
+   "critical": false
+  },
+  {
+   "id": 7,
+   "fase": "Análisis",
+   "act": "Relevamiento de fuentes de datos y APIs",
+   "start": "15/04/26",
+   "end": "23/04/26",
+   "start_original": "13/04/26",
+   "end_original": "21/04/26",
+   "dur": 7,
+   "deps": [
+    4
+   ],
+   "deps_text": "4",
+   "resp": "Especialistas en datos y GIS",
+   "ent": "Inventario de fuentes",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 8,
+   "fase": "Análisis",
+   "act": "Definición de requerimientos funcionales",
+   "start": "24/04/26",
+   "end": "30/04/26",
+   "start_original": "20/04/26",
+   "end_original": "24/04/26",
+   "dur": 5,
+   "deps": [
+    5,
+    7
+   ],
+   "deps_text": "5, 7",
+   "resp": "Analistas funcionales",
+   "ent": "Requerimientos funcionales",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 9,
+   "fase": "Análisis",
+   "act": "Definición de requerimientos no funcionales",
+   "start": "24/04/26",
+   "end": "30/04/26",
+   "start_original": "20/04/26",
+   "end_original": "24/04/26",
+   "dur": 5,
+   "deps": [
+    5,
+    7
+   ],
+   "deps_text": "5, 7",
+   "resp": "Analistas funcionales",
+   "ent": "Requerimientos no funcionales",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 10,
+   "fase": "Análisis",
+   "act": "Validación de requerimientos",
+   "start": "01/05/26",
+   "end": "07/05/26",
+   "start_original": "27/04/26",
+   "end_original": "01/05/26",
+   "dur": 5,
+   "deps": [
+    8,
+    9
+   ],
+   "deps_text": "8, 9",
+   "resp": "Project Manager",
+   "ent": "Requerimientos aprobados",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 11,
+   "fase": "Diseño",
+   "act": "Diseño de arquitectura de la solución",
+   "start": "08/05/26",
+   "end": "14/05/26",
+   "start_original": "04/05/26",
+   "end_original": "08/05/26",
+   "dur": 5,
+   "deps": [
+    10
+   ],
+   "deps_text": "10",
+   "resp": "Desarrolladores",
+   "ent": "Arquitectura",
+   "slack": 15,
+   "critical": false
+  },
+  {
+   "id": 12,
+   "fase": "Diseño",
+   "act": "Diseño de la capa geográfica común",
+   "start": "08/05/26",
+   "end": "18/05/26",
+   "start_original": "04/05/26",
+   "end_original": "12/05/26",
+   "dur": 7,
+   "deps": [
+    10
+   ],
+   "deps_text": "10",
+   "resp": "Especialistas en datos y GIS",
+   "ent": "Diseño geográfico",
+   "slack": 24,
+   "critical": false
+  },
+  {
+   "id": 13,
+   "fase": "Diseño",
+   "act": "Diseño del sistema de reportes",
+   "start": "08/05/26",
+   "end": "18/05/26",
+   "start_original": "04/05/26",
+   "end_original": "12/05/26",
+   "dur": 7,
+   "deps": [
+    10
+   ],
+   "deps_text": "10",
+   "resp": "Desarrolladores",
+   "ent": "Diseño de reportes",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 14,
+   "fase": "Diseño",
+   "act": "Diseño de validación y seguimiento",
+   "start": "19/05/26",
+   "end": "25/05/26",
+   "start_original": "11/05/26",
+   "end_original": "15/05/26",
+   "dur": 5,
+   "deps": [
+    13
+   ],
+   "deps_text": "13",
+   "resp": "Analistas funcionales",
+   "ent": "Flujo de incidencias",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 15,
+   "fase": "Diseño",
+   "act": "Diseño de integraciones y APIs",
+   "start": "19/05/26",
+   "end": "26/05/26",
+   "start_original": "11/05/26",
+   "end_original": "18/05/26",
+   "dur": 6,
+   "deps": [
+    10,
+    12
+   ],
+   "deps_text": "10, 12",
+   "resp": "Desarrolladores",
+   "ent": "Diseño de integración",
+   "slack": 24,
+   "critical": false
+  },
+  {
+   "id": 16,
+   "fase": "Diseño",
+   "act": "Diseño UX/UI",
+   "start": "26/05/26",
+   "end": "04/06/26",
+   "start_original": "13/05/26",
+   "end_original": "22/05/26",
+   "dur": 8,
+   "deps": [
+    10,
+    14
+   ],
+   "deps_text": "10, 14",
+   "resp": "UX/UI",
+   "ent": "Prototipos",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 17,
+   "fase": "Diseño",
+   "act": "Aprobación del diseño",
+   "start": "05/06/26",
+   "end": "08/06/26",
+   "start_original": "25/05/26",
+   "end_original": "26/05/26",
+   "dur": 2,
+   "deps": [
+    11,
+    16
+   ],
+   "deps_text": "11, 16",
+   "resp": "Sponsor",
+   "ent": "Diseño aprobado",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 18,
+   "fase": "Desarrollo",
+   "act": "Desarrollo de la capa geográfica",
+   "start": "09/06/26",
+   "end": "29/06/26",
+   "start_original": "27/05/26",
+   "end_original": "16/06/26",
+   "dur": 15,
+   "deps": [
+    17
+   ],
+   "deps_text": "17",
+   "resp": "Desarrolladores",
+   "ent": "Capa geográfica",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 19,
+   "fase": "Desarrollo",
+   "act": "Desarrollo del módulo de reportes",
+   "start": "09/06/26",
+   "end": "29/06/26",
+   "start_original": "27/05/26",
+   "end_original": "16/06/26",
+   "dur": 15,
+   "deps": [
+    17
+   ],
+   "deps_text": "17",
+   "resp": "Desarrolladores",
+   "ent": "Módulo de reportes",
+   "slack": 52,
+   "critical": false
+  },
+  {
+   "id": 20,
+   "fase": "Desarrollo",
+   "act": "Desarrollo de validación colaborativa",
+   "start": "30/06/26",
+   "end": "06/07/26",
+   "start_original": "17/06/26",
+   "end_original": "23/06/26",
+   "dur": 5,
+   "deps": [
+    19
+   ],
+   "deps_text": "19",
+   "resp": "Desarrolladores",
+   "ent": "Validación",
+   "slack": 52,
+   "critical": false
+  },
+  {
+   "id": 21,
+   "fase": "Desarrollo",
+   "act": "Desarrollo del seguimiento de incidencias",
+   "start": "07/07/26",
+   "end": "13/07/26",
+   "start_original": "24/06/26",
+   "end_original": "30/06/26",
+   "dur": 5,
+   "deps": [
+    19,
+    20
+   ],
+   "deps_text": "19, 20",
+   "resp": "Desarrolladores",
+   "ent": "Seguimiento",
+   "slack": 52,
+   "critical": false
+  },
+  {
+   "id": 22,
+   "fase": "Desarrollo",
+   "act": "Desarrollo de vista de gestión",
+   "start": "09/06/26",
+   "end": "29/06/26",
+   "start_original": "27/05/26",
+   "end_original": "16/06/26",
+   "dur": 15,
+   "deps": [
+    17
+   ],
+   "deps_text": "17",
+   "resp": "Desarrolladores",
+   "ent": "Panel de gestión",
+   "slack": 62,
+   "critical": false
+  },
+  {
+   "id": 23,
+   "fase": "Desarrollo",
+   "act": "Desarrollo de APIs e integraciones",
+   "start": "30/06/26",
+   "end": "15/07/26",
+   "start_original": "17/06/26",
+   "end_original": "02/07/26",
+   "dur": 12,
+   "deps": [
+    15,
+    18
+   ],
+   "deps_text": "15, 18",
+   "resp": "Desarrolladores",
+   "ent": "Integraciones",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 24,
+   "fase": "Integración",
+   "act": "Integración con fuentes oficiales",
+   "start": "16/07/26",
+   "end": "23/07/26",
+   "start_original": "03/07/26",
+   "end_original": "10/07/26",
+   "dur": 6,
+   "deps": [
+    18,
+    23
+   ],
+   "deps_text": "18, 23",
+   "resp": "Especialistas en datos y GIS",
+   "ent": "Fuentes integradas",
+   "slack": 34,
+   "critical": false
+  },
+  {
+   "id": 25,
+   "fase": "Integración",
+   "act": "Integración con canales digitales",
+   "start": "16/07/26",
+   "end": "27/07/26",
+   "start_original": "03/07/26",
+   "end_original": "14/07/26",
+   "dur": 8,
+   "deps": [
+    23
+   ],
+   "deps_text": "23",
+   "resp": "Desarrolladores",
+   "ent": "Canales integrados",
+   "slack": 32,
+   "critical": false
+  },
+  {
+   "id": 26,
+   "fase": "Integración",
+   "act": "Pruebas de intercambio de datos",
+   "start": "28/07/26",
+   "end": "03/08/26",
+   "start_original": "15/07/26",
+   "end_original": "21/07/26",
+   "dur": 5,
+   "deps": [
+    24,
+    25
+   ],
+   "deps_text": "24, 25",
+   "resp": "QA y testing",
+   "ent": "Integraciones validadas",
+   "slack": 32,
+   "critical": false
+  },
+  {
+   "id": 27,
+   "fase": "Pruebas",
+   "act": "Pruebas funcionales",
+   "start": "22/07/26",
+   "end": "31/07/26",
+   "start_original": "22/07/26",
+   "end_original": "31/07/26",
+   "dur": 8,
+   "deps": [
+    18,
+    23
+   ],
+   "deps_text": "18, 23",
+   "resp": "QA y testing",
+   "ent": "Resultados de testing",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 28,
+   "fase": "Pruebas",
+   "act": "Pruebas de integración",
+   "start": "04/08/26",
+   "end": "10/08/26",
+   "start_original": "03/08/26",
+   "end_original": "07/08/26",
+   "dur": 5,
+   "deps": [
+    26,
+    27
+   ],
+   "deps_text": "26, 27",
+   "resp": "QA y testing",
+   "ent": "Integración validada",
+   "slack": 32,
+   "critical": false
+  },
+  {
+   "id": 29,
+   "fase": "Pruebas",
+   "act": "Pruebas de usabilidad",
+   "start": "03/08/26",
+   "end": "11/08/26",
+   "start_original": "03/08/26",
+   "end_original": "11/08/26",
+   "dur": 7,
+   "deps": [
+    16,
+    27
+   ],
+   "deps_text": "16, 27",
+   "resp": "UX/UI",
+   "ent": "Evaluación UX",
+   "slack": 35,
+   "critical": false
+  },
+  {
+   "id": 30,
+   "fase": "Pruebas",
+   "act": "Pruebas de rendimiento y seguridad",
+   "start": "03/08/26",
+   "end": "11/08/26",
+   "start_original": "03/08/26",
+   "end_original": "11/08/26",
+   "dur": 7,
+   "deps": [
+    27
+   ],
+   "deps_text": "27",
+   "resp": "Seguridad informática",
+   "ent": "Evaluación técnica",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 31,
+   "fase": "Pruebas",
+   "act": "Corrección de errores",
+   "start": "12/08/26",
+   "end": "20/08/26",
+   "start_original": "12/08/26",
+   "end_original": "20/08/26",
+   "dur": 7,
+   "deps": [
+    27,
+    30
+   ],
+   "deps_text": "27, 30",
+   "resp": "Desarrolladores",
+   "ent": "Versión corregida",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 32,
+   "fase": "Pruebas",
+   "act": "Aprobación final de pruebas",
+   "start": "24/08/26",
+   "end": "27/08/26",
+   "start_original": "24/08/26",
+   "end_original": "27/08/26",
+   "dur": 4,
+   "deps": [
+    31
+   ],
+   "deps_text": "31",
+   "resp": "Sponsor",
+   "ent": "Solución validada",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 33,
+   "fase": "Implementación",
+   "act": "Preparación del entorno productivo",
+   "start": "28/08/26",
+   "end": "02/09/26",
+   "start_original": "28/08/26",
+   "end_original": "02/09/26",
+   "dur": 4,
+   "deps": [
+    32
+   ],
+   "deps_text": "32",
+   "resp": "Infraestructura/DevOps",
+   "ent": "Entorno preparado",
+   "slack": 2,
+   "critical": false
+  },
+  {
+   "id": 34,
+   "fase": "Implementación",
+   "act": "Capacitación y documentación",
+   "start": "28/08/26",
+   "end": "04/09/26",
+   "start_original": "28/08/26",
+   "end_original": "04/09/26",
+   "dur": 6,
+   "deps": [
+    32
+   ],
+   "deps_text": "32",
+   "resp": "Documentación y capacitación",
+   "ent": "Materiales y capacitación",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 35,
+   "fase": "Implementación",
+   "act": "Puesta en funcionamiento",
+   "start": "07/09/26",
+   "end": "09/09/26",
+   "start_original": "07/09/26",
+   "end_original": "09/09/26",
+   "dur": 3,
+   "deps": [
+    33,
+    34
+   ],
+   "deps_text": "33, 34",
+   "resp": "Infraestructura/DevOps",
+   "ent": "Solución implementada",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 36,
+   "fase": "Implementación",
+   "act": "Monitoreo inicial",
+   "start": "10/09/26",
+   "end": "16/09/26",
+   "start_original": "10/09/26",
+   "end_original": "16/09/26",
+   "dur": 5,
+   "deps": [
+    35
+   ],
+   "deps_text": "35",
+   "resp": "Infraestructura/DevOps",
+   "ent": "Informe inicial",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 37,
+   "fase": "Cierre",
+   "act": "Evaluación de resultados",
+   "start": "17/09/26",
+   "end": "22/09/26",
+   "start_original": "17/09/26",
+   "end_original": "22/09/26",
+   "dur": 4,
+   "deps": [
+    36
+   ],
+   "deps_text": "36",
+   "resp": "Project Manager",
+   "ent": "Evaluación",
+   "slack": 4,
+   "critical": false
+  },
+  {
+   "id": 38,
+   "fase": "Cierre",
+   "act": "Documentación final",
+   "start": "17/09/26",
+   "end": "24/09/26",
+   "start_original": "17/09/26",
+   "end_original": "24/09/26",
+   "dur": 6,
+   "deps": [
+    36
+   ],
+   "deps_text": "36",
+   "resp": "Documentación y capacitación",
+   "ent": "Documentación",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 39,
+   "fase": "Cierre",
+   "act": "Transferencia a responsables operativos",
+   "start": "25/09/26",
+   "end": "28/09/26",
+   "start_original": "25/09/26",
+   "end_original": "28/09/26",
+   "dur": 2,
+   "deps": [
+    36,
+    38
+   ],
+   "deps_text": "36, 38",
+   "resp": "Project Manager",
+   "ent": "Transferencia",
+   "slack": 0,
+   "critical": true
+  },
+  {
+   "id": 40,
+   "fase": "Cierre",
+   "act": "Cierre formal del proyecto",
+   "start": "29/09/26",
+   "end": "30/09/26",
+   "start_original": "29/09/26",
+   "end_original": "30/09/26",
+   "dur": 2,
+   "deps": [
+    37,
+    39
+   ],
+   "deps_text": "37, 39",
+   "resp": "Sponsor",
+   "ent": "Acta de cierre",
+   "slack": 0,
+   "critical": true
+  }
+ ],
+ "hitos": [
+  {
+   "n": 1,
+   "name": "Charter aprobado",
+   "result": "Project Charter formalizado y firmado",
+   "scope": "Proyecto Operativo",
+   "activity": 4,
+   "date": "14/04/2026",
+   "date_original": "10/04/2026"
+  },
+  {
+   "n": 2,
+   "name": "Requerimientos aprobados",
+   "result": "Especificación de Requerimientos Funcionales y No Funcionales",
+   "scope": "Proyecto Operativo",
+   "activity": 10,
+   "date": "07/05/2026",
+   "date_original": "01/05/2026"
+  },
+  {
+   "n": 3,
+   "name": "Diseño aprobado",
+   "result": "Documento de Arquitectura, Prototipos UI/UX y Modelo de Integración",
+   "scope": "Proyecto Operativo",
+   "activity": 17,
+   "date": "08/06/2026",
+   "date_original": "26/05/2026"
+  },
+  {
+   "n": 4,
+   "name": "Desarrollo completado",
+   "result": "Módulos de software, capa geográfica y APIs codificadas",
+   "scope": "Proyecto Operativo",
+   "activity": 23,
+   "date": "15/07/2026",
+   "date_original": "02/07/2026"
+  },
+  {
+   "n": 5,
+   "name": "Integraciones validadas",
+   "result": "Plataforma conectada con fuentes y canales digitales",
+   "scope": "Proyecto Operativo",
+   "activity": 26,
+   "date": "03/08/2026",
+   "date_original": "21/07/2026"
+  },
+  {
+   "n": 6,
+   "name": "Pruebas aprobadas",
+   "result": "Informe final de QA y aceptación de la solución",
+   "scope": "Proyecto Operativo",
+   "activity": 32,
+   "date": "27/08/2026",
+   "date_original": "27/08/2026"
+  },
+  {
+   "n": 7,
+   "name": "Puesta en funcionamiento",
+   "result": "Sistema desplegado en producción y capacitación efectuada",
+   "scope": "Proyecto Operativo",
+   "activity": 35,
+   "date": "09/09/2026",
+   "date_original": "09/09/2026"
+  },
+  {
+   "n": 8,
+   "name": "Cierre del proyecto",
+   "result": "Acta de Cierre, Lecciones Aprendidas y Transferencia",
+   "scope": "Proyecto Operativo",
+   "activity": 40,
+   "date": "30/09/2026",
+   "date_original": "30/09/2026"
+  }
+ ],
+ "changes": [
+  {
+   "id": 2,
+   "campo": "Inicio / Fin",
+   "antes": "02/04/26 – 06/04/26",
+   "despues": "06/04/26 – 08/04/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (1)"
+  },
+  {
+   "id": 3,
+   "campo": "Inicio / Fin",
+   "antes": "02/04/26 – 07/04/26",
+   "despues": "06/04/26 – 09/04/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (1)"
+  },
+  {
+   "id": 4,
+   "campo": "Inicio / Fin",
+   "antes": "08/04/26 – 10/04/26",
+   "despues": "10/04/26 – 14/04/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 4,
+   "campo": "Dependencias",
+   "antes": "1-3",
+   "despues": "1, 3",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 5,
+   "campo": "Inicio / Fin",
+   "antes": "13/04/26 – 17/04/26",
+   "despues": "15/04/26 – 21/04/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 6,
+   "campo": "Inicio / Fin",
+   "antes": "13/04/26 – 17/04/26",
+   "despues": "15/04/26 – 21/04/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 7,
+   "campo": "Inicio / Fin",
+   "antes": "13/04/26 – 21/04/26",
+   "despues": "15/04/26 – 23/04/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 8,
+   "campo": "Inicio / Fin",
+   "antes": "20/04/26 – 24/04/26",
+   "despues": "24/04/26 – 30/04/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (7)"
+  },
+  {
+   "id": 8,
+   "campo": "Dependencias",
+   "antes": "5-7",
+   "despues": "5, 7",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 9,
+   "campo": "Inicio / Fin",
+   "antes": "20/04/26 – 24/04/26",
+   "despues": "24/04/26 – 30/04/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (7)"
+  },
+  {
+   "id": 9,
+   "campo": "Dependencias",
+   "antes": "5-7",
+   "despues": "5, 7",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 10,
+   "campo": "Inicio / Fin",
+   "antes": "27/04/26 – 01/05/26",
+   "despues": "01/05/26 – 07/05/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 10,
+   "campo": "Dependencias",
+   "antes": "8-9",
+   "despues": "8, 9",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 11,
+   "campo": "Inicio / Fin",
+   "antes": "04/05/26 – 08/05/26",
+   "despues": "08/05/26 – 14/05/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 12,
+   "campo": "Inicio / Fin",
+   "antes": "04/05/26 – 12/05/26",
+   "despues": "08/05/26 – 18/05/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 13,
+   "campo": "Inicio / Fin",
+   "antes": "04/05/26 – 12/05/26",
+   "despues": "08/05/26 – 18/05/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 14,
+   "campo": "Inicio / Fin",
+   "antes": "11/05/26 – 15/05/26",
+   "despues": "19/05/26 – 25/05/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (13)"
+  },
+  {
+   "id": 15,
+   "campo": "Inicio / Fin",
+   "antes": "11/05/26 – 18/05/26",
+   "despues": "19/05/26 – 26/05/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (12)"
+  },
+  {
+   "id": 15,
+   "campo": "Dependencias",
+   "antes": "10-12",
+   "despues": "10, 12",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 16,
+   "campo": "Inicio / Fin",
+   "antes": "13/05/26 – 22/05/26",
+   "despues": "26/05/26 – 04/06/26",
+   "motivo": "Empezaba antes de que terminara su predecesora (14)"
+  },
+  {
+   "id": 16,
+   "campo": "Dependencias",
+   "antes": "10-14",
+   "despues": "10, 14",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 17,
+   "campo": "Inicio / Fin",
+   "antes": "25/05/26 – 26/05/26",
+   "despues": "05/06/26 – 08/06/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 17,
+   "campo": "Dependencias",
+   "antes": "11-16",
+   "despues": "11, 16",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 18,
+   "campo": "Inicio / Fin",
+   "antes": "27/05/26 – 16/06/26",
+   "despues": "09/06/26 – 29/06/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 19,
+   "campo": "Inicio / Fin",
+   "antes": "27/05/26 – 16/06/26",
+   "despues": "09/06/26 – 29/06/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 20,
+   "campo": "Inicio / Fin",
+   "antes": "17/06/26 – 23/06/26",
+   "despues": "30/06/26 – 06/07/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 21,
+   "campo": "Inicio / Fin",
+   "antes": "24/06/26 – 30/06/26",
+   "despues": "07/07/26 – 13/07/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 21,
+   "campo": "Dependencias",
+   "antes": "19-20",
+   "despues": "19, 20",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 22,
+   "campo": "Inicio / Fin",
+   "antes": "27/05/26 – 16/06/26",
+   "despues": "09/06/26 – 29/06/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 23,
+   "campo": "Inicio / Fin",
+   "antes": "17/06/26 – 02/07/26",
+   "despues": "30/06/26 – 15/07/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 23,
+   "campo": "Dependencias",
+   "antes": "15,18",
+   "despues": "15, 18",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 24,
+   "campo": "Inicio / Fin",
+   "antes": "03/07/26 – 10/07/26",
+   "despues": "16/07/26 – 23/07/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 24,
+   "campo": "Dependencias",
+   "antes": "18,23",
+   "despues": "18, 23",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 25,
+   "campo": "Inicio / Fin",
+   "antes": "03/07/26 – 14/07/26",
+   "despues": "16/07/26 – 27/07/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 26,
+   "campo": "Inicio / Fin",
+   "antes": "15/07/26 – 21/07/26",
+   "despues": "28/07/26 – 03/08/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 26,
+   "campo": "Dependencias",
+   "antes": "24-25",
+   "despues": "24, 25",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 27,
+   "campo": "Dependencias",
+   "antes": "18-23",
+   "despues": "18, 23",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 28,
+   "campo": "Inicio / Fin",
+   "antes": "03/08/26 – 07/08/26",
+   "despues": "04/08/26 – 10/08/26",
+   "motivo": "Se desplaza porque una predecesora corrigió su fecha de fin"
+  },
+  {
+   "id": 28,
+   "campo": "Dependencias",
+   "antes": "26-27",
+   "despues": "26, 27",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 29,
+   "campo": "Dependencias",
+   "antes": "16,27",
+   "despues": "16, 27",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 31,
+   "campo": "Dependencias",
+   "antes": "27-30",
+   "despues": "27, 30",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 35,
+   "campo": "Dependencias",
+   "antes": "33-34",
+   "despues": "33, 34",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 39,
+   "campo": "Dependencias",
+   "antes": "36-38",
+   "despues": "36, 38",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  },
+  {
+   "id": 40,
+   "campo": "Dependencias",
+   "antes": "37-39",
+   "despues": "37, 39",
+   "motivo": "Notación explícita: se listan las actividades predecesoras"
+  }
+ ]
+}

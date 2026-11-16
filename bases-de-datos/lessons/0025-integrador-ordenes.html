@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 25 · Integrador: el ejercicio del 10/09</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 25 · Unidad 3 · Integrador A</p>
+    <h1 class="masthead__title">El ejercicio del 10/09, paso a paso</h1>
+    <p class="masthead__standfirst">
+      Mismo procedimiento, otros datos. Y con la resolución del profe al lado, así que
+      esta vez se corrige solo.
+    </p>
+    <p class="masthead__meta">
+      <span>~12 minutos</span>
+      <span>Clase del 10/09/2026</span>
+      <span>Resolución oficial disponible</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>El punto de partida</h2>
+
+  <p>
+    Una sola tabla con todo adentro. Es la misma enfermedad del ejemplo de facturación,
+    con otro disfraz: órdenes de compra de artículos deportivos.
+  </p>
+
+  <div class="tbl-wrap">
+    <table class="datos">
+      <thead>
+        <tr><th>ID_ORDEN</th><th>FECHA</th><th>ID_CLIENTE</th><th>NOM_CLIENTE</th><th>ESTADO</th><th>NUM_ART</th><th>NOM_ART</th><th>CANT</th><th>PRECIO</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2301</td><td>2/23/2011</td><td>101</td><td>MARTIN</td><td>CARACAS</td><td>3786</td><td>RED</td><td>3</td><td>35</td></tr>
+        <tr><td>2301</td><td>2/23/2011</td><td>101</td><td>MARTIN</td><td>CARACAS</td><td>4011</td><td>RAQUETA</td><td>6</td><td>65</td></tr>
+        <tr><td>2301</td><td>2/23/2011</td><td>101</td><td>MARTIN</td><td>CARACAS</td><td>9132</td><td>PAQ-3</td><td>8</td><td>4,75</td></tr>
+        <tr><td>2302</td><td>2/25/2011</td><td>107</td><td>HERNAN</td><td>CORO</td><td>5794</td><td>PAQ-6</td><td>4</td><td>5</td></tr>
+        <tr><td>2303</td><td>2/27/2011</td><td>110</td><td>PEDRO</td><td>MARACAY</td><td>4011</td><td>RAQUETA</td><td>2</td><td>65</td></tr>
+        <tr><td>2303</td><td>2/27/2011</td><td>110</td><td>PEDRO</td><td>MARACAY</td><td>3141</td><td>FUNDA</td><td>2</td><td>10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <b>Antes de seguir, hacelo vos.</b> Sacá el mapa de dependencias como en la
+    <a href="0020-dependencia-funcional.html">lección 20</a> y después compará.
+    Leer la resolución sin haberlo intentado no te deja nada.
+  </p>
+
+  <details class="reveal">
+    <summary>Ver el mapa de dependencias</summary>
+    <div class="reveal__body">
+      <p>Clave primaria: <code>(ID_ORDEN, NUM_ART)</code> — una fila es un renglón de una orden.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Atributo</th><th>Depende de</th><th>Tipo</th></tr></thead>
+          <tbody>
+            <tr><td><code>CANT</code></td><td><code>(ID_ORDEN, NUM_ART)</code></td><td>Total ✓</td></tr>
+            <tr><td><code>FECHA</code></td><td><code>ID_ORDEN</code></td><td>Parcial</td></tr>
+            <tr><td><code>ID_CLIENTE</code></td><td><code>ID_ORDEN</code></td><td>Parcial</td></tr>
+            <tr><td><code>NOM_ART</code></td><td><code>NUM_ART</code></td><td>Parcial</td></tr>
+            <tr><td><code>PRECIO</code></td><td><code>NUM_ART</code></td><td>Parcial</td></tr>
+            <tr><td><code>NOM_CLIENTE</code></td><td><code>ID_CLIENTE</code></td><td>Transitiva</td></tr>
+            <tr><td><code>ESTADO</code></td><td><code>ID_CLIENTE</code></td><td>Transitiva</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Un detalle que confirma que <code>PRECIO</code> depende sólo del artículo:
+        el <code>NUM_ART</code> 4011 aparece en dos órdenes distintas y en las dos vale 65.
+        Los datos no contradicen la dependencia — acá el precio es del artículo,
+        <b>Situación B</b> de la <a href="0024-donde-vive-el-precio.html">lección 24</a>.
+      </p>
+    </div>
+  </details>
+
+  <div class="move">
+    <span class="move__n">Paso 1</span>
+    <p class="move__t">Primera forma normal — separar el grupo repetitivo</p>
+  </div>
+
+  <p>
+    Una orden tiene <b>una</b> fecha y <b>un</b> cliente, pero <b>muchos</b> artículos.
+    Ahí está el corte.
+  </p>
+
+  <div class="paso">
+    <div>
+      <h3>ORDEN_CLIENTES</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_ORDEN</th><th>FECHA</th><th>ID_CLI</th><th>NOM_CLI</th><th>ESTADO</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">2301</td><td>2/23/2011</td><td>101</td><td>MARTIN</td><td>CARACAS</td></tr>
+            <tr><td class="pk">2302</td><td>2/25/2011</td><td>107</td><td>HERNAN</td><td>CORO</td></tr>
+            <tr><td class="pk">2303</td><td>2/27/2011</td><td>110</td><td>PEDRO</td><td>MARACAY</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>ORDEN_ARTICULOS</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_ORDEN</th><th>NUM_ART</th><th>NOM_ART</th><th>CANT</th><th>PRECIO</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">2301</td><td class="pk">3786</td><td>RED</td><td>3</td><td>35</td></tr>
+            <tr><td class="pk">2301</td><td class="pk">4011</td><td>RAQUETA</td><td>6</td><td>65</td></tr>
+            <tr><td class="pk">2301</td><td class="pk">9132</td><td>PAQ-3</td><td>8</td><td>4,75</td></tr>
+            <tr><td class="pk">2302</td><td class="pk">5794</td><td>PAQ-6</td><td>4</td><td>5</td></tr>
+            <tr><td class="pk">2303</td><td class="pk">4011</td><td>RAQUETA</td><td>2</td><td>65</td></tr>
+            <tr><td class="pk">2303</td><td class="pk">3141</td><td>FUNDA</td><td>2</td><td>10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    En la resolución, el profe anota <b>"ID CLAVE COMPUESTA"</b> arriba de
+    <code>ORDEN_ARTICULOS</code>, y marca en amarillo <code>ID_ORDEN</code> y
+    <code>NUM_ART</code>. Copiá ese gesto: <b>marcá siempre la clave compuesta</b>,
+    porque es lo que hace posible el paso siguiente.
+  </p>
+
+  <div class="move">
+    <span class="move__n">Paso 2</span>
+    <p class="move__t">Segunda forma normal — sacar lo que depende de media clave</p>
+  </div>
+
+  <p>
+    <code>ORDEN_CLIENTES</code> tiene clave simple: <b>ya está en 2FN</b>, no se toca.
+    Todo el trabajo está en <code>ORDEN_ARTICULOS</code>, que tiene clave compuesta.
+  </p>
+
+  <p>
+    <code>NOM_ART</code> depende sólo de <code>NUM_ART</code> — la raqueta se llama raqueta
+    en cualquier orden. Se muda a una tabla propia.
+  </p>
+
+  <div class="paso paso--tres">
+    <div>
+      <h3>ORDEN_CLIENTES</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_ORDEN</th><th>…</th></tr></thead>
+          <tbody><tr><td class="dim">sin cambios</td><td class="dim">—</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>ORDEN_ARTICULOS</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_ORDEN</th><th>NUM_ART</th><th>CANT</th><th>PRECIO</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">2301</td><td class="pk">3786</td><td>3</td><td>35</td></tr>
+            <tr><td class="pk">2301</td><td class="pk">4011</td><td>6</td><td>65</td></tr>
+            <tr><td class="pk">2301</td><td class="pk">9132</td><td>8</td><td>4,75</td></tr>
+            <tr><td class="pk">2302</td><td class="pk">5794</td><td>4</td><td>5</td></tr>
+            <tr><td class="pk">2303</td><td class="pk">4011</td><td>2</td><td>65</td></tr>
+            <tr><td class="pk">2303</td><td class="pk">3141</td><td>2</td><td>10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>ARTICULOS</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>NUM_ART</th><th>NOM_ART</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">3786</td><td>RED</td></tr>
+            <tr><td class="pk">4011</td><td>RAQUETA</td></tr>
+            <tr><td class="pk">9132</td><td>PAQ-3</td></tr>
+            <tr><td class="pk">5794</td><td>PAQ-6</td></tr>
+            <tr><td class="pk">3141</td><td>FUNDA</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Mirá qué se quedó</span>
+    <p>
+      <code>PRECIO</code> sigue en <code>ORDEN_ARTICULOS</code>. Pero recién vimos que
+      <code>PRECIO</code> depende sólo de <code>NUM_ART</code>, igual que
+      <code>NOM_ART</code>. <b>Es la misma dependencia parcial, y quedó sin corregir en
+      este paso.</b>
+    </p>
+    <p>
+      No es un error de resultado: el profe lo mueve en el paso siguiente, y el modelo
+      final queda bien. Es una diferencia de <b>en qué paso se clasifica el arreglo</b>.
+      Por la definición estricta, mudar <code>PRECIO</code> es un arreglo de 2FN.
+    </p>
+  </div>
+
+  <div class="move">
+    <span class="move__n">Paso 3</span>
+    <p class="move__t">Tercera forma normal — sacar las transitivas</p>
+  </div>
+
+  <p>
+    En <code>ORDEN_CLIENTES</code>: <code>NOM_CLIENTE</code> y <code>ESTADO</code> dependen
+    de <code>ID_CLIENTE</code>, que no es clave. Cadena
+    <code>ID_ORDEN &rarr; ID_CLIENTE &rarr; NOM_CLIENTE</code>. Los dos se van a
+    <code>CLIENTES</code>.
+  </p>
+
+  <p>Y acá el profe además completa la mudanza de <code>PRECIO</code> a <code>ARTICULOS</code>.</p>
+
+  <div class="paso">
+    <div>
+      <h3>ORDEN_CLIENTE</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_ORDEN</th><th>FECHA</th><th>ID_CLIENTE</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">2301</td><td>2/23/2011</td><td>101</td></tr>
+            <tr><td class="pk">2302</td><td>2/25/2011</td><td>107</td></tr>
+            <tr><td class="pk">2303</td><td>2/27/2011</td><td>110</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>CLIENTES</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_CLIENTE</th><th>NOM_CLIENTE</th><th>ESTADO</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">101</td><td>MARTIN</td><td>CARACAS</td></tr>
+            <tr><td class="pk">107</td><td>HERNAN</td><td>CORO</td></tr>
+            <tr><td class="pk">110</td><td>PEDRO</td><td>MARACAY</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="paso">
+    <div>
+      <h3>ORDENES</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>ID_ORDEN</th><th>NUM_ART</th><th>CANT</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">2301</td><td class="pk">3786</td><td>3</td></tr>
+            <tr><td class="pk">2301</td><td class="pk">4011</td><td>6</td></tr>
+            <tr><td class="pk">2301</td><td class="pk">9132</td><td>8</td></tr>
+            <tr><td class="pk">2302</td><td class="pk">5794</td><td>4</td></tr>
+            <tr><td class="pk">2303</td><td class="pk">4011</td><td>2</td></tr>
+            <tr><td class="pk">2303</td><td class="pk">3141</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>ARTICULOS</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>NUM_ART</th><th>NOM_ART</th><th>PRECIO</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">3786</td><td>RED</td><td>35</td></tr>
+            <tr><td class="pk">4011</td><td>RAQUETA</td><td>65</td></tr>
+            <tr><td class="pk">9132</td><td>PAQ-3</td><td>4,75</td></tr>
+            <tr><td class="pk">5794</td><td>PAQ-6</td><td>5</td></tr>
+            <tr><td class="pk">3141</td><td>FUNDA</td><td>10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="num">02</span>El resultado, en notación de la cátedra</h2>
+
+  <div class="rel">
+    ORDEN_CLIENTE (<b>#ID_ORDEN</b>, FECHA, <i>(FK)ID_CLIENTE</i>)<br>
+    CLIENTES (<b>#ID_CLIENTE</b>, NOM_CLIENTE, ESTADO)<br>
+    ORDENES (<b>#ID_ORDEN</b>, <b>#NUM_ART</b>, CANT)<br>
+    ARTICULOS (<b>#NUM_ART</b>, NOM_ART, PRECIO)
+  </div>
+
+  <p>
+    Cuatro tablas, igual que en el ejemplo de facturación, y con la misma forma:
+    una cabecera, una asociativa, y dos tablas de referencia.
+    <b>No es casualidad</b> — es el patrón de cualquier documento con renglones.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Dos detalles de la resolución</span>
+    <p>
+      <b>El profe renombra tablas entre pasos.</b> <code>ORDEN_CLIENTES</code> pasa a
+      <code>ORDEN_CLIENTE</code>, y <code>ORDEN_ARTICULOS</code> pasa a <code>ORDENES</code>.
+      Los nombres del último cuadro son los que valen. Vos mantené el nombre estable entre
+      pasos: se sigue mucho mejor.
+    </p>
+    <p>
+      <b>Marca las claves en amarillo y las compuestas con un rótulo.</b> Es un hábito que
+      conviene copiar en la entrega: al corrector le tiene que saltar a la vista qué elegiste
+      como clave en cada tabla.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Comparación con el ejemplo de la Clase 3</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Rol</th><th>Facturación</th><th>Órdenes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cabecera del documento</td><td><code>CabeceraFact</code></td><td><code>ORDEN_CLIENTE</code></td></tr>
+        <tr><td>Tabla asociativa (renglones)</td><td><code>RenglonFact</code></td><td><code>ORDENES</code></td></tr>
+        <tr><td>Catálogo de productos</td><td><code>Prod</code></td><td><code>ARTICULOS</code></td></tr>
+        <tr><td>Catálogo de clientes</td><td><code>Cli</code></td><td><code>CLIENTES</code></td></tr>
+        <tr><td><b>Dónde queda el precio</b></td><td>en el renglón (Situación A)</td><td><b>en el artículo (Situación B)</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    La única diferencia real está en la última fila, y ya sabés por qué: son dos decisiones
+    de negocio distintas, las dos legítimas, las dos en 3FN. En el ejercicio de órdenes los
+    datos confirman la Situación B — la raqueta vale 65 en las dos órdenes donde aparece.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · El estado</span>
+    <p class="quiz__q">
+      ¿Por qué <code>ESTADO</code> se va a <code>CLIENTES</code> y no se queda en la orden?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es un dato del cliente — su ciudad o estado — no de la orden. Depende de ID_CLIENTE, que en ORDEN_CLIENTES no es clave: dependencia transitiva de manual. Viaja junto con NOM_CLIENTE porque las dos dependen del mismo atributo.">Depende del cliente, no de la orden</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No es el estado de la orden (pendiente, entregada). En este ejercicio ESTADO es la ciudad del cliente: CARACAS, CORO, MARACAY. Por eso viaja con NOM_CLIENTE.">Es el estado de avance de la orden</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · El paso correcto</span>
+    <p class="quiz__q">
+      Por la definición estricta, mudar <code>PRECIO</code> a <code>ARTICULOS</code>,
+      ¿qué paso es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es 2FN: PRECIO depende de NUM_ART, que es una PARTE de la clave compuesta (ID_ORDEN, NUM_ART). Eso es una dependencia parcial por definición. En la resolución se hace en el paso 3, pero el resultado final es idéntico.">2FN: depende de parte de la clave</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sería 3FN si PRECIO dependiera de un atributo NO clave. Pero NUM_ART sí es clave — es la mitad de la clave compuesta. Depender de parte de la clave es exactamente la definición de dependencia parcial.">3FN: depende de un campo no clave</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Chequeo final</span>
+    <p class="quiz__q">
+      ¿Cómo verificás que no perdiste información al normalizar?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Reconstruir la tabla original uniendo las cuatro por sus claves. Si te da exactamente las seis filas del principio, la descomposición no perdió nada. Es el control que casi nadie hace y el que más errores encuentra.">Reconstruís la tabla original con joins</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Que sumen no prueba nada: distribuiste las columnas en tablas más chicas y sin repetición, así que los totales de filas cambian a propósito. Hay que probar que podés VOLVER a la tabla original.">Contás que las filas sumen las mismas</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Resolución del docente</b>, <code>raw/Respuesta_Ejercicio20260910.png</code> —
+      la planilla con los tres cuadros (1ERA, 2DA y 3RA FORMA NORMAL).
+      Todas las tablas de esta lección salen de ahí.
+    </p>
+    <p>
+      El enunciado está en <code>raw/Ejercicios para realizar en clase 2026-09-10.pdf</code>.
+      La observación sobre el paso de <code>PRECIO</code> la agregamos nosotros, contrastando
+      contra Elmasri sección 10.3.5.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Lo de <code>PRECIO</code> es exactamente el tipo de cosa que
+      vale la pena preguntarle al docente en clase. No para corregirlo: para entender si él
+      espera el arreglo en 2FN o si lo agrupa en el último paso. Esa respuesta te dice cómo
+      quiere que entregues.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0024-donde-vive-el-precio.html">Anterior: 0024</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0026-integrador-proveedores.html">Siguiente: 0026 · Ejercicio 1 Proveedores</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

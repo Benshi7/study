@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consultas SQL (DML) · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<!-- Deck de estudio sobre el PPT "DML_Base de Datos" de la cátedra (Unidad 5). La sintaxis y las definiciones siguen al deck;
+     los ejemplos usan las tablas del modelo de parcial 1b (assets/seeds/envios.js) y los resultados se calcularon sobre esos datos.
+     El orden lógico de ejecución, los diagramas y los recuadros "En criollo" / "Ojo en el choice" son interpretación nuestra. -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ah"/></marker>
+  <marker id="arA" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahA"/></marker>
+  <marker id="arB" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahB"/></marker>
+</defs></svg>
+
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · Unidad 5 · práctica del 2.º parcial</p>
+    <h1 class="h1" style="font-size:112px;line-height:1">Consultas<br><span class="gradient-text">SQL (DML)</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Qué hace cada cláusula, en qué orden la ejecuta el motor y cómo se lee un enunciado.</p>
+    <p class="small">Basado en el PPT de la cátedra. Ejemplos sobre las tablas del modelo de parcial 1b, con resultados reales.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="slide" data-title="DML y las tablas del ejemplo">
+  <p class="kicker">Mapa</p>
+  <h2 class="h2">DML: cuatro sentencias para manejar datos</h2>
+  <div class="four" style="margin-top:8px">
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">casi todo el deck</div><h4>SELECT</h4><p>Obtener datos. Devuelve <b>una tabla</b>.</p></div>
+    <div class="card card-accent"><div class="src">alta</div><h4>INSERT</h4><p>Insertar filas en una tabla.</p></div>
+    <div class="card card-accent"><div class="src">cambio</div><h4>UPDATE</h4><p>Modificar filas existentes.</p></div>
+    <div class="card card-accent"><div class="src">baja</div><h4>DELETE</h4><p>Eliminar filas de una tabla.</p></div>
+  </div>
+  <svg class="dg" viewBox="0 0 1728 236" role="img" aria-labelledby="sch-title sch-desc" style="margin-top:22px">
+    <title id="sch-title">Tablas del ejemplo: proveedores, componentes, artículos y envíos</title>
+    <desc id="sch-desc">ENVIOS registra que un proveedor envió una cantidad de un componente para un artículo; tiene claves foráneas a PROVEEDORES, COMPONENTES y ARTICULOS.</desc>
+    <line x1="400" y1="120" x2="652" y2="120" class="ln"/>
+    <line x1="1076" y1="120" x2="1328" y2="120" class="ln"/>
+    <line x1="864" y1="196" x2="864" y2="168" class="ln"/>
+    <rect x="0" y="72" width="400" height="96" rx="8" class="box"/><text x="24" y="112" class="nm">PROVEEDORES</text><text x="24" y="148" class="sb">P · PNOMBRE · CATEGORIA · CIUDAD</text>
+    <rect x="656" y="72" width="416" height="96" rx="8" class="foc"/><text x="680" y="112" class="nm">ENVIOS</text><text x="680" y="148" class="sb">P · C · T · CANTIDAD</text>
+    <rect x="1332" y="72" width="396" height="96" rx="8" class="box"/><text x="1356" y="112" class="nm">COMPONENTES</text><text x="1356" y="148" class="sb" style="font-size:16px">C · CNOMBRE · COLOR · PESO · CIUDAD</text>
+    <rect x="656" y="196" width="416" height="40" rx="8" class="box"/><text x="680" y="224" class="tx" font-weight="700">ARTICULOS <tspan class="sb">T · TNOMBRE · CIUDAD</tspan></text>
+    <text x="0" y="40" class="ey">LAS TABLAS DEL MODELO DE PARCIAL 1B · 5 PROVEEDORES · 6 COMPONENTES · 7 ARTÍCULOS · 24 ENVÍOS</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Todos los ejemplos usan estas tablas, las mismas de SUMINISTROS. Los resultados que vas a ver son <b>los que da de verdad</b> la consulta sobre esos datos.</p></div>
+</section>
+
+<!-- ============ 1 · SELECT ============ -->
+<section class="slide" data-title="SELECT, DISTINCT y alias">
+  <p class="kicker">1 · Leer datos</p>
+  <h2 class="h2">SELECT, DISTINCT y alias</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <pre class="code sm"><span class="k">SELECT</span> CNOMBRE, COLOR   <span style="color:#a58a97">-- columnas</span>
+<span class="k">FROM</span>   COMPONENTES;
+
+<span class="k">SELECT</span> *                <span style="color:#a58a97">-- todas</span>
+<span class="k">FROM</span>   COMPONENTES;
+
+<span class="k">SELECT DISTINCT</span> COLOR   <span style="color:#a58a97">-- sin repetir</span>
+<span class="k">FROM</span>   COMPONENTES;
+
+<span class="k">SELECT</span> C.CNOMBRE        <span style="color:#a58a97">-- alias de tabla</span>
+<span class="k">FROM</span>   COMPONENTES <span class="k">AS</span> C;  <span style="color:#a58a97">-- el AS es opcional</span></pre>
+    </div>
+    <svg class="dg" viewBox="0 0 820 440" role="img" aria-labelledby="dis-title dis-desc">
+      <title id="dis-title">DISTINCT quita las filas repetidas</title>
+      <desc id="dis-desc">La columna COLOR de los seis componentes tiene ROJO tres veces y AZUL dos veces; con DISTINCT quedan tres filas: ROJO, VERDE y AZUL.</desc>
+      <text x="0" y="24" class="ey">SELECT COLOR · 6 FILAS</text>
+      <text x="820" y="24" class="eyA" text-anchor="end">SELECT DISTINCT COLOR · 3 FILAS</text>
+      <line x1="300" y1="216" x2="516" y2="216" class="lnA" marker-end="url(#arA)"/>
+      <rect x="344" y="180" width="128" height="20" class="mask"/><text x="408" y="195" class="lb" text-anchor="middle" style="fill:var(--accent)">DISTINCT</text>
+      <rect x="0" y="40" width="300" height="384" rx="6" class="store"/>
+      <text x="24" y="92" class="row">ROJO</text><text x="24" y="152" class="row">VERDE</text><text x="24" y="212" class="row">AZUL</text>
+      <text x="24" y="272" class="row" fill="var(--text-3)" style="fill:var(--text-3)">ROJO</text><text x="24" y="332" class="row" style="fill:var(--text-3)">AZUL</text><text x="24" y="392" class="row" style="fill:var(--text-3)">ROJO</text>
+      <text x="276" y="272" class="tag" text-anchor="end">repetido</text><text x="276" y="332" class="tag" text-anchor="end">repetido</text><text x="276" y="392" class="tag" text-anchor="end">repetido</text>
+      <rect x="520" y="136" width="300" height="180" rx="6" class="foc"/>
+      <text x="544" y="188" class="rowK">ROJO</text><text x="544" y="236" class="rowK">VERDE</text><text x="544" y="284" class="rowK">AZUL</text>
+    </svg>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Una consulta de selección <b>devuelve una tabla</b>. El <b>alias</b> es un nombre temporal que sólo existe mientras dura esa consulta: se usa para acortar (<code>C.CNOMBRE</code>) y es obligatorio cuando una tabla aparece dos veces.</p></div>
+</section>
+
+<section class="slide" data-title="WHERE y sus operadores">
+  <p class="kicker">1 · Leer datos</p>
+  <h2 class="h2">WHERE: quedarse sólo con las filas que cumplen</h2>
+  <table class="t head" style="font-size:25px;margin-top:6px">
+    <thead><tr><th style="width:15%">Operador</th><th style="width:36%">Qué hace</th><th>Ejemplo sobre las tablas</th></tr></thead>
+    <tbody>
+      <tr><td>AND</td><td>Se cumplen <b>las dos</b> condiciones</td><td><code>COLOR = 'ROJO' AND CIUDAD = 'SEVILLA'</code></td></tr>
+      <tr><td>OR</td><td>Se cumple <b>una o la otra</b></td><td><code>CIUDAD = 'SEVILLA' OR CIUDAD = 'MADRID'</code></td></tr>
+      <tr><td>NOT</td><td>Invierte la expresión <b>que sigue inmediatamente</b></td><td><code>NOT COLOR = 'ROJO'</code></td></tr>
+      <tr><td>LIKE</td><td>Busca un patrón con comodines (<code>%</code> = cualquier texto)</td><td><code>CIUDAD LIKE '%D'</code> · <code>LIKE '%E%'</code></td></tr>
+      <tr><td>BETWEEN</td><td>Rango de valores <b>inclusivo</b> (fechas, números, texto)</td><td><code>CANTIDAD BETWEEN 200 AND 500</code></td></tr>
+      <tr><td>IN</td><td>Coincide con <b>cualquier valor</b> de una lista o subconsulta: un OR abreviado</td><td><code>T IN ('T1', 'T2')</code></td></tr>
+      <tr><td>EXISTS</td><td>Verdadero si la subconsulta devuelve <b>al menos una fila</b>. Sólo con subconsultas</td><td><code>EXISTS (SELECT * FROM ENVIOS E WHERE E.P = P.P)</code></td></tr>
+    </tbody>
+  </table>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p><b>IN</b> acepta una lista de valores <b>o</b> una subconsulta; <b>EXISTS</b> sólo una subconsulta. <b>BETWEEN</b> incluye los dos extremos.</p></div>
+</section>
+
+<section class="slide" data-title="NULL">
+  <p class="kicker">1 · Leer datos</p>
+  <h2 class="h2">NULL no es un valor: es “no sé”</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <table class="t head mini">
+        <thead><tr><th>Si Precio es NULL…</th><th>da</th></tr></thead>
+        <tbody>
+          <tr><td><code>Precio = NULL</code></td><td style="color:var(--bad);font-weight:700">desconocido</td></tr>
+          <tr><td><code>Precio &gt; 0</code></td><td style="color:var(--bad);font-weight:700">desconocido</td></tr>
+          <tr><td><code>Precio &lt;&gt; 'ROJO'</code></td><td style="color:var(--bad);font-weight:700">desconocido</td></tr>
+          <tr><td><code>Precio IS NULL</code></td><td style="color:var(--good);font-weight:700">verdadero</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:28px;line-height:1.45;margin-top:18px">El <b>WHERE</b> sólo deja pasar lo <b>verdadero</b>: lo desconocido se cae. Por eso <code>= NULL</code> nunca encuentra nada.</p>
+    </div>
+    <div class="card card-soft"><h4>Tres casos que ya te cruzaste</h4><ul>
+      <li><b>Buscar nulos:</b> <code>IS NULL</code> / <code>IS NOT NULL</code>, nunca <code>= NULL</code>.</li>
+      <li><b>“Color no ROJO”:</b> <code>&lt;&gt; 'ROJO'</code> no trae las filas con color NULL.</li>
+      <li><b>CHECK:</b> al revés que el WHERE, <b>acepta</b> lo desconocido. <code>CHECK (Precio &gt; 0)</code> deja pasar un NULL: para prohibirlo va <code>NOT NULL</code>.</li></ul></div>
+  </div>
+  <p class="small" style="margin-top:auto">Este tema no está en el PPT de DML; está en la lección 0033 y en el ejercicio 3 de la 0031.</p>
+</section>
+
+<!-- ============ 2 · CÓMO EJECUTA ============ -->
+<section class="slide" data-title="Orden de ejecución">
+  <p class="kicker">2 · Cómo la ejecuta el motor</p>
+  <h2 class="h2">Se escribe en un orden, se ejecuta en otro</h2>
+  <svg class="dg" viewBox="0 0 1728 392" role="img" aria-labelledby="ord-title ord-desc" style="margin-top:6px">
+    <title id="ord-title">Orden de escritura y orden lógico de ejecución de un SELECT</title>
+    <desc id="ord-desc">Se escribe SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY; se ejecuta FROM, WHERE, GROUP BY, HAVING, SELECT y por último ORDER BY.</desc>
+    <text x="0" y="24" class="ey">ASÍ SE ESCRIBE</text>
+    <rect x="0" y="40" width="248" height="88" rx="8" class="foc"/><text x="124" y="92" class="nm-s" text-anchor="middle">SELECT</text><text x="228" y="64" class="tag" text-anchor="end">5</text>
+    <rect x="296" y="40" width="248" height="88" rx="8" class="box"/><text x="420" y="92" class="nm-s" text-anchor="middle">FROM</text><text x="524" y="64" class="tag" text-anchor="end">1</text>
+    <rect x="592" y="40" width="248" height="88" rx="8" class="box"/><text x="716" y="92" class="nm-s" text-anchor="middle">WHERE</text><text x="820" y="64" class="tag" text-anchor="end">2</text>
+    <rect x="888" y="40" width="248" height="88" rx="8" class="box"/><text x="1012" y="92" class="nm-s" text-anchor="middle">GROUP BY</text><text x="1116" y="64" class="tag" text-anchor="end">3</text>
+    <rect x="1184" y="40" width="248" height="88" rx="8" class="box"/><text x="1308" y="92" class="nm-s" text-anchor="middle">HAVING</text><text x="1412" y="64" class="tag" text-anchor="end">4</text>
+    <rect x="1480" y="40" width="248" height="88" rx="8" class="box"/><text x="1604" y="92" class="nm-s" text-anchor="middle">ORDER BY</text><text x="1708" y="64" class="tag" text-anchor="end">6</text>
+    <text x="0" y="192" class="eyA">ASÍ SE EJECUTA (ORDEN LÓGICO)</text>
+    <line x1="248" y1="264" x2="292" y2="264" class="ln" marker-end="url(#ar)"/>
+    <line x1="544" y1="264" x2="588" y2="264" class="ln" marker-end="url(#ar)"/>
+    <line x1="840" y1="264" x2="884" y2="264" class="ln" marker-end="url(#ar)"/>
+    <line x1="1136" y1="264" x2="1180" y2="264" class="ln" marker-end="url(#ar)"/>
+    <line x1="1432" y1="264" x2="1476" y2="264" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="208" width="248" height="112" rx="8" class="box"/><text x="124" y="256" class="nm-s" text-anchor="middle">1 · FROM</text><text x="124" y="292" class="sb" text-anchor="middle">tablas y JOINs</text>
+    <rect x="296" y="208" width="248" height="112" rx="8" class="box"/><text x="420" y="256" class="nm-s" text-anchor="middle">2 · WHERE</text><text x="420" y="292" class="sb" text-anchor="middle">filtra filas</text>
+    <rect x="592" y="208" width="248" height="112" rx="8" class="box"/><text x="716" y="256" class="nm-s" text-anchor="middle">3 · GROUP BY</text><text x="716" y="292" class="sb" text-anchor="middle">arma grupos</text>
+    <rect x="888" y="208" width="248" height="112" rx="8" class="box"/><text x="1012" y="256" class="nm-s" text-anchor="middle">4 · HAVING</text><text x="1012" y="292" class="sb" text-anchor="middle">filtra grupos</text>
+    <rect x="1184" y="208" width="248" height="112" rx="8" class="foc"/><text x="1308" y="256" class="nm-s" text-anchor="middle">5 · SELECT</text><text x="1308" y="292" class="sb" text-anchor="middle">elige columnas</text>
+    <rect x="1480" y="208" width="248" height="112" rx="8" class="box"/><text x="1604" y="256" class="nm-s" text-anchor="middle">6 · ORDER BY</text><text x="1604" y="292" class="sb" text-anchor="middle">ASC por defecto</text>
+    <text x="0" y="372" class="tx2">Por eso el WHERE no puede usar COUNT(*): cuando se ejecuta, los grupos todavía no existen.</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>La estructura del deck (“en resumen”) es la de arriba. El motor la piensa como la de abajo: primero <b>de dónde</b> saco las filas, después <b>cuáles</b> me quedo, después <b>cómo las agrupo</b>, y recién al final <b>qué columnas muestro</b>. El orden lógico es explicación nuestra; el deck no lo menciona.</p></div>
+</section>
+
+<section class="slide" data-title="Una consulta paso a paso">
+  <p class="kicker">2 · Cómo la ejecuta el motor</p>
+  <h2 class="h2">Una consulta, paso a paso, con filas reales</h2>
+  <div style="display:grid;grid-template-columns:.75fr 1.25fr;gap:40px;align-items:start;margin-top:6px">
+    <div>
+      <p class="res">Pedido</p>
+      <p style="font-size:28px;line-height:1.4;margin:0 0 16px">“Proveedores con más de dos envíos de 200 unidades o más, y cuántos tienen, del que más al que menos.”</p>
+      <pre class="code sm"><span class="k">SELECT</span> P, <span class="k">COUNT</span>(*) <span class="k">AS</span> envios
+<span class="k">FROM</span> ENVIOS
+<span class="k">WHERE</span> CANTIDAD &gt;= 200
+<span class="k">GROUP BY</span> P
+<span class="k">HAVING</span> <span class="k">COUNT</span>(*) &gt; 2
+<span class="k">ORDER BY</span> envios <span class="k">DESC</span>;</pre>
+    </div>
+    <svg class="dg" viewBox="0 0 1040 560" role="img" aria-labelledby="pip-title pip-desc">
+      <title id="pip-title">Cuántas filas quedan después de cada cláusula</title>
+      <desc id="pip-desc">FROM trae 24 envíos; WHERE deja 20; GROUP BY los junta en 5 grupos, uno por proveedor; HAVING deja 2 grupos; SELECT muestra P2 y P5 con 7 envíos cada uno; ORDER BY los ordena.</desc>
+      <text x="0" y="40" class="nm-s">FROM</text><rect x="200" y="12" width="720" height="40" rx="4" class="store"/><text x="936" y="40" class="rowK">24 filas</text>
+      <text x="0" y="128" class="nm-s">WHERE</text><rect x="200" y="100" width="600" height="40" rx="4" class="store"/><text x="816" y="128" class="rowK">20 filas</text>
+      <text x="200" y="168" class="sb">se van 4 envíos de 100 unidades</text>
+      <text x="0" y="236" class="nm-s">GROUP BY</text>
+      <rect x="200" y="208" width="80" height="40" rx="4" class="foc"/><rect x="292" y="208" width="80" height="40" rx="4" class="foc"/><rect x="384" y="208" width="80" height="40" rx="4" class="foc"/><rect x="476" y="208" width="80" height="40" rx="4" class="foc"/><rect x="568" y="208" width="80" height="40" rx="4" class="foc"/>
+      <text x="240" y="236" class="row" text-anchor="middle">P1</text><text x="332" y="236" class="row" text-anchor="middle">P2</text><text x="424" y="236" class="row" text-anchor="middle">P3</text><text x="516" y="236" class="row" text-anchor="middle">P4</text><text x="608" y="236" class="row" text-anchor="middle">P5</text>
+      <text x="664" y="236" class="rowK">5 grupos</text>
+      <text x="200" y="276" class="sb">P1 2 · P2 7 · P3 2 · P4 2 · P5 7 envíos</text>
+      <text x="0" y="344" class="nm-s">HAVING</text>
+      <rect x="292" y="316" width="80" height="40" rx="4" class="foc"/><rect x="568" y="316" width="80" height="40" rx="4" class="foc"/>
+      <text x="332" y="344" class="row" text-anchor="middle">P2</text><text x="608" y="344" class="row" text-anchor="middle">P5</text>
+      <text x="664" y="344" class="rowK">2 grupos</text>
+      <text x="200" y="384" class="sb">se van P1, P3 y P4: tienen 2, no más de 2</text>
+      <text x="0" y="452" class="nm-s">SELECT</text>
+      <rect x="200" y="424" width="320" height="40" rx="4" class="box"/><text x="216" y="452" class="row">P2 · 7</text><rect x="536" y="424" width="320" height="40" rx="4" class="box"/><text x="552" y="452" class="row">P5 · 7</text>
+      <text x="0" y="532" class="nm-s">ORDER BY</text><text x="200" y="532" class="tx2">7 y 7: empatan, el orden entre ellos no está garantizado</text>
+    </svg>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p><b>WHERE</b> trabaja sobre <b>filas</b> (cada envío); <b>HAVING</b>, sobre <b>grupos</b> (cada proveedor). El <code>COUNT(*) &gt; 2</code> sólo tiene sentido después de agrupar.</p></div>
+</section>
+
+<section class="slide" data-title="WHERE o HAVING">
+  <p class="kicker">2 · Cómo la ejecuta el motor</p>
+  <h2 class="h2">¿WHERE o HAVING? Mirá sobre qué es la condición</h2>
+  <div class="two" style="margin-top:8px">
+    <div class="card card-accent"><div class="src">Condición sobre cada fila → WHERE</div><p>“de color ROJO”, “de MADRID”, “de 2026 en adelante”. Se decide mirando <b>una fila sola</b>.</p>
+      <pre class="code sm" style="margin-top:14px"><span class="k">SELECT AVG</span>(E.CANTIDAD)
+<span class="k">FROM</span> ENVIOS E
+<span class="k">JOIN</span> COMPONENTES C <span class="k">ON</span> C.C = E.C
+<span class="k">WHERE</span> C.COLOR = 'ROJO';   <span style="color:#a58a97">-- 9 filas → 400</span></pre></div>
+    <div class="card card-accent"><div class="src">Condición sobre un total → HAVING</div><p>“con más de dos envíos”, “cuya cantidad total supere 500”. Hace falta <b>el grupo entero</b>.</p>
+      <pre class="code sm" style="margin-top:14px"><span class="k">SELECT</span> C, <span class="k">SUM</span>(CANTIDAD)
+<span class="k">FROM</span> ENVIOS
+<span class="k">GROUP BY</span> C
+<span class="k">HAVING SUM</span>(CANTIDAD) &gt; 500;</pre></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo</span><p>Hacer <code>GROUP BY COLOR … HAVING COLOR = 'ROJO'</code> puede andar, pero calcula todos los colores y tira los que no sirven. Si piden <b>un solo valor</b> (“el promedio de los rojos”), no hace falta <code>GROUP BY</code>: va <b>WHERE</b>.</p></div>
+</section>
+
+<!-- ============ 3 · AGREGACIÓN ============ -->
+<section class="slide" data-title="Funciones agregadas">
+  <p class="kicker">3 · Resumir</p>
+  <h2 class="h2">Funciones agregadas: muchas filas, un valor</h2>
+  <table class="t head" style="margin-top:6px;font-size:26px">
+    <thead><tr><th style="width:21%">Función</th><th style="width:37%">Qué devuelve</th><th>Sobre los 24 envíos</th></tr></thead>
+    <tbody>
+      <tr><td>SUM(col)</td><td>El total de una columna numérica</td><td><code>SUM(CANTIDAD)</code> → <b>8500</b></td></tr>
+      <tr><td>COUNT(*)</td><td>Cuántas <b>filas</b></td><td><code>COUNT(*)</code> → <b>24</b></td></tr>
+      <tr><td>COUNT(col)</td><td>Cuántos valores <b>no nulos</b> de esa columna</td><td><code>COUNT(P)</code> → <b>24</b> (no hay nulos)</td></tr>
+      <tr><td>COUNT(DISTINCT col)</td><td>Cuántos valores <b>distintos</b></td><td><code>COUNT(DISTINCT P)</code> → <b>5</b> proveedores</td></tr>
+      <tr><td>AVG(col)</td><td>El promedio</td><td><code>AVG(CANTIDAD)</code> → <b>354,17</b></td></tr>
+      <tr><td>MIN / MAX(col)</td><td>El menor / el mayor valor</td><td><code>MIN</code> → <b>100</b> · <code>MAX</code> → <b>800</b></td></tr>
+    </tbody>
+  </table>
+  <div class="crio"><span class="lbl">En criollo</span><p>Sin <code>GROUP BY</code>, la agregación colapsa <b>toda la tabla</b> en una fila. Con <code>GROUP BY</code>, devuelve <b>una fila por grupo</b>. Es la diferencia entre “el total” y “el total <b>de cada</b> proveedor”.</p></div>
+</section>
+
+<section class="slide" data-title="GROUP BY">
+  <p class="kicker">3 · Resumir</p>
+  <h2 class="h2">GROUP BY: junta las filas iguales y resume cada grupo</h2>
+  <svg class="dg" viewBox="0 0 1728 444" role="img" aria-labelledby="grp-title grp-desc" style="margin-top:6px">
+    <title id="grp-title">GROUP BY P sobre los envíos</title>
+    <desc id="grp-desc">Los 24 envíos se agrupan por proveedor: P1 tiene 2 envíos que suman 900, P2 tiene 8 que suman 3200, P3 2 que suman 700, P4 2 que suman 600 y P5 10 que suman 3100. El resultado tiene una fila por proveedor.</desc>
+    <text x="0" y="24" class="ey">LOS 24 ENVÍOS, AGRUPADOS POR P</text>
+    <text x="1216" y="24" class="eyA">RESULTADO · UNA FILA POR GRUPO</text>
+    <text x="0" y="84" class="rowK">P1</text>
+    <g class="sq"><rect x="64" y="60" width="32" height="32" rx="4" class="store"/><rect x="104" y="60" width="32" height="32" rx="4" class="store"/></g>
+    <text x="0" y="164" class="rowK">P2</text>
+    <rect x="64" y="140" width="32" height="32" rx="4" class="store"/><rect x="104" y="140" width="32" height="32" rx="4" class="store"/><rect x="144" y="140" width="32" height="32" rx="4" class="store"/><rect x="184" y="140" width="32" height="32" rx="4" class="store"/><rect x="224" y="140" width="32" height="32" rx="4" class="store"/><rect x="264" y="140" width="32" height="32" rx="4" class="store"/><rect x="304" y="140" width="32" height="32" rx="4" class="store"/><rect x="344" y="140" width="32" height="32" rx="4" class="store"/>
+    <text x="0" y="244" class="rowK">P3</text>
+    <rect x="64" y="220" width="32" height="32" rx="4" class="store"/><rect x="104" y="220" width="32" height="32" rx="4" class="store"/>
+    <text x="0" y="324" class="rowK">P4</text>
+    <rect x="64" y="300" width="32" height="32" rx="4" class="store"/><rect x="104" y="300" width="32" height="32" rx="4" class="store"/>
+    <text x="0" y="404" class="rowK">P5</text>
+    <rect x="64" y="380" width="32" height="32" rx="4" class="foc"/><rect x="104" y="380" width="32" height="32" rx="4" class="foc"/><rect x="144" y="380" width="32" height="32" rx="4" class="foc"/><rect x="184" y="380" width="32" height="32" rx="4" class="foc"/><rect x="224" y="380" width="32" height="32" rx="4" class="foc"/><rect x="264" y="380" width="32" height="32" rx="4" class="foc"/><rect x="304" y="380" width="32" height="32" rx="4" class="foc"/><rect x="344" y="380" width="32" height="32" rx="4" class="foc"/><rect x="384" y="380" width="32" height="32" rx="4" class="foc"/><rect x="424" y="380" width="32" height="32" rx="4" class="foc"/>
+    <line x1="480" y1="76" x2="1212" y2="76" class="ln" marker-end="url(#ar)"/>
+    <line x1="480" y1="156" x2="1212" y2="156" class="ln" marker-end="url(#ar)"/>
+    <line x1="480" y1="236" x2="1212" y2="236" class="ln" marker-end="url(#ar)"/>
+    <line x1="480" y1="316" x2="1212" y2="316" class="ln" marker-end="url(#ar)"/>
+    <line x1="480" y1="396" x2="1212" y2="396" class="lnA" marker-end="url(#arA)"/>
+    <rect x="712" y="352" width="288" height="20" class="mask"/><text x="856" y="367" class="lb" text-anchor="middle" style="fill:var(--accent)">COUNT(*) · SUM(CANTIDAD)</text>
+    <rect x="1216" y="56" width="512" height="40" rx="4" class="box"/><text x="1240" y="84" class="row">P1 · 2 envíos · 900</text>
+    <rect x="1216" y="136" width="512" height="40" rx="4" class="box"/><text x="1240" y="164" class="row">P2 · 8 envíos · 3200</text>
+    <rect x="1216" y="216" width="512" height="40" rx="4" class="box"/><text x="1240" y="244" class="row">P3 · 2 envíos · 700</text>
+    <rect x="1216" y="296" width="512" height="40" rx="4" class="box"/><text x="1240" y="324" class="row">P4 · 2 envíos · 600</text>
+    <rect x="1216" y="376" width="512" height="40" rx="4" class="foc"/><text x="1240" y="404" class="rowK">P5 · 10 envíos · 3100</text>
+  </svg>
+  <pre class="code sm" style="margin-top:10px"><span class="k">SELECT</span> P, <span class="k">COUNT</span>(*), <span class="k">SUM</span>(CANTIDAD) <span class="k">FROM</span> ENVIOS <span class="k">GROUP BY</span> P;</pre>
+  <div class="ojo"><span class="lbl">Ojo</span><p>En el <code>SELECT</code> sólo pueden ir las columnas del <code>GROUP BY</code> y funciones agregadas. Pedir <code>C</code> acá no tiene sentido: P5 tiene muchos componentes distintos.</p></div>
+</section>
+
+<!-- ============ 4 · JOIN ============ -->
+<section class="slide" data-title="JOIN">
+  <p class="kicker">4 · Combinar tablas</p>
+  <h2 class="h2">JOIN: pegar filas que comparten un campo</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="join-title join-desc" style="margin-top:6px">
+    <title id="join-title">INNER JOIN de ENVIOS con PROVEEDORES por P</title>
+    <desc id="join-desc">Cada envío busca en PROVEEDORES la fila con el mismo P y se le agrega el nombre: los dos envíos de P1 salen con CARLOS y los dos de P3 con JOSE.</desc>
+    <text x="0" y="24" class="ey">ENVIOS (P1 Y P3)</text>
+    <text x="616" y="24" class="ey">PROVEEDORES</text>
+    <text x="1136" y="24" class="eyA">RESULTADO DEL JOIN</text>
+    <rect x="0" y="40" width="480" height="44" rx="4" class="hd"/><text x="20" y="70" class="hdT">P</text><text x="120" y="70" class="hdT">C</text><text x="240" y="70" class="hdT">CANTIDAD</text>
+    <rect x="0" y="84" width="480" height="176" class="box"/>
+    <rect x="4" y="88" width="80" height="80" rx="4" class="grp"/>
+    <text x="20" y="120" class="rowK">P1</text><text x="120" y="120" class="row">C1</text><text x="240" y="120" class="row">200</text>
+    <text x="20" y="160" class="rowK">P1</text><text x="120" y="160" class="row">C1</text><text x="240" y="160" class="row">700</text>
+    <text x="20" y="200" class="rowK" style="fill:var(--note)">P3</text><text x="120" y="200" class="row">C3</text><text x="240" y="200" class="row">200</text>
+    <text x="20" y="240" class="rowK" style="fill:var(--note)">P3</text><text x="120" y="240" class="row">C4</text><text x="240" y="240" class="row">500</text>
+    <rect x="616" y="40" width="400" height="44" rx="4" class="hd"/><text x="636" y="70" class="hdT">P</text><text x="736" y="70" class="hdT">PNOMBRE</text>
+    <rect x="616" y="84" width="400" height="96" class="box"/>
+    <rect x="620" y="88" width="80" height="40" rx="4" class="grp"/>
+    <text x="636" y="120" class="rowK">P1</text><text x="736" y="120" class="row">CARLOS</text>
+    <text x="636" y="160" class="rowK" style="fill:var(--note)">P3</text><text x="736" y="160" class="row">JOSE</text>
+    <text x="616" y="228" class="sb">ON E.P = P.P</text>
+    <line x1="1016" y1="148" x2="1132" y2="148" class="lnA" marker-end="url(#arA)"/>
+    <rect x="1136" y="40" width="592" height="44" rx="4" class="hdA"/><text x="1156" y="70" class="hdAT">P</text><text x="1236" y="70" class="hdAT">PNOMBRE</text><text x="1416" y="70" class="hdAT">C</text><text x="1516" y="70" class="hdAT">CANTIDAD</text>
+    <rect x="1136" y="84" width="592" height="176" class="foc"/>
+    <text x="1156" y="120" class="row">P1</text><text x="1236" y="120" class="rowK">CARLOS</text><text x="1416" y="120" class="row">C1</text><text x="1516" y="120" class="row">200</text>
+    <text x="1156" y="160" class="row">P1</text><text x="1236" y="160" class="rowK">CARLOS</text><text x="1416" y="160" class="row">C1</text><text x="1516" y="160" class="row">700</text>
+    <text x="1156" y="200" class="row">P3</text><text x="1236" y="200" class="rowK">JOSE</text><text x="1416" y="200" class="row">C3</text><text x="1516" y="200" class="row">200</text>
+    <text x="1156" y="240" class="row">P3</text><text x="1236" y="240" class="rowK">JOSE</text><text x="1416" y="240" class="row">C4</text><text x="1516" y="240" class="row">500</text>
+  </svg>
+  <div class="three" style="grid-template-columns:repeat(3,1fr);margin-top:14px">
+    <pre class="code sm" style="margin:0"><span class="k">FROM</span> ENVIOS E
+<span class="k">INNER JOIN</span> PROVEEDORES P
+  <span class="k">ON</span> E.P = P.P</pre>
+    <pre class="code sm" style="margin:0"><span class="k">FROM</span> ENVIOS E
+<span class="k">JOIN</span> PROVEEDORES P
+  <span class="k">ON</span> E.P = P.P</pre>
+    <pre class="code sm" style="margin:0"><span class="k">FROM</span> ENVIOS E, PROVEEDORES P
+<span class="k">WHERE</span> E.P = P.P</pre>
+  </div>
+  <p class="small" style="margin-top:10px">Las tres formas del deck dan lo mismo. <code>JOIN</code> a secas es <code>INNER JOIN</code>.</p>
+</section>
+
+<section class="slide" data-title="Tipos de JOIN">
+  <p class="kicker">4 · Combinar tablas</p>
+  <h2 class="h2">INNER, LEFT, RIGHT y CROSS</h2>
+  <svg class="dg" viewBox="0 0 1728 340" role="img" aria-labelledby="jt-title jt-desc" style="margin-top:6px">
+    <title id="jt-title">Qué filas devuelve cada tipo de JOIN</title>
+    <desc id="jt-desc">INNER devuelve sólo las filas que coinciden en las dos tablas. LEFT devuelve todas las de la izquierda, con nulos a la derecha si no coinciden. RIGHT, todas las de la derecha. CROSS combina cada fila de una tabla con cada fila de la otra.</desc>
+    <g transform="translate(0,0)">
+      <circle cx="120" cy="140" r="96" fill="none" stroke="var(--text-2)" stroke-width="2"/><circle cx="232" cy="140" r="96" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+      <path d="M176,62 A96,96 0 0 1 176,218 A96,96 0 0 1 176,62 Z" class="foc"/>
+      <text x="176" y="276" class="nm-s" text-anchor="middle">INNER JOIN</text><text x="176" y="308" class="sb" text-anchor="middle">sólo las que coinciden</text>
+    </g>
+    <g transform="translate(440,0)">
+      <path d="M176,62 A96,96 0 1 0 176,218 A96,96 0 0 1 176,62 Z" class="foc"/>
+      <path d="M176,62 A96,96 0 0 1 176,218 A96,96 0 0 1 176,62 Z" class="foc"/>
+      <circle cx="120" cy="140" r="96" fill="none" stroke="var(--accent)" stroke-width="2.5"/><circle cx="232" cy="140" r="96" fill="none" stroke="var(--text-2)" stroke-width="2"/>
+      <text x="176" y="276" class="nm-s" text-anchor="middle">LEFT JOIN</text><text x="176" y="308" class="sb" text-anchor="middle">toda la izquierda + NULL</text>
+    </g>
+    <g transform="translate(880,0)">
+      <path d="M176,62 A96,96 0 1 1 176,218 A96,96 0 0 0 176,62 Z" class="foc"/>
+      <path d="M176,62 A96,96 0 0 1 176,218 A96,96 0 0 1 176,62 Z" class="foc"/>
+      <circle cx="120" cy="140" r="96" fill="none" stroke="var(--text-2)" stroke-width="2"/><circle cx="232" cy="140" r="96" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+      <text x="176" y="276" class="nm-s" text-anchor="middle">RIGHT JOIN</text><text x="176" y="308" class="sb" text-anchor="middle">toda la derecha + NULL</text>
+    </g>
+    <g transform="translate(1360,40)">
+      <rect x="0" y="40" width="64" height="40" rx="4" class="store"/><rect x="0" y="96" width="64" height="40" rx="4" class="store"/>
+      <rect x="112" y="0" width="64" height="40" rx="4" class="store"/><rect x="192" y="0" width="64" height="40" rx="4" class="store"/><rect x="272" y="0" width="64" height="40" rx="4" class="store"/>
+      <rect x="112" y="40" width="64" height="40" class="foc"/><rect x="192" y="40" width="64" height="40" class="foc"/><rect x="272" y="40" width="64" height="40" class="foc"/>
+      <rect x="112" y="96" width="64" height="40" class="foc"/><rect x="192" y="96" width="64" height="40" class="foc"/><rect x="272" y="96" width="64" height="40" class="foc"/>
+      <text x="168" y="236" class="nm-s" text-anchor="middle">CROSS JOIN</text><text x="168" y="268" class="sb" text-anchor="middle">2 × 3 = 6 filas</text>
+    </g>
+  </svg>
+  <div class="two" style="margin-top:6px">
+    <div class="card card-soft"><p><b>LEFT JOIN</b> = <code>LEFT OUTER JOIN</code>: todas las filas de la tabla de la <b>izquierda</b>; donde no hay pareja, la derecha viene en <b>NULL</b>. RIGHT es lo mismo al revés.</p></div>
+    <div class="card card-soft"><p><b>CROSS JOIN</b> es el <b>producto cartesiano</b>: cada fila de una tabla con cada fila de la otra. Sin condición.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="LEFT JOIN con nulos">
+  <p class="kicker">4 · Combinar tablas</p>
+  <h2 class="h2">LEFT JOIN: aparecen también los que no tienen pareja</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <p style="font-size:28px;line-height:1.45;margin:0 0 14px">Supongamos que cargaste el proveedor <b>P6 LUCIA</b> (el ejercicio de la lección 0037) y todavía no tiene envíos.</p>
+      <pre class="code sm"><span class="k">SELECT</span> P.P, <span class="k">COUNT</span>(E.C) <span class="k">AS</span> envios
+<span class="k">FROM</span> PROVEEDORES P
+<span class="k">LEFT JOIN</span> ENVIOS E <span class="k">ON</span> E.P = P.P
+<span class="k">GROUP BY</span> P.P;</pre>
+      <p style="font-size:28px;line-height:1.45;margin-top:16px">Con <code>INNER JOIN</code>, P6 <b>desaparece</b>: no tiene ninguna fila en ENVIOS con la que emparejarse.</p>
+    </div>
+    <div>
+      <table class="t head mini">
+        <thead><tr><th>P</th><th>E.C</th><th>COUNT(E.C)</th></tr></thead>
+        <tbody>
+          <tr><td>P1</td><td>C1, C1</td><td>2</td></tr>
+          <tr><td>P2</td><td>…</td><td>8</td></tr>
+          <tr><td>P3</td><td>C3, C4</td><td>2</td></tr>
+          <tr><td>P4</td><td>C6, C6</td><td>2</td></tr>
+          <tr><td>P5</td><td>…</td><td>10</td></tr>
+          <tr style="background:var(--accent-tint)"><td><b>P6</b></td><td style="color:var(--bad);font-weight:700">NULL</td><td><b>0</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo</span><p>Para contar después de un LEFT JOIN usá <code>COUNT(E.C)</code>: no cuenta el NULL y P6 da <b>0</b>. Con <code>COUNT(*)</code> P6 daría <b>1</b>, porque la fila existe. Y “sólo los que no tienen” es <code>LEFT JOIN … WHERE E.P IS NULL</code>.</p></div>
+</section>
+
+<!-- ============ 5 · SUBCONSULTAS ============ -->
+<section class="slide" data-title="Subconsultas">
+  <p class="kicker">5 · Subconsultas</p>
+  <h2 class="h2">Una consulta adentro de otra: una vez, o una por fila</h2>
+  <svg class="dg" viewBox="0 0 1728 424" role="img" aria-labelledby="sub-title sub-desc" style="margin-top:6px">
+    <title id="sub-title">Subconsulta simple contra subconsulta correlacionada</title>
+    <desc id="sub-desc">La subconsulta simple se calcula una sola vez, por ejemplo el promedio de los envíos rojos, 400, y después se compara cada fila contra ese valor. La correlacionada se vuelve a ejecutar para cada fila de afuera, usando un valor de esa fila.</desc>
+    <text x="0" y="24" class="eyA">SIMPLE · SE EJECUTA UNA VEZ</text>
+    <line x1="440" y1="104" x2="532" y2="104" class="lnA" marker-end="url(#arA)"/>
+    <line x1="840" y1="104" x2="932" y2="104" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="48" width="440" height="112" rx="8" class="foc"/><text x="24" y="92" class="nm-s">(SELECT AVG(CANTIDAD)</text><text x="24" y="128" class="sb">… WHERE COLOR = 'ROJO')</text>
+    <rect x="536" y="64" width="304" height="80" rx="8" class="box"/><text x="688" y="114" class="nm" text-anchor="middle">400</text>
+    <rect x="936" y="48" width="792" height="112" rx="8" class="store"/><text x="960" y="92" class="nm-s">WHERE E.CANTIDAD &gt; 400</text><text x="960" y="128" class="sb">se compara cada uno de los 24 envíos contra el mismo número</text>
+    <line x1="0" y1="200" x2="1728" y2="200" stroke="var(--border)" stroke-width="1.5"/>
+    <text x="0" y="240" class="ey">CORRELACIONADA · SE EJECUTA UNA VEZ POR FILA DE AFUERA</text>
+    <line x1="320" y1="284" x2="532" y2="284" class="ln" marker-end="url(#ar)"/>
+    <line x1="320" y1="340" x2="532" y2="340" class="ln" marker-end="url(#ar)"/>
+    <line x1="320" y1="396" x2="532" y2="396" class="ln" marker-end="url(#ar)"/>
+    <rect x="0" y="264" width="320" height="40" rx="4" class="box"/><text x="20" y="292" class="row">fila de afuera: C1</text>
+    <rect x="0" y="320" width="320" height="40" rx="4" class="box"/><text x="20" y="348" class="row">fila de afuera: C3</text>
+    <rect x="0" y="376" width="320" height="40" rx="4" class="box"/><text x="20" y="404" class="row">fila de afuera: C6</text>
+    <rect x="536" y="264" width="1192" height="40" rx="4" class="store"/><text x="556" y="292" class="row">media de los envíos de <tspan font-weight="700">C1</tspan> → compara</text>
+    <rect x="536" y="320" width="1192" height="40" rx="4" class="store"/><text x="556" y="348" class="row">media de los envíos de <tspan font-weight="700">C3</tspan> → compara</text>
+    <rect x="536" y="376" width="1192" height="40" rx="4" class="store"/><text x="556" y="404" class="row">media de los envíos de <tspan font-weight="700">C6</tspan> → compara</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Si la subconsulta <b>no usa nada de la consulta de afuera</b>, se calcula una vez (“mayor que la media de los rojos”, modelo 1b). Si usa un valor de la fila de afuera (“mayor que la media <b>de su</b> componente”), es <b>correlacionada</b> y se repite por fila.</p></div>
+</section>
+
+<section class="slide" data-title="IN y EXISTS">
+  <p class="kicker">5 · Subconsultas</p>
+  <h2 class="h2">IN y EXISTS: dos formas de preguntar “¿está?”</h2>
+  <div class="two" style="margin-top:6px">
+    <div class="card card-accent"><div class="src">IN · lista o subconsulta</div><p>Compara un valor contra <b>los valores</b> que devuelve la subconsulta.</p>
+      <pre class="code sm" style="margin-top:12px"><span class="k">SELECT</span> PNOMBRE <span class="k">FROM</span> PROVEEDORES
+<span class="k">WHERE</span> P <span class="k">IN</span> (<span class="k">SELECT</span> P <span class="k">FROM</span> ENVIOS
+            <span class="k">WHERE</span> C = 'C6');</pre></div>
+    <div class="card card-accent"><div class="src">EXISTS · sólo subconsulta</div><p>Verdadero si la subconsulta devuelve <b>al menos una fila</b>. Suele ser correlacionada.</p>
+      <pre class="code sm" style="margin-top:12px"><span class="k">SELECT</span> PNOMBRE <span class="k">FROM</span> PROVEEDORES P
+<span class="k">WHERE EXISTS</span> (<span class="k">SELECT</span> * <span class="k">FROM</span> ENVIOS E
+              <span class="k">WHERE</span> E.P = P.P
+                <span class="k">AND</span> E.C = 'C6');</pre></div>
+  </div>
+  <p class="res">Las dos devuelven lo mismo: INMA (P4) y EVA (P5)</p>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p>La diferencia que marca el deck: <b>IN</b> se usa con subconsultas <b>y</b> listas de valores; <b>EXISTS</b>, <b>sólo</b> con subconsultas.</p></div>
+</section>
+
+<section class="slide" data-title="NOT EXISTS: el caso de Sofía">
+  <p class="kicker">5 · Subconsultas</p>
+  <h2 class="h2">NOT EXISTS: “los que no son jefes”</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <div>
+      <table class="t head mini">
+        <thead><tr><th>Médico</th><th>Cod_Jefe</th><th>¿Alguien lo tiene de jefe?</th></tr></thead>
+        <tbody>
+          <tr><td>Carlos, Laura, Marta</td><td>NULL</td><td>sí → <b>son jefes</b></td></tr>
+          <tr style="background:var(--accent-tint)"><td><b>Sofía Luna</b></td><td><b>NULL</b></td><td><b>no → no es jefa</b></td></tr>
+          <tr><td>Ana, Jorge, Diego, Pablo</td><td>tienen jefe</td><td>no → no son jefes</td></tr>
+        </tbody>
+      </table>
+      <pre class="code sm" style="margin-top:18px"><span class="k">SELECT</span> M.Nombre <span class="k">FROM</span> PROFESIONAL M
+<span class="k">WHERE NOT EXISTS</span> (<span class="k">SELECT</span> * <span class="k">FROM</span> PROFESIONAL S
+                  <span class="k">WHERE</span> S.Cod_Jefe = M.Cod_Profesional);</pre>
+    </div>
+    <div class="card card-soft"><h4>El error típico</h4><p><code>WHERE M.Cod_Jefe IS NOT NULL</code> pregunta “¿<b>tiene</b> jefe?”, que es otra cosa. Sofía no tiene jefe ni es jefa: con esa condición <b>se pierde</b>.</p><p style="margin-top:12px">“No son jefes” se responde <b>mirando hacia abajo</b>: ¿existe alguien cuyo <code>Cod_Jefe</code> sea yo?</p></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Es el pedido 5 del TP5 (lecciones 0036 y 0040). Patrón: “los que <b>no</b> tienen / <b>no</b> son…” → <code>NOT EXISTS</code>, o <code>LEFT JOIN … IS NULL</code>.</p></div>
+</section>
+
+<!-- ============ 6 · CONJUNTOS Y CAMBIOS ============ -->
+<section class="slide" data-title="UNION y UNION ALL">
+  <p class="kicker">6 · Conjuntos y cambios</p>
+  <h2 class="h2">UNION apila resultados; UNION ALL también, sin limpiar</h2>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="un-title un-desc" style="margin-top:6px">
+    <title id="un-title">UNION contra UNION ALL con las ciudades</title>
+    <desc id="un-desc">Las ciudades de los 5 proveedores y de los 7 artículos suman 12 filas. UNION ALL devuelve las 12; UNION quita los duplicados y deja 5 ciudades distintas.</desc>
+    <rect x="0" y="40" width="440" height="104" rx="8" class="box"/><text x="24" y="80" class="nm-s">CIUDAD de PROVEEDORES</text><text x="24" y="116" class="sb">5 filas · SEVILLA ×3, MADRID, CACERES</text>
+    <rect x="0" y="172" width="440" height="104" rx="8" class="box"/><text x="24" y="212" class="nm-s">CIUDAD de ARTICULOS</text><text x="24" y="248" class="sb">7 filas · CACERES ×2, SEVILLA ×2, …</text>
+    <path d="M440,92 H592 Q600,92 600,100 V124 Q600,132 608,132 H836" class="ln" marker-end="url(#ar)"/>
+    <path d="M440,224 H592 Q600,224 600,216 V188 Q600,180 608,180 H836" class="ln" marker-end="url(#ar)"/>
+    <rect x="840" y="104" width="240" height="104" rx="8" class="store"/><text x="960" y="152" class="nm-s" text-anchor="middle">12 filas</text><text x="960" y="184" class="sb" text-anchor="middle">apiladas</text>
+    <path d="M1080,132 H1172 Q1180,132 1180,124 V76 Q1180,68 1188,68 H1268" class="ln" marker-end="url(#ar)"/>
+    <path d="M1080,180 H1172 Q1180,180 1180,188 V224 Q1180,232 1188,232 H1268" class="lnA" marker-end="url(#arA)"/>
+    <rect x="1272" y="24" width="456" height="88" rx="8" class="box"/><text x="1296" y="64" class="nm-s">UNION ALL · 12 filas</text><text x="1296" y="96" class="sb">deja los duplicados</text>
+    <rect x="1272" y="188" width="456" height="88" rx="8" class="foc"/><text x="1296" y="228" class="nm-s">UNION · 5 filas</text><text x="1296" y="260" class="sb">quita los duplicados</text>
+  </svg>
+  <pre class="code sm" style="margin-top:14px"><span class="k">SELECT</span> CIUDAD <span class="k">FROM</span> PROVEEDORES
+<span class="k">UNION</span>                        <span style="color:#a58a97">-- o UNION ALL</span>
+<span class="k">SELECT</span> CIUDAD <span class="k">FROM</span> ARTICULOS;</pre>
+  <div class="crio"><span class="lbl">En criollo</span><p>JOIN pega <b>columnas</b> (al costado); UNION pega <b>filas</b> (abajo). Por eso las dos consultas de un UNION tienen que devolver <b>las mismas columnas</b>.</p></div>
+</section>
+
+<section class="slide" data-title="INSERT, UPDATE, DELETE">
+  <p class="kicker">6 · Conjuntos y cambios</p>
+  <h2 class="h2">INSERT, UPDATE, DELETE</h2>
+  <div class="three" style="grid-template-columns:1.15fr 1fr .85fr;margin-top:6px">
+    <div><p class="res">Insertar</p><pre class="code sm" style="margin:0"><span class="k">INSERT INTO</span> PROVEEDORES
+  (P, PNOMBRE, CATEGORIA, CIUDAD)
+<span class="k">VALUES</span> ('P6','LUCIA',10,'MALAGA');
+
+<span class="k">INSERT INTO</span> T (col1, col2)
+<span class="k">SELECT</span> col1, col2 <span class="k">FROM</span> T2;</pre></div>
+    <div><p class="res">Modificar</p><pre class="code sm" style="margin:0"><span class="k">UPDATE</span> PROVEEDORES
+<span class="k">SET</span> CIUDAD = 'SEVILLA',
+    CATEGORIA = 20
+<span class="k">WHERE</span> P = 'P6';</pre></div>
+    <div><p class="res">Borrar</p><pre class="code sm" style="margin:0"><span class="k">DELETE FROM</span> ENVIOS
+<span class="k">WHERE</span> P = 'P6';
+
+<span class="k">DELETE FROM</span> ENVIOS;
+<span style="color:#ff8a8f">-- ¡borra todo!</span></pre></div>
+  </div>
+  <div class="ojo"><span class="lbl">Ojo</span><p><code>UPDATE</code> y <code>DELETE</code> sin <code>WHERE</code> afectan <b>todas las filas</b>. Y nombrá las columnas en el <code>INSERT</code>: si las escribís en otro orden, o la tabla cambia, sigue funcionando.</p></div>
+  <div class="crio"><span class="lbl">Upsert</span><p>El deck cierra con <b>UPSERT</b>: inserta si la clave no existe y actualiza si ya existe. Sintaxis: <code>INSERT … ON CONFLICT (col) DO UPDATE SET …</code> (PostgreSQL y SQLite).</p></div>
+</section>
+
+<!-- ============ CIERRE ============ -->
+<section class="slide" data-title="Del enunciado a la consulta">
+  <p class="kicker">Cierre</p>
+  <h2 class="h2">Del enunciado a la consulta</h2>
+  <table class="t head" style="font-size:25px;margin-top:6px">
+    <thead><tr><th style="width:46%">Si el enunciado dice…</th><th>Usá…</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--text-1);font-weight:400">“sin repetir”, “cada uno una vez”</td><td><code>SELECT DISTINCT</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“de color ROJO”, “de MADRID” (cada fila)</td><td><code>WHERE</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“para cada…”, “por proveedor”</td><td><code>GROUP BY</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“con más de dos…”, “total superior a 500”</td><td><code>HAVING</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“mayor que la media de…”</td><td>subconsulta con <code>AVG</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“la media de <b>su</b> componente”</td><td>subconsulta correlacionada</td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“todos, incluso los que no tienen…”</td><td><code>LEFT JOIN</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“los que no tienen / no son…”</td><td><code>NOT EXISTS</code> o <code>LEFT JOIN … IS NULL</code></td></tr>
+      <tr><td style="color:var(--text-1);font-weight:400">“T1 y T2” (los dos)</td><td><code>IN (… 'T1') AND IN (… 'T2')</code></td></tr>
+    </tbody>
+  </table>
+  <p class="small" style="margin-top:12px">La tabla completa (53 frases) está en la suite → Herramientas → “Frase → herramienta”.</p>
+</section>
+
+<section class="slide" data-title="Autoevaluación">
+  <p class="kicker">Autoevaluación</p>
+  <h2 class="h2">¿Lo tenés? Tocá cada pregunta para ver la respuesta</h2>
+  <div class="qz">
+    <details><summary>¿Qué se ejecuta antes: WHERE o SELECT?</summary><p>WHERE. El orden lógico es FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY.</p></details>
+    <details><summary>¿Por qué no se puede poner COUNT(*) en el WHERE?</summary><p>Porque el WHERE filtra filas antes de agrupar: los grupos todavía no existen. Va en HAVING.</p></details>
+    <details><summary>COUNT(*) y COUNT(col), ¿cuentan lo mismo?</summary><p>No: COUNT(col) no cuenta los NULL. Importa después de un LEFT JOIN.</p></details>
+    <details><summary>¿Qué operador acepta una lista de valores: IN o EXISTS?</summary><p>IN. EXISTS sólo funciona con subconsultas.</p></details>
+    <details><summary>¿BETWEEN 200 AND 500 incluye el 500?</summary><p>Sí: el rango es inclusivo.</p></details>
+    <details><summary>¿Qué devuelve un CROSS JOIN de 5 filas con 7?</summary><p>35 filas: el producto cartesiano.</p></details>
+    <details><summary>UNION y UNION ALL, ¿qué cambia?</summary><p>UNION elimina los duplicados; UNION ALL los deja.</p></details>
+    <details><summary>¿Qué pasa con un DELETE sin WHERE?</summary><p>Borra todas las filas de la tabla.</p></details>
+  </div>
+  <p class="small" style="margin-top:auto">A practicar: lecciones 0032 a 0037 (con corrector), SUMINISTROS (31 consultas) y el Constructor SQL de la suite.</p>
+</section>
+
+<div class="deck-footer"><span class="dim2">Consultas SQL (DML)</span><span class="slide-number" data-current="1" data-total="20"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+/* Diagram skin for diagram-design SVGs (profile "unicaba-cursada").
+   Shared by clases/*.html, slides/* and diagramas/*.html. Self-contained: it does not need course.css.
+   Light values = assets/course.css tokens; dark follows data-theme (theme.js) or the system. */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap");
+
+:root {
+  --d-paper: #ffffff;
+  --d-paper-2: #f8f1f5;
+  --d-box: #ffffff;
+  --d-ink: #24171f;
+  --d-muted: #6a5764;
+  --d-soft: #8d7a87;
+  --d-rule: #e6d3df;
+  --d-accent: #b83a95;
+  --d-accent-ink: #9c2a7b;
+  --d-accent-tint: rgba(184, 58, 149, .08);
+  --d-link: #6b2fae;
+  --d-link-tint: rgba(107, 47, 174, .08);
+}
+:root[data-theme="dark"] {
+  --d-paper: #1a1218;
+  --d-paper-2: #241a22;
+  --d-box: #241a22;
+  --d-ink: #f2e9ef;
+  --d-muted: #b3a3ae;
+  --d-soft: #8f7d89;
+  --d-rule: #43303e;
+  --d-accent: #f08fcf;
+  --d-accent-ink: #f08fcf;
+  --d-accent-tint: rgba(240, 143, 207, .10);
+  --d-link: #b99af0;
+  --d-link-tint: rgba(185, 154, 240, .10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --d-paper: #1a1218;
+    --d-paper-2: #241a22;
+    --d-box: #241a22;
+    --d-ink: #f2e9ef;
+    --d-muted: #b3a3ae;
+    --d-soft: #8f7d89;
+    --d-rule: #43303e;
+    --d-accent: #f08fcf;
+    --d-accent-ink: #f08fcf;
+    --d-accent-tint: rgba(240, 143, 207, .10);
+    --d-link: #b99af0;
+    --d-link-tint: rgba(185, 154, 240, .10);
+  }
+}
+
+/* Figure wrapper used by lessons */
+figure.diagram { margin: 1.6rem 0; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .5rem; }
+
+/* SVG classes (all prefixed dg-) */
+.dg-bg { fill: var(--d-paper); }
+.dg-mask { fill: var(--d-paper); }
+.dg-zone { fill: var(--d-paper-2); stroke: var(--d-rule); stroke-width: 1; }
+.dg-rule { stroke: var(--d-rule); stroke-width: .8; fill: none; }
+
+.dg-box { fill: var(--d-box); stroke: var(--d-ink); stroke-width: 1; }
+.dg-store { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-focal { fill: var(--d-accent-tint); stroke: var(--d-accent); stroke-width: 1.2; }
+.dg-viol { fill: var(--d-link-tint); stroke: var(--d-link); stroke-width: 1; }
+.dg-ghost { fill: none; stroke: var(--d-muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.dg-dot { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-dot-focal { fill: var(--d-accent); stroke: var(--d-accent); stroke-width: 1; }
+
+.dg-line { stroke: var(--d-muted); stroke-width: 1.2; fill: none; }
+.dg-line-accent { stroke: var(--d-accent); stroke-width: 1.2; fill: none; }
+.dg-line-link { stroke: var(--d-link); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+.dg-ah { fill: var(--d-muted); }
+.dg-ah-accent { fill: var(--d-accent); }
+.dg-ah-link { fill: var(--d-link); }
+
+.dg-name { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-sub { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-row { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-tag { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-soft); letter-spacing: .08em; }
+.dg-lbl { font: 400 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-muted); letter-spacing: .04em; }
+.dg-lbl-accent { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-accent-ink); letter-spacing: .04em; }
+.dg-lbl-link { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-link); letter-spacing: .04em; }
+.dg-note { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-note-accent { font: 600 12px "Montserrat", system-ui, sans-serif; fill: var(--d-accent-ink); }
+
+/* Catedra slide screenshots (clases/img/*.jpg) shown next to the own diagrams. */
+figure.slide { margin: 1.4rem 0; }
+figure.slide img { display: block; width: 100%; max-width: 720px; height: auto; border: 1px solid var(--rule, #e6d3df); border-radius: 6px; }
+figure.slide figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .4rem; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }

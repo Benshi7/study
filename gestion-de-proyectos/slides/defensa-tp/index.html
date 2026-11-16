@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="unicaba" data-theme-base="../assets/themes/">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Source of truth: entregable/dist/TP_Cascada_Grupo01.md (final TP) and the cascada classes 1-7.
+     Each content slide pairs a cascada concept (cátedra) with what the TP did. The spoken script lives in <div class="notes"> (press S).
+     Diagrams are generated: python3 tools/diagramas.py rewrites everything between the diagram markers. -->
+<title>Defensa del TP Cascada · Mapa Interactivo de la Ciudad</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../assets/themes/unicaba.css">
+<link rel="stylesheet" href="../assets/animations/animations.css">
+<link rel="stylesheet" href="../../assets/diagram.css">
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide cover" data-title="Portada">
+    <p class="kicker">Defensa del TP Cascada · 18/11/2026</p>
+    <h1 class="h1">Modernización del<br>Mapa Interactivo de la Ciudad</h1>
+    <p class="lede mt-m" style="max-width:60ch">Una capa geográfica común para que el vecino consulte, reporte y siga lo que pasa en su entorno.</p>
+    <div class="row wrap mt-l"><span class="pill">⏱ 90 segundos + preguntas</span><span class="pill">Taller de Gestión de Proyectos Digitales</span></div>
+    <div class="notes">Deck de ensayo, para uno mismo. Cada diapositiva trae el guion hablado en estas notas (tecla S). Regla de oro: toda cifra que se diga lleva su origen en la cabeza. Si no se puede decir de dónde sale, no se dice. Orden: gancho, promesa, prueba, método y plan, costo y riesgo, pedido. Después vienen las diapositivas de respaldo para las preguntas.</div>
+  </section>
+
+  <section class="slide titled" data-title="Gancho">
+    <div class="bar"><p class="kicker">1 · Gancho · ¿Por qué me importa?</p><h2 class="h2">Lucía y su mañana con la información fragmentada</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><h4>Quiere saber</h4><p class="dim">Si hay una obstrucción en su cuadra y qué hay cerca: paradas, subte, puntos culturales.</p></div>
+        <div class="card violet"><h4>Hoy tiene que</h4><p class="dim">Saltar entre canales distintos: uno para consultar, otro para reportar.</p></div>
+        <div class="card card-accent"><h4>Y después</h4><p class="dim">No sabe qué pasó con su reporte.</p></div>
+      </div>
+      <div class="callout mt-l">El problema: la información de la Ciudad está <b>fragmentada</b> y el vecino no ve el estado de lo que reporta.</div>
+    </div>
+    <div class="notes">Empezar por la persona, no por la tecnología. «Lucía quiere saber si hay una obstrucción en su cuadra. Para eso abre un canal; para reportarla, otro; y después no sabe qué pasó con su reporte.» Lucía es una persona ficticia, perfil de usuario del Design Thinking (TP, punto 4.2). Decirlo así si preguntan. Frase de cierre: la información está fragmentada.</div>
+  </section>
+
+  <section class="slide titled" data-title="Promesa y Canvas">
+    <div class="bar"><p class="kicker">2 · Promesa · Clase 1 · Canvas</p><h2 class="h2">Una capa geográfica común, con dos lados</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Concepto de la cátedra</h4><p class="dim">El Canvas ordena el negocio en nueve bloques y parte de la <b>propuesta de valor</b>. Si hay dos lados que se necesitan, es una plataforma multilateral.</p></div>
+        <div class="card violet"><h4>En nuestro TP</h4><ul class="dim" style="padding-left:22px;margin:0"><li><b>Hogares de la Ciudad</b> consultan y reportan</li><li><b>Áreas del GCBA</b> aportan el dato y gestionan los reportes</li><li>Canales: Mapa Web, Boti y BAX</li></ul></div>
+      </div>
+      <div class="callout violet mt-l" style="font-size:28px">«Un mismo mapa donde se integra la información oficial, el vecino reporta y valida, y las áreas trabajan sobre esos reportes.»</div>
+    </div>
+    <div class="notes">La promesa en una frase: una capa geográfica común. El Canvas es de plataforma multilateral: los hogares de la Ciudad de un lado y las áreas del gobierno del otro, que son socias y clientas al mismo tiempo (TP, punto 3). El tercer lado, comercios con oferta geolocalizada, es opcional y queda como evolución futura. Se consulta desde el Mapa, Boti y BAX.</div>
+  </section>
+
+  <section class="slide titled" data-title="Prueba: Design Thinking">
+    <div class="bar"><p class="kicker">3 · Prueba · Clase 7 · Design Thinking</p><h2 class="h2">No lo inventamos en un escritorio</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:26px">
+        <thead><tr><th style="width:18%">Fase</th><th style="width:42%">Técnica</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td>Empatizar</td><td>Entrevistas y escenario de usuario</td><td>Patrones y escenario de Lucía</td></tr>
+          <tr><td>Definir</td><td>POV, perfil e historia de usuario</td><td>Pregunta de diseño</td></tr>
+          <tr><td>Idear</td><td>Brainstorming con pregunta foco</td><td>Mapa común + reportar + validar + seguir</td></tr>
+          <tr><td>Prototipar</td><td>Baja fidelidad</td><td>Tres pantallas</td></tr>
+          <tr><td>Testear</td><td>Evaluación con un usuario</td><td>«Seguir» confunde: se ajusta el estado</td></tr>
+        </tbody>
+      </table>
+      <div class="callout mt-m" style="font-size:26px">Hallazgo: en el estado <b>«En validación»</b> el vecino duda. Ajuste: lenguaje claro y próximo paso.</div>
+    </div>
+    <div class="notes">Este es el movimiento de la prueba, y el primero que se recorta si el tiempo aprieta. Decir exactamente lo que se hizo: cinco fases, un prototipo de tres pantallas y un test con un usuario del perfil de Lucía. No decir más de lo que hicimos. Ojo: el TP final ya no aclara si las entrevistas fueron reales o simuladas; el equipo tiene que acordar la respuesta antes de la defensa (ver lección defensa-03). Conexión: el Design Thinking alimenta el Charter (TP, 4.6).</div>
+  </section>
+
+  <section class="slide titled" data-title="Por qué cascada">
+    <div class="bar"><p class="kicker">4 · Método · Clase 8 · Cynefin</p><h2 class="h2">Cascada, porque el problema es complicado</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Concepto de la cátedra</h4><p class="dim">Cynefin: <b>simple</b> → buenas prácticas; <b>complicado</b> → cascada; <b>complejo y caótico</b> → ágil.</p></div>
+        <div class="card violet"><h4>En nuestro TP</h4><p class="dim">Sabemos qué construir y con qué tecnología: APIs oficiales, GIS, integraciones definidas. Hay incertidumbre, pero se resuelve con experiencia, no con experimentos.</p></div>
+      </div>
+      <div class="callout mt-l">Cascada = <b>fases secuenciales con hitos de aprobación</b>: el costo y el plazo se pueden comprometer antes de construir.</div>
+    </div>
+    <div class="notes">Anticipar la objeción de siempre: «¿por qué no ágil?». Respuesta corta: porque el dominio es complicado según Cynefin, el alcance está definido y quien financia necesita comprometer costo y plazo antes (TP, Charter 5.1). Sí hay un riesgo ágil: el crecimiento del alcance es el R05, riesgo crítico, y se controla con cambios formales. Ver diapositiva de respaldo sobre el riesgo de la cascada.</div>
+  </section>
+
+  <section class="slide titled" data-title="Charter">
+    <div class="bar"><p class="kicker">5 · Charter · Clase 2 · Proyectos</p><h2 class="h2">Qué hacemos y con qué límites</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Concepto de la cátedra</h4><p class="dim">El Charter autoriza el proyecto: propósito, objetivos, alcance (incluido y excluido), entregables, supuestos, restricciones y roles.</p></div>
+        <div class="card violet"><h4>En nuestro TP</h4><ul class="dim" style="padding-left:22px;margin:0"><li><b>1 objetivo general</b> y 8 específicos</li><li><b>8 entregables</b> (capa común, integraciones, reportes, validación, seguimiento, vista de gestión, documentación, cierre)</li><li>Alcance excluido explícito</li></ul></div>
+      </div>
+      <div class="callout violet mt-l" style="font-size:28px">«Modernizar el Mapa Interactivo mediante una capa geográfica común que integre información oficial y permita reportar, validar y consultar incidencias.»</div>
+    </div>
+    <div class="notes">El Charter es el contrato interno del proyecto. El objetivo general es el de la diapositiva (TP 5.4.1). Hay ocho objetivos específicos y ocho entregables principales (5.4.2 y 5.6). Lo que marca el límite es el alcance excluido y el criterio general de alcance (5.5): ahí se apoya el control de cambios. Punto flojo conocido: los criterios de éxito no tienen metas numéricas; tener preparada una respuesta (defensa-03).</div>
+  </section>
+
+  <section class="slide titled" data-title="Gantt">
+    <div class="bar"><p class="kicker">6 · Plan · Clase 3 · Cronograma</p><h2 class="h2">8 fases, 8 hitos y un camino crítico</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card ctr"><div class="big">8</div><p class="dim">fases en cascada: inicio, análisis, diseño, desarrollo, integración, pruebas, implementación, cierre</p></div>
+        <div class="card ctr"><div class="big violet">40</div><p class="dim">actividades en el Gantt, con 8 hitos de control</p></div>
+        <div class="card ctr"><div class="big">126</div><p class="dim">días hábiles de camino crítico, unas 25,2 semanas</p></div>
+      </div>
+      <div class="callout mt-l">Cada fase termina en un <b>hito de aprobación</b>: no se pasa a la siguiente sin firma.</div>
+    </div>
+    <div class="notes">Concepto de la cátedra: el camino crítico es la secuencia de actividades que define la duración mínima del proyecto; un atraso ahí atrasa todo. Cifra ancla: 126 días hábiles, que es el camino crítico del Gantt (TP, 6 y anexo A.4), y 126 dividido 5 son 25,2 semanas. Ese número viaja a dos lugares: a los riesgos y al presupuesto. Las fechas del Gantt van de abril a septiembre de 2026 y ya pasaron: preparar la respuesta (defensa-03).</div>
+  </section>
+
+  <section class="slide titled" data-title="Stakeholders y comunicación">
+    <div class="bar"><p class="kicker">7 · Personas · Clases 2 y 6</p><h2 class="h2">A quién afecta y cómo se le habla</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Stakeholders (poder e interés)</h4><ul class="dim" style="padding-left:22px;margin:0"><li><b>Gestionar de cerca:</b> Sponsor, PM, Tecnología, Datos, USIG/ASI, Transporte y Cultura, canales</li><li><b>Mantener satisfecho:</b> Hacienda</li><li><b>Mantener informado:</b> comunas, UX, vecinos</li></ul></div>
+        <div class="card violet"><h4>Comunicación</h4><ul class="dim" style="padding-left:22px;margin:0"><li>12 comunicaciones: qué, a quién, responsable, frecuencia y canal</li><li>La estrategia de cada grupo <b>fija cuánta atención</b> recibe</li><li>Evento crítico: el PM informa al Sponsor <b>en 48 horas</b></li></ul></div>
+      </div>
+    </div>
+    <div class="notes">El enlace es la frase clave: la matriz de stakeholders define la atención que merece cada grupo y el plan de comunicación la convierte en qué, cuándo y por dónde (TP, punto 8). Los stakeholders existen porque hay actividades del Gantt que ejecutar y una adopción que asegurar (punto 7). Punto flojo conocido: la matriz de comunicación no tiene columnas de tipo de comunicación ni de si requiere respuesta, que la Clase 6 sí pide; decirlo antes de que lo marquen y proponer agregarlas.</div>
+  </section>
+
+  <section class="slide titled" data-title="Riesgos">
+    <div class="bar"><p class="kicker">8 · Riesgo · Clase 5 · Riesgos</p><h2 class="h2">15 riesgos, valorados en dólares</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Concepto de la cátedra</h4><p class="dim">Probabilidad × impacto da el nivel; el <b>valor monetario esperado (EMV)</b> dice cuánto se espera perder. Respuestas: evitar, mitigar, transferir o aceptar.</p></div>
+        <div class="card violet"><h4>En nuestro TP</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Críticos: <b>R02</b> (datos de baja calidad) y <b>R05</b> (crecimiento del alcance)</li><li>Nacen del camino crítico y de los stakeholders</li><li>La comunicación responde a R04 y R06</li></ul></div>
+      </div>
+      <div class="callout mt-l">EMV inicial USD 69.353 → <b>EMV residual USD 41.206</b> después de las respuestas.</div>
+    </div>
+    <div class="notes">Dos críticos de nivel 20: la baja calidad de los datos y el crecimiento del alcance (TP, 9.2). El impacto de un riesgo se mide en semanas de retraso por el costo semanal del equipo, más gastos afectados. Ejemplo para llevar: R02 son 2 semanas más USD 3.205 de normalización de datos, probabilidad nivel 4, impacto USD 12.871, EMV inicial USD 9.010 y residual USD 6.436 (TP 9.7.2 y 9.7.3). La calculadora está en la lección defensa-02. Punto flojo: no hay riesgos positivos.</div>
+  </section>
+
+  <section class="slide titled" data-title="Presupuesto">
+    <div class="bar"><p class="kicker">9 · Costo · Clase 4 · Costos</p><h2 class="h2">USD 241.839, y cada número tiene dueño</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card ctr"><div class="big">200.633</div><p class="dim">USD de presupuesto base, en seis categorías</p></div>
+        <div class="card ctr"><div class="big violet">41.206</div><p class="dim">USD de reserva de contingencia = suma de los EMV residuales</p></div>
+        <div class="card ctr"><div class="big">241.839</div><p class="dim">USD de línea base de costos</p></div>
+      </div>
+      <div class="callout mt-l">La reserva <b>no es un porcentaje</b>: es el resultado de los riesgos. Equivale al 20,5 % del base.</div>
+    </div>
+    <div class="notes">La pregunta que seguro llega: ¿por qué USD 41.206? Respuesta: es la suma del valor esperado residual de los 15 riesgos, dividida por el base da 20,5 %; reemplaza al 10 % plano de la estimación original (TP, 10.8). Diferencia que importa: contingencia cubre riesgos identificados y está dentro del presupuesto; la reserva de gestión cubre imprevistos no identificados, requiere aprobación de la dirección y no está incluida. Referencia: 10 % de la línea base sería USD 24.107, decisión pendiente del Sponsor.</div>
+  </section>
+
+  <section class="slide titled" data-title="La cadena de cifras">
+    <div class="bar"><p class="kicker">Cifras · cómo se atan</p><h2 class="h2">Un número tira del siguiente</h2></div>
+    <div class="body">
+      <ol class="rule-list">
+        <li data-n="1"><b>126 días hábiles</b> (Gantt) → 25,2 semanas</li>
+        <li data-n="2">USD 121.790 de RRHH ÷ 25,2 = <b>USD 4.833 por semana</b></li>
+        <li data-n="3">Semanas de retraso × 4.833 + gastos = <b>impacto en USD</b> de cada riesgo</li>
+        <li data-n="4">Impacto × probabilidad = <b>EMV</b>; la suma de los residuales es la <b>reserva</b></li>
+        <li data-n="5">200.633 + 41.206 = <b>USD 241.839</b></li>
+      </ol>
+    </div>
+    <div class="notes">Esta es la diapositiva para ensayar de memoria. Un jurado que tira de un solo hilo, por ejemplo «¿por qué 41 mil?», recorre toda la cadena: la duración del Gantt define el costo semanal, el costo semanal valora los riesgos, los riesgos definen la reserva y la reserva completa el presupuesto. Detalle y calculadora en la lección defensa-02.</div>
+  </section>
+
+  <section class="slide titled" data-title="La cadena del TP">
+    <div class="bar"><p class="kicker">Relato · cómo se atan las secciones</p><h2 class="h2">Ocho secciones, una sola historia</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:tp-cadena-->
+<svg viewBox="0 0 1040 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tp-cadena-title tp-cadena-desc"><title id="tp-cadena-title">Cómo se atan las ocho secciones técnicas del TP</title><desc id="tp-cadena-desc">Las secciones 3 a 10 forman una cadena: Canvas, Design Thinking, Charter, Gantt, Stakeholders, Comunicación, Riesgos y Presupuesto. Además del orden, el Gantt aporta el camino crítico a Riesgos y las semanas al Presupuesto, y la matriz de riesgos aporta el EMV que define la reserva de contingencia.</desc><defs><marker id="tp-cadena-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="tp-cadena-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="tp-cadena-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M220 88 H300" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M220 360 H300" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M480 88 H560" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M480 360 H560" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M740 88 H820" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line-accent" d="M740 360 H820" marker-end="url(#tp-cadena-arrow-accent)"/>
+<rect class="dg-mask" x="222" y="64" width="76" height="16" rx="2"/>
+<text class="dg-lbl" x="260" y="76" text-anchor="middle">hipótesis</text>
+<rect class="dg-mask" x="486" y="64" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="520" y="76" text-anchor="middle">problema</text>
+<rect class="dg-mask" x="758" y="64" width="44" height="16" rx="2"/>
+<text class="dg-lbl" x="780" y="76" text-anchor="middle">hitos</text>
+<rect class="dg-mask" x="226" y="336" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="260" y="348" text-anchor="middle">atención</text>
+<rect class="dg-mask" x="482" y="336" width="76" height="16" rx="2"/>
+<text class="dg-lbl" x="520" y="348" text-anchor="middle">R04 · R06</text>
+<rect class="dg-mask" x="764" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl-accent" x="780" y="348" text-anchor="middle">EMV</text>
+<path class="dg-line" d="M852 136 V192 Q852 200 844 200 H138 Q130 200 130 208 V312" marker-end="url(#tp-cadena-arrow)"/>
+<rect class="dg-mask" x="470" y="176" width="60" height="16" rx="2"/>
+<text class="dg-lbl" x="500" y="188" text-anchor="middle">actores</text>
+<path class="dg-line-link" d="M900 136 V232 Q900 240 892 240 H658 Q650 240 650 248 V312" marker-end="url(#tp-cadena-arrow-link)"/>
+<rect class="dg-mask" x="724" y="216" width="112" height="16" rx="2"/>
+<text class="dg-lbl-link" x="780" y="228" text-anchor="middle">camino crítico</text>
+<path class="dg-line-link" d="M948 136 V312" marker-end="url(#tp-cadena-arrow-link)"/>
+<rect class="dg-mask" x="860" y="264" width="80" height="16" rx="2"/>
+<text class="dg-lbl-link" x="900" y="276" text-anchor="middle">semanas</text>
+<rect class="dg-mask" x="40" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="208" y="60" text-anchor="end">03</text>
+<text class="dg-name" x="130" y="75" text-anchor="middle">Canvas</text>
+<text class="dg-sub" x="130" y="93" text-anchor="middle">¿Qué negocio y</text>
+<text class="dg-sub" x="130" y="111" text-anchor="middle">para quién?</text>
+<rect class="dg-mask" x="300" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="300" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="468" y="60" text-anchor="end">04</text>
+<text class="dg-name" x="390" y="75" text-anchor="middle">Design Thinking</text>
+<text class="dg-sub" x="390" y="93" text-anchor="middle">¿El problema</text>
+<text class="dg-sub" x="390" y="111" text-anchor="middle">es real?</text>
+<rect class="dg-mask" x="560" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="560" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="728" y="60" text-anchor="end">05</text>
+<text class="dg-name" x="650" y="75" text-anchor="middle">Charter</text>
+<text class="dg-sub" x="650" y="93" text-anchor="middle">¿Qué hacemos y</text>
+<text class="dg-sub" x="650" y="111" text-anchor="middle">con qué límites?</text>
+<rect class="dg-mask" x="820" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="820" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="988" y="60" text-anchor="end">06</text>
+<text class="dg-name" x="910" y="75" text-anchor="middle">Gantt</text>
+<text class="dg-sub" x="910" y="93" text-anchor="middle">¿Qué tareas, en qué</text>
+<text class="dg-sub" x="910" y="111" text-anchor="middle">orden y cuánto duran?</text>
+<rect class="dg-mask" x="40" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="208" y="332" text-anchor="end">07</text>
+<text class="dg-name" x="130" y="347" text-anchor="middle">Stakeholders</text>
+<text class="dg-sub" x="130" y="365" text-anchor="middle">¿A quién afecta y</text>
+<text class="dg-sub" x="130" y="383" text-anchor="middle">con cuánto poder?</text>
+<rect class="dg-mask" x="300" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="300" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="468" y="332" text-anchor="end">08</text>
+<text class="dg-name" x="390" y="347" text-anchor="middle">Comunicación</text>
+<text class="dg-sub" x="390" y="365" text-anchor="middle">¿Qué, a quién,</text>
+<text class="dg-sub" x="390" y="383" text-anchor="middle">cuándo y por dónde?</text>
+<rect class="dg-mask" x="560" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="560" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="728" y="332" text-anchor="end">09</text>
+<text class="dg-name" x="650" y="347" text-anchor="middle">Riesgos</text>
+<text class="dg-sub" x="650" y="365" text-anchor="middle">¿Qué puede pasar</text>
+<text class="dg-sub" x="650" y="383" text-anchor="middle">y qué hacemos?</text>
+<rect class="dg-mask" x="820" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-focal" x="820" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="988" y="332" text-anchor="end">10</text>
+<text class="dg-name" x="910" y="356" text-anchor="middle">Presupuesto</text>
+<text class="dg-sub" x="910" y="374" text-anchor="middle">¿Cuánto cuesta?</text>
+<line class="dg-rule" x1="40" y1="456" x2="1000" y2="456"/>
+<text class="dg-tag" x="40" y="484" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 480 H152" marker-end="url(#tp-cadena-arrow)"/>
+<text class="dg-note" x="160" y="484" text-anchor="start">el relato: lo que una sección le pasa a la siguiente</text>
+<path class="dg-line-link" d="M536 480 H560" marker-end="url(#tp-cadena-arrow-link)"/>
+<text class="dg-note" x="568" y="484" text-anchor="start">dependencia de dato</text>
+<path class="dg-line-accent" d="M728 480 H752" marker-end="url(#tp-cadena-arrow-accent)"/>
+<text class="dg-note" x="760" y="484" text-anchor="start">la que más preguntan</text></svg>
+<!--/diagram:tp-cadena-->
+      </div>
+    </div>
+    <div class="notes">Mirar las flechas grises como el relato: cada sección le pasa algo a la siguiente. Las violetas son dependencias de dato y son las que revelan si se entiende el proyecto como un todo: Gantt a Riesgos (el camino crítico), Gantt a Presupuesto (las semanas) y Riesgos a Presupuesto (el EMV que define la reserva). La magenta es la que más preguntan.</div>
+  </section>
+
+  <section class="slide titled" data-title="El pedido">
+    <div class="bar"><p class="kicker">10 · Pedido · ¿Qué quieren de mí?</p><h2 class="h2">Lo que necesitamos del Sponsor</h2></div>
+    <div class="body">
+      <ol class="rule-list">
+        <li data-n="1"><b>Aprobar el Charter</b> y el presupuesto de USD 241.839</li>
+        <li data-n="2"><b>Decidir si se financia una reserva de gestión</b> adicional (referencia: USD 24.107)</li>
+        <li data-n="3">Confirmar a las <b>áreas dueñas del dato</b> (Transporte y Cultura) como socias del proyecto</li>
+      </ol>
+      <div class="callout violet mt-l">Cerrar siempre con un pedido: un pitch sin decisión es solo información.</div>
+    </div>
+    <div class="notes">Cierre con una decisión concreta. Los dos primeros puntos salen del TP (Charter y 10.8). El tercero es una propuesta de cierre para la defensa: confirmar el compromiso de las áreas dueñas del dato, que son el riesgo R01 y R04; ajustarlo con el equipo si no coincide con lo que se quiere pedir.</div>
+  </section>
+
+  <section class="slide titled" data-title="Respaldo: puntos flojos">
+    <div class="bar"><p class="kicker">Respaldo · decirlos antes que el jurado</p><h2 class="h2">Seis puntos flojos, con su respuesta</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:22px">
+        <thead><tr><th style="width:36%">Punto flojo</th><th>Respuesta preparada</th></tr></thead>
+        <tbody>
+          <tr><td>Investigación de DT: ¿real o simulada?</td><td>Decir exactamente qué se hizo; el equipo acuerda la frase</td></tr>
+          <tr><td>Fechas abr–sep 2026 ya pasaron</td><td>Es un plan de ejercicio académico; lo que vale es la lógica de la red</td></tr>
+          <tr><td>Éxito sin metas numéricas</td><td>Proponer metas medibles (SMART) como mejora</td></tr>
+          <tr><td>Comunicación sin tipo ni respuesta</td><td>Agregar las dos columnas de la Clase 6</td></tr>
+          <tr><td>Sin riesgos positivos ni FODA/PESTEL</td><td>Reconocerlo; mencionar la oportunidad (capa comercial)</td></tr>
+          <tr><td>Mantenimiento tras el cierre y reserva de gestión</td><td>USD 11.769 caen después del cierre; la reserva de gestión es decisión del Sponsor</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Los puntos flojos se verificaron contra el TP final y las clases. Lo más fuerte en una defensa es nombrar la limitación antes de que la marquen y decir qué se haría. Las respuestas completas están en la lección defensa-03. La frase sobre las fechas es una propuesta de redacción: acordarla con el equipo.</div>
+  </section>
+
+  <section class="slide titled" data-title="Repaso">
+    <div class="bar"><p class="kicker">Ensayo</p><h2 class="h2">Sin mirar: tres desafíos</h2></div>
+    <div class="body">
+      <div class="stack">
+        <div class="recall" style="font-size:30px">1 · Contar el proyecto en 90 segundos, con cronómetro y los seis movimientos.</div>
+        <div class="recall" style="font-size:30px">2 · Recorrer la cadena de cifras desde los 126 días hasta USD 241.839.</div>
+        <div class="recall" style="font-size:30px">3 · Cambiar de narrador: contar la sección que no escribió cada integrante.</div>
+      </div>
+    </div>
+    <div class="notes">Grabarse con el celular. Si pasa de dos minutos, recortar primero la prueba (Design Thinking) y nunca el costo ni el riesgo: son los que más preguntan. Después, practicar las 19 preguntas de la lección defensa-03.</div>
+  </section>
+
+  <div class="deck-footer"><span>Taller de Gestión de Proyectos Digitales · Defensa del TP</span><span class="slide-number" data-current="1" data-total="15"></span></div>
+</div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

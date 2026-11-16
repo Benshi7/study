@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body class="reference">
+<main>
+<div class="topbar no-print"><a href="../index.html">← Índice</a> · Referencia</div>
+<div class="kicker">Referencia · Bloque 3</div>
+<h1>Python: definiciones de la cátedra y trampas de salida</h1>
+<p class="muted">Fuentes: <a href="../raw/KAHOOT-ALUMNOS.pdf">Kahoot</a> y los notebooks de <code>raw/notebooks/</code>. Lecciones: <a href="../lessons/0007-python-y-su-ecosistema.html">0007</a> a <a href="../lessons/0011-pandas-y-matplotlib.html">0011</a>.</p>
+
+<div class="ref-grid">
+<section>
+<h2>Definiciones (Kahoot)</h2>
+<ul>
+  <li><strong>Python</strong>: lenguaje de código abierto, <strong>interpretado</strong> (sin compilar) · código → bytecode → VM</li>
+  <li><strong>Librería</strong>: módulos y funciones reutilizables</li>
+  <li><strong>Pandas</strong>: Series (1D) y DataFrame (2D)</li>
+  <li><strong>Función</strong>: bloque que realiza una tarea; parámetros + <code>return</code></li>
+  <li><strong>IDE</strong>: entorno de desarrollo integrado → <strong>PyCharm</strong> (no Jupyter ni Colab)</li>
+  <li><strong>Notebook</strong>: texto + código + resultados, por celdas</li>
+  <li><strong>Colab</strong>: notebooks en la nube de Google</li>
+  <li><strong>Variable</strong>: nombre que referencia un objeto en memoria</li>
+  <li><code>input()</code> → siempre <strong>str</strong></li>
+  <li><code>if cond:</code> + indentación (4 espacios)</li>
+</ul>
+
+<h2>Excepciones</h2>
+<table>
+  <tr><td><code>ZeroDivisionError</code></td><td><code>10 / 0</code></td></tr>
+  <tr><td><code>ValueError</code></td><td><code>int("cuarenta")</code></td></tr>
+  <tr><td><code>IndexError</code></td><td><code>lista[10]</code></td></tr>
+  <tr><td><code>KeyError</code></td><td><code>d["no_existe"]</code></td></tr>
+  <tr><td><code>TypeError</code></td><td><code>"20" + 5</code> · <code>tupla[0] = 1</code></td></tr>
+</table>
+<p>En el <code>try</code>, las líneas después del error <strong>no se ejecutan</strong>.</p>
+</section>
+
+<section>
+<h2>Salidas trampa</h2>
+<table>
+  <tr><th>Código</th><th>Salida</th></tr>
+  <tr><td><code>17 / 5</code> · <code>17 // 5</code> · <code>17 % 5</code></td><td>3.4 · 3 · 2</td></tr>
+  <tr><td><code>"PYTHON"[2]</code> · <code>[-1]</code></td><td>T · N</td></tr>
+  <tr><td><code>20 &lt; 20</code></td><td>False</td></tr>
+  <tr><td><code>[8,3,6]</code> + append(10), remove(3), sort()</td><td>[6, 8, 10]</td></tr>
+  <tr><td><code>"20" * 2</code></td><td>"2020"</td></tr>
+  <tr><td><code>math.sqrt(49)</code></td><td>7.0</td></tr>
+  <tr><td>función sin <code>return</code></td><td>None</td></tr>
+  <tr><td><code>{1, 2, 2, 3}</code></td><td>{1, 2, 3}</td></tr>
+  <tr><td><code>"hola".find("x")</code></td><td>-1</td></tr>
+  <tr><td><code>int(4.99)</code> · <code>round(7.856, 1)</code></td><td>4 · 7.9</td></tr>
+  <tr><td><code>0.1 + 0.2 == 0.3</code></td><td>False</td></tr>
+  <tr><td><code>b = a</code>; <code>b.append(x)</code></td><td><code>a</code> también cambia</td></tr>
+  <tr><td><code>d.get("k", "def")</code> · <code>d["k"]</code></td><td>"def" · KeyError</td></tr>
+  <tr><td><code>range(1, 101)</code></td><td>100 vueltas (el fin no se incluye)</td></tr>
+  <tr><td><code>break</code> · <code>continue</code></td><td>termina el bucle · saltea la vuelta</td></tr>
+</table>
+</section>
+</div>
+
+<div class="ref-grid">
+<section>
+<h2>Imports</h2>
+<table>
+  <tr><td><code>import math</code></td><td><code>math.sqrt()</code></td></tr>
+  <tr><td><code>from math import sqrt</code></td><td><code>sqrt()</code></td></tr>
+  <tr><td><code>import datetime as dt</code></td><td><code>dt.date.today()</code></td></tr>
+  <tr><td><code>from math import *</code></td><td>no recomendado</td></tr>
+</table>
+<p><code>!pip install x</code> instala · <code>import x</code> carga.</p>
+</section>
+<section>
+<h2>Pandas y gráficos</h2>
+<ul>
+  <li><code>read_csv</code> · <code>shape</code> (filas, cols) · <code>head()</code> · <code>dtypes</code></li>
+  <li><code>df["c"]</code> · <code>iloc[0]</code> (fila por posición) · <code>loc[cond]</code></li>
+  <li><code>groupby().sum()</code> · <code>isna().sum()</code> · <code>drop_duplicates()</code> · <code>pivot_table</code> · <code>corr()</code> (1 / -1 / 0)</li>
+  <li>Líneas = tiempo · Barras = comparar · Histograma = distribución · Dispersión = relación</li>
+</ul>
+</section>
+</div>
+</main>
+</body>
+</html>

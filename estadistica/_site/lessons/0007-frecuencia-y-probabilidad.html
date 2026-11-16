@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 7 — De la Frecuencia a la Probabilidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidades 1-3 → Unidad 4 · Tópico central · Lección 1 / n</span>
+<h1>De la Frecuencia a la Probabilidad</h1>
+<p class="subtitle">El mismo objeto, dos nombres. Esta es la idea puente que conecta Estadística Descriptiva con Probabilidad y Distribuciones.</p>
+
+<h2>El concepto central</h2>
+<p>Una <strong>tabla de frecuencias</strong> (Unidades 1-3, Estadística Descriptiva) y una <strong>función de probabilidad</strong> (Unidad 4, Probabilidad) son, conceptualmente, la misma tabla — solo que preguntan cosas distintas sobre los mismos datos:</p>
+<table>
+<tr><th>Frecuencias (lo que ya observaste)</th><th>Probabilidad (lo que esperás)</th></tr>
+<tr><td>"¿cuántas veces se repitió x en mi muestra?"</td><td>"¿con qué probabilidad ocurre x?"</td></tr>
+<tr><td class="formula">fr = f/n</td><td class="formula">P(X=x)</td></tr>
+</table>
+<p class="source">Fuente: <a href="https://www.mathsisfun.com/data/random-variables.html" target="_blank">Math is Fun — Random Variables</a>: "probabilidad = frecuencia del valor / total de resultados".</p>
+
+<h2>Vocabulario de la tabla de frecuencias</h2>
+<table>
+<tr><th>Símbolo</th><th>Nombre</th><th>Significa</th></tr>
+<tr><td class="formula">f</td><td>Frecuencia absoluta</td><td>Cuántas veces se repite un valor</td></tr>
+<tr><td class="formula">F</td><td>Frecuencia acumulada</td><td>Suma de f hasta ese valor (inclusive)</td></tr>
+<tr><td class="formula">fr</td><td>Frecuencia relativa</td><td>f/n — proporción sobre el total</td></tr>
+<tr><td class="formula">Fr</td><td>Frecuencia acumulada relativa</td><td>F/n — proporción acumulada</td></tr>
+</table>
+<div class="box">
+Para datos agrupados en intervalos: <strong>marca de clase (Xm)</strong> = punto medio del intervalo; <strong>amplitud (a)</strong> = ancho del intervalo. Los intervalos se escriben cerrados a izquierda, abiertos a derecha: <span class="formula">[Li ; Ls)</span>.
+</div>
+
+<h2>El mismo vocabulario, del lado de probabilidad</h2>
+<table>
+<tr><th>Frecuencias</th><th>Se convierte en</th><th>Nombre</th></tr>
+<tr><td class="formula">fr = f/n</td><td class="formula">P(X=x)</td><td>Función de probabilidad puntual</td></tr>
+<tr><td class="formula">Fr (acumulada relativa)</td><td class="formula">F(x) = P(X≤x)</td><td>Función de distribución acumulada</td></tr>
+<tr><td>Histograma (v. continua)</td><td>Función de densidad</td><td>Normal, etc.</td></tr>
+<tr><td>Media (x̄), Varianza (S²)</td><td>Esperanza E(X), Varianza Var(X)</td><td>Valores teóricos</td></tr>
+</table>
+<p>Nada cambia de fórmula — cambia el objeto sobre el que se calcula: en Descriptiva usás las frecuencias que <em>observaste</em>; en Probabilidad usás valores que <em>esperás</em> según un modelo teórico.</p>
+
+<h2>Ejemplo — tabla de probabilidad de una variable discreta</h2>
+<div class="example">
+Se lanzan dos dados y X = suma de los resultados. Contando las 36 combinaciones posibles, algunos valores de X se repiten más que otros:<br><br>
+<span class="formula">P(X=2) = 1/36</span> (solo 1+1)<br>
+<span class="formula">P(X=7) = 6/36 = 1/6</span> (la suma más frecuente: 1+6, 2+5, 3+4, 4+3, 5+2, 6+1)<br><br>
+La lógica es la misma que contar frecuencias en una muestra: cuántas combinaciones "caen" en cada valor, sobre el total de combinaciones posibles.
+</div>
+
+<h2>Requisito de toda función de probabilidad</h2>
+<div class="box">
+Para que P(r) sea una función de probabilidad válida, tiene que cumplir dos condiciones (equivalentes a los axiomas de Kolmogorov):<br>
+<span class="formula">P(r) ≥ 0</span> para todo r &nbsp;·&nbsp; <span class="formula">Σ P(r) = 1</span> (sumando todos los valores posibles)
+</div>
+<p>Chequeo rápido en multiple choice: si una tabla de probabilidad propuesta tiene algún P(r) negativo, o si la suma de todos los P(r) no da 1, esa tabla está mal — sin necesidad de calcular nada más.</p>
+
+<h2>Probabilidad acumulada: por izquierda y por derecha</h2>
+<table>
+<tr><th>Notación</th><th>Significa</th></tr>
+<tr><td class="formula">F(r₀) = P(r ≤ r₀)</td><td>Acumulada "por izquierda" — suma todo hasta r₀ inclusive</td></tr>
+<tr><td class="formula">G(r₀) = P(r ≥ r₀)</td><td>Acumulada "por derecha" — suma todo desde r₀ en adelante</td></tr>
+</table>
+<div class="example">
+Con la suma de dos dados, P(5≤X≤8) se calcula sumando las probabilidades individuales de ese rango:<br>
+<span class="formula">P(5≤X≤8) = P(X=5)+P(X=6)+P(X=7)+P(X=8) = 20/36 = 5/9</span>
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. Te dan una tabla con P(X=1)=0,2, P(X=2)=0,3, P(X=3)=0,4, P(X=4)=0,05. ¿Es una función de probabilidad válida?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> Sí, porque todos los valores son positivos</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', false)"> Sí, porque hay 4 valores posibles</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> No se puede saber sin más información</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', true)"> No, porque la suma da 0,95 y no 1</label>
+<div id="q1a" class="feedback wrong">Que sean positivos es una condición necesaria pero no alcanza — también hay que verificar que sumen 1.</div>
+<div id="q1b" class="feedback wrong">La cantidad de valores no es lo que determina si es válida — son las dos condiciones: P(r)≥0 y ΣP(r)=1.</div>
+<div id="q1c" class="feedback wrong">Con la tabla completa ya alcanza para verificar las dos condiciones — no falta información.</div>
+<div id="q1d" class="feedback correct">0,2+0,3+0,4+0,05 = 0,95 ≠ 1. Aunque todos los valores sean positivos, si no suman 1 la tabla no es válida como función de probabilidad.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. En la tabla de frecuencias de una muestra, ¿qué representa Fr (frecuencia acumulada relativa) en el último valor de la tabla?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> Depende de los datos, puede ser cualquier valor</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> Siempre vale 0</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', true)"> Siempre vale 1 (o 100%)</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> Es igual a la frecuencia absoluta del último valor</label>
+<div id="q2a" class="feedback wrong">No depende de los datos particulares — es una propiedad estructural de la acumulada: al llegar al último valor, ya incluiste toda la muestra.</div>
+<div id="q2b" class="feedback wrong">0 sería el valor de partida (antes del primer dato), no el final.</div>
+<div id="q2c" class="feedback correct">Fr acumula todas las proporciones hasta el final: en el último valor ya sumaste el 100% de los datos, por eso siempre da 1.</div>
+<div id="q2d" class="feedback wrong">Fr es acumulada (suma todo lo anterior más el actual), no el valor puntual de ese último dato.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. ¿Cuál es la relación conceptual correcta entre un histograma (Estadística Descriptiva) y la función de densidad de la Normal (Probabilidad)?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> No tienen relación, son temas distintos de la materia</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', true)"> El histograma es la versión empírica (observada); la densidad es el modelo teórico que la aproxima</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> El histograma sirve solo para variables discretas, la densidad solo para poblaciones</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> Son lo mismo, solo cambia el nombre</label>
+<div id="q3a" class="feedback wrong">Sí están relacionados: son el mismo tipo de idea (distribución de valores) en dos momentos distintos de la materia.</div>
+<div id="q3b" class="feedback correct">El área de cada barra del histograma (frecuencia relativa, dato observado) es el antecedente directo del área bajo la curva de densidad (probabilidad, modelo teórico).</div>
+<div id="q3c" class="feedback wrong">El histograma se usa típicamente para variable continua agrupada en intervalos, no para variables discretas puntuales.</div>
+<div id="q3d" class="feedback wrong">No son exactamente lo mismo: uno describe datos ya observados, el otro es un modelo probabilístico teórico — pero están profundamente conectados.</div>
+</div>
+
+<div class="ask">
+¿Alguna trampa te generó dudas? Decime cuál y la vemos con otro ejemplo.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/random-variables.html" target="_blank">Math is Fun — Random Variables</a>.
+<div class="nav-row">
+  <span>← <a href="0006-binomial-vs-poisson-cuando-usar.html">Lección 6 — Binomial vs. Poisson</a></span>
+  <span>Siguiente → <a href="0008-normal-y-estandarizacion.html">Lección 8 — Normal y estandarización</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

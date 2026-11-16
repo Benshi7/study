@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 9 · Scrum: roles y artefactos</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagram.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 9 · 7/10/2026 · Parcial del 18/11</p>
+  <h1>Scrum, parte 1: quién hace qué y qué se produce</h1>
+  <p class="subtitle">Los tres roles, los tres artefactos y los dos controles de calidad (DoR y DoD) que los conectan.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%204%20-%20Scrum%20Parte%202do%20Cuat.pptx.pdf" title="Solo disponible en la copia completa con raw/">Scrum parte 1</a>, p4 a 18</span><span><a href="../slides/09-scrum/index.html">Ver las slides</a></span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder explicar por qué Scrum es un framework, describir los tres roles (y qué no es el Scrum Master), distinguir Product Backlog, Sprint Backlog e Incremento, priorizar con MoSCoW y decidir si una historia cuenta como terminada según la DoD.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="08-agilidad-manifiesto-cynefin.html">Clase 8</a> (valores y principios del Manifiesto: Scrum es una de las metodologías de los firmantes) y de la <a href="03a-charter-stakeholders-edt.html">Clase 3</a> (alcance y EDT: el backlog es el equivalente ágil de listar lo que hay que entregar).</p>
+  <p><span class="to">Alimenta</span> las ceremonias de Scrum: <a href="10-ceremonias-scrum.html">Clase 10</a> (Sprint, Planning, refinamiento) y <a href="11-retrospectiva.html">Clase 11</a> (Daily, Review, Retrospectiva).</p>
+</div>
+
+<h2 id="repaso-previo">Antes de empezar · repaso de Clase 8</h2>
+<details class="recall">
+  <summary>Sin mirar: ¿qué es ser ágil según la cátedra? ¿Qué dominio de Cynefin pide ágil y cuál cascada?</summary>
+  <p>Dar valor temprano y adaptarse fácilmente al cambio. Complejo (y caótico) → ágil; complicado → cascada; simple → buenas prácticas. Repasar en la <a href="08-agilidad-manifiesto-cynefin.html">Clase 8</a>.</p>
+</details>
+
+<p class="note"><strong>Numeración.</strong> El PDF se titula «Clase 4: Scrum parte 1» (numeración propia del material). En el cronograma corresponde a la <strong>clase 9</strong> del 7/10: «responsabilidades de los actores en Scrum, sprint y gestión del producto».</p>
+
+<h2 id="el-problema">El problema</h2>
+<p>El Manifiesto dice qué se valora, pero no dice cómo organizarse un lunes a la mañana. Scrum es una de las respuestas: reparte responsabilidades (roles), define cómo se trabaja (eventos, que se ven en la próxima clase) y qué se produce (artefactos).</p>
+
+<h2 id="teoria">Idea 1 · Scrum es un framework</h2>
+<p>Según la cátedra, Scrum <strong>no es una metodología, es un framework</strong>: es ligero, fácil de entender y muy difícil de dominar. Se compone de roles, eventos y artefactos, y se basa en el <strong>empirismo</strong>: se decide con lo que se observa, no con lo que se supuso al planificar (Clase 9, p4).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Pilar (cátedra)</th><th>Qué quiere decir (lectura propia)</th><th>Dónde se ve</th></tr></thead>
+<tbody>
+<tr><td><strong>Transparencia</strong></td><td>Todos ven el mismo estado del trabajo</td><td>Los backlogs y la DoD: «terminado» significa lo mismo para todos</td></tr>
+<tr><td><strong>Inspección</strong></td><td>Se revisa seguido lo hecho y cómo se hizo</td><td>Las ceremonias: Daily, Review, Retrospectiva</td></tr>
+<tr><td><strong>Adaptación</strong></td><td>Con lo que se vio, se ajusta</td><td>Cambios al backlog y planes de acción de la retro</td></tr>
+</tbody>
+</table>
+</div>
+<p>El repaso con que la cátedra abrió la clase siguiente agrega tres datos que son carne de opción múltiple (Scrum parte 2, p4): Scrum <strong>no requiere grandes cambios estructurales a nivel organización</strong>, <strong>se puede aprender en 3 horas</strong> y los equipos <strong>pueden demorar hasta un año en dominarlo</strong>. Es la versión con números de «fácil de entender y muy difícil de dominar».</p>
+
+<h2 id="roles">Idea 2 · Los tres roles</h2>
+<p><strong>Equipo Scrum = equipo de desarrollo + Scrum Master + Product Owner</strong> (p5).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Rol</th><th>Qué es y qué hace (según la cátedra)</th></tr></thead>
+<tbody>
+<tr><td>Product Owner</td><td>Mantiene el backlog del producto actualizado, refinado y priorizado. Es <strong>una sola persona</strong>. El equipo debe respetar sus decisiones. (p6)</td></tr>
+<tr><td>Equipo de desarrollo</td><td>Autoorganizado y multifuncional, sin discriminación por roles. Entre <strong>3 y 9 personas</strong>. (p7)</td></tr>
+<tr><td>Scrum Master</td><td>Ayuda a todos a entender y aplicar Scrum, modera las ceremonias, genera espacios de mejora, ayuda a eliminar impedimentos y promueve el cambio hacia la organización. <strong>No es un Project Manager.</strong> (p8)</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>La confusión clásica.</strong> En cascada hay un Project Manager que arma el cronograma, controla el alcance y responde por el plan. En Scrum nadie «dirige» al equipo: el PO decide <em>qué</em> y en qué orden, el equipo decide <em>cómo</em> y cuánto entra, y el Scrum Master cuida que el marco funcione. El reparto en qué, cómo y marco es una síntesis propia; la frase literal de la cátedra es «NO es un Project Manager».</p>
+<p class="note"><strong>¿Tres roles o cuatro?</strong> La diapositiva de roles muestra tres (Clase 9, p5), pero el repaso de la clase siguiente dice «<strong>4 roles</strong>: Equipo Scrum, Scrum Master, Product Owner y Desarrolladores» (Scrum parte 2, p3): cuenta al Equipo Scrum entero como un rol más. Si una pregunta pide el número según ese repaso, es 4; si pide quiénes forman el Equipo Scrum, son tres.</p>
+
+<h2 id="artefactos">Idea 3 · Los tres artefactos y los dos controles</h2>
+<figure class="diagram">
+<!--diagram:scrum-artefactos-->
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scrum-artefactos-title scrum-artefactos-desc"><title id="scrum-artefactos-title">Scrum: roles, artefactos y los dos controles de calidad</title><desc id="scrum-artefactos-desc">El Equipo Scrum reúne al Product Owner, al equipo de desarrollo y al Scrum Master. El Product Owner ordena el Product Backlog; el equipo lo lleva al Sprint Backlog si cumple la DoR y entrega un Incremento con las historias que cumplen la DoD.</desc><defs><marker id="scrum-artefactos-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="scrum-artefactos-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="scrum-artefactos-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><rect class="dg-zone" x="28" y="24" width="904" height="152" rx="8"/>
+<text class="dg-tag" x="44" y="48" text-anchor="start">EQUIPO SCRUM</text>
+<path class="dg-line" d="M160 160 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-lbl" x="168" y="244" text-anchor="start">ordena</text>
+<path class="dg-line" d="M480 160 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-lbl" x="472" y="244" text-anchor="end">se compromete</text>
+<path class="dg-line" d="M540 160 V260 Q540 268 548 268 H792 Q800 268 800 276 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="642" y="244" width="60" height="16" rx="2"/>
+<text class="dg-lbl" x="672" y="256" text-anchor="middle">entrega</text>
+<path class="dg-line" d="M680 112 H600" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="606" y="88" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="640" y="100" text-anchor="middle">facilita</text>
+<path class="dg-line" d="M280 360 H360" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="304" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl" x="320" y="348" text-anchor="middle">DoR</text>
+<path class="dg-line-accent" d="M600 360 H680" marker-end="url(#scrum-artefactos-arrow-accent)"/>
+<rect class="dg-mask" x="624" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl-accent" x="640" y="348" text-anchor="middle">DoD</text>
+<rect class="dg-mask" x="40" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="160" y="99" text-anchor="middle">Product Owner</text>
+<text class="dg-sub" x="160" y="117" text-anchor="middle">Una sola persona</text>
+<text class="dg-sub" x="160" y="135" text-anchor="middle">Dueño del backlog</text>
+<rect class="dg-mask" x="360" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="360" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="480" y="99" text-anchor="middle">Equipo de desarrollo</text>
+<text class="dg-sub" x="480" y="117" text-anchor="middle">3 a 9 personas</text>
+<text class="dg-sub" x="480" y="135" text-anchor="middle">autoorganizado</text>
+<rect class="dg-mask" x="680" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="680" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="800" y="99" text-anchor="middle">Scrum Master</text>
+<text class="dg-sub" x="800" y="117" text-anchor="middle">Facilita Scrum</text>
+<text class="dg-sub" x="800" y="135" text-anchor="middle">No es un Project Manager</text>
+<rect class="dg-mask" x="40" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-store" x="40" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="160" y="347" text-anchor="middle">Product Backlog</text>
+<text class="dg-sub" x="160" y="365" text-anchor="middle">Lista única ordenada</text>
+<text class="dg-sub" x="160" y="383" text-anchor="middle">por valor de negocio</text>
+<rect class="dg-mask" x="360" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-store" x="360" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="480" y="347" text-anchor="middle">Sprint Backlog</text>
+<text class="dg-sub" x="480" y="365" text-anchor="middle">Tareas del Sprint,</text>
+<text class="dg-sub" x="480" y="383" text-anchor="middle">acordadas con el PO</text>
+<rect class="dg-mask" x="680" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-focal" x="680" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="800" y="347" text-anchor="middle">Incremento</text>
+<text class="dg-sub" x="800" y="365" text-anchor="middle">Historias que</text>
+<text class="dg-sub" x="800" y="383" text-anchor="middle">alcanzaron la DoD</text>
+<text class="dg-note" x="40" y="448" text-anchor="start">DoR · Definition of Ready: la historia está lista para entrar al Sprint.</text>
+<text class="dg-note" x="40" y="472" text-anchor="start">DoD · Definition of Done: la historia cumple el checklist y cuenta como terminada.</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 528 H152" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-note" x="160" y="532" text-anchor="start">relación</text>
+<path class="dg-line-accent" d="M248 528 H272" marker-end="url(#scrum-artefactos-arrow-accent)"/>
+<text class="dg-note" x="280" y="532" text-anchor="start">control de calidad (DoD)</text>
+<rect class="dg-focal" x="472" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="500" y="532" text-anchor="start">lo que se entrega</text></svg>
+<!--/diagram:scrum-artefactos-->
+<figcaption>Quién es dueño de cada artefacto y qué control separa uno del siguiente. DoR y DoD son términos de la cátedra (Clase 9, p9 a 17).</figcaption>
+</figure>
+
+<h3>Product Backlog</h3>
+<p>«Lista única que contiene todas las características deseables del producto ordenadas por valor de negocio.» La administra el Product Owner según los objetivos del producto. Los ítems de arriba deben estar refinados (idealmente por trimestre; como mínimo, el siguiente Sprint). <strong>Nunca está completo</strong>: se agregan o quitan ítems. Información mínima: orden, descripción, estimación en puntos (alto nivel) y valor de negocio en puntos (p10 y p11).</p>
+<p>La cátedra lo muestra con el backlog de una tienda en línea (Clase 9, p11):</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Id</th><th>Descripción</th><th>Estimación</th><th>Valor de negocio</th></tr></thead>
+<tbody>
+<tr><td>01</td><td>Como comprador, quiero poder guardar un producto como favorito, para tenerlo a mano al momento de comprar.</td><td>XS</td><td>100</td></tr>
+<tr><td>02</td><td>Como comprador, quiero recibir un email con la confirmación de la compra, para asegurarme que la compra se hizo correctamente.</td><td>S</td><td>95</td></tr>
+<tr><td>03</td><td>Como comprador, quiero poder acceder al detalle del producto, para verificar que es el producto que quiero comprar.</td><td>M</td><td>94</td></tr>
+<tr><td>04</td><td>Como comprador, quiero poder elegir un segundo medio de pago, para poder comprar productos que superen mi límite de compra.</td><td>L</td><td>90</td></tr>
+<tr><td>05</td><td>Notificaciones push y en aplicación.</td><td>L</td><td>89</td></tr>
+<tr><td>06</td><td>Pagos con tarjeta de crédito.</td><td>XL</td><td>88</td></tr>
+<tr><td>07 a 10</td><td>Búsqueda avanzada · módulo de sugerencias · módulo de envíos · módulo de vendedor.</td><td>XXL a XXXL</td><td>86 a 81</td></tr>
+</tbody>
+</table>
+</div>
+<p>Tres cosas para leer en esa tabla:</p>
+<ul>
+<li><strong>El orden lo da el valor de negocio</strong> (100, 95, 94…), no el tamaño ni el orden en que se pidió.</li>
+<li><strong>Arriba está refinado, abajo no.</strong> Los cuatro primeros ya son historias de usuario («Como… quiero… para…») y son chicos (XS a L). Los de abajo son títulos gruesos y enormes («Módulo de envíos», XXXL): se van a partir cuando les toque subir. Es la regla «los ítems superiores deben estar refinados» hecha tabla.</li>
+<li><strong>La estimación es de alto nivel</strong>, en talles (XS a XXXL), no en horas. Cómo se estima se ve en la <a href="10-ceremonias-scrum.html#estimacion">Clase 10</a>.</li>
+</ul>
+
+<h3 id="moscow">MoSCoW: priorizar el backlog</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Letra</th><th>Significa</th><th>Ejemplo: web de reservas de restaurantes</th></tr></thead>
+<tbody>
+<tr><td><strong>M</strong>ust have</td><td>Debe estar en el MVP</td><td>Buscar el restaurante y reservar; comisión al restaurante</td></tr>
+<tr><td><strong>S</strong>hould have</td><td>Incluir en el MVP si no compromete cronograma ni presupuesto</td><td>Compartir la experiencia y calificar</td></tr>
+<tr><td><strong>C</strong>ould have</td><td>No incluir en el MVP: fase 2</td><td>Sugerencias en base a reservas anteriores</td></tr>
+<tr><td><strong>W</strong>on’t have</td><td>Baja prioridad o descartar: fuera del MVP</td><td>Aplicación móvil</td></tr>
+</tbody>
+</table>
+</div>
+<p>(Clase 9, p12 y p13.) El <strong>MVP</strong> (producto mínimo viable) es la primera versión que ya sirve; MoSCoW decide qué entra en ella. Truco para recordar la diferencia entre S y C: la <em>S</em> entra al MVP «si no complica» el cronograma ni el presupuesto; la <em>C</em> ya queda en la fase 2. Y la <em>W</em> no es «nunca»: es baja prioridad o descartar, fuera del MVP.</p>
+
+<h3>Sprint Backlog</h3>
+<p>«Detalla todas las actividades que el equipo espera realizar durante un Sprint.» Se compone de las tareas necesarias para alcanzar la DoD de cada historia, y puede incluir planes de acción de la retrospectiva, acciones para mitigar riesgos, resolución de bugs, pruebas de concepto, trabajo sobre deuda técnica y refinamiento de historias. Se acuerda entre el PO y el equipo según los objetivos del Sprint y la capacidad del equipo. Las historias deben cumplir la <strong>DoR</strong> (p14).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Product Backlog</th><th>Sprint Backlog</th></tr></thead>
+<tbody>
+<tr><td>Qué contiene</td><td><strong>Todas</strong> las características deseables del producto</td><td>Las <strong>actividades de un Sprint</strong>: tareas para llegar a la DoD de cada historia</td></tr>
+<tr><td>Quién lo define</td><td>Lo administra el <strong>Product Owner</strong></td><td>Se <strong>acuerda entre el PO y el equipo</strong></td></tr>
+<tr><td>Criterio</td><td>Valor de negocio</td><td>Objetivo del Sprint y capacidad del equipo</td></tr>
+<tr><td>Cuánto dura</td><td>Todo el producto; nunca está completo</td><td>Un Sprint</td></tr>
+<tr><td>Además de historias</td><td>—</td><td>Planes de acción de la retro, mitigación de riesgos, bugs, pruebas de concepto, deuda técnica, refinamiento</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="dod">Incremento y Definition of Done</h3>
+<p>El Incremento reúne «todas las historias de usuario que alcanzaron la DoD durante el Sprint». La <strong>DoD</strong> es un contrato, en forma de checklist, del Equipo Scrum sobre las condiciones que debe cumplir una historia para considerarse terminada (p15 a p17). Ejemplos de la cátedra: criterios de aceptación cumplidos, desplegada en ambiente Stage, casos de prueba automatizados y testing de regresión finalizado.</p>
+<p class="note"><strong>El chiste de la cátedra tiene una moraleja.</strong> «Me dijiste que la habías terminado» / «de leer…»: sin DoD acordada, «terminado» significa cosas distintas para cada persona. La DoD elimina esa discusión.</p>
+
+<div class="source">
+  <strong>Complemento (no es de la cátedra)</strong>
+  La Guía de Scrum vigente (2020) usa otra terminología: habla de «Developers» en lugar de «equipo de desarrollo», dice que el Scrum Team tiene típicamente 10 personas o menos, que el Product Owner es una persona y no un comité, y define la Definition of Done como compromiso del Incremento. <strong>No menciona «Definition of Ready»</strong> como concepto. Tampoco dice textualmente que el Scrum Master «no es un Project Manager»: lo describe como líder que sirve al equipo y a la organización.<sup class="cite"><a href="https://scrumguides.org/scrum-guide.html">1</a></sup> Para el parcial, usar los números y términos de la cátedra (3 a 9, DoR); si hay contradicción, gana la cátedra.<br>Para repasar: <a href="../reference/agil-glosario.html">glosario y hoja de repaso ágil</a> (imprimible).
+</div>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: nombrar los tres roles con una característica de cada uno, y los tres artefactos con su dueño.</summary>
+  <p>PO: una sola persona, dueño del backlog, el equipo respeta sus decisiones. Equipo de desarrollo: autoorganizado, multifuncional, 3 a 9. Scrum Master: facilita y quita impedimentos; no es PM. Artefactos: Product Backlog (PO), Sprint Backlog (PO y equipo acuerdan), Incremento (historias que alcanzaron la DoD).</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: ¿cuál es la diferencia entre «Should» y «Could» en MoSCoW?</summary>
+  <p>Should: se incluye en el MVP si no compromete cronograma y presupuesto. Could: no se incluye en el MVP; queda para la fase 2 (Clase 9, p12).</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">Un compañero dice que Scrum es «la metodología ágil por excelencia». ¿Qué precisión hace la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: «no es una metodología, es un framework»: ligero, basado en empirismo y con tres pilares (Clase 9, p4).">Es un framework liviano basado en empirismo</button>
+    <button data-why="No: la cátedra dice lo contrario: es ligero y fácil de entender, aunque difícil de dominar.">Es una metodología pesada con fases cerradas</button>
+    <button data-why="No: los pilares son transparencia, inspección y adaptación; no hay planificación total inicial.">Es un plan completo fijado al inicio</button>
+    <button data-why="No: Scrum incluye roles, eventos y artefactos; no se limita a una herramienta.">Es una herramienta de software para tableros</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Alguien propone que el Scrum Master asigne tareas y controle el cronograma. ¿Qué responde la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: ayuda a aplicar Scrum, modera ceremonias y elimina impedimentos; «NO es un Project Manager» (Clase 9, p8).">No es un Project Manager: facilita y quita impedimentos</button>
+    <button data-why="No: el que mantiene y prioriza el backlog es el Product Owner.">Sí, porque decide el orden del backlog del producto</button>
+    <button data-why="No: el equipo de desarrollo es autoorganizado; nadie le asigna tareas.">Sí, porque dirige a todo el equipo de desarrollo</button>
+    <button data-why="No: la aprobación del producto no es una función del Scrum Master.">Sí, porque aprueba cada entrega antes que el cliente</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Una historia está programada y probada a mano, pero no pasó el checklist acordado: faltan las pruebas automatizadas. ¿Entra en el Incremento?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: el Incremento reúne solo las historias que alcanzaron la DoD (Clase 9, p15 a p17).">No: solo entra lo que cumple la DoD</button>
+    <button data-why="No: «terminada» la define la DoD, no la opinión de quien programó.">Sí: si quien programó dice que terminó, alcanza</button>
+    <button data-why="No: el Product Owner no reemplaza la DoD; es un acuerdo de todo el Equipo Scrum.">Sí: el Product Owner puede aceptarla igual siempre</button>
+    <button data-why="No: la DoD no se negocia en cada historia; es un contrato fijado por el equipo.">Sí: se negocia el checklist en cada historia</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Cómo se ordena el Product Backlog, según la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: «lista única que contiene todas las características deseables del producto ordenadas por valor de negocio» (Clase 9, p10).">Por el valor de negocio de cada ítem</button>
+    <button data-why="No: la estimación es un dato del ítem, pero no define el orden. En el ejemplo, el ítem 01 es XS y el 04 es L.">Por el tamaño estimado, de menor a mayor</button>
+    <button data-why="No: el orden lo administra el Product Owner según los objetivos del producto, no la fecha del pedido.">Por la fecha en que llegó cada pedido</button>
+    <button data-why="No: el equipo estima, pero quien administra y ordena el backlog es el Product Owner.">Por lo que prefiere hacer primero el equipo</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Cuál de estos elementos NO forma parte del Sprint Backlog, según la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: esa es la definición del Product Backlog. El Sprint Backlog solo detalla las actividades de un Sprint (Clase 9, p10 y p14).">La lista de todas las características del producto</button>
+    <button data-why="Sí forma parte: «planes de acción surgidos de la retrospectiva» (Clase 9, p14).">Planes de acción que surgieron de la retrospectiva</button>
+    <button data-why="Sí forma parte: «trabajar en deuda técnica» y «resolución de bugs» (Clase 9, p14).">Resolución de bugs y trabajo sobre deuda técnica</button>
+    <button data-why="Sí forma parte: «se compone de las tareas necesarias para alcanzar la DOD de cada historia» (Clase 9, p14).">Tareas para alcanzar la DoD de cada historia</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">En la web de reservas de restaurantes, la cátedra ubica «aplicación móvil» en una letra de MoSCoW. ¿Cuál?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: Won't have, baja prioridad o descartar; fuera del MVP (Clase 9, p13).">W: baja prioridad, queda fuera del MVP</button>
+    <button data-why="No: Must es lo que debe estar en el MVP, como buscar y reservar.">M: debe estar incluida en el MVP</button>
+    <button data-why="No: Should es lo que entra al MVP si no compromete cronograma ni presupuesto.">S: entra al MVP si no complica</button>
+    <button data-why="No: Could son las sugerencias en base a reservas anteriores, para la fase 2.">C: se deja para la fase dos</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="trampas">Trampas de opción múltiple</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>La opción tentadora</th><th>Por qué está mal</th></tr></thead>
+<tbody>
+<tr><td>«Scrum es una metodología»</td><td>La cátedra dice: no es una metodología, es un <strong>framework</strong></td></tr>
+<tr><td>«Es fácil de entender y fácil de dominar»</td><td>Ligero y fácil de entender, pero <strong>muy difícil de dominar</strong>: se aprende en 3 horas y dominarlo puede llevar un año</td></tr>
+<tr><td>«Los pilares son comunicación, simplicidad…»</td><td>Esas son bases de XP (<a href="12a-lean-xp.html#xp">Clase 12a</a>). Pilares de Scrum: transparencia, inspección y adaptación</td></tr>
+<tr><td>«El Product Owner es un comité»</td><td>Es <strong>una sola persona</strong>, y el equipo debe respetar sus decisiones</td></tr>
+<tr><td>«El Scrum Master asigna tareas y controla el plan»</td><td>No es un Project Manager: ayuda a aplicar Scrum, modera y quita impedimentos</td></tr>
+<tr><td>«El equipo de desarrollo tiene hasta 10 personas»</td><td>Cátedra: <strong>entre 3 y 9</strong>. «10 o menos» es de la Guía 2020</td></tr>
+<tr><td>«El Product Backlog se cierra al empezar»</td><td><strong>Nunca está completo</strong>: se agregan o quitan ítems</td></tr>
+<tr><td>«Should = fase 2»</td><td>Should entra al MVP si no compromete cronograma ni presupuesto; fase 2 es <strong>Could</strong></td></tr>
+<tr><td>«La DoD dice si la historia puede entrar al Sprint»</td><td>Eso es la <strong>DoR</strong>. La DoD dice si está terminada</td></tr>
+<tr><td>«El Incremento es todo lo que se trabajó en el Sprint»</td><td>Solo las historias que <strong>alcanzaron la DoD</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%204%20-%20Scrum%20Parte%202do%20Cuat.pptx.pdf" title="Solo disponible en la copia completa con raw/">Scrum parte 1</a>, diapositivas 4 a 18. Referencia que cita la cátedra: la <a href="https://scrumguides.org/scrum-guide.html">Guía de Scrum</a>.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «¿cómo distingo Sprint Backlog de Product Backlog?», «¿qué pasa con la DoR si la Guía de Scrum no la menciona?» o «dame diez funcionalidades y yo las priorizo con MoSCoW».
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="08-agilidad-manifiesto-cynefin.html">← Clase 8 · Agilidad</a>
+  <a href="10-ceremonias-scrum.html">Clase 10 · El Sprint por dentro →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

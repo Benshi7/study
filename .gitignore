@@ -1,0 +1,36 @@
+# Entornos y dependencias
+.venv/
+venv/
+env/
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Builds
+dist/
+build/
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Videos
+*.mp4
+*.mkv
+
+# Secretos
+.env
+.env.*
+
+# Tooling / OS
+.codegraph/
+.DS_Store
+Thumbs.db
+*:Zone.Identifier

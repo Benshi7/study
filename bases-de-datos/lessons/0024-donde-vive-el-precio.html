@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 24 · Dónde vive el precio</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 24 · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Dónde vive el precio: N:N, tabla asociativa e histórico</h1>
+    <p class="masthead__standfirst">
+      La anomalía 7 quedó viva después de 3FN. Acá se resuelve — y no con una regla,
+      sino con una pregunta al negocio.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Clase 3, slides 13–15</span>
+      <span>Cierra el ejemplo de facturación</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Primero: la tabla asociativa</h2>
+
+  <blockquote class="callout">
+    "En el modelo normalizado las relaciones muchos a muchos <b>NO existen</b>, sino que
+    este tipo de relaciones que sí existen en el DER, en un modelo normalizado se
+    transforman en una nueva tabla que se conoce con el nombre de <b>tabla asociativa</b>
+    o relacional."
+  </blockquote>
+
+  <p>
+    Esta frase es el puente entre la Unidad 2 y la Unidad 3, y conviene ver que ya la usaste
+    sin darte cuenta. En el modelo de facturación, una factura tiene muchos productos y un
+    producto está en muchas facturas: <b>eso es un N:N</b>. ¿Dónde está?
+  </p>
+
+  <div class="rel">
+    CabeceraFact (<b>#NFact</b>, Fecha, CodCli)<br>
+    <i>RenglonFact (<b>#NFact</b>, <b>#CProd</b>, Canti, PUnit)&nbsp;&nbsp;← la tabla asociativa</i><br>
+    Prod (<b>#CProd</b>, Descri)
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Los dos caminos llegan al mismo lugar</span>
+    <p>
+      <code>RenglonFact</code> apareció en 1FN, porque era el grupo repetitivo.
+      Si hubieras partido del DER, habría aparecido igual, pero por otra razón: porque
+      un N:N se convierte en tabla.
+    </p>
+    <p>
+      <b>Son dos rutas hacia la misma tabla.</b> Y su forma siempre es la misma: la clave
+      primaria es la <b>unión de las claves de las dos tablas que vincula</b>, más los
+      atributos que pertenecen al vínculo y no a ninguna de las dos puntas.
+    </p>
+  </div>
+
+  <p>
+    <code>Canti</code> es justamente eso: un atributo del vínculo. No es del producto
+    (una pera no tiene una cantidad) ni de la factura (una factura no tiene una cantidad
+    sola). Es de la combinación. En el DER colgaba del rombo.
+  </p>
+
+  <h2><span class="num">02</span>Ahora sí: las tres situaciones del precio</h2>
+
+  <p>
+    El profe no las presenta como alternativas, pero lo son. Son <b>tres modelos distintos
+    y los tres están en 3FN</b>. Lo que decide cuál usar no es la teoría: es lo que diga el
+    negocio.
+  </p>
+
+  <h3>Situación A — el precio es del renglón</h3>
+
+  <div class="rel">
+    RenglonFact (<b>#NFact</b>, <b>#CProd</b>, Canti, PUnit)<br>
+    Prod (<b>#CProd</b>, Descri)
+  </div>
+
+  <p>
+    Es donde quedó el ejemplo al terminar 3FN. <code>PUnit</code> es
+    <b>el precio que se cobró en esa venta</b>. Depende de la clave entera, así que 2FN
+    no tiene nada que objetar.
+  </p>
+
+  <p>
+    <b>Cuándo sirve:</b> cuando el precio se negocia por operación — descuentos, precio
+    pactado, remate. <b>El costo:</b> no hay ninguna fuente de verdad sobre "el precio del
+    producto". Si nadie compró nunca el producto 44, no sabés cuánto vale.
+  </p>
+
+  <h3>Situación B — un único precio por producto</h3>
+
+  <p>
+    La slide 14 lo plantea así: <q>los clientes no se encuentran categorizados en mayoristas
+    o minoristas, por lo que se maneja un <b>único precio</b> para cada producto</q>.
+  </p>
+
+  <div class="paso">
+    <div>
+      <h3>Prod</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>CProd</th><th>Descri</th><th>Precio</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">35</td><td>Peras</td><td>3</td></tr>
+            <tr><td class="pk">37</td><td>Uvas</td><td>3</td></tr>
+            <tr><td class="pk">39</td><td>Kivi</td><td>11</td></tr>
+            <tr><td class="pk">40</td><td>Sandía</td><td>3</td></tr>
+            <tr><td class="pk">44</td><td>Tomates</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>En el DER</h3>
+      <p style="font-size:0.95rem">
+        <code>Precio</code> pasa a ser un <b>atributo de la entidad Producto</b>,
+        igual que <code>Descri</code>. Un óvalo más colgando del rectángulo.
+      </p>
+      <p style="font-size:0.95rem">
+        Y <code>PUnit</code> <b>desaparece</b> de <code>RenglonFact</code>: ya no hace falta,
+        se lo pedís a <code>Prod</code> cuando lo necesites.
+      </p>
+    </div>
+  </div>
+
+  <p>
+    <b>Acá sí muere la anomalía 7.</b> El producto 39 tiene una fila, con un precio.
+    No hay forma de que valga 10 y 11 al mismo tiempo.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Lo que se rompe a cambio</span>
+    <p>
+      Si el precio cambia, <code>UPDATE Prod SET Precio = 12</code> y listo — pero
+      <b>las facturas viejas ahora mienten</b>. La factura 1 pasa a decir que el kiwi costó
+      12, cuando en realidad se cobró 10.
+    </p>
+    <p>
+      Ese es el precio de la Situación B, y es por eso que existe la C.
+    </p>
+  </div>
+
+  <h3>Situación C — el histórico de precios</h3>
+
+  <p>
+    La slide 15: <q>interesa guardar los distintos precios a los que se comercializó cada
+    producto a través del tiempo</q>. La solución es una tabla nueva.
+  </p>
+
+  <div class="paso">
+    <div>
+      <h3>Prod</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>CProd</th><th>Descri</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">35</td><td>Peras</td></tr>
+            <tr><td class="pk">37</td><td>Uvas</td></tr>
+            <tr><td class="pk">39</td><td>Kivi</td></tr>
+            <tr><td class="pk">40</td><td>Sandía</td></tr>
+            <tr><td class="pk">44</td><td>Tomates</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>PrecioProd</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>CProd</th><th>FechaDesde</th><th>Precio</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">35</td><td class="pk">12/01/2006</td><td>3</td></tr>
+            <tr><td class="pk">37</td><td class="pk">12/01/2006</td><td>5</td></tr>
+            <tr><td class="pk">37</td><td class="pk">13/01/2006</td><td>3</td></tr>
+            <tr><td class="pk">39</td><td class="pk">12/01/2006</td><td>10</td></tr>
+            <tr><td class="pk">39</td><td class="pk">13/01/2006</td><td>11</td></tr>
+            <tr><td class="pk">40</td><td class="pk">12/01/2006</td><td>3</td></tr>
+            <tr><td class="pk">44</td><td class="pk">14/01/2006</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="rel">
+    Prod (<b>#CProd</b>, Descri)<br>
+    PrecioProd (<b>#CProd</b>, <b>#FechaDesde</b>, Precio)
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">El patrón, para reconocerlo en cualquier enunciado</span>
+    <p>
+      Mirá la clave: <code>(CProd, FechaDesde)</code>. <b>El tiempo entra en la clave
+      primaria.</b> Ese es el patrón histórico completo.
+    </p>
+    <p>
+      Y fijate que el producto 39 ahora tiene <b>10 y 11 al mismo tiempo en la tabla</b>,
+      y no es una anomalía: son dos hechos verdaderos y distintos, cada uno con su fecha.
+      Antes había dos valores contradictorios; ahora hay dos valores fechados.
+      <b>Es la misma data y dejó de ser un error, porque la clave cambió.</b>
+    </p>
+  </div>
+
+  <p>
+    Este patrón vuelve en la Unidad 9 con otro nombre —
+    <em class="term">Slowly Changing Dimension</em> — que es exactamente esto aplicado a
+    un datawarehouse. Cuando llegues ahí, vas a reconocerlo.
+  </p>
+
+  <h2><span class="num">03</span>Cómo elegir, en un parcial</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Si el enunciado dice…</th><th>Usás</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>"el precio se pacta en cada operación", "descuento por venta"</td><td><b>A</b> — precio en el renglón</td></tr>
+        <tr><td>"cada producto tiene un precio", y nada sobre el tiempo</td><td><b>B</b> — precio en el producto</td></tr>
+        <tr><td>"interesa conocer cómo varió el precio", "histórico", "a lo largo del tiempo"</td><td><b>C</b> — tabla de histórico</td></tr>
+        <tr><td>nada sobre precios pero hay ventas</td><td><b>B</b>, y <b>declarás el supuesto</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Un detalle que suma puntos</span>
+    <p>
+      En la Situación C, si además querés que las facturas viejas nunca mientan, se guarda
+      el precio cobrado <b>también</b> en el renglón. Parece redundancia y no lo es:
+      el precio del renglón es <b>un hecho histórico congelado</b>, no una copia del precio
+      vigente. Son dos datos distintos que casualmente coinciden el día de la venta.
+    </p>
+    <p>
+      Si lo ponés, <b>escribí esa justificación al lado</b>. Sin ella parece un error de
+      normalización; con ella es una decisión de diseño.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Tabla asociativa</span>
+    <p class="quiz__q">
+      Un N:N entre <code>Alumno</code> y <code>Materia</code>, y de cada cursada interesa
+      la nota. ¿Cómo queda la tabla asociativa?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La clave es la unión de las dos claves, y Nota va adentro porque pertenece al vínculo: no es del alumno ni de la materia, es de la combinación. En el DER colgaba del rombo.">Cursa(#Legajo, #CodMateria, Nota)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Con esa clave, un alumno podría cursar una materia una sola vez en toda su vida... pero además perdés la nota, que es justamente lo que el enunciado pide guardar. La clave tiene que ser la unión de ambas.">Cursa(#Legajo, CodMateria, Nota)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un id propio no está prohibido, pero sin declarar única la combinación (Legajo, CodMateria) permitís cargar dos veces la misma cursada. La clave natural de una asociativa es la unión de las dos.">Cursa(#IdCursa, Legajo, CodMateria)</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Elegir situación</span>
+    <p class="quiz__q">
+      El enunciado dice: "se necesita saber a qué precio se vendió cada producto en cada
+      momento del año". ¿Qué modelo?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Situación C. 'En cada momento' mete el tiempo en el problema, y el tiempo se modela entrando en la clave primaria: PrecioProd(#CProd, #FechaDesde, Precio).">El histórico, con la fecha en la clave</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Con el precio en el producto sólo tenés el valor vigente. En cuanto lo actualizás perdés el anterior, y el enunciado pide exactamente lo contrario: poder reconstruir cualquier momento.">El precio como atributo del producto</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · La anomalía 7</span>
+    <p class="quiz__q">
+      En la tabla <code>PrecioProd</code>, el producto 39 aparece con 10 y con 11.
+      ¿Volvió la anomalía?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="No: la clave ahora es (CProd, FechaDesde), así que son dos filas distintas describiendo dos hechos distintos. Antes eran dos respuestas contradictorias a una misma pregunta; ahora son dos respuestas a dos preguntas distintas.">No: son dos hechos distintos, fechados</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Mirá la clave primaria antes de responder. Con (CProd, FechaDesde) las dos filas no compiten: cada una responde por su fecha. Una anomalía es dos valores para la MISMA clave.">Sí: el mismo producto tiene dos precios</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Clase 3 — Normalización</b>, slides 13 (tabla asociativa), 14 (Situación 1) y
+      15 (Situación 1B). Las tablas de esta lección son las de esas slides.
+      La comparación de las tres situaciones la armamos nosotros: el profe las presenta
+      en secuencia, no enfrentadas.
+    </p>
+    <p>
+      La misma slide 13 aparece en la <b>Clase 2, slide 28</b>. Es un tema bisagra:
+      se explica una vez desde el DER y otra desde el modelo normalizado.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Este patrón — meter el tiempo en la clave — resuelve muchísimo
+      más que precios. Si en el TP te aparece "desde cuándo", "por cuánto tiempo" o
+      "histórico de", mandámelo y lo modelamos.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0023-tercera-forma-normal.html">Anterior: 0023</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0025-integrador-ordenes.html">Siguiente: 0025 · Integrador del 10/09</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

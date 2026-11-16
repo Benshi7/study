@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calidad y gobierno</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body class="reference">
+<main>
+<div class="topbar no-print"><a href="../index.html">← Índice</a> · Referencia</div>
+<div class="kicker">Referencia · Bloque 1</div>
+<h1>Calidad y gobierno de datos</h1>
+<p class="muted">Fuente: <a href="../raw/001_INTRODUCCION_parte_2.pdf#page=2">Intro parte 2, slides 2 a 20</a>. Lecciones: <a href="../lessons/0001-dimensiones-de-calidad.html">0001</a>, <a href="../lessons/0002-procesos-y-gobierno.html">0002</a>.</p>
+
+<div class="ref-grid">
+<section>
+<h2>Dimensiones (slide 3)</h2>
+<table>
+  <tr><th>Dimensión</th><th>Pregunta</th></tr>
+  <tr><td>Completitud</td><td>¿Están todos los que deberían estar?</td></tr>
+  <tr><td>Configuración</td><td>¿Se generan del modo correcto?</td></tr>
+  <tr><td>Consistencia</td><td>¿Son consistentes en todos los sistemas?</td></tr>
+  <tr><td>Tempestividad</td><td>¿Están disponibles a tiempo?</td></tr>
+  <tr><td>Duplicados</td><td>¿Se repiten innecesariamente?</td></tr>
+  <tr><td>Integridad</td><td>¿No están alterados o rotos?</td></tr>
+  <tr><td>Precisión (slide 9)</td><td>¿Reflejan con exactitud la realidad?</td></tr>
+</table>
+
+<h2>Árbol de decisión</h2>
+<pre class="diagram">Falta obligatorio        → COMPLETITUD
+Difiere entre sistemas   → CONSISTENCIA
+Llega tarde / viejo      → TEMPESTIVIDAD
+Registro repetido        → DUPLICADOS
+Mal desde la carga       → PRECISIÓN
+Formato/proceso mal      → CONFIGURACIÓN
+Corrupto / truncado      → INTEGRIDAD</pre>
+
+<h2>¿Estuvo bien alguna vez?</h2>
+<p><strong>Nació mal</strong> (no cumple el estándar) → configuración · <strong>nació bien y se rompió</strong> → integridad · <strong>correcto pero tarde</strong> → tempestividad · <strong>contradice otra fuente</strong> → consistencia.</p>
+<!-- diagram:vida-dato -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 720 412" style="max-width:720px;margin-inline:auto" role="img" aria-labelledby="vida-dato-title vida-dato-desc" xmlns="http://www.w3.org/2000/svg"><title id="vida-dato-title">La vida del dato y las dimensiones de calidad</title><desc id="vida-dato-desc">Tres etapas del dato (nace, viaja, se usa) con la dimensión de calidad que falla en cada una, y una banda con completitud, duplicados y precisión, que pueden fallar en cualquier etapa.</desc><defs><marker id="vida-dato-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="vida-dato-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="vida-dato-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge" d="M232,44 L256,44" marker-end="url(#vida-dato-arrow)"/><path class="edge" d="M464,44 L488,44" marker-end="url(#vida-dato-arrow)"/><rect class="zone" x="24" y="244" width="672" height="92" rx="8"/><text class="eyebrow" x="40" y="262" text-anchor="start">EN CUALQUIER ETAPA</text><rect class="mask" x="24" y="24" width="208" height="40" rx="6"/><rect class="store" x="24" y="24" width="208" height="40" rx="6"/><text class="name" x="128" y="48" text-anchor="middle">Nace</text><text class="sub" x="128" y="80" text-anchor="middle">se genera o se carga</text><rect class="mask" x="256" y="24" width="208" height="40" rx="6"/><rect class="store" x="256" y="24" width="208" height="40" rx="6"/><text class="name" x="360" y="48" text-anchor="middle">Viaja / se guarda</text><text class="sub" x="360" y="80" text-anchor="middle">transferencia · almacenamiento</text><rect class="mask" x="488" y="24" width="208" height="40" rx="6"/><rect class="store" x="488" y="24" width="208" height="40" rx="6"/><text class="name" x="592" y="48" text-anchor="middle">Se usa</text><text class="sub" x="592" y="80" text-anchor="middle">reportes · decisiones</text><rect class="mask" x="24" y="96" width="208" height="56" rx="6"/><rect class="focal" x="24" y="96" width="208" height="56" rx="6"/><text class="name" x="128" y="122" text-anchor="middle">Configuración</text><text class="sub-accent" x="128" y="136" text-anchor="middle">¿se generó del modo correcto?</text><rect class="mask" x="256" y="96" width="208" height="56" rx="6"/><rect class="focal" x="256" y="96" width="208" height="56" rx="6"/><text class="name" x="360" y="122" text-anchor="middle">Integridad</text><text class="sub-accent" x="360" y="136" text-anchor="middle">¿llegó sin romperse?</text><rect class="mask" x="488" y="96" width="208" height="56" rx="6"/><rect class="node" x="488" y="96" width="208" height="56" rx="6"/><text class="name" x="592" y="122" text-anchor="middle">Tempestividad</text><text class="sub" x="592" y="136" text-anchor="middle">¿está disponible a tiempo?</text><rect class="mask" x="488" y="168" width="208" height="56" rx="6"/><rect class="node" x="488" y="168" width="208" height="56" rx="6"/><text class="name" x="592" y="194" text-anchor="middle">Consistencia</text><text class="sub" x="592" y="208" text-anchor="middle">¿dice lo mismo en todos lados?</text><text class="note" x="128" y="176" text-anchor="middle">nunca estuvo bien</text><text class="note" x="360" y="176" text-anchor="middle">estuvo bien, se rompió después</text><rect class="mask" x="40" y="272" width="200" height="48" rx="6"/><rect class="node" x="40" y="272" width="200" height="48" rx="6"/><text class="name" x="140" y="294" text-anchor="middle">Completitud</text><text class="sub" x="140" y="308" text-anchor="middle">¿están los obligatorios?</text><rect class="mask" x="260" y="272" width="200" height="48" rx="6"/><rect class="node" x="260" y="272" width="200" height="48" rx="6"/><text class="name" x="360" y="294" text-anchor="middle">Duplicados</text><text class="sub" x="360" y="308" text-anchor="middle">¿se repite sin necesidad?</text><rect class="mask" x="480" y="272" width="200" height="48" rx="6"/><rect class="node" x="480" y="272" width="200" height="48" rx="6"/><text class="name" x="580" y="294" text-anchor="middle">Precisión</text><text class="sub" x="580" y="308" text-anchor="middle">¿refleja la realidad?</text><text class="note" x="360" y="364" text-anchor="middle">Configuración vs integridad: ¿estuvo bien alguna vez?</text><line class="rule" x1="24" y1="380" x2="696" y2="380"/><text class="eyebrow" x="24" y="404" text-anchor="start">LEYENDA</text><rect class="focal" x="104" y="396" width="16" height="12" rx="3"/><text class="sub" x="128" y="405" text-anchor="start">el par que se confunde en el choice</text></svg></div><figcaption>Dimensiones de calidad según la etapa en que falla el dato. <a href="../diagrams/vida-dato.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:vida-dato -->
+<h2>Completitud</h2>
+<ul>
+  <li>Se mide contra la <strong>definición del negocio</strong> o del dueño del dato.</li>
+  <li>Un dato <strong>opcional no se considera</strong>.</li>
+  <li>Se mide <strong>por registro</strong>: 4 de 8 registros completos da 50%.</li>
+</ul>
+</section>
+
+<section>
+<h2>Data-driven</h2>
+<p>Usar datos y análisis para <strong>decidir y priorizar acciones</strong>.</p>
+<pre class="diagram">RESISTANT → AWARE → GUIDED → SAVVY → DRIVEN</pre>
+<ol>
+  <li>Recopilación correcta de datos</li>
+  <li>Herramientas orientadas al dato</li>
+  <li>Nuevas áreas y perfiles (CDO)</li>
+  <li>Data governance</li>
+</ol>
+
+<h2>Procesos (no son dimensiones)</h2>
+<table>
+  <tr><th>Profiling</th><th>Cleansing</th></tr>
+  <tr><td>Analiza y <strong>evalúa</strong> la calidad: % completitud, % errores, % únicos, patrones</td><td><strong>Detecta y corrige o elimina</strong> errores, inconsistencias y duplicados</td></tr>
+  <tr><td>→ comprensión</td><td>→ depuración</td></tr>
+</table>
+<p>"Limpieza" en una lista de dimensiones = <strong>distractor</strong>.</p>
+
+<h2>Data governance</h2>
+<p>Autoridad, control y toma de decisiones compartida sobre los activos de datos (DAMA). Personas + procesos + tecnologías.</p>
+<p><strong>QUIÉN</strong> · <strong>QUÉ ACCIONES</strong> · <strong>QUÉ DATOS</strong> · <strong>CUÁNDO</strong> · <strong>SITUACIONES</strong> · <strong>MÉTODOS</strong></p>
+<p>Incluye definir roles y responsabilidades y crear políticas y procesos. Beneficios: calidad, estandarización, mejores decisiones, menos esfuerzo, seguridad y privacidad.</p>
+</section>
+</div>
+</main>
+</body>
+</html>

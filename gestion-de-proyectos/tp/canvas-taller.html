@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller de Canvas · Mapa Interactivo</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp-nav.css">
+<style>
+/* ── Página: taller de Canvas ─────────────────────────────────────────
+   Extiende assets/course.css. Marca UNICABA: magenta #be3898 (logo),
+   sobre papel blanco. Un solo acento, el resto son neutros.            */
+/* Brand tokens (--brand*, --on-brand*) come from assets/course.css and follow the theme toggle. */
+
+main { max-width: 64rem; }               /* más ancho: el tablero lo necesita */
+.lede { font-size: 1.05rem; }
+
+
+/* ── Selector de opciones ─────────────────────────────────────────── */
+.options-bar { margin: 1.2rem 0 0; }
+.tablist { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .5rem; padding: 0; margin: 0; list-style: none; }
+.tablist button {
+  font-family: var(--sans); font-size: .8rem; line-height: 1.35; text-align: left; width: 100%;
+  cursor: pointer; background: var(--card); color: var(--fg);
+  border: 1px solid var(--rule); border-radius: 8px; padding: .6rem .7rem;
+}
+.tablist button:hover { border-color: var(--brand); }
+.tablist button .tag { display: block; font-size: .68rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.tablist button[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.tablist button[aria-selected="true"] .tag { color: var(--on-brand-tag); }
+.tablist button:focus-visible { outline: 2px solid var(--brand-ink); outline-offset: 2px; }
+.star { color: #ffd76a; }
+.tablist button[aria-selected="true"] .star { color: var(--on-brand-star); }
+
+.option-head {
+  border: 1px solid var(--rule); border-left: 4px solid var(--brand); border-radius: 0 8px 8px 0;
+  background: var(--brand-tint); padding: .9rem 1.1rem; margin: 1rem 0 0;
+}
+.option-head h3 { margin: 0 0 .3rem; font-size: 1.1rem; }
+.option-head p { margin: 0; font-size: .95rem; }
+.option-head dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .7rem 1.4rem; margin: .8rem 0 0; font-family: var(--sans); font-size: .78rem; }
+.option-head dl > div { min-width: 0; }
+.option-head dt { color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-size: .68rem; }
+.option-head dd { margin: .1rem 0 0; }
+
+/* ── El tablero: layout clásico de Osterwalder en grid de 10 columnas ── */
+.canvas {
+  display: grid; grid-template-columns: repeat(10, 1fr); grid-auto-rows: minmax(8.5rem, auto);
+  gap: 6px; margin: 1.2rem 0 0;
+  border: 1px solid var(--rule); border-radius: 10px; padding: 6px; background: var(--rule);
+}
+.cell {
+  display: flex; flex-direction: column; gap: .35rem; text-align: left; font: inherit;
+  background: var(--card); color: var(--fg); border: 0; border-radius: 6px;
+  padding: .55rem .6rem; cursor: pointer; min-width: 0;
+  box-shadow: inset 0 0 0 1px transparent; transition: box-shadow .12s, background .12s;
+}
+.cell:hover { background: var(--brand-tint); box-shadow: inset 0 0 0 2px var(--brand); }
+.cell:focus-visible { outline: 2px solid var(--brand-ink); outline-offset: 1px; }
+.cell[aria-pressed="true"] { background: var(--brand-tint); box-shadow: inset 0 0 0 2px var(--brand); }
+.cell .name {
+  font-family: var(--sans); font-size: .7rem; font-weight: 600; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--brand-ink); display: flex; align-items: baseline; gap: .35rem;
+}
+.cell .name .n { font-size: .62rem; color: var(--muted); font-weight: 400; }
+.cell ul { margin: 0; padding-left: .95rem; font-size: .78rem; line-height: 1.4; }
+.cell ul li { margin-bottom: .18rem; overflow-wrap: break-word; }
+.cell ul:focus-visible { outline: 2px dashed var(--brand); outline-offset: 3px; border-radius: 4px; }
+.cell.is-heart { background: var(--brand-tint-2); }
+.cell.is-heart:hover, .cell.is-heart[aria-pressed="true"] { background: var(--brand-tint); }
+
+#c-socios      { grid-column: 1 / 3;  grid-row: 1 / 3; }
+#c-actividades { grid-column: 3 / 5;  grid-row: 1; }
+#c-recursos    { grid-column: 3 / 5;  grid-row: 2; }
+#c-pv          { grid-column: 5 / 7;  grid-row: 1 / 3; }
+#c-relacion    { grid-column: 7 / 9;  grid-row: 1; }
+#c-canales     { grid-column: 7 / 9;  grid-row: 2; }
+#c-segmentos   { grid-column: 9 / 11; grid-row: 1 / 3; }
+#c-costos      { grid-column: 1 / 6;  grid-row: 3; }
+#c-ingresos    { grid-column: 6 / 11; grid-row: 3; }
+
+@media (max-width: 860px) {
+  .canvas { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; }
+  .canvas .cell { grid-column: auto !important; grid-row: auto !important; }
+  #c-pv, #c-costos, #c-ingresos { grid-column: 1 / 3 !important; }
+  /* Apilado: seguir el orden en que la cátedra presenta los bloques,
+     para que los números visibles queden en secuencia. */
+  #c-pv { order: 1; } #c-segmentos { order: 2; } #c-canales { order: 3; }
+  #c-relacion { order: 4; } #c-ingresos { order: 5; } #c-recursos { order: 6; }
+  #c-actividades { order: 7; } #c-socios { order: 8; } #c-costos { order: 9; }
+}
+@media (max-width: 560px) {
+  .canvas { grid-template-columns: 1fr; }
+  /* Los IDs ganan por especificidad: hay que repetirlos o queda una columna fantasma */
+  .canvas .cell, #c-pv, #c-costos, #c-ingresos { grid-column: 1 / 2 !important; }
+}
+
+/* Barra de herramientas del tablero */
+.toolbar { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; margin: .8rem 0 0; font-family: var(--sans); font-size: .78rem; }
+.toolbar button {
+  font: inherit; cursor: pointer; background: var(--card); color: var(--fg);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .35rem .7rem;
+}
+.toolbar button:hover { border-color: var(--brand); }
+.toolbar button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.toolbar .hint { color: var(--muted); }
+.toolbar .status { color: var(--brand-ink); min-height: 1em; }
+
+/* Panel de detalle del bloque */
+.detail { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); padding: 1rem 1.1rem; margin: .9rem 0 0; }
+.detail .eyebrow { font-family: var(--sans); font-size: .68rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.detail h3 { margin: .2rem 0 .5rem; font-size: 1.15rem; }
+.detail .def { margin: 0 0 .8rem; font-style: italic; }
+.detail .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem 1.6rem; }
+.detail h4 { font-family: var(--sans); font-size: .7rem; letter-spacing: .07em; text-transform: uppercase; color: var(--brand-ink); margin: 0 0 .3rem; }
+.detail ul { margin: 0; padding-left: 1.1rem; font-size: .9rem; }
+.detail .q li { color: var(--muted); font-style: italic; }
+.detail .empty { color: var(--muted); font-style: italic; }
+
+/* ── Mapa de valor (Clase 1, p8–9) ───────────────────────────────── */
+.vmap { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: stretch; margin: 1rem 0 0; }
+.vmap .side { border: 1px solid var(--rule); border-radius: 10px; padding: .9rem 1rem; background: var(--card); min-width: 0; }
+.vmap .side.value { background: var(--brand-tint); border-color: var(--brand); }
+.vmap .side > h4 { font-family: var(--sans); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--brand-ink); margin: 0 0 .6rem; }
+.vmap .side h5 { font-family: var(--sans); font-size: .78rem; margin: .8rem 0 .2rem; }
+.vmap .side h5:first-of-type { margin-top: 0; }
+.vmap .side ul { margin: 0; padding-left: 1.1rem; font-size: .85rem; }
+.vmap .fit { display: grid; place-items: center; font-size: 1.6rem; color: var(--brand); font-family: var(--sans); }
+@media (max-width: 720px) { .vmap { grid-template-columns: 1fr; } .vmap .fit { transform: rotate(90deg); } }
+
+/* ── Cadena hacia el resto del TP ────────────────────────────────── */
+.flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .7rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.flow li { border: 1px solid var(--rule); border-top: 3px solid var(--brand); border-radius: 0 0 8px 8px; background: var(--card); padding: .7rem .8rem; min-width: 0; }
+.flow .sec { font-family: var(--sans); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.flow strong { display: block; font-size: .95rem; margin: .1rem 0 .3rem; }
+.flow p { margin: 0; font-size: .85rem; }
+
+/* Marcas de veredicto en el comparador */
+.v-ok { color: var(--ok); font-weight: 600; }
+.v-mid { color: var(--muted); font-weight: 600; }
+.v-bad { color: var(--bad); font-weight: 600; }
+tr.is-current > * { background: var(--brand-tint); }
+td.col-opt { font-size: .85rem; }
+
+/* Checklist SMART */
+.smart { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: .4rem; }
+.smart li { display: grid; grid-template-columns: 1.6rem 1fr; gap: .5rem; border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .7rem; background: var(--card); font-size: .9rem; }
+.smart .letter { font-family: var(--sans); font-weight: 600; color: var(--brand); }
+
+@media print {
+  .toolbar, .tablist, .nav { display: none; }
+  .canvas { background: #fff; border-color: #999; page-break-inside: avoid; }
+  .cell { box-shadow: inset 0 0 0 1px #bbb; }
+  .detail { page-break-inside: avoid; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<p class="kicker">TP · Sección 3 · Canvas</p>
+<h1>Taller de Canvas: cuatro modelos posibles para el Mapa Interactivo</h1>
+<p class="subtitle">El mismo proyecto admite más de un modelo de negocio. Elegir uno es la primera decisión de storytelling del TP.</p>
+<p class="meta"><span>⏱ 25 minutos</span><span>Produce: sección 3 completa</span><span>Editable y exportable</span></p>
+</header>
+
+<div class="win">
+  <strong>Para qué sirve esta página</strong>
+  El borrador del equipo tiene los bloques a medias porque todavía no se decidió <em>qué tipo de negocio</em> es el Mapa. Aquí hay cuatro respuestas posibles, cada una completa y coherente. Se elige una, se edita sobre el tablero y se copia al documento.
+</div>
+
+<p class="lede">El Canvas es una <em>herramienta de gestión estratégica</em> de 9 módulos que permite ver el modelo de negocio de forma integrada<span class="cite"><a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%201%20-%20Modelo%20Canvas%20FN.pptx%20(2).pdf">1</a></span>. Nueve módulos vacíos no se llenan solos: primero hay que decidir quién es el cliente. Y en un proyecto de gobierno eso tiene por lo menos cuatro respuestas defendibles.</p>
+
+<div class="note">
+  <strong>La pregunta abierta del equipo</strong>
+  “¿Cómo separamos lo interno de lo externo?” no es un detalle de formato: <strong>es exactamente lo que cambia entre estas cuatro opciones</strong>. La opción A pone al vecino como cliente; la C pone a las áreas de gobierno; la B pone a los dos; la D agrega privados. Elegida la opción, la pregunta se responde sola.
+</div>
+
+<h2 id="opciones">1 · Elegir el modelo</h2>
+<p>Las cuatro opciones usan los mismos 9 bloques y el mismo proyecto. Lo que cambia es <strong>quién es el cliente</strong>, y por arrastre cambia todo lo demás. Seleccionar una para ver el tablero completo.</p>
+
+<div class="options-bar">
+  <ul class="tablist" role="tablist" aria-label="Opciones de modelo de negocio">
+    <li role="presentation"><button role="tab" id="tab-a" aria-controls="canvas" aria-selected="false" data-opt="a"><span class="tag">Opción A</span>Servicio público enfocado</button></li>
+    <li role="presentation"><button role="tab" id="tab-b" aria-controls="canvas" aria-selected="true" data-opt="b"><span class="tag">Opción B <span class="star">★</span></span>Plataforma multilateral</button></li>
+    <li role="presentation"><button role="tab" id="tab-c" aria-controls="canvas" aria-selected="false" data-opt="c"><span class="tag">Opción C</span>Capa de identidad geográfica</button></li>
+    <li role="presentation"><button role="tab" id="tab-d" aria-controls="canvas" aria-selected="false" data-opt="d"><span class="tag">Opción D</span>Ecosistema con beneficios</button></li>
+  </ul>
+
+  <div class="option-head">
+    <h3 id="opt-title">—</h3>
+    <p id="opt-idea">—</p>
+    <dl>
+      <div><dt>Cliente principal</dt><dd id="opt-cliente">—</dd></div>
+      <div><dt>Quién paga</dt><dd id="opt-paga">—</dd></div>
+      <div><dt>Interno / externo</dt><dd id="opt-borde">—</dd></div>
+      <div><dt>El riesgo de elegirla</dt><dd id="opt-riesgo">—</dd></div>
+    </dl>
+  </div>
+</div>
+
+<h2 id="tablero">2 · El tablero</h2>
+<p>Este es el layout de Osterwalder que muestra la cátedra<span class="cite"><a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%201%20-%20Modelo%20Canvas%20FN.pptx%20(2).pdf">1</a></span>: la propuesta de valor en el centro, el cliente a la derecha, la operación a la izquierda, y la economía abajo. <strong>Seleccionar cualquier bloque</strong> para ver qué pide la cátedra y qué diría esta opción.</p>
+
+<div class="canvas" id="canvas" role="group" aria-label="Business Model Canvas">
+  <div class="cell" id="c-socios" data-block="socios" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">8</span>Socios clave</span><ul></ul></div>
+  <div class="cell" id="c-actividades" data-block="actividades" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">7</span>Actividades clave</span><ul></ul></div>
+  <div class="cell" id="c-recursos" data-block="recursos" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">6</span>Recursos clave</span><ul></ul></div>
+  <div class="cell is-heart" id="c-pv" data-block="pv" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">1</span>Propuesta de valor</span><ul></ul></div>
+  <div class="cell" id="c-relacion" data-block="relacion" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">4</span>Relación con el cliente</span><ul></ul></div>
+  <div class="cell" id="c-canales" data-block="canales" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">3</span>Canales</span><ul></ul></div>
+  <div class="cell is-heart" id="c-segmentos" data-block="segmentos" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">2</span>Segmentos de mercado</span><ul></ul></div>
+  <div class="cell" id="c-costos" data-block="costos" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">9</span>Estructura de costos</span><ul></ul></div>
+  <div class="cell" id="c-ingresos" data-block="ingresos" role="button" tabindex="0" aria-pressed="false"><span class="name"><span class="n">5</span>Modelo de ingresos</span><ul></ul></div>
+</div>
+
+<div class="toolbar">
+  <button id="btn-edit" aria-pressed="false">Editar el tablero</button>
+  <button id="btn-copy">Copiar como texto</button>
+  <button id="btn-reset">↺ Restaurar la opción</button>
+  <span class="status" id="status" role="status" aria-live="polite"></span>
+  <span class="hint">Lo editado se guarda en este navegador, por opción.</span>
+</div>
+
+<div class="detail" id="detail" aria-live="polite">
+  <p class="eyebrow">Bloque seleccionado</p>
+  <h3 id="d-name">Seleccionar un bloque del tablero</h3>
+  <p class="def" id="d-def">Cada bloque trae la definición de la cátedra, sus preguntas guía y lo que le corresponde a la opción elegida.</p>
+  <div class="cols">
+    <div>
+      <h4>Qué diría esta opción</h4>
+      <ul id="d-content"><li class="empty">—</li></ul>
+    </div>
+    <div>
+      <h4>Preguntas guía de la cátedra</h4>
+      <ul class="q" id="d-questions"><li class="empty">—</li></ul>
+    </div>
+    <div>
+      <h4>Tipos y ejemplos posibles</h4>
+      <ul id="d-types"><li class="empty">—</li></ul>
+    </div>
+  </div>
+  <p class="eyebrow" id="d-src" style="margin-top:.9rem"></p>
+</div>
+
+<h2 id="comparador">3 · Comparar antes de decidir</h2>
+<p>Las cuatro son defendibles. No son igual de fáciles de escribir, ni de sostener en la defensa del 18/11.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Opción</th><th>Segmento principal</th><th>De dónde sale la plata</th><th>Trabajo en el TP</th><th>Lo que van a preguntar</th><th>Conviene si…</th></tr></thead>
+<tbody id="cmp-body"></tbody>
+</table>
+</div>
+
+<div class="win" id="recommendation">
+  <strong>Recomendación</strong>
+  <strong id="rec-title"></strong> <span id="rec-text"></span>
+</div>
+
+<h2 id="mapa-de-valor">4 · El mapa de valor del segmento elegido</h2>
+<p>La cátedra no se conforma con una frase en el bloque central: pide desarmar la propuesta de valor en seis partes, como en el ejemplo del iPhone<span class="cite"><a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%201%20-%20Modelo%20Canvas%20FN.pptx%20(2).pdf">1</a></span>. El bloque de cliente se llena primero (mirando al vecino), y el de valor después (respondiéndole). Si un generador de alivio no le contesta a ninguna frustración, sobra.</p>
+
+<div class="toolbar" role="tablist" aria-label="Segmento del mapa de valor">
+  <button role="tab" id="vtab-vecino" aria-selected="true" aria-pressed="true" data-vmap="vecino">Lado vecino</button>
+  <button role="tab" id="vtab-gcba" aria-selected="false" aria-pressed="false" data-vmap="gcba">Lado GCBA (quien paga)</button>
+</div>
+
+<div class="vmap">
+  <div class="side client">
+    <h4>Bloque de cliente · <span id="v-who">—</span></h4>
+    <h5>Tareas del cliente</h5><ul id="v-tareas"></ul>
+    <h5>Frustraciones</h5><ul id="v-frust"></ul>
+    <h5>Beneficios esperados</h5><ul id="v-benef"></ul>
+  </div>
+  <div class="fit" aria-hidden="true">⇄</div>
+  <div class="side value">
+    <h4>Bloque de valor · qué le ofrece el Mapa</h4>
+    <h5>Propuesta de valor</h5><ul id="v-pv"></ul>
+    <h5>Generadores de alivio</h5><ul id="v-alivio"></ul>
+    <h5>Generadores de satisfacción</h5><ul id="v-satis"></ul>
+  </div>
+</div>
+
+<h2 id="cadena">5 · Qué le pasa al resto del TP</h2>
+<p>El Canvas es la sección 3 de diez. La opción que elijan aquí <strong>ya decidió</strong> buena parte de lo que van a escribir en las otras siete. Esto cambia con la opción seleccionada arriba:</p>
+<ul class="flow" id="flow"></ul>
+<p class="note" style="margin-top:1rem">Si al llegar a la sección 9 o 10 aparece algo que no cierra con el Canvas, <strong>se corrige el Canvas</strong>, no se tapa. Lo que evalúan es que el documento cuente una sola historia, y la frase puente de cada sección tiene que poder citar un dato de la anterior. Ver el <a href="plan.html#checklist">checklist de coherencia</a>.</p>
+
+<h2 id="smart">6 · Del Canvas al objetivo SMART</h2>
+<p>Clase 1 cierra con OKR<span class="cite"><a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%201%20-%20Modelo%20Canvas%20FN.pptx%20(2).pdf">1</a></span>: el <strong>objetivo</strong> es aspiracional y lo define alguien de rango superior; los <strong>key results</strong> son los objetivos SMART que se pone el equipo y <em>tienen que ser medibles</em>; las <strong>acciones</strong> son las tareas para alcanzarlos. Es el puente directo al Project Charter (sección 5), que pide objetivos SMART.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Nivel</th><th>Ejemplo para la opción B</th><th>De dónde sale</th></tr></thead>
+<tbody>
+<tr><td><strong>Objetivo</strong><br><span style="font-size:.8rem;color:var(--muted)">aspiracional, lo baja la Secretaría</span></td><td>Que el vecino se entere de lo que le corresponde sin tener que saber a qué organismo preguntar.</td><td>La propuesta de valor del lado vecino</td></tr>
+<tr><td><strong>Key result 1</strong></td><td>Publicar el perfil por hogar con 3 capas integradas (Educación, Salud, Espacio Público) antes del 30/6/2027.</td><td>Actividades y recursos clave</td></tr>
+<tr><td><strong>Key result 2</strong></td><td>Llevar los reclamos con estado visible en el mapa del 0 % al 80 % en el primer trimestre posterior al lanzamiento.</td><td>Relación con el cliente (el loop de reclamos)</td></tr>
+<tr><td><strong>Key result 3</strong></td><td>Reducir un 15 % las consultas al 147 sobre los trámites cubiertos, medido a 6 meses.</td><td>La propuesta de valor del lado GCBA</td></tr>
+<tr><td><strong>Acciones</strong></td><td>Integrar el geocodificador; acordar el contrato de datos con cada área; instrumentar la medición base del 147.</td><td>Alimentan directo la EDT y el Gantt</td></tr>
+</tbody>
+</table>
+</div>
+<p>Antes de dar un key result por bueno, pasarlo por las cinco letras<span class="cite"><a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%201%20-%20Modelo%20Canvas%20FN.pptx%20(2).pdf">1</a></span>:</p>
+<ul class="smart">
+  <li><span class="letter">S</span><span><strong>Específico:</strong> claro y puntual, para que todos lo interpreten igual. <em>“Mejorar el mapa” no pasa.</em></span></li>
+  <li><span class="letter">M</span><span><strong>Medible:</strong> algo que se pueda cuantificar. Si no hay número ni medición base, no es un key result.</span></li>
+  <li><span class="letter">A</span><span><strong>Alcanzable:</strong> desafiante pero realizable dentro de nuestras posibilidades.</span></li>
+  <li><span class="letter">R</span><span><strong>Relevante:</strong> genera un impacto significativo en la organización o el área.</span></li>
+  <li><span class="letter">T</span><span><strong>Temporal:</strong> dentro de un plazo establecido. Preferentemente trimestral, para poder medirlo rápido.</span></li>
+</ul>
+
+<h2 id="practica">7 · Práctica</h2>
+<details class="recall">
+  <summary>Sin volver arriba: nombrar los 9 bloques y decir cuál se llena primero y por qué.</summary>
+  <p>Propuesta de valor, segmentos, canales, relación con el cliente, modelo de ingresos, recursos clave, actividades clave, socios clave y estructura de costos. Se empieza por <strong>segmentos</strong>, porque la propuesta de valor es siempre <em>para</em> alguien: sin segmento, el bloque central se escribe en el aire. Después propuesta de valor, y de ahí en adelante.</p>
+</details>
+
+<div class="quiz">
+  <p class="prompt">El Mapa se moderniza para el vecino, pero el que firma el presupuesto es el GCBA. ¿Cómo se refleja eso en el Canvas?</p>
+  <div class="options">
+    <button data-ok data-why="Dos segmentos distintos necesitan dos propuestas de valor distintas: es la plataforma multilateral de la opción B.">Como dos segmentos, cada uno con su propia propuesta de valor</button>
+    <button data-why="El bloque de socios es para quien aporta recursos o actividades que no se pueden hacer internamente, no para quien recibe valor.">El vecino va en segmentos y el GCBA en socios clave</button>
+    <button data-why="Quien paga es parte del modelo. Si no está en el Canvas, el bloque de ingresos queda sin explicación.">No se refleja: quien paga no entra en el Canvas</button>
+    <button data-why="Ingresos describe cómo entra el dinero, no quién es el cliente. El GCBA es un segmento que además financia.">El GCBA va solamente en el bloque de ingresos</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">“Capital de trabajo, la marca y las habilitaciones” — en el Canvas de la cátedra, ¿qué bloque es?</p>
+  <div class="options">
+    <button data-ok data-why="Recursos clave, y son de tres de los cuatro tipos: financieros, intelectuales e intelectuales/legales (Clase 1, p20).">Recursos clave</button>
+    <button data-why="Las actividades son acciones que se hacen; los recursos son activos que se tienen.">Actividades clave</button>
+    <button data-why="Un costo es lo que pagás por el recurso, no el recurso mismo.">Estructura de costos</button>
+    <button data-why="Los socios son terceros que no se pueden reemplazar fácilmente, no activos propios.">Socios clave</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">En el mapa de valor, ¿qué tiene que cumplir un “generador de alivio” para estar bien puesto?</p>
+  <div class="options">
+    <button data-ok data-why="El bloque de valor le responde al bloque de cliente. Un alivio que no ataca ninguna frustración no aporta valor: sobra.">Tiene que responder a una frustración concreta del cliente</button>
+    <button data-why="Que sea difícil de construir no lo hace valioso para el cliente.">Tiene que ser la funcionalidad más difícil de desarrollar</button>
+    <button data-why="Los alivios atacan frustraciones; lo que suma de más son los generadores de satisfacción.">Tiene que ofrecer algo que el cliente no esperaba</button>
+    <button data-why="El Canvas no pide paridad numérica, pide correspondencia: que cada frustración importante tenga respuesta.">Tiene que haber exactamente uno por cada tarea del cliente</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Por qué “colaboración con privados” no alcanza como bloque de ingresos?</p>
+  <div class="options">
+    <button data-ok data-why="Clase 1, p18: qué valor están dispuestos a pagar, cómo prefieren pagar y cuánto. Ninguna queda contestada.">Porque no dice quién paga, por qué mecanismo ni cuánto</button>
+    <button data-why="Sí puede tenerlos: comisiones y publicidad son fuentes válidas. La opción D se construye sobre eso.">Porque un proyecto público no puede tener ingresos de privados</button>
+    <button data-why="Un privado puede ser socio clave y fuente de ingresos al mismo tiempo; son bloques distintos, no excluyentes.">Porque los privados van solamente en socios clave</button>
+    <button data-why="La cátedra lista suscripciones, licencias, publicidad, comisiones, freemium y alquileres además de la venta directa.">Porque el bloque de ingresos solo acepta venta de bienes</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="decision">8 · Para el equipo: la decisión y sus tres líneas</h2>
+<ol>
+  <li><strong>Elegir una opción</strong> y escribirla en una frase antes de tocar el tablero. Si no se puede en una frase, todavía no está elegida.</li>
+  <li><strong>Nombrar un solo segmento de vecinos</strong> con la plantilla <em>[quiénes] que [situación] y hoy [dolor]</em>. Es el que se va a investigar en Design Thinking.</li>
+  <li><strong>Completar el mapa de valor</strong> de ese segmento: tareas, frustraciones y beneficios esperados primero; después propuesta de valor, alivios y satisfacción.</li>
+  <li><strong>Escribir el bloque de ingresos con un mecanismo concreto</strong>, aunque el mecanismo sea “partida presupuestaria de tal secretaría”. Es el bloque que más preguntas genera.</li>
+  <li><strong>Agregar una línea sobre las alternativas descartadas.</strong> Dos renglones: “se evaluó también un modelo B2G interno y uno con beneficios de privados; se descartaron por X”. Es storytelling gratis.</li>
+  <li><strong>Llevar a clase la pregunta del borde</strong> interno/externo con la opción ya elegida: preguntar si el criterio está bien, no qué criterio usar.</li>
+</ol>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Clase%201%20-%20Modelo%20Canvas%20FN.pptx%20(2).pdf">Clase 1 — Modelo Canvas</a>: layout del modelo (p5), propuesta de valor y mapa de valor (p7–9), segmentos (p11), canales (p13–14), relación con el cliente (p16), ingresos (p18), recursos clave (p20–21), actividades (p23), socios (p25), costos (p27–28), OKR y SMART (p29–32). Nivel de detalle esperado: <a class="local-only" title="Solo disponible en la copia completa con raw/" href="../raw/Ejemplo%20Clase.pdf">Ejemplo Clase</a>. Datos del proyecto verificados en <a href="https://mapa.buenosaires.gob.ar/">mapa.buenosaires.gob.ar</a> (v4.1) y el <a href="https://buenosaires.gob.ar/gcaba_historico/innovacionytransformaciondigital/datos-abiertos-de-buenos-aires/apis">catálogo de 14 APIs del GCBA</a>.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Conversarlo en el grupo o con los profesores: cuál opción conviene para el equipo, cómo redactar un bloque puntual, o revisar el Canvas ya editado buscando incoherencias con las secciones siguientes.
+</div>
+
+<nav class="nav">
+  <a href="canvas-segmentos.html">← Canvas · segmentos</a>
+  <a href="decisiones.html?d=interno-externo">Votar interno/externo</a>
+  <a href="seccion-04-design-thinking.html">Sección 4 · Design Thinking →</a>
+</nav>
+</main>
+<script src="assets/quiz.js"></script>
+<script src="assets/canvas-data.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   Taller de Canvas — 4 modelos de negocio sobre los mismos 9 bloques.
+   Los datos (bloques, opciones, comparador, mapa de valor) viven en
+   assets/canvas-data.js, la fuente única que también usa el entregable
+   para compartir. Este script solo los dibuja y agrega la edición.
+   ═══════════════════════════════════════════════════════════════════ */
+const DATA = window.CANVAS_DATA;
+const BLOCKS = DATA.blocks;
+const ORDER = DATA.order;
+const VMAP = DATA.valueMaps;
+const OPTS = Object.fromEntries(Object.entries(DATA.options).map(([id, o]) => [
+  id,
+  Object.assign({}, o, { title: DATA.titleOf(id) + (o.suggested ? ' ★ recomendada' : '') })
+]));
+
+/* ── Lógica ────────────────────────────────────────────────────────── */
+(function () {
+  const STORE = 'tgpd-canvas-v1';
+  const $ = (s) => document.querySelector(s);
+  const cells = [...document.querySelectorAll('.cell')];
+  const tabs = [...document.querySelectorAll('.tablist button')];
+  const status = $('#status');
+  let opt = 'b';
+  let selected = null;
+  let editing = false;
+
+  /* Ediciones guardadas: { opcion: { bloque: [líneas] } } */
+  const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } };
+  const save = (d) => { try { localStorage.setItem(STORE, JSON.stringify(d)); } catch (e) { flash('No se pudo guardar en este navegador.'); } };
+  let edits = load();
+
+  let flashTimer;
+  function flash(msg) {
+    status.textContent = msg;
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => { status.textContent = ''; }, 3500);
+  }
+
+  /* Contenido efectivo de un bloque: lo editado si existe, si no el de la opción */
+  const lines = (block) => (edits[opt] && edits[opt][block]) || OPTS[opt].blocks[block];
+
+  function fillList(ul, items) {
+    ul.replaceChildren(...items.map((t) => {
+      const li = document.createElement('li');
+      li.textContent = t;
+      return li;
+    }));
+  }
+
+  function renderCanvas() {
+    cells.forEach((cell) => fillList(cell.querySelector('ul'), lines(cell.dataset.block)));
+  }
+
+  function renderHead() {
+    const o = OPTS[opt];
+    $('#opt-title').textContent = o.title;
+    $('#opt-idea').textContent = o.idea;
+    $('#opt-cliente').textContent = o.cliente;
+    $('#opt-paga').textContent = o.paga;
+    $('#opt-borde').textContent = o.borde;
+    $('#opt-riesgo').textContent = o.riesgo;
+    document.querySelectorAll('tbody tr[data-row]').forEach((tr) => {
+      tr.classList.toggle('is-current', tr.dataset.row === opt);
+    });
+  }
+
+  function renderFlow() {
+    const ul = $('#flow');
+    ul.replaceChildren(...OPTS[opt].flow.map(([sec, title, text]) => {
+      const li = document.createElement('li');
+      const s = document.createElement('span'); s.className = 'sec'; s.textContent = sec;
+      const h = document.createElement('strong'); h.textContent = title;
+      const p = document.createElement('p'); p.textContent = text;
+      li.append(s, h, p);
+      return li;
+    }));
+  }
+
+  function renderDetail() {
+    if (!selected) return;
+    const b = BLOCKS[selected];
+    $('#d-name').textContent = b.n + ' · ' + b.name;
+    $('#d-def').textContent = b.def;
+    fillList($('#d-content'), lines(selected));
+    fillList($('#d-questions'), b.questions);
+    fillList($('#d-types'), b.types);
+    $('#d-src').textContent = 'Fuente: ' + b.src;
+  }
+
+  function selectBlock(block) {
+    selected = block;
+    cells.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === block)));
+    renderDetail();
+  }
+
+  function setOption(next) {
+    opt = next;
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.opt === next)));
+    renderHead();
+    renderCanvas();
+    renderFlow();
+    renderDetail();
+  }
+
+  /* ── Eventos: opciones ── */
+  tabs.forEach((t) => {
+    t.addEventListener('click', () => {
+      if (editing) setEditing(false);
+      setOption(t.dataset.opt);
+    });
+  });
+
+  /* ── Eventos: celdas del tablero ── */
+  cells.forEach((cell) => {
+    const ul = cell.querySelector('ul');
+    cell.addEventListener('click', () => { if (!editing) selectBlock(cell.dataset.block); });
+    cell.addEventListener('keydown', (e) => {
+      if (editing) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectBlock(cell.dataset.block); }
+    });
+    /* En modo edición, el texto manda: el clic no debe seleccionar el bloque */
+    ul.addEventListener('click', (e) => { if (editing) e.stopPropagation(); });
+    ul.addEventListener('keydown', (e) => { if (editing) e.stopPropagation(); });
+    ul.addEventListener('blur', () => {
+      if (!editing) return;
+      const items = [...ul.querySelectorAll('li')].map((li) => li.textContent.trim()).filter(Boolean);
+      if (!items.length) return;
+      edits[opt] = edits[opt] || {};
+      edits[opt][cell.dataset.block] = items;
+      save(edits);
+      flash('Guardado.');
+      if (selected === cell.dataset.block) renderDetail();
+    });
+  });
+
+  /* ── Modo edición ── */
+  function setEditing(on) {
+    editing = on;
+    $('#btn-edit').setAttribute('aria-pressed', String(on));
+    $('#btn-edit').textContent = on ? 'Terminar de editar' : 'Editar el tablero';
+    cells.forEach((cell) => {
+      const ul = cell.querySelector('ul');
+      ul.contentEditable = on ? 'true' : 'false';
+      ul.spellcheck = false;
+      cell.setAttribute('tabindex', on ? '-1' : '0');
+      cell.style.cursor = on ? 'text' : 'pointer';
+    });
+    flash(on ? 'Editar el texto de cada bloque. Se guarda al salir del bloque.' : 'Edición cerrada.');
+  }
+  $('#btn-edit').addEventListener('click', () => setEditing(!editing));
+
+  /* ── Copiar como texto ── */
+  $('#btn-copy').addEventListener('click', async () => {
+    const o = OPTS[opt];
+    const out = ['# ' + DATA.meta.title, '', o.title, '', o.idea, ''];
+    ORDER.forEach((k) => {
+      out.push('## ' + BLOCKS[k].n + '. ' + BLOCKS[k].name);
+      lines(k).forEach((l) => out.push('- ' + l));
+      out.push('');
+    });
+    out.push('Fuente: ' + DATA.meta.source);
+    const text = out.join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      flash('Canvas copiado: listo para pegar en el documento del TP.');
+    } catch (e) {
+      /* Sin permiso de portapapeles: se abre en una ventana para copiar a mano */
+      const w = window.open('', '_blank');
+      if (w) {
+        w.document.write('<pre style="white-space:pre-wrap;font:14px/1.5 ui-monospace,monospace;padding:2rem"></pre>');
+        w.document.querySelector('pre').textContent = text;
+        w.document.close();
+        flash('Se abrió en otra pestaña para copiar a mano.');
+      } else {
+        flash('No se pudo copiar. Revisar los permisos del navegador.');
+      }
+    }
+  });
+
+  /* ── Restaurar ── */
+  $('#btn-reset').addEventListener('click', () => {
+    if (!edits[opt]) { flash('Esta opción no tiene ediciones.'); return; }
+    if (!confirm('Se descartan las ediciones de ' + OPTS[opt].title + '. ¿Seguir?')) return;
+    delete edits[opt];
+    save(edits);
+    renderCanvas();
+    renderDetail();
+    flash('Restaurado al texto original de la opción.');
+  });
+
+  /* ── Mapa de valor ── */
+  const vtabs = [...document.querySelectorAll('[data-vmap]')];
+  function setVmap(which) {
+    const v = VMAP[which];
+    vtabs.forEach((t) => {
+      const on = t.dataset.vmap === which;
+      t.setAttribute('aria-selected', String(on));
+      t.setAttribute('aria-pressed', String(on));
+    });
+    $('#v-who').textContent = v.who;
+    fillList($('#v-tareas'), v.tareas);
+    fillList($('#v-frust'), v.frust);
+    fillList($('#v-benef'), v.benef);
+    fillList($('#v-pv'), v.pv);
+    fillList($('#v-alivio'), v.alivio);
+    fillList($('#v-satis'), v.satis);
+  }
+  vtabs.forEach((t) => t.addEventListener('click', () => setVmap(t.dataset.vmap)));
+
+  /* ── Comparador y recomendación: salen de los mismos datos ── */
+  function renderStatic() {
+    const tb = $('#cmp-body');
+    tb.replaceChildren(...DATA.comparison.map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.row = r.id;
+      const first = document.createElement('td');
+      const strong = document.createElement('strong');
+      strong.textContent = r.id.toUpperCase();
+      first.append(strong, ' · ' + DATA.options[r.id].name);
+      if (DATA.options[r.id].suggested) {
+        first.append(' ');
+        const star = document.createElement('span');
+        star.className = 'star';
+        star.textContent = '★';
+        first.append(star);
+      }
+      tr.append(first);
+      [r.segmento, r.plata, r.trabajo, r.pregunta, r.conviene].forEach((v) => {
+        const td = document.createElement('td');
+        td.className = 'col-opt';
+        if (typeof v === 'string') td.textContent = v;
+        else {
+          const s = document.createElement('span');
+          s.className = 'v-' + v.nivel;
+          s.textContent = v.texto;
+          td.append(s);
+        }
+        tr.append(td);
+      });
+      return tr;
+    }));
+    $('#rec-title').textContent = DATA.recommendation.titulo;
+    $('#rec-text').textContent = DATA.recommendation.texto;
+  }
+
+  /* ── Arranque ── */
+  renderStatic();
+  setOption('b');
+  setVmap('vecino');
+  if (Object.keys(edits).length) flash('Se cargaron las ediciones guardadas.');
+})();
+</script>
+<script src="assets/tp-data.js"></script>
+<script src="assets/tp-common.js"></script>
+</body>
+</html>

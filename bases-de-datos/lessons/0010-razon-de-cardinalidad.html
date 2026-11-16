@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 10 · La razón de cardinalidad</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 10 · Unidad 2 · Diseño conceptual</p>
+    <h1 class="masthead__title">La razón de cardinalidad: dónde va el número</h1>
+    <p class="masthead__standfirst">
+      Escribir <code>1</code> y <code>N</code> en un DER es fácil. Ponerlos del lado correcto
+      y leerlos sin invertir el sentido es donde se pierden los puntos.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Elmasri &amp; Navathe, cap. 3</span>
+      <span>Base: TP1 Farmacia</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La pregunta que responde una cardinalidad</h2>
+
+  <p>
+    Una relación en un DER dice <em class="term">que</em> dos entidades están vinculadas.
+    La cardinalidad dice <em class="term">cuántas</em>. Y "cuántas" siempre se pregunta en
+    una dirección concreta, nunca en abstracto.
+  </p>
+
+  <p>Tomemos un requisito literal del TP1:</p>
+
+  <blockquote class="callout">
+    "Cada medicamento puede venir en muchas formas de presentación distintas,
+    pero es producido por un único laboratorio."
+  </blockquote>
+
+  <p>
+    Ahí hay dos preguntas separadas escondidas en una sola oración, y cada una tiene su
+    propia respuesta:
+  </p>
+
+  <ul>
+    <li>¿Cuántos <b>laboratorios</b> produce un medicamento dado? &rarr; <b>uno</b>.</li>
+    <li>¿Cuántos <b>medicamentos</b> produce un laboratorio dado? &rarr; <b>muchos</b>.</li>
+  </ul>
+
+  <p>
+    Ese par de respuestas <em>es</em> la razón de cardinalidad. Se escribe
+    <code>Laboratorio : Medicamento = 1 : N</code>.
+  </p>
+
+  <h2><span class="num">02</span>Dónde se escribe cada número</h2>
+
+  <p>
+    Elmasri lo define en una línea: la razón de cardinalidad de una relación binaria
+    <q>se especifica adjuntando 1, M o N a cada borde participante</q>.
+    Es decir, los números no van sobre el rombo — van sobre <em class="term">cada tramo de línea</em>,
+    uno de cada lado.
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/er-razon-cardinalidad.svg"
+         alt="Fragmento DER: la entidad Laboratorio se une por el rombo Crea a la entidad Medicamento. Sobre el tramo del lado Laboratorio está escrito 1; sobre el tramo del lado Medicamento está escrita N. Cada marca se lee cruzada.">
+    <figcaption>
+      <b>La marca vive de un lado, pero cuenta el otro.</b>
+      El <code>1</code> está pegado a <i>Laboratorio</i>, y responde
+      "¿cuántos laboratorios por cada medicamento?". La <code>N</code> está pegada a
+      <i>Medicamento</i>, y responde "¿cuántos medicamentos por cada laboratorio?".
+    </figcaption>
+  </figure>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La regla, en una frase</span>
+    <p>
+      El número escrito junto a una entidad cuenta <b>instancias de esa entidad</b>,
+      por cada <b>una</b> instancia de la entidad del otro extremo. Se escribe de un lado
+      y se lee cruzado.
+    </p>
+  </div>
+
+  <p>
+    Por eso el orden importa al nombrarla. <code>Laboratorio : Medicamento = 1 : N</code>
+    y <code>Medicamento : Laboratorio = N : 1</code> dicen exactamente lo mismo; lo que
+    cambia es cuál entidad nombrás primero. Si escribís la razón sin decir el orden,
+    no dijiste nada.
+  </p>
+
+  <h2><span class="num">03</span>La trampa: la notación (mín, máx) invierte los lados</h2>
+
+  <p>
+    Elmasri presenta una segunda notación, el par <code>(mín, máx)</code>. Y no es un
+    formato distinto para lo mismo: <b>se lee al revés</b>.
+  </p>
+
+  <p>
+    El par pegado a una entidad E significa que <q>para cada entidad e de E, e debe
+    participar en al menos mín y a lo sumo en máx instancias de relación</q>. O sea:
+    el par describe la participación de <em class="term">esa misma</em> entidad, no la del otro extremo.
+    No se lee cruzado — se lee en el lugar.
+  </p>
+
+  <p>El resultado es que los números aterrizan en lados opuestos según qué notación uses:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Relación</th>
+          <th>Lado Laboratorio</th>
+          <th>Lado Medicamento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Razón de cardinalidad</td>
+          <td><code>1</code></td>
+          <td><code>N</code></td>
+        </tr>
+        <tr>
+          <td>Notación (mín, máx)</td>
+          <td><code>(1, N)</code></td>
+          <td><code>(1, 1)</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Error clásico de parcial</span>
+    <p>
+      Ver un <code>1</code> de un lado y un <code>(1,N)</code> del mismo lado y pensar que
+      uno de los dos está mal. Los dos están bien: el <code>1</code> cuenta laboratorios
+      por medicamento, y el <code>(1,N)</code> cuenta en cuántas instancias de <i>Crea</i>
+      participa un laboratorio. Distintas preguntas, misma realidad.
+    </p>
+  </div>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Qué pide la cátedra</span>
+    <p>
+      La resolución oficial del TP1 (<code>raw/Rta-TP-Farmacia.erdplus</code>) usa
+      <b>sólo razón de cardinalidad</b>: cada conector trae <code>maxCardinality</code>
+      en <code>One</code> o <code>Many</code>, y <code>minCardinality</code> quedó en
+      <code>Unspecified</code> en los quince conectores. Entregá razón de cardinalidad.
+      El par (mín, máx) te sirve para entender, y para no marearte cuando lo veas en Elmasri.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <p>
+    Respondé antes de leer la explicación. Equivocarte acá y ver por qué es lo que hace
+    que el concepto quede; leer la respuesta correcta de una no hace nada.
+  </p>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Ubicación</span>
+    <p class="quiz__q">
+      TP1: "Cada farmacia tiene sus propios empleados." Un empleado trabaja en una sola
+      farmacia. ¿Cómo queda marcado el tramo de cada lado?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La razón es Farmacia : Empleado = 1 : N. El 1 va pegado a Farmacia porque un empleado pertenece a una sola farmacia; la N va pegada a Empleado porque una farmacia tiene muchos. Así lo marca la resolución oficial: el conector hacia Farmacia es One y el conector hacia Empleado es Many.">1 junto a Farmacia, N junto a Empleado</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Invertido. Una N junto a Farmacia diría que un empleado pertenece a muchas farmacias, y el enunciado dice que cada farmacia tiene sus PROPIOS empleados. La marca se escribe de un lado y se lee cruzada.">N junto a Farmacia, 1 junto a Empleado</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Esa sería una relación N:N, y obligaría a que un empleado pudiera trabajar en varias farmacias a la vez. El enunciado lo descarta: los empleados son propios de cada farmacia.">N junto a Farmacia, N junto a Empleado</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Lectura</span>
+    <p class="quiz__q">
+      En <code>Laboratorio —Crea— Medicamento</code>, la <code>N</code> está escrita
+      del lado Medicamento. ¿Qué cuenta exactamente esa N?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Exacto: se lee cruzada. La marca está pegada a Medicamento y cuenta medicamentos, pero la unidad de referencia es la entidad del otro extremo — un laboratorio.">Cuántos medicamentos hay por laboratorio</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Esa pregunta la responde la OTRA marca, el 1 del lado Laboratorio. Cada marca cuenta la entidad que tiene al lado, tomando como unidad la del extremo opuesto.">Cuántos laboratorios hay por medicamento</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · La trampa</span>
+    <p class="quiz__q">
+      Misma relación, ahora en notación (mín, máx) de Elmasri. Sabiendo que un laboratorio
+      crea muchos medicamentos, ¿qué par va del lado <b>Laboratorio</b>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto, y fijate el cruce: donde la razón de cardinalidad escribe 1, el par (mín, máx) escribe (1,N). El par describe la participación del propio laboratorio: participa en al menos una y como mucho N instancias de Crea.">El par (1,N), no el (1,1)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ese es el par del lado Medicamento: un medicamento participa en exactamente una instancia de Crea, porque lo produce un único laboratorio. El par NO se lee cruzado; describe la entidad que tiene al lado.">El par (1,1), no el (1,N)</button></li>
+    </ul>
+  </div>
+
+  <h2><span class="num">05</span>Un caso que sorprende</h2>
+
+  <p>Del TP1, palabra por palabra:</p>
+
+  <blockquote class="callout">
+    "Por cada ciudad hay un único farmacéutico; es decir, si en una misma ciudad existe
+    más de una farmacia, entonces el mismo farmacéutico estaría afectado a todas las
+    farmacias de esa ciudad."
+  </blockquote>
+
+  <p>
+    Pensá la razón de cardinalidad entre <b>Ciudad</b> y <b>Farmacéutico</b> antes de abrir.
+    Escribila con el orden explícito.
+  </p>
+
+  <details class="reveal">
+    <summary>Ver la respuesta de la cátedra</summary>
+    <div class="reveal__body">
+      <p>
+        <code>Ciudad : Farmacéutico = 1 : 1</code>. En el archivo de resolución, la relación
+        <i>Tiene</i> lleva <code>maxCardinality: One</code> en <b>los dos</b> conectores.
+      </p>
+      <p>
+        La primera mitad la da el enunciado sin esfuerzo: "por cada ciudad hay un único
+        farmacéutico". La segunda mitad no está escrita en ninguna parte — la cátedra
+        asumió que un farmacéutico cubre una sola ciudad. Es una decisión de diseño, no
+        una lectura del texto.
+      </p>
+      <p>
+        Eso es exactamente lo que Elmasri manda hacer: <q>si no es posible determinar alguna
+        razón de cardinalidad o dependencia a partir de los requisitos, habrá que consultar
+        con los usuarios</q>. En un parcial no hay usuario a quien consultar, así que
+        <b>declarás el supuesto al lado del modelo</b>. Un supuesto escrito es defendible;
+        uno silencioso parece un error.
+      </p>
+    </div>
+  </details>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, <i>Fundamentos de Sistemas de Bases de Datos</i>, 5ª ed.</b> —
+      sección 3.7.1 "Resumen de la notación para los diagramas ER" (pág. 69–71) y
+      sección 3.7.4 "Notaciones alternativas" (pág. 72).
+      Están en <code>raw/Fundamentos-de-Sistemas-de-Bases-de-Datos.pdf</code>,
+      páginas 95 a 98 del PDF.
+    </p>
+    <p>
+      Leé las dos secciones enteras: son cuatro páginas y cierran el tema. La Figura 3.14
+      es la tabla de símbolos completa — vale la pena tenerla a mano durante todo el
+      cuatrimestre.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si algo de esto no cerró, preguntame en el chat y lo
+      desarmamos. Y si querés que te tire un enunciado nuevo para marcar cardinalidades,
+      pedímelo — la práctica es lo único que lo fija.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../MISSION.md">Misión</a>
+    <a href="../RESOURCES.md">Recursos</a>
+    <a href="../reference/0001-cardinalidad.html">Referencia: cardinalidad</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <span>Siguiente: 0011 · participación total vs parcial</span>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

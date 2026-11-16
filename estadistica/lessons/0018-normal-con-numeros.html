@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 18 — Distribución Normal con números</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 5 · Normal · Lección mecánica</span>
+<h1>Distribución Normal con números</h1>
+<p class="subtitle">Estandarizar, elegir la cola, leer la tabla o la calculadora, ir de percentil a valor, hallar μ y σ desconocidos y reconocer los valores críticos.</p>
+
+
+<h2>El problema</h2>
+<p>Con una Normal siempre pasa lo mismo: el enunciado te da <strong>μ, σ y un valor x</strong>, y tú debes transformar la pregunta en un área bajo la campana. Si la tabla (o el enunciado) te da <span class="formula">P(Z &lt; z)</span>, la habilidad es <strong>elegir la cola correcta</strong>, estandarizar bien y, al final, <strong>interpretar</strong> (“el 2,3 % de las latas…”).</p>
+
+<h2>La fórmula y cómo se lee la tabla</h2>
+<div class="box">
+<span class="formula">Z = (x − μ) / σ</span> &nbsp;·&nbsp; <span class="formula">x = μ + z · σ</span> &nbsp;(camino inverso)<br>
+Z cuenta <strong>cuántos desvíos</strong> hay entre x y la media. Se divide por σ (el desvío), nunca por σ².
+</div>
+<p>Una tabla Z acumulada entrega <strong>área a la izquierda</strong>: <span class="formula">Φ(z) = P(Z &lt; z)</span>. Con ella:</p>
+<div class="tw"><table>
+<tr><th>Quieres…</th><th>Se calcula</th></tr>
+<tr><td>P(X &lt; x)</td><td><span class="formula">Φ(z)</span></td></tr>
+<tr><td>P(X &gt; x)</td><td><span class="formula">1 − Φ(z)</span></td></tr>
+<tr><td>P(a &lt; X &lt; b)</td><td><span class="formula">Φ(z_b) − Φ(z_a)</span></td></tr>
+<tr><td>z negativo</td><td><span class="formula">Φ(−z) = 1 − Φ(z)</span></td></tr>
+</table></div>
+<p>Como X es continua, <span class="formula">P(X = a) = 0</span>: “menor que” y “menor o igual” dan lo mismo.</p>
+<div class="tw"><table>
+<tr><th class="n">z</th><th class="n">Φ(z) = P(Z &lt; z)</th><th class="n">1 − Φ(z) = P(Z &gt; z)</th></tr>
+<tr><td class="n">0,00</td><td class="n">0,5000</td><td class="n">0,5000</td></tr>
+<tr><td class="n">0,50</td><td class="n">0,6915</td><td class="n">0,3085</td></tr>
+<tr><td class="n">1,00</td><td class="n">0,8413</td><td class="n">0,1587</td></tr>
+<tr><td class="n">1,28</td><td class="n">0,8997</td><td class="n">0,1003</td></tr>
+<tr><td class="n">1,50</td><td class="n">0,9332</td><td class="n">0,0668</td></tr>
+<tr><td class="n">1,64</td><td class="n">0,9495</td><td class="n">0,0505</td></tr>
+<tr><td class="n">1,65</td><td class="n">0,9505</td><td class="n">0,0495</td></tr>
+<tr><td class="n">1,96</td><td class="n">0,9750</td><td class="n">0,0250</td></tr>
+<tr><td class="n">2,00</td><td class="n">0,9772</td><td class="n">0,0228</td></tr>
+<tr><td class="n">2,05</td><td class="n">0,9798</td><td class="n">0,0202</td></tr>
+<tr><td class="n">2,33</td><td class="n">0,9901</td><td class="n">0,0099</td></tr>
+<tr><td class="n">2,58</td><td class="n">0,9951</td><td class="n">0,0049</td></tr>
+</table></div>
+
+
+<h2>Los tres casos, con dibujo</h2>
+<h3>Caso 1 — cola izquierda: P(X &lt; x)</h3>
+<p>Latas de cerveza ~ N(750; 50). ¿Qué fracción de latas tiene <em>menos de 650 ml</em>?</p>
+<figure class="fig"><svg viewBox="0 0 360 165" width="360" height="165" role="img" aria-label="Campana con la cola izquierda sombreada hasta 650 ml">
+<title>Campana con la cola izquierda sombreada hasta 650 ml</title>
+<polygon class="svg-fill" points="20.0,118 20.0,117.9 22.2,117.8 24.4,117.8 26.7,117.8 28.9,117.7 31.1,117.6 33.3,117.6 35.6,117.5 37.8,117.4 40.0,117.3 42.2,117.2 44.4,117.1 46.7,116.9 48.9,116.8 51.1,116.6 53.3,116.4 55.6,116.1 57.8,115.8 60.0,115.5 62.2,115.1 64.4,114.7 66.7,114.3 68.9,113.8 71.1,113.2 73.3,112.6 75.6,111.9 77.8,111.2 80.0,110.4 82.2,109.5 84.4,108.5 86.7,107.4 88.9,106.3 91.1,105.0 91.1,118"/>
+<polyline class="svg-curve" points="20.0,117.9 22.2,117.8 24.4,117.8 26.7,117.8 28.9,117.7 31.1,117.6 33.3,117.6 35.6,117.5 37.8,117.4 40.0,117.3 42.2,117.2 44.4,117.1 46.7,116.9 48.9,116.8 51.1,116.6 53.3,116.4 55.6,116.1 57.8,115.8 60.0,115.5 62.2,115.1 64.4,114.7 66.7,114.3 68.9,113.8 71.1,113.2 73.3,112.6 75.6,111.9 77.8,111.2 80.0,110.4 82.2,109.5 84.4,108.5 86.7,107.4 88.9,106.3 91.1,105.0 93.3,103.7 95.6,102.3 97.8,100.7 100.0,99.1 102.2,97.3 104.4,95.4 106.7,93.5 108.9,91.4 111.1,89.2 113.3,86.9 115.6,84.5 117.8,82.1 120.0,79.5 122.2,76.9 124.4,74.2 126.7,71.4 128.9,68.6 131.1,65.7 133.3,62.8 135.6,59.9 137.8,57.0 140.0,54.1 142.2,51.3 144.4,48.5 146.7,45.7 148.9,43.1 151.1,40.5 153.3,38.0 155.6,35.7 157.8,33.5 160.0,31.5 162.2,29.6 164.4,27.9 166.7,26.5 168.9,25.2 171.1,24.1 173.3,23.3 175.6,22.7 177.8,22.4 180.0,22.3 182.2,22.4 184.4,22.7 186.7,23.3 188.9,24.1 191.1,25.2 193.3,26.5 195.6,27.9 197.8,29.6 200.0,31.5 202.2,33.5 204.4,35.7 206.7,38.0 208.9,40.5 211.1,43.1 213.3,45.7 215.6,48.5 217.8,51.3 220.0,54.1 222.2,57.0 224.4,59.9 226.7,62.8 228.9,65.7 231.1,68.6 233.3,71.4 235.6,74.2 237.8,76.9 240.0,79.5 242.2,82.1 244.4,84.5 246.7,86.9 248.9,89.2 251.1,91.4 253.3,93.5 255.6,95.4 257.8,97.3 260.0,99.1 262.2,100.7 264.4,102.3 266.7,103.7 268.9,105.0 271.1,106.3 273.3,107.4 275.6,108.5 277.8,109.5 280.0,110.4 282.2,111.2 284.4,111.9 286.7,112.6 288.9,113.2 291.1,113.8 293.3,114.3 295.6,114.7 297.8,115.1 300.0,115.5 302.2,115.8 304.4,116.1 306.7,116.4 308.9,116.6 311.1,116.8 313.3,116.9 315.6,117.1 317.8,117.2 320.0,117.3 322.2,117.4 324.4,117.5 326.7,117.6 328.9,117.6 331.1,117.7 333.3,117.8 335.6,117.8 337.8,117.8 340.0,117.9"/>
+<line class="svg-axis" x1="20" y1="118" x2="340" y2="118"/>
+<text class="svg-tb" x="51.1" y="106.6" text-anchor="middle">0,0228</text>
+<line class="svg-mark" x1="91.1" y1="118" x2="91.1" y2="105.0"/>
+<text class="svg-tb" x="91.1" y="133" text-anchor="middle">650</text>
+<text class="svg-t" x="91.1" y="147" text-anchor="middle">z = −2</text>
+<line class="svg-mark" x1="180.0" y1="118" x2="180.0" y2="22.3"/>
+<text class="svg-tb" x="180.0" y="133" text-anchor="middle">750</text>
+<text class="svg-t" x="180.0" y="147" text-anchor="middle">z = 0</text>
+</svg><figcaption>El área sombreada es la respuesta directa: Φ(−2).</figcaption></figure>
+<div class="example">
+<ol>
+<li><span class="formula">z = (650 − 750)/50 = −2</span></li>
+<li><span class="formula">P(X &lt; 650) = Φ(−2) = 1 − Φ(2) = 1 − 0,9772 = 0,0228</span></li>
+<li><strong>Interpretación:</strong> se desecha el 2,28 % de las latas (TP4, ej. 3b: 2,27 %).</li>
+</ol>
+</div>
+
+<h3>Caso 2 — cola derecha: P(X &gt; x)</h3>
+<p>Las mismas latas. ¿Probabilidad de que una lata tenga <em>al menos 800 ml</em>?</p>
+<figure class="fig"><svg viewBox="0 0 360 165" width="360" height="165" role="img" aria-label="Campana con la cola derecha sombreada desde 800 ml">
+<title>Campana con la cola derecha sombreada desde 800 ml</title>
+<polygon class="svg-fill" points="224.4,118 224.4,59.9 226.7,62.8 228.9,65.7 231.1,68.6 233.3,71.4 235.6,74.2 237.8,76.9 240.0,79.5 242.2,82.1 244.4,84.5 246.7,86.9 248.9,89.2 251.1,91.4 253.3,93.5 255.6,95.4 257.8,97.3 260.0,99.1 262.2,100.7 264.4,102.3 266.7,103.7 268.9,105.0 271.1,106.3 273.3,107.4 275.6,108.5 277.8,109.5 280.0,110.4 282.2,111.2 284.4,111.9 286.7,112.6 288.9,113.2 291.1,113.8 293.3,114.3 295.6,114.7 297.8,115.1 300.0,115.5 302.2,115.8 304.4,116.1 306.7,116.4 308.9,116.6 311.1,116.8 313.3,116.9 315.6,117.1 317.8,117.2 320.0,117.3 322.2,117.4 324.4,117.5 326.7,117.6 328.9,117.6 331.1,117.7 333.3,117.8 335.6,117.8 337.8,117.8 340.0,117.9 340.0,118"/>
+<polyline class="svg-curve" points="20.0,117.9 22.2,117.8 24.4,117.8 26.7,117.8 28.9,117.7 31.1,117.6 33.3,117.6 35.6,117.5 37.8,117.4 40.0,117.3 42.2,117.2 44.4,117.1 46.7,116.9 48.9,116.8 51.1,116.6 53.3,116.4 55.6,116.1 57.8,115.8 60.0,115.5 62.2,115.1 64.4,114.7 66.7,114.3 68.9,113.8 71.1,113.2 73.3,112.6 75.6,111.9 77.8,111.2 80.0,110.4 82.2,109.5 84.4,108.5 86.7,107.4 88.9,106.3 91.1,105.0 93.3,103.7 95.6,102.3 97.8,100.7 100.0,99.1 102.2,97.3 104.4,95.4 106.7,93.5 108.9,91.4 111.1,89.2 113.3,86.9 115.6,84.5 117.8,82.1 120.0,79.5 122.2,76.9 124.4,74.2 126.7,71.4 128.9,68.6 131.1,65.7 133.3,62.8 135.6,59.9 137.8,57.0 140.0,54.1 142.2,51.3 144.4,48.5 146.7,45.7 148.9,43.1 151.1,40.5 153.3,38.0 155.6,35.7 157.8,33.5 160.0,31.5 162.2,29.6 164.4,27.9 166.7,26.5 168.9,25.2 171.1,24.1 173.3,23.3 175.6,22.7 177.8,22.4 180.0,22.3 182.2,22.4 184.4,22.7 186.7,23.3 188.9,24.1 191.1,25.2 193.3,26.5 195.6,27.9 197.8,29.6 200.0,31.5 202.2,33.5 204.4,35.7 206.7,38.0 208.9,40.5 211.1,43.1 213.3,45.7 215.6,48.5 217.8,51.3 220.0,54.1 222.2,57.0 224.4,59.9 226.7,62.8 228.9,65.7 231.1,68.6 233.3,71.4 235.6,74.2 237.8,76.9 240.0,79.5 242.2,82.1 244.4,84.5 246.7,86.9 248.9,89.2 251.1,91.4 253.3,93.5 255.6,95.4 257.8,97.3 260.0,99.1 262.2,100.7 264.4,102.3 266.7,103.7 268.9,105.0 271.1,106.3 273.3,107.4 275.6,108.5 277.8,109.5 280.0,110.4 282.2,111.2 284.4,111.9 286.7,112.6 288.9,113.2 291.1,113.8 293.3,114.3 295.6,114.7 297.8,115.1 300.0,115.5 302.2,115.8 304.4,116.1 306.7,116.4 308.9,116.6 311.1,116.8 313.3,116.9 315.6,117.1 317.8,117.2 320.0,117.3 322.2,117.4 324.4,117.5 326.7,117.6 328.9,117.6 331.1,117.7 333.3,117.8 335.6,117.8 337.8,117.8 340.0,117.9"/>
+<line class="svg-axis" x1="20" y1="118" x2="340" y2="118"/>
+<text class="svg-tb" x="273.3" y="85.4" text-anchor="middle">0,1587</text>
+<line class="svg-mark" x1="180.0" y1="118" x2="180.0" y2="22.3"/>
+<text class="svg-tb" x="180.0" y="133" text-anchor="middle">750</text>
+<text class="svg-t" x="180.0" y="147" text-anchor="middle">z = 0</text>
+<line class="svg-mark" x1="224.4" y1="118" x2="224.4" y2="59.9"/>
+<text class="svg-tb" x="224.4" y="133" text-anchor="middle">800</text>
+<text class="svg-t" x="224.4" y="147" text-anchor="middle">z = 1</text>
+</svg><figcaption>Se pide la parte que queda a la derecha: se resta de 1 lo acumulado.</figcaption></figure>
+<div class="example">
+<ol>
+<li><span class="formula">z = (800 − 750)/50 = 1</span></li>
+<li><span class="formula">P(X ≥ 800) = 1 − Φ(1) = 1 − 0,8413 = 0,1587</span></li>
+<li><strong>Interpretación:</strong> alrededor de 16 de cada 100 latas llegan a 800 ml o más.</li>
+</ol>
+</div>
+
+<h3>Caso 3 — entre dos valores: P(a &lt; X &lt; b)</h3>
+<p>Estaturas de varones argentinos ~ N(1,73; 0,08). ¿Probabilidad de medir <em>entre 1,65 y 1,80 m</em>?</p>
+<figure class="fig"><svg viewBox="0 0 360 165" width="360" height="165" role="img" aria-label="Campana con el área entre 1,65 y 1,80 m sombreada">
+<title>Campana con el área entre 1,65 y 1,80 m sombreada</title>
+<polygon class="svg-fill" points="135.6,118 135.6,59.9 137.8,57.0 140.1,54.1 142.3,51.2 144.6,48.3 146.8,45.5 149.1,42.8 151.3,40.2 153.6,37.8 155.8,35.4 158.1,33.2 160.3,31.2 162.6,29.3 164.8,27.7 167.1,26.2 169.3,25.0 171.6,24.0 173.8,23.2 176.1,22.6 178.3,22.3 180.6,22.3 182.9,22.5 185.1,22.9 187.4,23.6 189.6,24.5 191.9,25.6 194.1,27.0 196.4,28.5 198.6,30.3 200.9,32.2 203.1,34.4 205.4,36.7 207.6,39.1 209.9,41.6 212.1,44.3 214.4,47.0 216.6,49.8 218.9,52.7 218.9,118"/>
+<polyline class="svg-curve" points="20.0,117.9 22.2,117.8 24.4,117.8 26.7,117.8 28.9,117.7 31.1,117.6 33.3,117.6 35.6,117.5 37.8,117.4 40.0,117.3 42.2,117.2 44.4,117.1 46.7,116.9 48.9,116.8 51.1,116.6 53.3,116.4 55.6,116.1 57.8,115.8 60.0,115.5 62.2,115.1 64.4,114.7 66.7,114.3 68.9,113.8 71.1,113.2 73.3,112.6 75.6,111.9 77.8,111.2 80.0,110.4 82.2,109.5 84.4,108.5 86.7,107.4 88.9,106.3 91.1,105.0 93.3,103.7 95.6,102.3 97.8,100.7 100.0,99.1 102.2,97.3 104.4,95.4 106.7,93.5 108.9,91.4 111.1,89.2 113.3,86.9 115.6,84.5 117.8,82.1 120.0,79.5 122.2,76.9 124.4,74.2 126.7,71.4 128.9,68.6 131.1,65.7 133.3,62.8 135.6,59.9 137.8,57.0 140.0,54.1 142.2,51.3 144.4,48.5 146.7,45.7 148.9,43.1 151.1,40.5 153.3,38.0 155.6,35.7 157.8,33.5 160.0,31.5 162.2,29.6 164.4,27.9 166.7,26.5 168.9,25.2 171.1,24.1 173.3,23.3 175.6,22.7 177.8,22.4 180.0,22.3 182.2,22.4 184.4,22.7 186.7,23.3 188.9,24.1 191.1,25.2 193.3,26.5 195.6,27.9 197.8,29.6 200.0,31.5 202.2,33.5 204.4,35.7 206.7,38.0 208.9,40.5 211.1,43.1 213.3,45.7 215.6,48.5 217.8,51.3 220.0,54.1 222.2,57.0 224.4,59.9 226.7,62.8 228.9,65.7 231.1,68.6 233.3,71.4 235.6,74.2 237.8,76.9 240.0,79.5 242.2,82.1 244.4,84.5 246.7,86.9 248.9,89.2 251.1,91.4 253.3,93.5 255.6,95.4 257.8,97.3 260.0,99.1 262.2,100.7 264.4,102.3 266.7,103.7 268.9,105.0 271.1,106.3 273.3,107.4 275.6,108.5 277.8,109.5 280.0,110.4 282.2,111.2 284.4,111.9 286.7,112.6 288.9,113.2 291.1,113.8 293.3,114.3 295.6,114.7 297.8,115.1 300.0,115.5 302.2,115.8 304.4,116.1 306.7,116.4 308.9,116.6 311.1,116.8 313.3,116.9 315.6,117.1 317.8,117.2 320.0,117.3 322.2,117.4 324.4,117.5 326.7,117.6 328.9,117.6 331.1,117.7 333.3,117.8 335.6,117.8 337.8,117.8 340.0,117.9"/>
+<line class="svg-axis" x1="20" y1="118" x2="340" y2="118"/>
+<text class="svg-tb" x="177.8" y="60.4" text-anchor="middle">0,6506</text>
+<line class="svg-mark" x1="135.6" y1="118" x2="135.6" y2="59.9"/>
+<text class="svg-tb" x="135.6" y="133" text-anchor="middle">1,65</text>
+<text class="svg-t" x="135.6" y="147" text-anchor="middle">z = −1</text>
+<line class="svg-mark" x1="180.0" y1="118" x2="180.0" y2="22.3"/>
+<text class="svg-tb" x="180.0" y="133" text-anchor="middle">1,73</text>
+<line class="svg-mark" x1="218.9" y1="118" x2="218.9" y2="52.7"/>
+<text class="svg-tb" x="218.9" y="133" text-anchor="middle">1,80</text>
+<text class="svg-t" x="218.9" y="147" text-anchor="middle">z = 0,875</text>
+</svg><figcaption>Área entre los dos valores = (todo lo acumulado hasta b) − (todo lo acumulado hasta a).</figcaption></figure>
+<div class="example">
+<ol>
+<li><span class="formula">z_a = (1,65 − 1,73)/0,08 = −1,00</span> &nbsp; <span class="formula">z_b = (1,80 − 1,73)/0,08 = 0,875</span></li>
+<li><span class="formula">P = Φ(0,875) − Φ(−1) = 0,8092 − 0,1587 = 0,6506</span> (cátedra: 0,80921 − 0,15866 = 0,65055)</li>
+<li><strong>Si la tabla solo trae 2 decimales</strong> (z = 0,88): Φ(0,88) − Φ(−1,00) = 0,8106 − 0,1587 = 0,6519. Cambia la 3.ª cifra; en múltiple choice elige la opción más cercana.</li>
+<li><strong>Interpretación:</strong> el 65,1 % de los varones mide entre 1,65 y 1,80 m.</li>
+</ol>
+</div>
+
+<h2>El camino inverso (fractil): del percentil al valor</h2>
+<p>Ahora el enunciado da la <strong>probabilidad</strong> y se pide el <strong>valor de X</strong>. Se busca z con esa área <em>a la izquierda</em> y se des-estandariza: <span class="formula">x = μ + z·σ</span>.</p>
+<figure class="fig"><svg viewBox="0 0 360 165" width="360" height="165" role="img" aria-label="Campana con el 98 % de área acumulada hasta el percentil 98">
+<title>Campana con el 98 % de área acumulada hasta el percentil 98</title>
+<polygon class="svg-fill" points="20.0,118 20.0,117.9 22.2,117.8 24.4,117.8 26.7,117.8 28.9,117.7 31.1,117.6 33.3,117.6 35.6,117.5 37.8,117.4 40.0,117.3 42.2,117.2 44.4,117.1 46.7,116.9 48.9,116.8 51.1,116.6 53.3,116.4 55.6,116.1 57.8,115.8 60.0,115.5 62.2,115.1 64.4,114.7 66.7,114.3 68.9,113.8 71.1,113.2 73.3,112.6 75.6,111.9 77.8,111.2 80.0,110.4 82.2,109.5 84.4,108.5 86.7,107.4 88.9,106.3 91.1,105.0 93.3,103.7 95.6,102.3 97.8,100.7 100.0,99.1 102.2,97.3 104.4,95.4 106.7,93.5 108.9,91.4 111.1,89.2 113.3,86.9 115.6,84.5 117.8,82.1 120.0,79.5 122.2,76.9 124.4,74.2 126.7,71.4 128.9,68.6 131.1,65.7 133.3,62.8 135.6,59.9 137.8,57.0 140.0,54.1 142.2,51.3 144.4,48.5 146.7,45.7 148.9,43.1 151.1,40.5 153.3,38.0 155.6,35.7 157.8,33.5 160.0,31.5 162.2,29.6 164.4,27.9 166.7,26.5 168.9,25.2 171.1,24.1 173.3,23.3 175.6,22.7 177.8,22.4 180.0,22.3 182.2,22.4 184.4,22.7 186.7,23.3 188.9,24.1 191.1,25.2 193.3,26.5 195.6,27.9 197.8,29.6 200.0,31.5 202.2,33.5 204.4,35.7 206.7,38.0 208.9,40.5 211.1,43.1 213.3,45.7 215.6,48.5 217.8,51.3 220.0,54.1 222.2,57.0 224.4,59.9 226.7,62.8 228.9,65.7 231.1,68.6 233.3,71.4 235.6,74.2 237.8,76.9 240.0,79.5 242.2,82.1 244.4,84.5 246.7,86.9 248.9,89.2 251.1,91.4 253.3,93.5 255.6,95.4 257.8,97.3 260.0,99.1 262.2,100.7 264.4,102.3 266.7,103.7 268.9,105.0 271.1,106.3 271.1,118"/>
+<polyline class="svg-curve" points="20.0,117.9 22.2,117.8 24.4,117.8 26.7,117.8 28.9,117.7 31.1,117.6 33.3,117.6 35.6,117.5 37.8,117.4 40.0,117.3 42.2,117.2 44.4,117.1 46.7,116.9 48.9,116.8 51.1,116.6 53.3,116.4 55.6,116.1 57.8,115.8 60.0,115.5 62.2,115.1 64.4,114.7 66.7,114.3 68.9,113.8 71.1,113.2 73.3,112.6 75.6,111.9 77.8,111.2 80.0,110.4 82.2,109.5 84.4,108.5 86.7,107.4 88.9,106.3 91.1,105.0 93.3,103.7 95.6,102.3 97.8,100.7 100.0,99.1 102.2,97.3 104.4,95.4 106.7,93.5 108.9,91.4 111.1,89.2 113.3,86.9 115.6,84.5 117.8,82.1 120.0,79.5 122.2,76.9 124.4,74.2 126.7,71.4 128.9,68.6 131.1,65.7 133.3,62.8 135.6,59.9 137.8,57.0 140.0,54.1 142.2,51.3 144.4,48.5 146.7,45.7 148.9,43.1 151.1,40.5 153.3,38.0 155.6,35.7 157.8,33.5 160.0,31.5 162.2,29.6 164.4,27.9 166.7,26.5 168.9,25.2 171.1,24.1 173.3,23.3 175.6,22.7 177.8,22.4 180.0,22.3 182.2,22.4 184.4,22.7 186.7,23.3 188.9,24.1 191.1,25.2 193.3,26.5 195.6,27.9 197.8,29.6 200.0,31.5 202.2,33.5 204.4,35.7 206.7,38.0 208.9,40.5 211.1,43.1 213.3,45.7 215.6,48.5 217.8,51.3 220.0,54.1 222.2,57.0 224.4,59.9 226.7,62.8 228.9,65.7 231.1,68.6 233.3,71.4 235.6,74.2 237.8,76.9 240.0,79.5 242.2,82.1 244.4,84.5 246.7,86.9 248.9,89.2 251.1,91.4 253.3,93.5 255.6,95.4 257.8,97.3 260.0,99.1 262.2,100.7 264.4,102.3 266.7,103.7 268.9,105.0 271.1,106.3 273.3,107.4 275.6,108.5 277.8,109.5 280.0,110.4 282.2,111.2 284.4,111.9 286.7,112.6 288.9,113.2 291.1,113.8 293.3,114.3 295.6,114.7 297.8,115.1 300.0,115.5 302.2,115.8 304.4,116.1 306.7,116.4 308.9,116.6 311.1,116.8 313.3,116.9 315.6,117.1 317.8,117.2 320.0,117.3 322.2,117.4 324.4,117.5 326.7,117.6 328.9,117.6 331.1,117.7 333.3,117.8 335.6,117.8 337.8,117.8 340.0,117.9"/>
+<line class="svg-axis" x1="20" y1="118" x2="340" y2="118"/>
+<text class="svg-tb" x="140.0" y="84.1" text-anchor="middle">0,98</text>
+<line class="svg-mark" x1="180.0" y1="118" x2="180.0" y2="22.3"/>
+<text class="svg-tb" x="180.0" y="133" text-anchor="middle">100</text>
+<text class="svg-t" x="180.0" y="147" text-anchor="middle">z = 0</text>
+<line class="svg-mark" x1="271.1" y1="118" x2="271.1" y2="106.3"/>
+<text class="svg-tb" x="271.1" y="133" text-anchor="middle">132,8</text>
+<text class="svg-t" x="271.1" y="147" text-anchor="middle">z = 2,05</text>
+</svg><figcaption>Percentil 98: el 98 % de las personas queda a la izquierda del puntaje buscado.</figcaption></figure>
+<div class="example">
+<strong>Mensa:</strong> el IQ ~ N(100; 16) y se admite desde el percentil 98.
+<ol>
+<li>Área a la izquierda = 0,98 ⇒ <span class="formula">z = 2,05</span> (valor de tabla de la cátedra; exacto 2,0537).</li>
+<li><span class="formula">x = 100 + 2,05 · 16 = 132,8</span> (con z exacto, 132,86).</li>
+<li><strong>Interpretación:</strong> hace falta un puntaje de <strong>al menos 133</strong> (ambos valores redondean a 133).</li>
+</ol>
+</div>
+<div class="example">
+<strong>“El 10 % de las latas con más contenido se regalan: ¿contenido mínimo?”</strong> (N(750; 50))
+<ol>
+<li>El 10 % superior deja <strong>90 % a la izquierda</strong> ⇒ <span class="formula">z = 1,2816</span>.</li>
+<li><span class="formula">x = 750 + 1,2816 · 50 = 814,08 ml</span> (cátedra: 814,1).</li>
+</ol>
+</div>
+
+<h2>Parámetros desconocidos</h2>
+<div class="example">
+<strong>Un parámetro (TP4, ej. 5):</strong> estaturas ~ N(1,68; σ) y el 95 % mide menos de 1,78 m.
+<ol>
+<li>Área izquierda 0,95 ⇒ z = 1,645.</li>
+<li><span class="formula">1,78 = 1,68 + 1,645·σ  ⇒  σ = 0,10 / 1,645 = 0,0608 m</span> (cátedra: 0,061).</li>
+<li>Con σ ya se responden las demás preguntas, p. ej. el 10 % más bajo mide como máximo 1,68 − 1,2816·0,0608 = 1,60 m.</li>
+</ol>
+</div>
+<div class="example">
+<strong>Dos parámetros (TP4, ej. 13, bolsas de cemento):</strong> el 10 % pesa más de 65 kg y el 10 % pesa menos de 55 kg.
+<ol>
+<li><span class="formula">65 = μ + 1,2816·σ</span> y <span class="formula">55 = μ − 1,2816·σ</span>.</li>
+<li>Se suman: <span class="formula">120 = 2μ ⇒ μ = 60 kg</span>. Se restan: <span class="formula">10 = 2·1,2816·σ ⇒ σ = 3,90 kg</span>.</li>
+</ol>
+</div>
+
+<h2>Normal condicional (sin fórmulas nuevas)</h2>
+<div class="example">
+<strong>TP4, ej. 8c:</strong> consumo ~ N(18,5; 1,8). Si se sabe que superó 17,5 l, ¿probabilidad de que haya superado la media?
+<ol>
+<li><span class="formula">P(X &gt; 18,5 / X &gt; 17,5) = P(X &gt; 18,5) / P(X &gt; 17,5)</span>: la intersección es lo más restrictivo (&gt; 18,5).</li>
+<li><span class="formula">P(X &gt; 18,5) = 0,5</span>; <span class="formula">P(X &gt; 17,5) = 1 − Φ(−0,556) = 0,7107</span>.</li>
+<li><span class="formula">0,5 / 0,7107 = 0,7035</span> (cátedra: 0,70349).</li>
+</ol>
+</div>
+
+<h2>Valores críticos que tienes que reconocer</h2>
+<div class="tw"><table>
+<tr><th>Confianza</th><th>α (total, 2 colas)</th><th>Z crítico</th><th>Área que pide Inverse Normal</th></tr>
+<tr><td>90 %</td><td>0,10</td><td>1,645  (1,64485)</td><td>0,95</td></tr>
+<tr><td>95 %</td><td>0,05</td><td>1,96  (1,95996)</td><td>0,975</td></tr>
+<tr><td>98 %</td><td>0,02</td><td>2,326</td><td>0,99</td></tr>
+<tr><td>99 %</td><td>0,01</td><td>2,576  (2,5758)</td><td>0,995</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Percentil (una cola)</th><th>z</th></tr>
+<tr><td>P90 (10 % superior)</td><td>1,282</td></tr>
+<tr><td>P95</td><td>1,645</td></tr>
+<tr><td>P97,5</td><td>1,96</td></tr>
+<tr><td>P98 (Mensa)</td><td>2,05  (la cátedra usa 2,05)</td></tr>
+<tr><td>P99</td><td>2,326</td></tr>
+<tr><td>P5</td><td>−1,645</td></tr>
+</table></div>
+<p>La cátedra nombra los valores críticos por el <strong>α total</strong> (dos colas): Z<sub>0,05</sub> = 1,96 es el del 95 %. Las tablas con área acumulada piden 0,975 para ese mismo valor. Algunas tablas imprimen 2,575 para el 99 %; el valor exacto es 2,5758 (≈ 2,576): elige la opción más cercana. Y recuerda que el 95 % es ±1,96, no ±2.</p>
+
+
+<div class="calc">
+<strong>Probabilidades: Normal CD</strong>
+<ol>
+<li><span class="key">MENU</span> <span class="key">7</span> (Distribution) → <span class="key">2</span> (Normal CD). Campos en este orden: <span class="formula">Lower</span>, <span class="formula">Upper</span>, <span class="formula">σ</span>, <span class="formula">μ</span>. Cada uno con <span class="key">=</span>.</li>
+<li><strong>Cola izquierda</strong> P(X &lt; 650): Lower = <span class="key">(−)</span> 1 <span class="key">×10ˣ</span> 99 (es −1E99), Upper = 650, σ = 50, μ = 750 ⇒ <span class="out">p = 0,022750</span>.</li>
+<li><strong>Cola derecha</strong> P(X ≥ 800): Lower = 800, Upper = 1 <span class="key">×10ˣ</span> 99, σ = 50, μ = 750 ⇒ <span class="out">p = 0,158655</span>.</li>
+<li><strong>Entre</strong> 1,65 y 1,80: Lower = 1,65, Upper = 1,8, σ = 0,08, μ = 1,73 ⇒ <span class="out">p = 0,650558</span>.</li>
+</ol>
+<strong>Percentiles: Inverse Normal</strong>
+<ol>
+<li><span class="key">MENU</span> <span class="key">7</span> → <span class="key">3</span> (Inverse Normal). Campos: <span class="formula">Area</span>, <span class="formula">σ</span>, <span class="formula">μ</span>.</li>
+<li>Percentil 98 de N(100; 16): Area = 0,98, σ = 16, μ = 100 ⇒ <span class="out">132,860</span>. 10 % superior de N(750; 50): Area = <strong>0,90</strong>, σ = 50, μ = 750 ⇒ <span class="out">814,078</span>.</li>
+<li>Z crítico del 95 %: Area = 0,975, σ = 1, μ = 0 ⇒ <span class="out">1,95996</span>.</li>
+</ol>
+<p><strong>Qué significa:</strong> Normal CD devuelve el <em>área</em> entre Lower y Upper (una probabilidad); Inverse Normal devuelve un <em>valor de X</em> (o un z si σ = 1 y μ = 0). Inverse Normal <strong>solo trabaja con la cola izquierda</strong>. Los campos recuerdan el cálculo anterior: revisa los cuatro antes de calcular.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>“10 % superior” → Area = 0,90</strong>, no 0,10. La calculadora siempre mide desde la izquierda; con 0,10 obtendrías el 10 % inferior (685,92).</li>
+<li><strong>Z de IC al 95 % → Area = 0,975</strong>. Con 0,95 sale 1,645, el valor del 90 %.</li>
+<li><strong>σ, no σ²:</strong> si el enunciado da la varianza, saca la raíz antes de usarla (en la calculadora y en Z).</li>
+<li><strong>Orden de campos:</strong> σ va antes que μ.</li>
+<li><strong>Cola equivocada:</strong> si x está por encima de la media, P(X &gt; x) es menor que 0,5. Si te da más, revisa.</li>
+<li><strong>“No superado por el 20 %”</strong> es el percentil 20 (Area = 0,20); <strong>“superado solo por el 10 %”</strong> es el percentil 90.</li>
+<li><strong>Z redondeado a 2 decimales</strong> cambia la 4.ª cifra de la probabilidad: normal, no es un error.</li>
+</ul>
+</div>
+
+<h2>Practica: identifica el caso antes de calcular</h2>
+<div class="quiz" data-quiz>
+<p class="q">1. Las latas siguen N(750; 50). ¿Cuánto vale P(X &lt; 650)?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. 0,9772</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. 0,4840</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. 0,4772</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. 0,0228</span></label>
+<label><input type="radio" name="q1" value="e"><span class="opt">e. 0,0455</span></label>
+<div class="feedback wrong" data-for="a">0,9772 es Φ(2) = P(X &lt; 850). Con 650 el z es −2 (negativo), así que el área a la izquierda es la pequeña.</div>
+<div class="feedback wrong" data-for="b">Dividiste por σ² = 2500 en vez de σ = 50. Se estandariza siempre con el desvío.</div>
+<div class="feedback wrong" data-for="c">0,4772 es el área entre la media y z = −2 (tablas antiguas desde el centro). La cola izquierda es 0,5 − 0,4772 = 0,0228.</div>
+<div class="feedback correct" data-for="d">z = (650 − 750)/50 = −2 y Φ(−2) = 1 − Φ(2) = 0,0228.</div>
+<div class="feedback wrong" data-for="e">0,0455 sería P(X &lt; 650 o X &gt; 850), las dos colas juntas. La pregunta es por una sola cola.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">2. Para hallar el contenido mínimo que debe tener una lata del 10 % con más contenido (N(750; 50)) con Inverse Normal, ¿qué área ingresas y qué da?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. Area = 0,10 → 685,92 ml</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. Area = 0,90 → 814,08 ml</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. Area = 0,95 → 832,24 ml</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. Area = 1,2816 → 814,08 ml</span></label>
+<label><input type="radio" name="q2" value="e"><span class="opt">e. Area = 0,90, σ = 2500 → 3953,9 ml</span></label>
+<div class="feedback wrong" data-for="a">Eso es el contenido máximo del 10 % INFERIOR. Inverse Normal mide siempre desde la izquierda.</div>
+<div class="feedback correct" data-for="b">El 10 % superior deja 90 % a la izquierda: z = 1,2816 y x = 750 + 1,2816·50 = 814,08.</div>
+<div class="feedback wrong" data-for="c">0,95 corresponde al 5 % superior. El 10 % superior se corresponde con 0,90.</div>
+<div class="feedback wrong" data-for="d">El área es una probabilidad entre 0 y 1; 1,2816 es el z, no el área.</div>
+<div class="feedback wrong" data-for="e">Ingresaste la varianza (2500) en el campo σ. Debe ir el desvío: 50.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">3. Estaturas ~ N(1,73; 0,08). ¿Cuánto vale P(1,65 &lt; X &lt; 1,80)?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. 0,9679</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. 0,8092</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. 0,1587</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. 0,3494</span></label>
+<label><input type="radio" name="q3" value="e"><span class="opt">e. 0,6506</span></label>
+<div class="feedback wrong" data-for="a">Sumaste las dos áreas acumuladas. Para el ‘entre’ se resta la de la izquierda a la de la derecha.</div>
+<div class="feedback wrong" data-for="b">Es P(X &lt; 1,80). Falta quitar lo que queda por debajo de 1,65.</div>
+<div class="feedback wrong" data-for="c">Es P(X &lt; 1,65), la cola izquierda, no el ‘entre’.</div>
+<div class="feedback wrong" data-for="d">Es el complemento: P(X &lt; 1,65 o X &gt; 1,80). Se pidió la parte central.</div>
+<div class="feedback correct" data-for="e">Φ(0,875) − Φ(−1) = 0,8092 − 0,1587 = 0,6506.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">4. Las estaturas son normales con media 1,68 m y el 95 % mide menos de 1,78 m. ¿Cuánto vale σ?</p>
+<label><input type="radio" name="q4" value="a"><span class="opt">a. 0,100 m</span></label>
+<label><input type="radio" name="q4" value="b"><span class="opt">b. 0,164 m</span></label>
+<label><input type="radio" name="q4" value="c"><span class="opt">c. 0,061 m</span></label>
+<label><input type="radio" name="q4" value="d"><span class="opt">d. 0,078 m</span></label>
+<label><input type="radio" name="q4" value="e"><span class="opt">e. 0,051 m</span></label>
+<div class="feedback wrong" data-for="a">0,10 es la distancia entre 1,78 y la media. Falta dividirla por z = 1,645 para obtener σ.</div>
+<div class="feedback wrong" data-for="b">Multiplicaste por z en vez de dividir. De x = μ + z·σ se despeja σ = (x − μ)/z.</div>
+<div class="feedback correct" data-for="c">z = 1,645 deja 95 % a la izquierda; σ = (1,78 − 1,68)/1,645 = 0,0608.</div>
+<div class="feedback wrong" data-for="d">Usaste z = 1,282, que es el valor para 90 % acumulado. Con 95 % acumulado el valor es 1,645.</div>
+<div class="feedback wrong" data-for="e">Usaste z = 1,96, que es el valor del 97,5 % acumulado. Para 95 % acumulado el valor es 1,645.</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">5. Para armar un IC del 95 % necesitas el Z crítico con Inverse Normal. ¿Qué área ingresas y qué valor sale?</p>
+<label><input type="radio" name="q5" value="a"><span class="opt">a. Area = 0,975 → 1,96</span></label>
+<label><input type="radio" name="q5" value="b"><span class="opt">b. Area = 0,95 → 1,645</span></label>
+<label><input type="radio" name="q5" value="c"><span class="opt">c. Area = 0,995 → 2,576</span></label>
+<label><input type="radio" name="q5" value="d"><span class="opt">d. Area = 0,90 → 1,282</span></label>
+<label><input type="radio" name="q5" value="e"><span class="opt">e. Area = 0,05 → −1,645</span></label>
+<div class="feedback correct" data-for="a">El 95 % central deja 2,5 % en cada cola: el área acumulada hasta el límite superior es 0,975, y z = 1,96.</div>
+<div class="feedback wrong" data-for="b">Con 0,95 sale 1,645, que corresponde a un IC del 90 %.</div>
+<div class="feedback wrong" data-for="c">Es el valor del 99 %.</div>
+<div class="feedback wrong" data-for="d">1,282 es el percentil 90 de una cola, no el crítico de un IC del 95 %.</div>
+<div class="feedback wrong" data-for="e">Mismo error que usar 0,95: da el valor del 90 % (con el signo cambiado).</div>
+</div>
+<div class="quiz" data-quiz>
+<p class="q">6. Se comparan un puntaje SAT de 650 (μ = 500, σ = 100) y un ACT de 30 (μ = 21, σ = 4,7). ¿Quién rindió relativamente mejor?</p>
+<label><input type="radio" name="q6" value="a"><span class="opt">a. El del SAT, porque 650 &gt; 30</span></label>
+<label><input type="radio" name="q6" value="b"><span class="opt">b. El del ACT: z = 1,91 contra z = 1,5</span></label>
+<label><input type="radio" name="q6" value="c"><span class="opt">c. Empatan, los dos superan la media</span></label>
+<label><input type="radio" name="q6" value="d"><span class="opt">d. No se pueden comparar escalas distintas</span></label>
+<label><input type="radio" name="q6" value="e"><span class="opt">e. El del SAT: z = 1,5 es mayor que 1,91</span></label>
+<div class="feedback wrong" data-for="a">Los números crudos no son comparables: las escalas son distintas. Hay que estandarizar.</div>
+<div class="feedback correct" data-for="b">Se estandariza para comparar en la misma escala: (30 − 21)/4,7 = 1,91 supera a (650 − 500)/100 = 1,5.</div>
+<div class="feedback wrong" data-for="c">Ambos están por encima de la media, pero a distinta cantidad de desvíos: 1,5 y 1,91.</div>
+<div class="feedback wrong" data-for="d">Justamente para eso sirve estandarizar: z mide cuántos desvíos sobre la media está cada uno, en una escala común.</div>
+<div class="feedback wrong" data-for="e">Invertiste la comparación: 1,91 &gt; 1,5, así que gana el ACT.</div>
+</div>
+
+<div class="ask">
+¿Quieres que te dé 5 enunciados con distintas colas y solo dibujes la campana sombreada y escribas Φ(...) sin calcular? Es el drill que más rinde.
+</div>
+
+<footer>
+Ejemplos de la teoría de la cátedra (Mensa, estaturas) y del TP4 (ejercicios 1, 2, 3, 5, 8, 13) — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0017-binomial-poisson-calculo.html">Lección 17 — Binomial y Poisson: el cálculo</a></span>
+  <span><a href="0019-distribucion-muestral-tcl.html">Lección 19 — Distribución muestral y TCL</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 6 · Cambios, comunicación y negociación</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: channel "temperature" ladder and empty communication-matrix skeleton */
+  .ladder-ch { list-style: none; margin: 1rem 0; padding: 0; font-family: var(--sans); font-size: .82rem; display: grid; gap: .3rem; }
+  .ladder-ch li { border: 1px solid var(--rule); border-radius: 8px; background: var(--card); padding: .45rem .8rem; }
+  .ladder-ch li:nth-child(1) { margin-right: 60%; }
+  .ladder-ch li:nth-child(2) { margin-right: 50%; }
+  .ladder-ch li:nth-child(3) { margin-right: 40%; }
+  .ladder-ch li:nth-child(4) { margin-right: 30%; }
+  .ladder-ch li:nth-child(5) { margin-right: 20%; }
+  .ladder-ch li:nth-child(6) { margin-right: 10%; }
+  .ladder-ch li:nth-child(7) { border-color: var(--accent); background: var(--accent-soft); }
+  .ladder-ch .cold { color: var(--muted); font-size: .72rem; }
+  .skeleton td { min-width: 6rem; }
+  .skeleton td.ph { color: var(--muted); font-style: italic; }
+  @media (max-width: 30rem) { .ladder-ch li { margin-right: 0 !important; } }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 6 · 16/9/2026 · Alimenta la sección 8 del TP</p>
+  <h1>Cambios, comunicación y negociación</h1>
+  <p class="subtitle">Cómo se controla lo que se modifica, cómo se decide quién recibe qué información, y cómo se llega a un acuerdo sin pelear.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%206%20-%20Comunicacion%20y%20Negociaci%C3%B3n.pdf" title="Solo disponible en la copia completa con raw/">Clase 6</a>, p3 a 29 · <a class="local-only" href="../raw/Clase%205%20-%20Gesti%C3%B3n%20de%20riesgos.pdf" title="Solo disponible en la copia completa con raw/">Clase 5</a>, p42 a 46</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder explicar por qué un cambio necesita un proceso, elegir el canal según el interlocutor y el contenido, armar una fila de la matriz de comunicación, y aplicar los cuatro principios de Fisher, Ury y Patton a una discusión de alcance, plazo o precio.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="03a-charter-stakeholders-edt.html">Clase 3</a> (la matriz de stakeholders dice a quién comunicar), <a href="03b-cronograma-camino-critico.html">Clase 3, parte 2</a> (las líneas base que un cambio modifica) y <a href="05-riesgos-foda.html">Clase 5</a> (donde se presenta la gestión de cambios).</p>
+  <p><span class="to">Alimenta</span> la sección 8 del TP (Plan de comunicación) y sostiene el control de cambios sobre la línea base. La negociación se usa con los stakeholders de alto poder y en cada cambio de alcance. Ver el <a href="mapa-de-conceptos.html">Mapa de conceptos</a>.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>Un proyecto puede tener cronograma, presupuesto y riesgos impecables y aun así fracasar si los cambios entran por la puerta de atrás o si nadie sabe qué le corresponde saber. Esta clase cubre tres piezas de la misma idea: <em>controlar lo que cambia, informar a quien corresponde y acordar cuando hay conflicto</em>.</p>
+
+<h2 id="idea-1">Idea 1 · Gestión de cambios</h2>
+<p>Es el proceso sistemático que permite <strong>identificar, evaluar, aprobar y controlar</strong> las modificaciones que surgen durante el ciclo de vida de un proyecto. Su objetivo es minimizar el impacto negativo de los cambios no planificados y mantener el proyecto alineado con alcance, tiempo, costo y calidad (Clase 6, p5; también Clase 5, p43).</p>
+<ul>
+  <li><strong>Por qué importa (p6):</strong> todo proyecto está sujeto a cambios; gestionarlos evita desvíos no controlados, permite decidir con base en impacto, riesgos y recursos, y da transparencia entre stakeholders.</li>
+  <li><strong>Tipos frecuentes (p7):</strong> requerimientos del cliente, ajustes de cronograma o presupuesto, modificaciones técnicas o de diseño, cambios organizacionales o normativos.</li>
+  <li><strong>Relación con el alcance (p8):</strong> todo cambio puede afectarlo, por eso debe pasar por análisis y control. Sin eso el alcance se expande sin control, con retrasos, sobrecostos y pérdida de foco.</li>
+</ul>
+<ol class="chain">
+  <li><strong>Identificar</strong><span class="q">¿Qué se pide cambiar y quién lo pide?</span></li>
+  <li data-in="la solicitud"><strong>Evaluar</strong><span class="q">¿Cuánto mueve alcance, cronograma, costo, calidad y riesgos?</span></li>
+  <li data-in="el análisis de impacto"><strong>Aprobar o rechazar</strong><span class="q">¿Quién decide? Un cambio grande lo decide el sponsor o un comité.</span></li>
+  <li data-in="la decisión"><strong>Controlar</strong><span class="q">Registrar, comunicar y actualizar la línea base.</span></li>
+</ol>
+<p class="note"><strong>Conexión con lo ya visto:</strong> las líneas base de alcance, cronograma y costo (<a href="03b-cronograma-camino-critico.html">Clase 3</a>) son la referencia contra la que se mide un cambio, y la reserva de gestión de la <a href="04-costos-pestel.html#reservas">Clase 4</a> exige aprobación del comité de control de cambios para usarse. La diapositiva 6 no lo enuncia así; es la lectura que une las clases.</p>
+
+<h2 id="idea-2">Idea 2 · Comunicar: componentes y canales</h2>
+<p>Una comunicación tiene un <strong>emisor</strong>, un <strong>receptor</strong> y un <strong>mensaje</strong> que viaja por un canal, dentro de un contexto, con ruido posible y con retroalimentación (Clase 6, p10). Un director de proyecto puede pasar 70% o hasta 80% de su tiempo comunicando, de manera formal o informal; hay que elegir el método según el interlocutor y el contenido (p12).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Tipo (p12)</th><th>Cuándo se recomienda</th></tr></thead>
+<tbody>
+<tr><td><strong>Formal escrita</strong></td><td>Problemas complejos, plan de dirección, actas de constitución, memorándums, comunicaciones a larga distancia</td></tr>
+<tr><td><strong>Formal verbal</strong></td><td>Presentaciones o discursos</td></tr>
+<tr><td><strong>Informal escrita</strong></td><td>Correo electrónico, notas, mensajes de texto o instantáneos</td></tr>
+<tr><td><strong>Informal verbal</strong></td><td>Reuniones o conversaciones</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="idea-3">Idea 3 · Dimensiones, efectividad y barreras</h2>
+<p>Al codificar un mensaje, el emisor considera dimensiones más allá de las palabras: la <strong>no verbal</strong> (la diapositiva dice que cerca del 55% de la comunicación es lenguaje corporal) y la <strong>paralingüística</strong> (el tono de voz; 38%). Además hay que confirmar que el mensaje se entendió, con <strong>retroalimentación</strong>: «¿entiendes lo que digo?» (Clase 6, p14 y 16).</p>
+<div class="note"><strong>Dos cuidados:</strong>
+<p>(1) La diapositiva 16 dice que el emisor determina los métodos «sin confirmar que el mensaje es entendido»; por el ejemplo de feedback que sigue, la intención parece ser «y confirmar». (2) <strong>Complemento:</strong> los porcentajes 55% y 38% vienen de estudios de Albert Mehrabian (años 60) sobre mensajes con palabras y actitud contradictorias en la comunicación de sentimientos, y el propio autor aclaró que no describen toda comunicación. Sirven como recordatorio de que el tono y el cuerpo importan, no como cifra exacta.</p></div>
+<p><strong>Barreras, filtros y bloqueadores</strong> más comunes (p17): idioma, cultura, contenido del mensaje, hostilidad, posición o estatus organizacional, distancia e incorrecta decodificación.</p>
+<p><strong>Efectividad y temperatura del canal</strong> (p18, gráfico atribuido a Tomeu Ozonas): cuanto más «caliente» el canal, más efectivo. De menor a mayor efectividad:</p>
+<ol class="ladder-ch">
+  <li>Documento <span class="cold">más frío</span></li>
+  <li>Email</li>
+  <li>Chat</li>
+  <li>Teléfono</li>
+  <li>Videollamada</li>
+  <li>Cara a cara</li>
+  <li>Cara a cara con soporte visual <span class="cold">más caliente</span></li>
+</ol>
+<p>Lectura práctica: lo importante o conflictivo, en un canal caliente; lo que debe quedar registrado, por escrito. Muchas veces se hacen las dos cosas: reunión y acta.</p>
+
+<h2 id="idea-4">Idea 4 · La matriz de comunicación</h2>
+<p>La cátedra propone una matriz de comunicaciones como herramienta de gestión (p20). Sus columnas: <strong>ítem, contenido, formato, emisor, receptor, medio, tipo de comunicación, frecuencia y si requiere respuesta</strong>. Filas de la diapositiva (transcripción de la imagen, leída visualmente):</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Contenido</th><th>Emisor</th><th>Receptor</th><th>Medio</th><th>Tipo</th><th>Frecuencia</th><th>¿Respuesta?</th></tr></thead>
+<tbody>
+<tr><td>Acta de constitución</td><td>Director de proyecto</td><td>Usuarios interesados</td><td>Reunión</td><td>Formal verbal</td><td>Una sola vez</td><td>No</td></tr>
+<tr><td>Informe de desempeño</td><td>Director de proyecto</td><td>Patrocinador</td><td>Reunión</td><td>Formal verbal y escrita</td><td>1 vez por semana</td><td>No</td></tr>
+<tr><td>Charla de seguridad</td><td>Residente de obra</td><td>Personal operario</td><td>Reunión</td><td>Informal verbal</td><td>Diaria</td><td>No</td></tr>
+<tr><td>Solicitud de validación de alcance</td><td>Director de proyecto</td><td>Gerente de atención al cliente</td><td>E-mail</td><td>Formal escrita</td><td>Una sola vez</td><td>Sí</td></tr>
+</tbody>
+</table>
+</div>
+<p>La diapositiva cierra con una advertencia: no hay una ciencia exacta de las formas de comunicación más efectivas; depende de las personas, el sitio, las formas y la cultura organizacional.</p>
+<p><strong>Esqueleto para el TP</strong> (una fila por stakeholder de la matriz de la <a href="03a-charter-stakeholders-edt.html">Clase 3</a>; la fila de ejemplo es ilustrativa):</p>
+<div class="table-wrap">
+<table class="skeleton">
+<thead><tr><th>Stakeholder</th><th>Qué necesita saber</th><th>Cuándo</th><th>Canal y tipo</th><th>Responsable</th><th>¿Respuesta?</th></tr></thead>
+<tbody>
+<tr><td>Patrocinador (ejemplo)</td><td>Avance, hitos y desvíos</td><td>Semanal</td><td>Reunión + e-mail · formal verbal y escrita</td><td>Director de proyecto</td><td>Sí, si hay cambios</td></tr>
+<tr><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td></tr>
+<tr><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td><td class="ph">…</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="idea-5">Idea 5 · Negociación: cuatro principios</h2>
+<p>La cátedra toma el método de <em>Sí, de acuerdo: cómo negociar sin ceder</em>, de Roger Fisher, William Ury y Bruce Patton (Clase 6, p22).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>Principio</th><th>Idea central (p23–26)</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Separar a las personas del problema</strong></td><td>La relación no es el conflicto. Ver a la contraparte como socio: comunicación clara sin juicios, escucha activa y empatía.</td></tr>
+<tr><td>2</td><td><strong>Centrarse en intereses, no en posiciones</strong></td><td>Posición es lo que cada parte dice querer; interés es la necesidad real que hay detrás. Identificar los propios, detectar los compartidos.</td></tr>
+<tr><td>3</td><td><strong>Idear opciones de beneficio mutuo</strong></td><td>No hay una única solución correcta: generar varias alternativas y trabajarlas juntos.</td></tr>
+<tr><td>4</td><td><strong>Acordar criterios objetivos</strong></td><td>Estándares justos y verificables (leyes, datos, mercado, ética), acordados antes de decidir soluciones.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Cuando no hay acuerdo, la cátedra ofrece la <strong>BATNA</strong>, la mejor alternativa a un acuerdo negociado, como plan B: no se aceptan acuerdos peores que la BATNA, y si se supera el «umbral de dolor» se pausa y se reevalúa (p25). También: no ceder ante presiones o amenazas, y estar dispuesto a ajustar posiciones si hay argumentos válidos (p26).</p>
+
+<h3>El ejemplo de la cátedra: ClienteSoft y TechPro (p27–28)</h3>
+<p>El proveedor quiere subir 15% la renovación anual de un software de gestión; el cliente dice que su presupuesto no lo permite.</p>
+<ol class="chain">
+  <li><strong>Personas ≠ problema</strong><span class="q">El cliente no dice «nos cobran de más»; dice «valoramos la relación, miremos juntos cómo ajustar el contrato».</span></li>
+  <li data-in="una conversación sin ataque"><strong>Intereses ≠ posiciones</strong><span class="q">Posición del proveedor: +15%. Interés: cubrir costos y retener al cliente. Posición del cliente: no subir. Interés: ajustar presupuesto y asegurar soporte. Descubren que el cliente usa 70% de las funciones.</span></li>
+  <li data-in="los intereses de cada uno"><strong>Opciones</strong><span class="q">Quitar módulos sin uso (+5% en vez de +15%), contrato a 2 años con 5% cada año, capacitación incluida, webinars gratuitos.</span></li>
+  <li data-in="las opciones posibles"><strong>Criterios objetivos</strong><span class="q">Tarifas de mercado, inflación del sector tecnológico, SLA de competidores: acuerdo por datos, no por quién presiona más.</span></li>
+</ol>
+<p>La diapositiva 29 solo lleva el título «Práctica - Negociación»: la actividad es oral, en clase. Un ensayo propuesto por esta lección: el sponsor pide sumar una función a mitad del proyecto. <em>Posición:</em> «tiene que estar». <em>Interés posible:</em> mostrar un resultado ante su propia jefatura. <em>Opciones:</em> entregar una versión mínima, mover otra función, extender el plazo, sumar presupuesto por la vía de cambios. <em>Criterio:</em> el impacto medido en el Gantt y en el presupuesto.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: nombrar los pasos de la gestión de cambios, los siete elementos de una comunicación y los cuatro principios de negociación.</summary>
+  <p>Cambios: identificar, evaluar, aprobar, controlar. Comunicación: emisor, receptor, mensaje, canal, contexto, ruido, retroalimentación. Negociación: separar personas del problema, intereses antes que posiciones, opciones de beneficio mutuo, criterios objetivos. Ver <a href="#idea-5">la tabla</a>.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">¿Qué riesgo trae aceptar cambios sin un proceso de análisis y control?</p>
+  <div class="options">
+    <button data-ok data-why="La cátedra lo dice: mala gestión de cambios lleva a expansión no controlada del alcance, retrasos, sobrecostos y pérdida de foco (Clase 6, p8).">La expansión no controlada del alcance, con retrasos y sobrecostos</button>
+    <button data-why="Un cambio bien gestionado no elimina la incertidumbre; el problema es su ausencia de control.">Que el proyecto termine antes de lo previsto</button>
+    <button data-why="El proceso justamente da transparencia entre stakeholders (p6).">Que haya demasiada transparencia entre stakeholders</button>
+    <button data-why="Los cambios no dejan de existir: todo proyecto está sujeto a ellos (p6).">Que dejen de existir los cambios</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Hay que comunicar el plan de dirección del proyecto a personas en otra ciudad. ¿Qué tipo de comunicación recomienda la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="La formal escrita se recomienda para problemas complejos, plan de dirección, actas y comunicaciones a larga distancia (Clase 6, p12).">Formal escrita</button>
+    <button data-why="La informal verbal son reuniones o conversaciones; no deja registro formal del plan.">Informal verbal</button>
+    <button data-why="La formal verbal se usa para presentaciones o discursos.">Formal verbal</button>
+    <button data-why="La informal escrita es correo, notas y mensajes instantáneos; el plan de dirección pide formalidad.">Informal escrita</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">En el caso ClienteSoft y TechPro, ¿cuál es un <strong>interés</strong> y no una posición?</p>
+  <div class="options">
+    <button data-ok data-why="Es la necesidad real del proveedor: cubrir costos y retener clientes (Clase 6, p27).">Asegurar que el cliente permanezca y cubrir mayores costos</button>
+    <button data-why="Es la posición del proveedor: lo que dice querer.">Cobrar un 15% más</button>
+    <button data-why="Es la posición del cliente: mantener o bajar el costo.">Mantener el precio actual</button>
+    <button data-why="Es una opción que aparece después, en la lluvia de ideas.">Reducir módulos no utilizados</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Qué es la BATNA?</p>
+  <div class="options">
+    <button data-ok data-why="Es la mejor alternativa a un acuerdo negociado: el plan B con el que se compara cualquier oferta (Clase 6, p25).">La mejor alternativa a un acuerdo negociado</button>
+    <button data-why="Eso describe la posición inicial; la BATNA es lo que se hace si no hay acuerdo.">La primera oferta que hace cada parte</button>
+    <button data-why="El criterio objetivo es el cuarto principio; la BATNA es un plan alternativo.">El estándar de mercado que se usa para decidir</button>
+    <button data-why="Es una alternativa fuera del acuerdo, no una concesión dentro de él.">La máxima concesión que se está dispuesto a dar</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Sección 8, Plan de comunicación.</strong> Receta: (1) partir de la Matriz de stakeholders (sección 7): una fila por stakeholder relevante; (2) escribir qué necesita saber, cuándo y con qué frecuencia; (3) elegir canal y tipo con el criterio de la tabla de canales y la temperatura del canal; (4) asignar un responsable; (5) marcar si requiere respuesta; (6) agregar una fila para cambios: cómo se solicitan, quién los evalúa y por qué canal se comunica la decisión. Coherencia: cada stakeholder de la sección 7 debe tener fila acá; los hitos que se comunican deben ser los del Gantt (sección 6). Para el Mapa, quedan pendientes las decisiones sobre quiénes son los stakeholders concretos. Ver el <a href="../tp/plan.html">Plan del TP</a>.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%206%20-%20Comunicacion%20y%20Negociaci%C3%B3n.pdf" title="Solo disponible en la copia completa con raw/">Clase 6 — Comunicación y Negociación</a>, diapositivas 3 a 29, y <a class="local-only" href="../raw/Clase%205%20-%20Gesti%C3%B3n%20de%20riesgos.pdf" title="Solo disponible en la copia completa con raw/">Clase 5</a>, diapositivas 42 a 46 (gestión de cambios). Las diapositivas 10, 14, 18 y 20 son imágenes: se leyeron visualmente. La 29 solo contiene el título de la práctica. Las diapositivas se titulan «Clase 12: Plan de comunicación» (numeración de otra cursada).
+  <br><strong>Complemento:</strong> (1) el origen de los porcentajes 55% y 38% (Mehrabian) no está en las diapositivas. (2) El paso a paso de identificar, evaluar, aprobar y controlar un cambio ordena la definición de la diapositiva 5; no es una lista de la cátedra. (3) El ensayo de negociación y el esqueleto de matriz son de esta lección.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: cómo armar la matriz de comunicación del equipo, cómo distinguir una posición de un interés en una discusión real, o cómo redactar la política de cambios del TP.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="05-riesgos-foda.html">← Clase 5 · Riesgos y FODA</a>
+  <a href="07-design-thinking.html">Clase 7 · Design Thinking →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

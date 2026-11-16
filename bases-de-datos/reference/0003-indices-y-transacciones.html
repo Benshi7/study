@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Índices y transacciones</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Referencia 03 · Para imprimir</p>
+    <h1 class="masthead__title">Índices y transacciones</h1>
+    <p class="masthead__standfirst">
+      Toda la Unidad 4 en una hoja, con las definiciones textuales de la cátedra.
+      Es lo que hay que releer la semana del parcial.
+    </p>
+  </header>
+
+  <h2><span class="num">A</span>Los tres tipos de índice</h2>
+
+  <p>
+    Un índice es "una estructura de datos que mapea los valores de una o más columnas de una
+    tabla a las filas correspondientes", y sirve para <b>evitar la búsqueda secuencial</b>.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Tipo</th><th>Definición de la cátedra</th><th>Beneficios y costos</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Principal</b><br><span style="color:var(--ink-soft)">o primario</span></td>
+          <td>"Se crea en la columna o columnas que forman la <b>clave primaria</b>."
+              Sólo <b>uno por tabla</b>, "ya que la clave primaria es única".</td>
+          <td>
+            Unicidad <b>(+)</b><br>
+            Búsqueda eficiente <b>(+)</b><br>
+            Base de la integridad referencial <b>(+)</b>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Agrupado</b></td>
+          <td>"Las filas de la tabla <b>se ordenan en el mismo orden que el índice</b>" y
+              quedan "<b>físicamente almacenadas juntas en el disco</b>".</td>
+          <td>
+            <b>Ordenamiento físico (+)</b><br>
+            Búsqueda eficiente <b>(+)</b><br>
+            Ahorro de espacio <b>(+)</b><br>
+            Limitaciones en la modificación <b>(−)</b>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Secundario</b></td>
+          <td>"Se crean en columnas que <b>no</b> forman parte de la clave primaria."
+              "No afecta el ordenamiento físico": crea una estructura <b>separada</b>.</td>
+          <td>
+            No afecta el orden físico <b>(+)</b><br>
+            Búsqueda eficiente <b>(+)</b><br>
+            Mayor flexibilidad <b>(+)</b><br>
+            Mayor espacio de almacenamiento <b>(−)</b><br>
+            Uso excesivo degrada el rendimiento <b>(−)</b>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">B</span>Denso y no denso</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Clase</th><th>Definición textual</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Denso</b></td>
+          <td>"Tiene una entrada de índice por <b>cada valor de la clave de búsqueda</b>
+              (y, por tanto, cada registro) del fichero de datos."</td>
+        </tr>
+        <tr>
+          <td><b>No denso</b></td>
+          <td>"Sólo tiene entradas para <b>algunos</b> de los valores de búsqueda."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    El <b>principal es no denso</b>, "porque incluye una entrada por cada <b>bloque de
+    disco</b> del fichero de datos en lugar de una entrada por cada valor de búsqueda (es
+    decir, por cada registro)".
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La regla, sin memorizar tablas</span>
+    <p>
+      <b>Apunta a bloques &rarr; no denso. Apunta a registros uno por uno &rarr; denso.</b>
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La trampa · pregunta textual del docente</span>
+    <p>
+      <b>"¿Cuál de todos los índices ordena físicamente los campos?" &rarr; el AGRUPADO.</b>
+      Porque "las filas de la tabla se ordenan en el mismo orden que el índice".
+    </p>
+    <p>
+      El material se contradice: el párrafo de denso/no denso está copiado de Elmasri
+      (p. 431), donde el principal <em>sí</em> implica orden físico. <b>No razonar desde
+      ahí.</b> Gana la cátedra.
+    </p>
+  </div>
+
+  <h2><span class="num">C</span>Transacciones y ACID</h2>
+
+  <p>
+    Una transacción "incluye <b>una o más</b> operaciones de acceso a la base de datos
+    (operaciones de <b>inserción, eliminación, modificación o recuperación</b>)". Sus
+    límites se marcan con <code>begin transaction</code> y <code>end transaction</code>.
+    Si "no actualizan la base de datos, sino que únicamente recuperan datos", la transacción
+    es de <b>sólo lectura</b>.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>Propiedad</th><th>Definición textual</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>A</b></td>
+          <td><b>Atomicidad</b></td>
+          <td>"Una transacción es una unidad atómica de procesamiento; o se ejecuta en su
+              <b>totalidad</b> o <b>no se ejecuta en absoluto</b>."</td>
+        </tr>
+        <tr>
+          <td><b>C</b></td>
+          <td><b>Conservación de la consistencia</b></td>
+          <td>"Una transacción está conservando la consistencia si su ejecución completa
+              lleva a la base de datos <b>de un estado consistente a otro</b>."</td>
+        </tr>
+        <tr>
+          <td><b>I</b></td>
+          <td><b>Aislamiento</b></td>
+          <td>"Una transacción debe aparecer como si estuviera ejecutándose de forma
+              <b>aislada</b> a las demás. […] no debe interferir con la ejecución de
+              ninguna otra transacción <b>simultánea</b>."</td>
+        </tr>
+        <tr>
+          <td><b>D</b></td>
+          <td><b>Durabilidad</b></td>
+          <td>"Los cambios aplicados […] por una transacción <b>confirmada</b> deben
+              <b>persistir</b>. Estos cambios no deben perderse por culpa de un
+              <b>fallo</b>."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">C contra I, que son las que se mezclan</span>
+    <p>
+      <b>Consistencia</b> = una transacción contra las reglas de la base.
+      <b>Aislamiento</b> = varias transacciones entre sí.
+      Si la definición dice <b>simultánea</b>, es aislamiento.
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">A contra C, que es el error más caro</span>
+    <p>
+      Las dos hablan de <em>una sola</em> transacción, y por eso se confunden. La diferencia
+      es <b>qué momento miran</b>:
+    </p>
+    <ul>
+      <li><b>Atomicidad</b> mira si la transacción <b>se completó</b>. Todo o nada.</li>
+      <li><b>Consistencia</b> mira si el estado en el que la dejó <b>es válido</b>.</li>
+    </ul>
+    <p>
+      El caso que separa las dos: sale plata de la cuenta A y nunca llega a la B.
+      Eso es <b>atomicidad</b> &mdash; se ejecutó media transacción. Si en cambio la
+      transferencia termina entera pero el saldo total del banco cambió, eso es
+      <b>consistencia</b>: la transacción fue perfectamente atómica y aun así dejó la base
+      en un estado inválido.
+    </p>
+    <p>
+      Cuidado con definir atomicidad como "una transacción que empieza y termina". Eso es la
+      definición de <b>transacción</b>, no de la propiedad.
+    </p>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Dónde entra el ROLLBACK</span>
+    <p>
+      El deck de la cátedra no lo nombra &mdash; sólo habla de "transacción confirmada"
+      &mdash; así que como pregunta es poco probable. Pero si aparece:
+      <b>el ROLLBACK garantiza la atomicidad</b>, no la consistencia.
+    </p>
+    <p>
+      <code>begin → commit</code> es la rama "<b>todo</b>".
+      <code>begin → rollback</code> es la rama "<b>nada</b>". Las dos cumplen la atomicidad.
+      Lo que la viola es la tercera rama, la que el motor evita justamente con el rollback:
+      media transacción aplicada, y así queda.
+    </p>
+  </div>
+
+  <h2><span class="num">D</span>Los cuatro problemas del enfoque de archivos</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Problema</th><th>Qué es</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Redundancia</b></td>
+          <td>Sin control sobre el ingreso, "es muy normal que existan […] errores de
+              duplicidad en los registros".</td></tr>
+        <tr><td><b>Error de ingreso</b></td>
+          <td>"Errores comunes en el ingreso manual": ortográficos, números mal
+              ingresados.</td></tr>
+        <tr><td><b>Estandarización</b></td>
+          <td>"El tipo de error <b>más común</b>". Ejemplo: <code>21-12-2021</code>,
+              <code>21/02/2021</code>, <code>21/2/2021</code>.</td></tr>
+        <tr><td><b>Seguridad</b></td>
+          <td>"No hay un control de uso y acceso por usuarios a los datos, más que el
+              control al archivo físico".</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Contra eso, la base de datos permite <b>integrar</b> ("archivos […] lógicamente
+    organizados para reducir la redundancia de datos y facilitar el acceso") y
+    <b>compartir</b> ("todos los usuarios calificados tienen acceso a los mismos datos").
+  </p>
+
+  <h3>La jerarquía de almacenamiento, en una línea</h3>
+
+  <p>
+    <b>Principal o primario</b> (caché, DRAM): la CPU opera ahí, rápido y de capacidad
+    limitada. <b>Secundario</b> (disco duro) y <b>terciario</b> (removibles, cintas): gran
+    capacidad, barato, más lento. <b>La CPU no puede procesar directamente lo secundario o
+    terciario: primero hay que copiarlo al principal.</b> El disco es <em>online</em>
+    (acceso directo); la cinta es <em>offline</em> (alguien tiene que cargarla).
+  </p>
+
+  <p class="callout callout--catedra">
+    <span class="callout__label">Fuentes</span>
+    <code>raw/Material_Examen/unidad 4 conceptos.pdf</code>, páginas 1–9 ·
+    deck <code>Clase Indices y Txn</code>, slides 2–19 ·
+    pautas de examen del 17/09/2026 ·
+    Elmasri &amp; Navathe 5ª ed., capítulos 13, 14 y 17.
+  </p>
+
+  <nav class="nav">
+    <a href="../index.html">Índice</a>
+    <a href="../lessons/0028-indices.html">Lección 28 · Índices</a>
+    <a href="../lessons/0041-transacciones-y-acid.html">Lección 41 · Transacciones</a>
+    <a href="0004-notacion-der-a-mano.html">Referencia: notación a mano</a>
+    <a href="0002-normalizacion.html">Referencia: normalización</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

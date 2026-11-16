@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Procesos y gobierno</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0002 · Bloque 1: Introducción a los datos</div>
+
+<div class="kicker">Lección 0002</div>
+<h1>Qué hace una organización data-driven</h1>
+<p class="lede">Separar las <em>dimensiones</em> (lo que se evalúa) de los <em>procesos</em> (lo que se hace) y del <em>gobierno</em> (quién decide).</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la lección 0001: ¿qué dimensión falla si el dashboard de ventas de ayer recién se actualiza a la semana? ¿Y si en un reporte un cliente tiene un mail y en otro reporte otro distinto?</p>
+</div>
+
+<h2>Data-driven, en una línea</h2>
+<p>Una organización <strong>data-driven</strong> (gestión basada en datos) <em>usa datos y análisis para tomar decisiones y priorizar acciones</em>, en lugar de la intuición o la experiencia previa. Llegar a eso es un <strong>proceso de madurez</strong>:</p>
+
+<pre class="diagram">DATA-RESISTANT → DATA-AWARE → DATA-GUIDED → DATA-SAVVY → DATA-DRIVEN
+evita los datos  empieza a    usa datos     etapa de     data-first,
+                 usarlos      para analizar insights     etapa estratégica</pre>
+<span class="sidenote">Fuente: <a href="../raw/001_INTRODUCCION_parte_2.pdf#page=2">Intro parte 2, slide 2</a> ("Evolution of the data-driven company").</span>
+
+<h2>Las 4 características</h2>
+<pre class="diagram">1. RECOPILACIÓN CORRECTA DE DATOS   → limpieza, profiling, completitud, precisión, unicidad
+2. HERRAMIENTAS ORIENTADAS AL DATO  → cultura de uso de herramientas (cloud, BI, visualización)
+3. NUEVAS ÁREAS Y PERFILES          → CDO y otros C-level (lección 0003)
+4. DATA GOVERNANCE                  → quién decide qué, sobre qué datos, cuándo</pre>
+
+<h2>Profiling vs cleansing</h2>
+<div class="table-wrap">
+<table>
+  <tr><th></th><th>Data profiling (perfilado)</th><th>Data cleansing (limpieza)</th></tr>
+  <tr><td>Qué es</td><td>Analizar y <strong>evaluar la calidad</strong> de los datos</td><td><strong>Detectar y corregir o eliminar</strong> errores, inconsistencias y duplicados</td></tr>
+  <tr><td>Verbo clave</td><td>medir, evaluar, identificar</td><td>corregir, eliminar, depurar</td></tr>
+  <tr><td>Produce</td><td>% de completitud, % de errores, % de únicos, patrones usuales e inusuales</td><td>Datos depurados de mejor calidad</td></tr>
+  <tr><td>Facilita</td><td>La <strong>comprensión</strong> de los datos</td><td>La <strong>depuración</strong> de los datos</td></tr>
+</table>
+</div>
+<p>Ciclo de limpieza del slide: <em>detectar datos sucios → definir reglas de limpieza → monitoreo continuo</em>.</p>
+
+<div class="box trap">
+  <span class="label">Cómo distinguirlos en el enunciado</span>
+  <p>Si el enunciado <strong>mide</strong> ("el 12% de los mails tiene formato inválido"), es profiling. Si <strong>arregla</strong> ("eliminamos duplicados", "corregimos los DNI"), es cleansing.</p>
+</div>
+
+<h2>Data governance</h2>
+<p>Es el <em>ejercicio de autoridad, control y toma de decisiones compartida</em> (planificación, seguimiento y aplicación) sobre la gestión de los activos de datos, según DAMA. Involucra <strong>personas, procesos y tecnologías</strong>.<span class="sidenote">DAMA-DMBOK es el marco de referencia que cita el slide. <a href="https://www.dama.org/cpages/body-of-knowledge">dama.org</a>.</span></p>
+
+<div class="box">
+  <span class="label">La pregunta del slide</span>
+  <p><strong>QUIÉN</strong> puede tomar <strong>QUÉ ACCIONES</strong>, con <strong>QUÉ DATOS</strong>, <strong>CUÁNDO</strong>, en qué <strong>SITUACIONES</strong> y con qué <strong>MÉTODOS</strong>.</p>
+</div>
+
+<p>Incluye <strong>definir roles y responsabilidades</strong> y <strong>crear políticas y procesos</strong> de gestión de datos en toda la empresa. Beneficios: mejora la calidad de los datos, estandariza su gestión, mejora la toma de decisiones (transparente y basada en datos), reduce esfuerzos económicos y humanos, y protege la seguridad y la privacidad.</p>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0002-procesos-y-gobierno"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "\"Calculamos que el 12% de los mails de la tabla Clientes tiene un formato inválido.\" ¿Qué proceso es?",
+   "options": ["Profiling", "Cleansing", "Governance", "Completitud"], "answer": 0,
+   "why": "Estás midiendo y evaluando la calidad; todavía no corregiste nada."},
+  {"q": "\"Eliminamos los registros duplicados y corregimos los DNI mal cargados.\" ¿Qué proceso es?",
+   "options": ["Cleansing", "Profiling", "Governance", "Unicidad"], "answer": 0,
+   "why": "Detectar y corregir o eliminar errores es data cleansing (limpieza)."},
+  {"q": "¿Qué describe mejor a una organización data-driven?",
+   "options": ["Usa datos y análisis para decidir y priorizar", "Usa intuición y experiencia previa para decidir rápido", "Recolecta datos pero no los usa para decidir", "Delega todas las decisiones al área de sistemas"], "answer": 0,
+   "why": "Es la definición del cuestionario (pregunta 6): datos y análisis para tomar decisiones y priorizar acciones."},
+  {"q": "¿Qué pregunta responde principalmente el data governance?",
+   "options": ["Quién puede realizar qué acciones sobre qué datos", "Qué herramienta de visualización conviene usar hoy mismo", "Cuánto espacio de almacenamiento necesita hoy el servidor", "Qué modelo predictivo tiene la mejor precisión posible"], "answer": 0,
+   "why": "Governance: quién puede tomar qué acciones, con qué datos, cuándo y con qué métodos."},
+  {"q": "\"El data governance incluye definir roles y responsabilidades para la gestión de datos, y crear políticas y procesos para toda la empresa.\"",
+   "options": ["Verdadero", "Falso"], "answer": 0,
+   "why": "Verdadero. Es la pregunta 15 del cuestionario de Moodle."},
+  {"q": "Una empresa evita activamente usar datos para decidir. ¿En qué etapa de madurez está?",
+   "options": ["Data-resistant", "Data-aware", "Data-guided", "Data-savvy"], "answer": 0,
+   "why": "Es el primer escalón: la organización evita los datos de forma activa."},
+  {"q": "¿Cuál de estas NO es una de las 4 características de una organización data-driven?",
+   "options": ["Centralizar decisiones en IT", "Recopilación correcta de datos", "Herramientas orientadas al dato", "Nuevas áreas y perfiles"], "answer": 0,
+   "why": "Las 4 son: recopilación correcta, herramientas orientadas al dato, nuevas áreas y perfiles, y data governance."},
+  {"q": "¿Para qué sirve principalmente el data profiling?",
+   "options": ["Evaluar la calidad existente", "Corregir los errores detectados", "Eliminar los registros duplicados", "Cargar datos al warehouse"], "answer": 0,
+   "why": "El profiling facilita la comprensión de los datos: identifica sus características y evalúa su calidad. Corregir es trabajo del cleansing."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Distinguís qué es una <em>dimensión</em>, qué es un <em>proceso</em> (profiling o cleansing) y qué es <em>gobierno</em>, y sabés nombrar las 4 características de una organización data-driven.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/001_INTRODUCCION_parte_2.pdf#page=2">Intro parte 2, slides 2 a 20</a>. Resumen: <a href="../reference/calidad-y-gobierno.html">Referencia · Calidad y gobierno de datos</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si querés comparar esto con cómo lo hacés en tu laburo (por ejemplo, data contracts o Great Expectations contra "profiling"), preguntame en el chat.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0001-dimensiones-de-calidad.html">← 0001 · Dimensiones de calidad</a>
+  <a href="0003-roles-c-level.html">0003 · Roles C-level →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

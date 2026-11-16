@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 54 · Conjuntos en SQL</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+<style>
+  figure.venn { max-width: 20rem; margin: 1.6rem auto; }
+  figure.venn figcaption { text-align: center; font-family: var(--mono); font-size: 0.95rem; color: var(--ink); }
+  .venn-row { display: flex; flex-wrap: wrap; gap: 0 1.2rem; justify-content: center; }
+  .venn-row figure.venn { flex: 1 1 13rem; max-width: 15rem; margin: 1rem 0; }
+</style>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 54 · SQL · 2do parcial</p>
+    <h1 class="masthead__title">Conjuntos en SQL: del diagrama a la consulta</h1>
+    <p class="masthead__standfirst">
+      Te dan dos conjuntos A y B con un campo <code>Id_Art</code> y un diagrama de Venn (o una
+      expresión como <code>(A ∪ B) − (A ∩ B)</code>), y hay que escribir el SQL de dos maneras
+      distintas. Con <b>JOIN + WHERE</b> se resuelven todos.
+    </p>
+    <p class="masthead__meta">
+      <span>~35 minutos</span>
+      <span>Repaso del 05/11 (audios de clase)</span>
+      <span>Prioridad para el 2do parcial: alta (práctica)</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Lo que dijo el docente</span>
+    <p>
+      Dan el diagrama o la expresión y piden el SQL equivalente, con <b>al menos dos
+      soluciones</b>. Dijeron que hay entre tres y seis soluciones válidas para cada uno, pero
+      <b>se prefiere JOIN y WHERE</b>. En la extra clase usó tablas
+      <code>ARTICULOS_A</code> y <code>ARTICULOS_B</code>; acá se llaman <code>A</code> y <code>B</code>. <code>UNION</code> y <code>EXCEPT</code> también se
+      aceptan. No toman la notación del álgebra relacional: piden el SQL directamente.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Tres regiones, y nada más</h2>
+
+  <p>
+    Con dos conjuntos, cada <code>Id_Art</code> cae en <b>una sola</b> de tres regiones:
+    sólo en A, en los dos o sólo en B. Cualquier diagrama que te den no es más que una
+    elección de cuáles de esas regiones van pintadas. Estos son los datos de la práctica:
+  </p>
+
+  <figure class="venn" data-on="" data-caption="A = {1..6} · B = {4..8}"></figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Región</th><th>Datos</th><th>Con JOIN + WHERE</th></tr></thead>
+      <tbody>
+        <tr><td><b>Sólo A</b> (A − B)</td><td>1, 2, 3</td><td><code>A LEFT JOIN B … WHERE B.Id_Art IS NULL</code></td></tr>
+        <tr><td><b>Los dos</b> (A ∩ B)</td><td>4, 5, 6</td><td><code>A INNER JOIN B …</code></td></tr>
+        <tr><td><b>Sólo B</b> (B − A)</td><td>7, 8</td><td><code>B LEFT JOIN A … WHERE A.Id_Art IS NULL</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    El truco del LEFT JOIN es este: trae <b>todas</b> las filas de la izquierda, y si una no
+    encuentra pareja en la derecha, las columnas de la derecha quedan en <code>NULL</code>.
+    Preguntar <code>IS NULL</code> por el lado derecho es preguntar "¿no tiene pareja?".
+  </p>
+
+<pre><code>A LEFT JOIN B ON A.Id_Art = B.Id_Art
+
+A.Id_Art  B.Id_Art
+1         NULL      ← sólo A
+2         NULL      ← sólo A
+3         NULL      ← sólo A
+4         4         ← los dos
+5         5         ← los dos
+6         6         ← los dos</code></pre>
+
+  <h2><span class="num">02</span>La llave maestra: FULL JOIN + WHERE</h2>
+
+  <p>
+    El <code>FULL JOIN</code> trae las filas de los dos lados. Cada fila del resultado ya
+    te dice en qué región está, según qué lado vino en <code>NULL</code>:
+  </p>
+
+<pre><code>A FULL JOIN B ON A.Id_Art = B.Id_Art
+
+A.Id_Art  B.Id_Art
+1..3      NULL      ← sólo A    (B.Id_Art IS NULL)
+4..6      4..6      ← los dos   (ninguno es NULL)
+NULL      7, 8      ← sólo B    (A.Id_Art IS NULL)</code></pre>
+
+  <p>
+    Entonces <b>cualquier</b> diagrama de dos conjuntos sale con un FULL JOIN y un WHERE que
+    deje pasar sólo las regiones pintadas:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Lo pintado</th><th>WHERE</th></tr></thead>
+      <tbody>
+        <tr><td>Sólo A</td><td><code>B.Id_Art IS NULL</code></td></tr>
+        <tr><td>Sólo B</td><td><code>A.Id_Art IS NULL</code></td></tr>
+        <tr><td>Intersección</td><td><code>A.Id_Art IS NOT NULL AND B.Id_Art IS NOT NULL</code></td></tr>
+        <tr><td>Todo A</td><td><code>A.Id_Art IS NOT NULL</code></td></tr>
+        <tr><td>Todo B</td><td><code>B.Id_Art IS NOT NULL</code></td></tr>
+        <tr><td>Unión</td><td>sin WHERE</td></tr>
+        <tr><td>Unión menos intersección</td><td><code>A.Id_Art IS NULL OR B.Id_Art IS NULL</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Qué columna mostrás</span>
+    <p>
+      En las filas "sólo B", <code>A.Id_Art</code> es NULL. Si ponés <code>SELECT A.Id_Art</code>
+      te salen NULL en vez de 7 y 8. Cuando el resultado puede traer filas de los dos lados,
+      elegí el que no es NULL:
+    </p>
+<pre><code>SELECT CASE WHEN A.Id_Art IS NULL THEN B.Id_Art
+            ELSE A.Id_Art
+       END AS Id_Art</code></pre>
+    <p>
+      <code>COALESCE(A.Id_Art, B.Id_Art)</code> hace lo mismo en una línea. El CASE es la forma
+      que se usó en clase.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Antes de escribir, simplificá</h2>
+
+  <p>
+    A veces la expresión es más larga de lo que pinta. Pintá las regiones y fijate qué queda:
+    el ejemplo del repaso, <code>(A − B) ∪ (A ∩ B)</code>, es <b>A entero</b>.
+  </p>
+
+  <div class="venn-row">
+    <figure class="venn" data-on="a i" data-caption="(A − B) ∪ (A ∩ B) = A"></figure>
+    <figure class="venn" data-on="a b" data-caption="(A ∪ B) − (A ∩ B)"></figure>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Expresión</th><th>Regiones</th><th>Es lo mismo que</th></tr></thead>
+      <tbody>
+        <tr><td><code>(A − B) ∪ (A ∩ B)</code></td><td>sólo A + los dos</td><td><b>A</b></td></tr>
+        <tr><td><code>(B − A) ∪ (A ∩ B)</code></td><td>sólo B + los dos</td><td><b>B</b></td></tr>
+        <tr><td><code>(A ∪ B) − (A ∩ B)</code></td><td>sólo A + sólo B</td><td><code>(A − B) ∪ (B − A)</code></td></tr>
+        <tr><td><code>A − (A ∩ B)</code></td><td>sólo A</td><td><code>A − B</code></td></tr>
+        <tr><td><code>(A ∪ B) − (A − B)</code></td><td>los dos + sólo B</td><td><b>B</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Dos soluciones de una</span>
+    <p>
+      Si la expresión se simplifica, ya tenés dos soluciones: la <b>directa</b>
+      (<code>SELECT Id_Art FROM A</code>) y la <b>desarrollada</b>, que escribe cada parte tal
+      como dice la expresión. Igual escribí las dos: la directa muestra que entendiste, la
+      desarrollada muestra que sabés armar cada pieza.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>El plan B: operadores de conjunto y subconsultas</h2>
+
+  <p>Sirven como segunda solución. Los dos SELECT tienen que traer las mismas columnas.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Operación</th><th>Operador</th><th>Con subconsulta</th></tr></thead>
+      <tbody>
+        <tr><td>A ∪ B</td><td><code>… FROM A UNION SELECT … FROM B</code></td><td>—</td></tr>
+        <tr><td>A ∩ B</td><td><code>… FROM A INTERSECT SELECT … FROM B</code></td><td><code>WHERE Id_Art IN (SELECT Id_Art FROM B)</code></td></tr>
+        <tr><td>A − B</td><td><code>… FROM A EXCEPT SELECT … FROM B</code></td><td><code>WHERE Id_Art NOT IN (SELECT Id_Art FROM B)</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Tres trampas</span>
+    <p>
+      <b>UNION contra UNION ALL.</b> <code>UNION</code> saca los repetidos; <code>UNION ALL</code>
+      no. Para conjuntos, usá <code>UNION</code>. El docente usó <code>UNION ALL</code> en la
+      versión literal de la unión menos la intersección, y ahí no hace daño: los repetidos son
+      justo los de la intersección, que después se sacan.<br>
+      <b>NOT IN con un NULL.</b> Si la subconsulta devuelve algún NULL, <code>NOT IN</code> no
+      devuelve nada. <code>NOT EXISTS</code> y el LEFT JOIN no tienen ese problema.<br>
+      <b>El IS NULL va en el WHERE.</b> Si lo ponés en el <code>ON</code> del LEFT JOIN, no
+      filtra: el LEFT JOIN igual trae todas las filas de la izquierda.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <p>
+    Base <code>conjuntos</code>: A = {1, 2, 3, 4, 5, 6} y B = {4, 5, 6, 7, 8}. Cada ejercicio
+    pide <b>un método</b>. El corrector sólo mira el resultado, así que lo pedido depende de
+    vos. Abajo de cada uno están las otras soluciones, para tener la segunda del examen.
+  </p>
+
+  <figure class="venn" data-on="i" data-caption="1 · A ∩ B"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">1 de 8 · Intersección, con JOIN</span>
+    <p class="sqlbox__task">Los <code>Id_Art</code> que están en A <b>y</b> en B.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT A.Id_Art
+FROM A
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT A.Id_Art
+FROM A
+INNER JOIN B ON A.Id_Art = B.Id_Art;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>SELECT Id_Art FROM A
+WHERE Id_Art IN (SELECT Id_Art FROM B);
+
+SELECT Id_Art FROM A
+INTERSECT
+SELECT Id_Art FROM B;</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="a" data-caption="2 · A − B"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">2 de 8 · Resta, con LEFT JOIN</span>
+    <p class="sqlbox__task">Los <code>Id_Art</code> que están en A pero <b>no</b> en B.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT A.Id_Art
+FROM A
+LEFT JOIN B ON </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT A.Id_Art
+FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>SELECT Id_Art FROM A
+WHERE Id_Art NOT IN (SELECT Id_Art FROM B);
+
+SELECT Id_Art FROM A
+EXCEPT
+SELECT Id_Art FROM B;
+
+SELECT A.Id_Art FROM A
+WHERE NOT EXISTS (SELECT 1 FROM B WHERE B.Id_Art = A.Id_Art);</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="b" data-caption="3 · B − A"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">3 de 8 · La otra resta, con JOIN</span>
+    <p class="sqlbox__task">Los <code>Id_Art</code> que están en B pero no en A.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT B.Id_Art
+FROM B
+LEFT JOIN A ON B.Id_Art = A.Id_Art
+WHERE A.Id_Art IS NULL;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>-- Mismo resultado sin dar vuelta las tablas:
+SELECT B.Id_Art
+FROM A
+RIGHT JOIN B ON A.Id_Art = B.Id_Art
+WHERE A.Id_Art IS NULL;
+
+SELECT Id_Art FROM B
+WHERE Id_Art NOT IN (SELECT Id_Art FROM A);
+
+SELECT Id_Art FROM B
+EXCEPT
+SELECT Id_Art FROM A;</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="a i b" data-caption="4 · A ∪ B"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">4 de 8 · Unión, con FULL JOIN</span>
+    <p class="sqlbox__task">Todos los <code>Id_Art</code> que están en A o en B, sin repetir y <b>sin NULL</b>.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT CASE WHEN A.Id_Art IS NULL THEN B.Id_Art
+            ELSE A.Id_Art
+       END AS Id_Art
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>SELECT Id_Art FROM A
+UNION
+SELECT Id_Art FROM B;
+
+SELECT COALESCE(A.Id_Art, B.Id_Art) AS Id_Art
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art;</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="a b" data-caption="5 · (A ∪ B) − (A ∩ B)"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">5 de 8 · Unión menos intersección, con FULL JOIN (repaso)</span>
+    <p class="sqlbox__task">Los <code>Id_Art</code> que están en uno solo de los dos conjuntos.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT CASE WHEN A.Id_Art IS NULL THEN B.Id_Art
+            ELSE A.Id_Art
+       END AS Id_Art
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art
+WHERE A.Id_Art IS NULL
+   OR B.Id_Art IS NULL;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones (las del repaso)</summary>
+    <div class="reveal__body">
+<pre><code>-- Las dos del docente (extra clase), con LEFT y RIGHT OUTER JOIN:
+SELECT A.Id_Art FROM A
+LEFT OUTER JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL
+UNION
+SELECT B.Id_Art FROM A
+RIGHT OUTER JOIN B ON A.Id_Art = B.Id_Art
+WHERE A.Id_Art IS NULL;
+
+-- y la literal, con UNION ALL:
+SELECT U.* FROM (SELECT Id_Art FROM A
+                 UNION ALL
+                 SELECT Id_Art FROM B) AS U
+WHERE U.Id_Art NOT IN (SELECT A.Id_Art
+                       FROM A INNER JOIN B ON A.Id_Art = B.Id_Art);
+
+-- Sólo A + sólo B, con dos LEFT JOIN:
+SELECT A.Id_Art FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL
+UNION
+SELECT B.Id_Art FROM B
+LEFT JOIN A ON B.Id_Art = A.Id_Art
+WHERE A.Id_Art IS NULL;
+
+-- Igual, con NOT IN:
+SELECT Id_Art FROM A WHERE Id_Art NOT IN (SELECT Id_Art FROM B)
+UNION
+SELECT Id_Art FROM B WHERE Id_Art NOT IN (SELECT Id_Art FROM A);
+
+-- Literal: la unión, sacando la intersección:
+SELECT Id_Art FROM (SELECT Id_Art FROM A
+                    UNION
+                    SELECT Id_Art FROM B) AS U
+WHERE Id_Art NOT IN (SELECT A.Id_Art
+                     FROM A INNER JOIN B ON A.Id_Art = B.Id_Art);</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="a i" data-caption="6 · (A − B) ∪ (A ∩ B)"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">6 de 8 · El del repaso, desarrollado</span>
+    <p class="sqlbox__task">
+      Escribí <code>(A − B) ∪ (A ∩ B)</code> parte por parte: la resta con LEFT JOIN, la
+      intersección con INNER JOIN, y uní las dos.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT A.Id_Art FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL
+UNION
+SELECT A.Id_Art FROM A
+INNER JOIN B ON A.Id_Art = B.Id_Art;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>-- Simplificada: sólo A + los dos = A
+SELECT Id_Art FROM A;
+
+-- Con JOIN y sin UNION: el LEFT JOIN sin WHERE ya trae todo A
+SELECT A.Id_Art
+FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art;</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="i b" data-caption="7 · (A ∪ B) − (A − B)"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">7 de 8 · Simplificá primero, con FULL JOIN</span>
+    <p class="sqlbox__task">
+      Resolvé <code>(A ∪ B) − (A − B)</code> con un FULL JOIN y un WHERE. Pista: pintá las
+      regiones antes.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT B.Id_Art
+FROM A
+FULL JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NOT NULL;
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>-- Unión menos "sólo A" deja los dos + sólo B = B
+SELECT Id_Art FROM B;
+
+-- Literal:
+SELECT Id_Art FROM (SELECT Id_Art FROM A
+                    UNION
+                    SELECT Id_Art FROM B) AS U
+EXCEPT
+SELECT A.Id_Art FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL;</code></pre>
+    </div>
+  </details>
+
+  <figure class="venn" data-on="a" data-caption="8 · A − (A ∩ B)"></figure>
+  <div class="sqlbox" data-seed="conjuntos">
+    <span class="sqlbox__label">8 de 8 · Literal, con NOT IN</span>
+    <p class="sqlbox__task">
+      Escribí <code>A − (A ∩ B)</code> tal como está: lo de A que <code>NOT IN</code> la
+      intersección, y la intersección con INNER JOIN adentro de la subconsulta.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Id_Art
+FROM A
+WHERE Id_Art NOT IN (SELECT A.Id_Art
+                     FROM A
+                     INNER JOIN B ON A.Id_Art = B.Id_Art);
+</script>
+  </div>
+  <details class="reveal">
+    <summary>Otras soluciones</summary>
+    <div class="reveal__body">
+<pre><code>-- Es A − B, así que sirve la resta de siempre:
+SELECT A.Id_Art
+FROM A
+LEFT JOIN B ON A.Id_Art = B.Id_Art
+WHERE B.Id_Art IS NULL;</code></pre>
+    </div>
+  </details>
+
+  <h2><span class="num">06</span>Repaso rápido</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 4 · Sólo A</span>
+    <p class="quiz__q">En <code>A LEFT JOIN B ON A.Id_Art = B.Id_Art</code>, ¿qué WHERE deja sólo lo que está en A y no en B?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Las filas de A sin pareja quedan con las columnas de B en NULL: eso es exactamente 'no está en B'.">WHERE B.Id_Art IS NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="A.Id_Art nunca es NULL en un LEFT JOIN desde A: todas las filas vienen de A. Esto no devuelve nada.">WHERE A.Id_Art IS NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso deja las filas que sí tienen pareja: es la intersección.">WHERE B.Id_Art IS NOT NULL</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 4 · Simplificar</span>
+    <p class="quiz__q"><code>(A − B) ∪ (A ∩ B)</code> es igual a…</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="La unión también tendría 'sólo B', que acá no aparece.">A ∪ B</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Sólo A más los dos: todo el círculo A. SELECT Id_Art FROM A es una solución válida.">A</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="A − B es sólo una de las dos partes; le falta la intersección.">A − B</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 4 · FULL JOIN</span>
+    <p class="quiz__q">Con <code>A FULL JOIN B</code>, ¿qué WHERE da la unión menos la intersección?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="AND no puede cumplirse nunca: una fila del FULL JOIN tiene al menos un lado con dato.">A.Id_Art IS NULL AND B.Id_Art IS NULL</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Un lado NULL significa que el Id_Art está en uno solo de los conjuntos: sólo A o sólo B.">A.Id_Art IS NULL OR B.Id_Art IS NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es la intersección: los dos lados con dato.">A.Id_Art IS NOT NULL AND B.Id_Art IS NOT NULL</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 4 · La columna</span>
+    <p class="quiz__q">En la unión con FULL JOIN, ¿por qué no alcanza con <code>SELECT A.Id_Art</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Las filas que están sólo en B traen A.Id_Art en NULL. Hace falta CASE (o COALESCE) para tomar el lado con dato.">Porque en las filas de sólo B, A.Id_Art viene en NULL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El FULL JOIN no duplica: con Id_Art único en cada tabla, cada valor aparece una vez.">Porque el FULL JOIN repite los de la intersección</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Se puede seleccionar cualquier columna; el problema es qué valor trae en ciertas filas.">Porque no se puede seleccionar una sola tabla en un FULL JOIN</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Audios del 05/11/2026 (clase y repaso extra), resumidos con NotebookLM, y las capturas de
+      los diagramas <code>(A − B) ∪ (A ∩ B)</code> y <code>(A ∪ B) − (A ∩ B)</code> que mostró
+      el docente. Las soluciones están probadas en SQLite 3.45 (la de esta página).
+    </p>
+    <p>
+      <a href="https://www.sqlite.org/lang_select.html#compound_select_statements">SQLite — UNION, INTERSECT, EXCEPT</a> ·
+      <a href="https://learn.microsoft.com/es-es/sql/t-sql/queries/from-transact-sql">SQL Server — FROM y tipos de JOIN</a>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Mandame una foto de un diagrama que no esté acá (o inventá uno
+      con <code>(B − A) ∪ (A ∩ B)</code>) con tus dos soluciones, y te digo si están bien.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0053-repaso-unidad-9.html">Anterior: 0053 · Repaso de la Unidad 9</a>
+    <a href="0036-subconsultas-exists.html">Subconsultas: 0036</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script>
+/* Venn de dos conjuntos. data-on lista las regiones pintadas: a (sólo A), i (los dos), b (sólo B). */
+(function () {
+  var n = 0;
+  document.querySelectorAll("figure.venn").forEach(function (fig) {
+    var on = (fig.getAttribute("data-on") || "").split(/\s+/);
+    var id = "v" + (n++);
+    var A = '<circle cx="105" cy="92" r="62"/>', B = '<circle cx="165" cy="92" r="62"/>';
+    var fill = function (r) { return on.indexOf(r) >= 0 ? "var(--accent)" : "var(--paper-sunk)"; };
+    var op = function (r) { return on.indexOf(r) >= 0 ? 0.45 : 1; };
+    fig.innerHTML =
+      '<svg viewBox="0 0 270 170" role="img" aria-label="' + (fig.getAttribute("data-caption") || "") + '">' +
+      '<defs>' +
+        '<mask id="' + id + 'ma"><rect width="270" height="170" fill="#fff"/><circle cx="165" cy="92" r="62" fill="#000"/></mask>' +
+        '<mask id="' + id + 'mb"><rect width="270" height="170" fill="#fff"/><circle cx="105" cy="92" r="62" fill="#000"/></mask>' +
+        '<clipPath id="' + id + 'ci">' + A + '</clipPath>' +
+      '</defs>' +
+      '<g mask="url(#' + id + 'ma)" style="fill:' + fill("a") + ';fill-opacity:' + op("a") + '">' + A + '</g>' +
+      '<g mask="url(#' + id + 'mb)" style="fill:' + fill("b") + ';fill-opacity:' + op("b") + '">' + B + '</g>' +
+      '<g clip-path="url(#' + id + 'ci)" style="fill:' + fill("i") + ';fill-opacity:' + op("i") + '">' + B + '</g>' +
+      '<g style="fill:none;stroke:var(--ink-soft);stroke-width:2">' + A + B + '</g>' +
+      '<g style="fill:var(--ink);font:700 18px var(--sans)"><text x="58" y="26">A</text><text x="200" y="26">B</text></g>' +
+      '<g style="fill:var(--ink-soft);font:14px var(--mono)" text-anchor="middle">' +
+        '<text x="75" y="97">1 2 3</text><text x="135" y="97">4 5 6</text><text x="195" y="97">7 8</text>' +
+      '</g></svg>' +
+      '<figcaption>' + (fig.getAttribute("data-caption") || "") + '</figcaption>';
+  });
+})();
+</script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/conjuntos.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

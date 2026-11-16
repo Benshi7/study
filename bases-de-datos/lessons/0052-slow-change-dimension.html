@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 52 · Slow Change Dimension</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 52 · Unidad 9 · Data warehouse</p>
+    <h1 class="masthead__title">Slow Change Dimension: una fila por foto</h1>
+    <p class="masthead__standfirst">
+      Cuando un dato de una dimensión cambia, no se pisa: se cierra la foto vieja y se abre una
+      nueva. De ahí salen dos consultas, "el estado a una fecha" y "el estado actual", y el
+      docente dijo que las toma.
+    </p>
+    <p class="masthead__meta">
+      <span>~40 minutos</span>
+      <span>Deck "Slow Change Dimension", slides 2–12 · TP SCD</span>
+      <span>Prioridad para el 2do parcial: muy alta (práctica)</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Lo que dijo el docente</span>
+    <p>
+      De SCD toman <b>dos cosas</b>: el estado de un cliente <b>a una fecha</b> y el
+      <b>estado actual</b>. Y por convención la "fecha actual" es <code>2100-12-31</code>: la
+      foto vigente no tiene fin real, así que lleva esa fecha lejana. Además el modelo de
+      parcial <code>bd parcial 1a</code> ya trae una tabla <code>CUSTOMER_GROUP</code> con fotos:
+      es esta lección con otro nombre.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>El problema: las dimensiones cambian despacio</h2>
+
+  <blockquote class="callout">
+    "Hace referencia a que los datos de las dimensiones van cambiando poco a poco a lo largo
+    del tiempo. <b>No son incrementales como los hechos.</b> Cada día hay nuevas ventas o
+    pedidos, sin embargo la categorización de los productos o clientes va cambiando poco a poco."
+  </blockquote>
+
+  <p>
+    Cuando un cliente cambia de rubro o de ejecutivo de cuentas, hay dos caminos, y el deck los
+    nombra: <b>registrar el historial de cambios</b> o <b>reemplazar los valores</b>. Reemplazar
+    es simple, pero el pasado se pierde: no se puede responder "¿en qué banca estaba en 2021?".
+
+  </p>
+
+  <h2><span class="num">02</span>Los tipos de SCD</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tipo</th><th>Estrategia</th><th>Qué dice el deck</th></tr></thead>
+      <tbody>
+        <tr><td><b>1</b></td><td>Sobrescribir</td><td>El más básico: no guarda cambios históricos, no requiere modelado especial ni filas nuevas.</td></tr>
+        <tr><td><b>2</b></td><td><b>Añadir fila</b></td><td>Se agregan columnas de inicio y fin y una fila nueva por cada cambio. <b>Es el que desarrolla el deck, y el del parcial.</b></td></tr>
+        <tr><td><b>3</b></td><td>Añadir columna</td><td>Sólo nombrado.</td></tr>
+        <tr><td><b>4</b></td><td>Tabla de historia separada</td><td>Sólo nombrado.</td></tr>
+        <tr><td><b>6</b></td><td>Híbrido</td><td>Sólo nombrado.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Kimball planteó originalmente los tipos 1, 2 y 3; el 4 y el 6 los sumó la comunidad con los
+    años. Para el examen alcanza con saber <b>nombrar los cinco</b> y <b>desarrollar el 2</b>.
+  </p>
+
+  <h2><span class="num">03</span>Tipo 2: las dos columnas nuevas</h2>
+
+  <blockquote class="callout">
+    "<b>Fecha de Inicio</b>: fecha desde que entró en vigencia el registro actual. Por defecto
+    suele utilizarse una fecha muy antigua, ejemplo: 01/01/1000.<br>
+    <b>Fecha de Fin</b>: fecha en la cual el registro actual dejó de estar en vigencia. Por
+    defecto suele utilizarse una fecha muy futurista, ejemplo: 31/12/2100."
+  </blockquote>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La convención de la fecha actual</span>
+    <p>
+      Una foto <b>vigente</b> termina en <code>2100-12-31</code>. No es una fecha real: es la
+      marca de "todavía no terminó". Por eso el estado actual se pide con
+      <code>Fecha_Fin = '2100-12-31'</code> y no comparando con la fecha de hoy. El deck dice
+      "por defecto suele utilizarse… ejemplo", así que en un examen <b>copiá la fecha de fin
+      abierta que traiga la tabla</b>.
+    </p>
+  </div>
+
+  <h3>Un cambio, paso a paso</h3>
+
+  <p>Un producto nace el 2023-02-15 con Rubro 1, y el 2023-05-01 pasa a Rubro 88:</p>
+
+<pre><code>ANTES     Id_Producto  Rubro  Tipo  Producto  Fecha_Inicio  Fecha_Fin
+          1            1      1     1         2023-02-15    2100-12-31
+
+DESPUÉS   1            1      1     1         2023-02-15    <b>2023-04-30</b>   ← Fecha_Inicio nueva − 1
+          1            <b>88</b>     1     1         <b>2023-05-01</b>    2100-12-31   ← la foto vigente</code></pre>
+
+  <ol>
+    <li>Se agrega una fila nueva con su clave.</li>
+    <li>Se registra la modificación (el Rubro nuevo).</li>
+    <li>Se actualiza la <b>Fecha_Fin de la fila vieja</b>: <b>Fecha_Inicio de la nueva − 1</b>.</li>
+    <li>La fila nueva lleva su <code>Fecha_Inicio</code> y la fecha de fin abierta.</li>
+  </ol>
+
+  <p>Esta técnica "permite guardar ilimitada información de cambios". En SQL son <b>dos sentencias</b>:</p>
+
+<pre><code>UPDATE Tabla
+SET    Fecha_Fin = '2023-04-30'
+WHERE  Id_Producto = 1
+  AND  Fecha_Fin = '2100-12-31';          -- sólo la foto vigente
+
+INSERT INTO Tabla
+VALUES (1, 88, 1, 1, '2023-05-01', '2100-12-31');</code></pre>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Falta una condición en el deck</span>
+    <p>
+      El <code>UPDATE</code> del slide 8 es <code>WHERE Id_producto = 1</code> y nada más. Con una
+      sola foto funciona, pero apenas el producto tiene historia <b>cierra todas sus fotos</b> con
+      la misma fecha y las pisa. Agregá siempre <code>AND Fecha_Fin = '2100-12-31'</code>: sólo se
+      cierra la vigente. El ejercicio 8 lo verifica.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Las dos consultas que toma el docente</h2>
+
+  <p>Cuatro fotos del cliente 9989 (del slide 9); la última es la vigente:</p>
+
+<pre><code>A   9989  1   1   1   2020-08-12   2021-09-09
+B   9989  1   1   1   2021-09-10   2023-02-01
+C   9989  1   1   1   2023-02-02   2023-04-30
+D   9989  88  1   1   2023-05-01   2100-12-31</code></pre>
+
+  <h3>Estado a una fecha</h3>
+
+<pre><code>SELECT *
+FROM   Tabla
+WHERE  '2023-04-01' BETWEEN Fecha_Inicio AND Fecha_Fin;     -- Rta: foto C</code></pre>
+
+  <h3>Estado actual</h3>
+
+<pre><code>SELECT *
+FROM   Tabla
+WHERE  Fecha_Fin = '2100-12-31';                            -- Rta: foto D</code></pre>
+
+  <blockquote class="callout">
+    "Siempre una sola foto cumple lo solicitado."
+  </blockquote>
+
+  <p>
+    Y se cumple <b>porque cada foto termina un día antes de que empiece la siguiente</b>
+    (Fecha_Fin = Fecha_Inicio − 1): los períodos no se pisan. Como el <code>BETWEEN</code> es
+    inclusivo, una fecha que cae justo en el borde (el 2023-04-30, o el 2023-05-01) pertenece a
+    una sola foto.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Dos detalles del deck que confunden</span>
+    <p>
+      <b>1.</b> El slide 9 escribe la pregunta con "01/04/2022" pero la consulta y la respuesta
+      usan <b>2023</b>: es una errata, la respuesta es la foto C. <br>
+      <b>2.</b> El deck mezcla <code>'2023/04/01'</code> en una consulta y <code>'2100-12-31'</code>
+      en otra. En SQLite las fechas son <b>texto</b> y se comparan letra a letra: <code>'/'</code>
+      es mayor que <code>'-'</code>, así que mezclar formatos da resultados incorrectos sin error.
+      Usá siempre <code>AAAA-MM-DD</code>, igual que en la tabla.
+    </p>
+  </div>
+
+  <h3>Con el nombre del cliente</h3>
+
+  <p>
+    El slide 12 pide "información actual del cliente con su nombre": la foto vigente más un
+    <code>JOIN</code> a la tabla de nombres (<code>LK_Clientes</code> en el deck,
+    <code>CUSTOMER_NAME</code> en el modelo 1a). El filtro de fecha va en el <code>WHERE</code>;
+    el <code>ON</code> sólo une por la clave.
+  </p>
+
+  <h2><span class="num">05</span>Las vistas: histórica y actual</h2>
+
+  <p>
+    El TP pide dos: <code>P_Mstr_LK_Clientes_Hist</code> ("con todos sus campos en español") y
+    <code>P_Mstr_LK_Clientes</code> ("la cual contendrá la información actual"). Después hay que
+    responder las mismas preguntas apuntando a la tabla y apuntando a cada vista.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>Vista histórica</th><th>Vista actual</th></tr></thead>
+      <tbody>
+        <tr><td><b>Filas</b></td><td>Todas las fotos</td><td>Sólo las que cumplen <code>Fecha_Fin = '2100-12-31'</code></td></tr>
+        <tr><td><b>Campos</b></td><td>Todos, en español, <b>con Fecha_Inicio y Fecha_Fin</b></td><td>Todos <b>menos</b> <code>Fecha_Inicio</code> y <code>Fecha_Fin</code>. Así la armó el docente, y en el repaso del 05/11 dijo que incluirlas está mal. Si la consigna enumera los campos (como el modelo 1a, ejercicio 5), manda la consigna.</td></tr>
+        <tr><td><b>Responde</b></td><td>El estado a cualquier fecha</td><td>El estado actual, sin repetir el filtro</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    La regla "<code>2100-12-31</code>" queda escrita <b>una sola vez</b>, dentro de la vista
+    actual. Quien la consulta ya no necesita saber la convención. En cambio las preguntas con
+    fecha ("la banca al 14/02/2021", "el oficial el último día de 2021") <b>sólo se resuelven
+    sobre la histórica</b>: la actual devolvería el valor de hoy.
+  </p>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Cómo las escribió el docente (extra clase)</span>
+    <p>La actual la armó <b>sobre la histórica</b>, no sobre la tabla, y sin las fechas:</p>
+<pre><code>CREATE VIEW VW_Clientes_Hist AS
+SELECT cliente_Id, Fecha_Inicio_vigencia, Fecha_fin_Vigencia, banco_Id, Oficial_Id
+FROM   CLIENTES;
+
+CREATE VIEW VW_Clientes AS
+SELECT cliente_Id, banco_Id, Oficial_Id
+FROM   VW_Clientes_Hist
+WHERE  Fecha_fin_Vigencia = '2100-12-31';
+
+-- Estado a una fecha, siempre sobre la histórica:
+SELECT cliente_id, oficial_id
+FROM   VW_Clientes_Hist
+WHERE  '2025-03-06' BETWEEN Fecha_Inicio_vigencia AND Fecha_fin_Vigencia;</code></pre>
+  </div>
+
+  <h3>El indicador</h3>
+
+  <p>
+    El deck de Data Warehouse muestra una vista de la capa lógica con un indicador
+    "Propio/Externo", y el modelo 1a lo pide: <i>"los oficiales con código menor a 21 y Banca
+    mayor a 4 sean catalogados como Externos y al resto Propios"</i>. Es un <code>CASE</code>
+    (lección <a href="0039-vistas.html">0039</a>):
+  </p>
+
+<pre><code>CASE WHEN Officer_Id &lt; 21 AND Banking_Group_Id &gt; 4
+     THEN 'Externo' ELSE 'Propio' END AS Ind_Staff</code></pre>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Un detalle de la lógica</span>
+    <p>
+      "Menor a 21 <b>y</b> mayor a 4" son las dos condiciones a la vez: un oficial con código 15
+      en la banca 3 es <b>Propio</b>, porque la segunda condición falla. Es la misma lógica de la
+      lección <a href="0033-condiciones-y-null.html">0033</a>.
+    </p>
+  </div>
+
+  <h2><span class="num">06</span>Historia o foto: qué usar</h2>
+
+  <p>
+    El docente adelantó que también puede venir una consulta como <i>"sumar el saldo histórico y
+    sacarle el promedio"</i>. Lo que se decide primero es <b>qué filas entran</b>, y eso lo dice el
+    enunciado:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Si el enunciado dice…</th><th>Entran…</th><th>Condición</th></tr></thead>
+      <tbody>
+        <tr><td>"histórico", "a lo largo del tiempo", "en toda su historia"</td><td><b>Todas</b> las fotos</td><td>ninguna sobre fechas (sólo el cliente, si lo pide)</td></tr>
+        <tr><td>"actual", "hoy", "vigente"</td><td>Sólo la <b>foto vigente</b></td><td><code>Fecha_Fin = '2100-12-31'</code></td></tr>
+        <tr><td>"al 31/12/2021", "en esa fecha"</td><td>La foto que <b>cubre</b> esa fecha</td><td><code>'2021-12-31' BETWEEN Fecha_Inicio AND Fecha_Fin</code></td></tr>
+        <tr><td>"hasta el 31/12/2021", "la historia hasta…"</td><td>Las fotos que <b>empezaron</b> hasta esa fecha</td><td><code>Fecha_Inicio &lt;= '2021-12-31'</code></td></tr>
+        <tr><td>"anteriores a la actual", "sin la actual"</td><td>Todas <b>menos</b> la vigente</td><td><code>Fecha_Fin &lt;&gt; '2100-12-31'</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Después viene la <b>agregación</b>: <code>SUM</code>, <code>AVG</code>, <code>COUNT</code>…, con
+    <code>GROUP BY</code> si pide "por cliente". Una agregada sin <code>GROUP BY</code> da una sola
+    fila para todo lo que entró.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">"Histórica más la última foto"</span>
+    <p>
+      La tabla histórica <b>ya contiene</b> la foto vigente: no hay que sumarla aparte. Si el
+      enunciado pide la historia <i>completa</i>, es la tabla sin filtro de fecha. La última foto
+      sola se pide con <code>2100-12-31</code>, y una fecha puntual con <code>BETWEEN</code>. Sobre la
+      vista actual no se puede calcular nada histórico: sólo tiene una foto por cliente.
+    </p>
+  </div>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Qué promedia un AVG</span>
+    <p>
+      <code>AVG(Saldo)</code> sobre las fotos es un promedio <b>simple</b>: cada foto pesa lo mismo,
+      aunque una haya durado un mes y otra cuatro años. Si el enunciado pidiera un promedio
+      "ponderado por el tiempo" habría que multiplicar por la duración de cada foto; no es lo que
+      muestran el deck ni el modelo, así que lo normal es el promedio simple.
+    </p>
+  </div>
+
+  <p>
+    Práctica sobre <code>SALDO_CLIENTE(Id_Cliente, Fecha_Inicio, Fecha_Fin, Saldo)</code>, otra
+    tabla de fotos (inventada) donde lo que cambia es el saldo. Fijate en cada enunciado qué
+    palabra decide las filas.
+  </p>
+
+  <h2><span class="num">07</span>La anteúltima foto</h2>
+
+  <p>
+    El docente lo repitió varias veces en clase: la última foto ya la sabemos sacar
+    (<code>Fecha_Fin = '2100-12-31'</code>), pero ¿y la <b>anteúltima</b>? La idea es una sola:
+    <b>la anteúltima es la más reciente de las que no son la vigente</b>. Hay tres formas de
+    escribirla; las tres devuelven lo mismo.
+  </p>
+
+  <h3>1. MAX sin la vigente</h3>
+
+<pre><code>SELECT *
+FROM   CUSTOMER_GROUP h
+WHERE  h.Start_Dt = (SELECT MAX(x.Start_Dt)
+                     FROM   CUSTOMER_GROUP x
+                     WHERE  x.Customer_Group_Id = h.Customer_Group_Id
+                       AND  x.End_Dt &lt;&gt; '2100-12-31');</code></pre>
+
+  <p>
+    La subconsulta se queda con las fotos ya cerradas del mismo cliente y toma la última fecha de
+    inicio. Es la forma más segura para el examen: sólo usa lo de las lecciones
+    <a href="0036-subconsultas-exists.html">0036</a> y anteriores, y funciona igual en cualquier motor.
+  </p>
+
+  <h3>2. El truco del −1 día</h3>
+
+<pre><code>SELECT a.*
+FROM   CUSTOMER_GROUP a
+JOIN   CUSTOMER_GROUP v ON v.Customer_Group_Id = a.Customer_Group_Id
+WHERE  v.End_Dt = '2100-12-31'
+  AND  a.End_Dt = DATE(v.Start_Dt, '-1 day');   -- SQL Server: DATEADD(DAY, -1, v.Start_Dt)</code></pre>
+
+  <p>
+    Usa la regla de la sección 04 (Fecha_Fin = Fecha_Inicio − 1): la foto anterior termina un día antes de que empiece la vigente.
+    Se une la tabla consigo misma (<code>v</code> = vigente, <code>a</code> = anterior). Depende de
+    que las fotos estén bien encadenadas: si hubiera un hueco entre fechas, no encuentra nada.
+  </p>
+
+  <h3>3. LAG, la función de ventana</h3>
+
+<pre><code>SELECT *
+FROM  (SELECT Customer_Group_Id, Start_Dt, End_Dt, Officer_Id,
+              LAG(Officer_Id) OVER (PARTITION BY Customer_Group_Id
+                                    ORDER BY Start_Dt) AS Officer_Anterior
+       FROM   CUSTOMER_GROUP) t
+WHERE  End_Dt = '2100-12-31';</code></pre>
+
+  <p>
+    <code>LAG(campo)</code> trae el valor de la fila anterior dentro de cada grupo. Sirve cuando
+    piden <b>el valor actual y el anterior lado a lado</b>. El filtro de la vigente va <b>afuera</b>:
+    si fuera adentro, la ventana sólo vería una fila por cliente y el LAG daría siempre NULL.
+  </p>
+
+  <h3>4. Las dos del docente (extra clase)</h3>
+
+  <p>
+    Las dos usan la regla del −1 día. La primera arma una tabla derivada con la fecha en que
+    <b>debería</b> terminar la anterior y le hace JOIN:
+  </p>
+<pre><code>SELECT c.*
+FROM   CLIENTES c
+INNER JOIN (SELECT cliente_id,
+                   DATE(fecha_inicio_vigencia, '-1 days') AS fecha_fin_vig_ant
+            FROM   CLIENTES
+            WHERE  fecha_fin_vigencia = '2100-12-31') AS T
+        ON c.cliente_id = T.cliente_id
+       AND c.Fecha_fin_Vigencia = T.fecha_fin_vig_ant;</code></pre>
+  <p>La segunda compara un <b>par</b> de columnas con <code>IN</code>, sumando el día del lado de la anterior:</p>
+<pre><code>SELECT *
+FROM   CLIENTES
+WHERE  (cliente_id, DATE(fecha_fin_vigencia, '+1 days'))
+       IN (SELECT cliente_id, fecha_inicio_vigencia
+           FROM   CLIENTES
+           WHERE  fecha_fin_vigencia = '2100-12-31');</code></pre>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Sin el ±1 día no devuelve nada</span>
+    <p>
+      El docente mostró primero la versión que compara <code>fecha_fin</code> de la anterior
+      con <code>fecha_inicio</code> de la vigente <b>sin ajustar</b>, y no trae ninguna fila:
+      la anterior termina el día <b>antes</b>. El día se resta de un lado o se suma del otro,
+      pero nunca se puede saltear. (El <code>IN</code> con dos columnas anda en SQLite y
+      PostgreSQL, pero no en SQL Server: ahí usá la versión con JOIN.)
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Tres trampas</span>
+    <p>
+      <b>1. LAG sin <code>PARTITION BY</code>.</b> Con <code>OVER (ORDER BY Start_Dt)</code> solo, todas
+      las filas forman una única fila ordenada: la "anterior" de un cliente puede ser una foto de
+      otro cliente. Siempre se particiona por el id. <br>
+      <b>2. Foto anterior no es lo mismo que valor anterior distinto.</b> El cliente 125269 tiene
+      <code>SIC_Cd = 182001</code> en sus cuatro últimas fotos: la anteúltima foto te vuelve a dar
+      182001. Si piden "el SIC que tenía <i>antes</i> del actual", hay que buscar la última foto con
+      un valor <b>distinto</b> al vigente (ejercicio Anteúltima 4). <br>
+      <b>3. Un cliente con una sola foto no tiene anteúltima.</b> Las formas 1 y 2 no lo devuelven;
+      LAG le pone NULL.
+    </p>
+  </div>
+
+  <h2><span class="num">08</span>Práctica</h2>
+
+  <p>
+    La base es <code>CUSTOMER_GROUP</code> del modelo 1a: el cliente 125269 tiene las ocho fotos
+    del examen, tal cual. Otros tres clientes están inventados para que el indicador tenga
+    casos. Botón <b>Tablas</b> para ver las columnas.
+  </p>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">1 de 8 · Estado actual</span>
+    <p class="sqlbox__task">Mostrá toda la información actual del cliente <code>125269</code>.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT *
+FROM CUSTOMER_GROUP
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT *
+FROM CUSTOMER_GROUP
+WHERE Customer_Group_Id = 125269
+  AND End_Dt = '2100-12-31';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">2 de 8 · Estado a una fecha (modelo 1a, punto c)</span>
+    <p class="sqlbox__task">Información de <b>todos los clientes</b> al 31 de enero de 2021.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT *
+FROM CUSTOMER_GROUP
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT *
+FROM CUSTOMER_GROUP
+WHERE '2021-01-31' BETWEEN Start_Dt AND End_Dt;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">3 de 8 · Un campo en una fecha (TP)</span>
+    <p class="sqlbox__task">¿Qué <code>Officer_Id</code> tenía el cliente <code>125269</code> el último día del año 2021?</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Officer_Id
+FROM CUSTOMER_GROUP
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Officer_Id
+FROM CUSTOMER_GROUP
+WHERE Customer_Group_Id = 125269
+  AND '2021-12-31' BETWEEN Start_Dt AND End_Dt;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">4 de 8 · Actual con su nombre (slide 12)</span>
+    <p class="sqlbox__task">
+      Información actual del cliente <code>125269</code>, con su nombre (<code>CG_Name</code>
+      de <code>CUSTOMER_NAME</code>): todas las columnas de la foto y el nombre al final.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT A.*, B.CG_Name
+FROM CUSTOMER_GROUP A
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT A.*, B.CG_Name
+FROM CUSTOMER_GROUP A
+INNER JOIN CUSTOMER_NAME B ON A.Customer_Group_Id = B.CG_Id
+WHERE A.End_Dt = '2100-12-31'
+  AND A.Customer_Group_Id = 125269;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">5 de 8 · La vista actual (modelo 1a, punto a)</span>
+    <p class="sqlbox__task">
+      Creá <code>Clientes_Actual</code> con la información actual completa de los clientes, con
+      los campos en castellano y en este orden: <code>Id_Cliente</code>, <code>Nombre</code>
+      (CG_Name), <code>Fecha_Inicio</code> (Start_Dt), <code>Cod_Actividad</code> (SIC_Cd),
+      <code>Fecha_Alta</code> (CG_Begin_Dt), <code>Id_Oficial</code>, <code>Id_Banca</code>,
+      <code>Ind_Telefono</code>, <code>Cod_Tipo</code>, <code>Id_Asociado</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Clientes_Actual AS
+SELECT
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Clientes_Actual AS
+SELECT A.Customer_Group_Id       AS Id_Cliente,
+       B.CG_Name                 AS Nombre,
+       A.Start_Dt                AS Fecha_Inicio,
+       A.SIC_Cd                  AS Cod_Actividad,
+       A.CG_Begin_Dt             AS Fecha_Alta,
+       A.Officer_Id              AS Id_Oficial,
+       A.Banking_Group_Id        AS Id_Banca,
+       A.Telephone_Ind           AS Ind_Telefono,
+       A.CG_Type_Cd              AS Cod_Tipo,
+       A.Customer_Group_Assoc_Id AS Id_Asociado
+FROM CUSTOMER_GROUP A
+INNER JOIN CUSTOMER_NAME B ON A.Customer_Group_Id = B.CG_Id
+WHERE A.End_Dt = '2100-12-31';
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM Clientes_Actual;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">6 de 8 · El indicador (modelo 1a, punto b)</span>
+    <p class="sqlbox__task">
+      Creá <code>Clientes_Actual</code> otra vez, con las mismas diez columnas y una undécima,
+      <code>Ind_Staff</code>: <code>'Externo'</code> si el oficial es menor a 21 <b>y</b> la banca
+      mayor a 4; <code>'Propio'</code> en el resto.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Clientes_Actual AS
+SELECT A.Customer_Group_Id AS Id_Cliente, B.CG_Name AS Nombre, A.Start_Dt AS Fecha_Inicio,
+       A.SIC_Cd AS Cod_Actividad, A.CG_Begin_Dt AS Fecha_Alta, A.Officer_Id AS Id_Oficial,
+       A.Banking_Group_Id AS Id_Banca, A.Telephone_Ind AS Ind_Telefono, A.CG_Type_Cd AS Cod_Tipo,
+       A.Customer_Group_Assoc_Id AS Id_Asociado,
+
+FROM CUSTOMER_GROUP A
+INNER JOIN CUSTOMER_NAME B ON A.Customer_Group_Id = B.CG_Id
+WHERE A.End_Dt = '2100-12-31';</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Clientes_Actual AS
+SELECT A.Customer_Group_Id AS Id_Cliente, B.CG_Name AS Nombre, A.Start_Dt AS Fecha_Inicio,
+       A.SIC_Cd AS Cod_Actividad, A.CG_Begin_Dt AS Fecha_Alta, A.Officer_Id AS Id_Oficial,
+       A.Banking_Group_Id AS Id_Banca, A.Telephone_Ind AS Ind_Telefono, A.CG_Type_Cd AS Cod_Tipo,
+       A.Customer_Group_Assoc_Id AS Id_Asociado,
+       CASE WHEN A.Officer_Id < 21 AND A.Banking_Group_Id > 4
+            THEN 'Externo' ELSE 'Propio' END AS Ind_Staff
+FROM CUSTOMER_GROUP A
+INNER JOIN CUSTOMER_NAME B ON A.Customer_Group_Id = B.CG_Id
+WHERE A.End_Dt = '2100-12-31';
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM Clientes_Actual;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">7 de 8 · Pegarle a la vista</span>
+    <p class="sqlbox__task">
+      La vista <code>Clientes_Actual</code> (con <code>Ind_Staff</code>) ya existe. Usándola,
+      listá <code>Id_Cliente</code> y <code>Nombre</code> de los clientes <b>externos</b>. Sin
+      tocar <code>CUSTOMER_GROUP</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT Id_Cliente, Nombre
+FROM </textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE VIEW Clientes_Actual AS
+SELECT A.Customer_Group_Id AS Id_Cliente, B.CG_Name AS Nombre, A.Start_Dt AS Fecha_Inicio,
+       A.SIC_Cd AS Cod_Actividad, A.CG_Begin_Dt AS Fecha_Alta, A.Officer_Id AS Id_Oficial,
+       A.Banking_Group_Id AS Id_Banca, A.Telephone_Ind AS Ind_Telefono, A.CG_Type_Cd AS Cod_Tipo,
+       A.Customer_Group_Assoc_Id AS Id_Asociado,
+       CASE WHEN A.Officer_Id < 21 AND A.Banking_Group_Id > 4
+            THEN 'Externo' ELSE 'Propio' END AS Ind_Staff
+FROM CUSTOMER_GROUP A
+INNER JOIN CUSTOMER_NAME B ON A.Customer_Group_Id = B.CG_Id
+WHERE A.End_Dt = '2100-12-31';
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Id_Cliente, Nombre
+FROM Clientes_Actual
+WHERE Ind_Staff = 'Externo';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">8 de 8 · El cambio: UPDATE + INSERT</span>
+    <p class="sqlbox__task">
+      El cliente <code>3362</code> cambia de oficial el <b>2024-01-01</b>: pasa del <code>30</code>
+      al <code>25</code>. Cerrá la foto vigente (un día antes) y abrí la nueva copiando el resto
+      de los valores de la foto vigente.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">-- 1) cerrar la foto vigente
+
+-- 2) abrir la foto nueva
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+UPDATE CUSTOMER_GROUP
+SET End_Dt = '2023-12-31'
+WHERE Customer_Group_Id = 3362
+  AND End_Dt = '2100-12-31';
+
+INSERT INTO CUSTOMER_GROUP
+VALUES (3362, '2024-01-01', 173001, '2010-03-15', 25, 7, 'Si', 24, 81, '2100-12-31');
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM CUSTOMER_GROUP WHERE Customer_Group_Id = 3362;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Historia 1 de 5 · Suma y promedio históricos</span>
+    <p class="sqlbox__task">Con toda la historia del cliente <code>125269</code> en <code>SALDO_CLIENTE</code>: la <b>suma</b> y el <b>promedio</b> de su saldo, en dos columnas.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT SUM(Saldo) AS Saldo_Total, AVG(Saldo) AS Saldo_Promedio
+FROM SALDO_CLIENTE
+WHERE Id_Cliente = 125269;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Historia 2 de 5 · Por cliente</span>
+    <p class="sqlbox__task">El <b>promedio histórico</b> del saldo de <b>cada</b> cliente: <code>Id_Cliente</code> y el promedio.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Id_Cliente, AVG(Saldo) AS Saldo_Promedio
+FROM SALDO_CLIENTE
+GROUP BY Id_Cliente;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Historia 3 de 5 · Sólo la actual</span>
+    <p class="sqlbox__task">El saldo <b>actual</b> de cada cliente: <code>Id_Cliente</code> y <code>Saldo</code>.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Id_Cliente, Saldo
+FROM SALDO_CLIENTE
+WHERE Fecha_Fin = '2100-12-31';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Historia 4 de 5 · Sin la actual</span>
+    <p class="sqlbox__task">El promedio del saldo de las fotos <b>anteriores a la actual</b> del cliente <code>125269</code> (sin contar la vigente).</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT AVG(Saldo) AS Saldo_Promedio
+FROM SALDO_CLIENTE
+WHERE Id_Cliente = 125269
+  AND Fecha_Fin <> '2100-12-31';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Historia 5 de 5 · Hasta una fecha</span>
+    <p class="sqlbox__task">El promedio del saldo del cliente <code>125269</code> con la historia <b>hasta el 31 de diciembre de 2021</b> (las fotos que empezaron hasta esa fecha).</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT AVG(Saldo) AS Saldo_Promedio
+FROM SALDO_CLIENTE
+WHERE Id_Cliente = 125269
+  AND Fecha_Inicio <= '2021-12-31';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Anteúltima 1 de 4 · De un cliente</span>
+    <p class="sqlbox__task">Mostrá toda la información de la <b>anteúltima</b> foto del cliente <code>125269</code>.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT *
+FROM CUSTOMER_GROUP
+WHERE Customer_Group_Id = 125269
+  AND Start_Dt = (SELECT MAX(Start_Dt)
+                  FROM CUSTOMER_GROUP
+                  WHERE Customer_Group_Id = 125269
+                    AND End_Dt <> '2100-12-31');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Anteúltima 2 de 4 · De cada cliente</span>
+    <p class="sqlbox__task">La anteúltima foto de <b>cada</b> cliente: <code>Customer_Group_Id</code>, <code>Start_Dt</code> y <code>Officer_Id</code>. ¿Por qué aparecen tres clientes y no cuatro?</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT h.Customer_Group_Id, h.Start_Dt, h.Officer_Id
+FROM CUSTOMER_GROUP h
+WHERE h.Start_Dt = (SELECT MAX(x.Start_Dt)
+                    FROM CUSTOMER_GROUP x
+                    WHERE x.Customer_Group_Id = h.Customer_Group_Id
+                      AND x.End_Dt <> '2100-12-31');
+-- 22365 tiene una sola foto: no hay anteúltima.
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Anteúltima 3 de 4 · Actual y anterior, lado a lado</span>
+    <p class="sqlbox__task">Para <b>cada</b> cliente: <code>Customer_Group_Id</code>, su <code>Officer_Id</code> actual y el de la foto anterior. Los clientes sin foto anterior van igual, con NULL.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Customer_Group_Id, Officer_Id, Officer_Anterior
+FROM (SELECT Customer_Group_Id, Officer_Id, End_Dt,
+             LAG(Officer_Id) OVER (PARTITION BY Customer_Group_Id
+                                   ORDER BY Start_Dt) AS Officer_Anterior
+      FROM CUSTOMER_GROUP) t
+WHERE End_Dt = '2100-12-31';
+-- Sin LAG: LEFT JOIN de la vigente con la foto cuyo End_Dt = DATE(v.Start_Dt, '-1 day').
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="scd">
+    <span class="sqlbox__label">Anteúltima 4 de 4 · El valor anterior distinto</span>
+    <p class="sqlbox__task">¿Qué <code>SIC_Cd</code> tenía el cliente <code>125269</code> <b>antes</b> del actual? Ojo: la anteúltima foto tiene el mismo SIC que la vigente.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT SIC_Cd
+FROM CUSTOMER_GROUP
+WHERE Customer_Group_Id = 125269
+  AND Start_Dt = (SELECT MAX(Start_Dt)
+                  FROM CUSTOMER_GROUP
+                  WHERE Customer_Group_Id = 125269
+                    AND SIC_Cd <> (SELECT SIC_Cd
+                                   FROM CUSTOMER_GROUP
+                                   WHERE Customer_Group_Id = 125269
+                                     AND End_Dt = '2100-12-31'));
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 7 · La consulta</span>
+    <p class="quiz__q">
+      Para saber en qué estado estaba un cliente el 01/04/2023, ¿qué condición usás?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La fecha tiene que caer dentro del período de una foto: '2023-04-01' BETWEEN Fecha_Inicio AND Fecha_Fin. Como los períodos no se pisan, una sola foto cumple.">La fecha pedida BETWEEN Fecha_Inicio AND Fecha_Fin</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso devuelve la foto vigente de hoy, no la que valía el 01/04/2023. Sirve para el estado actual, no para una fecha del pasado.">Fecha_Fin igual a la fecha 2100-12-31</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sólo encuentra una foto si justo empezó ese día. El cliente estuvo en esa foto desde antes: lo que importa es que la fecha caiga dentro del período.">Fecha_Inicio igual a la fecha pedida</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 7 · El cierre</span>
+    <p class="quiz__q">
+      Una foto vigente cambia el 2023-05-01. ¿Qué Fecha_Fin le queda a la foto vieja?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="2023-04-30: la Fecha_Inicio de la fila nueva menos un día. Así los períodos son consecutivos y no se pisan.">2023-04-30, un día antes del inicio nuevo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Si terminara el 2023-05-01, esa fecha pertenecería a las dos fotos (BETWEEN es inclusivo) y dos filas cumplirían la consulta. Por eso se resta un día.">2023-05-01, el mismo día del inicio nuevo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La fecha abierta 2100-12-31 es la de la foto nueva, la vigente. Si la vieja siguiera con ella, habría dos fotos vigentes a la vez.">2100-12-31, la fecha de fin abierta</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 7 · El tipo</span>
+    <p class="quiz__q">
+      Una estrategia de SCD agrega una fila nueva por cada cambio y guarda historia ilimitada.
+      ¿Cuál es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Tipo 2, añadir fila. Requiere columnas de inicio y fin, y es la que desarrolla el deck y la que se pide en la práctica.">SCD tipo 2: añadir fila</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El tipo 1 sobrescribe: no guarda historia ni agrega filas. Es el más simple justamente porque pierde el pasado.">SCD tipo 1: sobrescribir</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El tipo 3 agrega una columna (por ejemplo, para el valor anterior), no una fila. Guarda poca historia: no es ilimitada.">SCD tipo 3: añadir columna</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 7 · Por qué una sola</span>
+    <p class="quiz__q">
+      ¿Por qué "siempre una sola foto cumple" lo pedido en la consulta de estado a una fecha?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Cada foto termina un día antes de que empiece la siguiente, así que los períodos no se solapan y cualquier fecha cae en uno solo.">Los períodos de las fotos no se solapan</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La clave del cliente se repite en todas sus fotos: lo que hace única a cada fila es la clave junto con la fecha de inicio, y eso no garantiza que una fecha caiga en una sola.">La clave del cliente es única en la tabla</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="BETWEEN no elige ninguna fila: filtra las que cumplen. Que salga una sola es consecuencia de cómo se cierran las fotos, no del operador.">El operador BETWEEN devuelve una sola fila</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 7 · Histórica o actual</span>
+    <p class="quiz__q">
+      "Calculá el promedio del saldo histórico de cada cliente." ¿Qué filas entran a la consulta?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Todas las fotos, sin filtro de fechas, con GROUP BY cliente. La palabra histórico pide toda la historia; la vigente ya está incluida.">Todas las fotos de cada cliente, sin filtro de fechas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Con Fecha_Fin = 2100-12-31 queda una sola foto por cliente: el promedio sería su saldo actual, no el histórico.">Sólo la foto vigente, con Fecha_Fin igual a 2100-12-31</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El BETWEEN elige la foto que cubre una fecha puntual. El enunciado no da ninguna fecha, así que no corresponde.">La foto que cubre una fecha, con BETWEEN inicio y fin</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">6 de 7 · La última foto</span>
+    <p class="quiz__q">
+      Para la suma de todo el historial de saldos, ¿hay que agregar aparte la última foto?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="No: la tabla histórica ya contiene la foto vigente. Sumarla aparte la contaría dos veces.">No, la historia ya incluye la foto vigente</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Si se sumara aparte, el saldo actual entraría dos veces: una dentro de la historia y otra por separado.">Sí, hay que sumarla con una segunda consulta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La vista actual sólo tiene una foto por cliente: no sirve para sumas históricas, que necesitan todas las filas.">Sí, a través de la vista actual del cliente</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">7 de 7 · La anteúltima</span>
+    <p class="quiz__q">
+      Para la anteúltima foto de cada cliente, ¿qué condición elige la fila correcta?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es la más reciente de las fotos ya cerradas: MAX(Start_Dt) del mismo cliente con End_Dt distinto de 2100-12-31. Equivale a buscar la foto cuyo End_Dt es el Start_Dt de la vigente menos un día.">Start_Dt igual al MAX de las fotos del cliente con End_Dt distinto de 2100-12-31</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="End_Dt distinto de 2100-12-31 deja todas las fotos cerradas, no sólo la anteúltima. Falta quedarse con la más reciente de ellas.">End_Dt distinto de 2100-12-31, sin otra condición</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sin PARTITION BY, la ventana ordena las fotos de todos los clientes juntas: la fila anterior puede ser de otro cliente.">LAG(...) OVER (ORDER BY Start_Dt), sin PARTITION BY</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Deck <code>raw/Slow Change Dimension.pptx</code>: slides 2–5 (tipos y columnas), 6–8 (el
+      cambio y su SQL), 9–10 (las dos consultas) y 11–12 (ejercicios con la tabla
+      <code>Customer_Group</code>); TP <code>raw/TP Slow Change Dimension.pptx</code>; modelo de
+      parcial <code>raw/Material_Examen/bd parcial 1a.jpg</code>. La convención de la fecha
+      actual la dijo el docente en clase.
+    </p>
+    <p>
+      <a href="https://www.sqlite.org/lang_datefunc.html">SQLite — fechas como texto</a> ·
+      <a href="https://www.sqlite.org/lang_createview.html">CREATE VIEW</a>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Armá en papel la vista histórica y la actual del TP, con los
+      nombres de campo en español, y pasámelas: te digo qué campos sobran y cuáles faltan en cada una.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0051-modelo-estrella-y-copo-de-nieve.html">Anterior: 0051 · Estrella y copo de nieve</a>
+    <a href="0053-repaso-unidad-9.html">Siguiente: 0053 · Repaso de la Unidad 9</a>
+    <a href="0039-vistas.html">Vistas: 0039</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/scd.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDA automático y práctica</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0021 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0021 · Notebooks 6, 7 (tarea) y 8 (práctica integradora)</div>
+<h1>Leer un reporte automático sin creerle todo, y armar el informe final</h1>
+<p class="lede">Sweetviz y ydata-profiling hacen en una línea lo que hiciste a mano en los notebooks 0 a 5. La habilidad no es generarlos: es <strong>leerlos, verificarlos y decidir</strong>. El notebook 8 junta todo en un informe.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>¿Cuáles son los tres tratamientos para un problema de datos (<a href="0016-el-eda-y-su-flujo.html">0016</a>)? ¿Qué variable de <code>sample_dataset.csv</code> era casi constante?</p>
+</div>
+
+<h2>Reporte automático: ventajas y límites</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Ventajas</th><th>Riesgos y límites</th></tr>
+  <tr><td>Una primera mirada en segundos</td><td><strong>No reemplaza el criterio del analista</strong>: no sabe qué significa cada variable ni cuál es la pregunta</td></tr>
+  <tr><td>Detecta problemas que se pueden pasar (faltantes, duplicados, constantes)</td><td>Puede marcar como problema algo que no lo es, o al revés</td></tr>
+  <tr><td>Fácil de compartir (HTML)</td><td>Con muchos datos es lento y pesado</td></tr>
+</table>
+</div>
+<p><strong>Regla de oro del notebook:</strong> el reporte es un <strong>punto de partida</strong>. Las conclusiones las escribe el analista, y los números importantes se <strong>verifican</strong> con pandas.</p>
+
+<h2>Sweetviz (notebook 6) vs ydata-profiling (notebook 7)</h2>
+<div class="table-wrap">
+<table>
+  <tr><th></th><th>Sweetviz</th><th>ydata-profiling (antes <em>pandas-profiling</em>)</th></tr>
+  <tr><td>Crear</td><td><code>sweetviz.analyze(df, target_feat="target")</code></td><td><code>ProfileReport(df, title="…", minimal=True)</code></td></tr>
+  <tr><td>Ver</td><td><code>show_notebook()</code> · <code>show_html()</code></td><td><code>to_notebook_iframe()</code> · <code>to_file("r.html")</code></td></tr>
+  <tr><td>Punto fuerte</td><td><strong>Comparar</strong>: <code>compare()</code> dos datasets, <code>compare_intra()</code> dos grupos del mismo</td><td>Las <strong>alertas</strong> de calidad (pestaña <em>Alerts</em>)</td></tr>
+  <tr><td>Relaciones</td><td>Botón <em>ASSOCIATIONS</em>: círculos (num ↔ num, Pearson) y cuadrados (con categóricas)</td><td>Pestañas <em>Correlations</em> e <em>Interactions</em> (no aparecen con <code>minimal=True</code>)</td></tr>
+  <tr><td>Instalación en Colab</td><td>Necesita <code>numpy==1.26.4</code> y <strong>reiniciar la sesión</strong></td><td>Si falta <code>pkg_resources</code>: <code>pip install "setuptools&lt;81"</code> y reiniciar</td></tr>
+</table>
+</div>
+
+<h3>Las alertas de ydata-profiling, traducidas a la teoría</h3>
+<div class="table-wrap">
+<table>
+  <tr><th>Alerta</th><th>Qué significa</th><th>Concepto</th><th>Qué hacer, en general</th></tr>
+  <tr><td><code>Missing</code></td><td>Hay valores faltantes</td><td>Valores faltantes (NaN)</td><td>Imputar o documentar; eliminar filas solo si son pocas</td></tr>
+  <tr><td><code>Duplicates</code></td><td>Hay filas repetidas</td><td>Registros duplicados</td><td>Investigar: ¿es la misma muestra o coinciden por casualidad?</td></tr>
+  <tr><td><code>High correlation</code></td><td>Dos variables muy correlacionadas</td><td>Redundancia</td><td>Mantener y documentar (para un modelo, quedarse con una)</td></tr>
+  <tr><td><code>Imbalance</code></td><td>Una categoría domina</td><td>Variable casi constante</td><td>Investigar qué significa; si no aporta, eliminarla</td></tr>
+  <tr><td><code>Skewed</code></td><td>Muy asimétrica</td><td>Asimetría</td><td>Mantener; usar la mediana</td></tr>
+  <tr><td><code>Zeros</code></td><td>Muchos ceros exactos</td><td>¿Valor real o "no medido"?</td><td>Investigar</td></tr>
+  <tr><td><code>Constant</code> / <code>Unique</code></td><td>Un solo valor / todos distintos</td><td>Sin información / identificador</td><td>Eliminar del análisis (como el <code>id</code>)</td></tr>
+</table>
+</div>
+
+<h2>Respuestas guía · notebook 6 (Sweetviz)</h2>
+<p class="muted">Lo que sigue lo calculé con pandas. Lo que muestre el reporte debería coincidir; si no coincide, es justo lo que el notebook quiere que discutas.</p>
+
+<details class="answers"><summary>§4 · Búsqueda guiada en el reporte</summary>
+<ol>
+  <li><strong>569 filas, 0 duplicadas.</strong></li>
+  <li><code>area error</code> aparece como <strong>categórica</strong> (es texto), aunque en el dataset original es numérica. <code>target</code> tiene solo dos valores, así que es probable que Sweetviz la trate como categórica o booleana: está bien, es categórica nominal aunque se guarde como <code>int64</code>.</li>
+  <li><code>mean smoothness</code>: <strong>32,5% faltantes</strong>.</li>
+  <li><code>mean radius</code>: histograma con <strong>cola a la derecha</strong>. La línea del target <strong>baja</strong> a medida que crece el radio: radios grandes tienen target promedio cerca de 0, es decir, malignos.</li>
+</ol>
+</details>
+
+<details class="answers"><summary>§4 · ¿Por qué verificar con pandas?</summary>
+<p><code>df["mean smoothness"].isna().mean() * 100</code> da <strong>32,5</strong> y <code>df.duplicated().sum()</code> da <strong>0</strong>. Se verifica porque la herramienta puede clasificar mal un tipo o calcular sobre algo distinto de lo que creés, y porque en un informe firmás vos, no la librería.</p>
+</details>
+
+<details class="answers"><summary>§5 · Associations: asociación más fuerte con <code>target</code> y familias</summary>
+<p>Las más asociadas con <code>target</code> son las de <strong>concavidad y tamaño</strong>: <code>worst concave points</code>, <code>worst perimeter</code>, <code>worst radius</code>, <code>mean concave points</code> (|r| ≈ 0,77–0,79). Sí aparecen las mismas familias que en el heatmap del notebook 5: <strong>tamaño</strong> (radius/perimeter/area) y <strong>concavidad</strong> (compactness/concavity/concave points).</p>
+<p>Cómo leerlo: <strong>círculo</strong> = numérica ↔ numérica (Pearson, de −1 a 1); <strong>cuadrado</strong> = con una categórica (correlation ratio o uncertainty coefficient, de 0 a 1). Más grande e intenso = más fuerte.</p>
+</details>
+
+<details class="answers"><summary>§6 · Primeras 50 vs últimas 50 filas</summary>
+<p>No se parecen: las primeras 50 son <strong>43 malignos y 7 benignos</strong>; las últimas 50, <strong>10 malignos y 40 benignos</strong>. El dataset <strong>está ordenado</strong> (no es aleatorio). Riesgo de mirar solo <code>head()</code>: sacar conclusiones de una muestra sesgada. Por eso el notebook 0 sugiere <code>df.sample(5)</code>.</p>
+</details>
+
+<details class="answers"><summary>§6 · <code>compare_intra</code>: la condición</summary>
+<p><code>df["target"] == 0</code> → el primer grupo son los <strong>malignos</strong>. Ya viene completa en la celda.</p>
+</details>
+
+<h2>Respuestas guía · notebook 7 (ydata-profiling, tarea)</h2>
+
+<details class="answers"><summary>§2 · Reporte mínimo con 5 columnas</summary>
+<p><strong>Missing cells ≈ 20,1%</strong> (las 5 primeras columnas). <code>mean area</code>: <strong>IQR = 796,0 − 428,1 = 367,9</strong> y <strong>skewness ≈ 1,7</strong>: asimetría positiva, cola de áreas grandes. Conviene la mediana para el valor típico (notebook 2) y aparecen outliers arriba (notebook 3).</p>
+</details>
+
+<details class="answers"><summary>§3 · El <code>COMPLETAR</code></summary>
+<p><code>ProfileReport(df[cols], title="EDA - Breast Cancer (selección de variables)")</code>. El parámetro es <code>title</code>.</p>
+</details>
+
+<details class="answers"><summary>§4 · Alertas esperables con las 6 columnas, y qué hacer</summary>
+<div class="table-wrap"><table>
+<tr><th>Alerta</th><th>En estos datos</th><th>Qué haríamos</th></tr>
+<tr><td><code>Missing</code></td><td>4 numéricas con 13% a 33% de faltantes (<code>mean smoothness</code> 32,5%) y <code>area error</code> 13%</td><td>Documentar; si se modela, imputar con la mediana (no eliminar filas: <code>dropna</code> dejaba 0)</td></tr>
+<tr><td><code>High correlation</code></td><td><code>mean radius</code> ↔ <code>mean area</code> (0,99); las dos con <code>target</code> (−0,73 y −0,71)</td><td>Mantener y documentar la redundancia</td></tr>
+<tr><td><code>Imbalance</code></td><td><code>area error</code>: 489 de 494 son A</td><td>Investigar qué significa A/B/C; si no se aclara, excluirla</td></tr>
+<tr><td><code>Duplicates</code></td><td>1 fila duplicada (ver abajo)</td><td>Mantener: es un falso duplicado</td></tr>
+</table></div>
+<p class="muted">Con ydata-profiling 4.18 las alertas reales son <code>Missing</code> (5 variables), <code>Duplicates</code>, <code>High correlation</code> (<code>mean radius</code>, <code>mean area</code>, <code>area error</code> y <code>target</code>) e <code>Imbalance</code> (<code>area error</code>). Dependen de la versión y de sus umbrales: completá la tabla con lo que te muestre tu reporte. Paso a paso en la <a href="0022-taller-guiado-notebooks-7-y-8.html">0022</a>.</p>
+</details>
+
+<details class="answers"><summary>§4 · ¿Por qué aparecen duplicados con 6 columnas y no con todas?</summary>
+<p>Con todas las columnas: <strong>0</strong> duplicados. Con las 6 elegidas: <strong>1</strong>. Son las filas <strong>111 y 474</strong>: las dos tienen NaN en las cuatro numéricas, <code>A</code> en <code>area error</code> y <code>1</code> en <code>target</code>. Al mirar solo esas columnas parecen iguales, pero son muestras distintas. Un duplicado depende de <strong>qué columnas mirás</strong>: hay que definir una clave.</p>
+</details>
+
+<details class="answers"><summary>§5 · Correlations y Missing values</summary>
+<p>La correlación más alta es <code>mean radius</code> ↔ <code>mean area</code> (0,99), igual que en el heatmap del notebook 5. Los faltantes están <strong>repartidos al azar</strong> entre filas, no concentrados en algunas. Por eso <code>dropna()</code> elimina todo: casi ninguna fila está completa.</p>
+</details>
+
+<details class="answers"><summary>§7 · Automático vs manual</summary>
+<p><strong>Lo hizo mejor o más rápido</strong>: detectar de un golpe faltantes, duplicados, alta correlación y desbalance, y calcular estadísticos y gráficos de todas las variables a la vez.</p>
+<p><strong>No puede hacerlo por vos</strong>: saber qué significa cada variable y cuál es la pregunta, decidir si un outlier es un error o un tumor real, interpretar el signo de la correlación con <code>target</code> (0 = maligno), y escribir conclusiones sin afirmar causalidad.</p>
+</details>
+
+<h2>Notebook 8: la práctica integradora</h2>
+<p>Un EDA completo, con los 5 pasos, sobre el <strong>dataset original</strong>. Cambios respecto de <code>sample_dataset.csv</code>:</p>
+<ul>
+  <li>Nombres con otro formato: <code>radius_mean</code>, <code>radius_se</code>, <code>radius_worst</code>. Ojo: una se llama <code>concave points_mean</code>, <strong>con un espacio</strong>.</li>
+  <li><code>diagnosis</code> es texto: <strong>M = maligno, B = benigno</strong>.</li>
+  <li>Hay un <code>id</code> y una columna vacía (<code>Unnamed: 32</code>, sale de una coma de más en el CSV).</li>
+  <li>Se crea <code>maligno = (diagnosis == "M")</code>, con <strong>1 = maligno</strong>: <strong>el signo de la correlación se invierte</strong> respecto de los notebooks 5 y 6.</li>
+</ul>
+
+<details class="answers"><summary>Los <code>COMPLETAR</code> del notebook 8</summary>
+<div class="table-wrap"><table>
+<tr><th>Sección</th><th>Respuesta</th></tr>
+<tr><td>2 · dimensiones y tipos</td><td><code>df.shape</code> y <code>df.dtypes</code></td></tr>
+<tr><td>4 · Rice</td><td><code>n ** (1/3)</code> → con n = 569 da <strong>17 bins</strong></td></tr>
+<tr><td>4 · tercera variable</td><td>Por ejemplo <code>"concave points_worst"</code> o <code>"texture_mean"</code></td></tr>
+<tr><td>5 · boxplot por diagnóstico</td><td><code>x="diagnosis"</code></td></tr>
+<tr><td>6 · pairplot</td><td>Dos variables más y <code>hue="diagnosis"</code></td></tr>
+<tr><td>7 · ranking</td><td><code>corr_p["maligno"]</code> y <code>corr_s["maligno"]</code></td></tr>
+</table></div>
+</details>
+
+<details class="answers"><summary>Lo que deberías encontrar (para chequear tu informe)</summary>
+<ul>
+  <li><strong>Fuente</strong>: secundaria (la recolectó la Universidad de Wisconsin; no controlamos la medición).</li>
+  <li><strong>Calidad</strong>: (569, 33) → sin <code>id</code> ni <code>Unnamed: 32</code> → (569, 31). <strong>0 faltantes, 0 duplicados</strong>, tipos correctos. Es la versión "limpia" de <code>sample_dataset.csv</code>.</li>
+  <li><strong>Variables</strong>: <code>diagnosis</code> categórica nominal; <code>radius_mean</code> numérica continua. Clases: <strong>62,7% B, 37,3% M</strong>, no balanceadas.</li>
+  <li><strong>Univariado</strong>: <code>radius_mean</code> media 14,1 &gt; mediana 13,4 (skew 0,94); <code>area_mean</code> media 654,9 &gt; mediana 551,1 (skew 1,65). Asimetría positiva → mediana.</li>
+  <li><strong>Outliers</strong>: 14 en <code>radius_mean</code> y 25 en <code>area_mean</code>, <strong>todos malignos</strong>. Se mantienen: son tumores grandes reales.</li>
+  <li><strong>Correlación con <code>maligno</code></strong> (Pearson / Spearman): <code>concave points_worst</code> 0,79 / 0,78 · <code>perimeter_worst</code> 0,78 / 0,80 · <code>concave points_mean</code> 0,78 / 0,78 · <code>radius_worst</code> 0,78 / 0,79 · <code>area_worst</code> 0,73 / <strong>0,79</strong>. En las de área Spearman sube porque la relación no es lineal y hay outliers.</li>
+  <li><strong>Redundancia</strong>: radius, perimeter y area (r ≈ 0,99).</li>
+  <li><strong>Limitaciones</strong>: no establece causalidad; es exploratorio, así que genera hipótesis; depende de la calidad de la fuente; hace falta conocimiento médico para interpretarlo.</li>
+</ul>
+</details>
+
+<h2>Práctica</h2>
+<div class="quiz" data-quiz-id="0021-eda-automatico-y-practica"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "Según el notebook, ¿cuál es la regla de oro de los reportes automáticos?",
+   "options": ["Son un punto de partida y se verifican", "Reemplazan el EDA manual por completo", "Solo sirven para datasets muy grandes", "Sus alertas siempre indican errores reales"], "answer": 0,
+   "why": "No reemplazan el criterio del analista: las conclusiones las escribe el analista y los números se verifican."},
+  {"q": "¿Qué función de Sweetviz compara dos grupos dentro del mismo DataFrame?",
+   "options": ["compare_intra()", "compare()", "analyze()", "show_html()"], "answer": 0,
+   "why": "<code>compare_intra(df, condición, nombres)</code> separa el DataFrame según una condición True/False."},
+  {"q": "En ydata-profiling, ¿qué hace <code>minimal=True</code>?",
+   "options": ["Genera un reporte rápido sin correlaciones", "Analiza solo las primeras cinco columnas", "Muestra solo la pestaña de alertas", "Elimina las filas que tienen faltantes"], "answer": 0,
+   "why": "Versión liviana: sin correlaciones ni interacciones. Para eso hay que generar el reporte completo."},
+  {"q": "La alerta <code>Imbalance</code> en <code>area error</code> indica que…",
+   "options": ["Una categoría domina casi todos los valores", "La variable tiene muchos valores faltantes", "Dos variables están muy correlacionadas", "La distribución tiene una cola larga"], "answer": 0,
+   "why": "489 de 494 valores son A: variable casi constante."},
+  {"q": "¿Qué alerta esperás para una columna <code>id</code> con todos los valores distintos?",
+   "options": ["Unique", "Constant", "Zeros", "Skewed"], "answer": 0,
+   "why": "Todos distintos → identificador. No aporta al análisis y se elimina."},
+  {"q": "Con todas las columnas hay 0 duplicados; con 6 columnas, 1. ¿Por qué?",
+   "options": ["Dos filas coinciden solo en esas columnas", "pandas cuenta mal los duplicados", "Hay una fila repetida que se ocultó", "Los NaN siempre se cuentan duplicados"], "answer": 0,
+   "why": "Las filas 111 y 474 coinciden en las 6 columnas elegidas, pero no en el resto. Un duplicado depende de la clave."},
+  {"q": "Las primeras 50 filas son 43 malignos y las últimas 50, 40 benignos. ¿Qué indica?",
+   "options": ["El dataset está ordenado, no es aleatorio", "Hay un error de carga en las primeras filas", "Las clases están perfectamente balanceadas", "El target tiene valores faltantes al final"], "answer": 0,
+   "why": "Mirar solo <code>head()</code> daría una muestra sesgada. Por eso conviene <code>df.sample()</code>."},
+  {"q": "En el notebook 8, <code>maligno</code> = 1 si es M. Una variable tiene r = 0,79 con <code>maligno</code>. ¿Qué indica?",
+   "options": ["Valores altos se asocian a maligno", "Valores altos se asocian a benigno", "La variable causa el tumor maligno", "La variable no sirve para el análisis"], "answer": 0,
+   "why": "Acá 1 = maligno, así que positiva → maligno. Es al revés que con <code>target</code> (0 = maligno)."},
+  {"q": "¿Cuál es una limitación del EDA según la lámina de interpretación de resultados?",
+   "options": ["No establece relaciones de causa y efecto", "No permite detectar valores atípicos", "No sirve para variables categóricas", "No puede calcular correlaciones"], "answer": 0,
+   "why": "Limitaciones: no establece causalidad, depende de la calidad de los datos, es exploratorio y necesita contexto del negocio."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Generás un reporte automático, traducís cada alerta a un concepto de la teoría con su tratamiento, verificás los números clave con pandas y escribís hallazgos con evidencia y limitaciones.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>Notebooks <code>6_CIA_EDA</code>, <code>7_CIA_EDA</code> y <code>8_CIA_PRACTICA_EDA</code>, y la lámina 23, "Cómo interpretar los resultados de un EDA", del <a href="../material_eda/1-Teoría-Conceptual/003_ANALISIS_EXPLORATORIO_Data_Science_RESUMIDO_2_2026.pdf">PDF de teoría</a>. Documentación: <a href="https://docs.profiling.ydata.ai/latest/">ydata-profiling</a> y <a href="https://github.com/fbdesignpro/sweetviz">Sweetviz</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Cuando termines el informe del notebook 8, pegámelo y lo revisamos contra la checklist de entrega.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0020-relaciones-y-correlacion.html">← 0020 · Notebooks 4 y 5</a>
+  <a href="0022-taller-guiado-notebooks-7-y-8.html">0022 · Taller guiado 7 y 8 →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

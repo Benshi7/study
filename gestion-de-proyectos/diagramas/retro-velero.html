@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retrospectiva Sailing Boat</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Diagram skin for diagram-design SVGs (profile "unicaba-cursada").
+   Shared by clases/*.html, slides/* and diagramas/*.html. Self-contained: it does not need course.css.
+   Light values = assets/course.css tokens; dark follows data-theme (theme.js) or the system. */
+:root {
+  --d-paper: #ffffff;
+  --d-paper-2: #f8f1f5;
+  --d-box: #ffffff;
+  --d-ink: #24171f;
+  --d-muted: #6a5764;
+  --d-soft: #8d7a87;
+  --d-rule: #e6d3df;
+  --d-accent: #b83a95;
+  --d-accent-ink: #9c2a7b;
+  --d-accent-tint: rgba(184, 58, 149, .08);
+  --d-link: #6b2fae;
+  --d-link-tint: rgba(107, 47, 174, .08);
+}
+:root[data-theme="dark"] {
+  --d-paper: #1a1218;
+  --d-paper-2: #241a22;
+  --d-box: #241a22;
+  --d-ink: #f2e9ef;
+  --d-muted: #b3a3ae;
+  --d-soft: #8f7d89;
+  --d-rule: #43303e;
+  --d-accent: #f08fcf;
+  --d-accent-ink: #f08fcf;
+  --d-accent-tint: rgba(240, 143, 207, .10);
+  --d-link: #b99af0;
+  --d-link-tint: rgba(185, 154, 240, .10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --d-paper: #1a1218;
+    --d-paper-2: #241a22;
+    --d-box: #241a22;
+    --d-ink: #f2e9ef;
+    --d-muted: #b3a3ae;
+    --d-soft: #8f7d89;
+    --d-rule: #43303e;
+    --d-accent: #f08fcf;
+    --d-accent-ink: #f08fcf;
+    --d-accent-tint: rgba(240, 143, 207, .10);
+    --d-link: #b99af0;
+    --d-link-tint: rgba(185, 154, 240, .10);
+  }
+}
+
+/* Figure wrapper used by lessons */
+figure.diagram { margin: 1.6rem 0; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .5rem; }
+
+/* SVG classes (all prefixed dg-) */
+.dg-bg { fill: var(--d-paper); }
+.dg-mask { fill: var(--d-paper); }
+.dg-zone { fill: var(--d-paper-2); stroke: var(--d-rule); stroke-width: 1; }
+.dg-rule { stroke: var(--d-rule); stroke-width: .8; fill: none; }
+
+.dg-box { fill: var(--d-box); stroke: var(--d-ink); stroke-width: 1; }
+.dg-store { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-focal { fill: var(--d-accent-tint); stroke: var(--d-accent); stroke-width: 1.2; }
+.dg-viol { fill: var(--d-link-tint); stroke: var(--d-link); stroke-width: 1; }
+.dg-ghost { fill: none; stroke: var(--d-muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.dg-dot { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-dot-focal { fill: var(--d-accent); stroke: var(--d-accent); stroke-width: 1; }
+
+.dg-line { stroke: var(--d-muted); stroke-width: 1.2; fill: none; }
+.dg-line-accent { stroke: var(--d-accent); stroke-width: 1.2; fill: none; }
+.dg-line-link { stroke: var(--d-link); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+.dg-ah { fill: var(--d-muted); }
+.dg-ah-accent { fill: var(--d-accent); }
+.dg-ah-link { fill: var(--d-link); }
+
+.dg-name { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-sub { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-row { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-tag { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-soft); letter-spacing: .08em; }
+.dg-lbl { font: 400 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-muted); letter-spacing: .04em; }
+.dg-lbl-accent { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-accent-ink); letter-spacing: .04em; }
+.dg-lbl-link { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-link); letter-spacing: .04em; }
+.dg-note { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-note-accent { font: 600 12px "Montserrat", system-ui, sans-serif; fill: var(--d-accent-ink); }
+
+/* Catedra slide screenshots (clases/img/*.jpg) shown next to the own diagrams. */
+figure.slide { margin: 1.4rem 0; }
+figure.slide img { display: block; width: 100%; max-width: 720px; height: auto; border: 1px solid var(--rule, #e6d3df); border-radius: 6px; }
+figure.slide figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .4rem; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--d-paper); color: var(--d-ink); font-family: "Montserrat", system-ui, sans-serif; margin: 0; }
+  .frame { max-width: 1100px; margin: 0 auto; padding: 2rem 16px 3rem; }
+  .eyebrow { font: 500 .66rem "Geist Mono", ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--d-muted); margin-bottom: .5rem; }
+  h1 { font-size: clamp(1.4rem, 2vw + .8rem, 1.9rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
+  .sub { color: var(--d-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+  svg { display: block; width: 100%; height: auto; min-width: 640px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Diagrama · Taller de Gestión de Proyectos Digitales</p>
+  <h1>Retrospectiva Sailing Boat</h1>
+  <p class="sub">Velero, isla, viento, ancla, sol y rocas: el FODA del equipo.</p>
+  <div class="scroll">
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="retro-velero-title retro-velero-desc"><title id="retro-velero-title">Retrospectiva Sailing Boat y su equivalencia con FODA</title><desc id="retro-velero-desc">El barco es el equipo y la isla el objetivo. El viento son las fortalezas que impulsan, el ancla las debilidades que frenan, el sol las oportunidades y las rocas las amenazas o riesgos: son los cuatro cuadrantes del FODA.</desc><defs><marker id="retro-velero-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="retro-velero-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="retro-velero-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line-link" d="M380 260 H244" marker-end="url(#retro-velero-arrow-link)"/>
+<rect class="dg-mask" x="290" y="236" width="44" height="16" rx="2"/>
+<text class="dg-lbl" x="312" y="248" text-anchor="middle">rumbo</text>
+<path class="dg-line-accent" d="M680 84 L580 212" marker-end="url(#retro-velero-arrow-accent)"/>
+<path class="dg-line-accent" d="M280 84 L380 212" marker-end="url(#retro-velero-arrow-accent)"/>
+<path class="dg-line" d="M440 304 L360 392" marker-end="url(#retro-velero-arrow)"/>
+<path class="dg-line" d="M520 304 L600 392" marker-end="url(#retro-velero-arrow)"/>
+<rect class="dg-mask" x="40" y="40" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="40" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="268" y="60" text-anchor="end">O</text>
+<text class="dg-name" x="160" y="71" text-anchor="middle">Sol · oportunidades</text>
+<text class="dg-sub" x="160" y="89" text-anchor="middle">FODA: O (externo +)</text>
+<text class="dg-sub" x="160" y="107" text-anchor="middle">ej.: tenemos a los profes</text>
+<rect class="dg-mask" x="680" y="40" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="680" y="40" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="908" y="60" text-anchor="end">F</text>
+<text class="dg-name" x="800" y="71" text-anchor="middle">Viento · fortalezas</text>
+<text class="dg-sub" x="800" y="89" text-anchor="middle">FODA: F (interno +)</text>
+<text class="dg-sub" x="800" y="107" text-anchor="middle">ej.: buena química</text>
+<rect class="dg-mask" x="40" y="216" width="200" height="88" rx="6"/>
+<rect class="dg-store" x="40" y="216" width="200" height="88" rx="6"/>
+<text class="dg-name" x="140" y="256" text-anchor="middle">Isla · objetivo</text>
+<text class="dg-sub" x="140" y="274" text-anchor="middle">ej.: promocionar</text>
+<rect class="dg-mask" x="380" y="216" width="200" height="88" rx="6"/>
+<rect class="dg-focal" x="380" y="216" width="200" height="88" rx="6"/>
+<text class="dg-name" x="480" y="256" text-anchor="middle">Barco · el equipo</text>
+<text class="dg-sub" x="480" y="274" text-anchor="middle">nosotros</text>
+<rect class="dg-mask" x="200" y="396" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="200" y="396" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="428" y="416" text-anchor="end">D</text>
+<text class="dg-name" x="320" y="427" text-anchor="middle">Ancla · debilidades</text>
+<text class="dg-sub" x="320" y="445" text-anchor="middle">FODA: D (interno −)</text>
+<text class="dg-sub" x="320" y="463" text-anchor="middle">ej.: temas que no sabemos</text>
+<rect class="dg-mask" x="520" y="396" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="520" y="396" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="748" y="416" text-anchor="end">A</text>
+<text class="dg-name" x="640" y="427" text-anchor="middle">Rocas · amenazas</text>
+<text class="dg-sub" x="640" y="445" text-anchor="middle">FODA: A (externo −)</text>
+<text class="dg-sub" x="640" y="463" text-anchor="middle">ej.: problemas los miércoles</text>
+<line class="dg-rule" x1="40" y1="524" x2="920" y2="524"/>
+<text class="dg-tag" x="40" y="552" text-anchor="start">LEYENDA</text>
+<path class="dg-line-accent" d="M128 548 H152" marker-end="url(#retro-velero-arrow-accent)"/>
+<text class="dg-note" x="160" y="552" text-anchor="start">impulsa o ilumina</text>
+<path class="dg-line" d="M308 548 H332" marker-end="url(#retro-velero-arrow)"/>
+<text class="dg-note" x="340" y="552" text-anchor="start">frena o pone en riesgo</text>
+<path class="dg-line-link" d="M520 548 H544" marker-end="url(#retro-velero-arrow-link)"/>
+<text class="dg-note" x="552" y="552" text-anchor="start">hacia el objetivo</text></svg>
+  </div>
+</div>
+</body>
+</html>

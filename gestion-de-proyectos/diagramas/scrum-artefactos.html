@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrum: roles y artefactos</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Diagram skin for diagram-design SVGs (profile "unicaba-cursada").
+   Shared by clases/*.html, slides/* and diagramas/*.html. Self-contained: it does not need course.css.
+   Light values = assets/course.css tokens; dark follows data-theme (theme.js) or the system. */
+:root {
+  --d-paper: #ffffff;
+  --d-paper-2: #f8f1f5;
+  --d-box: #ffffff;
+  --d-ink: #24171f;
+  --d-muted: #6a5764;
+  --d-soft: #8d7a87;
+  --d-rule: #e6d3df;
+  --d-accent: #b83a95;
+  --d-accent-ink: #9c2a7b;
+  --d-accent-tint: rgba(184, 58, 149, .08);
+  --d-link: #6b2fae;
+  --d-link-tint: rgba(107, 47, 174, .08);
+}
+:root[data-theme="dark"] {
+  --d-paper: #1a1218;
+  --d-paper-2: #241a22;
+  --d-box: #241a22;
+  --d-ink: #f2e9ef;
+  --d-muted: #b3a3ae;
+  --d-soft: #8f7d89;
+  --d-rule: #43303e;
+  --d-accent: #f08fcf;
+  --d-accent-ink: #f08fcf;
+  --d-accent-tint: rgba(240, 143, 207, .10);
+  --d-link: #b99af0;
+  --d-link-tint: rgba(185, 154, 240, .10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --d-paper: #1a1218;
+    --d-paper-2: #241a22;
+    --d-box: #241a22;
+    --d-ink: #f2e9ef;
+    --d-muted: #b3a3ae;
+    --d-soft: #8f7d89;
+    --d-rule: #43303e;
+    --d-accent: #f08fcf;
+    --d-accent-ink: #f08fcf;
+    --d-accent-tint: rgba(240, 143, 207, .10);
+    --d-link: #b99af0;
+    --d-link-tint: rgba(185, 154, 240, .10);
+  }
+}
+
+/* Figure wrapper used by lessons */
+figure.diagram { margin: 1.6rem 0; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .5rem; }
+
+/* SVG classes (all prefixed dg-) */
+.dg-bg { fill: var(--d-paper); }
+.dg-mask { fill: var(--d-paper); }
+.dg-zone { fill: var(--d-paper-2); stroke: var(--d-rule); stroke-width: 1; }
+.dg-rule { stroke: var(--d-rule); stroke-width: .8; fill: none; }
+
+.dg-box { fill: var(--d-box); stroke: var(--d-ink); stroke-width: 1; }
+.dg-store { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-focal { fill: var(--d-accent-tint); stroke: var(--d-accent); stroke-width: 1.2; }
+.dg-viol { fill: var(--d-link-tint); stroke: var(--d-link); stroke-width: 1; }
+.dg-ghost { fill: none; stroke: var(--d-muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.dg-dot { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-dot-focal { fill: var(--d-accent); stroke: var(--d-accent); stroke-width: 1; }
+
+.dg-line { stroke: var(--d-muted); stroke-width: 1.2; fill: none; }
+.dg-line-accent { stroke: var(--d-accent); stroke-width: 1.2; fill: none; }
+.dg-line-link { stroke: var(--d-link); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+.dg-ah { fill: var(--d-muted); }
+.dg-ah-accent { fill: var(--d-accent); }
+.dg-ah-link { fill: var(--d-link); }
+
+.dg-name { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-sub { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-row { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-tag { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-soft); letter-spacing: .08em; }
+.dg-lbl { font: 400 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-muted); letter-spacing: .04em; }
+.dg-lbl-accent { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-accent-ink); letter-spacing: .04em; }
+.dg-lbl-link { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-link); letter-spacing: .04em; }
+.dg-note { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-note-accent { font: 600 12px "Montserrat", system-ui, sans-serif; fill: var(--d-accent-ink); }
+
+/* Catedra slide screenshots (clases/img/*.jpg) shown next to the own diagrams. */
+figure.slide { margin: 1.4rem 0; }
+figure.slide img { display: block; width: 100%; max-width: 720px; height: auto; border: 1px solid var(--rule, #e6d3df); border-radius: 6px; }
+figure.slide figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .4rem; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--d-paper); color: var(--d-ink); font-family: "Montserrat", system-ui, sans-serif; margin: 0; }
+  .frame { max-width: 1100px; margin: 0 auto; padding: 2rem 16px 3rem; }
+  .eyebrow { font: 500 .66rem "Geist Mono", ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--d-muted); margin-bottom: .5rem; }
+  h1 { font-size: clamp(1.4rem, 2vw + .8rem, 1.9rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
+  .sub { color: var(--d-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+  svg { display: block; width: 100%; height: auto; min-width: 640px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Diagrama · Taller de Gestión de Proyectos Digitales</p>
+  <h1>Scrum: roles y artefactos</h1>
+  <p class="sub">Quién es dueño de qué y qué controles hay.</p>
+  <div class="scroll">
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scrum-artefactos-title scrum-artefactos-desc"><title id="scrum-artefactos-title">Scrum: roles, artefactos y los dos controles de calidad</title><desc id="scrum-artefactos-desc">El Equipo Scrum reúne al Product Owner, al equipo de desarrollo y al Scrum Master. El Product Owner ordena el Product Backlog; el equipo lo lleva al Sprint Backlog si cumple la DoR y entrega un Incremento con las historias que cumplen la DoD.</desc><defs><marker id="scrum-artefactos-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="scrum-artefactos-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="scrum-artefactos-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><rect class="dg-zone" x="28" y="24" width="904" height="152" rx="8"/>
+<text class="dg-tag" x="44" y="48" text-anchor="start">EQUIPO SCRUM</text>
+<path class="dg-line" d="M160 160 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-lbl" x="168" y="244" text-anchor="start">ordena</text>
+<path class="dg-line" d="M480 160 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-lbl" x="472" y="244" text-anchor="end">se compromete</text>
+<path class="dg-line" d="M540 160 V260 Q540 268 548 268 H792 Q800 268 800 276 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="642" y="244" width="60" height="16" rx="2"/>
+<text class="dg-lbl" x="672" y="256" text-anchor="middle">entrega</text>
+<path class="dg-line" d="M680 112 H600" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="606" y="88" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="640" y="100" text-anchor="middle">facilita</text>
+<path class="dg-line" d="M280 360 H360" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="304" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl" x="320" y="348" text-anchor="middle">DoR</text>
+<path class="dg-line-accent" d="M600 360 H680" marker-end="url(#scrum-artefactos-arrow-accent)"/>
+<rect class="dg-mask" x="624" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl-accent" x="640" y="348" text-anchor="middle">DoD</text>
+<rect class="dg-mask" x="40" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="160" y="99" text-anchor="middle">Product Owner</text>
+<text class="dg-sub" x="160" y="117" text-anchor="middle">Una sola persona</text>
+<text class="dg-sub" x="160" y="135" text-anchor="middle">Dueño del backlog</text>
+<rect class="dg-mask" x="360" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="360" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="480" y="99" text-anchor="middle">Equipo de desarrollo</text>
+<text class="dg-sub" x="480" y="117" text-anchor="middle">3 a 9 personas</text>
+<text class="dg-sub" x="480" y="135" text-anchor="middle">autoorganizado</text>
+<rect class="dg-mask" x="680" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="680" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="800" y="99" text-anchor="middle">Scrum Master</text>
+<text class="dg-sub" x="800" y="117" text-anchor="middle">Facilita Scrum</text>
+<text class="dg-sub" x="800" y="135" text-anchor="middle">No es un Project Manager</text>
+<rect class="dg-mask" x="40" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-store" x="40" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="160" y="347" text-anchor="middle">Product Backlog</text>
+<text class="dg-sub" x="160" y="365" text-anchor="middle">Lista única ordenada</text>
+<text class="dg-sub" x="160" y="383" text-anchor="middle">por valor de negocio</text>
+<rect class="dg-mask" x="360" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-store" x="360" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="480" y="347" text-anchor="middle">Sprint Backlog</text>
+<text class="dg-sub" x="480" y="365" text-anchor="middle">Tareas del Sprint,</text>
+<text class="dg-sub" x="480" y="383" text-anchor="middle">acordadas con el PO</text>
+<rect class="dg-mask" x="680" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-focal" x="680" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="800" y="347" text-anchor="middle">Incremento</text>
+<text class="dg-sub" x="800" y="365" text-anchor="middle">Historias que</text>
+<text class="dg-sub" x="800" y="383" text-anchor="middle">alcanzaron la DoD</text>
+<text class="dg-note" x="40" y="448" text-anchor="start">DoR · Definition of Ready: la historia está lista para entrar al Sprint.</text>
+<text class="dg-note" x="40" y="472" text-anchor="start">DoD · Definition of Done: la historia cumple el checklist y cuenta como terminada.</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 528 H152" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-note" x="160" y="532" text-anchor="start">relación</text>
+<path class="dg-line-accent" d="M248 528 H272" marker-end="url(#scrum-artefactos-arrow-accent)"/>
+<text class="dg-note" x="280" y="532" text-anchor="start">control de calidad (DoD)</text>
+<rect class="dg-focal" x="472" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="500" y="532" text-anchor="start">lo que se entrega</text></svg>
+  </div>
+</div>
+</body>
+</html>

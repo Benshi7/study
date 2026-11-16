@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso intercalado</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0006 · Bloque 1: Introducción a los datos</div>
+
+<div class="kicker">Lección 0006</div>
+<h1>Repaso intercalado del bloque 1</h1>
+<p class="lede">Todo mezclado, como en el parcial. Esta lección no enseña nada nuevo: sirve para practicar recuperando de memoria.</p>
+
+<div class="box recall">
+  <span class="label">Cómo usarla</span>
+  <p>Hacela <strong>mañana</strong>, no hoy, y otra vez el domingo a la noche. Espaciar la práctica es lo que convierte "me lo acuerdo ahora" en "me lo acuerdo el lunes". Antes de tocar una opción, <strong>respondé en tu cabeza</strong> y recién después elegí.</p>
+</div>
+
+<p>Mezcla tipos de datos y tipos de análisis (lo que ya practicamos en el chat) con las lecciones <a href="0001-dimensiones-de-calidad.html">0001</a> a <a href="0005-del-dato-al-insight.html">0005</a>. Si fallás una, volvé a la lección que corresponde.</p>
+
+<span class="sidenote">Árbol de tipos de datos y tabla de tipos de análisis: <a href="../reference/datos-y-analisis.html">Referencia · Datos y análisis</a>.</span>
+<!-- diagram:tipos-datos -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 340" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="tipos-datos-title tipos-datos-desc" xmlns="http://www.w3.org/2000/svg"><title id="tipos-datos-title">Tipos de datos según la cátedra</title><desc id="tipos-datos-desc">Árbol que divide los datos en cualitativos (nominales, ordinales, binarias) y cuantitativos (discretos, continuos), con un ejemplo de cada uno.</desc><defs><marker id="tipos-datos-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="tipos-datos-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="tipos-datos-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="tree" d="M400,72 L400,92"/><path class="tree" d="M248,112 L248,100 Q248,92 256,92 L620,92 Q628,92 628,100 L628,112"/><path class="tree" d="M248,160 L248,184"/><path class="tree" d="M96,208 L96,192 Q96,184 104,184 L392,184 Q400,184 400,192 L400,208"/><path class="tree" d="M248,184 L248,208"/><path class="tree" d="M628,160 L628,184"/><path class="tree" d="M552,208 L552,192 Q552,184 560,184 L696,184 Q704,184 704,192 L704,208"/><rect class="mask" x="320" y="24" width="160" height="48" rx="6"/><rect class="node" x="320" y="24" width="160" height="48" rx="6"/><text class="name" x="400" y="46" text-anchor="middle">Datos</text><text class="sub" x="400" y="60" text-anchor="middle">atributo de un hecho</text><rect class="mask" x="168" y="112" width="160" height="48" rx="6"/><rect class="node" x="168" y="112" width="160" height="48" rx="6"/><text class="name" x="248" y="134" text-anchor="middle">Cualitativos</text><text class="sub" x="248" y="148" text-anchor="middle">no cuantificables</text><rect class="mask" x="548" y="112" width="160" height="48" rx="6"/><rect class="node" x="548" y="112" width="160" height="48" rx="6"/><text class="name" x="628" y="134" text-anchor="middle">Cuantitativos</text><text class="sub" x="628" y="148" text-anchor="middle">cuantificables</text><rect class="mask" x="28" y="208" width="136" height="52" rx="6"/><rect class="node" x="28" y="208" width="136" height="52" rx="6"/><text class="name" x="96" y="232" text-anchor="middle">Nominales</text><text class="sub" x="96" y="246" text-anchor="middle">sin orden</text><text class="note" x="96" y="280" text-anchor="middle">color de ojos</text><rect class="mask" x="180" y="208" width="136" height="52" rx="6"/><rect class="node" x="180" y="208" width="136" height="52" rx="6"/><text class="name" x="248" y="232" text-anchor="middle">Ordinales</text><text class="sub" x="248" y="246" text-anchor="middle">el orden importa</text><text class="note" x="248" y="280" text-anchor="middle">alto · medio · bajo</text><rect class="mask" x="332" y="208" width="136" height="52" rx="6"/><rect class="focal" x="332" y="208" width="136" height="52" rx="6"/><text class="name" x="400" y="232" text-anchor="middle">Binarias</text><text class="sub-accent" x="400" y="246" text-anchor="middle">dos valores</text><text class="note" x="400" y="280" text-anchor="middle">sí / no · frío / caliente</text><rect class="mask" x="484" y="208" width="136" height="52" rx="6"/><rect class="node" x="484" y="208" width="136" height="52" rx="6"/><text class="name" x="552" y="232" text-anchor="middle">Discretos</text><text class="sub" x="552" y="246" text-anchor="middle">enteros, indivisibles</text><text class="note" x="552" y="280" text-anchor="middle">cantidad de hijos</text><rect class="mask" x="636" y="208" width="136" height="52" rx="6"/><rect class="node" x="636" y="208" width="136" height="52" rx="6"/><text class="name" x="704" y="232" text-anchor="middle">Continuos</text><text class="sub" x="704" y="246" text-anchor="middle">valor en un intervalo</text><text class="note" x="704" y="280" text-anchor="middle">altura: 1.78 m</text><line class="rule" x1="24" y1="300" x2="776" y2="300"/><text class="eyebrow" x="24" y="324" text-anchor="start">LEYENDA</text><rect class="focal" x="104" y="316" width="16" height="12" rx="3"/><text class="sub" x="128" y="325" text-anchor="start">trampa: binarias va del lado CUALITATIVO (slide 24)</text></svg></div><figcaption>Tipos de datos (slide 24): binarias está del lado cualitativo. <a href="../diagrams/tipos-datos.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:tipos-datos -->
+
+<div class="quiz" data-quiz-id="0006-repaso-intercalado-bloque-1"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "En el dataset de Puma, la columna UNIDADES VENDIDAS tiene los valores ALTA / MEDIA / BAJA. ¿Qué tipo de dato es?",
+   "options": ["Cualitativo ordinal", "Cualitativo nominal", "Cuantitativo discreto", "Cuantitativo continuo"], "answer": 0,
+   "why": "Se clasifica por los valores, no por el nombre de la columna: son categorías con un orden que importa."},
+  {"q": "\"¿Tiene tarjeta de crédito? Sí / No.\" ¿Qué tipo de dato es?",
+   "options": ["Cualitativo binario", "Cuantitativo discreto", "Cuantitativo continuo", "Cualitativo ordinal"], "answer": 0,
+   "why": "Dos valores posibles: binario. En el slide 24, binarias está del lado cualitativo."},
+  {"q": "El peso de un producto en gramos (149,93; 135,454). ¿Qué tipo de dato es?",
+   "options": ["Cuantitativo continuo", "Cuantitativo discreto", "Cualitativo ordinal", "Cualitativo nominal"], "answer": 0,
+   "why": "Puede tomar cualquier valor dentro de un intervalo."},
+  {"q": "La cantidad de hijos de una persona. ¿Qué tipo de dato es?",
+   "options": ["Cuantitativo discreto", "Cuantitativo continuo", "Cualitativo ordinal", "Cualitativo binario"], "answer": 0,
+   "why": "Enteros e indivisibles: no hay ningún valor posible entre 2 y 3 hijos."},
+  {"q": "\"Con las ventas de zapatillas de 2022 se creó un modelo para estimar las de 2023.\" ¿Qué tipo de análisis es?",
+   "options": ["Predictivo", "Descriptivo", "Diagnóstico", "Prescriptivo"], "answer": 0,
+   "why": "Responde \"¿qué va a pasar?\" usando datos actuales e históricos."},
+  {"q": "\"En varones de 23 a 25 años, el promedio de notas es menor que el de las mujeres.\" ¿Qué tipo de análisis es?",
+   "options": ["Exploratorio", "Descriptivo", "Diagnóstico", "Predictivo"], "answer": 0,
+   "why": "Cruza variables buscando un patrón que no se ve a primera vista. Es el ejemplo literal del slide."},
+  {"q": "\"La facturación promedio por cliente fue de $12.000, un 5% más que el mes anterior.\" ¿Qué tipo de análisis es?",
+   "options": ["Descriptivo", "Exploratorio", "Predictivo", "Diagnóstico"], "answer": 0,
+   "why": "Comparar la misma métrica entre períodos sigue siendo \"¿qué pasó?\"."},
+  {"q": "Asociá: A) Descriptivo, B) Exploratorio, C) Diagnóstico, D) Predictivo, E) Prescriptivo con 1) ¿qué hacer?, 2) valores característicos de una muestra, 3) patrones ocultos, 4) causas, 5) predecir eventos futuros.",
+   "options": ["A-2, B-3, C-4, D-5, E-1", "A-1, B-2, C-3, D-4, E-5", "A-3, B-4, C-5, D-1, E-2", "A-4, B-5, C-1, D-2, E-3"], "answer": 0,
+   "why": "Es la pregunta 17 del cuestionario."},
+  {"q": "El dashboard de ventas del día recién se actualiza una semana después. ¿Qué dimensión de calidad falla?",
+   "options": ["Tempestividad", "Precisión", "Consistencia", "Integridad"], "answer": 0,
+   "why": "El dato no está disponible a tiempo. Si hay una referencia temporal, es tempestividad."},
+  {"q": "Un producto se define por código, nombre y precio. Los 20 productos tienen esos tres campos, pero 12 no tienen \"descripción larga\" (campo opcional). ¿Cuál es la completitud?",
+   "options": ["100%", "40%", "60%", "0%"], "answer": 0,
+   "why": "Un dato opcional no se considera: todos los registros tienen los obligatorios."},
+  {"q": "¿Quién se ocupa de la seguridad en general de la empresa, incluida la física?",
+   "options": ["CSO", "CISO", "CIO", "CDO"], "answer": 0,
+   "why": "El CSO cubre la seguridad en general; el CISO, solo la de la información."},
+  {"q": "\"Medimos qué porcentaje de registros tiene el DNI vacío.\" ¿Qué proceso es?",
+   "options": ["Profiling", "Cleansing", "Governance", "Completitud"], "answer": 0,
+   "why": "Medir y evaluar la calidad es profiling. Completitud es una dimensión, no un proceso."},
+  {"q": "¿Qué caracteriza a la 4ª revolución industrial?",
+   "options": ["Internet móvil, sensores potentes e IA", "Máquina de vapor y producción textil", "Electricidad, motor a gasolina, producción masiva", "Microelectrónica y transición analógico a digital"], "answer": 0,
+   "why": "Es la cita de Klaus Schwab."},
+  {"q": "¿Qué rol ayuda al Data Analyst a transformar necesidades de información en preguntas?",
+   "options": ["Business Analyst", "Data Engineer", "Data Scientist", "Visualization Specialist"], "answer": 0,
+   "why": "El Business Analyst, que tiene el conocimiento más profundo del negocio. Si el enunciado habla de <em>necesidades</em> o <em>preguntas</em>, es el lado del negocio. El Data Engineer está del lado técnico: diseña y construye los <strong>pipelines</strong> que dejan los datos utilizables."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Si sacás 12 o más sobre 14 dos días seguidos, el bloque 1 está listo para el lunes.</p>
+</div>
+
+<div class="box recall">
+  <span class="label">Conexión con el EDA (bloque 4)</span>
+  <p>En EDA el mismo árbol se llama <strong>categóricas</strong> (nominales, ordinales) y <strong>numéricas</strong> (discretas, continuas), sin rama "binarias": una variable 0/1 como <code>target</code> es categórica nominal. Y el EDA también "genera hipótesis", pero no busca causas: eso sigue siendo diagnóstico. Ver <a href="0016-el-eda-y-su-flujo.html">lección 0016</a>.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../reference/cuestionario-unidad-1.html">El cuestionario de Moodle resuelto</a>: hacelo sin mirar las respuestas como último control.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Contame en el chat qué preguntas fallaste. Así actualizo tus registros de aprendizaje y decido qué repasamos antes del lunes.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0005-del-dato-al-insight.html">← 0005 · Del dato al insight</a>
+  <a href="../index.html">Índice →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

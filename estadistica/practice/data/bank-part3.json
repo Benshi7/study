@@ -1,0 +1,1214 @@
+[
+ {
+  "id": "p3-001",
+  "topic": "regresion",
+  "kind": "concept",
+  "difficulty": 1,
+  "source": "TP6 ej 1",
+  "stem": "Determiná el tipo de asociación aparente en el siguiente gráfico de dispersión (los puntos están alineados casi sobre una recta que sube):<svg viewBox=\"0 0 300 210\" width=\"300\" height=\"210\" role=\"img\" aria-label=\"Diagrama de dispersion con puntos que suben de izquierda a derecha\"><line x1=\"40\" y1=\"8\" x2=\"40\" y2=\"176\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><line x1=\"40\" y1=\"176\" x2=\"290\" y2=\"176\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><path d=\"M 40 4 l -3 6 l 6 0 z\" fill=\"#a6a08a\"/><path d=\"M 294 176 l -6 -3 l 0 6 z\" fill=\"#a6a08a\"/><circle cx=\"53.1\" cy=\"167.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"79.4\" cy=\"149.5\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"79.4\" cy=\"131.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.6\" cy=\"131.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.6\" cy=\"114.3\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"131.8\" cy=\"114.3\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"131.8\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"158.1\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"184.3\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"184.3\" cy=\"79.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"210.5\" cy=\"79.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"210.5\" cy=\"61.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.8\" cy=\"61.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.8\" cy=\"26.1\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"263.0\" cy=\"43.7\" r=\"3.2\" fill=\"#7aa89f\"/></svg>",
+  "options": [
+   "Asociación lineal, asociación moderadamente fuerte",
+   "Asociación positiva, asociación lineal, asociación muy fuerte",
+   "Asociación positiva, asociación moderadamente fuerte",
+   "Asociación positiva, asociación lineal",
+   "Asociación lineal, muy fuerte asociación"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Sentido",
+    "text": "Al aumentar x, y tiende a aumentar: asociación positiva."
+   },
+   {
+    "label": "Forma",
+    "text": "Los puntos siguen una recta, no una curva: asociación lineal."
+   },
+   {
+    "label": "Fuerza",
+    "text": "Dispersión mínima alrededor de la recta; con los puntos del gráfico r ≈ 0,96, y |r| ≥ 0,7 ya es fuerte para la cátedra.",
+    "calc": "MENU→6 Estadística → y=a+bx: cargar los pares (x; y) → r ≈ 0,96"
+   }
+  ],
+  "why": "Una descripción completa de un diagrama de dispersión incluye sentido (positiva), forma (lineal) y fuerza (muy fuerte, r ≈ 0,96).",
+  "traps": [
+   "Omite el sentido (positivo) y subestima la fuerza: los puntos casi forman una recta, |r| está muy cerca de 1.",
+   "",
+   "Subestima la fuerza y no reconoce la forma lineal de la nube.",
+   "Describe sentido y forma pero no califica la fuerza; la descripción completa pide los tres aspectos.",
+   "No indica el sentido: al subir de izquierda a derecha la asociación es positiva."
+  ]
+ },
+ {
+  "id": "p3-002",
+  "topic": "regresion",
+  "kind": "concept",
+  "difficulty": 2,
+  "source": "TP6 ej 7",
+  "stem": "El siguiente gráfico de dispersión muestra los casos de una dada enfermedad diagnosticada en una región durante los años 1991-2011:<svg viewBox=\"0 0 330 230\" width=\"330\" height=\"230\" role=\"img\" aria-label=\"Casos diagnosticados por anio entre 1991 y 2011\"><line x1=\"40\" y1=\"8\" x2=\"40\" y2=\"196\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><line x1=\"40\" y1=\"196\" x2=\"320\" y2=\"196\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><path d=\"M 40 4 l -3 6 l 6 0 z\" fill=\"#a6a08a\"/><path d=\"M 324 196 l -6 -3 l 0 6 z\" fill=\"#a6a08a\"/><line x1=\"105.5\" y1=\"196\" x2=\"105.5\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"105.5\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">1995</text><line x1=\"165.1\" y1=\"196\" x2=\"165.1\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"165.1\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">2000</text><line x1=\"224.7\" y1=\"196\" x2=\"224.7\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"224.7\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">2005</text><line x1=\"284.2\" y1=\"196\" x2=\"284.2\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"284.2\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">2010</text><line x1=\"36\" y1=\"188.9\" x2=\"40\" y2=\"188.9\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"192.4\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">0</text><line x1=\"36\" y1=\"153.5\" x2=\"40\" y2=\"153.5\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"157.0\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">200</text><line x1=\"36\" y1=\"118.2\" x2=\"40\" y2=\"118.2\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"121.7\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">400</text><line x1=\"36\" y1=\"82.8\" x2=\"40\" y2=\"82.8\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"86.3\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">600</text><line x1=\"36\" y1=\"47.4\" x2=\"40\" y2=\"47.4\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"50.9\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">800</text><text x=\"177.0\" y=\"226\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">Año</text><text x=\"10\" y=\"104.0\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\" transform=\"rotate(-90 10 104.0)\">Casos</text><circle cx=\"57.9\" cy=\"187.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"69.8\" cy=\"183.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"81.7\" cy=\"174.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"93.6\" cy=\"167.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.5\" cy=\"144.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"117.4\" cy=\"127.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"129.3\" cy=\"100.5\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"141.3\" cy=\"81.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"153.2\" cy=\"59.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"165.1\" cy=\"45.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"177.0\" cy=\"45.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"188.9\" cy=\"24.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"200.8\" cy=\"27.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"212.7\" cy=\"43.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"224.7\" cy=\"70.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.6\" cy=\"98.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"248.5\" cy=\"133.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"260.4\" cy=\"150.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"272.3\" cy=\"158.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"284.2\" cy=\"171.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"296.1\" cy=\"180.1\" r=\"3.2\" fill=\"#7aa89f\"/></svg>Considerando sólo los datos de 2002 en adelante, ¿cuál de las siguientes opciones describe mejor la asociación lineal entre la cantidad de casos diagnosticados y el año?",
+  "options": [
+   "Ninguna asociación lineal",
+   "Débil y negativa",
+   "Débil y positiva",
+   "Fuerte y positiva",
+   "Fuerte y negativa"
+  ],
+  "answer": 4,
+  "steps": [
+   {
+    "label": "Recortar",
+    "text": "Se miran sólo los puntos de 2002 a 2011: la nube desciende de 930 a 50 casos."
+   },
+   {
+    "label": "Sentido y forma",
+    "text": "Al aumentar el año, los casos disminuyen y los puntos siguen una recta: asociación lineal negativa."
+   },
+   {
+    "label": "Fuerza",
+    "text": "Con los valores aproximados leídos del gráfico, r ≈ −0,98; |r| > 0,7 ⇒ fuerte.",
+    "calc": "MENU→6 Estadística → y=a+bx: x = años 2002…2011, y = casos → r ≈ −0,98"
+   }
+  ],
+  "why": "Considerando sólo 2002 en adelante, los puntos forman una recta decreciente: asociación lineal fuerte y negativa (r ≈ −0,98).",
+  "traps": [
+   "Mira todo el período (donde la nube es una curva), no el tramo 2002-2011.",
+   "Acierta el sentido pero subestima la fuerza: desde 2002 los puntos caen casi en línea recta.",
+   "Confunde sentido y fuerza: desde 2002 los casos bajan año tras año.",
+   "Acierta la fuerza pero invierte el sentido: al avanzar el año, los casos disminuyen.",
+   ""
+  ]
+ },
+ {
+  "id": "p3-003",
+  "topic": "regresion",
+  "kind": "concept",
+  "difficulty": 3,
+  "source": "TP6 ej 7 (variante)",
+  "stem": "El siguiente gráfico de dispersión muestra los casos de una dada enfermedad diagnosticada en una región durante los años 1991-2011:<svg viewBox=\"0 0 330 230\" width=\"330\" height=\"230\" role=\"img\" aria-label=\"Casos diagnosticados por anio entre 1991 y 2011\"><line x1=\"40\" y1=\"8\" x2=\"40\" y2=\"196\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><line x1=\"40\" y1=\"196\" x2=\"320\" y2=\"196\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><path d=\"M 40 4 l -3 6 l 6 0 z\" fill=\"#a6a08a\"/><path d=\"M 324 196 l -6 -3 l 0 6 z\" fill=\"#a6a08a\"/><line x1=\"105.5\" y1=\"196\" x2=\"105.5\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"105.5\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">1995</text><line x1=\"165.1\" y1=\"196\" x2=\"165.1\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"165.1\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">2000</text><line x1=\"224.7\" y1=\"196\" x2=\"224.7\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"224.7\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">2005</text><line x1=\"284.2\" y1=\"196\" x2=\"284.2\" y2=\"200\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"284.2\" y=\"211\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">2010</text><line x1=\"36\" y1=\"188.9\" x2=\"40\" y2=\"188.9\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"192.4\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">0</text><line x1=\"36\" y1=\"153.5\" x2=\"40\" y2=\"153.5\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"157.0\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">200</text><line x1=\"36\" y1=\"118.2\" x2=\"40\" y2=\"118.2\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"121.7\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">400</text><line x1=\"36\" y1=\"82.8\" x2=\"40\" y2=\"82.8\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"86.3\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">600</text><line x1=\"36\" y1=\"47.4\" x2=\"40\" y2=\"47.4\" stroke=\"#a6a08a\" stroke-width=\"1\"/><text x=\"33\" y=\"50.9\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"end\">800</text><text x=\"177.0\" y=\"226\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\">Año</text><text x=\"10\" y=\"104.0\" font-size=\"10\" fill=\"#a6a08a\" text-anchor=\"middle\" transform=\"rotate(-90 10 104.0)\">Casos</text><circle cx=\"57.9\" cy=\"187.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"69.8\" cy=\"183.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"81.7\" cy=\"174.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"93.6\" cy=\"167.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.5\" cy=\"144.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"117.4\" cy=\"127.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"129.3\" cy=\"100.5\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"141.3\" cy=\"81.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"153.2\" cy=\"59.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"165.1\" cy=\"45.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"177.0\" cy=\"45.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"188.9\" cy=\"24.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"200.8\" cy=\"27.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"212.7\" cy=\"43.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"224.7\" cy=\"70.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.6\" cy=\"98.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"248.5\" cy=\"133.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"260.4\" cy=\"150.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"272.3\" cy=\"158.8\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"284.2\" cy=\"171.2\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"296.1\" cy=\"180.1\" r=\"3.2\" fill=\"#7aa89f\"/></svg>Ahora se consideran TODOS los años (1991-2011). ¿Qué se puede afirmar?",
+  "options": [
+   "Hay una asociación lineal fuerte y positiva, porque durante la primera mitad del período los casos crecen.",
+   "Hay una asociación lineal fuerte y negativa, porque en los últimos años los casos caen.",
+   "No hay una asociación lineal apreciable (r cercano a 0), aunque sí hay una relación clara de tipo curvo.",
+   "No hay ningún tipo de relación entre los años y los casos, porque r ≈ 0.",
+   "Hay una asociación lineal débil y negativa, porque r < 0."
+  ],
+  "answer": 2,
+  "steps": [
+   {
+    "label": "Todo el período",
+    "text": "La nube sube hasta ≈ 2002 y luego baja: forma de arco (curva), no de recta."
+   },
+   {
+    "label": "Coeficiente",
+    "text": "Los tramos creciente y decreciente se compensan: r ≈ 0,14, cercano a 0.",
+    "calc": "MENU→6 Estadística → y=a+bx: x = años 1991…2011, y = casos → r ≈ 0,14"
+   },
+   {
+    "label": "Concluir",
+    "text": "r mide sólo asociación lineal: r ≈ 0 no implica ausencia de relación; conviene mirar el gráfico."
+   }
+  ],
+  "why": "r ≈ 0 indica falta de relación lineal, pero el gráfico muestra una relación curva fuerte; por eso siempre hay que mirar el diagrama de dispersión.",
+  "traps": [
+   "Mira sólo el tramo ascendente; con todo el período la nube sube y luego baja.",
+   "Mira sólo el tramo descendente; los años iniciales muestran lo contrario.",
+   "",
+   "r ≈ 0 sólo descarta relación LINEAL; acá hay una relación curva muy marcada.",
+   "Con todo el período r es cercano a 0 (≈ 0,14 con los datos leídos): no corresponde interpretarlo como asociación negativa."
+  ]
+ },
+ {
+  "id": "p3-004",
+  "topic": "regresion",
+  "kind": "concept",
+  "difficulty": 1,
+  "source": "TP6 ej 8",
+  "stem": "Determiná el tipo de asociación aparente en el siguiente gráfico de dispersión (los puntos bajan de izquierda a derecha, alineados):<svg viewBox=\"0 0 300 210\" width=\"300\" height=\"210\" role=\"img\" aria-label=\"Diagrama de dispersion con puntos que bajan de izquierda a derecha\"><line x1=\"40\" y1=\"8\" x2=\"40\" y2=\"176\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><line x1=\"40\" y1=\"176\" x2=\"290\" y2=\"176\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><path d=\"M 40 4 l -3 6 l 6 0 z\" fill=\"#a6a08a\"/><path d=\"M 294 176 l -6 -3 l 0 6 z\" fill=\"#a6a08a\"/><circle cx=\"53.1\" cy=\"43.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"79.4\" cy=\"26.1\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"79.4\" cy=\"61.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.6\" cy=\"61.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.6\" cy=\"79.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"131.8\" cy=\"79.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"131.8\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"158.1\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"184.3\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"184.3\" cy=\"114.3\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"210.5\" cy=\"114.3\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"210.5\" cy=\"131.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.8\" cy=\"131.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.8\" cy=\"149.5\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"263.0\" cy=\"167.2\" r=\"3.2\" fill=\"#7aa89f\"/></svg>",
+  "options": [
+   "Asociación negativa, asociación lineal, asociación muy fuerte",
+   "Asociación lineal, asociación muy fuerte",
+   "Asociación lineal, asociación moderadamente fuerte",
+   "Asociación negativa, asociación lineal",
+   "Asociación negativa, asociación moderadamente fuerte"
+  ],
+  "answer": 0,
+  "steps": [
+   {
+    "label": "Sentido",
+    "text": "Al aumentar x, y disminuye: asociación negativa."
+   },
+   {
+    "label": "Forma",
+    "text": "Los puntos se alinean en una recta: asociación lineal."
+   },
+   {
+    "label": "Fuerza",
+    "text": "Muy poca dispersión: con los puntos del gráfico r ≈ −0,96 (|r| ≥ 0,7 es fuerte).",
+    "calc": "MENU→6 Estadística → y=a+bx: cargar los pares (x; y) → r ≈ −0,96"
+   }
+  ],
+  "why": "Sentido negativo, forma lineal y fuerza muy alta (r ≈ −0,96).",
+  "traps": [
+   "",
+   "No indica el sentido: al aumentar x, y disminuye (asociación negativa).",
+   "Omite el sentido y subestima la fuerza: los puntos casi forman una recta.",
+   "Sentido y forma correctos, pero falta calificar la fuerza.",
+   "Subestima la fuerza y no menciona la forma lineal."
+  ]
+ },
+ {
+  "id": "p3-005",
+  "topic": "regresion",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP6 ej 8 (variante)",
+  "stem": "El siguiente gráfico de dispersión muestra puntos que bajan de izquierda a derecha, casi alineados. ¿Cuál es el valor más razonable del coeficiente de correlación?<svg viewBox=\"0 0 300 210\" width=\"300\" height=\"210\" role=\"img\" aria-label=\"Diagrama de dispersion con puntos que bajan de izquierda a derecha\"><line x1=\"40\" y1=\"8\" x2=\"40\" y2=\"176\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><line x1=\"40\" y1=\"176\" x2=\"290\" y2=\"176\" stroke=\"#a6a08a\" stroke-width=\"1.5\"/><path d=\"M 40 4 l -3 6 l 6 0 z\" fill=\"#a6a08a\"/><path d=\"M 294 176 l -6 -3 l 0 6 z\" fill=\"#a6a08a\"/><circle cx=\"53.1\" cy=\"43.7\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"79.4\" cy=\"26.1\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"79.4\" cy=\"61.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.6\" cy=\"61.4\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"105.6\" cy=\"79.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"131.8\" cy=\"79.0\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"131.8\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"158.1\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"184.3\" cy=\"96.6\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"184.3\" cy=\"114.3\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"210.5\" cy=\"114.3\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"210.5\" cy=\"131.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.8\" cy=\"131.9\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"236.8\" cy=\"149.5\" r=\"3.2\" fill=\"#7aa89f\"/><circle cx=\"263.0\" cy=\"167.2\" r=\"3.2\" fill=\"#7aa89f\"/></svg>",
+  "options": [
+   "r ≈ +0,96",
+   "r ≈ −0,35",
+   "r ≈ 0",
+   "r ≈ −0,96",
+   "r ≈ −1,35"
+  ],
+  "answer": 3,
+  "steps": [
+   {
+    "label": "Signo",
+    "text": "La nube baja: r < 0."
+   },
+   {
+    "label": "Módulo",
+    "text": "Puntos casi sobre una recta: |r| cercano a 1; con los pares del gráfico se obtiene −0,96 (aprox.).",
+    "calc": "MENU→6 Estadística → y=a+bx: cargar los pares → r ≈ −0,96"
+   },
+   {
+    "label": "Verificar rango",
+    "text": "−1 ≤ r ≤ 1; descarta −1,35."
+   }
+  ],
+  "why": "Asociación negativa y muy fuerte: r ≈ −0,96 (valor aproximado a partir de los puntos del gráfico).",
+  "traps": [
+   "Invierte el signo: la asociación es negativa (y baja cuando x sube).",
+   "Subestima la fuerza: la nube casi no se dispersa alrededor de la recta.",
+   "r ≈ 0 corresponde a una nube sin tendencia lineal, no a puntos alineados.",
+   "",
+   "Imposible: r siempre está entre −1 y 1."
+  ]
+ },
+ {
+  "id": "p3-006",
+  "topic": "regresion",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP6 ej 12",
+  "stem": "Encontrá la recta de regresión para los siguientes datos:<table><thead><tr><th>x</th><th>2</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><td>y</td><td>7</td><td>11</td><td>13</td><td>20</td></tr></tbody></table>",
+  "options": [
+   "y = 2,8x",
+   "y = 3x",
+   "y = 0,15 + 3x",
+   "y = 0,15 + 2,8x",
+   "y = 3x − 0,15"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Medias",
+    "formula": "x̄ = (2+4+5+6)/4 = 4,25 ; ȳ = (7+11+13+20)/4 = 12,75"
+   },
+   {
+    "label": "Pendiente",
+    "formula": "b = Σ(x−x̄)(y−ȳ)/Σ(x−x̄)² = 26,25/8,75 = 3"
+   },
+   {
+    "label": "Ordenada",
+    "formula": "a = ȳ − b·x̄ = 12,75 − 3·4,25 = 0",
+    "calc": "MENU→6 Estadística → y=a+bx: cargar x e y → a = 0, b = 3"
+   }
+  ],
+  "why": "Los mínimos cuadrados dan b = 3 y a = 0: la recta pasa por el origen, y = 3x.",
+  "traps": [
+   "La pendiente no es 2,8: Sxy/Sxx = 26,25/8,75 = 3 exacto.",
+   "",
+   "La pendiente es correcta, pero la ordenada no es 0,15: a = ȳ − b·x̄ = 12,75 − 3·4,25 = 0.",
+   "Ni la pendiente ni la ordenada coinciden con el ajuste por mínimos cuadrados.",
+   "Pendiente correcta, pero la recta pasa exactamente por el origen: a = 0."
+  ]
+ },
+ {
+  "id": "p3-007",
+  "topic": "regresion",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP6 ej 12 (variante)",
+  "stem": "Con los datos x = 2, 4, 5, 6 e y = 7, 11, 13, 20 se ajustó la recta y = 3x. ¿Cuál es el coeficiente de correlación y su interpretación según el criterio de la cátedra (|r| ≥ 0,7 fuerte)?",
+  "options": [
+   "r = 0,94: relación lineal positiva y fuerte; el 94% de la variación de y se explica por x.",
+   "r = 0,887: relación lineal positiva y fuerte; el 78,7% de la variación de y se explica por x.",
+   "r = 0,94: relación lineal positiva pero débil, porque es menor que 1.",
+   "r = −0,94: relación lineal negativa y fuerte; el 88,7% de la variación de y se explica por x.",
+   "r = 0,94: relación lineal positiva y fuerte; el 88,7% de la variación de y se explica por x."
+  ],
+  "answer": 4,
+  "steps": [
+   {
+    "label": "Calcular r",
+    "text": "La calculadora da r directamente.",
+    "formula": "r = Sxy/√(Sxx·Syy) = 0,9420",
+    "calc": "MENU→6 Estadística → y=a+bx: cargar x e y → r = 0,9420"
+   },
+   {
+    "label": "Fuerza",
+    "text": "|r| = 0,94 ≥ 0,7 ⇒ relación fuerte; el signo de b (+3) indica relación positiva."
+   },
+   {
+    "label": "Determinación",
+    "formula": "r² = 0,8873 → 88,7% de la variación de y explicada por x (> 50%: buen ajuste)"
+   }
+  ],
+  "why": "r ≈ 0,94 (fuerte, positiva) y r² ≈ 0,887: cerca del 88,7% de la variación de y se explica por x.",
+  "traps": [
+   "Confunde r con r²: el porcentaje de variación explicada es r², no r.",
+   "Toma R² como si fuera r y lo vuelve a elevar al cuadrado.",
+   "r se compara con 0,7 (criterio de la cátedra), no con 1.",
+   "Signo invertido: la pendiente b = 3 es positiva, así que r > 0.",
+   ""
+  ]
+ },
+ {
+  "id": "p3-008",
+  "topic": "ic-media",
+  "kind": "numeric",
+  "difficulty": 1,
+  "source": "TP5 ej 8",
+  "stem": "En una fábrica de envases se registró la cantidad de botellas empaquetadas por hora por cada operario. La distribución es:<table><thead><tr><th>Velocidad (botellas/hora)</th><th>Cantidad de operarios</th></tr></thead><tbody><tr><td>10-20</td><td>3</td></tr><tr><td>20-30</td><td>11</td></tr><tr><td>30-40</td><td>9</td></tr><tr><td>40-50</td><td>2</td></tr></tbody></table>El desvío estándar poblacional de la velocidad es conocido: σ = 8 botellas/hora. ¿Cuál es la velocidad promedio muestral x̄ (usando las marcas de clase)?",
+  "options": [
+   "30 botellas/hora",
+   "24 botellas/hora",
+   "29 botellas/hora",
+   "25 botellas/hora",
+   "11 botellas/hora"
+  ],
+  "answer": 2,
+  "steps": [
+   {
+    "label": "Marcas de clase",
+    "formula": "15, 25, 35, 45"
+   },
+   {
+    "label": "Ponderar",
+    "text": "Cada marca se pesa por su frecuencia.",
+    "formula": "x̄ = (15·3 + 25·11 + 35·9 + 45·2)/25 = 725/25 = 29",
+    "calc": "MENU→6 Estadística → 1-Variable: x = marcas, FREQ = frecuencias → x̄ = 29"
+   }
+  ],
+  "why": "Con datos agrupados se usa la marca de clase ponderada por frecuencia: x̄ = 725/25 = 29.",
+  "traps": [
+   "Promedia las 4 marcas de clase sin ponderar por la cantidad de operarios.",
+   "Usa el límite inferior de cada intervalo en lugar de la marca de clase.",
+   "",
+   "Confunde el promedio con el tamaño de la muestra (n = 25 operarios).",
+   "Toma la frecuencia mayor (operarios del intervalo modal), no la velocidad."
+  ]
+ },
+ {
+  "id": "p3-009",
+  "topic": "ic-media",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP5 ej 8a",
+  "stem": "En una fábrica de envases se registró la cantidad de botellas empaquetadas por hora por cada operario. La distribución es:<table><thead><tr><th>Velocidad (botellas/hora)</th><th>Cantidad de operarios</th></tr></thead><tbody><tr><td>10-20</td><td>3</td></tr><tr><td>20-30</td><td>11</td></tr><tr><td>30-40</td><td>9</td></tr><tr><td>40-50</td><td>2</td></tr></tbody></table>El desvío estándar poblacional de la velocidad es conocido: σ = 8 botellas/hora. Estimá la velocidad promedio de empaquetado con una confianza del 90%. <b>Datos:</b> Z(0,95) = 1,645; Z(0,975) = 1,96; Z(0,995) = 2,576.",
+  "options": [
+   "(26,37; 31,63)",
+   "(25,86; 32,14)",
+   "(24,88; 33,12)",
+   "(15,84; 42,16)",
+   "(22,42; 35,58)"
+  ],
+  "answer": 0,
+  "steps": [
+   {
+    "label": "Elegir distribución",
+    "text": "σ conocido ⇒ Z.",
+    "formula": "IC(μ) = x̄ ± Z·σ/√n"
+   },
+   {
+    "label": "Valor crítico",
+    "text": "90% ⇒ 1 − α/2 = 0,95.",
+    "formula": "Z = 1,645"
+   },
+   {
+    "label": "Error",
+    "formula": "E = 1,645·8/√25 = 2,632",
+    "calc": "MENU→1 Calcular: 1,645×8÷√25 = 2,632"
+   },
+   {
+    "label": "Intervalo",
+    "formula": "29 ± 2,632 = (26,37; 31,63)"
+   }
+  ],
+  "why": "Con σ conocido y 90% de confianza: 29 ± 1,645·8/5 = (26,37; 31,63) botellas/hora.",
+  "traps": [
+   "",
+   "Usa Z = 1,96 (95%) en lugar de 1,645 (90%).",
+   "Usa Z = 2,576 (99%) en lugar de 1,645 (90%).",
+   "Olvida dividir σ por √n: usa E = 1,645·8.",
+   "Divide por √4 (cantidad de intervalos) en lugar de √25 (operarios)."
+  ]
+ },
+ {
+  "id": "p3-010",
+  "topic": "ic-media",
+  "kind": "concept",
+  "difficulty": 2,
+  "source": "TP5 ej 8b",
+  "stem": "En una fábrica de envases se registró la cantidad de botellas empaquetadas por hora por cada operario. La distribución es:<table><thead><tr><th>Velocidad (botellas/hora)</th><th>Cantidad de operarios</th></tr></thead><tbody><tr><td>10-20</td><td>3</td></tr><tr><td>20-30</td><td>11</td></tr><tr><td>30-40</td><td>9</td></tr><tr><td>40-50</td><td>2</td></tr></tbody></table>El desvío estándar poblacional de la velocidad es conocido: σ = 8 botellas/hora. Con 90% de confianza el error de estimación es E = 2,63. Si se construye el intervalo con 99% de confianza (Z = 2,576), ¿cómo cambia el error y qué ocurre con el intervalo?",
+  "options": [
+   "El error disminuye a 1,68 y el intervalo se hace más angosto.",
+   "El error no cambia, porque σ y n son los mismos.",
+   "El error aumenta a 4,12, pero el centro del intervalo se mueve a 33,12.",
+   "El error aumenta a 4,12 y el intervalo se hace más ancho: (24,88; 33,12).",
+   "El error es el mismo, pero el intervalo contiene a μ con menor probabilidad."
+  ],
+  "answer": 3,
+  "steps": [
+   {
+    "label": "Error al 99%",
+    "formula": "E = 2,576·8/√25 = 4,122"
+   },
+   {
+    "label": "Comparar",
+    "text": "E pasa de 2,632 (90%) a 4,122 (99%): el intervalo (24,88; 33,12) es más ancho."
+   },
+   {
+    "label": "Interpretar",
+    "text": "A mayor confianza, mayor error de estimación (menor precisión) para el mismo n."
+   }
+  ],
+  "why": "Más nivel de confianza ⇒ Z mayor ⇒ error y amplitud mayores, a igual σ y n.",
+  "traps": [
+   "Invierte la relación: más confianza exige un valor crítico Z mayor, y por lo tanto más error.",
+   "Ignora que el error depende también del valor crítico Z, que crece con el nivel de confianza.",
+   "El centro es x̄ = 29 y no depende del nivel de confianza; sólo cambia la amplitud.",
+   "",
+   "Con mayor confianza el intervalo contiene a μ con MAYOR probabilidad (99%)."
+  ]
+ },
+ {
+  "id": "p3-011",
+  "topic": "ic-media",
+  "kind": "numeric",
+  "difficulty": 1,
+  "source": "TP5 ej 10",
+  "stem": "El contador de una firma comercial elige al azar 10 de las facturas emitidas ayer y encuentra los siguientes montos (en pesos): 142 - 38 - 76 - 24 - 187 - 95 - 129 - 82 - 63 - 74. Con la calculadora, ¿cuáles son la media y el desvío estándar que corresponden usar para estimar el monto promedio de todas las facturas?",
+  "options": [
+   "x̄ = 91; s = 46,86",
+   "x̄ = 91; s = 49,39",
+   "x̄ = 91; s = 2.439,3",
+   "x̄ = 82; s = 49,39",
+   "x̄ = 91; s = 15,62"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Muestra",
+    "text": "Son 10 facturas tomadas al azar ⇒ muestra ⇒ s con n − 1."
+   },
+   {
+    "label": "Calculadora",
+    "calc": "MENU→6 Estadística → 1-Variable: cargar los 10 montos → x̄ = 91, sx = 49,39"
+   },
+   {
+    "label": "Verificación",
+    "formula": "Σ(x − x̄)² = 21.954 ; s = √(21.954/9) = 49,39"
+   }
+  ],
+  "why": "Muestra ⇒ desvío con n − 1: s = 49,39 (σx = 46,86 es el divisor n).",
+  "traps": [
+   "Usa σx (divisor n) en lugar de sx (divisor n − 1); los datos son una muestra.",
+   "",
+   "Informa la varianza muestral en lugar del desvío estándar.",
+   "Informa la mediana (82) en lugar de la media.",
+   "Informa el error estándar s/√n en lugar del desvío s."
+  ]
+ },
+ {
+  "id": "p3-012",
+  "topic": "ic-media",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP5 ej 10a",
+  "stem": "El contador de una firma comercial elige al azar 10 de las facturas emitidas ayer y encuentra los siguientes montos (en pesos): 142 - 38 - 76 - 24 - 187 - 95 - 129 - 82 - 63 - 74. Estimá el monto promedio de las facturas emitidas ayer con un nivel de riesgo de 0,10 (σ desconocido, población normal). <b>Datos:</b> Z(0,95) = 1,645; t(0,05; 9) = 1,833; t(0,025; 9) = 2,262.",
+  "options": [
+   "(65,31; 116,69)",
+   "(55,67; 126,33)",
+   "(63,84; 118,16)",
+   "(0,47; 181,53)",
+   "(62,37; 119,63)"
+  ],
+  "answer": 4,
+  "steps": [
+   {
+    "label": "Distribución",
+    "text": "σ desconocido y n pequeño ⇒ t de Student con n − 1 = 9 gl.",
+    "formula": "IC(μ) = x̄ ± t·s/√n"
+   },
+   {
+    "label": "Valor crítico",
+    "text": "Riesgo α = 0,10 ⇒ confianza 90% ⇒ α/2 = 0,05.",
+    "formula": "t(0,05; 9) = 1,833"
+   },
+   {
+    "label": "Error",
+    "formula": "E = 1,833·49,39/√10 = 28,63",
+    "calc": "MENU→1 Calcular: 1,833×49,39÷√10 = 28,63"
+   },
+   {
+    "label": "Intervalo",
+    "formula": "91 ± 28,63 = (62,37; 119,63)"
+   }
+  ],
+  "why": "x̄ = 91, s = 49,39, t(0,05; 9) = 1,833: IC del 90% = (62,37; 119,63) pesos.",
+  "traps": [
+   "Usa Z = 1,645 aunque σ es desconocido y n = 10: corresponde t de Student.",
+   "Usa t(0,025; 9) (95%): riesgo 0,10 ⇒ 90% ⇒ t(0,05; 9).",
+   "Usa el desvío con divisor n; para muestras se usa s (n − 1).",
+   "Olvida dividir s por √n: usa E = 1,833·s.",
+   ""
+  ]
+ },
+ {
+  "id": "p3-013",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 2",
+  "stem": "Se midieron los tiempos de espera (en minutos) de algunos clientes en el Banco Río (una sola fila para las tres cajas) y en el Banco Galicia (una fila por caja):<table><thead><tr><th>Banco</th><th>Tiempos de espera (min)</th></tr></thead><tbody><tr><td>Río</td><td>6,5 - 6,6 - 6,7 - 6,8 - 7,1 - 7,3 - 7,4 - 7,7 - 7,7 - 7,7</td></tr><tr><td>Galicia</td><td>4,2 - 5,4 - 5,8 - 6,2 - 6,7 - 7,7 - 7,7 - 8,5 - 9,3 - 10,0</td></tr></tbody></table>Considerando los datos como una muestra, ¿cuáles son el desvío estándar y el coeficiente de variación del Banco Río?",
+  "options": [
+   "x̄ = 7,15; σ = 0,4522; CV = 6,32%",
+   "x̄ = 7,15; s = 0,2272; CV = 3,18%",
+   "x̄ = 7,15; s = 0,4767; CV = 6,67%",
+   "x̄ = 7,15; s = 0,4767; CV = 0,0667%",
+   "x̄ = 7,15; s = 0,4767; CV = 15,00%"
+  ],
+  "answer": 2,
+  "steps": [
+   {
+    "label": "Media",
+    "formula": "x̄ = 71,5/10 = 7,15"
+   },
+   {
+    "label": "Desvío muestral",
+    "formula": "s = √(Σ(x − x̄)²/(n − 1)) = 0,4767",
+    "calc": "MENU→6 Estadística → 1-Variable → sx = 0,4767"
+   },
+   {
+    "label": "CV",
+    "formula": "CV = s/x̄·100 = 0,4767/7,15·100 = 6,67%"
+   }
+  ],
+  "why": "Muestra ⇒ s con n − 1: s = 0,4767 min y CV = 6,67% (muy homogéneo: < 20%).",
+  "traps": [
+   "Usa el divisor n; para una muestra el desvío lleva n − 1.",
+   "Usa la varianza (min²) como si fuera el desvío.",
+   "",
+   "No multiplica por 100: ese cociente (0,0667) ya es el CV en proporción, no en %.",
+   "Invierte el cociente: CV = s/x̄, no x̄/s."
+  ]
+ },
+ {
+  "id": "p3-014",
+  "topic": "descriptiva",
+  "kind": "concept",
+  "difficulty": 2,
+  "source": "TP1 ej 2",
+  "stem": "Se midieron los tiempos de espera (en minutos) de algunos clientes en el Banco Río (una sola fila para las tres cajas) y en el Banco Galicia (una fila por caja):<table><thead><tr><th>Banco</th><th>Tiempos de espera (min)</th></tr></thead><tbody><tr><td>Río</td><td>6,5 - 6,6 - 6,7 - 6,8 - 7,1 - 7,3 - 7,4 - 7,7 - 7,7 - 7,7</td></tr><tr><td>Galicia</td><td>4,2 - 5,4 - 5,8 - 6,2 - 6,7 - 7,7 - 7,7 - 8,5 - 9,3 - 10,0</td></tr></tbody></table>El Banco Río tiene CV = 6,67%. ¿Qué conclusión es correcta para el Banco Galicia (tratando los datos como muestra)?",
+  "options": [
+   "CV = 25,48% > 20%: los tiempos NO son homogéneos y el banco es menos predecible que el Río.",
+   "CV = 25,48% < 30%: los tiempos son homogéneos.",
+   "CV = 24,17% ≤ 20%: los tiempos son homogéneos.",
+   "CV = 1,8216%: los tiempos son homogéneos porque el desvío es pequeño.",
+   "Galicia es mejor porque tiene el mismo promedio y mayor variabilidad."
+  ],
+  "answer": 0,
+  "steps": [
+   {
+    "label": "Desvío",
+    "formula": "s = 1,8216 min",
+    "calc": "MENU→6 Estadística → 1-Variable → sx = 1,8216"
+   },
+   {
+    "label": "CV",
+    "formula": "CV = 1,8216/7,15·100 = 25,48%"
+   },
+   {
+    "label": "Criterio",
+    "text": "CV ≤ 20% ⇒ homogéneo; acá 25,48% > 20% ⇒ no homogéneo. Con igual media, Río es más parejo."
+   }
+  ],
+  "why": "CV = 25,48% > 20%: Galicia es heterogéneo; con la misma media conviene el Banco Río.",
+  "traps": [
+   "",
+   "El criterio de la cátedra para homogeneidad es CV ≤ 20%.",
+   "Con el divisor n el CV es 24,17%: sigue superando 20% y además no corresponde para una muestra.",
+   "Confunde el desvío (min) con el CV (%): el CV es s/x̄·100.",
+   "A igual media, mayor variabilidad significa tiempos de espera menos previsibles."
+  ]
+ },
+ {
+  "id": "p3-015",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 1,
+  "source": "TP1 ej 4a",
+  "stem": "En una boletería del subte se registró la cantidad de viajes adquiridos por los últimos 8 clientes: 5 - 1 - 10 - 5 - 3 - 1 - 5 - 2. ¿Cuáles son la moda, la mediana y el promedio?",
+  "options": [
+   "Mo = 5; Me = 5; x̄ = 4",
+   "Mo = 5; Me = 3; x̄ = 4",
+   "Mo = 1; Me = 4; x̄ = 4",
+   "Mo = 5; Me = 4; x̄ = 4",
+   "Mo = 5; Me = 4; x̄ = 4,57"
+  ],
+  "answer": 3,
+  "steps": [
+   {
+    "label": "Ordenar",
+    "formula": "1, 1, 2, 3, 5, 5, 5, 10"
+   },
+   {
+    "label": "Moda y mediana",
+    "text": "El 5 aparece 3 veces. n = 8 es par: se promedian los dos centrales.",
+    "formula": "Mo = 5 ; Me = (3 + 5)/2 = 4"
+   },
+   {
+    "label": "Promedio",
+    "formula": "x̄ = 32/8 = 4",
+    "calc": "MENU→6 Estadística → 1-Variable → x̄ = 4"
+   }
+  ],
+  "why": "Mo = 5 (3 veces), Me = (3 + 5)/2 = 4 y x̄ = 32/8 = 4.",
+  "traps": [
+   "Confunde la mediana con el valor más repetido: la mediana es el centro de los datos ordenados.",
+   "Toma el 4º dato ordenado (3) sin promediar con el 5º (5): con n par la mediana es el promedio de los dos centrales.",
+   "El 1 aparece 2 veces; el 5 aparece 3 veces, y es el valor más frecuente.",
+   "",
+   "Divide la suma (32) por 7 en lugar de por n = 8."
+  ]
+ },
+ {
+  "id": "p3-016",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 4b",
+  "stem": "En una boletería del subte se registró la cantidad de viajes adquiridos por los últimos 8 clientes: 5 - 1 - 10 - 5 - 3 - 1 - 5 - 2. Considerando los 8 clientes como una muestra, ¿cuáles son la varianza, el desvío estándar y el coeficiente de variación?",
+  "options": [
+   "s² = 7,75 viajes²; σ = 2,78 viajes; CV = 69,6%",
+   "s² = 8,86 viajes²; s = 2,98 viajes; CV = 74,4%",
+   "s² = 2,98 viajes²; s = 1,73 viajes; CV = 43,1%",
+   "s² = 62 viajes²; s = 7,87 viajes; CV = 196,9%",
+   "s² = 8,86 viajes²; s = 2,98 viajes; CV = 0,744%"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Suma de cuadrados",
+    "formula": "Σ(x − 4)² = 1+9+36+1+1+9+1+4 = 62"
+   },
+   {
+    "label": "Varianza y desvío",
+    "formula": "s² = 62/7 = 8,86 ; s = √8,86 = 2,98",
+    "calc": "MENU→6 Estadística → 1-Variable → sx = 2,98"
+   },
+   {
+    "label": "CV",
+    "formula": "CV = 2,98/4·100 = 74,4%"
+   }
+  ],
+  "why": "Con n − 1: s² = 62/7 = 8,86, s = 2,98 y CV = 74,4% (datos muy heterogéneos).",
+  "traps": [
+   "Usa el divisor n = 8; para una muestra la cátedra usa n − 1.",
+   "",
+   "Intercambia varianza y desvío: s² = 8,86 y s = 2,98.",
+   "Usa la suma de cuadrados Σ(x − x̄)² = 62 sin dividir por n − 1.",
+   "No multiplica por 100: 0,744 es la proporción, el CV es 74,4%."
+  ]
+ },
+ {
+  "id": "p3-017",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 1,
+  "source": "TP1 ej 4c",
+  "stem": "En una boletería del subte se registró la cantidad de viajes adquiridos por los últimos 8 clientes: 5 - 1 - 10 - 5 - 3 - 1 - 5 - 2. ¿Qué porcentaje de los clientes adquirió como mínimo 3 viajes?",
+  "options": [
+   "37,5%",
+   "50%",
+   "75%",
+   "87,5%",
+   "62,5%"
+  ],
+  "answer": 4,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "\"Como mínimo 3\" es x ≥ 3."
+   },
+   {
+    "label": "Contar",
+    "text": "Cumplen 5, 10, 5, 3, 5: 5 clientes de 8."
+   },
+   {
+    "label": "Porcentaje",
+    "formula": "5/8·100 = 62,5%"
+   }
+  ],
+  "why": "5 de 8 clientes compraron 3 o más viajes: 62,5%.",
+  "traps": [
+   "Es el porcentaje que compró como máximo 2 viajes (3 de 8): el complemento.",
+   "Cuenta sólo los que compraron MÁS de 3 (5, 5, 5 y 10 = 4 de 8): deja afuera a quien compró exactamente 3.",
+   "Cuenta los que compraron como mínimo 2 viajes (6 de 8).",
+   "Cuenta los que compraron más de 1 viaje (7 de 8).",
+   ""
+  ]
+ },
+ {
+  "id": "p3-018",
+  "topic": "descriptiva",
+  "kind": "concept",
+  "difficulty": 2,
+  "source": "TP1 ej 10a",
+  "stem": "Se desea evaluar cuánto tarda un atleta en una prueba de los juegos olímpicos. En olimpíadas anteriores, la duración para un grupo de 50 individuos fue:<table><thead><tr><th>X (minutos)</th><th>Atletas</th></tr></thead><tbody><tr><td>10-15</td><td>8</td></tr><tr><td>15-20</td><td>21</td></tr><tr><td>20-25</td><td>10</td></tr><tr><td>25-30</td><td>7</td></tr><tr><td>30-35</td><td>4</td></tr></tbody></table>Se calculó x̄ = 20,3 min, s = 5,82 min y modo = 17,71 min. ¿Los datos son homogéneos y qué tipo de asimetría presentan?",
+  "options": [
+   "Son homogéneos (CV = 28,65% < 30%); asimetría positiva.",
+   "No son homogéneos (CV = 28,65%); asimetría negativa (Mo > x̄).",
+   "No son homogéneos (CV = 28,65% > 20%); asimetría positiva (Mo < x̄).",
+   "No son homogéneos (CV = 28,65%); distribución simétrica (Mo = x̄).",
+   "Son homogéneos (CV = 5,82); asimetría negativa."
+  ],
+  "answer": 2,
+  "steps": [
+   {
+    "label": "CV",
+    "formula": "CV = s/x̄·100 = 5,82/20,3·100 = 28,65%"
+   },
+   {
+    "label": "Homogeneidad",
+    "text": "28,65% > 20% ⇒ NO homogéneo."
+   },
+   {
+    "label": "Asimetría",
+    "formula": "Mo = 17,71 < x̄ = 20,3 ⇒ asimetría positiva (cola a la derecha)"
+   }
+  ],
+  "why": "CV = 28,65% > 20% ⇒ heterogéneo; Mo < x̄ ⇒ asimetría positiva.",
+  "traps": [
+   "El criterio de la cátedra es CV ≤ 20%; con 28,65% los datos no son homogéneos.",
+   "Compara mal: Mo = 17,71 < x̄ = 20,3, lo que indica asimetría positiva.",
+   "",
+   "Moda (17,71) y media (20,3) no coinciden: hay cola a la derecha.",
+   "Confunde s con CV (s = 5,82 min no es un porcentaje) y además invierte la asimetría."
+  ]
+ },
+ {
+  "id": "p3-019",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 10b",
+  "stem": "Se desea evaluar cuánto tarda un atleta en una prueba de los juegos olímpicos. En olimpíadas anteriores, la duración para un grupo de 50 individuos fue:<table><thead><tr><th>X (minutos)</th><th>Atletas</th></tr></thead><tbody><tr><td>10-15</td><td>8</td></tr><tr><td>15-20</td><td>21</td></tr><tr><td>20-25</td><td>10</td></tr><tr><td>25-30</td><td>7</td></tr><tr><td>30-35</td><td>4</td></tr></tbody></table>¿Cuánto tarda el competidor más rápido del 15% de los competidores más lentos?",
+  "options": [
+   "27,5 minutos",
+   "14,69 minutos",
+   "32,5 minutos",
+   "35,0 minutos",
+   "25,0 minutos"
+  ],
+  "answer": 0,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "El más rápido del 15% más lento es el percentil 85 (deja 85% por debajo)."
+   },
+   {
+    "label": "Ubicar la clase",
+    "text": "0,85·50 = 42,5; F acumuladas: 8, 29, 39, 46. Cae en 25-30 (f = 7)."
+   },
+   {
+    "label": "Interpolar",
+    "formula": "P85 = 25 + (42,5 − 39)/7·5 = 27,5",
+    "calc": "MENU→1 Calcular: 25+(42,5−39)÷7×5 = 27,5"
+   }
+  ],
+  "why": "P85 = 25 + (42,5 − 39)/7·5 = 27,5 minutos.",
+  "traps": [
+   "",
+   "Toma el percentil 15 (los más rápidos) en lugar del 85 (el 15% más lento empieza en P85).",
+   "Usa la marca de clase de 30-35 en lugar de interpolar el percentil 85.",
+   "Toma el extremo superior de la última clase: ese es el más lento de todos.",
+   "Usa el límite inferior de la clase donde cae P85, sin interpolar."
+  ]
+ },
+ {
+  "id": "p3-020",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 10c",
+  "stem": "Se desea evaluar cuánto tarda un atleta en una prueba de los juegos olímpicos. En olimpíadas anteriores, la duración para un grupo de 50 individuos fue:<table><thead><tr><th>X (minutos)</th><th>Atletas</th></tr></thead><tbody><tr><td>10-15</td><td>8</td></tr><tr><td>15-20</td><td>21</td></tr><tr><td>20-25</td><td>10</td></tr><tr><td>25-30</td><td>7</td></tr><tr><td>30-35</td><td>4</td></tr></tbody></table>Hay 10 medallas para los 10 competidores más veloces. ¿Cuál es el tiempo máximo que debe tardar un competidor para recibir una?",
+  "options": [
+   "25,71 minutos",
+   "15,00 minutos",
+   "17,50 minutos",
+   "15,48 minutos",
+   "12,50 minutos"
+  ],
+  "answer": 3,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "10 de 50 = 20%: el tiempo máximo es el percentil 20."
+   },
+   {
+    "label": "Ubicar la clase",
+    "text": "0,20·50 = 10; F acumulada en 10-15 es 8 y en 15-20 es 29: cae en 15-20 (f = 21)."
+   },
+   {
+    "label": "Interpolar",
+    "formula": "P20 = 15 + (10 − 8)/21·5 = 15,48",
+    "calc": "MENU→1 Calcular: 15+(10−8)÷21×5 = 15,48"
+   }
+  ],
+  "why": "P20 = 15 + (10 − 8)/21·5 = 15,48 minutos.",
+  "traps": [
+   "Toma el percentil 80 (los más lentos) en lugar del 20: 10 de 50 son el 20% MÁS rápido.",
+   "Usa el límite inferior de la clase 15-20 sin interpolar.",
+   "Usa la marca de clase de 15-20 en lugar de interpolar.",
+   "",
+   "Usa la marca de la clase 10-15, que sólo reúne a los 8 primeros."
+  ]
+ },
+ {
+  "id": "p3-021",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 11a",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>La política es llevar el monto mínimo a un valor que desprecie al 25% de los plazos fijos menores. ¿Cuál es el nuevo monto mínimo?",
+  "options": [
+   "u$s 5.000,00",
+   "u$s 4.636,36",
+   "u$s 4.000,00",
+   "u$s 3.000,00",
+   "u$s 6.000,00"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "Despreciar al 25% menor ⇒ percentil 25."
+   },
+   {
+    "label": "Ubicar la clase",
+    "text": "0,25·42 = 10,5; F: 7, 18, 31, 38, 42 ⇒ cae en 4000-6000 (f = 11)."
+   },
+   {
+    "label": "Interpolar",
+    "formula": "P25 = 4000 + (10,5 − 7)/11·2000 = 4.636,36",
+    "calc": "MENU→1 Calcular: 4000+(10,5−7)÷11×2000 = 4636,36"
+   }
+  ],
+  "why": "P25 = 4000 + (10,5 − 7)/11·2000 = u$s 4.636,36.",
+  "traps": [
+   "Usa la marca de clase de 4000-6000 sin interpolar.",
+   "",
+   "Usa el límite inferior de la clase en la que cae P25.",
+   "Usa la marca de la primera clase, que sólo reúne al 16,7% de los inversores.",
+   "Usa el límite superior de la clase: eso corresponde a P43 (18 de 42)."
+  ]
+ },
+ {
+  "id": "p3-022",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 3,
+  "source": "TP1 ej 11b",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>Se puede pagar un punto adicional de interés a los cinco clientes que hicieron las operaciones de mayor importe. ¿A partir de qué valor de certificado se paga ese punto adicional?",
+  "options": [
+   "u$s 9.942,86",
+   "u$s 9.000,00",
+   "u$s 10.000,00",
+   "u$s 11.000,00",
+   "u$s 9.714,29"
+  ],
+  "answer": 4,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "Los 5 mayores de 42 dejan por debajo a 37 inversores: percentil 37/42 = 88,1%."
+   },
+   {
+    "label": "Ubicar la clase",
+    "text": "F: 7, 18, 31, 38 ⇒ 37 cae en 8000-10000 (f = 7)."
+   },
+   {
+    "label": "Interpolar",
+    "formula": "x = 8000 + (37 − 31)/7·2000 = 9.714,29",
+    "calc": "MENU→1 Calcular: 8000+(37−31)÷7×2000 = 9714,29"
+   }
+  ],
+  "why": "Se busca el valor que deja por debajo a 37 de 42 inversores: u$s 9.714,29.",
+  "traps": [
+   "Usa el percentil 90 (10% superior) en lugar de 5/42 = 11,9% superior.",
+   "Usa la marca de clase de 8000-10000 sin interpolar.",
+   "Toma el extremo superior de la clase 8000-10000.",
+   "Toma la marca de la última clase, que reúne sólo a 4 inversores.",
+   ""
+  ]
+ },
+ {
+  "id": "p3-023",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 11c",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>Considerando los depósitos como una muestra, ¿cuáles son la media, el desvío y el coeficiente de variación, y qué se concluye sobre la homogeneidad?",
+  "options": [
+   "x̄ = 6.523,81; σ = 2.382,86; CV = 36,53%: no homogéneo",
+   "x̄ = 6.523,81; s = 2.411,74; CV = 36,97%: homogéneo, porque supera el 20%",
+   "x̄ = 6.523,81; s = 2.411,74; CV = 36,97%: no homogéneo",
+   "x̄ = 7.000,00; s = 3.162,28; CV = 45,18%: no homogéneo",
+   "x̄ = 6.523,81; s = 2.411,74; CV = 0,37: homogéneo, porque 0,37 < 20"
+  ],
+  "answer": 2,
+  "steps": [
+   {
+    "label": "Media ponderada",
+    "text": "Marcas de clase 3000, 5000, 7000, 9000, 11000.",
+    "formula": "x̄ = 6.523,81",
+    "calc": "MENU→6 Estadística → 1-Variable: x = marcas, FREQ = f → x̄ y sx"
+   },
+   {
+    "label": "Desvío muestral",
+    "formula": "s = 2.411,74"
+   },
+   {
+    "label": "CV",
+    "formula": "CV = 2.411,74/6.523,81·100 = 36,97% > 20% ⇒ no homogéneo"
+   }
+  ],
+  "why": "CV = 36,97% > 20%: la distribución no es homogénea.",
+  "traps": [
+   "Usa el divisor n; para una muestra la cátedra usa n − 1 (CV = 36,97%).",
+   "Invierte el criterio: homogéneo exige CV ≤ 20%.",
+   "",
+   "Promedia las marcas de clase sin ponderar por la cantidad de inversores.",
+   "No pasa a porcentaje: el CV debe compararse como 36,97% con 20%."
+  ]
+ },
+ {
+  "id": "p3-024",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 11d",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>¿A partir de qué valor de certificado se encuentra el 50% de los montos invertidos (es decir, el valor que divide a los inversores en mitades)?",
+  "options": [
+   "u$s 6.461,54",
+   "u$s 6.523,81",
+   "u$s 6.500,00",
+   "u$s 6.000,00",
+   "u$s 7.000,00"
+  ],
+  "answer": 0,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "Mediana = percentil 50: 0,5·42 = 21."
+   },
+   {
+    "label": "Ubicar la clase",
+    "text": "F: 7, 18, 31 ⇒ 21 cae en 6000-8000 (f = 13)."
+   },
+   {
+    "label": "Interpolar",
+    "formula": "Me = 6000 + (21 − 18)/13·2000 = 6.461,54",
+    "calc": "MENU→1 Calcular: 6000+(21−18)÷13×2000 = 6461,54"
+   }
+  ],
+  "why": "Me = 6000 + (21 − 18)/13·2000 = u$s 6.461,54 (la clave impresa muestra 6.451,54, que es un error de tipeo).",
+  "traps": [
+   "",
+   "Es la media, no la mediana.",
+   "Es la moda (mayor habitualidad), no la mediana.",
+   "Toma el límite inferior de la clase mediana sin interpolar.",
+   "Toma la marca de clase de 6000-8000 sin interpolar."
+  ]
+ },
+ {
+  "id": "p3-025",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 11e",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>¿Cuál es el monto invertido con mayor habitualidad (moda)?",
+  "options": [
+   "u$s 7.000,00",
+   "u$s 6.461,54",
+   "u$s 6.000,00",
+   "u$s 6.500,00",
+   "u$s 6.523,81"
+  ],
+  "answer": 3,
+  "steps": [
+   {
+    "label": "Clase modal",
+    "text": "La mayor frecuencia (13) está en 6000-8000."
+   },
+   {
+    "label": "Diferencias",
+    "formula": "d₁ = 13 − 11 = 2 ; d₂ = 13 − 7 = 6"
+   },
+   {
+    "label": "Moda",
+    "formula": "Mo = 6000 + 2/(2 + 6)·2000 = 6.500"
+   }
+  ],
+  "why": "Mo = 6000 + 2/8·2000 = u$s 6.500 (la clave impresa dice 65000, un error de tipeo).",
+  "traps": [
+   "Usa la marca de la clase modal sin aplicar la fórmula de interpolación.",
+   "Es la mediana, no la moda.",
+   "Usa el límite inferior de la clase modal sin sumar la corrección.",
+   "",
+   "Es la media, no la moda."
+  ]
+ },
+ {
+  "id": "p3-026",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 3,
+  "source": "TP1 ej 11f",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>¿Cuál es el monto invertido que es superado por el 36% de los inversores?",
+  "options": [
+   "u$s 5.476,36",
+   "u$s 7.366,15",
+   "u$s 7.000,00",
+   "u$s 8.000,00",
+   "u$s 6.523,81"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "Superado por el 36% ⇒ deja el 64% por debajo ⇒ P64."
+   },
+   {
+    "label": "Ubicar la clase",
+    "text": "0,64·42 = 26,88; F: 18, 31 ⇒ cae en 6000-8000 (f = 13)."
+   },
+   {
+    "label": "Interpolar",
+    "formula": "P64 = 6000 + (26,88 − 18)/13·2000 = 7.366,15",
+    "calc": "MENU→1 Calcular: 6000+(26,88−18)÷13×2000 = 7366,15"
+   }
+  ],
+  "why": "P64 = u$s 7.366,15.",
+  "traps": [
+   "Toma el percentil 36 en lugar del 64: \"superado por el 36%\" deja 64% por debajo.",
+   "",
+   "Usa la marca de clase de 6000-8000 sin interpolar.",
+   "Usa el límite superior de la clase donde cae P64.",
+   "Informa la media, que no responde a un percentil."
+  ]
+ },
+ {
+  "id": "p3-027",
+  "topic": "descriptiva",
+  "kind": "concept",
+  "difficulty": 2,
+  "source": "TP1 ej 11g",
+  "stem": "Una entidad bancaria analiza los montos de los depósitos a plazo fijo del mes anterior (42 inversores):<table><thead><tr><th>Monto (u$s)</th><th>2000-4000</th><th>4000-6000</th><th>6000-8000</th><th>8000-10000</th><th>10000-12000</th></tr></thead><tbody><tr><td>Cantidad de inversores</td><td>7</td><td>11</td><td>13</td><td>7</td><td>4</td></tr></tbody></table>Se obtuvo x̄ = 6.523,81; Me = 6.461,54; Mo = 6.500,00. ¿Qué se puede decir de la asimetría?",
+  "options": [
+   "Asimetría positiva, porque x̄ > Me.",
+   "Asimetría negativa, porque Mo > Me.",
+   "Asimetría positiva fuerte, porque el CV supera el 20%.",
+   "No se puede determinar sin graficar el histograma.",
+   "La distribución es prácticamente simétrica: media, mediana y moda casi coinciden."
+  ],
+  "answer": 4,
+  "steps": [
+   {
+    "label": "Comparar",
+    "formula": "x̄ = 6.523,81 ; Me = 6.461,54 ; Mo = 6.500,00"
+   },
+   {
+    "label": "Diferencias",
+    "text": "Las tres medidas están a menos de u$s 65 entre sí, en una variable con s ≈ u$s 2.400."
+   },
+   {
+    "label": "Concluir",
+    "text": "Prácticamente simétrica."
+   }
+  ],
+  "why": "x̄, Me y Mo prácticamente coinciden: la distribución es (casi) simétrica.",
+  "traps": [
+   "La diferencia es mínima (≈ 1%) frente a la dispersión de los datos: se considera prácticamente simétrica.",
+   "Mo y Me difieren muy poco: no hay una cola marcada hacia la izquierda.",
+   "El CV mide dispersión, no asimetría.",
+   "Con media, mediana y moda se puede comparar posición de las tres medidas.",
+   ""
+  ]
+ },
+ {
+  "id": "p3-028",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 13a",
+  "stem": "Juan, relacionista público, registró durante un mes (26 días laborales; los domingos no se trabaja) las botellas de vino que vendió por día:<table><thead><tr><th>Semana</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th></tr></thead><tbody><tr><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>25</td></tr><tr><td>2</td><td>40</td><td>50</td><td>50</td><td>35</td><td>85</td><td>75</td></tr><tr><td>3</td><td>25</td><td>25</td><td>75</td><td>40</td><td>85</td><td>50</td></tr><tr><td>4</td><td>35</td><td>75</td><td>35</td><td>40</td><td>100</td><td>50</td></tr><tr><td>5</td><td>75</td><td>85</td><td>85</td><td>100</td><td>100</td><td>100</td></tr><tr><td>6</td><td>75</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>Al ordenar los datos en una tabla de frecuencias, ¿cuál es la fila correcta para x = 75 botellas?",
+  "options": [
+   "f = 4; F = 17; h = 0,1538",
+   "f = 18; F = 5; h = 0,6923",
+   "f = 5; F = 18; h = 0,1923",
+   "f = 5; F = 13; h = 0,1923",
+   "f = 5; F = 22; h = 0,1923"
+  ],
+  "answer": 2,
+  "steps": [
+   {
+    "label": "Contar",
+    "text": "Valores: 25 (3), 35 (3), 40 (3), 50 (4), 75 (5), 85 (4), 100 (4); total 26."
+   },
+   {
+    "label": "Acumular",
+    "formula": "F(75) = 3 + 3 + 3 + 4 + 5 = 18"
+   },
+   {
+    "label": "Proporción",
+    "formula": "h = 5/26 = 0,1923"
+   }
+  ],
+  "why": "La fila x = 75 tiene f = 5, F = 18 y h = 5/26 = 0,1923; además es el valor más frecuente (moda).",
+  "traps": [
+   "Cuenta un día de menos: el 75 se vendió los días 8, 12, 18, 24 y 31.",
+   "Intercambia f y F: f es la cantidad de días con 75 (5) y F la acumulada hasta 75 (18).",
+   "",
+   "Acumula sólo hasta 50 botellas (13 días) y olvida sumar los 5 días de 75.",
+   "Acumula hasta 85 botellas (22 días) en lugar de hasta 75."
+  ]
+ },
+ {
+  "id": "p3-029",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 2,
+  "source": "TP1 ej 13b",
+  "stem": "Juan, relacionista público, registró durante un mes (26 días laborales; los domingos no se trabaja) las botellas de vino que vendió por día:<table><thead><tr><th>Semana</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th></tr></thead><tbody><tr><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>25</td></tr><tr><td>2</td><td>40</td><td>50</td><td>50</td><td>35</td><td>85</td><td>75</td></tr><tr><td>3</td><td>25</td><td>25</td><td>75</td><td>40</td><td>85</td><td>50</td></tr><tr><td>4</td><td>35</td><td>75</td><td>35</td><td>40</td><td>100</td><td>50</td></tr><tr><td>5</td><td>75</td><td>85</td><td>85</td><td>100</td><td>100</td><td>100</td></tr><tr><td>6</td><td>75</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>¿Cuál es el promedio de botellas por día y es representativo? (La cátedra considera representativa una media con CV ≤ 10%; tratá los 26 días como muestra.)",
+  "options": [
+   "x̄ = 62,12; CV = 42%: la media no es representativa",
+   "x̄ = 62,12; CV = 42%: la media es representativa, porque el CV es menor que 50%",
+   "x̄ = 75; CV = 35%: la media no es representativa",
+   "x̄ = 62,12; CV = 26,1%: la media no es representativa",
+   "x̄ = 62,12; CV = 0,42: la media es representativa, porque 0,42 < 10"
+  ],
+  "answer": 0,
+  "steps": [
+   {
+    "label": "Media",
+    "formula": "x̄ = 1615/26 = 62,12",
+    "calc": "MENU→6 Estadística → 1-Variable: cargar los 26 datos → x̄ = 62,12"
+   },
+   {
+    "label": "Desvío y CV",
+    "formula": "s = 26,12 ; CV = 26,12/62,12·100 = 42%"
+   },
+   {
+    "label": "Criterio",
+    "text": "CV ≤ 10% ⇒ media representativa; 42% > 10% ⇒ no representativa (conviene mirar mediana y moda)."
+   }
+  ],
+  "why": "CV = 42,1% > 10%: el promedio (62,12) no representa bien las ventas diarias.",
+  "traps": [
+   "",
+   "El umbral de la cátedra para media representativa es CV ≤ 10%.",
+   "Confunde la media con la moda (75).",
+   "Informa el desvío (26,1 botellas) como si fuera el CV.",
+   "No pasa a porcentaje: debe compararse 42% con 10%."
+  ]
+ },
+ {
+  "id": "p3-030",
+  "topic": "descriptiva",
+  "kind": "concept",
+  "difficulty": 2,
+  "source": "TP1 ej 13c",
+  "stem": "Juan, relacionista público, registró durante un mes (26 días laborales; los domingos no se trabaja) las botellas de vino que vendió por día:<table><thead><tr><th>Semana</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th></tr></thead><tbody><tr><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>25</td></tr><tr><td>2</td><td>40</td><td>50</td><td>50</td><td>35</td><td>85</td><td>75</td></tr><tr><td>3</td><td>25</td><td>25</td><td>75</td><td>40</td><td>85</td><td>50</td></tr><tr><td>4</td><td>35</td><td>75</td><td>35</td><td>40</td><td>100</td><td>50</td></tr><tr><td>5</td><td>75</td><td>85</td><td>85</td><td>100</td><td>100</td><td>100</td></tr><tr><td>6</td><td>75</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>Se obtuvieron x̄ = 62,12, Me = 62,5 y Mo = 75. ¿Qué tipo de asimetría tiene la distribución, según el criterio de la cátedra?",
+  "options": [
+   "Asimetría positiva, porque Mo > x̄.",
+   "Asimetría positiva, porque Mo < x̄.",
+   "Asimetría negativa, porque Mo < x̄.",
+   "Asimetría negativa, porque Mo > x̄.",
+   "No tiene asimetría por tratarse de una variable discreta."
+  ],
+  "answer": 3,
+  "steps": [
+   {
+    "label": "Comparar",
+    "formula": "Mo = 75 ; x̄ = 62,12"
+   },
+   {
+    "label": "Regla",
+    "text": "Mo < x̄ ⇒ positiva; Mo > x̄ ⇒ negativa; Mo ≈ x̄ ⇒ simétrica."
+   },
+   {
+    "label": "Concluir",
+    "text": "75 > 62,12 ⇒ asimetría negativa."
+   }
+  ],
+  "why": "Mo = 75 > x̄ = 62,12 ⇒ asimetría negativa (criterio de la cátedra).",
+  "traps": [
+   "Invierte la regla: Mo > x̄ indica asimetría negativa (cola hacia la izquierda).",
+   "La moda (75) es mayor que la media (62,12), no menor.",
+   "La regla es correcta pero la comparación no: acá Mo (75) > x̄ (62,12).",
+   "",
+   "La asimetría se define también en variables discretas, comparando moda y media."
+  ]
+ },
+ {
+  "id": "p3-031",
+  "topic": "descriptiva",
+  "kind": "numeric",
+  "difficulty": 1,
+  "source": "TP1 ej 13d",
+  "stem": "Juan, relacionista público, registró durante un mes (26 días laborales; los domingos no se trabaja) las botellas de vino que vendió por día:<table><thead><tr><th>Semana</th><th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th></tr></thead><tbody><tr><td>1</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>25</td></tr><tr><td>2</td><td>40</td><td>50</td><td>50</td><td>35</td><td>85</td><td>75</td></tr><tr><td>3</td><td>25</td><td>25</td><td>75</td><td>40</td><td>85</td><td>50</td></tr><tr><td>4</td><td>35</td><td>75</td><td>35</td><td>40</td><td>100</td><td>50</td></tr><tr><td>5</td><td>75</td><td>85</td><td>85</td><td>100</td><td>100</td><td>100</td></tr><tr><td>6</td><td>75</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>¿Qué porcentaje de los días Juan vendió como máximo 50 botellas?",
+  "options": [
+   "34,62%",
+   "50%",
+   "65,38%",
+   "69,23%",
+   "15,38%"
+  ],
+  "answer": 1,
+  "steps": [
+   {
+    "label": "Traducir",
+    "text": "\"Como máximo 50\" es x ≤ 50."
+   },
+   {
+    "label": "Contar",
+    "text": "25 (3) + 35 (3) + 40 (3) + 50 (4) = 13 días."
+   },
+   {
+    "label": "Porcentaje",
+    "formula": "13/26·100 = 50%"
+   }
+  ],
+  "why": "13 de 26 días: 50% (F(50)/n).",
+  "traps": [
+   "Cuenta sólo los días con menos de 50 botellas (9 de 26), sin los 4 días de exactamente 50.",
+   "",
+   "Es el porcentaje de días con 50 botellas o MÁS (17 de 26).",
+   "Es el porcentaje de días con menos de 85 botellas (18 de 26).",
+   "Es el porcentaje de días con exactamente 50 botellas (4 de 26)."
+  ]
+ }
+]

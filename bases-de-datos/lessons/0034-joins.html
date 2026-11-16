@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 34 · JOIN: consultas multitabla</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 34 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">JOIN: recorrer las FK que dibujaste</h1>
+    <p class="masthead__standfirst">
+      Cada FK del modelo relacional es un camino entre dos tablas. Un JOIN es caminar por
+      ese camino. Si sabés leer el MER, ya sabés qué JOIN escribir.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Deck "DML", slides 25–31</span>
+      <span>Prioridad para el 2do parcial y el TP5: muy alta</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>INNER JOIN: sólo las filas que se encuentran</h2>
+
+<pre><code><span class="k">SELECT</span> P.Nombre, T.Telefono
+<span class="k">FROM</span>   PACIENTE P
+<span class="k">JOIN</span>   PACIENTE_TELEFONO T <span class="k">ON</span> T.Cod_Paciente = P.Cod_Paciente;</code></pre>
+
+  <p>
+    "Un INNER JOIN devuelve todos los registros de varias tablas que cumplen con la
+    condición." <code>JOIN</code> a secas es <code>INNER JOIN</code>. La condición del
+    <code>ON</code> es casi siempre <b>FK = PK</b>: la flecha del MER escrita en SQL.
+  </p>
+
+  <p>
+    El deck muestra también la forma vieja, con coma y la condición en el WHERE:
+    <code>FROM PACIENTE P, PACIENTE_TELEFONO T WHERE T.Cod_Paciente = P.Cod_Paciente</code>.
+    Da lo mismo. Pero si te olvidás el WHERE, obtenés un <b>producto cartesiano</b>: cada
+    paciente combinado con cada teléfono. Es el <code>CROSS JOIN</code> del slide 31, y casi
+    nunca es lo que querías.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cómo planear un JOIN largo</span>
+    <p>
+      Marcá en el MER la tabla donde está el dato que filtrás y la tabla donde está el dato que
+      mostrás. Después seguí las FK de una a otra: cada salto es un <code>JOIN … ON</code>.
+      "Teléfonos de los pacientes de OSDE": el filtro vive en <code>PREPAGA</code>, el dato en
+      <code>PACIENTE_TELEFONO</code>, y el camino pasa por <code>PACIENTE</code>. Son dos saltos.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>LEFT y RIGHT: no perder a los que no tienen pareja</h2>
+
+  <p>
+    <code>LEFT JOIN</code> "devuelve todos los registros de la tabla de la izquierda, con las
+    correspondientes de la tabla de la derecha. El resultado es NULL en la parte de la derecha
+    cuando no hay registros que correspondan". <code>RIGHT JOIN</code> es el espejo. Se usan
+    cuando la pregunta dice "todos", "incluso los que no…", o "los que no tienen…".
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">El INNER se come filas en silencio</span>
+    <p>
+      Con <code>PACIENTE JOIN PACIENTE_TELEFONO</code>, los pacientes sin teléfono
+      <b>desaparecen</b> del resultado. No hay error ni aviso. Si el enunciado los quiere,
+      era <code>LEFT JOIN</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Self join: la relación unaria</h2>
+
+  <p>
+    "Trabaja para" es una relación de <code>PROFESIONAL</code> consigo misma, y en el
+    relacional quedó como <code>Cod_Jefe</code>, una FK a la misma tabla. Para cruzar un
+    profesional con su jefe, la tabla se usa <b>dos veces</b>, con dos alias. Sin alias, el
+    motor no puede saber de cuál de las dos hablás.
+  </p>
+
+<pre><code><span class="k">SELECT</span> M.Nombre <span class="k">AS</span> Medico, J.Nombre <span class="k">AS</span> Jefe
+<span class="k">FROM</span>   PROFESIONAL M
+<span class="k">JOIN</span>   PROFESIONAL J <span class="k">ON</span> J.Cod_Profesional = M.Cod_Jefe;</code></pre>
+
+  <h2><span class="num">04</span>Práctica — cuatro consultas del TP5</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 4 · Consigna TP5, pedido 2</span>
+    <p class="sqlbox__task">Listar los teléfonos de los pacientes que pertenezcan a OSDE (nombre y teléfono).</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT P.Nombre, T.Telefono
+FROM PACIENTE P
+JOIN PACIENTE_TELEFONO T ON T.Cod_Paciente = P.Cod_Paciente
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.Nombre, T.Telefono
+FROM PACIENTE P
+JOIN PACIENTE_TELEFONO T ON T.Cod_Paciente = P.Cod_Paciente
+JOIN PREPAGA PR          ON PR.Cod_Prepaga = P.Cod_Prepaga
+WHERE PR.Nombre = 'OSDE';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 4 · Consigna TP5, pedido 4</span>
+    <p class="sqlbox__task">
+      Listar el nombre de los pacientes internados en habitaciones con ventana.
+      Pista: "internado" es tener una fila en <code>OCUPACION</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT P.Nombre
+FROM PACIENTE P
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.Nombre
+FROM PACIENTE P
+JOIN OCUPACION O  ON O.Cod_Paciente = P.Cod_Paciente
+JOIN HABITACION H ON H.Cod_Habitacion = O.Cod_Habitacion
+WHERE H.Posee_Ventana = 'S';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 4 · LEFT JOIN</span>
+    <p class="sqlbox__task">
+      Todas las prepagas con sus pacientes (nombre de prepaga, nombre de paciente).
+      Las prepagas sin pacientes tienen que aparecer igual, con el paciente en NULL.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT PR.Nombre, P.Nombre
+FROM PREPAGA PR
+JOIN PACIENTE P ON P.Cod_Prepaga = PR.Cod_Prepaga;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT PR.Nombre, P.Nombre
+FROM PREPAGA PR
+LEFT JOIN PACIENTE P ON P.Cod_Prepaga = PR.Cod_Prepaga;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">4 de 4 · Consigna TP5, pedido 6</span>
+    <p class="sqlbox__task">
+      Listar los médicos supervisados por un médico determinado: los que tienen como jefe a
+      <b>Carlos Méndez</b>. Buscalo por nombre, no por código.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT M.Nombre
+FROM PROFESIONAL M
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT M.Nombre
+FROM PROFESIONAL M
+JOIN PROFESIONAL J ON J.Cod_Profesional = M.Cod_Jefe
+WHERE J.Nombre = 'Carlos Méndez';
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Contar sin correr</span>
+    <p class="quiz__q">
+      Hay 10 pacientes y 9 teléfonos, de 7 pacientes distintos.
+      ¿Cuántas filas devuelve <code>PACIENTE LEFT JOIN PACIENTE_TELEFONO</code>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="12. Los 7 pacientes con teléfono generan una fila por teléfono (9 filas). Los 3 sin teléfono aparecen una vez cada uno, con NULL a la derecha (3 filas).">Doce filas en total, 9 + 3</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="9 es lo que devuelve el INNER JOIN: sólo los pares que se encuentran. El LEFT agrega los 3 pacientes sin teléfono.">Nueve filas, una por teléfono</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un LEFT JOIN no limita a una fila por paciente: los que tienen dos teléfonos aparecen dos veces.">Diez filas, una por paciente</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Coma en el FROM</span>
+    <p class="quiz__q"><code>FROM T1, T2 WHERE T1.x = T2.x</code> da el mismo resultado que…</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Sin el WHERE, la coma sí es un producto cartesiano. Con el WHERE que iguala la clave, es un INNER JOIN."><code>T1 CROSS JOIN T2</code></button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No: con la coma, la fila de T1 sin pareja desaparece. El LEFT la conservaría con NULL."><code>T1 LEFT JOIN T2 ON T1.x = T2.x</code></button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. El slide 26 muestra las dos escrituras juntas. JOIN a secas es INNER JOIN."><code>T1 JOIN T2 ON T1.x = T2.x</code></button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">UNION</span>
+    <p class="quiz__q">¿En qué se diferencian <code>UNION</code> y <code>UNION ALL</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slides 32–33: UNION combina los resultados &quot;en una sola tabla, se eliminan los duplicados&quot;; UNION ALL &quot;NO&quot; los elimina.">UNION elimina los duplicados; UNION ALL no</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las dos exigen lo mismo: igual cantidad de columnas en cada SELECT. La única diferencia son los duplicados.">UNION ALL exige las mismas columnas y UNION no</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las dos apilan filas. Juntar columnas de dos tablas es un JOIN.">UNION junta columnas y UNION ALL junta filas</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b>, slides 25–31. <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.5.6
+      "Tablas concatenadas en SQL y concatenaciones exteriores" (concatenación es como la
+      traducción llama al JOIN).
+    </p>
+    <p><a href="https://www.sqlite.org/lang_select.html#from_clause">SQLite — la cláusula FROM y los JOIN</a>.</p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si querés, dame cualquier pregunta sobre la Clínica y te digo
+      qué camino de FK tiene que recorrer, antes de que escribas el SQL.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0033-condiciones-y-null.html">Anterior: 0033 · Condiciones</a>
+    <a href="0035-group-by-having.html">Siguiente: 0035 · GROUP BY</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

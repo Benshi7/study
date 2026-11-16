@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 37 · DML: INSERT, UPDATE, DELETE</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 37 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">Cambiar los datos: INSERT, UPDATE, DELETE</h1>
+    <p class="masthead__standfirst">
+      Tres sentencias, más una combinación de dos. El INSERT … SELECT es el corazón
+      técnico del TP5: así se puebla producción desde desarrollo.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Deck "DML", slides 34–37 · Consigna TP5, slides 4 y 7</span>
+      <span>Prioridad para el TP5: muy alta</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>INSERT: dos formas</h2>
+
+  <p><b>Con valores.</b> Una fila, o varias separadas por coma:</p>
+
+<pre><code><span class="k">INSERT INTO</span> SERVICIO (Cod_Servicio, Nombre)
+<span class="k">VALUES</span> (6, 'Dermatología'),
+       (7, 'Traumatología');</code></pre>
+
+  <p>
+    La lista de columnas es opcional, pero ponela siempre: sin ella, los valores tienen que
+    venir en el orden exacto del <code>CREATE TABLE</code>, y un <code>ALTER</code> futuro
+    rompe el script sin avisar.
+  </p>
+
+  <p><b>Desde otra consulta.</b> El <code>SELECT</code> reemplaza al <code>VALUES</code>:</p>
+
+<pre><code><span class="k">INSERT INTO</span> Prod_Service (Id_Service, Name_Service)
+<span class="k">SELECT</span> Id_Servicio, Nombre_Servicio
+<span class="k">FROM</span>   Desa_Servicio;</code></pre>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Esto es lo que pide la consigna del TP5</span>
+    <p>
+      "Poblar las entidades de desarrollo con un (insert values). Poblar las entidades de
+      producción desde las tablas de desarrollo (insert select)." El ejemplo de arriba es
+      el del slide 7 de la consigna. Las columnas se emparejan <b>por posición</b>, no por
+      nombre: la primera del SELECT va a la primera de la lista del INSERT. Por eso
+      <code>Id_Servicio</code> puede caer en <code>Id_Service</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>UPDATE y DELETE</h2>
+
+<pre><code><span class="k">UPDATE</span> OCUPACION
+<span class="k">SET</span>    F_Hasta_Prevista = '2026-10-27'
+<span class="k">WHERE</span>  Cod_Paciente = 1;
+
+<span class="k">DELETE FROM</span> PREPAGA <span class="k">WHERE</span> Cod_Prepaga = 4;</code></pre>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Sin WHERE, es toda la tabla</span>
+    <p>
+      El deck lo muestra sin vueltas: <code>DELETE FROM table;</code> borra todo.
+      <code>UPDATE</code> sin <code>WHERE</code> pisa todas las filas. Antes de correr un
+      UPDATE o un DELETE, corré el mismo <code>WHERE</code> con un <code>SELECT</code> y
+      mirá qué filas toca.
+    </p>
+  </div>
+
+  <p>
+    Y la integridad referencial sigue mandando: borrar OSDE, que tiene pacientes, falla por
+    la FK de <code>PACIENTE</code>. Qué hacer en ese caso (<code>CASCADE</code>,
+    <code>SET NULL</code>) se ve en la <a href="0038-alter-drop-on-delete.html">0038</a>.
+  </p>
+
+  <h2><span class="num">03</span>UPSERT</h2>
+
+  <p>
+    "Inserta una nueva fila si un identificador único especificado no existe, o actualiza
+    una fila existente si el mismo identificador ya existe."
+  </p>
+
+<pre><code><span class="k">INSERT INTO</span> SERVICIO (Cod_Servicio, Nombre) <span class="k">VALUES</span> (5, 'Kinesiología')
+<span class="k">ON CONFLICT</span> (Cod_Servicio)
+<span class="k">DO UPDATE SET</span> Nombre = excluded.Nombre;</code></pre>
+
+  <p>
+    <code>excluded</code> es la fila que intentaste insertar. Esta es la sintaxis de
+    PostgreSQL y SQLite, la que muestra el deck. MySQL usa
+    <code>ON DUPLICATE KEY UPDATE</code> y SQL Server usa <code>MERGE</code>.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 5 · INSERT VALUES</span>
+    <p class="sqlbox__task">
+      Dá de alta a la paciente 11, <b>Valentina Ortiz</b>, nacida el 1998-09-11, de OSDE (código 1).
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO PACIENTE (Cod_Paciente, Nombre, F_Nacimiento, Cod_Prepaga)
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO PACIENTE (Cod_Paciente, Nombre, F_Nacimiento, Cod_Prepaga)
+VALUES (11, 'Valentina Ortiz', '1998-09-11', 1);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM PACIENTE WHERE Cod_Paciente = 11;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 5 · INSERT SELECT, como en el TP5</span>
+    <p class="sqlbox__task">
+      Ya existe la tabla de producción <code>PROD_PATIENT(Patient_Id, Name, Birth_Date, Prepaid_Id)</code>, vacía.
+      Poblala desde <code>PACIENTE</code>, que hace de tabla de desarrollo.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO PROD_PATIENT (Patient_Id, Name, Birth_Date, Prepaid_Id)
+</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE PROD_PATIENT (
+  Patient_Id  INT PRIMARY KEY,
+  Name        VARCHAR(50) NOT NULL,
+  Birth_Date  DATE NOT NULL,
+  Prepaid_Id  INT
+);
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO PROD_PATIENT (Patient_Id, Name, Birth_Date, Prepaid_Id)
+SELECT Cod_Paciente, Nombre, F_Nacimiento, Cod_Prepaga
+FROM PACIENTE;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM PROD_PATIENT;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 5 · UPDATE</span>
+    <p class="sqlbox__task">
+      A Juan Pérez (paciente 1) le extienden la internación: la fecha prevista de salida pasa a ser el 2026-10-27.
+      El código de abajo hace algo mucho peor.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">UPDATE OCUPACION
+SET F_Hasta_Prevista = '2026-10-27';</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+UPDATE OCUPACION
+SET F_Hasta_Prevista = '2026-10-27'
+WHERE Cod_Paciente = 1;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM OCUPACION;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">4 de 5 · DELETE</span>
+    <p class="sqlbox__task">
+      Borrá las prepagas que no tienen ningún paciente. No uses el código a mano: que la
+      condición lo descubra (pista: <a href="0036-subconsultas-exists.html">0036</a>).
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">DELETE FROM PREPAGA
+WHERE </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+DELETE FROM PREPAGA
+WHERE NOT EXISTS (SELECT * FROM PACIENTE P WHERE P.Cod_Prepaga = PREPAGA.Cod_Prepaga);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM PREPAGA;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">5 de 5 · UPSERT</span>
+    <p class="sqlbox__task">
+      Cargá el servicio 5 con el nombre <b>Kinesiología</b>. Si el código ya existe, que se
+      actualice el nombre en lugar de fallar.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO SERVICIO (Cod_Servicio, Nombre) VALUES (5, 'Kinesiología');</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO SERVICIO (Cod_Servicio, Nombre) VALUES (5, 'Kinesiología')
+ON CONFLICT (Cod_Servicio) DO UPDATE SET Nombre = excluded.Nombre;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM SERVICIO;
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">INSERT SELECT</span>
+    <p class="quiz__q">
+      <code>INSERT INTO Prod_Service (Id_Service, Name_Service) SELECT Nombre_Servicio, Id_Servicio FROM Desa_Servicio</code>.
+      ¿Qué pasa?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Las columnas se emparejan por posición: el nombre cae en Id_Service y el código en Name_Service. Con tipos estrictos da error; con tipos flexibles carga basura. En ningún caso las acomoda por nombre.">Se cruzan: van por la posición</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El motor no mira nombres para emparejar: Id_Service y Nombre_Servicio no tienen nada en común para él. La regla es la posición.">Se acomodan solas, por nombre</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es una sentencia sintácticamente válida, porque la cantidad de columnas coincide. El problema es de significado, y por eso es peligroso.">Siempre falla por la sintaxis</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">UPDATE sin WHERE</span>
+    <p class="quiz__q">¿Qué hace <code>UPDATE PACIENTE SET Cod_Prepaga = 2;</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="El WHERE es opcional: la sentencia corre sin avisar.">Error: falta el WHERE</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Sin &lt;code&gt;&amp;lt;&amp;lt;search_condition&amp;gt;&amp;gt;&lt;/code&gt;, el UPDATE toca todas las filas de la tabla. Lo mismo pasa con &lt;code&gt;DELETE FROM table;&lt;/code&gt;, que el deck muestra como sentencia válida.">Cambia la prepaga de todos los pacientes</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="SQL no tiene &quot;primera fila&quot;: sin condición, afecta a todas.">Cambia sólo la primera fila</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">UPSERT</span>
+    <p class="quiz__q">¿Qué hace un UPSERT (<code>INSERT … ON CONFLICT … DO UPDATE</code>)?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 37: &quot;inserta una nueva fila si un identificador único especificado no existe o actualiza una fila existente si el mismo identificador ya existe&quot;.">Inserta si la clave no existe y actualiza si ya existe</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No borra nada: actualiza la fila existente.">Inserta y, si falla, borra la fila vieja</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es un UPDATE común. El UPSERT trabaja con una fila y su identificador único.">Actualiza todas las filas que coinciden con un WHERE</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b>, slides 34–37, y la consigna <code>raw/TP5/TP DDL-DML Clinica.pptx</code>,
+      slides 4 y 7. <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.6 "Sentencias INSERT, DELETE y
+      UPDATE de SQL" (p. 235).
+    </p>
+    <p><a href="https://www.sqlite.org/lang_upsert.html">SQLite — UPSERT</a>.</p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Cuando escribas los INSERT … SELECT del TP, pasámelos y reviso
+      que cada columna caiga donde debe.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0036-subconsultas-exists.html">Anterior: 0036 · Subconsultas</a>
+    <a href="0038-alter-drop-on-delete.html">Siguiente: 0038 · ALTER, DROP, ON DELETE</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

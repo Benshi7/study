@@ -1,0 +1,469 @@
+{
+  "diagramType": 2,
+  "data": {
+    "nodes": [
+      {
+        "id": "d759097f-9bab-4c6f-acb1-ed8566b18d71",
+        "type": "Table",
+        "position": {
+          "x": 270,
+          "y": 121
+        },
+        "data": {
+          "label": "PRESTAMO",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "b9110993-0223-4ad2-be13-f673e11d86ec",
+              "name": "Dias_Prestamo",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "b1b0bf4f-1655-46f2-aef9-85b8adc9cbde",
+              "name": "Fecha_Prestamo",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "f1bfc81e-56b0-4399-90b0-edda7770b1a9",
+              "name": "Fecha_Devolucion",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "4dedd274-f5bb-428e-a922-56b15e073982",
+              "name": "Id_Prestamo",
+              "type": "INT",
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "9ad5a44a-9b94-48fb-a543-4e68718acd1c",
+              "name": "fk_SOCIO",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "1fbcaaa7-1d81-48b0-90b5-f870c6e5d0c4",
+                "sourceTableId": "4e86364b-0fc6-4da9-bfa5-0d1f4cdd7500",
+                "columns": [
+                  {
+                    "id": "fk_1fa49f35-2235-4578-950a-8a11d789598e",
+                    "name": "Id_Socio",
+                    "type": "INT"
+                  }
+                ]
+              },
+              "isOptional": false
+            },
+            {
+              "id": "6a4e84d2-2f03-4900-8bcf-e11f6520fdfd",
+              "name": "fk_LIBRO",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "2d8f4459-5197-4bd8-b0f9-f8d0f9d9bffe",
+                "sourceTableId": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+                "columns": [
+                  {
+                    "id": "fk_ae70f712-6641-4125-9176-2d461cfd6738",
+                    "name": "ISBN",
+                    "type": "INT"
+                  }
+                ]
+              },
+              "isOptional": false
+            }
+          ],
+          "numberOfGroups": 0,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 270,
+          "height": 200
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "4e86364b-0fc6-4da9-bfa5-0d1f4cdd7500",
+        "type": "Table",
+        "position": {
+          "x": 270,
+          "y": 390
+        },
+        "data": {
+          "label": "SOCIO",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "1fa49f35-2235-4578-950a-8a11d789598e",
+              "name": "Id_Socio",
+              "type": "INT",
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "3f33fe75-8b5c-4176-916e-11fd86b62ef9",
+              "name": "Nombre",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "74cd1ba4-a67b-41aa-a32c-c0a4d3edd730",
+              "name": "Apellido",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "6234c4ee-19b3-45e9-805c-b1e7ee4ba985",
+              "name": "Domicilio",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "07ae539a-4258-40a2-9326-d58447b20040",
+              "name": "Telefono",
+              "type": "INT",
+              "isPrimaryKey": false
+            }
+          ],
+          "numberOfGroups": 0,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 270,
+          "height": 171
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+        "type": "Table",
+        "position": {
+          "x": 664,
+          "y": 126
+        },
+        "data": {
+          "label": "LIBRO",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "ae70f712-6641-4125-9176-2d461cfd6738",
+              "name": "ISBN",
+              "type": "INT",
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "a985d6af-16b5-4530-b56d-0c00370d4ba1",
+              "name": "Titulo",
+              "type": "INT",
+              "isPrimaryKey": false
+            }
+          ],
+          "numberOfGroups": 0,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 270,
+          "height": 86
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "c5d42cac-9d5a-4ca0-9b22-afd37f9063ac",
+        "type": "Table",
+        "position": {
+          "x": 663.7381428076771,
+          "y": 389.9154902393222
+        },
+        "data": {
+          "label": "AUTOR",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "e4b88863-f064-4eb0-9e5d-568b310afc37",
+              "name": "Fecha_Nacimiento",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "371727b8-cbfc-40a7-a3d1-800a928d13e8",
+              "name": "Fecha_Fallecimiento",
+              "type": "INT",
+              "isPrimaryKey": false
+            },
+            {
+              "id": "55654dcf-8866-41c1-b354-edad4c619933",
+              "name": "Id_Autor",
+              "type": "INT",
+              "isPrimaryKey": true,
+              "isOptional": false
+            }
+          ],
+          "numberOfGroups": 0,
+          "isSelected": true
+        },
+        "measured": {
+          "width": 270,
+          "height": 114
+        },
+        "selected": true,
+        "dragging": false
+      },
+      {
+        "id": "46c58cf6-105e-4b81-a269-7fba2e0d825a",
+        "type": "Table",
+        "position": {
+          "x": 663.4456987476573,
+          "y": 241.07460840056746
+        },
+        "data": {
+          "label": "LIBRO_AUTOR",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "4187b04c-4d0c-4801-81ad-f9191b316e56",
+              "name": "fk_LIBRO",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "678c6ce4-4a80-4e69-830a-df3013d4d951",
+                "sourceTableId": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+                "columns": [
+                  {
+                    "id": "fk_ae70f712-6641-4125-9176-2d461cfd6738",
+                    "name": "ISBN",
+                    "type": "INT"
+                  }
+                ]
+              },
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "927648de-450f-4003-95b9-849923c32aa9",
+              "name": "fk_AUTOR",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "63240ce3-ac76-4986-9916-b8da81a2f0a2",
+                "sourceTableId": "c5d42cac-9d5a-4ca0-9b22-afd37f9063ac",
+                "columns": [
+                  {
+                    "id": "fk_55654dcf-8866-41c1-b354-edad4c619933",
+                    "name": "Id_Autor",
+                    "type": "INT"
+                  }
+                ]
+              },
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "fk_97999c99-6bf8-49b2-97a9-424d80d16f8f",
+              "name": "fk_Tipo_Autor",
+              "type": "None",
+              "isForeignKey": true,
+              "foreignKeyProps": {
+                "foreignKeyGroupId": "bee9260c-d087-458e-9c6c-9f7c8ba17b85",
+                "sourceTableId": "60449fb2-4bbc-4eee-a328-9c85258c84f5",
+                "columns": [
+                  {
+                    "id": "fk_bfcc3207-47f5-4b38-95a1-c2c51a0cb5a4",
+                    "name": "Id_Tipo_Autor",
+                    "type": "INT"
+                  }
+                ]
+              }
+            }
+          ],
+          "numberOfGroups": 0,
+          "isSelected": false
+        },
+        "measured": {
+          "width": 270,
+          "height": 117
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "60449fb2-4bbc-4eee-a328-9c85258c84f5",
+        "type": "Table",
+        "position": {
+          "x": 1032,
+          "y": 262
+        },
+        "data": {
+          "label": "Tipo_Autor",
+          "isConnectable": false,
+          "columns": [
+            {
+              "id": "bfcc3207-47f5-4b38-95a1-c2c51a0cb5a4",
+              "name": "Id_Tipo_Autor",
+              "type": "INT",
+              "position": 0,
+              "isPrimaryKey": true,
+              "isOptional": false
+            },
+            {
+              "id": "340f8605-1a82-49a9-892e-d3a0dc518def",
+              "name": "Tipo",
+              "type": "VARCHAR(n)",
+              "position": 0,
+              "size": "50"
+            }
+          ],
+          "isSelected": false
+        },
+        "measured": {
+          "width": 270,
+          "height": 86
+        },
+        "selected": false,
+        "dragging": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "4e86364b-0fc6-4da9-bfa5-0d1f4cdd7500->d759097f-9bab-4c6f-acb1-ed8566b18d71_1fbcaaa7-1d81-48b0-90b5-f870c6e5d0c4",
+        "type": "Relational",
+        "source": "4e86364b-0fc6-4da9-bfa5-0d1f4cdd7500",
+        "targetHandle": "foreign-key-handle-1fbcaaa7-1d81-48b0-90b5-f870c6e5d0c4",
+        "target": "d759097f-9bab-4c6f-acb1-ed8566b18d71",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "1fbcaaa7-1d81-48b0-90b5-f870c6e5d0c4",
+            "sourceTableId": "4e86364b-0fc6-4da9-bfa5-0d1f4cdd7500",
+            "columns": [
+              {
+                "id": "fk_1fa49f35-2235-4578-950a-8a11d789598e",
+                "name": "Id_Socio",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "e9a66118-c06a-4e4f-9a72-394422f2cb7c->d759097f-9bab-4c6f-acb1-ed8566b18d71_2d8f4459-5197-4bd8-b0f9-f8d0f9d9bffe",
+        "type": "Relational",
+        "source": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+        "targetHandle": "foreign-key-handle-2d8f4459-5197-4bd8-b0f9-f8d0f9d9bffe",
+        "target": "d759097f-9bab-4c6f-acb1-ed8566b18d71",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "2d8f4459-5197-4bd8-b0f9-f8d0f9d9bffe",
+            "sourceTableId": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+            "columns": [
+              {
+                "id": "fk_ae70f712-6641-4125-9176-2d461cfd6738",
+                "name": "ISBN",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "e9a66118-c06a-4e4f-9a72-394422f2cb7c->46c58cf6-105e-4b81-a269-7fba2e0d825a_678c6ce4-4a80-4e69-830a-df3013d4d951",
+        "type": "Relational",
+        "source": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+        "targetHandle": "foreign-key-handle-678c6ce4-4a80-4e69-830a-df3013d4d951",
+        "target": "46c58cf6-105e-4b81-a269-7fba2e0d825a",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "678c6ce4-4a80-4e69-830a-df3013d4d951",
+            "sourceTableId": "e9a66118-c06a-4e4f-9a72-394422f2cb7c",
+            "columns": [
+              {
+                "id": "fk_ae70f712-6641-4125-9176-2d461cfd6738",
+                "name": "ISBN",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "c5d42cac-9d5a-4ca0-9b22-afd37f9063ac->46c58cf6-105e-4b81-a269-7fba2e0d825a_63240ce3-ac76-4986-9916-b8da81a2f0a2",
+        "type": "Relational",
+        "source": "c5d42cac-9d5a-4ca0-9b22-afd37f9063ac",
+        "targetHandle": "foreign-key-handle-63240ce3-ac76-4986-9916-b8da81a2f0a2",
+        "target": "46c58cf6-105e-4b81-a269-7fba2e0d825a",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "63240ce3-ac76-4986-9916-b8da81a2f0a2",
+            "sourceTableId": "c5d42cac-9d5a-4ca0-9b22-afd37f9063ac",
+            "columns": [
+              {
+                "id": "fk_55654dcf-8866-41c1-b354-edad4c619933",
+                "name": "Id_Autor",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "60449fb2-4bbc-4eee-a328-9c85258c84f5->46c58cf6-105e-4b81-a269-7fba2e0d825a_bee9260c-d087-458e-9c6c-9f7c8ba17b85",
+        "type": "Relational",
+        "source": "60449fb2-4bbc-4eee-a328-9c85258c84f5",
+        "targetHandle": "foreign-key-handle-bee9260c-d087-458e-9c6c-9f7c8ba17b85",
+        "target": "46c58cf6-105e-4b81-a269-7fba2e0d825a",
+        "markerStart": {
+          "type": "arrow"
+        },
+        "data": {
+          "foreignKeyProps": {
+            "foreignKeyGroupId": "bee9260c-d087-458e-9c6c-9f7c8ba17b85",
+            "sourceTableId": "60449fb2-4bbc-4eee-a328-9c85258c84f5",
+            "columns": [
+              {
+                "id": "fk_bfcc3207-47f5-4b38-95a1-c2c51a0cb5a4",
+                "name": "Id_Tipo_Autor",
+                "type": "INT"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "viewport": {
+      "x": 134.81928140353307,
+      "y": 58.56950999861408,
+      "zoom": 0.9999999999999996
+    }
+  },
+  "name": "TP4_Grupo3_MER",
+  "folder": {
+    "name": "TP4",
+    "folderType": 2,
+    "parentFolder": {
+      "depth": 0,
+      "id": 385368,
+      "name": "Diagrams",
+      "folderType": 1
+    },
+    "depth": 1,
+    "id": 418131
+  },
+  "id": 585122,
+  "updatedAtTimestamp": 1789249456
+}

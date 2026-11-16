@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Super Glosario — Repaso Completo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+<style>
+  body { max-width: 920px; }
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin: 1.5rem 0 2.5rem;
+    padding: 1.1rem 1.3rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+  }
+  .toc a { font-size: 0.82rem; border-bottom: none; color: var(--ink-dim); }
+  .toc a:hover { color: var(--accent); }
+  @media (max-width: 640px) { .toc { grid-template-columns: 1fr 1fr; } }
+  h2 { margin-top: 3.2rem; padding-top: 1.6rem; border-top: 1px solid var(--line); }
+  h2:first-of-type { margin-top: 2.6rem; padding-top: 0; border-top: none; }
+  h3 { font-family: var(--font-display); color: var(--ink); font-size: 1.05rem; margin-top: 1.6rem; margin-bottom: 0.5rem; }
+  .compact td, .compact th { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<span class="kicker">Referencia maestra · Todas las unidades</span>
+<h1>Super Glosario — Repaso Completo</h1>
+<p class="subtitle">Fórmulas, definiciones y trampas de las 8 unidades del programa, todo en una sola página. Para consultar rápido, no para leer de una sentada.</p>
+
+<div class="toc">
+  <a href="#u1">§1 Probabilidad básica</a>
+  <a href="#u2">§2 Estadística descriptiva</a>
+  <a href="#u3">§3 Distribuciones discretas</a>
+  <a href="#u4">§4 Distribuciones continuas y muestreo</a>
+  <a href="#u5">§5 Intervalos de confianza</a>
+  <a href="#u6">§6 Regresión y correlación</a>
+  <a href="#u7">§7 Trampas más frecuentes (todas)</a>
+</div>
+
+<h2 id="u1">§1 — Probabilidad Básica</h2>
+
+<h3>Definiciones de probabilidad</h3>
+<table class="compact">
+<tr><th>Nombre</th><th>Fórmula</th><th>Cuándo</th></tr>
+<tr><td>Laplace</td><td class="formula">favorables / posibles</td><td>Espacio equiprobable</td></tr>
+<tr><td>Frecuencial</td><td class="formula">éxitos / ensayos</td><td>Aproximación empírica</td></tr>
+<tr><td>Axiomática</td><td class="formula">P(A)≥0, P(E)=1, aditividad</td><td>Base formal</td></tr>
+</table>
+
+<h3>Relaciones entre sucesos</h3>
+<table class="compact">
+<tr><th>Término</th><th>Condición</th></tr>
+<tr><td class="term">Excluyentes</td><td>A∩B = ∅</td></tr>
+<tr><td class="term">Independientes</td><td>P(A∩B)=P(A)·P(B) — equivalente a P(A)=P(A/B)</td></tr>
+<tr><td class="term">Exhaustivos</td><td>A∪B = E (pueden solaparse)</td></tr>
+<tr><td class="term">Complementarios</td><td>Exhaustivos Y excluyentes a la vez</td></tr>
+</table>
+<div class="warn">Independientes ⇒ NO excluyentes (salvo trivial P=0). Excluyentes ⇒ NO independientes (salvo trivial).</div>
+
+<h3>Combinación de sucesos</h3>
+<table class="compact">
+<tr><th>Situación</th><th>Fórmula</th></tr>
+<tr><td>A o B, excluyentes</td><td class="formula">P(A)+P(B)</td></tr>
+<tr><td>A o B, general</td><td class="formula">P(A)+P(B)−P(A∩B)</td></tr>
+<tr><td>A y B, independientes</td><td class="formula">P(A)·P(B)</td></tr>
+<tr><td>A y B, dependientes</td><td class="formula">P(A)·P(B/A)</td></tr>
+<tr><td>Condicional</td><td class="formula">P(B/A) = P(A∩B)/P(A)</td></tr>
+</table>
+<div class="box">Con reposición → independiente. Sin reposición → dependiente. Si el enunciado NO aclara: se asume <strong>sin reposición</strong>.</div>
+
+<h3>Probabilidad total y Bayes</h3>
+<table class="compact">
+<tr><th>Pregunta</th><th>Fórmula</th></tr>
+<tr><td>Total: "¿P(B) en general?"</td><td class="formula">P(B) = Σ P(Aᵢ)·P(B/Aᵢ)</td></tr>
+<tr><td>Bayes: "ya ocurrió B, ¿causa Aₖ?"</td><td class="formula">P(Aₖ/B) = P(Aₖ)·P(B/Aₖ) / Σ P(Aᵢ)·P(B/Aᵢ)</td></tr>
+</table>
+<p>P(Aₖ/B) se llama <strong>probabilidad a posteriori</strong>. El denominador de Bayes ES la probabilidad total.</p>
+
+<h3>Traducción de enunciados</h3>
+<table class="compact">
+<tr><td>como máximo / a lo sumo k</td><td class="formula">P(x ≤ k)</td></tr>
+<tr><td>como mínimo / por lo menos k</td><td class="formula">P(x ≥ k)</td></tr>
+<tr><td>más de la mitad</td><td class="formula">P(x &gt; n/2)</td></tr>
+<tr><td>menos de la mitad</td><td class="formula">P(x &lt; n/2)</td></tr>
+<tr><td>ninguno / alguno</td><td class="formula">P(x=0) / P(x≥1)</td></tr>
+<tr><td>entre a y b</td><td class="formula">P(a≤x≤b) = P(x≤b)−P(x≤a−1)</td></tr>
+</table>
+
+<h2 id="u2">§2 — Estadística Descriptiva</h2>
+
+<h3>Tabla de frecuencias</h3>
+<table class="compact">
+<tr><th>Símbolo</th><th>Nombre</th></tr>
+<tr><td class="formula">f</td><td>Frecuencia absoluta</td></tr>
+<tr><td class="formula">F</td><td>Frecuencia acumulada</td></tr>
+<tr><td class="formula">fr = f/n</td><td>Frecuencia relativa</td></tr>
+<tr><td class="formula">Fr = F/n</td><td>Frecuencia acumulada relativa</td></tr>
+</table>
+<p>Intervalos: cerrados a izquierda, abiertos a derecha <span class="formula">[Li ; Ls)</span>. Marca de clase (Xm) = punto medio; amplitud (a) = ancho.</p>
+
+<h3>Medidas de tendencia central</h3>
+<table class="compact">
+<tr><td>Media</td><td>x̄ (muestra) / μ (población)</td></tr>
+<tr><td>Mediana (Me)</td><td>"el del medio" — requiere datos ordenados</td></tr>
+<tr><td>Moda (Mo)</td><td>el valor de mayor frecuencia</td></tr>
+</table>
+
+<h3>Medidas de variabilidad</h3>
+<table class="compact">
+<tr><td>Varianza</td><td>S² (muestra) / σ² (población)</td></tr>
+<tr><td>Desvío</td><td>S = √Varianza</td></tr>
+<tr><td>Coef. de Variación</td><td class="formula">CV = (S/x̄)·100%</td></tr>
+</table>
+<div class="box">CV &lt; 20% → datos homogéneos. CV &lt; 10% → el promedio es representativo (convención de la cátedra, usada en TPs y parciales; la red conceptual cita 5% como criterio aún más exigente, pero en las claves se usó 10%).</div>
+<p><strong>Parámetro</strong> (población: μ, σ, σ²) vs. <strong>Estadístico</strong> (muestra: x̄, S, S²).</p>
+
+<h3>Percentiles, cuartiles y posición</h3>
+<table class="compact">
+<tr><td>Cuartiles (Q1,Q2,Q3)</td><td>Dividen en 4 partes de 25%. Q2=Mediana=P50.</td><td></td></tr>
+<tr><td>Percentiles (Pk)</td><td>Dividen en 100 partes. Pk supera al k% de los datos.</td><td></td></tr>
+<tr><td>RIC</td><td class="formula">Q3 − Q1</td><td>Dispersión robusta, ideal con asimetría fuerte</td></tr>
+</table>
+<div class="box">
+Fórmula única (cambia solo k): <span class="formula">Pk = LI + [(k·n/100 − Fa)/f]·a</span><br>
+Mediana con lista de datos: posición = (n+1)/2. Con tabla de frecuencias acumuladas: posición = n/2 (sin el +1).<br>
+Buscar el intervalo con <strong>F</strong> (acumulada), no con f (simple).
+</div>
+<div class="warn">"El k% obtiene MÁS que X" → Pk_real = 100−k, no k. Leer de qué lado está el porcentaje.</div>
+
+<h3>Asimetría</h3>
+<table class="compact">
+<tr><td class="formula">Mo > x̄</td><td>Asimetría <strong>negativa</strong> (cola larga a la izquierda)</td></tr>
+<tr><td class="formula">Mo &lt; x̄</td><td>Asimetría <strong>positiva</strong> (cola larga a la derecha)</td></tr>
+<tr><td class="formula">Mo = x̄</td><td>Simetría</td></tr>
+</table>
+
+<h2 id="u3">§3 — Distribuciones Discretas</h2>
+
+<h3>Variable aleatoria discreta (general)</h3>
+<table class="compact">
+<tr><td>Función de probabilidad</td><td class="formula">P(r)≥0 ∀r ; ΣP(r)=1</td></tr>
+<tr><td>Esperanza</td><td class="formula">μ = E(r) = Σ rᵢ·P(rᵢ)</td></tr>
+<tr><td>Varianza</td><td class="formula">σ² = Σ(rᵢ−E(r))²·P(rᵢ)</td></tr>
+</table>
+
+<h3>Binomial vs. Poisson</h3>
+<table class="compact">
+<tr><th>Aspecto</th><th>Binomial</th><th>Poisson</th></tr>
+<tr><td>Cuándo usar</td><td>n fijo de pruebas, p de éxito</td><td>Tasa promedio por unidad de tiempo/espacio, sin n fijo</td></tr>
+<tr><td>Parámetros</td><td>n, p</td><td>λ = b·t</td></tr>
+<tr><td>Dominio</td><td>{0,...,n} acotado</td><td>{0,1,2,...} sin cota</td></tr>
+<tr><td>Esperanza</td><td class="formula">n·p</td><td class="formula">λ</td></tr>
+<tr><td>Varianza</td><td class="formula">n·p·q</td><td class="formula">λ (=esperanza)</td></tr>
+</table>
+<div class="warn">λ SIEMPRE se recalcula según la ventana de tiempo/espacio pedida: λ_nuevo = tasa · nueva_extensión. No reusar el λ dado en otra unidad.</div>
+
+<h3>Suma de variables aleatorias</h3>
+<table class="compact">
+<tr><td class="formula">μ(x₁±x₂) = μ(x₁)±μ(x₂)</td><td>Esperanza de suma/resta</td></tr>
+<tr><td class="formula">σ²(x₁±x₂) = σ²(x₁)+σ²(x₂)</td><td>SIEMPRE se suma, aunque sea resta</td></tr>
+<tr><td class="formula">σ²(k·x) = k²·σ²(x)</td><td>Constante multiplicando, al cuadrado</td></tr>
+<tr><td class="formula">σ²(k) = 0</td><td>Una constante no tiene varianza</td></tr>
+</table>
+<div class="box">TCL: si x es Normal → suma exactamente Normal (cualquier n). Si x NO es Normal → suma aprox. Normal si n≥30. Binomial→Normal si n≥30 es un caso particular del TCL. Para proporciones la cátedra también usa el criterio n·p ≥ 15 y n·q ≥ 15.</div>
+
+<h2 id="u4">§4 — Distribuciones Continuas y Muestreo</h2>
+
+<h3>Distribución Normal</h3>
+<table class="compact">
+<tr><td>Estandarización</td><td class="formula">Z = (x−μ)/σ</td></tr>
+<tr><td>Regla empírica</td><td>μ±1σ→68% · μ±2σ→95% · μ±3σ→99,7% (aprox.; el 95% exacto es μ±1,96σ)</td></tr>
+<tr><td>Suma de n iguales</td><td class="formula">μ_W = n·μ · σ_W = √n·σ</td></tr>
+<tr><td>Parámetros desconocidos</td><td>Con un percentil se despeja μ o σ; con dos percentiles, sistema de 2 ecuaciones para μ y σ</td></tr>
+<tr><td>P(X=a)</td><td class="formula">= 0 siempre (continua) → P(≤)=P(&lt;), P(≥)=P(&gt;)</td></tr>
+</table>
+<p>Estandarizar permite usar una sola tabla de referencia para cualquier μ y σ.</p>
+
+<h3>Distribución muestral de la media</h3>
+<table class="compact">
+<tr><td class="formula">μ_x̄ = μ</td><td>La media de las medias muestrales = media poblacional</td></tr>
+<tr><td class="formula">σ_x̄ = σ/√n</td><td>Error estándar de la media (siempre ≤ σ)</td></tr>
+<tr><td class="formula">Z = (x̄−μ)/(σ/√n)</td><td>Estadístico para un promedio de muestra</td></tr>
+</table>
+<div class="box">x original Normal → x̄ Normal exacto (cualquier n). x original NO Normal → x̄ aprox. Normal solo si n≥30.</div>
+
+<h2 id="u5">§5 — Intervalos de Confianza</h2>
+
+<table class="compact">
+<tr><th>Caso</th><th>Fórmula</th></tr>
+<tr><td>σ conocido</td><td class="formula">IC(μ) = x̄ ± Z·(σ/√n)</td></tr>
+<tr><td>σ desconocido</td><td class="formula">IC(μ) = x̄ ± t·(s/√n), ν=n−1</td></tr>
+</table>
+<table class="compact">
+<tr><td>Tamaño de muestra, σ conocido</td><td class="formula">n = (Z·σ/E)²</td></tr>
+<tr><td>Tamaño de muestra, σ desconocido</td><td>Método <strong>iterativo</strong> (t depende de ν=n−1)</td></tr>
+</table>
+<table class="compact">
+<tr><td>IC para una proporción</td><td class="formula">IC(p) = p̂ ± Z·√(p̂·q̂/n)</td></tr>
+<tr><td>Tamaño de muestra, proporción</td><td class="formula">n = Z²·p̂·q̂ / E²  (sin estimación previa de p: p̂ = 0,5)</td></tr>
+<tr><td>Margen de error y amplitud</td><td class="formula">E = (sup − inf)/2 · amplitud = 2E</td></tr>
+<tr><td>Confianza inversa (σ conocido)</td><td class="formula">Z = E·√n/σ → de ese Z sale el nivel de confianza</td></tr>
+</table>
+<div class="warn">
+"Confianza 95%" es una propiedad del <strong>método</strong> repetido, NO la probabilidad de que μ esté en ESE intervalo particular ya calculado (μ es constante, no variable aleatoria).
+</div>
+<div class="box">
+n siempre se redondea <strong>hacia arriba</strong> (nunca al más cercano). Mayor confianza → intervalo más ancho. Mayor n → intervalo más angosto. t &gt; Z siempre, para el mismo nivel de confianza. Con ν grande, t→Z.
+</div>
+
+<h2 id="u6">§6 — Regresión y Correlación</h2>
+
+<table class="compact">
+<tr><td>Correlación (Pearson)</td><td class="formula">r = Sxy/√(Sxx·Syy)</td><td>Rango −1 a 1</td></tr>
+<tr><td>Recta de regresión</td><td class="formula">ŷ = a + b·x</td><td></td></tr>
+<tr><td>Pendiente</td><td class="formula">b = Sxy/Sxx = r·(Sy/Sx)</td><td></td></tr>
+<tr><td>Ordenada</td><td class="formula">a = ȳ − b·x̄</td><td></td></tr>
+<tr><td>Determinación</td><td class="formula">R² = r²</td><td>Rango 0 a 1 (% de variabilidad explicada)</td></tr>
+</table>
+<div class="box">
+El signo de b siempre coincide con el signo de r. La recta pasa siempre por (x̄, ȳ). Σ residuos = 0; Σ residuos² = mínimo (por eso "mínimos cuadrados"). Umbral de la cátedra: |r|≥0,7 → fuerte; R²>0,5 → buen ajuste.
+</div>
+<div class="warn">Correlación ≠ Causalidad, siempre. r=0 solo descarta relación LINEAL (puede haber curvilínea). Extrapolar fuera del rango de X observado es riesgoso.</div>
+
+<h2 id="u7">§7 — Las Trampas Más Frecuentes (repaso relámpago)</h2>
+<table class="compact">
+<tr><th>Trampa</th><th>Resolución en una línea</th></tr>
+<tr><td>Independiente vs. excluyente</td><td>Ejes distintos — casi nunca son ambas cosas a la vez</td></tr>
+<tr><td>Condicional vs. conjunta</td><td>P(B/A) reduce el espacio; P(A∩B) no</td></tr>
+<tr><td>Bayes vs. probabilidad total</td><td>Total = P(B) general; Bayes = causa puntual dado B</td></tr>
+<tr><td>"al menos uno" vs. "más de uno"</td><td>P(X≥1)=1−P(X=0) ; P(X&gt;1) resta también P(X=1)</td></tr>
+<tr><td>Binomial vs. Poisson</td><td>n fijo+p → Binomial; tasa sin n → Poisson</td></tr>
+<tr><td>Varianza vs. desvío</td><td>σ = √Var — nunca son el mismo número (salvo Var=0 o Var=1)</td></tr>
+<tr><td>Signo en σ²(x₁±x₂)</td><td>Siempre se suma, nunca se resta</td></tr>
+<tr><td>Percentil "al revés"</td><td>"el k% gana MÁS que X" → Pk_real = 100−k</td></tr>
+<tr><td>Asimetría</td><td>Mo &gt; x̄ → negativa (no positiva, ojo con la intuición)</td></tr>
+<tr><td>Interpretación del IC</td><td>Confianza es del método, no del intervalo ya calculado</td></tr>
+<tr><td>Z vs. t</td><td>σ desconocido (viene de la muestra) → t, aunque n sea grande</td></tr>
+<tr><td>r vs. R²</td><td>r tiene signo (−1 a 1); R² no tiene signo (0 a 1)</td></tr>
+</table>
+
+<footer>
+Fuente: <code>knowledge-base/*.md</code> (7 bloques). Complementa las lecciones interactivas en <a href="../lessons/index.html">lessons/index.html</a>.
+</footer>
+
+</body>
+</html>

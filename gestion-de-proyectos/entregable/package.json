@@ -1,0 +1,22 @@
+{
+  "name": "entregable-tp-cascada",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build": "bash build.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.12",
+    "adm-zip": "^0.6.1",
+    "docx": "^9.10.0",
+    "markdown-it": "^15.0.2",
+    "puppeteer-core": "^25.13.0"
+  },
+  "private": true
+}

@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa de conceptos</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: concept map (inline SVG, every node is a link to the lesson that teaches it) */
+  .map-figure { margin: 1.2rem 0; }
+  .map-figure .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; background: var(--card); padding: .5rem; }
+  .map-figure svg { display: block; min-width: 560px; width: 100%; height: auto; }
+  .map-figure figcaption { font-family: var(--sans); font-size: .75rem; color: var(--muted); margin-top: .4rem; }
+  .map-figure text { fill: var(--fg); font-family: var(--sans); }
+  .map-figure .t { font-size: 13px; font-weight: 700; }
+  .map-figure .s { font-size: 10.5px; fill: var(--muted); }
+  .map-figure .lb { font-size: 10px; fill: var(--muted); font-style: italic; }
+  .map-figure .col { font-size: 11px; font-weight: 700; fill: var(--muted); letter-spacing: .06em; }
+  .map-figure a { cursor: pointer; }
+  .map-figure .n { fill: var(--card); stroke: var(--accent); stroke-width: 2; }
+  .map-figure .n.x { stroke: var(--violet); }
+  .map-figure .n.p { stroke: var(--muted); stroke-dasharray: 6 4; }
+  .map-figure a:hover .n, .map-figure a:focus-visible .n { fill: var(--accent-soft); stroke-width: 3.5; }
+  .map-figure a:focus-visible { outline: none; }
+  .map-figure .e { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .map-figure .e.x { stroke: var(--violet); }
+  .map-figure .e.d { stroke: var(--muted); stroke-dasharray: 5 4; }
+  .map-figure .ah-a { fill: var(--accent); }
+  .map-figure .ah-x { fill: var(--violet); }
+  .map-figure .ah-d { fill: var(--muted); }
+  .map-legend { font-family: var(--sans); font-size: .75rem; color: var(--muted); display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: .4rem; }
+  .map-legend i { display: inline-block; width: 1.6rem; height: 0; border-top: 3px solid var(--accent); vertical-align: middle; margin-right: .35rem; }
+  .map-legend i.x { border-color: var(--violet); }
+  .map-legend i.d { border-top: 3px dashed var(--muted); }
+  .checks li { margin: .25rem 0; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Transversal · Clases 1 a 7 · Sirve a las 10 secciones del TP</p>
+  <h1>Mapa de conceptos</h1>
+  <p class="subtitle">Cómo se conectan Canvas, Charter, cronograma, costos, riesgos y comunicación, y qué le entrega cada pieza a la siguiente.</p>
+  <p class="meta"><span>⏱ 15 minutos</span><span>Fuente: las lecciones 1 a 7 de esta carpeta y sus diapositivas</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder recorrer el hilo de punta a punta sin mirar las diapositivas: de qué negocio se parte, cómo se convierte en un plan (alcance, cronograma, costo), cómo los riesgos y los stakeholders modifican ese plan, y qué cuatro números tienen que coincidir entre secciones del TP.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> todas las lecciones: <a href="01-canvas.html">1</a> · <a href="02-proyectos.html">2</a> · <a href="03a-charter-stakeholders-edt.html">3a</a> · <a href="03b-cronograma-camino-critico.html">3b</a> · <a href="04-costos-pestel.html">4</a> · <a href="05-riesgos-foda.html">5</a> · <a href="06-cambios-comunicacion-negociacion.html">6</a> · <a href="07-design-thinking.html">7 (pendiente)</a>.</p>
+  <p><span class="to">Alimenta</span> la sección de coherencia del <a href="../tp/plan.html">Plan del TP</a>, la revisión final del documento y la defensa oral del 18/11.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>La consigna del TP pide diez secciones y exige un <em>storytelling</em> que las conecte: «no deben ser puntos sueltos». Cada clase enseñó una pieza por separado. Este mapa muestra las conexiones, y una conexión es siempre lo mismo: <strong>un dato que sale de una pieza y entra en otra</strong>.</p>
+
+<h2 id="el-mapa">El mapa</h2>
+<p>La columna izquierda es la columna vertebral, de arriba hacia abajo: del negocio al plan y al presupuesto. La derecha son los temas transversales (stakeholders y comunicación, entorno y riesgos, cambios y negociación) que entran al plan por los costados. Cada caja abre la lección que la enseña; la punteada todavía no tiene material de la cátedra.</p>
+<figure class="map-figure">
+  <div class="scroll">
+    <svg viewBox="0 0 650 1030" role="group" aria-labelledby="map-t map-d">
+      <title id="map-t">Mapa de conceptos del curso</title>
+      <desc id="map-d">Columna izquierda: Canvas, Design Thinking (pendiente), Proyecto, Project Charter, EDT, Actividades y PERT, Camino crítico y Gantt, Mano de obra, Presupuesto y Línea base. Columna derecha: Stakeholders, Plan de comunicación, PESTEL y FODA, Riesgos, Reserva de contingencia, Gestión de cambios y Negociación. Las flechas indican qué concepto alimenta a cuál.</desc>
+      <defs>
+        <marker id="ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-a" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="mx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-x" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="md" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-d" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+
+      <text class="col" x="20" y="12">DEL NEGOCIO AL PRESUPUESTO</text>
+      <text class="col" x="360" y="284">TRANSVERSALES</text>
+
+      <!-- spine edges -->
+      <path class="e d" d="M135,82 L135,112" marker-end="url(#md)"/>
+      <path class="e d" d="M135,174 L135,204" marker-end="url(#md)"/>
+      <path class="e" d="M135,266 L135,296" marker-end="url(#ma)"/>
+      <path class="e" d="M135,358 L135,388" marker-end="url(#ma)"/>
+      <path class="e" d="M135,450 L135,480" marker-end="url(#ma)"/>
+      <path class="e" d="M135,542 L135,572" marker-end="url(#ma)"/>
+      <path class="e" d="M135,634 L135,664" marker-end="url(#ma)"/>
+      <path class="e" d="M135,726 L135,756" marker-end="url(#ma)"/>
+      <path class="e" d="M135,818 L135,848" marker-end="url(#ma)"/>
+      <text class="lb" x="145" y="101">segmento a investigar</text>
+      <text class="lb" x="145" y="193">problema validado</text>
+      <text class="lb" x="145" y="285">límites del proyecto</text>
+      <text class="lb" x="145" y="377">alcance</text>
+      <text class="lb" x="145" y="469">paquetes → actividades</text>
+      <text class="lb" x="145" y="561">duraciones</text>
+      <text class="lb" x="145" y="653">duración × recursos</text>
+      <text class="lb" x="145" y="745">costo por actividad</text>
+      <text class="lb" x="145" y="837">aprobado y fijado</text>
+
+      <!-- cross edges -->
+      <path class="e x" d="M250,327 L360,327" marker-end="url(#mx)"/>
+      <text class="lb" x="255" y="318">stakeholders</text>
+      <text class="lb" x="255" y="343">principales</text>
+      <path class="e x" d="M480,358 L480,388" marker-end="url(#mx)"/>
+      <text class="lb" x="488" y="377">quién necesita qué</text>
+      <path class="e x" d="M417,542 L417,572" marker-end="url(#mx)"/>
+      <path class="e x" d="M542,542 L542,572" marker-end="url(#mx)"/>
+      <text class="lb" x="480" y="561" text-anchor="middle">insumo de riesgos</text>
+      <path class="e x" d="M480,634 L480,664" marker-end="url(#mx)"/>
+      <text class="lb" x="488" y="653">EMV</text>
+      <path class="e x" d="M400,726 C400,770 300,787 250,787" marker-end="url(#mx)"/>
+      <text class="lb" x="262" y="807">+ contingencia</text>
+      <path class="e x" d="M360,879 L250,879" marker-end="url(#mx)"/>
+      <text class="lb" x="305" y="871" text-anchor="middle">controla</text>
+      <path class="e x" d="M480,940 L480,910" marker-end="url(#mx)"/>
+      <text class="lb" x="488" y="929">acuerdos</text>
+      <path class="e d" d="M600,971 L618,971 L618,327 L600,327" marker-end="url(#md)"/>
+      <text class="lb" x="634" y="650" text-anchor="middle" transform="rotate(-90 634 650)">negociar con stakeholders de alto poder</text>
+
+      <!-- spine nodes -->
+      <a href="01-canvas.html" aria-label="Canvas: segmento y propuesta de valor. Clase 1">
+        <rect class="n" x="20" y="20" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="44">Canvas</text><text class="s" x="34" y="62">segmento y propuesta de valor</text>
+      </a>
+      <a href="07-design-thinking.html" aria-label="Design Thinking: problema validado. Clase 7, pendiente">
+        <rect class="n p" x="20" y="112" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="136">Design Thinking</text><text class="s" x="34" y="154">problema validado · pendiente</text>
+      </a>
+      <a href="02-proyectos.html" aria-label="Proyecto y triple restricción. Clase 2">
+        <rect class="n" x="20" y="204" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="228">Proyecto</text><text class="s" x="34" y="246">triple restricción · cascada vs ágil</text>
+      </a>
+      <a href="03a-charter-stakeholders-edt.html#charter" aria-label="Project Charter. Clase 3, parte 1">
+        <rect class="n" x="20" y="296" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="316">Project Charter</text><text class="s" x="34" y="332">objetivos SMART · alcance · hitos</text><text class="s" x="34" y="346">$ y riesgos de alto nivel</text>
+      </a>
+      <a href="03a-charter-stakeholders-edt.html" aria-label="EDT. Clase 3, parte 1">
+        <rect class="n" x="20" y="388" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="412">EDT</text><text class="s" x="34" y="430">paquetes de trabajo del alcance</text>
+      </a>
+      <a href="03b-cronograma-camino-critico.html" aria-label="Actividades y PERT. Clase 3, parte 2">
+        <rect class="n" x="20" y="480" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="504">Actividades y PERT</text><text class="s" x="34" y="522">secuencia · duración esperada</text>
+      </a>
+      <a href="03b-cronograma-camino-critico.html" aria-label="Camino crítico y Gantt. Clase 3, parte 2">
+        <rect class="n" x="20" y="572" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="596">Camino crítico y Gantt</text><text class="s" x="34" y="614">fecha final · holguras</text>
+      </a>
+      <a href="04-costos-pestel.html#ejemplo" aria-label="Costo de mano de obra. Clase 4">
+        <rect class="n" x="20" y="664" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="688">Mano de obra</text><text class="s" x="34" y="706">personas × tarifa × duración</text>
+      </a>
+      <a href="04-costos-pestel.html#reservas" aria-label="Presupuesto. Clase 4">
+        <rect class="n" x="20" y="756" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="780">Presupuesto</text><text class="s" x="34" y="798">línea base + reserva de gestión</text>
+      </a>
+      <a href="03b-cronograma-camino-critico.html#linea-base" aria-label="Línea base de alcance, cronograma y costo. Clase 3, parte 2">
+        <rect class="n" x="20" y="848" width="230" height="62" rx="9"/>
+        <text class="t" x="34" y="872">Línea base</text><text class="s" x="34" y="890">alcance · cronograma · costo</text>
+      </a>
+
+      <!-- cross-cutting nodes -->
+      <a href="03a-charter-stakeholders-edt.html#matriz" aria-label="Stakeholders y matriz poder interés. Clase 3, parte 1">
+        <rect class="n x" x="360" y="296" width="240" height="62" rx="9"/>
+        <text class="t" x="374" y="320">Stakeholders</text><text class="s" x="374" y="338">matriz poder / interés</text>
+      </a>
+      <a href="06-cambios-comunicacion-negociacion.html" aria-label="Plan de comunicación. Clase 6">
+        <rect class="n x" x="360" y="388" width="240" height="62" rx="9"/>
+        <text class="t" x="374" y="412">Plan de comunicación</text><text class="s" x="374" y="430">qué · a quién · cuándo · canal</text>
+      </a>
+      <a href="04-costos-pestel.html" aria-label="PESTEL. Clase 4">
+        <rect class="n x" x="360" y="480" width="115" height="62" rx="9"/>
+        <text class="t" x="372" y="504">PESTEL</text><text class="s" x="372" y="522">entorno externo</text>
+      </a>
+      <a href="05-riesgos-foda.html#idea-1" aria-label="FODA. Clase 5">
+        <rect class="n x" x="485" y="480" width="115" height="62" rx="9"/>
+        <text class="t" x="497" y="504">FODA</text><text class="s" x="497" y="522">interno/externo</text>
+      </a>
+      <a href="05-riesgos-foda.html" aria-label="Riesgos: probabilidad por impacto, EMV. Clase 5">
+        <rect class="n x" x="360" y="572" width="240" height="62" rx="9"/>
+        <text class="t" x="374" y="596">Riesgos</text><text class="s" x="374" y="614">P × I · EMV · respuestas</text>
+      </a>
+      <a href="04-costos-pestel.html#reservas" aria-label="Reserva de contingencia. Clase 4">
+        <rect class="n x" x="360" y="664" width="240" height="62" rx="9"/>
+        <text class="t" x="374" y="688">Reserva de contingencia</text><text class="s" x="374" y="706">suma neta de los EMV</text>
+      </a>
+      <a href="06-cambios-comunicacion-negociacion.html#idea-1" aria-label="Gestión de cambios. Clase 6">
+        <rect class="n x" x="360" y="848" width="240" height="62" rx="9"/>
+        <text class="t" x="374" y="872">Gestión de cambios</text><text class="s" x="374" y="890">evaluar · aprobar · controlar</text>
+      </a>
+      <a href="06-cambios-comunicacion-negociacion.html#idea-5" aria-label="Negociación. Clase 6">
+        <rect class="n x" x="360" y="940" width="240" height="62" rx="9"/>
+        <text class="t" x="374" y="964">Negociación</text><text class="s" x="374" y="982">intereses · BATNA · criterios</text>
+      </a>
+    </svg>
+  </div>
+  <figcaption>Mapa de conceptos. Se puede desplazar horizontalmente en pantallas chicas. La tabla de más abajo dice lo mismo en texto.</figcaption>
+</figure>
+<p class="map-legend"><span><i></i>encadena el plan (columna izquierda)</span><span><i class="x"></i>entra al plan desde un tema transversal</span><span><i class="d"></i>pendiente o de apoyo</span></p>
+
+<h2 id="idea-1">Cómo leerlo: cuatro flujos</h2>
+<ol>
+  <li><strong>El alcance baja en cascada.</strong> El Canvas fija segmento y propuesta; el Charter fija alcance, hitos y límites; la EDT parte el alcance en paquetes; los paquetes se convierten en actividades.</li>
+  <li><strong>La duración se convierte en costo.</strong> El Gantt entrega duraciones; multiplicadas por personas y tarifas dan la mano de obra; con otros costos y las reservas dan el presupuesto.</li>
+  <li><strong>El riesgo se convierte en reserva.</strong> PESTEL y FODA alimentan la lista de riesgos; la probabilidad por el impacto da el EMV; la suma neta de los EMV es la reserva de contingencia, que está dentro de la línea base.</li>
+  <li><strong>Las personas modifican el plan.</strong> Los stakeholders dicen a quién informar (plan de comunicación) y quién puede pedir cambios; los cambios pasan por evaluación y aprobación antes de tocar la línea base, y la negociación por intereses resuelve los desacuerdos.</li>
+</ol>
+
+<h2 id="tabla-de-handoffs">Tabla de handoffs</h2>
+<p>Lo que sale de cada concepto y entra en el siguiente. La última columna es la pregunta que el concepto responde, la misma que aparece en el <a href="../tp/plan.html">Plan del TP</a>.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Concepto</th><th>Viene de</th><th>Alimenta</th><th>Pregunta que responde</th></tr></thead>
+<tbody>
+<tr><td><a href="01-canvas.html">Canvas</a></td><td>La idea del proyecto</td><td>Design Thinking, Charter (justificación y objetivos SMART)</td><td>¿Qué negocio y para quién?</td></tr>
+<tr><td><a href="07-design-thinking.html">Design Thinking</a> (pendiente)</td><td>Canvas: segmento y propuesta</td><td>Charter</td><td>¿El problema es real?</td></tr>
+<tr><td><a href="02-proyectos.html">Proyecto y triple restricción</a></td><td>Canvas, Design Thinking</td><td>Charter (alcance, tiempo, costo); elección de cascada</td><td>¿Qué se gestiona y con qué límites?</td></tr>
+<tr><td><a href="03a-charter-stakeholders-edt.html">Project Charter</a></td><td>Canvas, Design Thinking, Proyecto</td><td>EDT, stakeholders, hitos, presupuesto y riesgos de alto nivel</td><td>¿Qué hacemos, por qué y con qué límites?</td></tr>
+<tr><td><a href="03a-charter-stakeholders-edt.html">Stakeholders</a></td><td>Charter (stakeholders principales)</td><td>Plan de comunicación, negociación, cambios</td><td>¿A quién afecta y con cuánto poder e interés?</td></tr>
+<tr><td><a href="03a-charter-stakeholders-edt.html">EDT</a></td><td>Charter (alcance)</td><td>Actividades</td><td>¿Qué entregables y paquetes de trabajo hay?</td></tr>
+<tr><td><a href="03b-cronograma-camino-critico.html">Actividades, secuencia y PERT</a></td><td>EDT</td><td>Camino crítico</td><td>¿Qué depende de qué y cuánto dura?</td></tr>
+<tr><td><a href="03b-cronograma-camino-critico.html">Camino crítico y Gantt</a></td><td>Actividades y duraciones</td><td>Mano de obra, hitos del Charter, línea base del cronograma</td><td>¿Cuándo termina y qué no puede atrasarse?</td></tr>
+<tr><td><a href="04-costos-pestel.html">PESTEL</a> y <a href="05-riesgos-foda.html#idea-1">FODA</a></td><td>El contexto externo e interno</td><td>Lista de riesgos</td><td>¿Qué del entorno y de nosotros puede pesar?</td></tr>
+<tr><td><a href="05-riesgos-foda.html">Riesgos (P × I, EMV)</a></td><td>PESTEL, FODA, riesgos de alto nivel del Charter</td><td>Reserva de contingencia, respuestas</td><td>¿Qué puede pasar y qué hacemos?</td></tr>
+<tr><td><a href="04-costos-pestel.html#ejemplo">Mano de obra</a></td><td>Gantt (duraciones)</td><td>Presupuesto</td><td>¿Cuánto cuesta el trabajo?</td></tr>
+<tr><td><a href="04-costos-pestel.html#reservas">Reserva de contingencia</a></td><td>Suma neta de EMV</td><td>Línea base de costos</td><td>¿Cuánto se guarda para lo identificado?</td></tr>
+<tr><td><a href="04-costos-pestel.html#reservas">Presupuesto</a></td><td>Mano de obra, otros costos, contingencia</td><td>Línea base; total del Charter</td><td>¿Cuánto cuesta todo?</td></tr>
+<tr><td><a href="06-cambios-comunicacion-negociacion.html#idea-2">Plan de comunicación</a></td><td>Stakeholders</td><td>Reporte de hitos y de cambios</td><td>¿Qué, a quién, cuándo y por qué canal?</td></tr>
+<tr><td><a href="06-cambios-comunicacion-negociacion.html#idea-1">Gestión de cambios</a></td><td>Línea base, stakeholders</td><td>Línea base actualizada, comunicación</td><td>¿Cómo se modifica el plan sin perder el control?</td></tr>
+<tr><td><a href="06-cambios-comunicacion-negociacion.html#idea-5">Negociación</a></td><td>Stakeholders, solicitudes de cambio</td><td>Acuerdos sobre alcance, plazo y costo</td><td>¿Cómo se acuerda cuando hay conflicto?</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">La fila de Design Thinking está marcada como pendiente: la cátedra todavía no aportó el material de la Clase 7. El vínculo con Canvas y Charter surge de la consigna del TP (secciones 3, 4 y 5), no de una diapositiva.</p>
+
+<h2 id="checklist">Checklist de coherencia</h2>
+<p>Antes de entregar, verificar los siete puntos del <a href="../tp/plan.html#checklist">Plan del TP</a>:</p>
+<ul class="checks">
+  <li>Los <strong>hitos</strong> del Charter tienen la misma fecha en el Gantt.</li>
+  <li>El <strong>presupuesto de alto nivel</strong> del Charter coincide con el total del Presupuesto.</li>
+  <li>Los <strong>riesgos de alto nivel</strong> del Charter están en la Matriz de riesgos.</li>
+  <li>Los <strong>stakeholders principales</strong> del Charter están en la Matriz de stakeholders, y todos los de la Matriz tienen fila en el Plan de comunicación.</li>
+  <li>La <strong>reserva de contingencia</strong> sale de los EMV de la Matriz de riesgos.</li>
+  <li>El <strong>costo de mano de obra</strong> usa las duraciones del Gantt.</li>
+  <li>Cada sección abre con una <strong>frase puente</strong> que cita un dato de la anterior.</li>
+</ul>
+
+<h2 id="preguntas-de-defensa">Preguntas de defensa</h2>
+<p>Preguntas que cruzan clases. Contestarlas en voz alta antes de abrir la respuesta.</p>
+
+<details class="recall"><summary>1. ¿De dónde sale la reserva de contingencia?</summary>
+  <p>De la suma neta de los EMV de la matriz de riesgos (EMV = probabilidad × impacto): amenazas menos oportunidades, como en la diapositiva 32 de la Clase 5. Entra a la línea base de costos (Clase 4, p24). Ver <a href="05-riesgos-foda.html#idea-5">EMV</a> y la <a href="04-costos-pestel.html#reservas">escalera del presupuesto</a>.</p></details>
+
+<details class="recall"><summary>2. ¿Cuál es la diferencia entre la línea base de costos y el presupuesto?</summary>
+  <p>Línea base = costo del proyecto + reserva de contingencia. Presupuesto = línea base + reserva de gestión, que no está asignada a riesgos específicos y necesita aprobación superior (Clase 4, p19 y 24).</p></details>
+
+<details class="recall"><summary>3. ¿Cómo se relaciona el Gantt con el presupuesto?</summary>
+  <p>La mano de obra es personas × tarifa × duración, y la duración sale del Gantt. Si el Gantt cambia, cambia el presupuesto. Ver el <a href="04-costos-pestel.html#ejemplo">ejemplo resuelto</a>.</p></details>
+
+<details class="recall"><summary>4. ¿Cuál es el camino crítico y por qué importa para los riesgos?</summary>
+  <p>Es la secuencia más larga de actividades, con holgura cero; un atraso ahí mueve la fecha final. Por eso un retraso en una actividad crítica es un riesgo de cronograma prioritario, y una actividad con holgura puede atrasarse hasta agotarla sin cambiar la fecha. Ver <a href="03b-cronograma-camino-critico.html">lección 3b</a>.</p></details>
+
+<details class="recall"><summary>5. ¿Por qué el TP se gestiona en cascada?</summary>
+  <p>La consigna pide Canvas, Charter, Gantt, presupuesto y riesgos completos antes de ejecutar: es planificar por adelantado, propio de la cascada, que la Clase 2 (p16–17) describe como lineal, secuencial y con requisitos claros desde el inicio. Es un argumento para defender en el Charter. Ver <a href="02-proyectos.html">lección 2</a>.</p></details>
+
+<details class="recall"><summary>6. ¿Cómo se decide a quién comunicar qué?</summary>
+  <p>Se parte de la matriz de stakeholders (poder e interés) y se arma una fila de la matriz de comunicación por cada uno: qué necesita saber, cuándo, por qué canal, quién lo envía y si requiere respuesta (Clase 6, p20). Todos los stakeholders de la matriz deben tener fila.</p></details>
+
+<details class="recall"><summary>7. El sponsor pide sumar una función a mitad del proyecto. ¿Qué se hace?</summary>
+  <p>Se aplica la gestión de cambios: identificar el pedido, evaluar su impacto en alcance, cronograma, costo y riesgos, decidir quién lo aprueba y, si se aprueba, actualizar la línea base y comunicarlo. La discusión se conduce separando personas del problema y buscando intereses antes que posiciones (Clase 6, p5–8 y 23–26). Ver <a href="06-cambios-comunicacion-negociacion.html">lección 6</a>.</p></details>
+
+<details class="recall"><summary>8. ¿Cómo se conecta el FODA con la matriz de riesgos?</summary>
+  <p>El FODA figura entre las técnicas de identificación de riesgos (Clase 5, p26). Las amenazas y debilidades son candidatas a riesgos negativos y las oportunidades a riesgos positivos; cada candidato se redacta con la plantilla, se prioriza por P × I y se cuantifica con EMV. El paso de ítem a riesgo es una síntesis, no una diapositiva.</p></details>
+
+<details class="recall"><summary>9. ¿Qué es un riesgo positivo y cómo afecta a la reserva?</summary>
+  <p>Una oportunidad: una condición incierta que, de ocurrir, favorece los objetivos (Clase 5, p21). En el ejemplo de la cátedra su EMV se resta del total de la reserva (p32). Conviene declarar en el documento si se netea o se reserva solo por amenazas.</p></details>
+
+<details class="recall"><summary>10. ¿Qué dos números del Charter deben coincidir con otras secciones?</summary>
+  <p>Los <strong>hitos</strong> (con las fechas del Gantt) y el <strong>presupuesto de alto nivel</strong> (con el total de la sección 10). Además, los riesgos y stakeholders principales del Charter deben aparecer en sus matrices. Es el checklist de arriba.</p></details>
+
+<h2 id="practica-preguntas">Práctica · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">El Gantt del equipo pasa de 17 a 20 días. ¿Qué otras secciones del TP hay que revisar?</p>
+  <div class="options">
+    <button data-ok data-why="La mano de obra usa las duraciones del Gantt, y los hitos del Charter deben tener las mismas fechas que el Gantt.">Presupuesto (mano de obra) y hitos del Charter</button>
+    <button data-why="El Canvas describe el negocio; no depende de la duración del cronograma.">Solo el Canvas</button>
+    <button data-why="La matriz de stakeholders clasifica personas por poder e interés; no cambia por la duración.">Solo la matriz de stakeholders</button>
+    <button data-why="Cambiar un cronograma casi siempre mueve otras secciones: la coherencia entre ellas es parte de la consigna.">Ninguna, el Gantt es independiente</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">La matriz de riesgos da una reserva neta de $210.000. ¿Dónde tiene que aparecer ese número?</p>
+  <div class="options">
+    <button data-ok data-why="Es la reserva de contingencia: se suma al costo del proyecto para obtener la línea base de costos (Clase 4, p24).">Como reserva de contingencia dentro de la línea base del presupuesto</button>
+    <button data-why="La reserva de gestión no se asigna a riesgos específicos; es una decisión aparte.">Como reserva de gestión, por encima de la línea base</button>
+    <button data-why="Los hitos son fechas; la reserva es una cifra monetaria.">En los hitos del Charter</button>
+    <button data-why="La mano de obra sale de personas × tarifa × duración, no de la matriz de riesgos.">Como parte del costo de mano de obra</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Un stakeholder de alto poder y alto interés pide cambiar el alcance. ¿Qué orden de conceptos es el correcto?</p>
+  <div class="options">
+    <button data-ok data-why="Se evalúa el impacto en la línea base (cambios), se negocia por intereses con criterios objetivos, se decide y se comunica según la matriz.">Evaluar el impacto, negociar por intereses, decidir y comunicar según el plan de comunicación</button>
+    <button data-why="Aceptar antes de evaluar es justamente la expansión no controlada del alcance (Clase 6, p8).">Aceptar el pedido y después actualizar el Gantt</button>
+    <button data-why="Rechazar sin evaluar ni negociar ignora al stakeholder de mayor poder y no sigue el proceso.">Rechazarlo porque el Charter ya está aprobado</button>
+    <button data-why="La reserva de gestión requiere aprobación superior y no es una vía para absorber cambios de alcance sin evaluarlos.">Cubrirlo con la reserva de gestión sin avisar</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Las 10 secciones, revisadas de punta a punta.</strong> Antes de cada entrega parcial: recorrer la columna izquierda del mapa como historia («el segmento X tiene el problema Y, por eso el alcance es Z, dura N días, cuesta M y puede fallar por R») y usar la tabla de handoffs para comprobar que cada dato aparece igual donde entra. El <a href="../tp/plan.html">Plan del TP</a> tiene el estado por sección y la lista de coherencia; la sección 4 (Design Thinking) queda abierta hasta contar con el material de la Clase 7.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  Las lecciones <a href="01-canvas.html">1</a>, <a href="02-proyectos.html">2</a>, <a href="03a-charter-stakeholders-edt.html">3a</a>, <a href="03b-cronograma-camino-critico.html">3b</a>, <a href="04-costos-pestel.html">4</a>, <a href="05-riesgos-foda.html">5</a> y <a href="06-cambios-comunicacion-negociacion.html">6</a>, con sus diapositivas de origen citadas allí, y la <a class="local-only" href="../raw/Consigna%20TP%20Cascada.pdf" title="Solo disponible en la copia completa con raw/">Consigna TP Cascada</a>.
+  <br><strong>Complemento:</strong> el diagrama, la tabla de handoffs y las respuestas de defensa son una síntesis de esta suite; no provienen de una diapositiva. Los flujos entre conceptos (por ejemplo, que la contingencia se calcule con la Matriz de riesgos) sí están en las diapositivas de las Clases 4 y 5.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: que tome una sección del TP del equipo y compruebe qué datos deberían coincidir con las demás, o que haga una ronda de preguntas de defensa cruzadas.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="07-design-thinking.html">← Clase 7 · Design Thinking</a>
+  <a href="defensa-01-relato.html">Defensa 1 · El relato →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

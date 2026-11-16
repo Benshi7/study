@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="unicaba" data-theme-base="../assets/themes/">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Sources: Wikipedia (Muda, Lean software development, Extreme programming, Kanban) and the Kanban Guide 2025.
+     Source: cátedra PDF raw/«Clase 7 - Kanban Lean y XP.pdf» (= class 12); public sources only as complement.
+     Diagrams are generated: python3 tools/diagramas.py rewrites everything between the diagram markers. -->
+<title>Clase 12 · Lean, XP y Kanban</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../assets/themes/unicaba.css">
+<link rel="stylesheet" href="../assets/animations/animations.css">
+<link rel="stylesheet" href="../../assets/diagram.css">
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide cover" data-title="Portada">
+    <p class="kicker">Clase 12 · 28/10 · Parcial del 18/11</p>
+    <h1 class="h1">Lean, XP y Kanban</h1>
+    <p class="lede mt-m" style="max-width:56ch">Tres formas de hacer ágil el trabajo: desperdicio, calidad técnica y flujo.</p>
+    <div class="row wrap mt-l"><span class="pill">⏱ 25 minutos</span><span class="pill">Fuentes públicas: contrastar con la clase</span></div>
+    <div class="notes">Estas slides siguen el PDF de la cátedra «Kanban, Lean y XP»; las fuentes públicas quedan como complemento. Idea central: Scrum es un marco; los otros tres atacan otro problema. Lean pone en el centro el desperdicio, XP la calidad técnica y Kanban el flujo.</div>
+  </section>
+
+  <section class="slide titled" data-title="Tres centros">
+    <div class="bar"><p class="kicker">Mapa</p><h2 class="h2">Cada enfoque pone algo distinto en el centro</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><h4>Lean</h4><p class="dim">El <b>desperdicio</b>: todo lo que no agrega valor al cliente.</p></div>
+        <div class="card violet"><h4>XP</h4><p class="dim">La <b>calidad técnica</b>: pruebas, integración y feedback constante.</p></div>
+        <div class="card card-accent"><h4>Kanban</h4><p class="dim">El <b>flujo</b>: limitar el trabajo en curso para que fluya.</p></div>
+      </div>
+      <div class="callout mt-l">Scrum ya vimos que es un <b>marco</b> de roles, eventos y artefactos. Los cuatro se pueden <b>combinar</b>.</div>
+    </div>
+    <div class="notes">Wikipedia registra que Kanban se usa a menudo junto con Scrum (Scrumban, 2008). La tabla comparativa completa está en la lección y en la guía del parcial.</div>
+  </section>
+
+  <section class="slide titled" data-title="Muda">
+    <div class="bar"><p class="kicker">Lean · cátedra</p><h2 class="h2">Muda: los siete desperdicios</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:24px">
+        <thead><tr><th style="width:34%">Muda (cátedra)</th><th style="width:30%">Afecta a…</th><th>En software (complemento)</th></tr></thead>
+        <tbody>
+          <tr><td>Transporte</td><td>Del producto</td><td>Cambio de tarea</td></tr>
+          <tr><td>Inventario</td><td>De materias primas</td><td>Trabajo parcialmente terminado</td></tr>
+          <tr><td>Movimiento</td><td>Del operario</td><td>Traspasos (hand-offs)</td></tr>
+          <tr><td>Espera</td><td>Del operario</td><td>Esperar a otros equipos o procesos</td></tr>
+          <tr><td>Sobreprocesamiento</td><td>Proceso o herramienta</td><td>Procesos extra</td></tr>
+          <tr><td>Sobreproducción</td><td>Costos de producción</td><td>Funcionalidades extra</td></tr>
+          <tr><td>Defectos</td><td>Del producto</td><td>Defectos y baja calidad</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Lista y paréntesis de la cátedra (PDF «Kanban, Lean y XP», p. 13). Truco: dos del operario (movimiento, espera), dos del producto (transporte, defectos) y tres sueltos. La columna de software viene de Poppendieck (Wikipedia) y es complemento. La espera es la que conecta con Kanban.</div>
+  </section>
+
+  <section class="slide titled" data-title="Lean">
+    <div class="bar"><p class="kicker">Lean · cátedra</p><h2 class="h2">Optimizar los procesos eliminando el desperdicio</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><h4>Origen</h4><p class="dim"><b>Taiichi Ohno</b>, dentro de <b>Kaizen</b>. El mismo origen que Kanban.</p></div>
+        <div class="card violet"><h4>Objetivo</h4><p class="dim"><b>Optimizar los procesos</b> eliminando el desperdicio: las <b>7 mudas</b>.</p></div>
+        <div class="card card-accent"><h4>Base</h4><p class="dim"><b>Ciclo de Deming (PDCA)</b>: planificar, hacer, verificar, actuar.</p></div>
+      </div>
+    </div>
+    <div class="notes">Cátedra, p. 12. Para no confundir: Lean apunta a todo el desperdicio; Kanban ataca los cuellos de botella, que generan la muda de espera. Complemento (no cátedra): siete principios del software Lean de Poppendieck y la distinción muda tipo I / tipo II.</div>
+  </section>
+
+  <section class="slide titled" data-title="XP">
+    <div class="bar"><p class="kicker">Extreme Programming · cátedra</p><h2 class="h2">Chrysler, años 90, Kent Beck: 5 bases y 12 prácticas</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>5 bases</h4><p class="dim">Comunicación (cara a cara) · Simplicidad (omitir detalles) · Retroalimentación (del cliente) · Respeto (equipo y cliente) · Coraje (plantear los temas)</p></div>
+        <div class="card violet"><h4>12 prácticas (regla 3-4-3-2)</h4><ul class="dim" style="padding-left:22px;margin:0"><li><b>Personas:</b> cliente in situ, semana de 40 horas, programación de pares</li><li><b>Código:</b> diseño simple, refactorización, código estándar, propiedad colectiva</li><li><b>Entregar y probar:</b> entregas cortas, testing, integración continua</li><li><b>Explicar y planificar:</b> metáfora, juego de planificación</li></ul></div>
+      </div>
+    </div>
+    <div class="notes">Cátedra, pp. 15–17: conjunto de buenas prácticas que Beck recolectó de sus equipos, previo al Manifiesto (Beck lo firmó en 2001). Debate de la clase: ¿pair programming es un desperdicio? Parece sobreprocesamiento, pero reduce defectos y esperas de revisión y reparte el conocimiento (propiedad colectiva). Lo que se evalúa es el fundamento.</div>
+  </section>
+
+  <section class="slide titled" data-title="Kanban">
+    <div class="bar"><p class="kicker">Kanban · cátedra</p><h2 class="h2">Implementación: tablero y tarjetas</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Tablero de 3 columnas</h4><p class="dim"><b>To do</b> · <b>WIP</b> (se puede abrir en varias columnas) · <b>Done</b></p></div>
+        <div class="card violet"><h4>Tarjeta, como mínimo</h4><p class="dim"><b>Descripción</b> · <b>Responsable</b> · <b>Fecha de inicio y fin</b>. Se agrega lo que haga falta.</p></div>
+      </div>
+    </div>
+    <div class="notes">Cátedra, p. 7. Las fechas sirven para detectar dónde se estanca una tarjeta: ahí se forma el cuello de botella. Complemento: la Kanban Guide (2025) define Kanban como una estrategia para optimizar el flujo de valor.</div>
+  </section>
+
+  <section class="slide titled" data-title="Tablero y WIP">
+    <div class="bar"><p class="kicker">Kanban · Parte 2</p><h2 class="h2">WIP, pull y cuello de botella</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:kanban-flujo-->
+<svg viewBox="0 0 960 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="kanban-flujo-title kanban-flujo-desc"><title id="kanban-flujo-title">Tablero Kanban: límites de WIP, pull y cuello de botella</title><desc id="kanban-flujo-desc">Cuatro columnas: Por hacer con cuatro tarjetas, En curso con tres de un límite de tres, Revisión con dos de un límite de dos y Hecho con tres. La columna Revisión llena es el cuello de botella: nada nuevo entra hasta que salga una tarjeta, y el trabajo se tira (pull) cuando hay capacidad.</desc><defs><marker id="kanban-flujo-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="kanban-flujo-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="kanban-flujo-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M800 348 H140" marker-end="url(#kanban-flujo-arrow)"/>
+<rect class="dg-mask" x="296" y="324" width="348" height="16" rx="2"/>
+<text class="dg-lbl" x="470" y="336" text-anchor="middle">pull: se toma trabajo solo cuando hay capacidad</text>
+<rect class="dg-zone" x="40" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="52" y="48" text-anchor="start">POR HACER</text>
+<text class="dg-tag" x="232" y="48" text-anchor="end">sin límite</text>
+<rect class="dg-mask" x="60" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="99" text-anchor="middle">Historia 7</text>
+<rect class="dg-mask" x="60" y="128" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="128" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="155" text-anchor="middle">Historia 8</text>
+<rect class="dg-mask" x="60" y="184" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="184" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="211" text-anchor="middle">Historia 9</text>
+<rect class="dg-mask" x="60" y="240" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="240" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="267" text-anchor="middle">Historia 10</text>
+<rect class="dg-zone" x="260" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="272" y="48" text-anchor="start">EN CURSO</text>
+<text class="dg-tag" x="452" y="48" text-anchor="end">WIP 3 / 3</text>
+<rect class="dg-mask" x="280" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-box" x="280" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="362" y="99" text-anchor="middle">Historia 4</text>
+<rect class="dg-mask" x="280" y="128" width="164" height="44" rx="6"/>
+<rect class="dg-box" x="280" y="128" width="164" height="44" rx="6"/>
+<text class="dg-name" x="362" y="155" text-anchor="middle">Historia 5</text>
+<rect class="dg-mask" x="280" y="184" width="164" height="44" rx="6"/>
+<rect class="dg-box" x="280" y="184" width="164" height="44" rx="6"/>
+<text class="dg-name" x="362" y="211" text-anchor="middle">Historia 6</text>
+<rect class="dg-zone" x="480" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="492" y="48" text-anchor="start">REVISIÓN</text>
+<text class="dg-tag" x="672" y="48" text-anchor="end">WIP 2 / 2</text>
+<rect class="dg-mask" x="500" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-focal" x="500" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="582" y="99" text-anchor="middle">Historia 2</text>
+<rect class="dg-mask" x="500" y="128" width="164" height="44" rx="6"/>
+<rect class="dg-focal" x="500" y="128" width="164" height="44" rx="6"/>
+<text class="dg-name" x="582" y="155" text-anchor="middle">Historia 3</text>
+<rect class="dg-zone" x="700" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="712" y="48" text-anchor="start">HECHO</text>
+<text class="dg-tag" x="892" y="48" text-anchor="end">terminadas</text>
+<rect class="dg-mask" x="720" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-store" x="720" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="802" y="99" text-anchor="middle">Historia 1</text>
+<text class="dg-note" x="40" y="396" text-anchor="start">Cuello de botella: Revisión está llena, así que En curso no puede entregar y Por hacer no avanza.</text>
+<text class="dg-note" x="40" y="420" text-anchor="start">El límite de WIP vuelve visible el problema el mismo día en que aparece.</text>
+<line class="dg-rule" x1="40" y1="456" x2="920" y2="456"/>
+<text class="dg-tag" x="40" y="484" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="472" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="484" text-anchor="start">cuello de botella</text>
+<path class="dg-line" d="M304 480 H328" marker-end="url(#kanban-flujo-arrow)"/>
+<text class="dg-note" x="336" y="484" text-anchor="start">dirección del pull</text></svg>
+<!--/diagram:kanban-flujo-->
+      </div>
+    </div>
+    <div class="notes">Leer el tablero: En curso tiene su límite de tres completo y Revisión su límite de dos completo. Como Revisión está llena, nada entra hasta que salga una tarjeta: eso es pull, se toma trabajo cuando hay capacidad. En push, el trabajo se empuja cuando alguien lo pide, sin mirar la capacidad. El límite vuelve visible el cuello de botella. Los números son un ejemplo propio.</div>
+  </section>
+
+  <section class="slide titled" data-title="Objetivo de Kanban">
+    <div class="bar"><p class="kicker">Pregunta casi segura del parcial · cátedra</p><h2 class="h2">Kanban: eliminar cuellos de botella</h2></div>
+    <div class="body">
+      <p class="lede">Toyota · <b>Taiichi Ohno</b> · años 50 · dentro de <b>Kaizen</b> · «registro visual» · <b>pull</b></p>
+      <div class="grid g3 mt-m">
+        <div class="card card-accent"><h4>1 · Mostrar el proceso</h4><p class="dim">Tablero con columnas por etapa.</p></div>
+        <div class="card violet"><h4>2 · Limitar el trabajo en curso</h4><p class="dim">Máximo de tarjetas por columna. <b>Puede ser pregunta.</b></p></div>
+        <div class="card card-accent"><h4>3 · Optimizar el flujo</h4><p class="dim">Atacar la columna que siempre se llena.</p></div>
+      </div>
+      <div class="callout mt-l">Limitar el WIP hace <b>visible</b> el cuello de botella: la columna llena frena a las anteriores.</div>
+    </div>
+    <div class="notes">Diapositiva de la cátedra (clase 12): creada en Toyota por Taiichi Ohno en los 50 como parte de Kaizen para eliminar cuellos de botella; significa registro visual; maneja pull; basada en las automotrices de EE. UU.; tres reglas. El profesor dijo que puede tomar «limitar el trabajo en curso»: qué es (máximo por columna), cómo (no se pasa trabajo a una columna llena) y por qué funciona (el cuello de botella se ve, menos trabajo a medias, cada ítem termina antes).</div>
+  </section>
+
+  <section class="slide titled" data-title="Push y pull">
+    <div class="bar"><p class="kicker">Cronograma: pull y push, cuellos de botella</p><h2 class="h2">Push esconde el cuello de botella; pull lo muestra</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:push-pull-->
+<svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="push-pull-title push-pull-desc"><title id="push-pull-title">Push contra pull: dónde se esconde el cuello de botella</title><desc id="push-pull-desc">En push cada etapa empuja trabajo a la siguiente sin mirar su capacidad y la cola se acumula frente a la etapa lenta. En pull cada etapa toma trabajo solo cuando tiene lugar bajo su límite de WIP, así que la etapa llena queda a la vista y frena a las anteriores.</desc><defs><marker id="push-pull-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="push-pull-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="push-pull-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-row" x="40" y="44" text-anchor="start">Push · se empuja trabajo sin mirar la capacidad</text>
+<path class="dg-line" d="M280 96 H356" marker-end="url(#push-pull-arrow)"/>
+<path class="dg-line" d="M600 96 H676" marker-end="url(#push-pull-arrow)"/>
+<rect class="dg-mask" x="40" y="64" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="64" width="240" height="64" rx="6"/>
+<text class="dg-name" x="160" y="92" text-anchor="middle">Análisis</text>
+<text class="dg-sub" x="160" y="110" text-anchor="middle">termina y empuja</text>
+<rect class="dg-mask" x="360" y="64" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="360" y="64" width="240" height="64" rx="6"/>
+<text class="dg-name" x="480" y="92" text-anchor="middle">Desarrollo</text>
+<text class="dg-sub" x="480" y="110" text-anchor="middle">termina y empuja</text>
+<rect class="dg-mask" x="680" y="64" width="240" height="64" rx="6"/>
+<rect class="dg-focal" x="680" y="64" width="240" height="64" rx="6"/>
+<text class="dg-name" x="800" y="92" text-anchor="middle">Pruebas</text>
+<text class="dg-sub" x="800" y="110" text-anchor="middle">cola: 9 ítems esperando</text>
+<text class="dg-note-accent" x="800" y="156" text-anchor="middle">la cola crece y nadie la ve a tiempo</text>
+<text class="dg-row" x="40" y="220" text-anchor="start">Pull · cada etapa toma trabajo cuando tiene lugar (límite de WIP)</text>
+<path class="dg-line" d="M280 260 H356" marker-end="url(#push-pull-arrow)"/>
+<path class="dg-line-link" d="M356 288 H284" marker-end="url(#push-pull-arrow-link)"/>
+<path class="dg-line" d="M600 260 H676" marker-end="url(#push-pull-arrow)"/>
+<path class="dg-line-link" d="M676 288 H604" marker-end="url(#push-pull-arrow-link)"/>
+<rect class="dg-mask" x="40" y="240" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="240" width="240" height="64" rx="6"/>
+<text class="dg-name" x="160" y="268" text-anchor="middle">Análisis</text>
+<text class="dg-sub" x="160" y="286" text-anchor="middle">WIP 2 de 3 · toma si hay lugar</text>
+<rect class="dg-mask" x="360" y="240" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="360" y="240" width="240" height="64" rx="6"/>
+<text class="dg-name" x="480" y="268" text-anchor="middle">Desarrollo</text>
+<text class="dg-sub" x="480" y="286" text-anchor="middle">WIP 3 de 3 · espera la señal</text>
+<rect class="dg-mask" x="680" y="240" width="240" height="64" rx="6"/>
+<rect class="dg-focal" x="680" y="240" width="240" height="64" rx="6"/>
+<text class="dg-name" x="800" y="268" text-anchor="middle">Pruebas</text>
+<text class="dg-sub" x="800" y="286" text-anchor="middle">WIP 2 de 2 · llena, frena</text>
+<text class="dg-note" x="480" y="340" text-anchor="middle">La columna llena se ve en el tablero: ahí está el cuello de botella para atacar.</text>
+<line class="dg-rule" x1="40" y1="404" x2="920" y2="404"/>
+<text class="dg-tag" x="40" y="432" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 428 H152" marker-end="url(#push-pull-arrow)"/>
+<text class="dg-note" x="160" y="432" text-anchor="start">trabajo</text>
+<path class="dg-line-link" d="M240 428 H264" marker-end="url(#push-pull-arrow-link)"/>
+<text class="dg-note" x="272" y="432" text-anchor="start">señal de capacidad (pull)</text>
+<rect class="dg-focal" x="472" y="420" width="20" height="16" rx="4"/>
+<text class="dg-note" x="500" y="432" text-anchor="start">cuello de botella</text></svg>
+<!--/diagram:push-pull-->
+      </div>
+    </div>
+    <div class="notes">En push cada etapa empuja trabajo sin mirar la capacidad de la siguiente y la cola crece sin que nadie la vea. En pull cada etapa toma trabajo solo si tiene lugar bajo su límite de WIP; la columna llena frena a las anteriores y deja el problema a la vista. Ejemplo: cuatro desarrolladores y una sola persona que prueba; «En pruebas» se llena y muestra que falta capacidad para probar, no para programar.</div>
+  </section>
+
+  <section class="slide titled" data-title="Herramientas">
+    <div class="bar"><p class="kicker">Kanban · cátedra</p><h2 class="h2">Herramientas: elegir según el tamaño</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:24px">
+        <thead><tr><th style="width:20%">Herramienta</th><th>A favor</th><th>En contra</th></tr></thead>
+        <tbody>
+          <tr><td>Trello</td><td>Fácil; la versión gratuita alcanza; power-ups</td><td>Con equipos grandes cuesta seguir y escalar</td></tr>
+          <tr><td>Jira</td><td>Muy configurable; tableros y gráficos; plug-ins</td><td>Caro desde 10 usuarios; interfaz difícil; demasiado para proyectos chicos</td></tr>
+          <tr><td>Azure DevOps</td><td>Integrado con Microsoft; pensado para corporaciones; convenios</td><td>Puesta a punto compleja; poco agradable; no para proyectos chicos</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Cátedra, pp. 8–10. Criterio: proyecto chico → Trello; mediano o grande con métricas → Jira; corporación con Microsoft → Azure DevOps. Complemento: la Kanban Guide propone cuatro métricas de flujo (WIP, throughput, antigüedad del ítem, cycle time).</div>
+  </section>
+
+  <section class="slide titled" data-title="Comparación">
+    <div class="bar"><p class="kicker">Comparar</p><h2 class="h2">Qué controla cada enfoque</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:22px">
+        <thead><tr><th style="width:12%"></th><th>Scrum</th><th>Lean</th><th>XP</th><th>Kanban</th></tr></thead>
+        <tbody>
+          <tr><td>Centro</td><td>Marco de roles, eventos y artefactos</td><td>Eliminar desperdicio</td><td>Calidad técnica y feedback</td><td>Flujo del trabajo</td></tr>
+          <tr><td>Controla</td><td>Tiempo (Sprint) y compromiso (Goal)</td><td>Lo que no agrega valor</td><td>Ciclos cortos con prácticas de ingeniería</td><td>WIP y métricas de flujo</td></tr>
+          <tr><td>Mejora con</td><td>Retrospectiva</td><td>Siete principios</td><td>Pruebas e integración continua</td><td>Mejora del flujo</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Síntesis propia sobre lo que cada fuente define. Revisar con la cátedra si se dio otra comparación. Idea para el parcial: ante un caso, preguntarse qué problema tiene el equipo: falta de estructura (Scrum), desperdicio (Lean), calidad técnica (XP) o trabajo atascado (Kanban).</div>
+  </section>
+
+  <section class="slide titled" data-title="Lean y Kanban">
+    <div class="bar"><p class="kicker">Pregunta de final</p><h2 class="h2">¿Qué relación hay entre Lean y Kanban?</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:24px">
+        <thead><tr><th style="width:8%">Paso</th><th style="width:42%">Qué pasa</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Un operario espera a que otro termine</td><td>Muda de <b>espera</b> (del operario): Lean</td></tr>
+          <tr><td>2</td><td>La espera aparece siempre en el mismo lugar</td><td>Hay un <b>cuello de botella</b></td></tr>
+          <tr><td>3</td><td>Se muestra el proceso y se limita el trabajo en curso</td><td><b>Kanban</b>, con pull</td></tr>
+          <tr><td>4</td><td>La etapa saturada queda a la vista y se ataca</td><td>Se elimina la espera</td></tr>
+        </tbody>
+      </table>
+      <div class="callout mt-m" style="font-size:26px">Lean dice <b>qué</b> eliminar (el desperdicio). Kanban da un <b>cómo</b> para una muda: la espera.</div>
+    </div>
+    <div class="notes">El profesor la planteó como una cadena, «lo que no debería pasar». No confundir los objetivos: Lean, optimizar los procesos eliminando el desperdicio (las 7 mudas); Kanban, eliminar cuellos de botella. Los dos vienen de Toyota y de Taiichi Ohno, dentro de Kaizen. De paso, limitar el WIP también reduce el inventario: trabajo empezado y no terminado.</div>
+  </section>
+
+  <section class="slide titled" data-title="Repaso">
+    <div class="bar"><p class="kicker">Repaso</p><h2 class="h2">Sin mirar: tres preguntas</h2></div>
+    <div class="body">
+      <div class="stack">
+        <div class="recall" style="font-size:30px">1 · Nombrar los siete desperdicios y su equivalente en software.</div>
+        <div class="recall" style="font-size:30px">2 · Decir el objetivo de Lean, las cinco bases de XP y sus doce prácticas.</div>
+        <div class="recall" style="font-size:30px">3 · Explicar WIP, pull y cuello de botella con un tablero dibujado a mano.</div>
+      </div>
+    </div>
+    <div class="notes">Responder antes de abrir las lecciones escritas (clases/12a-lean-xp.html y clases/12b-kanban.html), que traen las respuestas y las preguntas.</div>
+  </section>
+
+  <div class="deck-footer"><span>Taller de Gestión de Proyectos Digitales · Clase 12</span><span class="slide-number" data-current="1" data-total="13"></span></div>
+</div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

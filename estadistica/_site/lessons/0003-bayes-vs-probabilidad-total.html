@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 3 — Bayes vs. Probabilidad Total</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Probabilidad Básica · Lección 3 / n</span>
+<h1>Teorema de Bayes vs. Probabilidad Total</h1>
+<p class="subtitle">Comparten fórmula, pero responden preguntas opuestas. Se confunden justo por eso.</p>
+
+<h2>El problema</h2>
+<p>Supongamos que un suceso B puede ocurrir por distintas <strong>causas</strong> A₁, A₂, ..., Aₙ (mutuamente excluyentes, que cubren todo el espacio muestral E). Hay dos preguntas distintas que se pueden hacer sobre esta situación:</p>
+<ol>
+  <li><strong>¿Cuál es la probabilidad de que ocurra B en total,</strong> considerando todos los caminos posibles? → <strong>Teorema de la probabilidad total.</strong></li>
+  <li><strong>Ya sé que B ocurrió. ¿Cuál es la probabilidad de que la causa haya sido Aₖ en particular?</strong> → <strong>Teorema de Bayes</strong> (o "teorema de la probabilidad de las causas").</li>
+</ol>
+<p>La primera mira <em>hacia adelante</em>: de las causas hacia el efecto. La segunda mira <em>hacia atrás</em>: del efecto ya observado hacia una causa puntual. Por eso a P(Aₖ/B) la cátedra la llama <strong>probabilidad a posteriori</strong>.</p>
+
+<h2>Las fórmulas — y por qué se parecen</h2>
+<div class="box">
+Probabilidad total: <span class="formula">P(B) = Σ P(Aᵢ) · P(B/Aᵢ)</span>
+</div>
+<div class="box">
+Bayes: <span class="formula">P(Aₖ/B) = [P(Aₖ) · P(B/Aₖ)] / Σ P(Aᵢ) · P(B/Aᵢ)</span>
+</div>
+<p>Mirá el denominador de Bayes: es <strong>exactamente</strong> la probabilidad total. Bayes no inventa una cuenta nueva — toma la probabilidad total como denominador y le agrega, en el numerador, el camino de la causa puntual que le interesa aislar.</p>
+
+<h2>Ejemplo con diagrama de árbol — proveedores</h2>
+<p>Se resuelve fácil con un diagrama de árbol: se consideran todas las ramas que llegan a B y se suman.</p>
+<svg viewBox="0 0 640 300" width="100%" role="img" aria-label="Diagrama de árbol: tres proveedores A, B, C con probabilidades 0,45; 0,32; 0,23 y bolsa rota R con 0,04; 0,06; 0,025" style="max-width:640px;display:block;margin:1.2rem auto;font-family:'Fira Code',ui-monospace,monospace;font-size:13px">
+  <style>
+    .t-line{stroke:#363646;stroke-width:1.5;fill:none}
+    .t-hot{stroke:#e6c384;stroke-width:3;fill:none}
+    .t-ink{fill:#dcd7ba}
+    .t-dim{fill:#a6a08a}
+    .t-hit{fill:#98bb6c}
+    .t-leaf{fill:#2a2a37;stroke:#363646;stroke-width:1.2}
+    .t-leaf-hot{fill:#2a2a37;stroke:#e6c384;stroke-width:2}
+  </style>
+  <rect x="0" y="0" width="640" height="300" rx="6" fill="#1f1f28"/>
+  <circle cx="40" cy="150" r="6" fill="#e6c384"/>
+  <!-- causes -->
+  <path class="t-hot" d="M46 150 C 100 150, 100 55, 170 55"/>
+  <path class="t-line" d="M46 150 L 170 150"/>
+  <path class="t-line" d="M46 150 C 100 150, 100 245, 170 245"/>
+  <text class="t-ink" x="82" y="82" text-anchor="middle">0,45</text>
+  <text class="t-dim" x="112" y="142" text-anchor="middle">0,32</text>
+  <text class="t-dim" x="82" y="228" text-anchor="middle">0,23</text>
+  <rect class="t-leaf-hot" x="170" y="40" width="70" height="30" rx="4"/>
+  <text class="t-ink" x="205" y="60" text-anchor="middle">A</text>
+  <rect class="t-leaf" x="170" y="135" width="70" height="30" rx="4"/>
+  <text class="t-ink" x="205" y="155" text-anchor="middle">B</text>
+  <rect class="t-leaf" x="170" y="230" width="70" height="30" rx="4"/>
+  <text class="t-ink" x="205" y="250" text-anchor="middle">C</text>
+  <!-- effects -->
+  <path class="t-hot" d="M240 55 L 400 55"/>
+  <path class="t-hot" d="M240 150 L 400 150" style="stroke:#7aa89f;stroke-width:2"/>
+  <path class="t-hot" d="M240 245 L 400 245" style="stroke:#7aa89f;stroke-width:2"/>
+  <text class="t-ink" x="320" y="46" text-anchor="middle">R: 0,04</text>
+  <text class="t-dim" x="320" y="141" text-anchor="middle">R: 0,06</text>
+  <text class="t-dim" x="320" y="236" text-anchor="middle">R: 0,025</text>
+  <rect class="t-leaf-hot" x="400" y="40" width="230" height="30" rx="4"/>
+  <text class="t-ink" x="515" y="60" text-anchor="middle">0,45·0,04 = 0,0180</text>
+  <rect class="t-leaf" x="400" y="135" width="230" height="30" rx="4" style="stroke:#7aa89f"/>
+  <text class="t-ink" x="515" y="155" text-anchor="middle">0,32·0,06 = 0,0192</text>
+  <rect class="t-leaf" x="400" y="230" width="230" height="30" rx="4" style="stroke:#7aa89f"/>
+  <text class="t-ink" x="515" y="250" text-anchor="middle">0,23·0,025 = 0,00575</text>
+  <text class="t-hit" x="515" y="285" text-anchor="middle">P(R) = 0,0180 + 0,0192 + 0,00575 = 0,04295</text>
+</svg>
+<p class="source">Cómo leer el árbol (se omiten las ramas "no rota", que no entran en la cuenta): <strong>probabilidad total</strong> = sumar las TRES ramas que terminan en R (aqua y amarillo). <strong>Bayes</strong> = tomar solo la rama resaltada en amarillo (proveedor A: 0,0180) y dividirla por esa suma: 0,0180 / 0,04295 = 0,4191.</p>
+<div class="example">
+Un supermercado compra a 3 proveedores: A (45%), B (32%), C (23%). El % de bolsas rotas de cada uno es 4%, 6% y 2,5% respectivamente.<br><br>
+<strong>Probabilidad total</strong> — "¿cuál es la probabilidad de que llegue una bolsa rota (R), en general?"<br>
+<span class="formula">P(R) = 0,45·0,04 + 0,32·0,06 + 0,23·0,025 = 0,04295</span><br><br>
+<strong>Bayes</strong> — "si la bolsa llegó rota, ¿cuál es la probabilidad de que sea del proveedor A?"<br>
+<span class="formula">P(A/R) = (0,45·0,04) / 0,04295 = 0,018 / 0,04295 = 0,4191</span>
+</div>
+<p>Notá que el denominador (0,04295) es el mismo número en los dos casos — es la probabilidad total que ya calculaste en el primer paso. Bayes reaprovecha esa cuenta.</p>
+
+<h2>Ejemplo intuitivo — fuego y humo</h2>
+<div class="example">
+El fuego (causa) es raro: P(fuego) = 1%. El humo (efecto) es más común: P(humo) = 10%. Cuando hay fuego, casi siempre hay humo: P(humo/fuego) = 90%.<br><br>
+Pregunta tipo Bayes: "si veo humo, ¿cuál es la probabilidad de que haya fuego?"<br>
+<span class="formula">P(fuego/humo) = [0,01 · 0,90] / 0,10 = 0,09 = 9%</span><br><br>
+Aunque el 90% de los fuegos generan humo, ver humo solo te da un 9% de probabilidad de que haya fuego realmente — porque el fuego es un suceso mucho más raro que el humo en general (hay muchas otras causas de humo). Por eso "vale la pena revisar igual" ante cualquier humo, aunque la probabilidad final sea baja.
+</div>
+<p class="source">Fuente: <a href="https://www.mathsisfun.com/data/bayes-theorem.html" target="_blank">Math is Fun — Bayes' Theorem</a>.</p>
+
+<h2>Cómo distinguirlas en el enunciado</h2>
+<table>
+<tr><th>El enunciado pregunta...</th><th>Herramienta</th></tr>
+<tr><td>"¿cuál es la probabilidad de que ocurra B (en general)?"</td><td>Probabilidad total</td></tr>
+<tr><td>"si ya ocurrió B, ¿cuál es la probabilidad de que la causa haya sido Aₖ?"</td><td>Teorema de Bayes</td></tr>
+<tr><td>"sin condicionar a ninguna causa particular"</td><td>Probabilidad total</td></tr>
+<tr><td>"dado que B ya pasó" + pregunta por UNA causa puntual</td><td>Teorema de Bayes</td></tr>
+</table>
+
+<div class="warn">
+La trampa no es la fórmula — ambas usan la misma estructura de suma. La trampa es <strong>leer mal la pregunta</strong>: si el enunciado ya te dio que B ocurrió y te pregunta por una causa específica, usar solo la probabilidad total (sin el numerador de Bayes) te da un número que no responde lo que se pidió.
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. Un enunciado pregunta: "¿cuál es la probabilidad de que un producto elegido al azar sea defectuoso?", sabiendo que hay 3 proveedores con distintos porcentajes de defectos. ¿Qué herramienta usás?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> Teorema de Bayes</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', true)"> Teorema de la probabilidad total</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> Regla de la suma para sucesos excluyentes</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> Regla del producto para independientes</label>
+<div id="q1a" class="feedback wrong">Bayes se usaría si el enunciado ya dijera "el producto salió defectuoso" y preguntara por un proveedor puntual.</div>
+<div id="q1b" class="feedback correct">La pregunta no condiciona a ningún proveedor en particular — pide la probabilidad de defecto "en general", sumando todos los caminos. Es probabilidad total.</div>
+<div id="q1c" class="feedback wrong">Los proveedores no son sucesos que se estén sumando directamente como "A o B" — hay que ponderar cada uno por su propia probabilidad de defecto.</div>
+<div id="q1d" class="feedback wrong">No hay independencia simple acá — es una suma ponderada de probabilidades condicionales.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Mismo escenario de los 3 proveedores. Ahora el enunciado dice: "se sabe que el producto es defectuoso; ¿cuál es la probabilidad de que sea del proveedor C?". ¿Qué cambia respecto a la pregunta anterior?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', false)"> Nada, se resuelve igual</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> Ahora se usa la regla de la suma en vez de la del producto</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', true)"> Ahora hay que usar Bayes: el denominador es el mismo, pero el numerador aísla al proveedor C</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> Ya no hace falta calcular la probabilidad total</label>
+<div id="q2a" class="feedback wrong">Cambia la pregunta: antes pedían P(defectuoso) en general, ahora piden P(proveedor C / defectuoso) — una causa puntual dado el efecto.</div>
+<div id="q2b" class="feedback wrong">Seguís usando la misma estructura de suma ponderada, no la regla de la suma para excluyentes.</div>
+<div id="q2c" class="feedback correct">Correcto. El denominador (la probabilidad total) es el mismo cálculo que ya hiciste antes; Bayes solo agrega el numerador P(C)·P(defectuoso/C) para aislar esa causa.</div>
+<div id="q2d" class="feedback wrong">Al contrario: necesitás la probabilidad total calculada antes, porque es el denominador de Bayes.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. En el ejemplo de fuego y humo, P(fuego/humo) salió 9%, un número bajo. ¿Por qué es bajo si el 90% de los fuegos generan humo?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', true)"> Porque el fuego es un suceso raro (1%) comparado con el humo, que tiene muchas otras causas</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', false)"> Porque el cálculo de Bayes tiene un error</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> Porque P(humo/fuego) y P(fuego/humo) deberían ser el mismo número</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', false)"> Porque la probabilidad total no aplica a este ejemplo</label>
+<div id="q3a" class="feedback correct">Exacto: P(humo/fuego) es alta (90%), pero eso no dice nada sobre P(fuego/humo). El fuego es raro de entrada (1%), y hay muchas otras causas de humo, así que ver humo no garantiza fuego.</div>
+<div id="q3b" class="feedback wrong">El cálculo está bien — el resultado bajo es correcto y tiene una explicación conceptual, no es un error.</div>
+<div id="q3c" class="feedback wrong">Son probabilidades condicionales invertidas — no tienen por qué coincidir, y de hecho casi nunca coinciden. Confundirlas es exactamente el error que Bayes corrige.</div>
+<div id="q3d" class="feedback wrong">Sí aplica — es lo que se usa para calcular el denominador P(humo) cuando no está dado directamente.</div>
+</div>
+
+<div class="ask">
+¿Alguna trampa te generó dudas? Decime cuál y armamos otro ejemplo con diagrama de árbol paso a paso.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/bayes-theorem.html" target="_blank">Math is Fun — Bayes' Theorem</a>.
+<div class="nav-row">
+  <span>← <a href="0002-condicional-vs-conjunta.html">Lección 2 — Condicional vs. conjunta</a></span>
+  <span>Ver también → <a href="../reference/glosario-probabilidad-basica.html">Glosario de referencia</a></span>
+  <span>Siguiente → <a href="0004-exhaustivos-y-traduccion-enunciados.html">Lección 4 — Exhaustivos y traducción de enunciados</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 2 · Proyectos</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .tri-figure { margin: 1.2rem auto; max-width: 22rem; }
+  .tri-figure .tri-shape { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; }
+  .tri-figure text { fill: var(--fg); font-family: var(--sans); font-size: 15px; font-weight: 600; }
+  .tri-figure .tri-note { font-size: 12px; font-weight: 400; fill: var(--muted); }
+  .tri-figure figcaption { font-family: var(--sans); font-size: .75rem; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 2 · 19/8/2026 · Alimenta la sección 5 del TP</p>
+  <h1>Proyectos y dirección de proyectos</h1>
+  <p class="subtitle">Qué hace que algo sea un proyecto, quién lo dirige y qué tres variables se mueven juntas cuando cambia algo.</p>
+  <p class="meta"><span>⏱ 20 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%202%20%20-%20Proyectos.pdf" title="Solo disponible en la copia completa con raw/">Clase 2</a></span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder decidir si algo es un proyecto o una operación, enumerar las restricciones de un proyecto, predecir qué pasa con tiempo y costo cuando cambia el alcance, y explicar por qué el TP se gestiona en cascada.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="01-canvas.html">Clase 1</a>: el Canvas describe el negocio; el proyecto es el esfuerzo que lo construye.</p>
+  <p><span class="to">Alimenta</span> <a href="03a-charter-stakeholders-edt.html">Clase 3</a> (el Charter formaliza el alcance, el cronograma y el presupuesto de alto nivel), <a href="04-costos-pestel.html">Clase 4</a> (costo), <a href="05-riesgos-foda.html">Clase 5</a> (riesgo) y <a href="06-cambios-comunicacion-negociacion.html">Clase 6</a> (los cambios de alcance y la negociación con stakeholders). Ver el <a href="mapa-de-conceptos.html">Mapa de conceptos</a>.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>Si algo se confunde con una operación, se gestiona con las reglas equivocadas: sin fecha de fin, sin alcance cerrado y sin presupuesto propio. La primera pregunta es entonces qué es un proyecto. La RAE lo define como <em>propósito o intención de hacer algo</em>; el PMI, como <em>un esfuerzo temporario destinado a crear un producto, servicio o resultado único</em> (Clase 2, p5).</p>
+
+<h2 id="idea-1">Idea 1 · Proyecto versus operación</h2>
+<p>La cátedra enumera nueve características de un proyecto (Clase 2, p6): es <strong>temporal</strong>, reporta un resultado <strong>único</strong>, se planifica de manera <strong>gradual</strong>, introduce un <strong>cambio</strong>, responde a una <strong>necesidad</strong>, tiene <strong>objetivos concretos</strong>, reporta un <strong>beneficio</strong>, involucra <strong>riesgo</strong> y responde a factores concretos para ser exitoso.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Proyecto</th><th>Operación</th></tr></thead>
+<tbody>
+<tr><td>Resultado</td><td>Único</td><td>Repetitivo (<em>on going</em>)</td></tr>
+<tr><td>Para qué se ejecuta</td><td>Alcanzar objetivos de negocio</td><td>Soportar al negocio</td></tr>
+<tr><td>Fin</td><td>Tiene un inicio y un final definidos</td><td>Se repite, por ejemplo cada mes</td></tr>
+</tbody>
+</table>
+</div>
+<p>Ambos comparten características: los ejecutan personas, con recursos limitados, y sus actividades se planifican, ejecutan y controlan (Clase 2, p7). Los ejemplos de la cátedra (p8–11): <em>desarrollar una página web corporativa</em>, <em>implementar un nuevo sistema de contabilidad</em> y <em>organizar un congreso anual</em> son proyectos; <em>gestionar la nómina de empleados</em> es un proceso porque se repite todos los meses.</p>
+<p class="note">Prueba rápida: ¿tiene un producto o resultado único y una fecha en la que termina? Si la respuesta es sí, es proyecto. Si se repite sin fin, es operación.</p>
+<p>La p12 muestra la viñeta clásica en la que el mismo pedido del cliente se entiende distinto en cada etapa (cómo se solicitó, se diseñó, se especificó, se desarrolló, y lo que el cliente realmente necesitaba). Es la razón de fondo para definir bien el alcance desde el inicio.</p>
+
+<h2 id="idea-2-gestion-de-proyectos-y-director-d">Idea 2 · Gestión de proyectos y director de proyectos</h2>
+<p>La gestión de proyectos es el <em>conjunto de métodos, técnicas y herramientas usadas para planificar y administrar un proyecto efectivamente, respecto de su alcance, tiempos, costos y calidad</em> (Clase 2, p14). Dirigir un proyecto implica (p21):</p>
+<ul>
+  <li>atender las necesidades, inquietudes y expectativas de los interesados;</li>
+  <li>liderar a un grupo humano;</li>
+  <li>equilibrar restricciones contrapuestas entre calidad, costos y duración;</li>
+  <li>identificar y gestionar riesgos.</li>
+</ul>
+<p>Las habilidades que la cátedra pide al director (p22) son visión sistémica, comunicación, trabajo en equipo, <strong>negociación con los stakeholders</strong>, uso de herramientas informáticas y saber planificar. La comunicación y la negociación se desarrollan en la <a href="06-cambios-comunicacion-negociacion.html">Clase 6</a>.</p>
+
+<h2 id="idea-3-pmi-y-pmbok">Idea 3 · PMI y PMBOK</h2>
+<p>El <strong>PMI</strong> (Project Management Institute) es una organización sin fines de lucro, fundada en 1969, que promueve las buenas prácticas de gestión de proyectos y ofrece certificaciones como el PMP (Clase 2, p24). El <strong>PMBOK</strong> es la guía que publica: reúne estándares, mejores prácticas y terminología común, y sirve para estandarizar vocabulario y procesos entre equipos e interesados (p26–27). Cubre estas áreas de conocimiento: integración, alcance, tiempo, costo, calidad, recursos humanos, comunicación, riesgo, adquisiciones e interesados (p26).</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Área del PMBOK (p26)</th><th>Dónde se trabaja en este curso</th></tr></thead>
+<tbody>
+<tr><td>Integración</td><td><a href="03a-charter-stakeholders-edt.html">Clase 3</a>: Project Charter y línea base</td></tr>
+<tr><td>Alcance</td><td><a href="03a-charter-stakeholders-edt.html">Clase 3</a>: EDT</td></tr>
+<tr><td>Tiempo</td><td><a href="03b-cronograma-camino-critico.html">Clase 3, parte 2</a>: cronograma y camino crítico</td></tr>
+<tr><td>Costo</td><td><a href="04-costos-pestel.html">Clase 4</a></td></tr>
+<tr><td>Riesgo</td><td><a href="05-riesgos-foda.html">Clase 5</a></td></tr>
+<tr><td>Comunicación</td><td><a href="06-cambios-comunicacion-negociacion.html">Clase 6</a></td></tr>
+<tr><td>Interesados</td><td><a href="03a-charter-stakeholders-edt.html">Clase 3</a>: matriz de stakeholders</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Esta tabla es una síntesis del curso, no una diapositiva. Las áreas calidad, recursos humanos y adquisiciones aparecen en la lista del PMBOK pero no tienen clase propia en este cronograma.</p>
+
+<h2 id="idea-4">Idea 4 · La triple restricción y la hepta restricción</h2>
+<p>Alcance, tiempo y costo están interrelacionados: <strong>un cambio en una de ellas puede impactar en las otras dos</strong> (Clase 2, p28–29). Definiciones de la cátedra: el alcance es la definición detallada de los entregables y el trabajo necesario; el tiempo es el período total para completar todas las actividades; el costo son los gastos totales estimados o reales.</p>
+<figure class="tri-figure">
+  <svg viewBox="0 0 340 230" role="img" aria-labelledby="tri-title tri-desc" width="100%">
+    <title id="tri-title">Triple restricción</title>
+    <desc id="tri-desc">Triángulo con los vértices Tiempo, Costo y Alcance. Un cambio en uno afecta a los otros dos.</desc>
+    <polygon class="tri-shape" points="170,40 40,196 300,196"/>
+    <text x="170" y="26" text-anchor="middle">Tiempo</text>
+    <text x="40" y="218" text-anchor="middle">Costo</text>
+    <text x="300" y="218" text-anchor="middle">Alcance</text>
+    <text class="tri-note" x="170" y="140" text-anchor="middle">un cambio en uno</text>
+    <text class="tri-note" x="170" y="158" text-anchor="middle">afecta a los otros dos</text>
+  </svg>
+  <figcaption>Triple restricción (Clase 2, p28–29).</figcaption>
+</figure>
+<p>Ejemplo de la cátedra (p30–32): una aplicación móvil con chat, pagos e interfaz intuitiva, seis meses y $100.000. Si el cliente pide sumar recomendaciones con IA, aumenta el <strong>alcance</strong>, es probable que se retrase el lanzamiento (<strong>tiempo</strong>) y el presupuesto puede crecer (<strong>costo</strong>).</p>
+<p>La <strong>hepta restricción</strong> agrega cuatro variables (p34): calidad, recursos, riesgos y satisfacción del cliente.</p>
+
+<h2 id="idea-5-cascada-frente-a-agil-y-por-que-e">Idea 5 · Cascada frente a ágil, y por qué el TP es cascada</h2>
+<p>La cátedra compara metodologías en p16–17. Las dos que importan para esta materia:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Cascada (Waterfall)</th><th>Ágil (Agile)</th></tr></thead>
+<tbody>
+<tr><td>Enfoque</td><td>Lineal y secuencial: cada fase se completa antes de pasar a la siguiente</td><td>Iterativo e incremental: permite cambios y ajustes durante el desarrollo</td></tr>
+<tr><td>Ventajas</td><td>Requisitos claros desde el inicio, fácil de gestionar, buena documentación</td><td>Alta adaptabilidad, entregas continuas, mejora continua</td></tr>
+<tr><td>Desventajas</td><td>Poco flexible a cambios; mucha documentación</td><td>Difícil de gestionar si no se implementa bien; exige mucha colaboración</td></tr>
+<tr><td>Industria recomendada</td><td>Construcción, manufactura, requisitos bien definidos</td><td>Software y proyectos con requisitos cambiantes</td></tr>
+</tbody>
+</table>
+</div>
+<p>La actividad de la <strong>torre de papel</strong> (p35–39) lo ilustra: 20 hojas, 1 metro de cinta y 18 minutos son una triple restricción en vivo; los equipos que diseñan antes de construir suelen llegar mejor (cascada); y corregir un mal diseño sobre la marcha cuesta tiempo y material, por eso en cascada se cuida tanto la fase inicial (p39). La misma slide deja la pregunta abierta: <em>¿conviene siempre planificar todo al inicio?</em></p>
+<p class="note"><strong>Lectura para el TP:</strong> la consigna pide Canvas, Charter, Gantt, presupuesto y riesgos completos antes de ejecutar nada. Eso es planificar por adelantado, es decir, cascada. Es un argumento para defender en el Charter; la metodología ágil se ve más adelante en el curso (clases 8 a 13) y queda fuera del TP.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: dar la definición de proyecto del PMI, dos características que lo distinguen de una operación y las tres variables de la triple restricción.</summary>
+  <p>Esfuerzo temporario destinado a crear un producto, servicio o resultado único. Temporal y de resultado único (frente a lo repetitivo de una operación). Alcance, tiempo y costo, que se afectan entre sí. Ver <a href="#idea-1">Idea 1</a> y la <a href="#idea-4">triple restricción</a>.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">Un equipo liquida los sueldos todos los meses. Según los ejemplos de la cátedra, ¿qué es eso?</p>
+  <div class="options">
+    <button data-ok data-why="Se repite mensualmente, por eso es un proceso u operación y no un proyecto (Clase 2, p9).">Un proceso, porque se realiza de forma repetitiva</button>
+    <button data-why="Un proyecto tiene fin definido y resultado único; la nómina se repite indefinidamente.">Un proyecto, porque tiene un objetivo claro cada mes</button>
+    <button data-why="La cascada es una metodología para gestionar proyectos; no clasifica el tipo de trabajo.">Un proyecto en cascada</button>
+    <button data-why="Un hito es un punto importante dentro de un proyecto (Clase 3, p29), no una clase de trabajo.">Un hito del proyecto</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">En un proyecto de 6 meses y $100.000, el cliente pide una función nueva de IA. Sin cambiar nada más, ¿qué es lo más probable?</p>
+  <div class="options">
+    <button data-ok data-why="Sube el alcance, y eso presiona tiempo y costo (Clase 2, p32).">Que suban el alcance, el tiempo y el costo</button>
+    <button data-why="Un cambio en una restricción impacta en las otras dos (p29); no se absorbe gratis.">Que el alcance suba y las demás no cambien</button>
+    <button data-why="La calidad forma parte de la hepta restricción, pero el impacto directo del ejemplo es sobre tiempo y costo.">Que solo baje la calidad</button>
+    <button data-why="El riesgo no desaparece: agregar una función lo aumenta.">Que baje el riesgo</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Cuál es una ventaja de cascada según las diapositivas?</p>
+  <div class="options">
+    <button data-ok data-why="Requisitos claros desde el principio, fácil de gestionar y buena documentación (Clase 2, p17).">Requisitos claros desde el inicio y buena documentación</button>
+    <button data-why="Es una ventaja de ágil; cascada es poco flexible a cambios (p16–17).">Alta adaptabilidad a los cambios</button>
+    <button data-why="Las entregas rápidas y frecuentes son propias de Scrum/ágil (p16).">Entregas rápidas y frecuentes</button>
+    <button data-why="Es una desventaja de cascada, no una ventaja.">Requiere poca documentación</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Con qué clase del curso se corresponde el área <strong>riesgo</strong> del PMBOK?</p>
+  <div class="options">
+    <button data-ok data-why="El riesgo se trabaja en la Clase 5 (gestión de riesgos y FODA), y forma parte de las áreas listadas en Clase 2, p26.">Clase 5: gestión de riesgos</button>
+    <button data-why="La Clase 4 trata costos y PESTEL.">Clase 4: gestión de costos</button>
+    <button data-why="La Clase 1 es el Canvas; el riesgo no se estudia ahí.">Clase 1: Canvas</button>
+    <button data-why="La Clase 6 es comunicación y negociación.">Clase 6: comunicación</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Qué llevar al documento (sección 5, Project Charter):</strong> tres argumentos que salen de esta clase. (1) <em>Es un proyecto</em>: la modernización del Mapa Interactivo tiene inicio, fin y resultado único; operar el Mapa día a día es operación, y ese no es el objeto del TP. (2) <em>Restricciones declaradas</em>: alcance, cronograma de alto nivel y presupuesto de alto nivel del Charter son la triple restricción escrita. (3) <em>Por qué cascada</em>, con el argumento de la torre de papel. Ver el hilo de todo el documento en <a href="../tp/hilo-conductor.html">El hilo conductor</a> y las fechas en <a href="../tp/plan.html">Plan del TP</a>. Coherencia: el alcance debe reaparecer en la EDT, el cronograma en el Gantt (sección 6) y el presupuesto en la sección 10.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%202%20%20-%20Proyectos.pdf" title="Solo disponible en la copia completa con raw/">Clase 2 — Proyectos</a>, diapositivas 5 a 39.
+  <br><strong>Complemento:</strong> el cronograma de la materia menciona los grupos de procesos del PMBOK, pero las diapositivas de esta clase no los desarrollan. Las cinco fases del ciclo de vida están en la <a href="03a-charter-stakeholders-edt.html">Clase 3</a> (p9). La equivalencia con los grupos de procesos del PMBOK (inicio, planificación, ejecución, monitoreo y control, cierre) es información externa a las diapositivas.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: si el mantenimiento del Mapa sería proyecto u operación, cómo documentar un cambio de alcance en la triple restricción, o cómo argumentar cascada frente a ágil en la defensa.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="01-canvas.html">← Clase 1 · Canvas</a>
+  <a href="03a-charter-stakeholders-edt.html">Clase 3a · Charter y EDT →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

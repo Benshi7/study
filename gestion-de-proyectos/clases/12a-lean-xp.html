@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Source: cátedra PDF raw/«Clase 7 - Kanban Lean y XP.pdf» (= class 12 of the cronograma, 28/10),
+     slides in clases/img/klx-pNN.jpg. Public sources (Wikipedia: Muda, Lean software development) are marked as complement. Split from the former 12-lean-xp-kanban. -->
+<title>Clase 12a · Lean y XP</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagram.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 12 (1 de 2) · 28/10/2026 · Parcial del 18/11</p>
+  <h1>Lean y XP: eliminar el desperdicio y construir con calidad</h1>
+  <p class="subtitle">Qué cosas no le agregan valor al cliente y qué prácticas mantienen el código sano mientras el producto cambia.</p>
+  <p class="meta"><span>⏱ 20 minutos</span><span>Fuente: PDF de la cátedra «Kanban, Lean y XP»</span><span><a href="../slides/12-lean-xp-kanban/index.html">Ver las slides</a></span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder decir el objetivo de Lean y su origen, nombrar los siete tipos de muda de la cátedra con lo que afecta cada uno, dar un ejemplo de cada uno en software, y decir de dónde viene XP, sus cinco bases y sus doce prácticas.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> la <a href="08-agilidad-manifiesto-cynefin.html">Clase 8</a> (formas de aplicar el Manifiesto) y de la <a href="11-retrospectiva.html">Clase 11</a> (la retrospectiva ya era mejora continua).</p>
+  <p><span class="to">Alimenta</span> la <a href="12b-kanban.html">Clase 12b · Kanban</a>: la <strong>espera</strong> es la muda que Kanban ataca.</p>
+</div>
+<h2 id="repaso-previo">Antes de empezar · repaso de Clases 10 y 11</h2>
+<details class="recall">
+  <summary>Sin mirar: ¿cuál es la única ceremonia que se repite? ¿En qué dos partes se divide la Review? ¿Qué es Sailing Boat y qué es Starfish? ¿Qué pasa con una historia que no cumple la DoR?</summary>
+  <p>Así lo repasa la cátedra al abrir esta clase: la <strong>Daily</strong> es la única ceremonia que se repite (15 minutos: qué hicimos ayer, qué haremos hoy, impedimentos). La <strong>Review</strong> primero muestra el incremento y después define los pasos a seguir. En la <strong>Retro</strong>, Sailing Boat es un <strong>FODA</strong> para ver cómo está el equipo frente a nuevos desafíos, y Starfish es un <strong>brainstorming</strong> de acciones de mejora rápidas (versión simple: start, stop, continue/keep). Si una historia no cumple la DoR, no entra al Sprint. Para repasar: <a href="11-retrospectiva.html">Clase 11</a> y <a href="10-ceremonias-scrum.html">Clase 10</a>.</p>
+</details>
+
+<p class="note"><strong>Fuente.</strong> Esta lección sigue el PDF de la cátedra «Clase 7: Kanban, Lean y XP», que corresponde a la clase 12 del cronograma. Lo que viene de fuentes públicas está marcado como complemento. Las actividades del PDF (Galletas Julieta, Trello) se dejan de lado, salvo la pregunta sobre pair programming, que sirve para el parcial.</p>
+
+<h2 id="el-problema">El problema</h2>
+<p>Scrum define un marco (roles, ceremonias y artefactos), pero no dice dónde se pierde tiempo ni cómo programar con calidad. Lean pone en el centro <strong>el desperdicio</strong>; XP, <strong>la calidad técnica</strong>. Kanban, que pone en el centro el flujo, sigue en la <a href="12b-kanban.html">lección 12b</a>.</p>
+
+<h2 id="lean">Idea 1 · Lean: eliminar el desperdicio (muda)</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Lean según la cátedra</th><th></th></tr></thead>
+<tbody>
+<tr><td><strong>Origen</strong></td><td>Creada por <strong>Taiichi Ohno</strong>; forma parte de <strong>Kaizen</strong> (mejora continua). Es el mismo origen que Kanban (<a href="12b-kanban.html#objetivos">12b</a>).</td></tr>
+<tr><td><strong>Objetivo</strong></td><td><strong>Optimizar los procesos eliminando el desperdicio</strong>: las 7 mudas.</td></tr>
+<tr><td><strong>Base</strong></td><td>El <strong>ciclo de Deming (PDCA)</strong>: <em>Plan, Do, Check, Act</em>, es decir, planificar, hacer, verificar y actuar, y volver a empezar. El nombre de cada paso es complemento; la diapositiva solo dice «PDCA».</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Respuesta modelo.</strong> «Lean, creada por Taiichi Ohno dentro de Kaizen, tiene como objetivo <strong>optimizar los procesos eliminando el desperdicio</strong>, es decir, las siete mudas. Se basa en el ciclo de Deming (PDCA).» Para no confundirlo con Kanban: Lean apunta a <em>todo</em> el desperdicio; Kanban ataca los <em>cuellos de botella</em>, que generan una muda en particular, la espera.</p>
+
+<p><strong>Muda</strong> (無駄) significa «desperdicio»: todo lo que consume recursos sin agregar valor para el cliente. La cátedra enumera <strong>siete tipos</strong>, cada uno con lo que afecta entre paréntesis:</p>
+<div class="pair">
+<figure class="slide">
+  <img src="img/klx-p12.jpg" alt="Diapositiva de la cátedra: Lean. Creada por Taiichi Ohno y forma parte de Kaizen. Su objetivo es optimizar los procesos en base a eliminar el desperdicio: 7 MUDAs. Basado en el ciclo de Deming (PDCA)." loading="lazy">
+  <figcaption>Cátedra, «Kanban, Lean y XP», p. 12.</figcaption>
+</figure>
+<figure class="slide">
+  <img src="img/klx-p13.jpg" alt="Diapositiva de la cátedra: Lean, tipos de MUDA. Transporte (del producto), Inventario (de materias primas), Movimiento (del operario), Espera (del operario), Sobreprocesamiento (proceso o herramienta), Sobreproducción (costos de producción), Defectos (del producto)." loading="lazy">
+  <figcaption>Cátedra, «Kanban, Lean y XP», p. 13.</figcaption>
+</figure>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Muda (cátedra)</th><th>Afecta a…</th><th>En una fábrica de galletitas</th><th>En un equipo de software</th></tr></thead>
+<tbody>
+<tr><td><strong>Transporte</strong></td><td>Del producto</td><td>Las bandejas cruzan toda la planta entre el horno y el empaque</td><td>Una historia pasa por tres equipos antes de llegar a quien la resuelve</td></tr>
+<tr><td><strong>Inventario</strong></td><td>De materias primas</td><td>Harina comprada para seis meses, ocupando depósito</td><td>Diez historias empezadas y ninguna terminada</td></tr>
+<tr><td><strong>Movimiento</strong></td><td>Del operario</td><td>El operario camina hasta otro sector a buscar cada molde</td><td>El desarrollador va y viene entre tres herramientas para registrar un cambio</td></tr>
+<tr><td><strong>Espera</strong></td><td>Del operario</td><td>El empaque está parado hasta que salga la tanda del horno</td><td>El equipo frena hasta que otra área publique la API</td></tr>
+<tr><td><strong>Sobreprocesamiento</strong></td><td>Proceso o herramienta</td><td>Tres controles de calidad idénticos sobre la misma tanda</td><td>Tres aprobaciones para cambiar un texto</td></tr>
+<tr><td><strong>Sobreproducción</strong></td><td>Costos de producción</td><td>Se hornea más de lo que se vendió</td><td>Una funcionalidad que nadie pidió ni usa</td></tr>
+<tr><td><strong>Defectos</strong></td><td>Del producto</td><td>Galletitas quemadas o rotas que hay que descartar</td><td>Errores que obligan a rehacer el trabajo</td></tr>
+</tbody>
+</table>
+</div>
+<p>Los dos ejemplos son propios. El de la fábrica sigue el estilo de la actividad de la clase (identificar desperdicios en un proceso de producción); el de software aplica la aclaración de la cátedra (qué se mueve, quién espera, qué sobra). <strong>Complemento:</strong> Lean software development (Poppendieck, 2003) traduce las siete al software con otros nombres: trabajo parcialmente terminado (inventario), funcionalidades extra (sobreproducción), procesos extra (sobreprocesamiento), cambio de tarea (transporte), traspasos (movimiento), esperas y defectos.</p>
+<h3>Los tres pares que se confunden</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Par</th><th>Cómo distinguirlos</th></tr></thead>
+<tbody>
+<tr><td><strong>Transporte</strong> / <strong>movimiento</strong></td><td>¿Qué se mueve de más? Si es el <em>producto</em>, transporte. Si es la <em>persona</em>, movimiento.</td></tr>
+<tr><td><strong>Movimiento</strong> / <strong>espera</strong></td><td>Los dos son «del operario». En movimiento el operario <em>se desplaza</em> sin agregar valor; en espera <em>está parado</em>.</td></tr>
+<tr><td><strong>Sobreproducción</strong> / <strong>sobreprocesamiento</strong></td><td>Sobreproducción es hacer <em>más cantidad</em> de la que se pidió. Sobreprocesamiento es <em>trabajar de más</em> sobre lo mismo: pasos, controles o herramientas que el cliente no necesita.</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Para memorizar la lista de la cátedra:</strong> dos «del operario» (<em>movimiento</em> y <em>espera</em>), dos «del producto» (<em>transporte</em> y <em>defectos</em>) y tres sueltos (<em>inventario</em> de materias primas, <em>sobreprocesamiento</em> del proceso o herramienta, <em>sobreproducción</em> por costos de producción). La cátedra muestra <strong>siete</strong>; el octavo de otras fuentes (habilidades no utilizadas) no figura en la diapositiva.</p>
+
+<p class="note"><strong>Sigue en la 12b.</strong> La pregunta de final que une Lean con Kanban (espera → cuello de botella → Kanban) está en la <a href="12b-kanban.html#lean-kanban">Clase 12b</a>.</p>
+
+<p class="note"><strong>PDCA, el ciclo de Deming.</strong> Es un ciclo de mejora continua: se <em>planifica</em> un cambio, se <em>hace</em> en chico, se <em>verifica</em> si funcionó y se <em>actúa</em> (se adopta o se corrige), y se vuelve a empezar. Es la misma lógica que ya apareció dos veces: el empirismo de Scrum (inspección y adaptación) y la retrospectiva con sus planes de acción y su seguimiento. Kaizen es el nombre japonés de esa mejora continua.</p>
+
+<p class="note"><strong>Complemento (no está en la cátedra).</strong> Las fuentes públicas distinguen la muda de <strong>tipo I</strong>, que no agrega valor pero es necesaria, de la de <strong>tipo II</strong>, que no agrega valor, es innecesaria y es la que se elimina. Lean software development (Poppendieck, 2003) resume Lean en siete principios: eliminar el desperdicio, amplificar el aprendizaje, decidir lo más tarde posible, entregar lo más rápido posible, empoderar al equipo, construir la calidad desde adentro y optimizar el todo.</p>
+
+<h2 id="xp">Idea 2 · Extreme Programming (XP): buenas prácticas de los equipos</h2>
+<p>Según la cátedra, XP <strong>nació en Chrysler en los 90 de la mano de Kent Beck</strong>. Es un <strong>conjunto de buenas prácticas que Beck recolectó de sus equipos</strong> y es <strong>previo al Manifiesto ágil</strong> (2001, <a href="08-agilidad-manifiesto-cynefin.html">Clase 8</a>). Mientras Lean y Kanban vienen de la fábrica (Toyota), XP viene del desarrollo de software.</p>
+
+<div class="pair">
+<figure class="slide">
+  <img src="img/klx-p16.jpg" alt="Diapositiva de la cátedra: eXtreme Programming, bases. Se basa en 5 conceptos: comunicación (cara a cara), simplicidad (omitir detalles), retroalimentación (del cliente), respeto (entre equipo y con cliente), coraje (para plantear los temas)." loading="lazy">
+  <figcaption>Cátedra, «Kanban, Lean y XP», p. 16.</figcaption>
+</figure>
+<figure class="slide">
+  <img src="img/klx-p17.jpg" alt="Diapositiva de la cátedra: eXtreme Programming, principios. Se basa también en 12 prácticas: cliente in situ, semana de 40 horas, metáfora, diseño simple, refactorización, programación de pares, entregas cortas, testing, código estándar, propiedad colectiva, integración continua, juego de planificación." loading="lazy">
+  <figcaption>Cátedra, «Kanban, Lean y XP», p. 17.</figcaption>
+</figure>
+</div>
+
+<p><strong>Cinco bases (conceptos).</strong> Cada una con su aclaración de la cátedra: <strong>comunicación</strong> (cara a cara), <strong>simplicidad</strong> (omitir detalles), <strong>retroalimentación</strong> (del cliente), <strong>respeto</strong> (entre el equipo y con el cliente) y <strong>coraje</strong> (para plantear los temas).</p>
+<p class="note"><strong>XP y el Manifiesto.</strong> XP es anterior al Manifiesto y Kent Beck fue uno de los 17 firmantes, así que varias ideas de XP aparecen después como valores y principios: <em>comunicación cara a cara</em> es el principio 6; <em>cliente in situ</em> es «colaboración con el cliente» y el principio 4; <em>semana de 40 horas</em> es el ritmo sostenible del principio 8; <em>entregas cortas</em>, el principio 3; <em>diseño simple</em>, el principio 10 (<a href="08-agilidad-manifiesto-cynefin.html#manifiesto">Clase 8</a>). El emparejamiento es propio.</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Las 12 prácticas (cátedra)</th><th>Qué quiere decir</th><th>En la web de reservas (ejemplo propio)</th></tr></thead>
+<tbody>
+<tr><td><strong>Cliente in situ</strong></td><td>El cliente es parte del equipo</td><td>Alguien que conoce el negocio de los restaurantes trabaja con los desarrolladores</td></tr>
+<tr><td><strong>Semana de 40 horas</strong></td><td>De trabajo, sin horas extra crónicas</td><td>No se llega a la entrega a fuerza de noches</td></tr>
+<tr><td><strong>Metáfora</strong></td><td>Para explicar temas complejos</td><td>«La disponibilidad es una libreta de turnos con casilleros que se tachan»</td></tr>
+<tr><td><strong>Diseño simple</strong></td><td>Fácil de entender y mantener</td><td>Sumar un restaurante no obliga a tocar el código de las reservas</td></tr>
+<tr><td><strong>Refactorización</strong></td><td>A medida que crece el código</td><td>Ordenar el código de los filtros cuando se suma el quinto</td></tr>
+<tr><td><strong>Programación de pares</strong></td><td>Dos programadores, una máquina</td><td>Uno escribe el cálculo de mesas libres, el otro revisa en vivo</td></tr>
+<tr><td><strong>Entregas cortas</strong></td><td>Para tener feedback</td><td>Publicar primero «buscar y reservar» y escuchar a los comensales</td></tr>
+<tr><td><strong>Testing</strong></td><td>Pruebas unitarias (UT), de regresión y de aceptación del usuario (UAT)</td><td>Cada cambio se prueba sin romper las reservas que ya funcionaban</td></tr>
+<tr><td><strong>Código estándar</strong></td><td>Del proyecto o de la industria</td><td>Todos nombran las funciones igual</td></tr>
+<tr><td><strong>Propiedad colectiva</strong></td><td>Todos deben entender el código</td><td>Si falta quien hizo los filtros, otro puede cambiarlos</td></tr>
+<tr><td><strong>Integración continua</strong></td><td>Commit al menos una vez por día</td><td>El código de todos se junta y se prueba a diario</td></tr>
+<tr><td><strong>Juego de planificación</strong></td><td>Definir el trabajo del ciclo de desarrollo</td><td>Elegir qué historias entran en la próxima entrega</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Las tres pruebas del testing.</strong> <strong>UT</strong> (<em>unit test</em>, prueba unitaria): revisa una pieza chica de código. <strong>Regresión</strong>: confirma que lo nuevo no rompió lo que ya andaba. <strong>UAT</strong> (<em>user acceptance test</em>): el usuario o el cliente confirma que hace lo que pidió. El detalle de cada sigla es complemento; la diapositiva solo las nombra.</p>
+<p class="note"><strong>Para memorizar las doce:</strong> tres sobre <em>personas</em> (cliente in situ, semana de 40 horas, programación de pares), cuatro sobre <em>código</em> (diseño simple, refactorización, código estándar, propiedad colectiva), tres sobre <em>entregar y probar</em> (entregas cortas, testing, integración continua) y dos para <em>explicar y planificar</em> (metáfora, juego de planificación). En otras fuentes algunas cambian de nombre: «equipo completo» por cliente in situ, «ritmo sostenible» por semana de 40 horas, «TDD» por testing. En el parcial conviene usar los de la cátedra.</p>
+
+<h3 id="pair-programming">La pregunta de la cátedra: ¿pair programming es un desperdicio?</h3>
+<p>La clase terminó con este debate, que une XP con Lean. Vale para practicar porque no alcanza con decir sí o no: hay que <strong>fundamentar con la lista de mudas</strong>.</p>
+<details class="recall">
+  <summary>Antes de abrir: armar una respuesta de tres o cuatro líneas. ¿Qué muda podría parecer? ¿Cuáles evita?</summary>
+  <p><strong>Una respuesta posible.</strong> A primera vista parece <em>sobreprocesamiento</em>, porque son dos personas para una tarea. Pero evita otras mudas: menos <strong>defectos</strong>, porque el código se revisa mientras se escribe; menos <strong>espera</strong>, porque no hay que aguardar una revisión posterior; y menos dependencia de una sola persona, porque el conocimiento se comparte (<em>propiedad colectiva</em>). Por eso no es desperdicio si se usa en tareas complejas o riesgosas. En una tarea trivial sí puede serlo. La cátedra no dio una respuesta única: lo que se evalúa es el fundamento.</p>
+</details>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: los siete tipos de muda de la cátedra, con lo que afecta cada uno.</summary>
+  <p>Transporte (del producto), inventario (de materias primas), movimiento (del operario), espera (del operario), sobreprocesamiento (proceso o herramienta), sobreproducción (costos de producción), defectos (del producto).</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: el objetivo de Lean, su origen y en qué ciclo se basa.</summary>
+  <p>Optimizar los procesos eliminando el desperdicio (las 7 mudas). Taiichi Ohno, dentro de Kaizen. Se basa en el ciclo de Deming (PDCA).</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: el origen de XP, sus cinco bases y las doce prácticas (usar la regla 3-4-3-2).</summary>
+  <p>Chrysler, años 90, Kent Beck; buenas prácticas de sus equipos, antes del Manifiesto. Bases: comunicación, simplicidad, retroalimentación, respeto, coraje. Prácticas: cliente in situ, semana de 40 horas, programación de pares · diseño simple, refactorización, código estándar, propiedad colectiva · entregas cortas, testing, integración continua · metáfora, juego de planificación.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">Un equipo tiene diez historias a medias porque cambia de tarea cada día. ¿Qué desperdicio Lean describe mejor el problema?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: el trabajo parcialmente terminado es el «inventario» del software; el cambio de tarea es el «transporte».">Trabajo a medias y cambio de tarea</button>
+    <button data-why="No: las funcionalidades extra son sobreproducción, no trabajo sin terminar.">Funcionalidades extra producidas por sobreproducción del equipo</button>
+    <button data-why="No: los defectos son el trabajo rehecho por mala calidad.">Defectos por la baja calidad del código</button>
+    <button data-why="No: el procesamiento extra es hacer más de lo que el cliente pide.">Procesos extra sin valor para el cliente</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Cuál de estas prácticas pertenece a XP?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: programación de pares (dos programadores, una máquina) y testing son dos de las 12 prácticas de XP según la cátedra.">Programación de pares con testing unitario y regresión</button>
+    <button data-why="No: el límite de WIP es una práctica de Kanban.">Límite de WIP en cada columna del tablero</button>
+    <button data-why="No: la Daily Scrum es un evento de Scrum.">Daily Scrum de quince minutos todos los días</button>
+    <button data-why="No: eliminar los siete desperdicios es el principio central de Lean.">Eliminar los siete desperdicios del sistema de Toyota</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">El equipo frena hasta que otra área publique la API. ¿Qué tipo de muda es, según la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: es tiempo ocioso de quien produce: espera (del operario), clase 12.">Espera (del operario)</button>
+    <button data-why="No: el movimiento es el desplazamiento innecesario del operario, no quedarse parado.">Movimiento (del operario)</button>
+    <button data-why="No: el transporte es mover el producto sin agregar valor.">Transporte (del producto)</button>
+    <button data-why="No: el inventario es material o trabajo acumulado sin usar.">Inventario (materias primas)</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Qué lista contiene solo bases (valores) de XP?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: son los cinco conceptos en los que se basa XP según la cátedra (p. 16).">Comunicación, simplicidad, retroalimentación, coraje, respeto</button>
+    <button data-why="No: transparencia, inspección y adaptación son los pilares de Scrum (Clase 9).">Transparencia, inspección, adaptación, foco, apertura</button>
+    <button data-why="No: mostrar, limitar y optimizar son las reglas de Kanban.">Mostrar, limitar, optimizar, tirar, visualizar</button>
+    <button data-why="No: son tipos de muda de Lean.">Transporte, inventario, espera, movimiento, defectos</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Según la cátedra, ¿cuál es el objetivo de Lean?</p>
+  <div class="options">
+    <button data-why="No: ese es el objetivo de Kanban, que la cátedra pone como «eliminar cuellos de botella».">Eliminar los cuellos de botella del flujo</button>
+    <button data-why="No: entregar software de calidad con prácticas de ingeniería describe a XP.">Asegurar la calidad técnica con buenas prácticas</button>
+    <button data-ok data-why="Correcto: «optimizar los procesos en base a eliminar el desperdicio» (7 mudas), basado en el ciclo de Deming (PDCA).">Optimizar los procesos eliminando el desperdicio existente</button>
+    <button data-why="No: entregar un incremento en un time box fijo describe a Scrum.">Entregar un incremento al cerrar cada Sprint</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Qué afirmación sobre el origen de XP es correcta, según la cátedra?</p>
+  <div class="options">
+    <button data-why="No: Toyota y Taiichi Ohno son el origen de Lean y de Kanban.">Nació en Toyota con Taiichi Ohno, antes que Kanban</button>
+    <button data-ok data-why="Correcto: Chrysler, años 90, Kent Beck; prácticas recolectadas de sus equipos, previo al Manifiesto ágil de 2001.">Nació en Chrysler con Kent Beck, antes del Manifiesto</button>
+    <button data-why="No: XP es previo al Manifiesto; Kent Beck fue uno de sus firmantes.">Nació después del Manifiesto como una extensión de Scrum</button>
+    <button data-why="No: XP no viene de la industria automotriz japonesa ni de Kaizen.">Nació dentro de Kaizen como parte del ciclo PDCA</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="trampas">Trampas de opción múltiple</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>La opción tentadora</th><th>Por qué está mal</th></tr></thead>
+<tbody>
+<tr><td>«El objetivo de Lean es eliminar cuellos de botella»</td><td>Ese es el de <strong>Kanban</strong>. Lean: optimizar los procesos eliminando el desperdicio</td></tr>
+<tr><td>«Lean se basa en el empirismo»</td><td>El empirismo es de Scrum. Lean se basa en el <strong>ciclo de Deming (PDCA)</strong></td></tr>
+<tr><td>«Las mudas son ocho»</td><td>La cátedra muestra <strong>siete</strong></td></tr>
+<tr><td>«Espera (del producto)»</td><td>La espera y el movimiento son <strong>del operario</strong>; del producto son transporte y defectos</td></tr>
+<tr><td>«XP nació en Toyota» o «la creó Taiichi Ohno»</td><td>XP: <strong>Chrysler, años 90, Kent Beck</strong>. Toyota y Ohno son Lean y Kanban</td></tr>
+<tr><td>«XP surgió a partir del Manifiesto»</td><td>Es <strong>previo</strong> al Manifiesto ágil (2001)</td></tr>
+<tr><td>«XP tiene 12 bases y 5 prácticas»</td><td>Al revés: <strong>5 bases y 12 prácticas</strong></td></tr>
+<tr><td>«Transparencia» como base de XP</td><td>Es un pilar de Scrum. Bases de XP: comunicación, simplicidad, retroalimentación, respeto, coraje</td></tr>
+<tr><td>«Daily Scrum» o «límite de WIP» como práctica de XP</td><td>Son de Scrum y de Kanban. De XP: programación de pares, integración continua, refactorización, cliente in situ…</td></tr>
+<tr><td>«Integración continua: commit una vez por Sprint»</td><td>Commit <strong>al menos diario</strong></td></tr>
+<tr><td>«Semana de 40 horas» como práctica de Lean</td><td>Es una de las 12 prácticas de <strong>XP</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%207%20-%20Kanban%20Lean%20y%20XP.pdf">PDF de la cátedra «Clase 7: Kanban, Lean y XP»</a> (clase 12 del cronograma), pp. 12–18. Complemento: <a href="https://en.wikipedia.org/wiki/Muda_(Japanese_term)">Wikipedia · Muda</a>, <a href="https://en.wikipedia.org/wiki/Lean_software_development">Lean software development</a> y <a href="https://en.wikipedia.org/wiki/Extreme_programming">Extreme programming</a>.<br>Para repasar: <a href="../reference/agil-glosario.html">glosario y hoja de repaso ágil</a> (imprimible).
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «dame cinco casos y dime qué muda es cada uno» o «¿en qué se parecen XP y la DoD de Scrum?».
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="11.1-repaso-listas-que-se-confunden.html">← Clase 11.1 · Repaso</a>
+  <a href="12b-kanban.html">Clase 12b · Kanban →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

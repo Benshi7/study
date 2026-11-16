@@ -1,0 +1,10 @@
+Rol,Meses del equipo,Costo del equipo (ARS M),Tarifa implícita (ARS M/mes),Tarifa implícita (USD/mes),Días hábiles en el Gantt,Meses según Gantt,Personas A (para conservar su costo),Costo A (USD),Personas B (propuesta),Costo B (USD)
+Project Manager,6,48.0,8.00,5128.21,130,6.19,0.97,30769,1,31746
+Analistas funcionales,3,18.0,6.00,3846.15,32,1.52,1.97,11538,2,11722
+Desarrolladores,4,40.0,10.00,6410.26,53,2.52,1.58,25641,3,48535
+Especialistas en datos y GIS,4,32.0,8.00,5128.21,62,2.95,1.35,20513,2,30281
+UX/UI,2,12.0,6.00,3846.15,20,0.95,2.10,7692,2,7326
+QA y testing,2,12.0,6.00,3846.15,31,1.48,1.35,7692,2,11355
+Seguridad informática,1,8.0,8.00,5128.21,12,0.57,1.75,5128,1,2930
+Infraestructura/DevOps,2,16.0,8.00,5128.21,25,1.19,1.68,10256,1,6105
+Documentación y capacitación,1,4.0,4.00,2564.10,14,0.67,1.50,2564,1,1709

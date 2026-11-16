@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Del enunciado al DER</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Referencia 05 · Para imprimir · La hoja del ejercicio práctico</p>
+    <h1 class="masthead__title">Del enunciado al DER, y cómo verificar que está bien</h1>
+    <p class="masthead__standfirst">
+      Los enunciados de esta cátedra usan <b>siempre las mismas fórmulas</b>. No describen
+      entidades ni cardinalidades: describen <em>necesidades de información</em>, y cada
+      forma de decirlo produce una cosa distinta en el diagrama. Acá está el diccionario, el
+      TP1 decodificado línea por línea, y las seis pasadas para chequear tu dibujo.
+    </p>
+    <p class="masthead__meta">
+      <span>Fuente: TP1–TP4 + Clase 2, slides 29&ndash;32</span>
+      <span>Enunciados verbatim</span>
+    </p>
+  </header>
+
+  <h2><span class="num">A</span>El decodificador: qué produce cada fórmula</h2>
+
+  <p>
+    Columna izquierda: cómo lo escribe la cátedra, literal. Columna derecha: qué tenés que
+    dibujar. <b>Si una viñeta del enunciado no te produjo nada en el diagrama, volvé a
+    leerla.</b>
+  </p>
+
+  <h3>Fórmulas que producen ENTIDAD</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>La fórmula</th><th>Qué produce</th></tr></thead>
+    <tbody>
+      <tr><td>"Usted ha sido contratado… para una <b>cadena de farmacias</b>"</td>
+          <td>El <b>dominio</b>, no una entidad. No dibujes "Cadena".</td></tr>
+      <tr><td>"Las <b>sucursales</b> se encuentran distribuidas en diferentes <b>ciudades</b>"</td>
+          <td><b>Dos entidades y una relación</b> en una sola oración.</td></tr>
+      <tr><td>Un sustantivo que <b>reaparece en varias viñetas</b></td>
+          <td>Entidad, casi seguro. Los que aparecen una sola vez suelen ser atributos.</td></tr>
+      <tr><td>"Respecto de los <b>pacientes</b>…", "De cada <b>profesional</b> se guarda…"</td>
+          <td>Abre el bloque de atributos de esa entidad.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Fórmulas que producen ATRIBUTO</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>La fórmula</th><th>Qué produce</th></tr></thead>
+    <tbody>
+      <tr><td>"hay que poder <b>conocer</b>…", "es importante <b>conocer</b>…",
+              "se <b>guarda</b>…", "los datos guardados <b>son</b>…"</td>
+          <td>Atributos comunes. Es la fórmula más frecuente de todas.</td></tr>
+      <tr><td>"dirección (<b>sólo interesa calle y número</b>)"</td>
+          <td><b>Compuesto</b>, y encima te dicta las hijas. El paréntesis es la pista.</td></tr>
+      <tr><td>"teléfono<b>/s</b>", "más de una dirección"</td>
+          <td><b>Multivaluado</b> → doble elipse. La barra-ese es literal en el TP1.</td></tr>
+      <tr><td>"qué comodidades posee, <b>a saber:</b>" + lista</td>
+          <td>Lista de atributos; si se repiten por ocurrencia, multivaluado.</td></tr>
+      <tr><td>Un dato nombrado <b>al lado</b> del dato del que sale<br>
+              <i>"la fecha de ingreso a la empresa <b>y su antigüedad</b>"</i></td>
+          <td><b>DERIVADO</b> → elipse punteada. Nunca falla: si están pegados, el segundo
+              sale del primero.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Fórmulas que producen CLAVE</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>La fórmula</th><th>Qué produce</th></tr></thead>
+    <tbody>
+      <tr><td>"Todo empleado <b>se identifica con</b> un código"</td>
+          <td>Clave primaria → subrayala.</td></tr>
+      <tr><td>"Cada socio tiene un número <b>único que lo identifica</b>"</td>
+          <td>Clave primaria.</td></tr>
+      <tr><td>Una entidad sin ninguna frase de éstas</td>
+          <td>Inventale la clave igual. <b>Ninguna entidad puede quedar sin clave.</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Fórmulas que producen CARDINALIDAD</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>La fórmula</th><th>Qué produce</th></tr></thead>
+    <tbody>
+      <tr><td>"<b>un solo</b> farmacéutico a cargo", "<b>un único</b> laboratorio",
+              "<b>Por cada</b> ciudad hay un único…"</td>
+          <td>El lado <b>1</b>.</td></tr>
+      <tr><td>"<b>muchas</b> formas de presentación", "<b>varias</b> veces", "sus propios
+              empleados"</td>
+          <td>El lado <b>N</b>.</td></tr>
+      <tr><td>"puede venir en <b>muchas</b> presentaciones, <b>pero</b> es producido por
+              <b>un único</b> laboratorio"</td>
+          <td>La fórmula canónica: <b>el "pero" separa los dos extremos</b> de dos
+              relaciones distintas. Leela dos veces.</td></tr>
+      <tr><td>"<b>es decir, si</b>… <b>entonces</b>…"</td>
+          <td><b>Aclaración que redefine</b> lo anterior. Nunca es adorno. En el TP1 es lo
+              que mueve el farmacéutico de Farmacia a Ciudad.</td></tr>
+      <tr><td>"Un mismo lector puede llevarse <b>varias veces</b> el mismo libro"</td>
+          <td>Te prohíbe usar (socio, libro) como clave: hace falta una entidad propia o la
+              fecha en la clave.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Fórmulas que producen ESPECIALIZACIÓN o RELACIÓN ESPECIAL</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>La fórmula</th><th>Qué produce</th></tr></thead>
+    <tbody>
+      <tr><td>Una entidad general y después <b>"Del X además…"</b> / <b>"Del Y…"</b> con
+              atributos distintos<br>
+              <i>"Del personal propio además… / Del farmacéutico…"</i></td>
+          <td><b>ISA.</b> Atributos propios por rama = la definición de especialización.</td></tr>
+      <tr><td>"Una característica importante es que un doctor <b>puede dirigir un área</b>
+              y tener personal a cargo"</td>
+          <td><b>Relación unaria</b> (recursiva) sobre la misma entidad.</td></tr>
+      <tr><td>"la cantidad en existencia <b>del mismo en cada farmacia</b>"</td>
+          <td><b>Atributo de la relación</b>, no de ninguna de las dos entidades. El "en
+              cada X" te dice de qué depende.</td></tr>
+      <tr><td>"cómo <b>varía</b> a través del tiempo", "los distintos precios a los que se
+              comercializó"</td>
+          <td><b>Historicidad</b>: tabla nueva con la fecha en la clave.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Frases que NO van al modelo</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>La fórmula</th><th>Qué hacer</th></tr></thead>
+    <tbody>
+      <tr><td>"Un socio puede retirar libros <b>sólo de a uno por vez</b>"</td>
+          <td><b>Regla de negocio no representable</b> en el DER. Anotala al margen como
+              supuesto y seguí. No inventes estructura para cumplirla.</td></tr>
+      <tr><td>"Si surgen dudas respecto a otras condiciones, <b>consultar con el docente</b>
+              y registrar por escrito"</td>
+          <td>El enunciado <b>admite que es incompleto a propósito</b>. Es tu permiso para
+              escribir supuestos al margen. Usalo.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2><span class="num">B</span>El TP1 decodificado, línea por línea</h2>
+
+  <p>
+    Éste es el enunciado completo tal como está en la Clase 2, slide 30. El docente nombró
+    "farmacia" como uno de los dominios que puede tomar. <b>Leé la viñeta, tapá la derecha,
+    decidí vos, y después comparás.</b>
+  </p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Viñeta textual</th><th>Qué produce</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>"Las sucursales se encuentran distribuidas en diferentes ciudades."</td>
+        <td>Entidades <b>Farmacia</b> y <b>Ciudad</b>, relación <i>Ubica</i>.
+            Cardinalidad <b>1:N</b> (una ciudad, muchas farmacias).</td>
+      </tr>
+      <tr>
+        <td>"Cada farmacia tiene sus propios empleados y un solo farmacéutico a cargo de la
+            misma."</td>
+        <td>Entidad <b>Empleado</b>, relación Farmacia–Empleado <b>1:N</b>.
+            <span class="callout__label">Y una trampa: el farmacéutico parece colgar acá.
+            No te comprometas todavía.</span></td>
+      </tr>
+      <tr>
+        <td>"Todo empleado <b>se identifica con un código</b>, guardando además su nombre,
+            dirección (sólo interesa calle y número) y teléfono<b>/s</b>."</td>
+        <td><b>Clave:</b> código (subrayado). <b>Atributos:</b> nombre.
+            <b>Compuesto:</b> dirección → calle + número.
+            <b>Multivaluado:</b> teléfono → doble elipse.</td>
+      </tr>
+      <tr>
+        <td>"Del <b>personal propio</b> además hay que poder conocer la fecha de ingreso a la
+            empresa <b>y su antigüedad</b>."</td>
+        <td>Primer subtipo. <b>Antigüedad = DERIVADO</b> (elipse punteada), sale de la fecha
+            de ingreso que está en la misma oración.</td>
+      </tr>
+      <tr>
+        <td>"Del <b>farmacéutico</b> hay que poder conocer la matrícula y la fecha de
+            graduación."</td>
+        <td>Segundo subtipo. → <b>ISA: Empleado → Personal_propio / Farmacéutico</b>,
+            <b>total y exclusiva</b> (círculo + arco).
+            <span class="callout__label">La matrícula falta en la resolución de la cátedra.
+            Ponela vos.</span></td>
+      </tr>
+      <tr>
+        <td>"Por cada ciudad hay un único farmacéutico; <b>es decir, si</b> en una misma
+            ciudad existe más de una farmacia, <b>entonces</b> el mismo farmacéutico estaría
+            afectado a todas las farmacias de esa ciudad."</td>
+        <td><b>La trampa de ubicación.</b> El "es decir" <b>reasigna</b>: la relación no es
+            Farmacia–Farmacéutico sino <b>Ciudad–Farmacéutico, 1:1</b>.</td>
+      </tr>
+      <tr>
+        <td>"Cada farmacia tiene a su vez su propio stock de medicamentos."</td>
+        <td>Relación <b>Stock</b>: Farmacia–Medicamento <b>N:N</b>.</td>
+      </tr>
+      <tr>
+        <td>"Por cada presentación del medicamento se guarda el laboratorio al que pertenece
+            y <b>la cantidad en existencia (stock) del mismo en cada farmacia</b>."</td>
+        <td>Entidad <b>Presentación</b>. Y <b>Cantidad es atributo de la relación Stock</b>,
+            porque el "en cada farmacia" dice de qué depende.</td>
+      </tr>
+      <tr>
+        <td>"Cada medicamento puede venir en <b>muchas</b> formas de presentación distintas,
+            <b>pero</b> es producido por <b>un único</b> laboratorio."</td>
+        <td>Dos relaciones en una oración: Medicamento–Presentación <b>N:N</b>, y
+            Laboratorio–Medicamento <b>1:N</b>.</td>
+      </tr>
+      <tr>
+        <td><b>Consultas:</b> "Cantidad de empleados farmacéuticos y propios <b>según su
+            código postal</b>."</td>
+        <td><b>Requerimiento encubierto.</b> El <b>código postal</b> no aparece en ninguna
+            viñeta: sólo acá. Es atributo de <b>Ciudad</b> y es obligatorio.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Sobre la resolución oficial · leela con pinzas</span>
+    <p>
+      <code>raw/Rta-TP-Farmacia.erdplus</code> la dio la cátedra, pero <b>no cumple su propio
+      enunciado</b> en tres puntos: cuelga <code>Cantidad</code> del N:N
+      Medicamento–Presentación cuando el enunciado dice "en cada farmacia";
+      le falta la <b>matrícula</b> del farmacéutico y el <b>código postal</b> de la ciudad,
+      que el TP pide; y tiene typos ("Emleado", "Antoguedad").
+    </p>
+    <p>
+      <b>Usala como referencia, no como verdad.</b> Lo único que confirma con certeza es la
+      especialización Empleado → Farmacéutico / Propio como <b>total y exclusiva</b>.
+      Si tu lectura y la resolución chocan, gana el enunciado &mdash; y escribís el supuesto
+      al margen.
+    </p>
+  </blockquote>
+
+  <h2><span class="num">C</span>Las seis pasadas de verificación</h2>
+
+  <p>
+    Terminaste el dibujo. <b>No lo entregues todavía.</b> Estas seis pasadas tardan cinco
+    minutos y son donde se recuperan los puntos tontos. Hacelas en este orden.
+  </p>
+
+  <ol class="paso">
+    <li>
+      <b>Pasada de cobertura — viñeta por viñeta.</b><br>
+      Volvé al enunciado y <b>tachá cada viñeta</b> a medida que confirmás que produjo algo
+      en tu diagrama. Si una viñeta no produjo nada, o no la entendiste o te la olvidaste.
+      <b>Ninguna viñeta es decorativa.</b>
+    </li>
+    <li>
+      <b>Pasada de consultas — el test que la cátedra te regala.</b><br>
+      Casi todos los enunciados cierran con "con el modelo desarrollado usted debería poder
+      responder las siguientes consultas". <b>Recorré cada consulta con el dedo sobre tu
+      diagrama</b> y comprobá que existe el camino. Si te falta un atributo, aparece acá.
+      Es donde estaba escondido el código postal del TP1.
+    </li>
+    <li>
+      <b>Pasada de cardinalidad — en voz alta, en los dos sentidos.</b><br>
+      Por cada relación decí las dos frases:
+      <i>"¿cuántos B tiene un A?"</i> y <i>"¿cuántos A tiene un B?"</i>.
+      Si una de las dos te suena rara, el número está invertido. Y verificá que
+      <b>no quede ninguna relación sin número en algún extremo</b>.
+    </li>
+    <li>
+      <b>Pasada de símbolos.</b><br>
+      ¿Toda entidad tiene <b>clave subrayada</b>? ¿Los teléfonos en <b>doble elipse</b>?
+      ¿Los calculados en <b>punteada</b>? ¿La dirección abierta en <b>compuesto</b>?
+      ¿Toda entidad débil con su <b>rombo doble</b>?
+    </li>
+    <li>
+      <b>Pasada de ISA.</b><br>
+      Leé <i>"un subtipo <b>es un</b> supertipo"</i>. Si no suena bien, no era ISA: era una
+      relación. Y por cada triángulo, ¿decidiste <b>círculo</b> y <b>arco</b>, y los
+      justificaste al margen?
+    </li>
+    <li>
+      <b>Pasada de trampas.</b><br>
+      Las tres de la tabla de abajo. Buscalas explícitamente, una por una. No aparecen solas.
+    </li>
+  </ol>
+
+  <h2><span class="num">D</span>Las tres trampas, con su disparador textual</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Trampa</th><th>Cómo suena en el enunciado</th><th>Qué hacer</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Atributo derivado</b><br><span style="color:var(--ink-soft)">Aparece en casi
+            todos</span></td>
+        <td>El dato calculado se menciona <b>al lado del dato del que sale</b>:
+            "fecha de ingreso <b>y su antigüedad</b>", "fecha de nacimiento <b>y la edad</b>",
+            "fecha del préstamo… <b>fecha esperada de devolución</b>", "precio unitario…
+            <b>precio del renglón</b>".</td>
+        <td><b>En el DER: dibujalo punteado</b> y anotá de qué deriva.<br>
+            <b>En el relacional: no va como columna.</b></td>
+      </tr>
+      <tr>
+        <td><b>Trampa de ubicación</b></td>
+        <td>Un dato se presenta pegado a una entidad y <b>una viñeta posterior o una nota al
+            pie con asterisco lo reasigna</b> a otra entidad o a la relación.
+            Disparadores: "<b>es decir, si… entonces…</b>", "<b>del mismo en cada…</b>",
+            un "(*)" al final.</td>
+        <td><b>Leé el enunciado entero antes de dibujar nada.</b> La aclaración siempre viene
+            después del dato que corrige.</td>
+      </tr>
+      <tr>
+        <td><b>Requerimiento encubierto</b></td>
+        <td>La lista final &mdash; "<b>consultas que debería poder responder</b>",
+            "<b>Condiciones</b>", "<b>Se pide</b>" &mdash; nombra un dato que
+            <b>no está en ninguna viñeta</b>. En el TP1: el <b>código postal</b>.</td>
+        <td>Tratá esa lista como <b>parte del enunciado</b>, no como un cierre formal.
+            Es la pasada 2.</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Los cuatro dominios que nombró el docente</span>
+    <b>Libros, autos, farmacia, celulares.</b> Los enunciados van a tener esta misma forma:
+    encabezado en infinitivo ("Desarrollar el Modelo Conceptual, definiendo las entidades,
+    los atributos de cada una de ellas y la cardinalidad de las relaciones"), ficción de
+    relevamiento en segunda persona formal, viñetas cortas de una regla cada una, y cierre
+    con la lista de validación. <b>Reconocer la forma te ahorra la mitad del tiempo.</b>
+  </blockquote>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      El enunciado del TP1 está transcripto <b>textual de
+      <code>raw/B Clase 2 Diseño Conceptual Udeci.pptx</code>, slides 30 y 31</b> (leídos del
+      PPTX, no de la resolución). Las fórmulas del decodificador salen del cruce de los
+      cuatro TP, catalogado en <a href="../raw/TP_CATALOGO.md">TP_CATALOGO.md</a>.
+      Las prioridades y los errores que marca el docente, de
+      <a href="../raw/PAUTAS_EXAMEN.md">PAUTAS_EXAMEN.md</a>.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0004-notacion-der-a-mano.html">Referencia: notación a mano</a>
+    <a href="0002-normalizacion.html">Referencia: normalización</a>
+    <a href="../practica/repaso-final.html">Repaso final</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

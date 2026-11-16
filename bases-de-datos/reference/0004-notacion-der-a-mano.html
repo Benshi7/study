@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Notación DER a mano</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Referencia 04 · Para imprimir · Llevar al escritorio, no al parcial</p>
+    <h1 class="masthead__title">Notación DER a mano</h1>
+    <p class="masthead__standfirst">
+      El docente avisó que la notación va <b>de memoria, porque no van a tener la
+      herramienta que dibuja sola</b>. Esta hoja es la tabla de símbolos completa, con la
+      notación de la cátedra. Copiala a mano tres veces y se acabó el tema.
+    </p>
+    <p class="masthead__meta">
+      <span>Fuente: Clase 2, slides 8&ndash;27</span>
+      <span>Verificado contra el PPTX</span>
+    </p>
+  </header>
+
+  <h2><span class="num">A</span>La tabla de símbolos</h2>
+
+  <figure class="full">
+    <img src="../assets/diagrams/notacion-der-simbolos.svg"
+         alt="Tabla de doce símbolos del DER: entidad fuerte, entidad débil, relación, relación identificativa, atributo, atributo clave, multivaluado, derivado, compuesto, cardinalidad, ISA total y exclusiva, y pata de gallo.">
+  </figure>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Elemento</th><th>Símbolo</th><th>Regla de mano</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Entidad fuerte</b></td><td>Rectángulo simple</td><td>Sustantivo en singular.</td></tr>
+      <tr><td><b>Entidad débil</b></td><td>Rectángulo <b>doble</b></td><td>Dibujá dos rectángulos, uno adentro del otro.</td></tr>
+      <tr><td><b>Relación</b></td><td>Rombo</td><td>Verbo. El nombre va adentro del rombo.</td></tr>
+      <tr><td><b>Relación identificativa</b></td><td>Rombo <b>doble</b></td><td>Siempre acompaña a una entidad débil. Si dibujaste una débil sin rombo doble, te falta la mitad.</td></tr>
+      <tr><td><b>Atributo</b></td><td>Elipse colgada de la entidad</td><td>Una línea simple hasta el rectángulo.</td></tr>
+      <tr><td><b>Atributo clave</b></td><td>Elipse con el nombre <b>subrayado</b></td><td>Subrayar, no poner asterisco. El asterisco es de la notación UML.</td></tr>
+      <tr><td><b>Multivaluado</b></td><td>Elipse <b>doble</b></td><td>Doble elipse en el DER; <b>tabla propia</b> en el relacional.</td></tr>
+      <tr><td><b>Derivado</b></td><td>Elipse <b>punteada</b></td><td>Se dibuja en el DER; <b>no se guarda</b> como columna.</td></tr>
+      <tr><td><b>Compuesto</b></td><td>Elipse con elipses hijas colgando</td><td>En el relacional se aplana: una columna por hija, la madre desaparece.</td></tr>
+      <tr><td><b>Cardinalidad</b></td><td><code>1</code> / <code>N</code> sobre la línea</td><td>El número va del lado de la entidad a la que le corresponde esa cantidad.</td></tr>
+      <tr><td><b>Especialización</b></td><td>Triángulo <b>ISA</b></td><td><b>Círculo = total. Arco = exclusiva.</b> Sin marca = parcial / solapada.</td></tr>
+      <tr><td><b>Pata de gallo</b></td><td>Tres puntas</td><td>La pata <b>toca</b> la entidad del lado de los <b>muchos</b>.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2><span class="num">B</span>Los cuatro que se confunden</h2>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Doble rectángulo vs. doble rombo</span>
+    Van <b>juntos, siempre</b>. La entidad débil se dibuja con rectángulo doble
+    <em>y</em> la relación que la identifica con rombo doble. Es un par; no existe uno sin el
+    otro. Ejemplo de la cátedra: <code>Empleado —1— (Tiene por) —N— Hijo</code>, con
+    <code>Hijo</code> en doble rectángulo (Clase 2, slide 10).
+  </blockquote>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Doble elipse vs. elipse punteada</span>
+    <b>Doble</b> = multivaluado (muchos valores: los teléfonos).
+    <b>Punteada</b> = derivado (se calcula: la antigüedad).
+    Son dos cosas completamente distintas y las dos aparecen en el TP1. La punteada es
+    "fantasma" &mdash; de ahí que la línea esté cortada.
+  </blockquote>
+
+  <h2><span class="num">C</span>El atributo derivado: qué es y para qué se usa</h2>
+
+  <p>
+    El docente lo dio como pregunta teórica explícita: <b>"atributo derivable: qué es y para
+    qué se usa"</b>. Las dos partes, no sólo la primera.
+  </p>
+
+  <blockquote class="callout callout--catedra">
+    <span class="callout__label">Clase 2, slide 12 · textual</span>
+    "Existe otro tipo de atributo, que es el <b>derivable</b>, cuya característica es que
+    puede ser obtenido a través de un cálculo realizado a partir de otro atributo que
+    conocemos. Por ejemplo, el atributo Edad de un Asistente puede ser obtenido a partir de
+    su Fecha de Nacimiento, que es un atributo que conocemos."
+  </blockquote>
+
+  <p><b>Para qué se usa</b> &mdash; la parte que la gente no contesta:</p>
+
+  <ul>
+    <li><b>Documenta un requerimiento sin duplicar el dato.</b> El usuario pidió ver la
+      antigüedad. Si no la dibujás, en la revisión parece que te la olvidaste.</li>
+    <li><b>Deja asentado de qué otro atributo se obtiene.</b> Dibujar "antigüedad" punteada
+      al lado de "fecha de ingreso" dice, sin texto, que una sale de la otra.</li>
+    <li><b>Evita la redundancia y la anomalía de actualización.</b> Si guardaras la edad como
+      columna, mañana está desactualizada. Se calcula en el momento de la consulta.</li>
+  </ul>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Trampa nº 1 del docente</span>
+    <p>
+      Es el error que nombró primero en la lista de los que ven siempre:
+      <i>"Modelar los campos calculados. Si la tabla trae el precio y un total que es la
+      multiplicación, ese campo derivado no va cuando se pasa a las tablas normalizadas.
+      Si lo ponen, está mal."</i>
+    </p>
+    <p>
+      Fijate que la trampa tiene <b>dos mitades y van en sentidos opuestos</b>:
+    </p>
+    <ul>
+      <li><b>En el DER: SÍ se dibuja</b>, con elipse punteada. Si no lo dibujás, perdiste el requerimiento.</li>
+      <li><b>En el relacional: NO va como columna.</b> Si lo ponés, está mal.</li>
+    </ul>
+    <p>
+      Los candidatos que aparecen en casi todos los enunciados de la cátedra:
+      <b>antigüedad</b> (TP1), <b>edad</b> (TP2), <b>fecha esperada de devolución</b> (TP4),
+      <b>precio del renglón</b> / <b>total</b> (normalización). Cuando el enunciado te
+      menciona el dato <em>al lado del dato del que sale</em>, es derivado. Siempre.
+      Y escribí al margen de qué deriva: eso es lo que te da el punto completo.
+    </p>
+  </blockquote>
+
+  <h2><span class="num">D</span>Sobre la pata de gallo</h2>
+
+  <p>
+    Cuidado con el peso que le das. La cátedra dedica <b>tres slides</b> (17, 18 y 19) a las
+    "notaciones alternativas", y arranca aclarando que <i>"no existe una notación única que
+    sea aceptada por todos los autores"</i>. La pata de gallo aparece ahí, como alternativa:
+  </p>
+
+  <blockquote class="callout callout--catedra">
+    <span class="callout__label">Clase 2, slide 19 · textual</span>
+    "Este enfoque con diagramas más cercanos a UML utiliza <b>rectángulos con puntas
+    redondeadas</b> para representar las entidades, señalando los identificadores únicos
+    <b>anteponiendo asteriscos</b> a los atributos que forman parte del mismo, y las
+    relaciones toman la forma de los diagramas de <b>Pata de Gallo</b> para representar la
+    razón de cardinalidad."
+  </blockquote>
+
+  <p>
+    <b>Dibujá en Chen</b> &mdash; rectángulo, rombo, elipse, con <code>1</code> y
+    <code>N</code> sobre las líneas. Es la notación de los slides 8 a 27, la del TP1 y la de
+    la resolución de la cátedra. La pata de gallo tenés que <b>reconocerla</b> y saber
+    <b>dónde va la pata</b>, porque el docente lo nombró; no tenés que diagramar en ella.
+  </p>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Dónde va la pata</span>
+    La pata de tres puntas <b>toca la entidad del lado de los "muchos"</b>. Un trazo
+    perpendicular simple significa "uno". Regla de lectura: parate en una entidad, mirá el
+    símbolo del <b>extremo opuesto</b> de la línea, y ése te dice cuántas de aquéllas le
+    corresponden a ésta.
+  </blockquote>
+
+  <h2><span class="num">E</span>Checklist antes de entregar el DER</h2>
+
+  <ol class="paso">
+    <li>¿Toda entidad tiene su <b>clave subrayada</b>?</li>
+    <li>¿Toda relación tiene <b>cardinalidad escrita en los dos extremos</b>?</li>
+    <li>¿Los <b>teléfonos</b> (o lo que se repita) están en <b>doble elipse</b>?</li>
+    <li>¿Los <b>calculados</b> están en <b>punteada</b> y anoté de qué derivan?</li>
+    <li>¿La <b>dirección</b> (o similar) está descompuesta como <b>compuesto</b>?</li>
+    <li>¿Cada <b>entidad débil</b> tiene su <b>rombo doble</b>?</li>
+    <li>¿Marqué el <b>círculo</b> y el <b>arco</b> en cada ISA, y lo justifiqué al margen?</li>
+    <li>¿Releí la <b>lista de consultas</b> del final? Ahí se esconden atributos obligatorios
+      &mdash; en el TP1, el <b>código postal</b> aparece <em>sólo</em> ahí.</li>
+    <li>¿Hay alguna <b>nota al pie o viñeta posterior</b> que reubique un dato en otra
+      entidad? En el TP1 el farmacéutico parece colgar de la farmacia y un bullet después lo
+      manda a <b>Ciudad</b>.</li>
+    <li>¿Escribí al margen los <b>supuestos</b> que tomé? Un supuesto escrito es defendible;
+      uno silencioso parece un error.</li>
+  </ol>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b><code>raw/B Clase 2 Diseño Conceptual Udeci.pptx</code></b> &mdash; slides 8 a 16
+      (entidad, débil, multivaluado, derivable, unaria, historia), 17 a 19 (notaciones
+      alternativas), 20 a 27 (especialización). Las mismas figuras están en
+      <code>raw/Material_Examen/unidad 2.pdf</code>.
+    </p>
+    <p>
+      Todos los símbolos de esta hoja fueron leídos <b>de las imágenes del PPTX</b>, no
+      reconstruidos de memoria ni tomados de <code>Rta-TP-Farmacia.erdplus</code>, que tiene
+      errores conocidos.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../lessons/0013-especializacion-la-notacion-isa.html">Lección 13 · notación ISA</a>
+    <a href="../lessons/0014-contar-registros-del-supertipo.html">Lección 14 · contar registros</a>
+    <a href="0005-del-enunciado-al-der.html">Referencia: del enunciado al DER</a>
+    <a href="0001-cardinalidad.html">Referencia: cardinalidad</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="unicaba" data-theme-base="../assets/themes/">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Source of truth: Clase 9 (PDF "Clase 4 - Scrum Parte 1") in raw/.
+     Diagrams are generated: python3 tools/diagramas.py rewrites everything between the diagram markers. -->
+<title>Clase 9 · Scrum: roles y artefactos</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../assets/themes/unicaba.css">
+<link rel="stylesheet" href="../assets/animations/animations.css">
+<link rel="stylesheet" href="../../assets/diagram.css">
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide cover" data-title="Portada">
+    <p class="kicker">Clase 9 · 7/10/2026 · Parcial del 18/11</p>
+    <h1 class="h1">Scrum, parte 1:<br>roles y artefactos</h1>
+    <p class="lede mt-m" style="max-width:56ch">Quién hace qué, qué se produce y cómo se sabe que algo está terminado.</p>
+    <div class="row wrap mt-l"><span class="pill">⏱ 25 minutos</span><span class="pill">Taller de Gestión de Proyectos Digitales</span></div>
+    <div class="notes">Esta clase tiene tres bloques: la teoría de Scrum, los tres roles y los tres artefactos. La palabra clave que atraviesa todo es «terminado»: la Definition of Done.</div>
+  </section>
+
+  <section class="slide titled" data-title="Framework">
+    <div class="bar"><p class="kicker">Teoría</p><h2 class="h2">Scrum es un framework, no una metodología</h2></div>
+    <div class="body">
+      <ol class="rule-list">
+        <li data-n="1"><b>Ligero</b>, fácil de entender y muy difícil de dominar</li>
+        <li data-n="2">Se compone de <b>roles, eventos y artefactos</b></li>
+        <li data-n="3">Se basa en el <b>empirismo</b>: se decide con lo que se observa</li>
+        <li data-n="4">Tres pilares: <b>transparencia, inspección y adaptación</b></li>
+      </ol>
+    </div>
+    <div class="notes">Dos frases para el parcial: no es una metodología sino un framework, y se apoya en el empirismo. Los tres pilares son transparencia, inspección y adaptación. Clase 9, p4.</div>
+  </section>
+
+  <section class="slide titled" data-title="Roles">
+    <div class="bar"><p class="kicker">Roles</p><h2 class="h2">Equipo Scrum = Desarrollo + Scrum Master + Product Owner</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><h4>Product Owner</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Mantiene el backlog actualizado, refinado y priorizado</li><li>Es <b>una sola persona</b></li><li>El equipo respeta sus decisiones</li></ul></div>
+        <div class="card violet"><h4>Equipo de desarrollo</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Autoorganizado y multifuncional</li><li>Sin discriminación por roles</li><li>Entre <b>3 y 9</b> personas</li></ul></div>
+        <div class="card card-accent"><h4>Scrum Master</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Ayuda a entender y aplicar Scrum</li><li>Modera las ceremonias y quita impedimentos</li><li>Promueve el cambio en la organización</li></ul></div>
+      </div>
+    </div>
+    <div class="notes">Tres roles, tres números para memorizar: un solo Product Owner, entre tres y nueve en el equipo de desarrollo, y un Scrum Master. Clase 9, p5 a p8.</div>
+  </section>
+
+  <section class="slide titled" data-title="Scrum Master no es PM">
+    <div class="bar"><p class="kicker">Ojo</p><h2 class="h2">El Scrum Master NO es un Project Manager</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Project Manager (cascada)</h4><p class="dim">Arma el cronograma, controla alcance, costos y cambios, y responde por el plan.</p></div>
+        <div class="card violet"><h4>Scrum Master</h4><p class="dim">Cuida que Scrum funcione: modera, genera espacios de mejora y ayuda a eliminar impedimentos. No dirige al equipo.</p></div>
+      </div>
+      <div class="callout mt-l">Quién decide <b>qué</b>: el Product Owner. Quién decide <b>cómo</b> y cuánto entra: el equipo. Quién cuida el <b>marco</b>: el Scrum Master.</div>
+    </div>
+    <div class="notes">La confusión más común en el parcial. En cascada el Project Manager responde por el plan. En Scrum el rol se reparte: producto, ejecución y marco de trabajo. Esta diferenciación entre qué, cómo y marco es nuestra síntesis; la frase literal de la cátedra es que no es un Project Manager (p8).</div>
+  </section>
+
+  <section class="slide titled" data-title="Diagrama de artefactos">
+    <div class="bar"><p class="kicker">Mapa</p><h2 class="h2">Roles, artefactos y controles de calidad</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:scrum-artefactos-->
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scrum-artefactos-title scrum-artefactos-desc"><title id="scrum-artefactos-title">Scrum: roles, artefactos y los dos controles de calidad</title><desc id="scrum-artefactos-desc">El Equipo Scrum reúne al Product Owner, al equipo de desarrollo y al Scrum Master. El Product Owner ordena el Product Backlog; el equipo lo lleva al Sprint Backlog si cumple la DoR y entrega un Incremento con las historias que cumplen la DoD.</desc><defs><marker id="scrum-artefactos-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="scrum-artefactos-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="scrum-artefactos-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><rect class="dg-zone" x="28" y="24" width="904" height="152" rx="8"/>
+<text class="dg-tag" x="44" y="48" text-anchor="start">EQUIPO SCRUM</text>
+<path class="dg-line" d="M160 160 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-lbl" x="168" y="244" text-anchor="start">ordena</text>
+<path class="dg-line" d="M480 160 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-lbl" x="472" y="244" text-anchor="end">se compromete</text>
+<path class="dg-line" d="M540 160 V260 Q540 268 548 268 H792 Q800 268 800 276 V312" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="642" y="244" width="60" height="16" rx="2"/>
+<text class="dg-lbl" x="672" y="256" text-anchor="middle">entrega</text>
+<path class="dg-line" d="M680 112 H600" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="606" y="88" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="640" y="100" text-anchor="middle">facilita</text>
+<path class="dg-line" d="M280 360 H360" marker-end="url(#scrum-artefactos-arrow)"/>
+<rect class="dg-mask" x="304" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl" x="320" y="348" text-anchor="middle">DoR</text>
+<path class="dg-line-accent" d="M600 360 H680" marker-end="url(#scrum-artefactos-arrow-accent)"/>
+<rect class="dg-mask" x="624" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl-accent" x="640" y="348" text-anchor="middle">DoD</text>
+<rect class="dg-mask" x="40" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="160" y="99" text-anchor="middle">Product Owner</text>
+<text class="dg-sub" x="160" y="117" text-anchor="middle">Una sola persona</text>
+<text class="dg-sub" x="160" y="135" text-anchor="middle">Dueño del backlog</text>
+<rect class="dg-mask" x="360" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="360" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="480" y="99" text-anchor="middle">Equipo de desarrollo</text>
+<text class="dg-sub" x="480" y="117" text-anchor="middle">3 a 9 personas</text>
+<text class="dg-sub" x="480" y="135" text-anchor="middle">autoorganizado</text>
+<rect class="dg-mask" x="680" y="64" width="240" height="96" rx="6"/>
+<rect class="dg-box" x="680" y="64" width="240" height="96" rx="6"/>
+<text class="dg-name" x="800" y="99" text-anchor="middle">Scrum Master</text>
+<text class="dg-sub" x="800" y="117" text-anchor="middle">Facilita Scrum</text>
+<text class="dg-sub" x="800" y="135" text-anchor="middle">No es un Project Manager</text>
+<rect class="dg-mask" x="40" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-store" x="40" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="160" y="347" text-anchor="middle">Product Backlog</text>
+<text class="dg-sub" x="160" y="365" text-anchor="middle">Lista única ordenada</text>
+<text class="dg-sub" x="160" y="383" text-anchor="middle">por valor de negocio</text>
+<rect class="dg-mask" x="360" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-store" x="360" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="480" y="347" text-anchor="middle">Sprint Backlog</text>
+<text class="dg-sub" x="480" y="365" text-anchor="middle">Tareas del Sprint,</text>
+<text class="dg-sub" x="480" y="383" text-anchor="middle">acordadas con el PO</text>
+<rect class="dg-mask" x="680" y="312" width="240" height="96" rx="6"/>
+<rect class="dg-focal" x="680" y="312" width="240" height="96" rx="6"/>
+<text class="dg-name" x="800" y="347" text-anchor="middle">Incremento</text>
+<text class="dg-sub" x="800" y="365" text-anchor="middle">Historias que</text>
+<text class="dg-sub" x="800" y="383" text-anchor="middle">alcanzaron la DoD</text>
+<text class="dg-note" x="40" y="448" text-anchor="start">DoR · Definition of Ready: la historia está lista para entrar al Sprint.</text>
+<text class="dg-note" x="40" y="472" text-anchor="start">DoD · Definition of Done: la historia cumple el checklist y cuenta como terminada.</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 528 H152" marker-end="url(#scrum-artefactos-arrow)"/>
+<text class="dg-note" x="160" y="532" text-anchor="start">relación</text>
+<path class="dg-line-accent" d="M248 528 H272" marker-end="url(#scrum-artefactos-arrow-accent)"/>
+<text class="dg-note" x="280" y="532" text-anchor="start">control de calidad (DoD)</text>
+<rect class="dg-focal" x="472" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="500" y="532" text-anchor="start">lo que se entrega</text></svg>
+<!--/diagram:scrum-artefactos-->
+      </div>
+    </div>
+    <div class="notes">Mirar el diagrama de izquierda a derecha: el Product Owner ordena el Product Backlog; si las historias cumplen la DoR entran al Sprint Backlog; lo que cumple la DoD pasa al Incremento.</div>
+  </section>
+
+  <section class="slide titled" data-title="Product Backlog">
+    <div class="bar"><p class="kicker">Artefacto 1</p><h2 class="h2">Product Backlog</h2></div>
+    <div class="body">
+      <div class="callout violet" style="font-size:28px">«Lista única que contiene todas las características deseables del producto <b>ordenadas por valor de negocio</b>.»</div>
+      <div class="grid g2 mt-l">
+        <div class="card card-accent"><h4>Reglas</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Lo administra el Product Owner</li><li>Los ítems de arriba están refinados (como mínimo, el próximo Sprint)</li><li>Nunca está completo</li></ul></div>
+        <div class="card violet"><h4>Información mínima</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Orden y descripción</li><li>Estimación en puntos (alto nivel)</li><li>Valor de negocio (en puntos)</li></ul></div>
+      </div>
+      <p class="dim mt-m" style="font-size:24px">Se escribe como historia de usuario: «Como <i>comprador</i>, quiero <i>guardar un producto como favorito</i>, para <i>tenerlo a mano</i>».</p>
+    </div>
+    <div class="notes">Lista única, ordenada por valor de negocio, a cargo del Product Owner. Nunca está completa porque se agregan y se quitan ítems todo el tiempo. Clase 9, p10 y p11.</div>
+  </section>
+
+  <section class="slide titled" data-title="MoSCoW">
+    <div class="bar"><p class="kicker">Priorizar</p><h2 class="h2">MoSCoW: qué entra en el MVP</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:26px">
+        <thead><tr><th style="width:20%">Letra</th><th style="width:38%">Significa</th><th>Ejemplo: reservas de restaurantes</th></tr></thead>
+        <tbody>
+          <tr><td>M · Must</td><td>Debe estar en el MVP</td><td>Buscar el restaurante y reservar; comisión</td></tr>
+          <tr><td>S · Should</td><td>Entra al MVP si no compromete cronograma ni presupuesto</td><td>Compartir la experiencia y calificar</td></tr>
+          <tr><td>C · Could</td><td>No entra al MVP: fase 2</td><td>Sugerencias según reservas anteriores</td></tr>
+          <tr><td>W · Won’t</td><td>Baja prioridad o se descarta: fuera del MVP</td><td>Aplicación móvil</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Truco para no confundir Should y Could: el Should entra al MVP si no complica; el Could ya queda para la fase 2. Clase 9, p12 y p13.</div>
+  </section>
+
+  <section class="slide titled" data-title="Sprint Backlog">
+    <div class="bar"><p class="kicker">Artefacto 2</p><h2 class="h2">Sprint Backlog</h2></div>
+    <div class="body">
+      <div class="callout violet" style="font-size:28px">«Detalla todas las actividades que el equipo espera realizar durante un Sprint.»</div>
+      <div class="grid g2 mt-l">
+        <div class="card card-accent"><h4>Siempre</h4><p class="dim">Las tareas necesarias para alcanzar la DoD de cada historia. Se acuerda entre el PO y el equipo, según los objetivos del Sprint y la capacidad del equipo.</p></div>
+        <div class="card violet"><h4>También puede incluir</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Planes de acción de la retrospectiva</li><li>Acciones para mitigar riesgos</li><li>Bugs, pruebas de concepto, deuda técnica</li><li>Refinamiento de historias</li></ul></div>
+      </div>
+      <p class="dim mt-m" style="font-size:24px">Para entrar, las historias deben cumplir la <b>DoR</b>.</p>
+    </div>
+    <div class="notes">El Sprint Backlog es lo que el equipo se compromete a hacer en el Sprint. Incluye tareas de las historias pero también mejoras que salen de la retrospectiva y trabajo sobre deuda técnica. Clase 9, p14.</div>
+  </section>
+
+  <section class="slide titled" data-title="Incremento y DoD">
+    <div class="bar"><p class="kicker">Artefacto 3</p><h2 class="h2">Incremento y Definition of Done</h2></div>
+    <div class="body">
+      <div class="callout" style="font-size:28px">Incremento = todas las historias que <b>alcanzaron la DoD</b> durante el Sprint.</div>
+      <div class="grid g2 mt-l">
+        <div class="card card-accent"><h4>DoD: un contrato</h4><p class="dim">Checklist del Equipo Scrum con las condiciones para considerar terminada una historia. Sin DoD, «terminado» significa algo distinto para cada persona.</p></div>
+        <div class="card violet"><h4>Ejemplos de la cátedra</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Criterios de aceptación cumplidos</li><li>Desplegada en ambiente Stage</li><li>Casos de prueba automatizados</li><li>Testing de regresión finalizado</li></ul></div>
+      </div>
+    </div>
+    <div class="notes">El chiste de la diapositiva: el Product Owner dice «me dijiste que la habías terminado» y el programador responde «de leer». La DoD evita esa discusión porque es un acuerdo escrito. Clase 9, p15 a p17.</div>
+  </section>
+
+  <section class="slide titled" data-title="Aplicado">
+    <div class="bar"><p class="kicker">Ejemplo de la cátedra · Clase 9, p11</p><h2 class="h2">Un Product Backlog por dentro</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:22px">
+        <thead><tr><th style="width:6%">Id</th><th>Descripción</th><th style="width:13%">Estimación</th><th style="width:11%">Valor</th></tr></thead>
+        <tbody>
+          <tr><td>01</td><td>Como comprador, quiero guardar un producto como favorito, para tenerlo a mano al comprar.</td><td>XS</td><td>100</td></tr>
+          <tr><td>02</td><td>Como comprador, quiero recibir un email con la confirmación de la compra, para asegurarme de que se hizo bien.</td><td>S</td><td>95</td></tr>
+          <tr><td>04</td><td>Como comprador, quiero elegir un segundo medio de pago, para comprar productos que superen mi límite.</td><td>L</td><td>90</td></tr>
+          <tr><td>06</td><td>Pagos con tarjeta de crédito.</td><td>XL</td><td>88</td></tr>
+          <tr><td>09</td><td>Módulo de envíos.</td><td>XXXL</td><td>82</td></tr>
+        </tbody>
+      </table>
+      <div class="callout mt-m" style="font-size:24px">Ordena el <b>valor de negocio</b>, no el tamaño. Arriba, historias chicas y <b>refinadas</b>; abajo, títulos gruesos que se van a partir cuando suban.</div>
+    </div>
+    <div class="notes">Cinco de los diez ítems del ejemplo de la cátedra (tienda en línea). Tres cosas para leer: el orden lo da el valor de negocio (100, 95, 90…); los de arriba ya son historias de usuario y son chicos, los de abajo son módulos enteros sin refinar; la estimación es de alto nivel, en talles, no en horas. Es la regla «los ítems superiores deben estar refinados» hecha tabla.</div>
+  </section>
+
+  <section class="slide titled" data-title="Repaso">
+    <div class="bar"><p class="kicker">Repaso</p><h2 class="h2">Sin mirar: tres preguntas</h2></div>
+    <div class="body">
+      <div class="stack">
+        <div class="recall" style="font-size:30px">1 · ¿Qué tres roles forman el Equipo Scrum y qué número caracteriza a cada uno?</div>
+        <div class="recall" style="font-size:30px">2 · ¿Quién es dueño de cada artefacto y qué control separa uno del siguiente?</div>
+        <div class="recall" style="font-size:30px">3 · ¿Entra al Incremento una historia que no cumple la DoD? ¿Por qué?</div>
+      </div>
+    </div>
+    <div class="notes">Responder antes de abrir la lección escrita (clases/09-scrum-roles-artefactos.html), que trae las respuestas y un quiz.</div>
+  </section>
+
+  <div class="deck-footer"><span>Taller de Gestión de Proyectos Digitales · Clase 9</span><span class="slide-number" data-current="1" data-total="11"></span></div>
+</div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

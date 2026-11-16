@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 29 · Store procedures y triggers</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 29 · Unidad 4 · DDL: procedimientos y disparadores</p>
+    <h1 class="masthead__title">Store procedures y triggers: código que vive en el motor</h1>
+    <p class="masthead__standfirst">
+      Un procedimiento se ejecuta cuando alguien lo llama. Un trigger, cuando pasa algo
+      en una tabla. Esa es toda la diferencia, y lo primero que hay que poder decir.
+    </p>
+    <p class="masthead__meta">
+      <span>~20 minutos</span>
+      <span>Deck "DDL, SP, Triggers", slides 17–23</span>
+      <span>Prioridad para el 2do parcial: muy alta</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Tres preguntas del modelo de examen salen de acá</span>
+    <p>
+      <a href="../raw/Examen1.webp">Examen1</a>: <b>2</b> "Triggers: explique qué es, diga un
+      ejemplo de cuándo lo utilizaría". <b>5</b> "Store Procedure: explique qué es, cuándo lo
+      utilizaría, cuál es la sentencia utilizada para llamarlo". <b>7</b> "Explique con sus
+      palabras y en detalle qué hace el siguiente Store Procedure" (el
+      <code>GET_LOAD_ID</code> del slide 19). Las tres tienen respuesta modelo abajo.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Store procedures</h2>
+
+  <p>
+    "Un conjunto de instrucciones destinados a ejecutar un proceso específico. Pueden aceptar
+    parámetros de entrada y salida, y pueden devolver ya sea un valor o un conjunto de
+    registros." Su razón de ser, según el deck: encadenar procesos <b>dentro del servidor</b>
+    en lugar de ir y volver entre cliente y servidor por cada paso, lo que "conlleva a un
+    mayor tráfico de datos y tiempo".
+  </p>
+
+  <p>Las tres circunstancias en que son útiles (slide 18, textual de Elmasri §9.4.1):</p>
+  <ol>
+    <li>Si <b>varias aplicaciones</b> necesitan el mismo programa: se guarda en el servidor y
+        todas lo invocan. Menos duplicación, más modularidad.</li>
+    <li>Ejecutar en el servidor <b>reduce el costo de transferencia y comunicación</b> entre
+        cliente y servidor.</li>
+    <li>Mejoran la potencia de modelado de las vistas, permitiendo <b>tipos más complejos de
+        datos derivados</b>.</li>
+  </ol>
+
+  <p>Se ejecuta con <code>CALL nombre_procedimiento(argumentos);</code>.</p>
+
+  <h3>El procedimiento del examen, línea por línea</h3>
+
+<pre><code><span class="k">CREATE PROCEDURE</span> Desa_ETL_ADMIN.GET_LOAD_ID(<span class="k">IN</span> DTS_Package_Name VARCHAR(250), <span class="k">OUT</span> Load_id INTEGER)
+<span class="k">BEGIN</span>
+  <span class="k">DECLARE</span> FECHA DATE;
+  <span class="k">DECLARE</span> HORA INTEGER;
+  <span class="k">SELECT</span> DATE <span class="k">INTO</span> :FECHA;
+  <span class="k">SELECT</span> TIME <span class="k">INTO</span> :HORA;
+  <span class="k">INSERT INTO</span> Desa_ETL_ADMIN.LOAD_INSTANCE_LOG (DTS_Package_Name, Load_Start_Dt, Load_Start_Tm)
+    <span class="k">VALUES</span> (:DTS_Package_Name, :FECHA, :HORA);
+  <span class="k">SELECT</span> Load_Id <span class="k">INTO</span> :Load_Id
+  <span class="k">FROM</span>   Desa_ETL_ADMIN.LOAD_INSTANCE_LOG
+  <span class="k">WHERE</span>  DTS_Package_Name = :DTS_Package_Name
+    <span class="k">AND</span>  Load_Start_Dt = :FECHA <span class="k">AND</span> Load_Start_Tm = :HORA;
+<span class="k">END</span>;</code></pre>
+
+  <p>Antes de abrir la respuesta, escribí la tuya en papel. Es la pregunta 7.</p>
+
+  <details class="reveal">
+    <summary>Respuesta modelo — qué hace GET_LOAD_ID</summary>
+    <div class="reveal__body">
+      <p>
+        Es un procedimiento del esquema <code>Desa_ETL_ADMIN</code> (desarrollo) que <b>registra
+        el inicio de una carga</b> y <b>devuelve el identificador</b> que le asignó la base.
+      </p>
+      <ol>
+        <li>Recibe un parámetro de <b>entrada</b>, el nombre del paquete de carga
+            (<code>DTS_Package_Name</code>), y tiene uno de <b>salida</b>, <code>Load_id</code>.</li>
+        <li>Declara dos variables locales y guarda en ellas la <b>fecha</b> y la <b>hora</b> actuales.</li>
+        <li>Inserta una fila en la tabla de log <code>LOAD_INSTANCE_LOG</code> con el nombre del
+            paquete, la fecha y la hora de inicio. El <code>Load_Id</code> no se inserta: lo
+            genera la tabla (es autonumérico).</li>
+        <li>Busca esa misma fila (por paquete, fecha y hora) y copia su <code>Load_Id</code> en el
+            parámetro de salida.</li>
+      </ol>
+      <p>
+        Quien lo llama, con <code>CALL Desa_ETL_ADMIN.GET_LOAD_ID('P_LDM_AGMT_DAILY_SALES', Load_Id);</code>,
+        obtiene el número de carga (en el slide 20, <code>10100009</code>) y lo usa para marcar
+        las filas que esa carga inserte. Es lo que se ve en la columna <code>Load_Id</code> de la
+        tabla <code>Postal_Code</code> del slide 20.
+      </p>
+    </div>
+  </details>
+
+  <h2><span class="num">02</span>Triggers</h2>
+
+  <p>
+    "Los disparadores se encargan de activar una determinada función cuando ocurre un cierto
+    evento ya sea en una tabla o una vista." El evento es siempre una sentencia DML:
+    <code>INSERT</code>, <code>UPDATE</code> o <code>DELETE</code>. "Se utilizan para ejecutar
+    reglas de negocio en los datos, auditar o validar datos." Elmasri los llama
+    <em class="term">reglas ECA</em>: <b>E</b>vento, <b>C</b>ondición, <b>A</b>cción.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Momento</th><th>Según el deck</th></tr></thead>
+      <tbody>
+        <tr><td><code>BEFORE</code></td><td>Sólo en tablas, <b>antes</b> de verificar las restricciones. Sirve para chequear reglas que no se pueden expresar con referencias.</td></tr>
+        <tr><td><code>AFTER</code></td><td>Sólo en tablas, <b>después</b> de la operación. Se usa para propagar cambios a otras tablas en cascada.</td></tr>
+        <tr><td><code>INSTEAD OF</code></td><td>En <b>vistas</b>, para hacerlas actualizables.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>El ejemplo del slide 23, que es el de Elmasri (en el deck salió con errores de OCR: "IN5ERT", "15 NOT NULL"):</p>
+
+<pre><code><span class="k">CREATE TRIGGER</span> SueldoTotal1
+<span class="k">AFTER INSERT ON</span> EMPLEADO                <span class="c">-- evento</span>
+<span class="k">FOR EACH ROW</span>
+<span class="k">WHEN</span> (NEW.Dno <span class="k">IS NOT NULL</span>)               <span class="c">-- condición</span>
+  <span class="k">UPDATE</span> DEPARTAMENTO                    <span class="c">-- acción</span>
+  <span class="k">SET</span>    SueldoTotal = SueldoTotal + NEW.Sueldo
+  <span class="k">WHERE</span>  Dno = NEW.Dno;</code></pre>
+
+  <p>
+    <code>NEW</code> es la fila que se acaba de insertar (en un <code>UPDATE</code> o un
+    <code>DELETE</code> existe también <code>OLD</code>, la fila de antes).
+    <code>FOR EACH ROW</code> hace que la acción corra una vez por fila afectada.
+  </p>
+
+  <details class="reveal">
+    <summary>Respuesta modelo — pregunta 2 (qué es un trigger y un ejemplo)</summary>
+    <div class="reveal__body">
+      <p>
+        Un trigger es un objeto de la base que ejecuta automáticamente una acción cuando
+        ocurre un evento DML (INSERT, UPDATE o DELETE) sobre una tabla o vista. Se define con
+        un momento (BEFORE, AFTER o INSTEAD OF), una condición opcional y una acción. Se usa
+        para reglas de negocio, auditoría y validación.
+      </p>
+      <p>
+        <b>Ejemplo:</b> en la Clínica, un trigger <code>AFTER INSERT</code> sobre
+        <code>OCUPACION</code> que incrementa el contador de camas ocupadas de la habitación.
+        O uno <code>BEFORE INSERT</code> que rechaza una internación si la habitación ya no tiene
+        camas libres, una regla que una FK o un CHECK no pueden expresar.
+      </p>
+    </div>
+  </details>
+
+  <details class="reveal">
+    <summary>Respuesta modelo — pregunta 5 (store procedure)</summary>
+    <div class="reveal__body">
+      <p>
+        Un store procedure es un conjunto de instrucciones guardado en el servidor de base de
+        datos, que ejecuta un proceso específico; puede recibir parámetros de entrada y salida y
+        devolver un valor o un conjunto de registros. Lo usaría cuando varias aplicaciones
+        necesitan el mismo proceso, o para encadenar varios pasos dentro del servidor y ahorrar
+        el ida y vuelta con el cliente. Se llama con <code>CALL nombre(argumentos);</code>.
+      </p>
+    </div>
+  </details>
+
+  <div class="callout callout--key">
+    <span class="callout__label">SP vs trigger en una línea</span>
+    <p>
+      Al procedimiento lo <b>llama alguien</b> (<code>CALL</code>). El trigger <b>se dispara
+      solo</b>, por un evento DML. Un trigger no recibe parámetros: recibe <code>NEW</code> y
+      <code>OLD</code>.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Práctica</h2>
+
+  <p>
+    El sandbox es SQLite, que tiene triggers pero no procedimientos. Su sintaxis agrega un
+    <code>BEGIN … END</code> alrededor de la acción, y para rechazar una operación usa
+    <code>SELECT RAISE(ABORT, 'mensaje')</code>.
+  </p>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 3 · El SueldoTotal de la Clínica</span>
+    <p class="sqlbox__task">
+      <code>HABITACION</code> tiene ahora una columna <code>Camas_Ocupadas</code>. Escribí un
+      trigger que, cada vez que se inserta una <code>OCUPACION</code>, sume 1 a las camas
+      ocupadas de esa habitación.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TRIGGER Ocupar_Cama
+AFTER INSERT ON OCUPACION
+FOR EACH ROW
+BEGIN
+
+END;</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+ALTER TABLE HABITACION ADD Camas_Ocupadas INT NOT NULL DEFAULT 0;
+UPDATE HABITACION
+SET Camas_Ocupadas = (SELECT COUNT(*) FROM OCUPACION O WHERE O.Cod_Habitacion = HABITACION.Cod_Habitacion);
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TRIGGER Ocupar_Cama
+AFTER INSERT ON OCUPACION
+FOR EACH ROW
+BEGIN
+  UPDATE HABITACION
+  SET Camas_Ocupadas = Camas_Ocupadas + 1
+  WHERE Cod_Habitacion = NEW.Cod_Habitacion;
+END;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO OCUPACION VALUES (5, 3, '2026-10-15', '2026-10-20');
+SELECT Cod_Habitacion, Camas_Ocupadas FROM HABITACION;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 3 · Auditoría</span>
+    <p class="sqlbox__task">
+      Existe la tabla <code>AUDITORIA_HC(Cod_Paciente, Id_Consulta, Operacion)</code>. Cada consulta
+      nueva en <code>HISTORIA_CLINICA</code> tiene que dejar una fila ahí, con
+      <code>Operacion = 'ALTA'</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE AUDITORIA_HC (Cod_Paciente INT, Id_Consulta INT, Operacion VARCHAR(10));
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TRIGGER Auditar_HC
+AFTER INSERT ON HISTORIA_CLINICA
+FOR EACH ROW
+BEGIN
+  INSERT INTO AUDITORIA_HC VALUES (NEW.Cod_Paciente, NEW.Id_Consulta, 'ALTA');
+END;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO HISTORIA_CLINICA VALUES (7, 1, '2026-10-15', 'Control', 1, 4);
+SELECT * FROM AUDITORIA_HC;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 3 · BEFORE: validar lo que una FK no puede</span>
+    <p class="sqlbox__task">
+      Rechazá cualquier <code>OCUPACION</code> nueva si la habitación ya tiene tantas
+      ocupaciones como camas (<code>Cant_Camas</code>). La comprobación intenta internar a
+      alguien en la habitación 1, que tiene una sola cama y ya está ocupada.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TRIGGER Validar_Camas
+BEFORE INSERT ON OCUPACION
+FOR EACH ROW
+WHEN
+
+BEGIN
+  SELECT RAISE(ABORT, 'La habitación no tiene camas libres');
+END;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TRIGGER Validar_Camas
+BEFORE INSERT ON OCUPACION
+FOR EACH ROW
+WHEN (SELECT COUNT(*) FROM OCUPACION WHERE Cod_Habitacion = NEW.Cod_Habitacion)
+     >= (SELECT Cant_Camas FROM HABITACION WHERE Cod_Habitacion = NEW.Cod_Habitacion)
+BEGIN
+  SELECT RAISE(ABORT, 'La habitación no tiene camas libres');
+END;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO OCUPACION VALUES (1, 3, '2026-10-15', '2026-10-20');
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Elegir el momento</span>
+    <p class="quiz__q">
+      Querés impedir que se cargue una internación en una habitación llena.
+      ¿Qué tipo de trigger usás?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="BEFORE: corre antes de que la fila entre, y puede abortar la operación. El deck lo describe justo así: útil para chequear restricciones que no se pueden verificar mediante referencias.">BEFORE INSERT sobre OCUPACION</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="AFTER corre cuando la fila ya entró. Sirve para propagar el cambio a otras tablas, como el contador de camas, no para impedirlo.">AFTER INSERT sobre la OCUPACION</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="INSTEAD OF es para vistas: reemplaza la operación sobre la vista por otra sobre las tablas. OCUPACION es una tabla.">INSTEAD OF sobre la OCUPACION</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">SP o trigger</span>
+    <p class="quiz__q">¿Cuál de estas frases describe a un store procedure y no a un trigger?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Al procedimiento lo invoca alguien, con CALL, y puede recibir parámetros IN y OUT. El trigger nunca se llama: se dispara por un evento.">Se ejecuta cuando alguien lo llama</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es un trigger: se activa solo cuando ocurre un INSERT, UPDATE o DELETE sobre su tabla.">Se dispara al insertar en la tabla</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="NEW y OLD son las filas que recibe un trigger de fila. Un procedimiento recibe parámetros.">Accede a las filas NEW y la OLD</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Cómo se llama</span>
+    <p class="quiz__q">Según el deck, ¿con qué sentencia se ejecuta un store procedure?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="SELECT trae datos; no invoca procedimientos. El slide 18 da la sentencia: CALL &amp;lt;nombre&amp;gt; «lista de argumentos»."><code>SELECT nombre(args);</code></button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 18: &quot;Para ejecutar se debe generar la siguiente sentencia: CALL &amp;lt;nombre del procedimiento o función&amp;gt; «lista de argumentos»&quot;. Es la pregunta 5 del Examen1."><code>CALL nombre(args);</code></button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es un trigger. Al store procedure lo invoca alguien.">No se ejecuta: se dispara solo</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Contexto de tiempo</span>
+    <p class="quiz__q">¿Para qué sirve un trigger <code>INSTEAD OF</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Eso es BEFORE: &quot;sólo se aplica a tablas y antes de verificar las restricciones&quot;.">Para validar antes de tocar la tabla</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es AFTER: &quot;se emplea para ejercer cambios en otras tablas en cascada&quot;.">Para propagar cambios en cascada</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 22: &quot;INSTEAD OF: se aplica en vistas, para hacerlas actualizables&quot;. Es el único de los tres que no va sobre tablas.">Para hacer actualizables las vistas</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Qué lo dispara</span>
+    <p class="quiz__q">Según el deck, ¿qué activa un trigger?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 21: &quot;se activan cuando se modifica la data mediante cualquier evento de una sentencia DML&quot;.">Una sentencia DML: INSERT, UPDATE o DELETE</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="CALL ejecuta un store procedure. El trigger no se llama: lo dispara el evento.">Un <code>CALL</code> desde la aplicación</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Esas son sentencias DDL. El deck habla sólo de eventos DML sobre una tabla o vista.">Un <code>CREATE</code> o un <code>ALTER</code></button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Ventajas del SP</span>
+    <p class="quiz__q">¿Cuál de estas <b>no</b> es una de las circunstancias en que el deck dice que un SP es útil?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Sí está en el deck: se almacena en el servidor y se invoca desde esas aplicaciones, &quot;reduce la duplicidad del esfuerzo y mejora la modularidad&quot;.">Varias aplicaciones usan el mismo programa</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto, esa no está. La integridad referencial la garantiza la FOREIGN KEY. El deck da tres: menos duplicidad (modularidad), menos costo de comunicación cliente–servidor y derivados más complejos en las vistas.">Garantizar la integridad referencial</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí está: ejecutar en el servidor &quot;puede reducir el coste derivado de la transferencia y la comunicación de datos&quot;.">Bajar el tráfico entre cliente y servidor</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Leer el trigger</span>
+    <p class="quiz__q">En <code>SueldoTotal1</code> (AFTER INSERT ON EMPLEADO), ¿qué es <code>NEW.Sueldo</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Ese es DEPARTAMENTO.SueldoTotal, la columna que el trigger actualiza.">El sueldo total del departamento</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Los parámetros IN/OUT son de los store procedures. El trigger recibe filas.">Un parámetro IN del trigger</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. NEW es la fila que acaba de entrar. El trigger suma ese sueldo al SueldoTotal del departamento del empleado, si Dno no es NULL.">El sueldo del empleado recién insertado</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Leer el SP</span>
+    <p class="quiz__q">En <code>GET_LOAD_ID</code>, ¿qué devuelve el parámetro <code>OUT Load_id</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Registra el paquete con la fecha y hora actuales en LOAD_INSTANCE_LOG y después busca esa misma fila (paquete + fecha + hora) para devolver su Load_Id. Es la pregunta 7 del Examen1.">El Load_Id de la fila de log que acaba de insertar</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="FECHA y HORA son variables internas (DECLARE): se usan para insertar y para encontrar la fila, pero no salen.">La fecha y la hora de la carga</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="DTS_Package_Name es el parámetro IN: entra, no sale.">El nombre del paquete DTS</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DDL, SP, Triggers"</b>, slides 17–23 (= <code>raw/Material_Examen/unidad 4 DDL.pdf</code>, pp. 7–11).
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — §9.4.1 "Procedimientos almacenados de bases de
+      datos y funciones" (p. 272), de donde sale el slide 18, y §24.1 "Conceptos de bases de
+      datos activas y triggers" (p. 706), de donde sale el ejemplo <code>SueldoTotal1</code>.
+    </p>
+    <p><a href="https://www.sqlite.org/lang_createtrigger.html">SQLite — CREATE TRIGGER</a>.</p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Escribime las respuestas a las preguntas 2, 5 y 7 del Examen1
+      sin mirar las respuestas modelo, y te las corrijo con el criterio del docente.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0028-indices.html">Anterior: 0028 · Índices</a>
+    <a href="0031-ddl-create-table.html">Siguiente: 0031 · CREATE TABLE</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

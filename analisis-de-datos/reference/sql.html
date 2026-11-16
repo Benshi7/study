@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body class="reference">
+<main>
+<div class="topbar no-print"><a href="../index.html">← Índice</a> · Referencia</div>
+<div class="kicker">Referencia · Bloque 2</div>
+<h1>SQL, bases de datos y Data Warehouse</h1>
+<p class="muted">Fuentes: <a href="../raw/unicaba_fundamentos_sql.pdf">Fundamentos de SQL</a> · <a href="../raw/2%20-%20C.I.A%20SQL%20II%20de%20II.docx">Taller Chinook</a>. Lecciones: <a href="../lessons/0012-bases-de-datos-y-modelo-relacional.html">0012</a> a <a href="../lessons/0015-taller-sql-chinook.html">0015</a>.</p>
+
+<div class="ref-grid">
+<section>
+<h2>Tipos de bases de datos</h2>
+<table>
+  <tr><td>Relacional</td><td>Facturación y stock</td></tr>
+  <tr><td>Documental</td><td>Catálogo con atributos variables</td></tr>
+  <tr><td>Clave-valor</td><td>Carrito y sesiones</td></tr>
+  <tr><td>Columnar</td><td>Dashboards analíticos</td></tr>
+  <tr><td>Grafos</td><td>Recomendaciones</td></tr>
+  <tr><td>Time series</td><td>Sensores IoT, métricas</td></tr>
+</table>
+<h2>Modelo relacional (Codd, 1970)</h2>
+<ul>
+  <li><strong>PK</strong>: única e irrepetible · <strong>FK</strong>: referencia la PK de otra tabla</li>
+  <li><strong>Integridad referencial</strong>: la FK apunta a un registro existente</li>
+  <li>1:1 · 1:N · <strong>N:M → tabla intermedia</strong></li>
+  <li>DBA → Arquitecto → Ingeniero → Scientist → <strong>Analista</strong></li>
+</ul>
+</section>
+<section>
+<h2>OLTP vs OLAP</h2>
+<table>
+  <tr><th></th><th>OLTP</th><th>OLAP</th></tr>
+  <tr><td>Objetivo</td><td>Día a día</td><td>Análisis histórico</td></tr>
+  <tr><td>Ops</td><td>INSERT/UPDATE/DELETE</td><td>SELECT complejos</td></tr>
+  <tr><td>Datos</td><td>Actuales, detallados</td><td>Históricos, agregados</td></tr>
+  <tr><td>Usuarios</td><td>Operarios</td><td>Analistas, BI</td></tr>
+</table>
+<p><strong>Fact</strong>: métricas + FK · <strong>Dim</strong>: contexto + PK · Estrella: dims alrededor de la fact.</p>
+<p><strong>Bronze</strong> crudo, sin transformar · <strong>Silver</strong> limpio, validado, sin duplicados · <strong>Gold</strong> facts, dims, KPIs para BI.</p>
+</section>
+</div>
+
+<h2>Sublenguajes</h2>
+<table>
+  <tr><td><strong>DDL</strong></td><td>CREATE · ALTER · DROP · <strong>TRUNCATE</strong></td><td><strong>DML</strong></td><td><strong>SELECT</strong> · INSERT · UPDATE · DELETE</td></tr>
+  <tr><td><strong>DCL</strong></td><td>GRANT · REVOKE</td><td><strong>TCL</strong></td><td>COMMIT · ROLLBACK · SAVEPOINT</td></tr>
+</table>
+
+<div class="ref-grid">
+<section>
+<h2>SELECT</h2>
+<pre class="code">SELECT … FROM … WHERE … GROUP BY …
+HAVING … ORDER BY … LIMIT …
+-- evaluación:
+FROM → WHERE → GROUP BY → HAVING
+     → SELECT → ORDER BY → LIMIT</pre>
+<ul>
+  <li>WHERE filtra <strong>filas</strong> · HAVING filtra <strong>grupos</strong></li>
+  <li><code>COUNT(*)</code> todas · <code>COUNT(col)</code> sin NULL</li>
+  <li><code>IS NULL</code>, nunca <code>= NULL</code></li>
+  <li><code>BETWEEN</code> incluye los extremos · <code>LIKE 'A%'</code></li>
+</ul>
+</section>
+<section>
+<h2>Taller</h2>
+<ul>
+  <li>INNER = coincidencias · LEFT = toda la izquierda + NULL</li>
+  <li>LEFT JOIN + <code>IS NULL</code> = "sin facturas"</li>
+  <li>Subconsulta: <code>&gt; (SELECT AVG(...))</code> · CTE: <code>WITH x AS (...)</code></li>
+  <li>OVER no colapsa filas · PARTITION BY reinicia por grupo</li>
+  <li>100, 80, 80, 50 → ROW_NUMBER 1-2-3-4 · RANK 1-2-2-4</li>
+  <li>LAG = fila anterior · LEAD = fila siguiente · en los bordes, NULL</li>
+  <li>Física = largo plazo · temporal = intermedia</li>
+  <li>Índice: búsquedas más rápidas, inserciones más lentas</li>
+</ul>
+</section>
+</div>
+</main>
+</body>
+</html>

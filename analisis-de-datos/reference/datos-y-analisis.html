@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datos y análisis</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body class="reference">
+<main>
+<div class="topbar no-print"><a href="../index.html">← Índice</a> · Referencia</div>
+<div class="kicker">Referencia · Bloque 1</div>
+<h1>Tipos de datos, tipos de análisis y DIKW</h1>
+<p class="muted">Fuentes: <a href="../raw/001_INTRODUCCION.pdf#page=24">Intro parte 1, slide 24</a> · <a href="../raw/001_INTRODUCCION_parte_2.pdf#page=24">Intro parte 2, slides 22 a 40</a>. Lecciones: <a href="../lessons/0005-del-dato-al-insight.html">0005</a>, <a href="../lessons/0006-repaso-intercalado-bloque-1.html">0006</a>.</p>
+
+<h2>Tipos de datos (slide 24, literal)</h2>
+<!-- diagram:tipos-datos -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 340" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="tipos-datos-title tipos-datos-desc" xmlns="http://www.w3.org/2000/svg"><title id="tipos-datos-title">Tipos de datos según la cátedra</title><desc id="tipos-datos-desc">Árbol que divide los datos en cualitativos (nominales, ordinales, binarias) y cuantitativos (discretos, continuos), con un ejemplo de cada uno.</desc><defs><marker id="tipos-datos-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="tipos-datos-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="tipos-datos-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="tree" d="M400,72 L400,92"/><path class="tree" d="M248,112 L248,100 Q248,92 256,92 L620,92 Q628,92 628,100 L628,112"/><path class="tree" d="M248,160 L248,184"/><path class="tree" d="M96,208 L96,192 Q96,184 104,184 L392,184 Q400,184 400,192 L400,208"/><path class="tree" d="M248,184 L248,208"/><path class="tree" d="M628,160 L628,184"/><path class="tree" d="M552,208 L552,192 Q552,184 560,184 L696,184 Q704,184 704,192 L704,208"/><rect class="mask" x="320" y="24" width="160" height="48" rx="6"/><rect class="node" x="320" y="24" width="160" height="48" rx="6"/><text class="name" x="400" y="46" text-anchor="middle">Datos</text><text class="sub" x="400" y="60" text-anchor="middle">atributo de un hecho</text><rect class="mask" x="168" y="112" width="160" height="48" rx="6"/><rect class="node" x="168" y="112" width="160" height="48" rx="6"/><text class="name" x="248" y="134" text-anchor="middle">Cualitativos</text><text class="sub" x="248" y="148" text-anchor="middle">no cuantificables</text><rect class="mask" x="548" y="112" width="160" height="48" rx="6"/><rect class="node" x="548" y="112" width="160" height="48" rx="6"/><text class="name" x="628" y="134" text-anchor="middle">Cuantitativos</text><text class="sub" x="628" y="148" text-anchor="middle">cuantificables</text><rect class="mask" x="28" y="208" width="136" height="52" rx="6"/><rect class="node" x="28" y="208" width="136" height="52" rx="6"/><text class="name" x="96" y="232" text-anchor="middle">Nominales</text><text class="sub" x="96" y="246" text-anchor="middle">sin orden</text><text class="note" x="96" y="280" text-anchor="middle">color de ojos</text><rect class="mask" x="180" y="208" width="136" height="52" rx="6"/><rect class="node" x="180" y="208" width="136" height="52" rx="6"/><text class="name" x="248" y="232" text-anchor="middle">Ordinales</text><text class="sub" x="248" y="246" text-anchor="middle">el orden importa</text><text class="note" x="248" y="280" text-anchor="middle">alto · medio · bajo</text><rect class="mask" x="332" y="208" width="136" height="52" rx="6"/><rect class="focal" x="332" y="208" width="136" height="52" rx="6"/><text class="name" x="400" y="232" text-anchor="middle">Binarias</text><text class="sub-accent" x="400" y="246" text-anchor="middle">dos valores</text><text class="note" x="400" y="280" text-anchor="middle">sí / no · frío / caliente</text><rect class="mask" x="484" y="208" width="136" height="52" rx="6"/><rect class="node" x="484" y="208" width="136" height="52" rx="6"/><text class="name" x="552" y="232" text-anchor="middle">Discretos</text><text class="sub" x="552" y="246" text-anchor="middle">enteros, indivisibles</text><text class="note" x="552" y="280" text-anchor="middle">cantidad de hijos</text><rect class="mask" x="636" y="208" width="136" height="52" rx="6"/><rect class="node" x="636" y="208" width="136" height="52" rx="6"/><text class="name" x="704" y="232" text-anchor="middle">Continuos</text><text class="sub" x="704" y="246" text-anchor="middle">valor en un intervalo</text><text class="note" x="704" y="280" text-anchor="middle">altura: 1.78 m</text><line class="rule" x1="24" y1="300" x2="776" y2="300"/><text class="eyebrow" x="24" y="324" text-anchor="start">LEYENDA</text><rect class="focal" x="104" y="316" width="16" height="12" rx="3"/><text class="sub" x="128" y="325" text-anchor="start">trampa: binarias va del lado CUALITATIVO (slide 24)</text></svg></div><figcaption>Tipos de datos (slide 24): binarias está del lado cualitativo. <a href="../diagrams/tipos-datos.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:tipos-datos -->
+
+<div class="ref-grid">
+<section>
+<table>
+  <tr><th>Tipo</th><th>Ejemplo de la cátedra</th></tr>
+  <tr><td>Nominal</td><td>Colores de un LED</td></tr>
+  <tr><td>Ordinal</td><td>Alto / Medio / Bajo; calificaciones</td></tr>
+  <tr><td>Binario</td><td>Frío / Caliente</td></tr>
+  <tr><td>Discreto</td><td>"Un millón de amigos"</td></tr>
+  <tr><td>Continuo</td><td>"Carlos mide 1.78"</td></tr>
+</table>
+</section>
+<section>
+<h3>Reglas para el choice</h3>
+<ul>
+  <li>Verificá <strong>etiqueta + definición + ejemplo</strong>: el distractor cambia una sola pieza.</li>
+  <li>"Cualitativo continuo" no existe. <strong>Binarias</strong> va en cualitativos.</li>
+  <li>En EDA (<a href="eda.html">referencia</a>): cualitativo = <strong>categórico</strong>, cuantitativo = <strong>numérico</strong>. Una binaria es categórica nominal.</li>
+  <li>Clasificá por los <strong>valores</strong>, no por el nombre de la columna.</li>
+</ul>
+</section>
+</div>
+
+<h2>Los 5 tipos de análisis</h2>
+<table>
+  <tr><th>Tipo</th><th>Pregunta</th><th>Ejemplo del slide</th></tr>
+  <tr><td>Descriptivo</td><td>¿Qué pasó?</td><td>Promedio de edad = 23 años</td></tr>
+  <tr><td>Exploratorio</td><td>¿Hay un patrón oculto?</td><td>Varones de 23 a 25 con notas menores que las mujeres</td></tr>
+  <tr><td>Diagnóstico</td><td>¿Por qué pasó?</td><td>Un error en el pago explica la baja de ventas</td></tr>
+  <tr><td>Predictivo</td><td>¿Qué va a pasar?</td><td>Ventas 2022 → modelo para 2023</td></tr>
+  <tr><td>Prescriptivo</td><td>¿Qué hacer?</td><td>Ajustar precios para no perder clientes</td></tr>
+</table>
+<p>Misma métrica en el tiempo = <strong>descriptivo</strong>. Cruce de variables = <strong>exploratorio</strong> (el EDA genera hipótesis para validar; la hipótesis sobre <em>causas</em> sigue siendo diagnóstico). Cuestionario #17: <strong>A-2, B-3, C-4, D-5, E-1</strong>.</p>
+
+<div class="ref-grid">
+<section>
+<h2>DIKW</h2>
+<pre class="diagram">SABIDURÍA     juicio → decisiones estratégicas
+CONOCIMIENTO  aplicar info para resolver
+INFORMACIÓN   datos procesados + contexto
+DATOS         hechos discontinuos</pre>
+<p><strong>Insight</strong>: información de valor que ayuda a decidir y a plantear estrategias.</p>
+</section>
+<section>
+<h2>Flujo del Data Analyst</h2>
+<ol>
+  <li>Problema / pregunta</li>
+  <li>Hipótesis</li>
+  <li>Exploración y consultas</li>
+  <li>Recopilar información de valor</li>
+  <li>Visualizaciones</li>
+  <li>Comunicar hallazgos (iterativo)</li>
+</ol>
+<p>Generar información: fuentes → <strong>ETL</strong> → análisis → visualización → decisiones.</p>
+</section>
+</div>
+</main>
+</body>
+</html>

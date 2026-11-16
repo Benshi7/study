@@ -1,0 +1,24 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<!-- size: 760x300 -->
+<link rel="stylesheet" href="theme.css"><link rel="stylesheet" href="figure.css">
+<style>
+.fig { padding: 14px 16px; }
+.steps { display: flex; }
+.step { flex: 1; min-width: 0; }
+.chev { height: 52px; display: flex; align-items: center; justify-content: center; color: var(--c-bg); font-weight: 700; font-size: 16px; padding: 0 14px 0 20px;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%); margin-right: -6px; text-align: center; line-height: 1.1; }
+.step:first-child .chev { clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); padding-left: 12px; }
+.desc { padding: 10px 8px 0 6px; font-size: 14.5px; line-height: 1.3; color: var(--c-text); }
+.n { display: block; font-size: 13px; font-weight: 700; color: var(--c-muted); letter-spacing: .06em; margin-bottom: 2px; }
+.note { margin-top: 14px; font-size: 14.5px; color: var(--c-muted); border-top: 1px solid var(--c-rule); padding-top: 8px; }
+</style></head><body><div class="fig">
+<div class="steps">
+<div class="step"><div class="chev" style="background:var(--p2)">Reportado</div><div class="desc"><span class="n">1</span>El vecino registra el reporte</div></div>
+<div class="step"><div class="chev" style="background:var(--p3)">Validado</div><div class="desc"><span class="n">2</span>Otros vecinos lo confirman</div></div>
+<div class="step"><div class="chev" style="background:var(--p4)">Derivado</div><div class="desc"><span class="n">3</span>Se envía al área responsable</div></div>
+<div class="step"><div class="chev" style="background:var(--p5)">En gestión</div><div class="desc"><span class="n">4</span>El área trabaja en la incidencia</div></div>
+<div class="step"><div class="chev" style="background:var(--p7)">Resuelto</div><div class="desc"><span class="n">5</span>La incidencia se resolvió</div></div>
+<div class="step"><div class="chev" style="background:var(--p1)">Cerrado</div><div class="desc"><span class="n">6</span>Se cierra con registro</div></div>
+</div>
+<p class="note">Estados previstos; se confirman con las áreas responsables.</p>
+</div></body></html>

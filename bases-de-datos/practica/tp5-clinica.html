@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TP5 Clínica · Scripts paso a paso</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Práctica · TP5 DDL-DML Clínica</p>
+    <h1 class="masthead__title">Los scripts del TP, de a un escalón</h1>
+    <p class="masthead__standfirst">
+      Cada escalón es una pieza del script final, con corrección automática. Hacelos en orden:
+      cada uno usa lo que armaste en el anterior. Cuando terminás, sabés escribir el TP entero.
+    </p>
+    <p class="masthead__meta">
+      <span>Sigue el camino de la <a href="../lessons/0040-integrador-tp5-clinica.html">lección 0040</a></span>
+      <span>Motor: SQLite 3.45 en el navegador</span>
+    </p>
+  </header>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">Cómo se usa</span>
+    <p>
+      Los escalones 1 a 5 trabajan con <b>una sola tabla</b>, TORRE, y la llevan de punta a
+      punta: Desa, datos, Prod, insert-select, vista. Es el recorrido completo en miniatura.
+      En el TP repetís ese mismo recorrido con las 13 tablas. El escalón 6 son los seis
+      pedidos de la consigna, mezclados y sin pistas: ahí ya no se trata de saber la sintaxis,
+      sino de elegir la herramienta.
+    </p>
+  </blockquote>
+
+  <h2><span class="num">01</span>Desa_Torre: el CREATE</h2>
+
+  <div class="sqlbox">
+    <span class="sqlbox__label">Escalón 1 · DDL en español</span>
+    <p class="sqlbox__task">
+      Creá <code>Desa_Torre</code> con <code>Id_Torre</code> (PK), <code>Nombre</code>,
+      <code>Tipo_Torre</code> (sólo 'Hospitalización' o 'Consulta'), <code>Calle</code>,
+      <code>Numero</code>, <code>Piso</code> y <code>Depto</code>, en ese orden. Obligatorios:
+      todos menos piso y depto. La comprobación carga una torre válida y otra con un tipo inválido,
+      que tu tabla tiene que rechazar.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE IF NOT EXISTS Desa_Torre (
+
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE IF NOT EXISTS Desa_Torre (
+  Id_Torre   INT         PRIMARY KEY,
+  Nombre     VARCHAR(30) NOT NULL,
+  Tipo_Torre VARCHAR(20) NOT NULL CHECK (Tipo_Torre IN ('Hospitalización', 'Consulta')),
+  Calle      VARCHAR(40) NOT NULL,
+  Numero     INT         NOT NULL,
+  Piso       INT,
+  Depto      CHAR(2)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO Desa_Torre VALUES (1, 'Torre Norte', 'Hospitalización', 'Av. Rivadavia', 1500, NULL, NULL);
+INSERT INTO Desa_Torre VALUES (2, 'Torre Rara', 'Depósito', 'Av. Rivadavia', 1520, NULL, NULL);
+</script>
+  </div>
+
+  <h2><span class="num">02</span>Desa_Torre: los datos</h2>
+
+  <div class="sqlbox">
+    <span class="sqlbox__label">Escalón 2 · INSERT VALUES</span>
+    <p class="sqlbox__task">
+      La tabla ya existe. Cargá las tres torres en <b>un solo INSERT</b>: dos de hospitalización
+      (Torre Norte, Av. Rivadavia 1500; Torre Sur, Av. Rivadavia 1520) y una de consulta
+      (Torre Este, Av. Belgrano 3500, piso 1, depto 'A').
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO Desa_Torre (Id_Torre, Nombre, Tipo_Torre, Calle, Numero, Piso, Depto)
+VALUES
+</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE Desa_Torre (
+  Id_Torre INT PRIMARY KEY, Nombre VARCHAR(30) NOT NULL,
+  Tipo_Torre VARCHAR(20) NOT NULL CHECK (Tipo_Torre IN ('Hospitalización', 'Consulta')),
+  Calle VARCHAR(40) NOT NULL, Numero INT NOT NULL, Piso INT, Depto CHAR(2)
+);
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO Desa_Torre (Id_Torre, Nombre, Tipo_Torre, Calle, Numero, Piso, Depto)
+VALUES
+  (1, 'Torre Norte', 'Hospitalización', 'Av. Rivadavia', 1500, NULL, NULL),
+  (2, 'Torre Sur',   'Hospitalización', 'Av. Rivadavia', 1520, NULL, NULL),
+  (3, 'Torre Este',  'Consulta',        'Av. Belgrano',  3500, 1,    'A');
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM Desa_Torre;
+</script>
+  </div>
+
+  <h2><span class="num">03</span>Prod_Tower: el CREATE en inglés y el INSERT SELECT</h2>
+
+  <div class="sqlbox">
+    <span class="sqlbox__label">Escalón 3 · Producción</span>
+    <p class="sqlbox__task">
+      Creá <code>Prod_Tower</code> con <code>Tower_Id</code>, <code>Name</code>, <code>Tower_Type</code>,
+      <code>Street</code>, <code>Number</code>, <code>Floor</code>, <code>Apartment</code> (mismas
+      restricciones que Desa, con los valores del tipo traducidos: 'Hospitalization' y 'Outpatient')
+      y poblala desde <code>Desa_Torre</code> con un insert-select. Para traducir el tipo vas a necesitar
+      un <code>CASE</code> (<a href="../lessons/0039-vistas.html">0039</a>).
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE IF NOT EXISTS Prod_Tower (
+
+);
+
+INSERT INTO Prod_Tower (Tower_Id, Name, Tower_Type, Street, Number, Floor, Apartment)
+SELECT
+FROM Desa_Torre;</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE Desa_Torre (
+  Id_Torre INT PRIMARY KEY, Nombre VARCHAR(30) NOT NULL,
+  Tipo_Torre VARCHAR(20) NOT NULL CHECK (Tipo_Torre IN ('Hospitalización', 'Consulta')),
+  Calle VARCHAR(40) NOT NULL, Numero INT NOT NULL, Piso INT, Depto CHAR(2)
+);
+INSERT INTO Desa_Torre VALUES
+  (1, 'Torre Norte', 'Hospitalización', 'Av. Rivadavia', 1500, NULL, NULL),
+  (2, 'Torre Sur',   'Hospitalización', 'Av. Rivadavia', 1520, NULL, NULL),
+  (3, 'Torre Este',  'Consulta',        'Av. Belgrano',  3500, 1,    'A');
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE IF NOT EXISTS Prod_Tower (
+  Tower_Id   INT         PRIMARY KEY,
+  Name       VARCHAR(30) NOT NULL,
+  Tower_Type VARCHAR(20) NOT NULL CHECK (Tower_Type IN ('Hospitalization', 'Outpatient')),
+  Street     VARCHAR(40) NOT NULL,
+  Number     INT         NOT NULL,
+  Floor      INT,
+  Apartment  CHAR(2)
+);
+
+INSERT INTO Prod_Tower (Tower_Id, Name, Tower_Type, Street, Number, Floor, Apartment)
+SELECT Id_Torre, Nombre,
+       CASE Tipo_Torre WHEN 'Hospitalización' THEN 'Hospitalization' ELSE 'Outpatient' END,
+       Calle, Numero, Piso, Depto
+FROM Desa_Torre;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT Tower_Id, Name, Tower_Type, Street, Number, Floor, Apartment FROM Prod_Tower;
+</script>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">¿Hace falta traducir los valores?</span>
+    <p>
+      La consigna pide tablas y campos en inglés; no dice nada de los <b>datos</b>. Traducir el
+      tipo es opcional. Si no lo traducís, el CHECK de Prod tiene que aceptar los valores en
+      español. Lo que no puede pasar es que los dos queden desparejos y el insert-select falle.
+      Si dudás, preguntalo en clase.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Vista_Torre: de vuelta al español</h2>
+
+  <div class="sqlbox">
+    <span class="sqlbox__label">Escalón 4 · Vista sobre producción</span>
+    <p class="sqlbox__task">
+      Creá <code>Vista_Torre</code> sobre <code>Prod_Tower</code>, con todas sus columnas en
+      español: <code>Id_Torre, Nombre, Tipo_Torre, Calle, Numero, Piso, Depto</code>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE VIEW Vista_Torre AS
+</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE Prod_Tower (
+  Tower_Id INT PRIMARY KEY, Name VARCHAR(30) NOT NULL, Tower_Type VARCHAR(20) NOT NULL,
+  Street VARCHAR(40) NOT NULL, Number INT NOT NULL, Floor INT, Apartment CHAR(2)
+);
+INSERT INTO Prod_Tower VALUES
+  (1, 'Torre Norte', 'Hospitalization', 'Av. Rivadavia', 1500, NULL, NULL),
+  (2, 'Torre Sur',   'Hospitalization', 'Av. Rivadavia', 1520, NULL, NULL),
+  (3, 'Torre Este',  'Outpatient',      'Av. Belgrano',  3500, 1,    'A');
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE VIEW Vista_Torre AS
+SELECT Tower_Id   AS Id_Torre,
+       Name       AS Nombre,
+       Tower_Type AS Tipo_Torre,
+       Street     AS Calle,
+       Number     AS Numero,
+       Floor      AS Piso,
+       Apartment  AS Depto
+FROM Prod_Tower;
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT Id_Torre, Nombre, Tipo_Torre, Calle, Numero, Piso, Depto FROM Vista_Torre;
+</script>
+  </div>
+
+  <h2><span class="num">05</span>Una FK compuesta de verdad: Desa_Ocupacion</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Escalón 5 · La N:N con atributos</span>
+    <p class="sqlbox__task">
+      Con la base completa de la Clínica, creá <code>Desa_Ocupacion</code>: <code>Id_Habitacion</code>,
+      <code>Id_Paciente</code>, <code>Fecha_Desde</code>, <code>Fecha_Hasta_Prevista</code>. La PK es de tres
+      columnas, cada id es FK a <code>HABITACION</code> y a <code>PACIENTE</code>, y la fecha hasta no
+      puede ser anterior a la desde. La comprobación intenta internar a un paciente que no existe.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">CREATE TABLE Desa_Ocupacion (
+
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+CREATE TABLE Desa_Ocupacion (
+  Id_Habitacion        INT  NOT NULL,
+  Id_Paciente          INT  NOT NULL,
+  Fecha_Desde          DATE NOT NULL,
+  Fecha_Hasta_Prevista DATE,
+  PRIMARY KEY (Id_Habitacion, Id_Paciente, Fecha_Desde),
+  FOREIGN KEY (Id_Habitacion) REFERENCES HABITACION (Cod_Habitacion),
+  FOREIGN KEY (Id_Paciente)   REFERENCES PACIENTE (Cod_Paciente),
+  CHECK (Fecha_Hasta_Prevista >= Fecha_Desde)
+);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+INSERT INTO Desa_Ocupacion VALUES (1, 99, '2026-10-15', '2026-10-20');
+</script>
+  </div>
+
+  <h2><span class="num">06</span>Los seis pedidos, mezclados</h2>
+
+  <p>
+    Sin pistas y en otro orden que la consigna, a propósito. Antes de escribir, decidí qué
+    necesita cada uno: ¿un JOIN, una agregada, un EXISTS, un self join? Elegir es la mitad
+    del ejercicio. Base: la Clínica completa.
+  </p>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Pedido · médicos que no son jefes</span>
+    <p class="sqlbox__task">Listar los médicos que no son jefes y su especialidad (nombre del médico, nombre de la especialidad).</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT M.Nombre, E.Nombre
+FROM PROFESIONAL M
+JOIN ESPECIALIDAD E ON E.Cod_Especialidad = M.Cod_Especialidad
+WHERE NOT EXISTS (SELECT * FROM PROFESIONAL S WHERE S.Cod_Jefe = M.Cod_Profesional);
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Pedido · habitaciones de la Torre 1</span>
+    <p class="sqlbox__task">Informar la cantidad de habitaciones de la Torre 1.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT COUNT(*) FROM HABITACION WHERE Cod_Torre = 1;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Pedido · supervisados</span>
+    <p class="sqlbox__task">Listar los médicos supervisados por Marta Vera (nombre).</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT M.Nombre
+FROM PROFESIONAL M
+JOIN PROFESIONAL J ON J.Cod_Profesional = M.Cod_Jefe
+WHERE J.Nombre = 'Marta Vera';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Pedido · Pediatría</span>
+    <p class="sqlbox__task">Listar los pacientes (nombre) que se atendieron en el servicio de Pediatría, cada uno una vez.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT Nombre
+FROM PACIENTE
+WHERE Cod_Paciente IN (SELECT H.Cod_Paciente
+                       FROM HISTORIA_CLINICA H
+                       JOIN SERVICIO S ON S.Cod_Servicio = H.Cod_Servicio
+                       WHERE S.Nombre = 'Pediatría');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Pedido · internados con ventana</span>
+    <p class="sqlbox__task">Listar el nombre de los pacientes internados en habitaciones con ventana.</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.Nombre
+FROM PACIENTE P
+JOIN OCUPACION O  ON O.Cod_Paciente = P.Cod_Paciente
+JOIN HABITACION H ON H.Cod_Habitacion = O.Cod_Habitacion
+WHERE H.Posee_Ventana = 'S';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">Pedido · teléfonos OSDE</span>
+    <p class="sqlbox__task">Listar los teléfonos de los pacientes que pertenezcan a OSDE (nombre y teléfono).</p>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.Nombre, T.Telefono
+FROM PACIENTE P
+JOIN PACIENTE_TELEFONO T ON T.Cod_Paciente = P.Cod_Paciente
+JOIN PREPAGA PR          ON PR.Cod_Prepaga = P.Cod_Prepaga
+WHERE PR.Nombre = 'OSDE';
+</script>
+  </div>
+
+  <hr>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Cuando tengas el script entero del TP con el DER nuevo,
+      pasámelo: lo corro con las FK activas y te digo qué rompe antes que el docente.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../lessons/0040-integrador-tp5-clinica.html">Lección 0040 · Integrador TP5</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+    <a href="../index.html">Inicio</a>
+  </nav>
+
+</main>
+
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

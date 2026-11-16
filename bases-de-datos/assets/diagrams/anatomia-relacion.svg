@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 272" width="720" height="272"
+     role="img" aria-labelledby="anatomia-relacion-title anatomia-relacion-desc">
+  <title id="anatomia-relacion-title">Anatomía de una relación</title>
+  <desc id="anatomia-relacion-desc">Una relación ESTUDIANTE dibujada como tabla de cuatro columnas — Legajo, Nombre, Año y Especialidad — con tres filas de datos. Una llave superior abarca las cuatro columnas y las rotula como el grado de la relación. Una llave izquierda abarca las tres filas de datos y las rotula como la cardinalidad. Una guía inferior señala la columna Especialidad e indica su dominio, el conjunto de valores permitidos.</desc>
+
+  <style>
+    .dg-paper  { fill: #fffef9; }
+    .dg-cell   { fill: none; stroke: #56544c; stroke-width: 1; }
+    .dg-head   { fill: rgba(26,26,23,0.05); stroke: #56544c; stroke-width: 1; }
+    .dg-outer  { fill: none; stroke: #1a1a17; stroke-width: 1.2; }
+    .dg-hname  { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dg-val    { fill: #56544c; font: 400 12px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .dg-brk    { fill: none; stroke: #1a1a17; stroke-width: 1; }
+    .dg-eyeb   { fill: #1a1a17; font: 600 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; }
+    .dg-cnt    { fill: #56544c; font: 400 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dg-leader { fill: none; stroke: #7a2e0e; stroke-width: 1; stroke-dasharray: 4 3; }
+    .dg-acc    { fill: #7a2e0e; font: italic 12px "Iowan Old Style", Palatino, Georgia, serif; }
+
+    @media (prefers-color-scheme: dark) {
+      .dg-paper  { fill: #16161a; }
+      .dg-cell   { stroke: #a8a498; }
+      .dg-head   { fill: rgba(232,228,217,0.06); stroke: #a8a498; }
+      .dg-outer  { stroke: #e8e4d9; }
+      .dg-hname  { fill: #e8e4d9; }
+      .dg-val    { fill: #a8a498; }
+      .dg-brk    { stroke: #e8e4d9; }
+      .dg-eyeb   { fill: #e8e4d9; }
+      .dg-cnt    { fill: #a8a498; }
+      .dg-leader { stroke: #e08a5c; }
+      .dg-acc    { fill: #e08a5c; }
+    }
+  </style>
+
+  <rect width="720" height="272" class="dg-paper"/>
+
+  <!-- ─── Grado: llave superior sobre las cuatro columnas ─── -->
+  <text x="400" y="20" class="dg-eyeb" text-anchor="middle">GRADO</text>
+  <text x="400" y="36" class="dg-cnt"  text-anchor="middle">4 atributos</text>
+  <path d="M200 56 V44 H600 V56" class="dg-brk"/>
+
+  <!-- ─── Cabecera: los atributos ─── -->
+  <rect x="200" y="72" width="400" height="32" class="dg-head"/>
+  <text x="240" y="92" class="dg-hname">Legajo</text>
+  <text x="308" y="92" class="dg-hname">Nombre</text>
+  <text x="416" y="92" class="dg-hname">Año</text>
+  <text x="488" y="92" class="dg-hname">Especialidad</text>
+
+  <!-- ─── Tuplas ─── -->
+  <text x="240" y="124" class="dg-val">1042</text>
+  <text x="308" y="124" class="dg-val">Bruno</text>
+  <text x="416" y="124" class="dg-val">3</text>
+  <text x="488" y="124" class="dg-val">Datos</text>
+
+  <text x="240" y="156" class="dg-val">1043</text>
+  <text x="308" y="156" class="dg-val">Marina</text>
+  <text x="416" y="156" class="dg-val">2</text>
+  <text x="488" y="156" class="dg-val">Sistemas</text>
+
+  <text x="240" y="188" class="dg-val">1044</text>
+  <text x="308" y="188" class="dg-val">Iván</text>
+  <text x="416" y="188" class="dg-val">3</text>
+  <text x="488" y="188" class="dg-val">Redes</text>
+
+  <!-- Grilla: separadores de fila y de columna, y marco exterior -->
+  <line x1="200" y1="136" x2="600" y2="136" class="dg-cell"/>
+  <line x1="200" y1="168" x2="600" y2="168" class="dg-cell"/>
+  <line x1="300" y1="72"  x2="300" y2="200" class="dg-cell"/>
+  <line x1="400" y1="72"  x2="400" y2="200" class="dg-cell"/>
+  <line x1="480" y1="72"  x2="480" y2="200" class="dg-cell"/>
+  <rect x="200" y="72" width="400" height="128" class="dg-outer"/>
+
+  <!-- ─── Cardinalidad: llave izquierda sobre las filas de datos ─── -->
+  <path d="M188 104 H176 V200 H188" class="dg-brk"/>
+  <text x="164" y="148" class="dg-eyeb" text-anchor="end">CARDINALIDAD</text>
+  <text x="164" y="164" class="dg-cnt"  text-anchor="end">3 tuplas</text>
+
+  <!-- ─── Dominio: guía bajo la columna Especialidad ─── -->
+  <line x1="540" y1="200" x2="540" y2="228" class="dg-leader"/>
+  <text x="540" y="248" class="dg-acc" text-anchor="middle">dominio: {Datos, Sistemas, Redes}</text>
+</svg>

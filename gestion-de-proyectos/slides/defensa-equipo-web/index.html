@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="unicaba" data-theme-base="assets/themes/">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Team defense deck (10 speakers, 2:30 each, 25 min; order aligned with the team's shared table). Source of truth: raw/TP_Cascada_Grupo01_corregido.docx.pdf (TP entregado 14/10/2026).
+     Visible copy in neutral Spanish; the spoken script and the hand-off to the next speaker live in <div class="notes"> (press S).
+     Diagrams are generated: python3 tools/diagramas.py rewrites everything between the diagram markers.
+     Mock screenshots: slides/defensa-equipo/img/mock-*.png (prototype/mock/index.html, 1600x900 @1.5x). -->
+<title>Defensa del TP Cascada · Grupo 01</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" id="theme-link" href="assets/themes/unicaba.css">
+<link rel="stylesheet" href="assets/animations/animations.css">
+<link rel="stylesheet" href="assets/diagram.css">
+<style>
+  /* Speaker chip in the title bar: who talks and for how long. */
+  .slide.titled .bar{align-items:center}
+  .who{margin-left:auto;white-space:nowrap;font-size:18px;font-weight:600;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:6px 16px}
+  .who small{font-weight:500;opacity:.85;margin-left:8px}
+  /* Relay / agenda */
+  .relay{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  .relay .step{border:1px solid var(--border);border-top:4px solid var(--accent);border-radius:var(--radius-sm);padding:16px 18px;background:var(--surface)}
+  .relay .step.v{border-top-color:var(--accent-2)}
+  .relay .n{font:600 14px var(--font-mono);color:var(--text-3)}
+  .relay .t{font-size:22px;font-weight:700;margin:6px 0 4px;color:var(--text-1)}
+  .relay .p{font-size:17px;color:var(--text-2)}
+  /* Lucía's morning */
+  .morning{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+  .morning::before{content:"";position:absolute;left:0;right:0;top:27px;height:2px;background:var(--border-strong)}
+  .morning .m{padding-right:28px;position:relative}
+  .morning .h{display:inline-block;background:var(--accent);color:#fff;font:700 22px var(--font-sans);padding:12px 18px;border-radius:999px;position:relative}
+  .morning .m:last-child .h{background:var(--accent-2)}
+  .morning p{font-size:24px;line-height:1.4;margin:18px 0 0;color:var(--text-2)}
+  .morning b{color:var(--text-1)}
+  /* Image + argument */
+  .shot{display:grid;grid-template-columns:900px 1fr;gap:56px;align-items:center}
+  .shot .img-frame{--img-ratio:11/9}
+  .shot ul{margin:0;padding-left:26px;font-size:28px;line-height:1.45}
+  .shot li{margin-bottom:12px}
+  .shot li b{color:var(--accent-3)}
+  .disclaimer{display:inline-block;font-size:15px;font-weight:600;color:var(--text-3);border:1px dashed var(--border-strong);border-radius:999px;padding:4px 14px;margin-top:14px}
+  .pair-shots{display:grid;grid-template-columns:600px 600px;gap:64px;justify-content:center}
+  .pair-shots h4{font-size:24px;margin:16px 0 4px;color:var(--accent-3)}
+  .pair-shots p{font-size:20px;margin:0;color:var(--text-2)}
+  /* Test results */
+  .verdict{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .verdict .card{text-align:center}
+  .verdict .stage{font-size:22px;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+  .verdict .res{font-size:56px;font-weight:800;margin:8px 0}
+  .ok{color:var(--good)} .bad{color:var(--bad)}
+  .quote{font-family:var(--font-serif);font-style:italic;font-size:34px;line-height:1.35;color:var(--text-1)}
+  /* Steps (Design Thinking) */
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .steps .s{background:var(--surface-2);border-radius:var(--radius-sm);padding:18px}
+  .steps .s b{display:block;font-size:22px;color:var(--accent-3);margin-bottom:6px}
+  .steps .s span{font-size:18px;color:var(--text-2);line-height:1.4}
+  /* Stakeholder 2x2 */
+  .grid2x2{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:12px}
+  .grid2x2 .q{border-radius:var(--radius-sm);padding:16px 20px;font-size:20px;line-height:1.4;background:var(--surface-2)}
+  .grid2x2 .q.hot{background:color-mix(in srgb,var(--accent) 12%,#fff);border:1.5px solid var(--accent)}
+  .grid2x2 .q h5{margin:0 0 6px;font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3)}
+  /* Budget bars */
+  .bars{display:flex;flex-direction:column;gap:10px;font-size:19px}
+  .bars .r{display:grid;grid-template-columns:340px 1fr 110px;align-items:center;gap:14px}
+  .bars .b{height:22px;border-radius:4px;background:var(--accent-2);opacity:.85}
+  .bars .r.res .b{background:var(--accent);opacity:1}
+  .bars .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .num{font-size:96px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--accent)}
+  .num.v{color:var(--accent-2)}
+  .team{font-size:22px;line-height:1.7;color:rgba(255,255,255,.92);max-width:1500px}
+  .fig.tall svg{max-height:640px}
+  /* Mouse navigation: on-screen buttons (wheel is handled in the inline script at the end). */
+  .nav-btns{position:fixed;right:20px;bottom:44px;z-index:40;display:flex;flex-direction:column;gap:8px;opacity:.55;transition:opacity .2s}
+  .nav-btns:hover{opacity:1}
+  .nav-btns button{width:48px;height:48px;border-radius:50%;border:1px solid var(--border-strong);background:var(--surface);color:var(--text-1);font-size:22px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .nav-btns button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  @media print{.nav-btns{display:none}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ============ 1 · BRUNO — apertura ============ -->
+  <section class="slide cover" data-title="Portada">
+    <p class="kicker">Taller de Gestión de Proyectos Digitales · TP integrador en cascada · Grupo 01</p>
+    <h1 class="h1" style="font-size:88px">Modernización del<br>Mapa Interactivo de la Ciudad</h1>
+    <p class="lede mt-m" style="max-width:62ch;font-size:28px">Una capa geográfica común para que el vecino consulte, reporte y siga lo que pasa en su entorno, sin saber qué área lo gestiona.</p>
+    <p class="team mt-l">Bruno Celia · Camil Malespina · Corina Cesarini · Jonas Gho · Matias Sanchez · Miriam Raposo · Oscar Moreira · Pablo Galloro · Víctor Riveros Araujo · Víctor Avendaño</p>
+    <div class="notes"><b>Reglas para todos:</b> no leer la diapositiva (la diapositiva muestra, ustedes cuentan); una idea por slide; mirar al jurado; terminar siempre con la frase de pase, que nombra al siguiente; cronometrar el ensayo general (2:30 por persona, 25 minutos en total). Si alguien se pasa, el que sigue recorta, no acelera.<br><br><b>Bruno.</b> Arrancar sin leer la diapositiva. «Buenas. Somos el grupo 01 y les venimos a proponer algo concreto: modernizar el Mapa Interactivo de la Ciudad.» Pausa. «Pero antes de hablar de mapas, les quiero presentar a alguien.» Pasar de inmediato a la siguiente. Tiempo de esta diapositiva: 10 segundos.</div>
+  </section>
+
+  <section class="slide titled" data-title="Gancho: la mañana de Lucía">
+    <div class="bar"><p class="kicker">El problema</p><h2 class="h2">Una mañana con información fragmentada</h2><span class="who">Bruno</span></div>
+    <div class="body">
+      <div class="morning anim-stagger-list" data-anim="stagger-list">
+        <div class="m"><span class="h">07:30</span><p><b>Lucía organiza el recorrido</b> a la escuela con sus dos hijos.</p></div>
+        <div class="m"><span class="h">07:40</span><p><b>Busca si hay obras</b>: la información está repartida entre canales.</p></div>
+        <div class="m"><span class="h">07:50</span><p><b>Quiere reportar un corte</b>, pero no sabe qué área lo gestiona.</p></div>
+        <div class="m"><span class="h">Después</span><p><b>Envía el reclamo</b> y no puede saber si sigue vigente ni quién lo tomó.</p></div>
+      </div>
+      <div class="callout mt-l" style="font-size:30px">La información existe. El problema es que está <b>fragmentada</b>, y el vecino no ve qué pasa con lo que reporta.</div>
+    </div>
+    <div class="notes"><b>Bruno.</b> Abrir con una pregunta al público, levantando la mano: «¿Quién sabe a qué área hay que avisarle si hay un contenedor bloqueando la vereda?» Esperar dos segundos. «Nosotros tampoco sabíamos.» Después contarlo como una historia, en presente: «Son las siete y media. Lucía tiene dos chicos y los tiene que llevar a la escuela. Quiere saber si hay obras en el camino: abre una página, otra, otra. Ve un corte y lo quiere reportar, pero ¿a quién? ¿Tránsito? ¿Espacio Público? Manda el reclamo… y nunca más sabe nada.» Remate: «Lucía no es real: es la persona que construimos en el Design Thinking a partir de entrevistas a 10 vecinos. Pero esa mañana le pasa a cualquiera de nosotros.» Fuente: TP 4.1 y escenario de usuario.</div>
+  </section>
+
+  <section class="slide titled" data-title="Hoja de ruta">
+    <div class="bar"><p class="kicker">Hoja de ruta</p><h2 class="h2">De la idea al presupuesto, en diez relevos</h2><span class="who">Bruno</span></div>
+    <div class="body">
+      <div class="relay">
+        <div class="step"><div class="n">01</div><div class="t">El problema</div><div class="p">Bruno</div></div>
+        <div class="step"><div class="n">02</div><div class="t">Canvas · Design Thinking</div><div class="p">Camil</div></div>
+        <div class="step"><div class="n">03</div><div class="t">Test y prototipo</div><div class="p">Corina</div></div>
+        <div class="step v"><div class="n">04</div><div class="t">Charter: método y objetivos</div><div class="p">Jonas</div></div>
+        <div class="step v"><div class="n">05</div><div class="t">Charter: alcance y entregables</div><div class="p">Matias</div></div>
+        <div class="step v"><div class="n">06</div><div class="t">Charter: criterios y roles</div><div class="p">Víctor A.</div></div>
+        <div class="step v"><div class="n">07</div><div class="t">Gantt e hitos</div><div class="p">Oscar</div></div>
+        <div class="step v"><div class="n">08</div><div class="t">Stakeholders</div><div class="p">Pablo</div></div>
+        <div class="step v"><div class="n">09</div><div class="t">Riesgos</div><div class="p">Miriam</div></div>
+        <div class="step v"><div class="n">10</div><div class="t">Presupuesto y cierre</div><div class="p">Víctor R.</div></div>
+      </div>
+      <div class="row mt-l" style="gap:40px;font-size:24px">
+        <span><b style="color:var(--accent)">■</b> Qué proponemos y por qué es una buena idea</span>
+        <span><b style="color:var(--accent-2)">■</b> Cómo lo gestionamos en cascada</span>
+      </div>
+    </div>
+    <div class="notes"><b>Bruno.</b> Diez segundos, no más: «La primera mitad es qué proponemos y por qué vale la pena; la segunda, cómo lo planificamos con cascada: alcance, tiempos, personas, riesgos y plata.» Pase: «Camil les cuenta la idea.»</div>
+  </section>
+
+  <!-- ============ 2 · CAMIL — la idea ============ -->
+  <section class="slide titled" data-title="La idea: una capa común">
+    <div class="bar"><p class="kicker">02 · La idea</p><h2 class="h2">Un solo mapa entre los datos y los canales</h2><span class="who">Camil</span></div>
+    <div class="body">
+      <div class="fig tall">
+<!--diagram:capa-comun-->
+<svg viewBox="0 0 1040 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="capa-comun-title capa-comun-desc"><title id="capa-comun-title">Una capa geográfica común entre las fuentes y los accesos</title><desc id="capa-comun-desc">Las áreas del GCBA, USIG e Innovación y los vecinos alimentan una única capa geográfica común, con control de calidad; esa capa se consulta desde el Mapa Web, Boti y BAX.</desc><defs><marker id="capa-comun-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="capa-comun-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="capa-comun-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-tag" x="160" y="32" text-anchor="middle">FUENTES</text>
+<text class="dg-tag" x="520" y="32" text-anchor="middle">PLATAFORMA</text>
+<text class="dg-tag" x="880" y="32" text-anchor="middle">ACCESOS</text>
+<path class="dg-line" d="M280 92 H332 Q340 92 340 100 V162 Q340 170 348 170 H400" marker-end="url(#capa-comun-arrow)"/>
+<path class="dg-line" d="M280 212 H400" marker-end="url(#capa-comun-arrow)"/>
+<path class="dg-line-link" d="M280 332 H332 Q340 332 340 324 V262 Q340 254 348 254 H400" marker-end="url(#capa-comun-arrow-link)"/>
+<path class="dg-line-accent" d="M640 170 H692 Q700 170 700 162 V100 Q700 92 708 92 H760" marker-end="url(#capa-comun-arrow-accent)"/>
+<path class="dg-line-accent" d="M640 212 H760" marker-end="url(#capa-comun-arrow-accent)"/>
+<path class="dg-line-accent" d="M640 254 H692 Q700 254 700 262 V324 Q700 332 708 332 H760" marker-end="url(#capa-comun-arrow-accent)"/>
+<rect class="dg-mask" x="40" y="48" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="48" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="79" text-anchor="middle">Áreas del GCBA</text>
+<text class="dg-sub" x="160" y="97" text-anchor="middle">Transporte, Cultura,</text>
+<text class="dg-sub" x="160" y="115" text-anchor="middle">Espacio Público</text>
+<rect class="dg-mask" x="40" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="199" text-anchor="middle">USIG e Innovación</text>
+<text class="dg-sub" x="160" y="217" text-anchor="middle">infraestructura</text>
+<text class="dg-sub" x="160" y="235" text-anchor="middle">y estándares</text>
+<rect class="dg-mask" x="40" y="288" width="240" height="88" rx="6"/>
+<rect class="dg-viol" x="40" y="288" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="328" text-anchor="middle">Vecinos</text>
+<text class="dg-sub" x="160" y="346" text-anchor="middle">reportan y validan</text>
+<rect class="dg-mask" x="400" y="128" width="240" height="168" rx="6"/>
+<rect class="dg-focal" x="400" y="128" width="240" height="168" rx="6"/>
+<text class="dg-name" x="520" y="199" text-anchor="middle">Capa geográfica común</text>
+<text class="dg-sub" x="520" y="217" text-anchor="middle">un solo dato por lugar,</text>
+<text class="dg-sub" x="520" y="235" text-anchor="middle">con control de calidad</text>
+<rect class="dg-mask" x="760" y="48" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="760" y="48" width="240" height="88" rx="6"/>
+<text class="dg-name" x="880" y="88" text-anchor="middle">Mapa Web / Mobile</text>
+<text class="dg-sub" x="880" y="106" text-anchor="middle">consultar, reportar, seguir</text>
+<rect class="dg-mask" x="760" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="760" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="880" y="208" text-anchor="middle">Boti</text>
+<text class="dg-sub" x="880" y="226" text-anchor="middle">WhatsApp</text>
+<rect class="dg-mask" x="760" y="288" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="760" y="288" width="240" height="88" rx="6"/>
+<text class="dg-name" x="880" y="328" text-anchor="middle">BAX</text>
+<text class="dg-sub" x="880" y="346" text-anchor="middle">canal digital de la Ciudad</text>
+<line class="dg-rule" x1="40" y1="424" x2="1000" y2="424"/>
+<text class="dg-tag" x="40" y="452" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="440" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="452" text-anchor="start">lo que construye el proyecto</text>
+<path class="dg-line" d="M376 448 H400" marker-end="url(#capa-comun-arrow)"/>
+<text class="dg-note" x="408" y="452" text-anchor="start">dato oficial</text>
+<path class="dg-line-link" d="M520 448 H544" marker-end="url(#capa-comun-arrow-link)"/>
+<text class="dg-note" x="552" y="452" text-anchor="start">aporte ciudadano</text>
+<path class="dg-line-accent" d="M692 448 H716" marker-end="url(#capa-comun-arrow-accent)"/>
+<text class="dg-note" x="724" y="452" text-anchor="start">la misma capa, en cada canal</text></svg>
+<!--/diagram:capa-comun-->
+      </div>
+    </div>
+    <div class="notes"><b>Camil.</b> «La propuesta es usar la ubicación como punto de encuentro.» Recorrer el diagrama de izquierda a derecha: «A la izquierda, quienes tienen el dato: las áreas del gobierno, como Transporte y Cultura, y USIG con la infraestructura. Abajo, los vecinos, que también aportan: reportan y validan. En el medio, lo que construye el proyecto: una capa geográfica común, con control de calidad. Y a la derecha, la misma capa se consulta desde el Mapa Web, desde Boti y desde BAX.» Frase para cerrar: «El vecino no tiene que saber qué área gestiona qué: busca un lugar y ve todo lo que pasa ahí.» Fuente: resumen ejecutivo y Canvas (TP 3).</div>
+  </section>
+
+  <section class="slide titled" data-title="Canvas: valor por lado">
+    <div class="bar"><p class="kicker">02 · Canvas</p><h2 class="h2">Una plataforma multilateral: valor para cada lado</h2><span class="who">Camil</span></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><p class="kicker">Segmento principal</p><h3>Hogares de la Ciudad</h3><p class="dim" style="font-size:22px">Consultan su entorno en un solo lugar, reportan y siguen sus incidencias.</p></div>
+        <div class="card card-accent"><p class="kicker">Lado institucional</p><h3>Áreas del GCBA</h3><p class="dim" style="font-size:22px">Socias y clientas a la vez: aportan el dato y reciben reportes georreferenciados y validados.</p></div>
+        <div class="card" style="border-style:dashed"><p class="kicker" style="color:var(--text-3)">Tercer lado · opcional</p><h3>Socios geolocalizados</h3><p class="dim" style="font-size:22px">Banco Ciudad, Pase Cultural. Evolución futura, fuera del alcance de esta versión.</p></div>
+      </div>
+      <div class="callout violet mt-l" style="font-size:28px">Fuente de valor: <b>valor público</b> y menos gasto en soluciones fragmentadas. Canales: Mapa Web/Mobile, Boti y BAX.</div>
+    </div>
+    <div class="notes"><b>Camil.</b> Concepto de la cátedra en una línea: «El Canvas parte de la propuesta de valor, y cuando hay dos lados que se necesitan es una plataforma multilateral.» Después, nuestro caso: los hogares son el segmento principal; las áreas del gobierno son socias y clientas al mismo tiempo; y hay un tercer lado opcional, los socios con oferta geolocalizada, que dejamos explícitamente para el futuro. Venta: «Hoy cada área mantiene su pedacito; con una capa común se gasta menos y se ve más.» Fuente: TP 3. Sin pase: sigue Camil con «¿Y cómo sabemos que esto es lo que la gente necesita?»</div>
+  </section>
+
+  <!-- ============ 2 · CAMIL — introducción a Design Thinking ============ -->
+  <section class="slide titled" data-title="Design Thinking">
+    <div class="bar"><p class="kicker">02 · Design Thinking</p><h2 class="h2">No lo inventamos en un escritorio</h2><span class="who">Camil</span></div>
+    <div class="body">
+      <div class="steps">
+        <div class="s"><b>Empatizar</b><span>Entrevistas a 10 vecinos y escenario de Lucía</span></div>
+        <div class="s"><b>Definir</b><span>Punto de vista, perfil e historia de usuario</span></div>
+        <div class="s"><b>Idear</b><span>Mapa común + reportar + validar + seguir</span></div>
+        <div class="s"><b>Prototipar</b><span>Baja fidelidad: tres pantallas</span></div>
+        <div class="s"><b>Testear</b><span>Evaluación con un usuario del perfil</span></div>
+      </div>
+      <p class="kicker mt-l">Pregunta de diseño</p>
+      <p class="quote" style="margin:8px 0 0">«¿Cómo podríamos facilitar que las personas consulten, reporten y sigan situaciones de su entorno sin necesitar conocer qué área del Gobierno las gestiona?»</p>
+    </div>
+    <div class="notes"><b>Camil.</b> «El Canvas es una hipótesis. Antes de planificar nada, la pusimos a prueba con Design Thinking.» Presentar el método en una frase: cinco pasos, de entender a la persona a probar la solución con ella (señalar la fila, sin leerla). Cerrar con la pregunta de diseño, leída despacio: es la frase más importante del TP. No contar los resultados: son de Corina. Fuente: TP 4. Pase: «Corina les cuenta qué encontramos en cada paso.»</div>
+  </section>
+
+  <section class="slide titled" data-title="El test">
+    <div class="bar"><p class="kicker">03 · Testear</p><h2 class="h2">El test encontró el punto débil</h2><span class="who">Corina</span></div>
+    <div class="body">
+      <div class="verdict">
+        <div class="card"><div class="stage">Encontrar</div><div class="res ok">Claro</div><p class="dim" style="font-size:20px">Ubica la incidencia y reconoce la fuente oficial</p></div>
+        <div class="card"><div class="stage">Reportar</div><div class="res ok">Fluido</div><p class="dim" style="font-size:20px">Marca ubicación y categoría; entiende el envío</p></div>
+        <div class="card" style="border:2px solid var(--bad)"><div class="stage">Seguir</div><div class="res bad">Confuso</div><p class="dim" style="font-size:20px">Duda ante el estado «En validación»</p></div>
+      </div>
+      <div class="grid g2 mt-l" style="align-items:center">
+        <p class="quote" style="margin:0">«¿Quién confirma que el reporte sigue vigente?»</p>
+        <div class="callout" style="font-size:24px"><b>Ajuste:</b> estados en lenguaje claro y el próximo paso a la vista.</div>
+      </div>
+    </div>
+    <div class="notes"><b>Corina.</b> Recorrer los pasos en 30 segundos antes de mirar la diapositiva: «Empatizar: entrevistas semiestructuradas a 10 vecinos (muestra por conveniencia). Tres patrones: usan muchos canales, no saben qué área corresponde y después de reportar no saben qué pasó. Definir: eso se resume en Lucía y en la pregunta que leyó Camil. Prototipamos en baja fidelidad, tres pantallas, y lo testeamos con un usuario del perfil.» Ahora la diapositiva: «El test salió bien en dos de tres pasos. En el tercero, el seguimiento, el usuario se trabó con el estado "En validación" y preguntó: ¿quién confirma que el reporte sigue vigente?» Venta: «Encontramos el problema antes de escribir una línea de código, que es cuando más barato sale arreglarlo.» Honestidad: con un solo participante es orientativo; el TP prevé repetir el test en Diseño UX/UI y en las pruebas de usabilidad (actividades 16 y 29). Fuente: TP 4.1 a 4.5. Sin pase: «Les muestro cómo quedó.»</div>
+  </section>
+
+  <!-- ============ 3 · CORINA — prototipo ============ -->
+  <section class="slide titled" data-title="Prototipo: Mi hogar">
+    <div class="bar"><p class="kicker">03 · Prototipo</p><h2 class="h2">07:30: el mapa le avisa a Lucía</h2><span class="who">Corina</span></div>
+    <div class="body">
+      <div class="shot">
+        <figure class="img-frame contain" style="--img-ratio:13/9"><img src="img/mock-hogar.png" alt="Prototipo: pestaña Mi hogar con el recorrido a la escuela y un corte parcial por obra resaltado en el mapa"></figure>
+        <div>
+          <ul>
+            <li>Todo lo cercano en <b>un solo mapa</b>: cortes, ciclovías, subte, eventos y reportes.</li>
+            <li>El recorrido a la escuela muestra <b>qué corte la afecta</b> y qué alternativa tiene.</li>
+            <li>Reportar lleva <b>tres pasos</b>: categoría, ubicación y enviar.</li>
+          </ul>
+          <span class="disclaimer">Prototipo conceptual · datos ficticios</span>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Corina.</b> Primero el aviso: «Esto es un prototipo conceptual con datos ficticios, para mostrar casos de uso.» Después volver a la historia: «¿Se acuerdan de Lucía a las 7:30? Abre "Mi hogar" y el mapa ya le dice que hay un corte parcial por obra en el camino a la escuela, que termina en 7 horas, y que si usa la calle paralela suma 5 minutos. No buscó en cinco canales.» Si hay internet y tiempo, mostrarlo en vivo (prototype/mock/index.html); si no, alcanza con la captura. Conexión: Design Thinking, necesidad de «información oficial cercana».</div>
+  </section>
+
+  <section class="slide titled" data-title="Prototipo: seguimiento">
+    <div class="bar"><p class="kicker">03 · Prototipo</p><h2 class="h2">El hallazgo del test, ya resuelto</h2><span class="who">Corina</span></div>
+    <div class="body">
+      <div class="shot">
+        <figure class="img-frame contain"><img src="img/mock-seguimiento.png" alt="Prototipo: seguimiento de un reporte con cuatro estados (Recibido, Revisando que siga vigente, Enviado al área responsable, Resuelto), el próximo paso y siete confirmaciones de la comunidad"></figure>
+        <div>
+          <ul>
+            <li>«En validación» pasa a <b>«Revisando que siga vigente»</b>.</li>
+            <li>Cada estado dice el <b>próximo paso</b>.</li>
+            <li>La <b>comunidad confirma</b>: con confirmaciones, el reporte avanza al área; uno dudoso queda marcado.</li>
+          </ul>
+          <span class="disclaimer">Responde al riesgo R07: reportes incorrectos o maliciosos</span>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Corina.</b> Esta es la diapositiva que une todo: «Recién vieron que en el test "En validación" confundía. Acá el estado dice "Revisando que siga vigente" y abajo aparece el próximo paso: el área ya tiene tu reporte, te avisamos cuando lo tome.» Señalar la validación de la comunidad: con tres confirmaciones el reporte pasa al área; este ya tiene siete. Uno sin confirmaciones y con tres avisos de que ya no está queda marcado «Sin confirmar» y no desplaza a los reales. «Y esto no es solo usabilidad: es la respuesta al riesgo R07, reportes falsos o maliciosos, que Miriam va a mostrar en la matriz.»</div>
+  </section>
+
+  <section class="slide titled" data-title="Prototipo: del lado del área">
+    <div class="bar"><p class="kicker">03 · Prototipo</p><h2 class="h2">El valor está en integrar, no solo en reportar</h2><span class="who">Corina</span></div>
+    <div class="body">
+      <div class="pair-shots">
+        <div>
+          <figure class="img-frame contain" style="--img-ratio:11/9"><img src="img/mock-area.png" alt="Prototipo: vista Del lado del área con el flujo Fuentes, Capa común y Accesos, y la frescura y completitud de cada capa"></figure>
+          <h4>Del lado del área</h4>
+          <p>Cada fuente muestra cuándo se actualizó y qué tan completa está.</p>
+        </div>
+        <div>
+          <figure class="img-frame contain" style="--img-ratio:11/9"><img src="img/mock-asistente.png" alt="Prototipo: asistente simulado que resume el día de Lucía con el corte, el estado del subte y su reporte"></figure>
+          <h4>«¿Qué tengo para hacer hoy?»</h4>
+          <p>La misma capa, resumida en lenguaje natural. Aquí es un guion simulado.</p>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Corina.</b> «Lo que ve el vecino es la punta del iceberg. Lo que sostiene el proyecto es que cada área entregue su dato a la capa común con su ritmo y su calidad, y que si una fuente se atrasa, se note.» Eso conecta con los riesgos R01 y R02 (disponibilidad y calidad de los datos). El asistente: «No usa inteligencia artificial: es un guion para mostrar lo que se puede hacer con la capa común en un canal como Boti.» Si vienen atrasados, esta es la diapositiva a saltear (quedarse con las dos anteriores). Pase: «Ya vieron qué queremos construir. Jonas les cuenta cómo lo formalizamos: el Charter.»</div>
+  </section>
+
+  <!-- ============ 4 · JONAS — Charter: identificación (método) y objetivos ============ -->
+  <section class="slide titled" data-title="Por qué cascada">
+    <div class="bar"><p class="kicker">04 · Charter · Identificación</p><h2 class="h2">Cascada, porque el problema es complicado</h2><span class="who">Jonas</span></div>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1.35fr 1fr;gap:40px;align-items:center">
+        <div class="fig">
+<!--diagram:cynefin-->
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cynefin-title cynefin-desc"><title id="cynefin-title">Cynefin: qué metodología corresponde a cada dominio</title><desc id="cynefin-desc">Cuatro dominios ordenados por incertidumbre creciente: simple usa buenas prácticas, complicado usa cascada, complejo y caótico usan ágil; el dominio desordenado exige accionar para llegar a alguno de los cuatro.</desc><defs><marker id="cynefin-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="cynefin-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="cynefin-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-tag" x="40" y="40" text-anchor="start">INCERTIDUMBRE CRECIENTE</text>
+<path class="dg-line" d="M40 56 H920" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M138 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M366 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M594 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M822 184 V240" marker-end="url(#cynefin-arrow)"/>
+<rect class="dg-mask" x="40" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="224" y="108" text-anchor="end">1</text>
+<text class="dg-name" x="138" y="123" text-anchor="middle">Simple</text>
+<text class="dg-sub" x="138" y="141" text-anchor="middle">Situaciones claras</text>
+<text class="dg-sub" x="138" y="159" text-anchor="middle">y conocidas</text>
+<rect class="dg-mask" x="268" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-focal" x="268" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="452" y="108" text-anchor="end">2</text>
+<text class="dg-name" x="366" y="123" text-anchor="middle">Complicado</text>
+<text class="dg-sub" x="366" y="141" text-anchor="middle">Requiere experiencia</text>
+<text class="dg-sub" x="366" y="159" text-anchor="middle">en la materia</text>
+<rect class="dg-mask" x="496" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="496" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="680" y="108" text-anchor="end">3</text>
+<text class="dg-name" x="594" y="123" text-anchor="middle">Complejo</text>
+<text class="dg-sub" x="594" y="141" text-anchor="middle">Sin experiencia en el</text>
+<text class="dg-sub" x="594" y="159" text-anchor="middle">tema o la tecnología</text>
+<rect class="dg-mask" x="724" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="724" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="908" y="108" text-anchor="end">4</text>
+<text class="dg-name" x="822" y="123" text-anchor="middle">Caótico</text>
+<text class="dg-sub" x="822" y="141" text-anchor="middle">Sin experiencia en el</text>
+<text class="dg-sub" x="822" y="159" text-anchor="middle">tema ni la tecnología</text>
+<rect class="dg-mask" x="40" y="240" width="196" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="240" width="196" height="64" rx="6"/>
+<text class="dg-name" x="138" y="277" text-anchor="middle">Buenas prácticas</text>
+<rect class="dg-mask" x="268" y="240" width="196" height="64" rx="6"/>
+<rect class="dg-focal" x="268" y="240" width="196" height="64" rx="6"/>
+<text class="dg-name" x="366" y="277" text-anchor="middle">Cascada</text>
+<rect class="dg-mask" x="496" y="240" width="424" height="64" rx="6"/>
+<rect class="dg-viol" x="496" y="240" width="424" height="64" rx="6"/>
+<text class="dg-name" x="708" y="277" text-anchor="middle">Ágil</text>
+<rect class="dg-mask" x="40" y="368" width="880" height="80" rx="6"/>
+<rect class="dg-ghost" x="40" y="368" width="880" height="80" rx="6"/>
+<text class="dg-tag" x="908" y="388" text-anchor="end">5</text>
+<text class="dg-name" x="480" y="404" text-anchor="middle">Desordenado</text>
+<text class="dg-sub" x="480" y="428" text-anchor="middle">No aplica a ninguno de los anteriores: accionar para llegar a los 4 anteriores</text>
+<line class="dg-rule" x1="40" y1="484" x2="920" y2="484"/>
+<text class="dg-tag" x="40" y="512" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="512" text-anchor="start">único dominio en cascada</text>
+<path class="dg-line" d="M348 508 H372" marker-end="url(#cynefin-arrow)"/>
+<text class="dg-note" x="380" y="512" text-anchor="start">se gestiona con</text>
+<rect class="dg-ghost" x="512" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="540" y="512" text-anchor="start">dominio sin clasificar</text></svg>
+<!--/diagram:cynefin-->
+        </div>
+        <ul style="font-size:24px;line-height:1.45;padding-left:24px;margin:0">
+          <li style="margin-bottom:14px">Sabemos <b style="color:var(--accent-3)">qué construir y con qué</b>: APIs oficiales, GIS, canales existentes.</li>
+          <li style="margin-bottom:14px">El Sponsor necesita <b style="color:var(--accent-3)">comprometer costo y plazo</b> antes de empezar.</li>
+          <li>Fases secuenciales con <b style="color:var(--accent-3)">hitos de aprobación</b>: nada avanza sin firma.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notes"><b>Jonas.</b> Abrir el bloque: «El Charter es el documento que autoriza el proyecto. Lo primero que fija es la identificación: nombre, organización (el Gobierno de la Ciudad), duración (6 meses) y la metodología: cascada.» Anticipar la pregunta: «¿Por qué no ágil?» Cynefin: en lo simple, buenas prácticas; en lo complicado, cascada; en lo complejo y caótico, ágil. «Nuestro problema es complicado: hay incertidumbre, pero se resuelve con experiencia, no con experimentos. Sabemos qué construir y con qué tecnología, y el gobierno necesita aprobar un presupuesto y un plazo antes de arrancar.» Reconocer el riesgo propio de cascada: que el alcance crezca (R05, uno de los dos riesgos más altos), que se controla con cambios formales. Fuente: TP 5.1. Sin pase: sigue Jonas con los objetivos.</div>
+  </section>
+
+  <section class="slide titled" data-title="Charter: objetivos">
+    <div class="bar"><p class="kicker">04 · Charter · Objetivos</p><h2 class="h2">Un objetivo general y ocho específicos</h2><span class="who">Jonas</span></div>
+    <div class="body">
+      <div class="callout violet" style="font-size:25px"><b>Objetivo general:</b> modernizar el Mapa Interactivo con una capa geográfica común que integre información oficial y permita reportar, validar y seguir incidencias. <b>6 meses</b> · abril a septiembre de 2026.</div>
+      <div class="steps mt-l" style="grid-template-columns:repeat(4,1fr)">
+        <div class="s"><b>1 · Centralizar</b><span>Una estructura geográfica común para las fuentes oficiales</span></div>
+        <div class="s"><b>2 · Integrar canales</b><span>APIs para el Mapa, Boti y BAX</span></div>
+        <div class="s"><b>3 · Reportes</b><span>Incidencias con ubicación, categoría, fecha y hora</span></div>
+        <div class="s"><b>4 · Validación</b><span>Otros vecinos confirman o avisan que ya no está</span></div>
+        <div class="s"><b>5 · Seguimiento</b><span>Estado visible desde la creación hasta el cierre</span></div>
+        <div class="s"><b>6 · Gestión</b><span>Las áreas acceden a los reportes de su ámbito</span></div>
+        <div class="s"><b>7 · Gobernanza</b><span>Responsables, actualización y control de calidad</span></div>
+        <div class="s"><b>8 · Acceso</b><span>El vecino no necesita saber qué área o canal corresponde</span></div>
+      </div>
+    </div>
+    <div class="notes"><b>Jonas.</b> Leer solo el objetivo general, despacio. Los ocho específicos no se leen: agruparlos. «Del 1 al 2, juntar el dato y llevarlo a los canales. Del 3 al 5, lo que hace el vecino: reportar, validar y seguir. Del 6 al 7, lo que necesitan las áreas: gestionar y cuidar la calidad. Y el 8 es el resultado: que Lucía no tenga que saber a quién preguntarle.» Conectar con lo anterior: cada objetivo sale de un hallazgo del Design Thinking. Fuente: TP 5.4. Pase: «Matías les muestra qué entra y qué no entra en el proyecto.»</div>
+  </section>
+
+  <!-- ============ 5 · MATIAS — Charter: alcance y entregables ============ -->
+  <section class="slide titled" data-title="Charter: alcance">
+    <div class="bar"><p class="kicker">05 · Charter · Alcance</p><h2 class="h2">Qué hacemos, y sobre todo qué no</h2><span class="who">Matias</span></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Dentro del alcance</h4><ul class="dim" style="font-size:21px;padding-left:22px;margin:0;line-height:1.5"><li>Capa geográfica común e integración de fuentes oficiales</li><li>Integración con Mapa, Boti y BAX</li><li>Reportes, validación colaborativa y seguimiento</li><li>Vista de gestión para las áreas, gobernanza y documentación</li></ul></div>
+        <div class="card" style="border-top:3px solid var(--text-3)"><h4 style="color:var(--text-2)">Fuera del alcance</h4><ul class="dim" style="font-size:21px;padding-left:22px;margin:0;line-height:1.5"><li>Reemplazar Boti, BAX o los sistemas de las áreas</li><li>Una app de navegación tipo Waze</li><li>Resolver físicamente las incidencias</li><li>Monetización y publicidad (salvo decisión formal)</li></ul></div>
+      </div>
+      <div class="callout mt-l" style="font-size:25px"><b>Criterio:</b> lo que no ayude a centralizar, consultar, reportar, validar o seguir es un <b>cambio de alcance</b> y pasa por control de cambios formal.</div>
+    </div>
+    <div class="notes"><b>Matías.</b> «Lo más valioso del alcance es lo que dejamos afuera. Decir que no es tan importante como decir que sí.» Ejemplos: «No vamos a hacer un Waze, ni reemplazar Boti, ni arreglar los baches: registramos, validamos, derivamos y seguimos.» El criterio general: una funcionalidad entra solo si contribuye a uno de los cinco resultados; si no, es un cambio de alcance y se evalúa su impacto en alcance, cronograma, costos, recursos, riesgos, entregables y calidad. Los cambios menores los resuelve el equipo; los significativos los aprueba el Sponsor. Eso es lo que controla el riesgo R05. Fuente: TP 5.5 y 5.9.2. Sin pase: sigue Matías con los entregables.</div>
+  </section>
+
+  <section class="slide titled" data-title="Charter: entregables">
+    <div class="bar"><p class="kicker">05 · Charter · Entregables</p><h2 class="h2">Ocho entregables que se pueden verificar</h2><span class="who">Matias</span></div>
+    <div class="body">
+      <div class="steps" style="grid-template-columns:repeat(4,1fr)">
+        <div class="s"><b>1 · Capa geográfica común</b><span>Estructura centralizada que integra las fuentes oficiales</span></div>
+        <div class="s"><b>2 · Integraciones</b><span>Con las fuentes y con los canales: Mapa, Boti y BAX</span></div>
+        <div class="s"><b>3 · Reportes ciudadanos</b><span>Registrar incidencias ligadas a una ubicación</span></div>
+        <div class="s"><b>4 · Validación colaborativa</b><span>Otros usuarios aportan sobre una incidencia</span></div>
+        <div class="s"><b>5 · Seguimiento</b><span>Flujo de estados desde la creación hasta el cierre</span></div>
+        <div class="s"><b>6 · Vista de gestión</b><span>Interfaz básica para las áreas responsables</span></div>
+        <div class="s"><b>7 · Documentación</b><span>Técnica y funcional, para operar y mantener</span></div>
+        <div class="s"><b>8 · Implementación y cierre</b><span>Puesta en funcionamiento y cierre formal</span></div>
+      </div>
+      <div class="callout violet mt-l" style="font-size:25px">Seis son <b>producto</b> y dos son <b>gestión</b>: sin documentación ni plan de cierre, el proyecto no se entrega.</div>
+    </div>
+    <div class="notes"><b>Matías.</b> «El alcance se convierte en ocho entregables concretos.» No leerlos: señalar que los primeros seis son lo que ya vieron en el prototipo de Corina (la capa, las integraciones, reportar, validar, seguir y la vista del área) y los dos últimos son de gestión: documentación y plan de implementación y cierre. Idea a dejar: un entregable es algo que se puede revisar y aceptar; por eso cada fase del Gantt termina en uno. Fuente: TP 5.6. Pase: «¿Y cómo sabemos que están bien hechos? Víctor Avendaño.»</div>
+  </section>
+
+  <!-- ============ 6 · VÍCTOR A. — Charter: criterios, roles y aprobación ============ -->
+  <section class="slide titled" data-title="Charter: criterios">
+    <div class="bar"><p class="kicker">06 · Charter · Criterios</p><h2 class="h2">Cuándo decimos que está terminado</h2><span class="who">Víctor A.</span></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><p class="kicker">Criterios de éxito</p><h4>¿Cumplió los objetivos?</h4><ul class="dim" style="font-size:20px;padding-left:22px;margin:0;line-height:1.5"><li>Información oficial integrada</li><li>Disponible en varios canales</li><li>Reportes y validación funcionando</li><li>Incidencias trazables</li><li>Acceso para las áreas</li><li>Datos con responsable</li></ul></div>
+        <div class="card card-accent"><p class="kicker">Criterios de aceptación</p><h4>¿Pasó las pruebas?</h4><ul class="dim" style="font-size:20px;padding-left:22px;margin:0;line-height:1.5"><li>Funcionales</li><li>De integración</li><li>De reportes y de validación</li><li>De seguimiento</li><li>De gestión</li><li>Revisión de la documentación</li></ul></div>
+        <div class="card" style="border-top:3px solid var(--text-3)"><p class="kicker" style="color:var(--text-3)">Aceptación final</p><h4>¿Se puede cerrar?</h4><ul class="dim" style="font-size:20px;padding-left:22px;margin:0;line-height:1.5"><li>Alcance aprobado cumplido</li><li>Componentes y documentos entregados</li><li>Pruebas aprobadas</li><li>Defectos críticos resueltos o aceptados</li><li>Validación de los responsables</li></ul></div>
+      </div>
+      <div class="callout mt-l" style="font-size:24px">Los indicadores técnicos (rendimiento, disponibilidad, tiempos de respuesta) se fijan en la <b>etapa de análisis</b>, con los requerimientos no funcionales.</div>
+    </div>
+    <div class="notes"><b>Víctor A.</b> Tres preguntas, de izquierda a derecha. «Éxito: ¿el proyecto cumplió sus objetivos? Aceptación: ¿cada entregable pasó sus pruebas? Y aceptación final: ¿se puede cerrar?» Un ejemplo alcanza: «El objetivo de seguimiento tiene su criterio de éxito, que cada reporte tenga un estado identificable, y su prueba, que los estados se actualicen y se consulten bien.» Punto flojo, decirlo antes de que lo marquen: los criterios no tienen metas numéricas; el TP los deja para la etapa de análisis y nosotros propondríamos metas medibles como mejora. Fuente: TP 5.7. Sin pase: sigue Víctor A. con los roles.</div>
+  </section>
+
+  <section class="slide titled" data-title="Charter: roles y aprobación">
+    <div class="bar"><p class="kicker">06 · Charter · Roles y aprobación</p><h2 class="h2">Quién decide y quién firma</h2><span class="who">Víctor A.</span></div>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1fr 1.1fr;gap:48px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:22px;text-align:center">
+          <div class="card card-accent" style="padding:12px 18px"><b>Sponsor</b> · aprueba objetivos, alcance y cambios significativos</div>
+          <div style="color:var(--text-3)">↓</div>
+          <div class="card" style="padding:12px 18px"><b>Director del proyecto</b> · planifica, coordina y hace el seguimiento</div>
+          <div style="color:var(--text-3)">↓</div>
+          <div class="card" style="padding:12px 18px"><b>Equipos</b> · Tecnología · Datos y gobernanza · Diseño UX</div>
+          <div style="color:var(--text-3)">↓</div>
+          <div class="card" style="padding:12px 18px"><b>Áreas de la Ciudad y canales digitales</b></div>
+          <div style="color:var(--text-3)">↓</div>
+          <div class="card" style="padding:12px 18px"><b>Usuarios y comunidad</b></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="callout violet" style="font-size:24px"><b>Aprobación del Charter · hito H1 · 14 de abril.</b> El Sponsor valida objetivos, alcance, entregables, criterios, presupuesto de alto nivel, riesgos iniciales y el cronograma con sus 8 hitos.</div>
+          <div class="callout" style="font-size:24px">La firma <b>autoriza la fase de análisis</b> y le da autoridad al Director del proyecto. Firman: Sponsor y Director.</div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Víctor A.</b> «Un Charter sin responsables es una lista de deseos.» Bajar por la cadena: el Sponsor da el respaldo institucional y aprueba lo grande; el Director planifica y coordina; los equipos especializados construyen; las áreas y los canales aportan el dato y los procesos; y los vecinos son usuarios y, con los reportes, también fuente de información. Esta estructura es la base de la matriz de stakeholders que va a mostrar Pablo. Aprobación: el Charter se firma el 14 de abril, es el primer hito (Gate 1), y recién ahí se autoriza a empezar el análisis. Fuente: TP 5.11 y 5.13. Pase: «Con el Charter firmado empieza a correr el reloj. Oscar les muestra el cronograma.»</div>
+  </section>
+
+  <!-- ============ 7 · OSCAR — Gantt ============ -->
+  <section class="slide titled" data-title="Gantt e hitos">
+    <div class="bar"><p class="kicker">07 · Cronograma</p><h2 class="h2">8 fases, 8 hitos y un camino crítico</h2><span class="who">Oscar</span></div>
+    <div class="body">
+      <div class="row" style="gap:56px;align-items:flex-end">
+        <div><div class="num">40</div><p class="dim" style="font-size:20px;margin:6px 0 0">actividades</p></div>
+        <div><div class="num v">8</div><p class="dim" style="font-size:20px;margin:6px 0 0">hitos de control (gates)</p></div>
+        <div><div class="num">126</div><p class="dim" style="font-size:20px;margin:6px 0 0">días hábiles de camino crítico</p></div>
+        <div class="callout" style="flex:1;font-size:22px">Una única puesta en producción: <b>9 de septiembre</b>.</div>
+      </div>
+      <figure class="img-frame contain mt-l" style="--img-ratio:3/1;border:none;background:transparent"><img src="img/hitos.png" alt="Línea de tiempo de los 8 hitos sobre las fases: H1 Charter 14/04, H2 Requerimientos 07/05, H3 Diseño 08/06, H4 Desarrollo 15/07, H5 Integraciones 03/08, H6 Pruebas 27/08, H7 Puesta en funcionamiento 09/09, H8 Cierre 30/09"></figure>
+    </div>
+    <div class="notes"><b>Oscar.</b> Concepto: «El camino crítico es la cadena de actividades que define la duración mínima: si una se atrasa, se atrasa todo el proyecto.» Nuestro Gantt: 40 actividades en 8 fases, del 1 de abril al 30 de septiembre, con un camino crítico de 126 días hábiles, unas 25 semanas. Cada fase termina en un hito de aprobación, de H1 (Charter, 14/04) a H8 (cierre, 30/09). Fijar el número 126: «Este número viaja: Miriam lo va a usar para valorar los riesgos en dólares.» Si preguntan por las fechas que ya pasaron: es un plan académico; lo que vale es la lógica de la red. Fuente: TP 6 y Anexo A. Pase: «Un plan lo ejecutan personas. Pablo.»</div>
+  </section>
+
+  <!-- ============ 8 · PABLO — stakeholders y comunicación ============ -->
+  <section class="slide titled" data-title="Stakeholders y comunicación">
+    <div class="bar"><p class="kicker">08 · Stakeholders y comunicación</p><h2 class="h2">15 actores, y a cada uno su forma de enterarse</h2><span class="who">Pablo</span></div>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1.2fr 1fr;gap:40px;align-items:start">
+        <div class="grid2x2">
+          <div class="q"><h5>Mantener satisfecho</h5>Hacienda / Presupuesto</div>
+          <div class="q hot"><h5>Gestionar de cerca</h5>Sponsor, PM, Tecnología, Datos y GIS, USIG/ASI, Transporte y Cultura, canales Boti/BAX</div>
+          <div class="q"><h5>Monitorear</h5>Socios con oferta geolocalizada</div>
+          <div class="q"><h5>Mantener informado</h5>Comunas, UX/UI, Comunicación, vecinos, prestadores de transporte, proveedores</div>
+          <p class="dim2" style="grid-column:1/-1;font-size:16px;margin:4px 0 0">Arriba: más influencia · Derecha: más interés</p>
+        </div>
+        <div class="stack" style="display:flex;flex-direction:column;gap:18px">
+          <div class="callout" style="font-size:22px">La matriz decide <b>cuánta atención</b> recibe cada grupo; el plan de comunicación la convierte en <b>qué, cuándo y por dónde</b>.</div>
+          <div class="callout violet" style="font-size:22px">Evento crítico: el PM informa al Sponsor <b>dentro de las 48 horas</b>.</div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Pablo.</b> «Identificamos 15 actores y los ubicamos por influencia e interés.» Lo importante está arriba a la derecha: Sponsor, PM, equipos técnicos, USIG, las áreas dueñas del dato y los responsables de Boti y BAX; a esos se los gestiona de cerca, con reuniones semanales y quincenales. Hacienda tiene mucho poder y poco interés diario: se la mantiene satisfecha. Los vecinos, informados. Remate: «Si una API clave se cae o el presupuesto se desvía, el PM avisa al Sponsor en 48 horas, con el problema, el impacto y las alternativas.» Eso responde a los riesgos R04 (coordinación entre áreas) y R06 (baja participación). Fuente: TP 7 y 8. Pase: «Y hablando de riesgos… Miriam.»</div>
+  </section>
+
+  <!-- ============ 9 · MIRIAM — riesgos ============ -->
+  <section class="slide titled" data-title="Riesgos">
+    <div class="bar"><p class="kicker">09 · Riesgos</p><h2 class="h2">15 riesgos, valorados en dólares</h2><span class="who">Miriam</span></div>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1.7fr 1fr;gap:40px;align-items:center">
+        <figure class="img-frame contain" style="--img-ratio:1.85/1;border:none;background:transparent"><img src="img/mapa-calor.png" alt="Mapa de calor de riesgos: 6 inaceptables (R01, R02, R04, R05, R08, R10), 8 aceptables con atención y 1 aceptable (R15)"></figure>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div class="card card-accent"><h4>Los dos más altos (nivel 20)</h4><p class="dim" style="font-size:21px;margin:0"><b>R02</b> datos de baja calidad · <b>R05</b> crecimiento del alcance</p></div>
+          <div class="card"><div class="row" style="gap:18px;align-items:baseline"><span class="num" style="font-size:56px;color:var(--text-3)">69.353</span><span style="font-size:32px">→</span><span class="num" style="font-size:56px">41.206</span></div><p class="dim" style="font-size:19px;margin:8px 0 0">USD de valor monetario esperado (EMV), antes y después de las respuestas</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Miriam.</b> «Evaluamos 15 riesgos con probabilidad por impacto. Seis quedan en zona inaceptable y cada uno tiene una acción preventiva y un plan de contingencia.» Los dos más altos: la baja calidad de los datos y el crecimiento del alcance. Lo que nos diferencia: «No nos quedamos en el semáforo: los valuamos en dólares. El impacto de cada riesgo es semanas de atraso por lo que cuesta una semana de equipo, más los gastos afectados. Multiplicado por la probabilidad da el valor esperado.» Sin respuestas serían USD 69.353; con las respuestas, USD 41.206. Ejemplo si preguntan, R02: impacto USD 12.871, EMV inicial USD 9.010, residual USD 6.436. Fuente: TP 9.2 y 9.7. Pase: «Ese número, 41.206, es la reserva del presupuesto. Víctor Riveros.»</div>
+  </section>
+
+  <!-- ============ 10 · VÍCTOR R. — presupuesto, cadena y cierre ============ -->
+  <section class="slide titled" data-title="Presupuesto">
+    <div class="bar"><p class="kicker">10 · Presupuesto</p><h2 class="h2">USD 241.839, y cada número tiene origen</h2><span class="who">Víctor R.</span></div>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1.25fr 1fr;gap:56px;align-items:center">
+        <div class="bars">
+          <div class="r"><span>Recursos humanos</span><div class="b" style="width:100%"></div><span class="v">121.790</span></div>
+          <div class="r"><span>Desarrollo y tecnología</span><div class="b" style="width:18.4%"></div><span class="v">22.435</span></div>
+          <div class="r"><span>Infraestructura y seguridad</span><div class="b" style="width:15.8%"></div><span class="v">19.230</span></div>
+          <div class="r"><span>Mantenimiento inicial</span><div class="b" style="width:14.7%"></div><span class="v">17.948</span></div>
+          <div class="r"><span>Datos, GIS e integraciones</span><div class="b" style="width:9.5%"></div><span class="v">11.538</span></div>
+          <div class="r"><span>Implementación y capacitación</span><div class="b" style="width:6.3%"></div><span class="v">7.692</span></div>
+          <div class="r res"><span><b>Reserva de contingencia</b></span><div class="b" style="width:33.8%"></div><span class="v">41.206</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:22px">
+          <div><div class="num v" style="font-size:72px">200.633</div><p class="dim" style="font-size:20px;margin:4px 0 0">USD de presupuesto base (bottom-up)</p></div>
+          <div><div class="num" style="font-size:72px">+ 41.206</div><p class="dim" style="font-size:20px;margin:4px 0 0">USD de reserva = suma de los EMV residuales</p></div>
+          <div style="border-top:2px solid var(--border-strong);padding-top:14px"><div class="num" style="font-size:88px;color:var(--text-1)">241.839</div><p class="dim" style="font-size:20px;margin:4px 0 0">USD de línea base de costos</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Víctor R.</b> «El presupuesto base se armó de abajo hacia arriba: USD 200.633, y más de la mitad es el equipo.» La parte que importa es la reserva: «No pusimos un 10 % a ojo. La reserva de contingencia, USD 41.206, es exactamente la suma del valor esperado de los riesgos después de las respuestas. Equivale al 20,5 % del base, pero ese porcentaje es un resultado, no una regla.» Diferencia si preguntan: la contingencia cubre riesgos identificados y está dentro del presupuesto; la reserva de gestión cubre lo no identificado, no está incluida y es decisión del Sponsor (como referencia, el 10 % de la línea base serían USD 24.184). Fuente: TP 10.8 y 10.9.</div>
+  </section>
+
+  <section class="slide titled" data-title="La cadena de cifras">
+    <div class="bar"><p class="kicker">10 · Cómo se atan los números</p><h2 class="h2">Un número tira del siguiente</h2><span class="who">Víctor R.</span></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:cadena-cifras-->
+<svg viewBox="0 0 1080 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cadena-cifras-title cadena-cifras-desc"><title id="cadena-cifras-title">La cadena de cifras: del Gantt a la línea base de costos</title><desc id="cadena-cifras-desc">El camino crítico de 126 días hábiles da 25,2 semanas; el costo de recursos humanos dividido por esas semanas da USD 4.833 por semana; con eso se valora el impacto de cada riesgo, la suma de los valores esperados residuales da la reserva de USD 41.206 y, sumada al base de USD 200.633, la línea base de USD 241.839.</desc><defs><marker id="cadena-cifras-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="cadena-cifras-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="cadena-cifras-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-row" x="40" y="44" text-anchor="start">Si el jurado tira de un hilo, sale toda la cadena</text>
+<path class="dg-line" d="M208 144 H248" marker-end="url(#cadena-cifras-arrow)"/>
+<path class="dg-line" d="M416 144 H456" marker-end="url(#cadena-cifras-arrow)"/>
+<path class="dg-line" d="M624 144 H664" marker-end="url(#cadena-cifras-arrow)"/>
+<path class="dg-line-accent" d="M832 144 H872" marker-end="url(#cadena-cifras-arrow-accent)"/>
+<rect class="dg-mask" x="40" y="88" width="168" height="112" rx="6"/>
+<rect class="dg-box" x="40" y="88" width="168" height="112" rx="6"/>
+<text class="dg-tag" x="196" y="108" text-anchor="end">06</text>
+<text class="dg-name" x="124" y="131" text-anchor="middle">Gantt</text>
+<text class="dg-sub" x="124" y="149" text-anchor="middle">126 días hábiles</text>
+<text class="dg-sub" x="124" y="167" text-anchor="middle">= 25,2 semanas</text>
+<rect class="dg-mask" x="248" y="88" width="168" height="112" rx="6"/>
+<rect class="dg-box" x="248" y="88" width="168" height="112" rx="6"/>
+<text class="dg-tag" x="404" y="108" text-anchor="end">10</text>
+<text class="dg-name" x="332" y="131" text-anchor="middle">Costo semanal</text>
+<text class="dg-sub" x="332" y="149" text-anchor="middle">RRHH 121.790 ÷ 25,2</text>
+<text class="dg-sub" x="332" y="167" text-anchor="middle">= USD 4.833</text>
+<rect class="dg-mask" x="456" y="88" width="168" height="112" rx="6"/>
+<rect class="dg-box" x="456" y="88" width="168" height="112" rx="6"/>
+<text class="dg-tag" x="612" y="108" text-anchor="end">09</text>
+<text class="dg-name" x="540" y="131" text-anchor="middle">Impacto</text>
+<text class="dg-sub" x="540" y="149" text-anchor="middle">semanas × 4.833</text>
+<text class="dg-sub" x="540" y="167" text-anchor="middle">+ gastos afectados</text>
+<rect class="dg-mask" x="664" y="88" width="168" height="112" rx="6"/>
+<rect class="dg-box" x="664" y="88" width="168" height="112" rx="6"/>
+<text class="dg-tag" x="820" y="108" text-anchor="end">09</text>
+<text class="dg-name" x="748" y="131" text-anchor="middle">Reserva</text>
+<text class="dg-sub" x="748" y="149" text-anchor="middle">EMV = impacto × prob.</text>
+<text class="dg-sub" x="748" y="167" text-anchor="middle">Σ residual: 41.206</text>
+<rect class="dg-mask" x="872" y="88" width="168" height="112" rx="6"/>
+<rect class="dg-focal" x="872" y="88" width="168" height="112" rx="6"/>
+<text class="dg-tag" x="1028" y="108" text-anchor="end">10</text>
+<text class="dg-name" x="956" y="131" text-anchor="middle">Línea base</text>
+<text class="dg-sub" x="956" y="149" text-anchor="middle">200.633 + 41.206</text>
+<text class="dg-sub" x="956" y="167" text-anchor="middle">= USD 241.839</text>
+<line class="dg-rule" x1="40" y1="264" x2="1040" y2="264"/>
+<text class="dg-tag" x="40" y="292" text-anchor="start">LEYENDA</text>
+<rect class="dg-box" x="128" y="280" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="292" text-anchor="start">sección del TP (número arriba a la derecha)</text>
+<rect class="dg-focal" x="472" y="280" width="20" height="16" rx="4"/>
+<text class="dg-note" x="500" y="292" text-anchor="start">la cifra que se aprueba</text></svg>
+<!--/diagram:cadena-cifras-->
+      </div>
+    </div>
+    <div class="notes"><b>Víctor R.</b> Recorrerla de izquierda a derecha, sin apuro: «Los 126 días del camino crítico que mostró Oscar son 25,2 semanas. El costo del equipo dividido por esas semanas da USD 4.833 por semana. Con eso valuamos cuánto cuesta cada riesgo; Miriam les mostró el valor esperado, y la suma es la reserva. Base más reserva: USD 241.839.» Remate de venta: «Si nos preguntan por cualquier número, podemos decir de dónde sale.» Sin pase: sigue Víctor R. con el cierre.</div>
+  </section>
+
+  <!-- ============ cierre · VÍCTOR R. ============ -->
+  <section class="slide titled" data-title="Cierre: por qué apostar">
+    <div class="bar"><p class="kicker">Cierre</p><h2 class="h2">Por qué es una buena apuesta</h2><span class="who">Víctor R.</span></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><p class="kicker">Problema real</p><h3>Validado con vecinos</h3><p class="dim" style="font-size:21px">Entrevistas, una persona, un test, y el ajuste ya está en el prototipo.</p></div>
+        <div class="card card-accent"><p class="kicker">Plan controlable</p><h3>8 hitos con firma</h3><p class="dim" style="font-size:21px">Alcance cerrado, 126 días de camino crítico y aviso al Sponsor en 48 horas.</p></div>
+        <div class="card card-accent"><p class="kicker">Costo con respaldo</p><h3>Cada dólar explicado</h3><p class="dim" style="font-size:21px">La reserva sale de los riesgos, no de un porcentaje.</p></div>
+      </div>
+      <div class="callout violet mt-l" style="font-size:28px">Lo que pedimos: <b>aprobar el Charter y la línea base de USD 241.839</b>, y decidir si se suma una reserva de gestión.</div>
+    </div>
+    <div class="notes"><b>Víctor R.</b> Volver a la Lucía que presentó Bruno, para cerrar el círculo: «A las 7:30, Lucía ya no busca en cinco canales: abre un mapa y sabe qué pasa en su camino, y cuando reporta, sabe qué pasa con su reporte.» Después las tres razones, una frase cada una. Terminar con el pedido mirando al jurado, como si fuera el Sponsor; es lo que convierte la presentación en un pitch: aprobar el Charter y la línea base, y decidir sobre la reserva de gestión (TP 10.8). «Muchas gracias. ¿Preguntas?»</div>
+  </section>
+
+  <section class="slide cover" data-title="Preguntas">
+    <p class="kicker">Grupo 01 · Modernización del Mapa Interactivo de la Ciudad</p>
+    <h1 class="h1" style="font-size:120px">¿Preguntas?</h1>
+    <p class="team mt-l">Bruno Celia · Camil Malespina · Corina Cesarini · Jonas Gho · Matias Sanchez · Miriam Raposo · Oscar Moreira · Pablo Galloro · Víctor Riveros Araujo · Víctor Avendaño</p>
+    <div class="notes">Regla para las preguntas: responde quien presentó esa sección; si la pregunta cruza secciones, la toma quien tenga el número (por ejemplo, la reserva: Víctor R.; el EMV: Miriam; el camino crítico: Oscar). Las dos diapositivas siguientes son de respaldo: no se muestran salvo que haga falta.</div>
+  </section>
+
+  <!-- ============ respaldo ============ -->
+  <section class="slide titled" data-title="Respaldo: la cadena del TP">
+    <div class="bar"><p class="kicker">Respaldo</p><h2 class="h2">Ocho secciones, una sola historia</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:tp-cadena-->
+<svg viewBox="0 0 1040 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tp-cadena-title tp-cadena-desc"><title id="tp-cadena-title">Cómo se atan las ocho secciones técnicas del TP</title><desc id="tp-cadena-desc">Las secciones 3 a 10 forman una cadena: Canvas, Design Thinking, Charter, Gantt, Stakeholders, Comunicación, Riesgos y Presupuesto. Además del orden, el Gantt aporta el camino crítico a Riesgos y las semanas al Presupuesto, y la matriz de riesgos aporta el EMV que define la reserva de contingencia.</desc><defs><marker id="tp-cadena-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="tp-cadena-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="tp-cadena-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M220 88 H300" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M220 360 H300" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M480 88 H560" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M480 360 H560" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line" d="M740 88 H820" marker-end="url(#tp-cadena-arrow)"/>
+<path class="dg-line-accent" d="M740 360 H820" marker-end="url(#tp-cadena-arrow-accent)"/>
+<rect class="dg-mask" x="222" y="64" width="76" height="16" rx="2"/>
+<text class="dg-lbl" x="260" y="76" text-anchor="middle">hipótesis</text>
+<rect class="dg-mask" x="486" y="64" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="520" y="76" text-anchor="middle">problema</text>
+<rect class="dg-mask" x="758" y="64" width="44" height="16" rx="2"/>
+<text class="dg-lbl" x="780" y="76" text-anchor="middle">hitos</text>
+<rect class="dg-mask" x="226" y="336" width="68" height="16" rx="2"/>
+<text class="dg-lbl" x="260" y="348" text-anchor="middle">atención</text>
+<rect class="dg-mask" x="482" y="336" width="76" height="16" rx="2"/>
+<text class="dg-lbl" x="520" y="348" text-anchor="middle">R04 · R06</text>
+<rect class="dg-mask" x="764" y="336" width="32" height="16" rx="2"/>
+<text class="dg-lbl-accent" x="780" y="348" text-anchor="middle">EMV</text>
+<path class="dg-line" d="M852 136 V192 Q852 200 844 200 H138 Q130 200 130 208 V312" marker-end="url(#tp-cadena-arrow)"/>
+<rect class="dg-mask" x="470" y="176" width="60" height="16" rx="2"/>
+<text class="dg-lbl" x="500" y="188" text-anchor="middle">actores</text>
+<path class="dg-line-link" d="M900 136 V232 Q900 240 892 240 H658 Q650 240 650 248 V312" marker-end="url(#tp-cadena-arrow-link)"/>
+<rect class="dg-mask" x="724" y="216" width="112" height="16" rx="2"/>
+<text class="dg-lbl-link" x="780" y="228" text-anchor="middle">camino crítico</text>
+<path class="dg-line-link" d="M948 136 V312" marker-end="url(#tp-cadena-arrow-link)"/>
+<rect class="dg-mask" x="860" y="264" width="80" height="16" rx="2"/>
+<text class="dg-lbl-link" x="900" y="276" text-anchor="middle">semanas</text>
+<rect class="dg-mask" x="40" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="208" y="60" text-anchor="end">03</text>
+<text class="dg-name" x="130" y="75" text-anchor="middle">Canvas</text>
+<text class="dg-sub" x="130" y="93" text-anchor="middle">¿Qué negocio y</text>
+<text class="dg-sub" x="130" y="111" text-anchor="middle">para quién?</text>
+<rect class="dg-mask" x="300" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="300" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="468" y="60" text-anchor="end">04</text>
+<text class="dg-name" x="390" y="75" text-anchor="middle">Design Thinking</text>
+<text class="dg-sub" x="390" y="93" text-anchor="middle">¿El problema</text>
+<text class="dg-sub" x="390" y="111" text-anchor="middle">es real?</text>
+<rect class="dg-mask" x="560" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="560" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="728" y="60" text-anchor="end">05</text>
+<text class="dg-name" x="650" y="75" text-anchor="middle">Charter</text>
+<text class="dg-sub" x="650" y="93" text-anchor="middle">¿Qué hacemos y</text>
+<text class="dg-sub" x="650" y="111" text-anchor="middle">con qué límites?</text>
+<rect class="dg-mask" x="820" y="40" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="820" y="40" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="988" y="60" text-anchor="end">06</text>
+<text class="dg-name" x="910" y="75" text-anchor="middle">Gantt</text>
+<text class="dg-sub" x="910" y="93" text-anchor="middle">¿Qué tareas, en qué</text>
+<text class="dg-sub" x="910" y="111" text-anchor="middle">orden y cuánto duran?</text>
+<rect class="dg-mask" x="40" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="208" y="332" text-anchor="end">07</text>
+<text class="dg-name" x="130" y="347" text-anchor="middle">Stakeholders</text>
+<text class="dg-sub" x="130" y="365" text-anchor="middle">¿A quién afecta y</text>
+<text class="dg-sub" x="130" y="383" text-anchor="middle">con cuánto poder?</text>
+<rect class="dg-mask" x="300" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="300" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="468" y="332" text-anchor="end">08</text>
+<text class="dg-name" x="390" y="347" text-anchor="middle">Comunicación</text>
+<text class="dg-sub" x="390" y="365" text-anchor="middle">¿Qué, a quién,</text>
+<text class="dg-sub" x="390" y="383" text-anchor="middle">cuándo y por dónde?</text>
+<rect class="dg-mask" x="560" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-box" x="560" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="728" y="332" text-anchor="end">09</text>
+<text class="dg-name" x="650" y="347" text-anchor="middle">Riesgos</text>
+<text class="dg-sub" x="650" y="365" text-anchor="middle">¿Qué puede pasar</text>
+<text class="dg-sub" x="650" y="383" text-anchor="middle">y qué hacemos?</text>
+<rect class="dg-mask" x="820" y="312" width="180" height="96" rx="6"/>
+<rect class="dg-focal" x="820" y="312" width="180" height="96" rx="6"/>
+<text class="dg-tag" x="988" y="332" text-anchor="end">10</text>
+<text class="dg-name" x="910" y="356" text-anchor="middle">Presupuesto</text>
+<text class="dg-sub" x="910" y="374" text-anchor="middle">¿Cuánto cuesta?</text>
+<line class="dg-rule" x1="40" y1="456" x2="1000" y2="456"/>
+<text class="dg-tag" x="40" y="484" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 480 H152" marker-end="url(#tp-cadena-arrow)"/>
+<text class="dg-note" x="160" y="484" text-anchor="start">el relato: lo que una sección le pasa a la siguiente</text>
+<path class="dg-line-link" d="M536 480 H560" marker-end="url(#tp-cadena-arrow-link)"/>
+<text class="dg-note" x="568" y="484" text-anchor="start">dependencia de dato</text>
+<path class="dg-line-accent" d="M728 480 H752" marker-end="url(#tp-cadena-arrow-accent)"/>
+<text class="dg-note" x="760" y="484" text-anchor="start">la que más preguntan</text></svg>
+<!--/diagram:tp-cadena-->
+      </div>
+    </div>
+    <div class="notes">Para preguntas del tipo «¿cómo se relacionan las partes?». Flechas grises: lo que cada sección le pasa a la siguiente. Violetas: dependencias de dato (camino crítico a riesgos, semanas a presupuesto). Magenta: el EMV que define la reserva.</div>
+  </section>
+
+  <section class="slide titled" data-title="Respaldo: puntos flojos">
+    <div class="bar"><p class="kicker">Respaldo · decirlos antes que el jurado</p><h2 class="h2">Puntos flojos, con su respuesta</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:22px">
+        <thead><tr><th style="width:38%">Punto flojo</th><th>Respuesta preparada</th></tr></thead>
+        <tbody>
+          <tr><td>Test con un solo usuario</td><td>Es exploratorio y orientativo; se repite en Diseño UX/UI y en las pruebas de usabilidad (actividades 16 y 29)</td></tr>
+          <tr><td>Las fechas abr–sep 2026 ya pasaron</td><td>Es un plan de ejercicio académico; lo que vale es la lógica de la red y los hitos</td></tr>
+          <tr><td>Criterios de éxito sin metas numéricas</td><td>Proponer metas medibles como mejora</td></tr>
+          <tr><td>Sin riesgos positivos</td><td>Reconocerlo; la capa comercial futura es la oportunidad a gestionar</td></tr>
+          <tr><td>Reserva de gestión no incluida</td><td>Es decisión del Sponsor; referencia: 10 % de la línea base, USD 24.184</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Lo más fuerte en una defensa es nombrar la limitación antes de que la marquen y decir qué haríamos. Acordar estas frases entre todos antes del 18/11.</div>
+  </section>
+
+  <div class="deck-footer"><span>Taller de Gestión de Proyectos Digitales · Grupo 01 · Defensa del TP</span><span class="slide-number" data-current="1" data-total="25"></span></div>
+</div>
+<script src="assets/runtime.js"></script>
+<script>
+/* Mouse navigation for this deck: ▲/▼ buttons and wheel (down = next, up = previous).
+   Both go through the runtime's own keyboard handler, so hash, notes and presenter stay in sync. */
+(function(){
+  if (/[?&]preview=/.test(location.search)) return;
+  function step(dir){ document.dispatchEvent(new KeyboardEvent('keydown',{key: dir>0 ? 'ArrowRight' : 'ArrowLeft', bubbles:true})); }
+  var box = document.createElement('div');
+  box.className = 'nav-btns';
+  box.innerHTML = '<button type="button" aria-label="Diapositiva anterior" title="Anterior">▲</button><button type="button" aria-label="Diapositiva siguiente" title="Siguiente">▼</button>';
+  box.children[0].addEventListener('click', function(){ step(-1); });
+  box.children[1].addEventListener('click', function(){ step(1); });
+  document.body.appendChild(box);
+  var last = 0;
+  window.addEventListener('wheel', function(e){
+    if (e.ctrlKey || Math.abs(e.deltaY) < 8) return;
+    if (document.querySelector('.overview.open, .notes-overlay.open')) return;
+    var now = Date.now();
+    if (now - last < 450) return;
+    last = now;
+    step(e.deltaY > 0 ? 1 : -1);
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>

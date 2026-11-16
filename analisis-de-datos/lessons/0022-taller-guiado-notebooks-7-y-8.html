@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller guiado: notebooks 7 y 8</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0022 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0022 · Taller</div>
+<h1>Resolver los notebooks 7 y 8, paso a paso</h1>
+<p class="lede">Esta lección no explica conceptos nuevos: es el <strong>guion de la sesión de trabajo</strong>. Para cada paso hay una consigna, una pista y la resolución plegada. La regla: <strong>intentá primero, abrí la pista, y recién después la resolución</strong>. El notebook 8 es el que más se parece al TP, así que ahí importa más pensar que copiar.</p>
+
+<div class="box recall">
+  <span class="label">Antes de empezar: recuperá de memoria</span>
+  <p>Sin mirar: las fórmulas de Li y Ls, la regla de Rice y qué significa el signo de la correlación con <code>target</code> (0 = maligno). Si dudás de alguna, repasá la <a href="0019-boxplots-y-outliers.html">0019</a> y la <a href="0020-relaciones-y-correlacion.html">0020</a> antes de abrir los notebooks.</p>
+</div>
+
+<h2>Plan de la sesión</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Bloque</th><th>Qué hacen</th><th>Producto</th></tr>
+  <tr><td><strong>0 · Setup</strong></td><td>Abrir el notebook en Colab y subir <code>sample_dataset.csv</code> (el 8 no lo necesita)</td><td>Notebook corriendo</td></tr>
+  <tr><td><strong>1 · Notebook 7</strong></td><td>Reporte con ydata-profiling: 2 reportes, tabla de alertas, duplicados</td><td>Tabla de alertas con decisión por cada una</td></tr>
+  <tr><td><strong>2 · Notebook 8, parte A</strong></td><td>Secciones 0 a 5: fuente, calidad, variables, univariado, outliers</td><td>Diagnóstico de calidad + decisión sobre outliers</td></tr>
+  <tr><td><strong>3 · Notebook 8, parte B</strong></td><td>Secciones 6 a 9: relaciones, correlación, informe</td><td>Informe con 3 a 5 hallazgos</td></tr>
+</table>
+</div>
+<p class="muted">El notebook 8 está pensado para repartirse entre dos equipos (A y B). La parte B igual tiene que ejecutar las celdas de las secciones 0 y 2 para cargar los datos.</p>
+
+<div class="box trap">
+  <span class="label">Setup: los tres tropiezos de siempre</span>
+  <p><strong>1.</strong> <code>FileNotFoundError</code> → el CSV no está subido en el panel <em>Archivos</em> de <strong>ese</strong> notebook (cada uno es independiente y los archivos son temporales).</p>
+  <p><strong>2.</strong> Tras el <code>pip install</code>, Colab pide <em>Reiniciar sesión</em>: reiniciá y seguí desde el <code>import</code>, sin volver a ejecutar el <code>pip install</code>. Si dice <code>No module named 'pkg_resources'</code>: <code>!pip install "setuptools&lt;81"</code> y reiniciá.</p>
+  <p><strong>3.</strong> Una celda con <code>COMPLETAR</code> sin reemplazar da <code>NameError</code>: los nombres de columna van <strong>entre comillas</strong>.</p>
+</div>
+
+<h2>Bloque 1 · Notebook 7: ydata-profiling</h2>
+
+<h3>Paso 1 · Reporte mínimo con 5 columnas</h3>
+<p><strong>Consigna:</strong> generar <code>ProfileReport(df.iloc[:, 0:5], minimal=True)</code>, mostrarlo con <code>to_notebook_iframe()</code> y responder: ¿qué % de celdas falta? ¿cuánto valen el <strong>IQR</strong> y la <strong>asimetría</strong> de <code>mean area</code>?</p>
+<details class="answers"><summary>Pista</summary>
+<p>El % está en <em>Overview → Dataset statistics → Missing cells (%)</em>. IQR y Skewness aparecen al hacer clic en <em>More details</em> de la variable. IQR es el RIC de la guía 3.</p>
+</details>
+<details class="answers"><summary>Resolución</summary>
+<p><strong>Missing cells ≈ 20,1%.</strong> Las 5 columnas (<code>mean radius</code>, <code>mean texture</code>, <code>mean perimeter</code>, <code>mean area</code>, <code>mean smoothness</code>) saltan con la alerta <code>Missing</code>.</p>
+<p><code>mean area</code>: <strong>IQR ≈ 367,9</strong> (Q3 796,0 − Q1 428,1) y <strong>skewness ≈ 1,7</strong>: asimetría positiva, con cola de áreas grandes. Lectura: conviene la mediana como valor típico y hay que esperar outliers por arriba.</p>
+<p>Con <code>minimal=True</code> no aparecen las pestañas de correlaciones ni interacciones: por eso el paso 2 arma otro reporte.</p>
+</details>
+
+<h3>Paso 2 · Reporte completo con 6 columnas</h3>
+<p><strong>Consigna:</strong> completar el <code>COMPLETAR</code> de la celda del reporte 2 y generarlo.</p>
+<details class="answers"><summary>Pista</summary>
+<p>Es el parámetro que le pone nombre al reporte. Mirá el otro <code>ProfileReport</code> de la guía: ¿qué argumento ya usaste?</p>
+</details>
+<details class="answers"><summary>Resolución</summary>
+<pre class="code">report2 = ProfileReport(df[cols], title="EDA - Breast Cancer (selección de variables)")</pre>
+<p>El argumento es <code>title</code>. Sin <code>minimal=True</code> el reporte tarda más, pero trae <em>Correlations</em>, <em>Interactions</em> y <em>Missing values</em>.</p>
+</details>
+
+<h3>Paso 3 · La tabla de alertas</h3>
+<p><strong>Consigna:</strong> abrir la pestaña <em>Alerts</em> del reporte 2 y, para cada alerta, decidir qué hacer: <strong>eliminar, corregir, imputar, mantener/documentar o investigar</strong>. Es el producto principal del notebook.</p>
+<details class="answers"><summary>Pista</summary>
+<p>Para cada alerta preguntate dos cosas: (1) <em>¿esto es un error o es un dato real?</em> y (2) <em>¿puedo recuperar la información o no?</em> Si es un error y se puede recuperar → corregir; si es un error y no → eliminar; si falta y se puede estimar → imputar; si es real → mantener y documentar.</p>
+</details>
+<details class="answers"><summary>Resolución (alertas reales de ydata-profiling 4.18 con este dataset)</summary>
+<div class="table-wrap"><table>
+<tr><th>Alerta</th><th>Qué significa en estos datos</th><th>Qué haríamos</th></tr>
+<tr><td><code>Missing</code> × 5</td><td><code>mean radius</code> (15%), <code>mean texture</code> (14%), <code>mean area</code> (29%), <code>mean smoothness</code> (32%) y <code>area error</code> (13%). En total, 17,3% de las celdas</td><td><strong>Imputar con la mediana</strong> si hubiera que modelar (las variables son asimétricas). <strong>No eliminar filas</strong>: <code>dropna()</code> dejaba 0. Mientras sea EDA, solo medir y documentar</td></tr>
+<tr><td><code>Duplicates</code></td><td>1 fila "duplicada" en las 6 columnas elegidas (ver paso 4)</td><td><strong>Mantener</strong>: es un falso duplicado, porque con las 31 columnas no hay ninguno</td></tr>
+<tr><td><code>High correlation</code></td><td>Marca <code>mean radius</code> y <code>mean area</code> (r = 0,99 entre sí), y también <code>target</code> y <code>area error</code></td><td><strong>Mantener y documentar</strong> la redundancia: en un modelo, quedarse con una de las dos de tamaño. Que <code>target</code> aparezca no es un problema, es el hallazgo (se asocia con el tamaño)</td></tr>
+<tr><td><code>Imbalance</code> (<code>area error</code>)</td><td>489 de 494 valores son "A"</td><td><strong>Investigar</strong> qué significan A/B/C (en el original es numérica). Si no se aclara, <strong>excluirla</strong> del análisis</td></tr>
+</table></div>
+<p class="muted">No salió <code>Skewed</code> aunque <code>mean area</code> es asimétrica: la alerta depende de umbrales de la versión. Completá la tabla con lo que muestre <strong>tu</strong> reporte, no con esta.</p>
+</details>
+
+<h3>Paso 4 · El misterio de los duplicados</h3>
+<p><strong>Consigna:</strong> el reporte dice que hay filas duplicadas, pero en el notebook 0 el dataset completo no tenía. Verificarlo con las dos líneas de código de la guía y explicarlo.</p>
+<details class="answers"><summary>Resolución</summary>
+<p><code>df.duplicated().sum()</code> da <strong>0</strong>; <code>df[cols].duplicated().sum()</code> da <strong>1</strong>. Son las filas <strong>111 y 474</strong>: en las 6 columnas elegidas tienen NaN en las cuatro numéricas, <code>"A"</code> y <code>target = 1</code>. Parecen iguales mirando solo esas columnas, pero son muestras distintas. <strong>Un duplicado depende de qué columnas mirás</strong>: para decidir si dos filas son la misma observación hay que definir una clave (por ejemplo un <code>id</code>).</p>
+</details>
+
+<h3>Paso 5 · Correlaciones, faltantes y exportar</h3>
+<details class="answers"><summary>Resolución</summary>
+<p><strong>Correlations:</strong> el par más alto es <code>mean radius</code> ↔ <code>mean area</code> (0,99); coincide con el heatmap del notebook 5.</p>
+<p><strong>Missing values:</strong> están <strong>repartidos al azar</strong>, no concentrados en unas filas. Implicancia: <code>dropna()</code> elimina todo. Se explica con la cuenta del notebook 0: una fila tiene que estar completa en las 30 columnas a la vez.</p>
+<p><strong>Exportar:</strong> <code>report.to_file("report.html")</code> y <code>files.download(...)</code> son de Colab: <code>from google.colab import files</code> no funciona fuera de Colab.</p>
+</details>
+
+<h3>Paso 6 · Cierre y "Para pensar" (lo que se cuenta en la puesta en común)</h3>
+<details class="answers"><summary>Borrador de respuesta</summary>
+<ol>
+  <li><strong>Técnica:</strong> los reportes automáticos (Sweetviz, ydata-profiling) calculan en segundos lo que hicimos a mano: estructura, faltantes, descriptivos, distribuciones y correlaciones. Sirven como primera mirada y para detectar problemas de calidad.</li>
+  <li><strong>Gráfico más importante:</strong> el mapa de correlaciones: se ve el bloque de variables de tamaño (radius, perimeter, area) y su asociación con el diagnóstico.</li>
+  <li><strong>Hallazgos:</strong> (a) 17% de celdas faltantes, repartidas al azar; (b) <code>area error</code> es casi constante y sospechosa de tipo incorrecto; (c) radio y área son redundantes (r = 0,99).</li>
+  <li><strong>Aporte a la pregunta guía:</strong> el tamaño del núcleo se asocia con el diagnóstico (r ≈ −0,73 con <code>target</code>, donde 0 = maligno).</li>
+  <li><strong>Duda:</strong> ¿de verdad el reporte "ve" todo? Marcó un falso duplicado y no marcó la asimetría de <code>mean area</code>.</li>
+</ol>
+<p><strong>Automático vs manual:</strong> mejor y más rápido en detectar problemas y calcular de a todas las variables; no puede saber qué significa cada variable, decidir si un outlier es un error o un tumor real, ni escribir conclusiones sin afirmar causalidad.</p>
+</details>
+
+<h2>Bloque 2 · Notebook 8, parte A (secciones 0 a 5)</h2>
+<p>Dataset <strong>original</strong> (se descarga de Hugging Face; si falla internet, la celda arma el mismo desde scikit-learn). Nombres nuevos: <code>radius_mean</code>, <code>radius_se</code>, <code>radius_worst</code>; ojo con <code>concave points_mean</code> y <code>concave points_worst</code>, que tienen un <strong>espacio</strong>. Diagnóstico en <code>diagnosis</code>: <strong>M</strong> = maligno, <strong>B</strong> = benigno.</p>
+
+<h3>Sección 1 · Pregunta y fuente</h3>
+<details class="answers"><summary>Pista</summary>
+<p>La pregunta guía de todos los notebooks está en el notebook 2. Para la fuente: ¿quién recolectó los datos y vos controlás cómo? Mirá la tabla de la <a href="0016-el-eda-y-su-flujo.html">0016</a>.</p>
+</details>
+<details class="answers"><summary>Resolución</summary>
+<p><strong>Pregunta:</strong> ¿qué características de los núcleos celulares parecen diferenciar un tumor maligno de uno benigno?</p>
+<p><strong>Fuente: secundaria.</strong> La recolectó la Universidad de Wisconsin (1995) y se publicó en UCI; no controlamos cómo se midió. Importa porque la validez de las conclusiones depende de un proceso de recolección que no vimos, y porque no podemos volver a medir.</p>
+</details>
+
+<h3>Sección 2 · Carga, exploración y calidad</h3>
+<p><strong>Consigna:</strong> completar <code>df.COMPLETAR</code> (filas y columnas) y <code>df.COMPLETAR</code> (tipos), mirar faltantes y duplicados, y sacar las columnas que no aportan.</p>
+<details class="answers"><summary>Resolución</summary>
+<pre class="code">print("Filas y columnas:", df.shape)   # atributo, sin paréntesis
+df.dtypes</pre>
+<p>Al cargar sale <strong>(569, 33)</strong>. La salida de faltantes muestra <code>Unnamed: 32</code> con <strong>569</strong> (100% vacía): viene de una coma de más al final de cada línea del CSV. Al sacar <code>id</code> y esa columna queda <strong>(569, 31)</strong>.</p>
+<p><strong>Diagnóstico de calidad</strong> (comparado con <code>sample_dataset.csv</code>): sin faltantes reales, <strong>0 duplicados</strong>, tipos correctos (<code>diagnosis</code> es texto y el resto numérico). Es la versión limpia. Columnas eliminadas: <code>id</code> (identificador: no mide nada de la célula, no tiene sentido promediarlo ni correlacionarlo) y <code>Unnamed: 32</code> (100% vacía). Ambas decisiones se documentan.</p>
+</details>
+
+<h3>Sección 3 · Clasificar variables y balance</h3>
+<details class="answers"><summary>Resolución</summary>
+<p><code>diagnosis</code> → <strong>categórica nominal</strong> (M/B, sin orden). <code>radius_mean</code> → <strong>numérica continua</strong> (cualquier valor dentro de un rango).</p>
+<p>Clases: <strong>B 357 (62,7%) y M 212 (37,3%)</strong>. No están perfectamente balanceadas, aunque no es un desbalance extremo. Hay que tenerlo en cuenta al comparar grupos.</p>
+</details>
+
+<h3>Sección 4 · Univariado: descriptivos y Rice</h3>
+<p><strong>Consigna:</strong> completar <code>rice_bins</code> y elegir 3 variables (con <code>radius_mean</code> y <code>area_mean</code>).</p>
+<details class="answers"><summary>Pista</summary>
+<p>La fórmula es 2 · n elevado a <em>qué potencia</em>. Es una raíz cúbica.</p>
+</details>
+<details class="answers"><summary>Resolución</summary>
+<pre class="code">def rice_bins(n):
+    return int(np.ceil(2 * n ** (1/3)))
+
+cols = ["radius_mean", "area_mean", "concave points_worst"]</pre>
+<p>Con n = 569 son <strong>17 bins</strong> (en el sample eran 16 por los faltantes).</p>
+<div class="table-wrap"><table>
+<tr><th>Variable</th><th>media</th><th>mediana</th><th>skew</th><th>Lectura</th></tr>
+<tr><td><code>radius_mean</code></td><td>14,13</td><td>13,37</td><td>0,94</td><td>Asimetría positiva</td></tr>
+<tr><td><code>area_mean</code></td><td>654,9</td><td>551,1</td><td>1,65</td><td>Asimetría positiva más marcada</td></tr>
+<tr><td><code>concave points_worst</code></td><td>0,115</td><td>0,100</td><td>0,49</td><td>Asimetría positiva leve</td></tr>
+</table></div>
+<p>Preguntas del notebook: la <strong>media es claramente mayor que la mediana</strong> en las de área y radio, lo que sugiere cola de valores altos. Escalas: <code>area_mean</code> (cientos) vs <code>smoothness_mean</code> (≈ 0,1): <strong>sí estandarizaría</strong> si fuera a modelar, porque las escalas son muy distintas. Para el valor típico: <strong>mediana</strong>.</p>
+</details>
+
+<h3>Sección 5 · Boxplots y outliers</h3>
+<p><strong>Consigna:</strong> tabla de outliers de las 3 variables, boxplot por diagnóstico (<code>x=COMPLETAR</code>) y decidir si eliminar o mantener.</p>
+<details class="answers"><summary>Resolución</summary>
+<pre class="code">sns.boxplot(data=df, x="diagnosis", y=c, ax=ax)</pre>
+<div class="table-wrap"><table>
+<tr><th>Variable</th><th>Q1</th><th>Q3</th><th>RIC</th><th>Ls</th><th>Outliers</th><th>Diagnóstico</th></tr>
+<tr><td><code>radius_mean</code></td><td>11,70</td><td>15,78</td><td>4,08</td><td>21,90</td><td><strong>14</strong></td><td>todos M</td></tr>
+<tr><td><code>area_mean</code></td><td>420,3</td><td>782,7</td><td>362,4</td><td>1326,3</td><td><strong>25</strong></td><td>todos M</td></tr>
+<tr><td><code>concave points_worst</code></td><td>0,065</td><td>0,161</td><td>0,096</td><td>0,306</td><td><strong>0</strong></td><td>—</td></tr>
+</table></div>
+<p><strong>Decisión: mantener.</strong> Son tumores realmente grandes, no errores de medición, y son justo los casos que responden la pregunta guía. Eliminarlos nos dejaría sin los malignos más claros. Atención: que una variable tenga 0 outliers (<code>concave points_worst</code>) no significa que no sea interesante: es una de las que mejor separa los diagnósticos.</p>
+</details>
+
+<h2>Bloque 3 · Notebook 8, parte B (secciones 6 a 9)</h2>
+
+<h3>Sección 6 · Pairplot y jointplot</h3>
+<details class="answers"><summary>Pista</summary>
+<p>Elegí variables de <strong>familias distintas</strong> (tamaño, concavidad, textura) para que el pairplot muestre algo. Y el <code>hue</code> es la columna de texto con el diagnóstico.</p>
+</details>
+<details class="answers"><summary>Resolución</summary>
+<pre class="code">subset = ["radius_mean", "area_mean", "concave points_worst", "texture_mean"]
+sns.pairplot(df, vars=subset, hue="diagnosis", corner=True)</pre>
+<p><strong>Dos relaciones:</strong> (1) <code>radius_mean</code> vs <code>area_mean</code>: positiva muy fuerte (r ≈ 0,99) pero <strong>curva</strong>, porque el área crece con el cuadrado del radio. (2) <code>radius_mean</code> vs <code>concave points_worst</code>: positiva, fuerte; los malignos quedan arriba a la derecha. <strong>Separa mejor los diagnósticos:</strong> <code>concave points_worst</code> y los de tamaño; <code>texture_mean</code> se superpone bastante.</p>
+</details>
+
+<h3>Sección 7 · Pearson vs Spearman + heatmap</h3>
+<p><strong>Consigna:</strong> armar el ranking con ambos métodos. Ojo con el signo: acá <strong>1 = maligno</strong>.</p>
+<details class="answers"><summary>Resolución</summary>
+<pre class="code">ranking = pd.DataFrame({
+    "pearson":  corr_p["maligno"],
+    "spearman": corr_s["maligno"],
+}).drop("maligno").sort_values("pearson", ascending=False)</pre>
+<div class="table-wrap"><table>
+<tr><th>Variable</th><th>Pearson</th><th>Spearman</th></tr>
+<tr><td><code>concave points_worst</code></td><td>0,79</td><td>0,78</td></tr>
+<tr><td><code>perimeter_worst</code></td><td>0,78</td><td>0,80</td></tr>
+<tr><td><code>concave points_mean</code></td><td>0,78</td><td>0,78</td></tr>
+<tr><td><code>radius_worst</code></td><td>0,78</td><td>0,79</td></tr>
+<tr><td><code>perimeter_mean</code></td><td>0,74</td><td>0,75</td></tr>
+</table></div>
+<p><strong>Pearson vs Spearman:</strong> Pearson mide relaciones <em>lineales</em> sobre los valores y es sensible a outliers; Spearman mide relaciones <em>monótonas</em> sobre los rangos y es robusta. La magnitud cambia cuando la relación no es una recta o hay valores extremos: la diferencia más grande es <code>concavity_se</code> (0,25 vs 0,47) y <code>area_se</code> (0,55 vs 0,71), dos variables muy asimétricas con muchos outliers. En las más asociadas casi no cambia: la relación es bastante lineal.</p>
+<p><strong>Redundantes:</strong> <code>radius</code>, <code>perimeter</code> y <code>area</code> (r ≈ 0,99). Implicancia: aportan la misma información; para un modelo, una sola. <strong>Sin relación con el diagnóstico:</strong> <code>fractal_dimension_mean</code> (r = −0,01).</p>
+</details>
+
+<h3>Sección 8 · El informe final</h3>
+<p><strong>Consigna:</strong> entre 3 y 5 conclusiones, cada una con <strong>evidencia</strong> (un número o un gráfico del notebook) y <strong>qué implica</strong>; más variables informativas y limitaciones. Esto es lo que se evalúa.</p>
+<details class="answers"><summary>Pista: cómo escribir un buen hallazgo</summary>
+<p>Fórmula: <strong>qué encontré → con qué evidencia → qué significa</strong>, sin decir "causa". Evitá hallazgos sin número ("hay correlación") y verbos de causalidad ("provoca", "causa").</p>
+</details>
+<details class="answers"><summary>Borrador completo para chequear tu informe</summary>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>Hallazgo</th><th>Evidencia</th><th>¿Qué implica?</th></tr>
+<tr><td>1</td><td>Los tumores malignos tienen núcleos más grandes</td><td>Mediana de <code>radius_mean</code>: 17,3 (M) vs 12,2 (B); boxplot por diagnóstico</td><td>El tamaño ayuda a distinguir los diagnósticos</td></tr>
+<tr><td>2</td><td>La concavidad es la variable más asociada al diagnóstico</td><td><code>concave points_worst</code>: r = 0,79 con <code>maligno</code>; mediana 0,182 (M) vs 0,074 (B)</td><td>Es la primera candidata a incluir si se modela</td></tr>
+<tr><td>3</td><td>Los outliers de tamaño son todos malignos</td><td>14 en <code>radius_mean</code> y 25 en <code>area_mean</code>, todos M</td><td>Se mantienen: son casos reales, no errores</td></tr>
+<tr><td>4</td><td>Radio, perímetro y área son redundantes</td><td>r ≈ 0,99 entre sí (pairplot y heatmap)</td><td>No aportan información independiente: una sola alcanza</td></tr>
+<tr><td>5</td><td>El dataset está limpio pero las clases no están balanceadas, y la dimensión fractal no discrimina</td><td>0 faltantes y 0 duplicados; 62,7% B vs 37,3% M; <code>fractal_dimension_mean</code> r = −0,01</td><td>Al comparar grupos hay que considerar el desbalance; no vale la pena priorizar esa variable</td></tr>
+</table></div>
+<p><strong>Variables más informativas:</strong> <code>concave points_worst</code>, <code>perimeter_worst</code>, <code>radius_worst</code>, <code>concave points_mean</code> (Pearson ≈ 0,78 y Spearman ≈ 0,78–0,80; Spearman confirma que no es un efecto de los outliers).</p>
+<p><strong>Limitaciones</strong> (lámina "Cómo interpretar los resultados de un EDA"):</p>
+<ul>
+  <li><strong>Causalidad:</strong> las correlaciones son asociaciones; no decimos que el tamaño del núcleo "cause" el cáncer.</li>
+  <li><strong>Calidad y fuente:</strong> es un dataset secundario de 1995, ya depurado: no vimos cómo se midió.</li>
+  <li><strong>Alcance exploratorio:</strong> genera hipótesis, no las prueba.</li>
+  <li><strong>Contexto:</strong> falta conocimiento médico para interpretar qué significan las medidas.</li>
+  <li><strong>Técnica:</strong> la correlación de Pearson con una variable binaria es solo orientativa.</li>
+</ul>
+</details>
+
+<h3>Sección 9 (opcional) · Contrastar con un reporte automático</h3>
+<details class="answers"><summary>Resolución</summary>
+<p>Descomentá las líneas y usá el reporte para <strong>contrastar</strong> tus conclusiones, no para reemplazarlas: <code>ProfileReport(df[["diagnosis"] + cols], minimal=True)</code>. Chequeá que las alertas coincidan con tu diagnóstico de calidad (esperable: ninguna <code>Missing</code>, quizá <code>Skewed</code> en <code>area_mean</code>).</p>
+</details>
+
+<h2>Cierre: checklist de entrega del notebook 8</h2>
+<ul>
+  <li>☐ 1. Pregunta y fuente (y por qué importa el tipo de fuente)</li>
+  <li>☐ 2. Exploración inicial y calidad (faltantes, duplicados, columnas inútiles <strong>con decisión documentada</strong>)</li>
+  <li>☐ 3. Clasificación de variables y balance de clases</li>
+  <li>☐ 4. Univariado: descriptivos e histogramas (Rice) con lectura media vs mediana</li>
+  <li>☐ 5. Boxplots, RIC y outliers <strong>con decisión justificada</strong></li>
+  <li>☐ 6. Pairplot / jointplot con <code>hue</code></li>
+  <li>☐ 7. Pearson y Spearman + heatmap, con el signo bien interpretado</li>
+  <li>☐ 8. Informe: 3 a 5 conclusiones con evidencia + variables informativas + limitaciones</li>
+</ul>
+
+<h2>Práctica de decisión</h2>
+<div class="quiz" data-quiz-id="0022-taller-guiado-notebooks-7-y-8"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "Un reporte automático marca una alerta <code>Duplicates</code> con 6 columnas, pero con las 31 no hay ninguno. ¿Qué hacés?",
+   "options": ["Mantenerlas: coinciden solo en esas columnas", "Eliminar las dos filas por estar repetidas", "Imputar los valores de esas dos filas", "Descartar el reporte por ser incorrecto"], "answer": 0,
+   "why": "Un duplicado depende de qué columnas mirás. Con todas las columnas son filas distintas: es un falso duplicado."},
+  {"q": "<code>dropna()</code> deja 0 filas y la mayoría de las columnas tiene 15% a 33% de faltantes al azar. ¿Qué estrategia es más razonable?",
+   "options": ["Imputar con la mediana de cada columna", "Eliminar las filas con algún faltante", "Reemplazar todos los faltantes por cero", "Eliminar todas las columnas con faltantes"], "answer": 0,
+   "why": "Eliminar filas no es viable (no sobrevive ninguna). Las variables son asimétricas: la mediana es mejor que la media. Reemplazar por 0 inventa datos."},
+  {"q": "En <code>radius_mean</code> hay 14 outliers y todos son malignos. ¿Qué decisión justificás mejor?",
+   "options": ["Mantenerlos: son tumores grandes reales", "Eliminarlos: distorsionan la media", "Reemplazarlos por la mediana del grupo", "Eliminarlos solo los benignos"], "answer": 0,
+   "why": "No son errores sino casos reales, y son los que más aportan a la pregunta guía. Un outlier no es automáticamente un error."},
+  {"q": "Una variable tiene 0 outliers según la regla del RIC. ¿Qué podés concluir?",
+   "options": ["Que ningún valor cae fuera de Li y Ls", "Que la variable no sirve para el análisis", "Que la distribución es perfectamente simétrica", "Que la variable no tiene faltantes"], "answer": 0,
+   "why": "Solo que ningún valor queda fuera de [Li, Ls]. <code>concave points_worst</code> no tiene outliers y es de las que mejor separan los diagnósticos."},
+  {"q": "En el notebook 8, <code>concave points_worst</code> tiene r = 0,79 con <code>maligno</code> (1 = M). ¿Cómo lo redactás en el informe?",
+   "options": ["Valores altos se asocian a diagnóstico maligno", "Valores altos provocan un diagnóstico maligno", "Valores altos se asocian a diagnóstico benigno", "Valores bajos se asocian a diagnóstico maligno"], "answer": 0,
+   "why": "Correlación positiva con <code>maligno</code> = 1: asociación con maligno. No se afirma causalidad."},
+  {"q": "<code>area_se</code> tiene Pearson 0,55 y Spearman 0,71 con el diagnóstico. ¿Cuál es la explicación más probable?",
+   "options": ["Es muy asimétrica y con outliers que afectan a Pearson", "Spearman siempre da un valor mayor que Pearson", "Hay un error de cálculo en alguno de los dos", "La variable es categórica y no numérica"], "answer": 0,
+   "why": "Pearson es sensible a outliers y a relaciones no lineales; Spearman usa rangos y es más robusta."},
+  {"q": "<code>radius</code>, <code>perimeter</code> y <code>area</code> tienen r ≈ 0,99 entre sí. ¿Qué implicancia anotás?",
+   "options": ["Son redundantes: una sola aporta lo mismo", "El radio causa el perímetro y el área", "Hay que eliminar las tres del análisis", "Las tres separan mal los diagnósticos"], "answer": 0,
+   "why": "Miden el mismo fenómeno (el tamaño). Mantenerlas para el EDA está bien, pero en un modelo se elegiría una."},
+  {"q": "¿Cuál de estas es una limitación válida del informe del notebook 8?",
+   "options": ["Es exploratorio: genera hipótesis, no las prueba", "Los datos tienen 30% de faltantes sin tratar", "No se pudieron calcular las correlaciones", "Hay demasiados outliers para analizar"], "answer": 0,
+   "why": "En el dataset original no hay faltantes ni duplicados. Las limitaciones reales: causalidad, fuente secundaria, alcance exploratorio y contexto."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Resolvés los notebooks 7 y 8 y, sobre todo, justificás cada decisión: qué hacer con cada alerta, con cada outlier y con cada columna que no sirve, y escribís un informe con evidencia. Es exactamente lo que va a pedir el TP.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>Notebooks <code>7_CIA_EDA</code> y <code>8_CIA_PRACTICA_EDA</code> de <code>material_eda/4-Tarea/</code>. Documentación de <a href="https://docs.profiling.ydata.ai/latest/">ydata-profiling</a> (qué significa cada alerta). Referencia imprimible: <a href="../reference/eda.html">EDA</a>. Conceptos de fondo: <a href="0016-el-eda-y-su-flujo.html">0016</a> a <a href="0021-eda-automatico-y-practica.html">0021</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Cuando tengas el informe del notebook 8 armado, pegámelo y lo revisamos contra la checklist: evidencia en cada hallazgo, decisiones justificadas y nada de causalidad.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0021-eda-automatico-y-practica.html">← 0021 · Notebooks 6, 7 y 8</a>
+  <a href="../reference/eda.html">Referencia · EDA →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

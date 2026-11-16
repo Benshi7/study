@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="unicaba" data-theme-base="../assets/themes/">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Source: cátedra PDFs "Clase 5 - Scrum Parte" (cronograma clase 10) and "Clase 6 - Scrum Parte 3" (clase 11).
+     Diagrams are generated: python3 tools/diagramas.py rewrites everything between the diagram markers. -->
+<title>Clases 10 y 11 · Ceremonias de Scrum</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../assets/themes/unicaba.css">
+<link rel="stylesheet" href="../assets/animations/animations.css">
+<link rel="stylesheet" href="../../assets/diagram.css">
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide cover" data-title="Portada">
+    <p class="kicker">Clases 10 y 11 · Parcial del 18/11</p>
+    <h1 class="h1">Ceremonias de Scrum:<br>el Sprint por dentro</h1>
+    <p class="lede mt-m" style="max-width:56ch">Planificar, estimar, partir el trabajo, controlarlo cada día, mostrarlo y mejorar.</p>
+    <div class="row wrap mt-l"><span class="pill">⏱ 25 minutos</span><span class="pill">Fuente: Scrum parte 2 y parte 3 (cátedra)</span></div>
+    <div class="notes">Estas slides siguen los PDFs de la cátedra «Clase 5: Scrum Parte 2» (clase 10 del cronograma) y «Clase 6: Scrum Parte 3» (clase 11). Donde la Guía 2020 dice otra cosa, para el parcial gana la cátedra: Sprint de 2 semanas a 2 meses, Daily con tres preguntas, DoR, refinamiento moderado por el PO.</div>
+  </section>
+
+  <section class="slide titled" data-title="El Sprint">
+    <div class="bar"><p class="kicker">Mapa · Scrum parte 2, p8</p><h2 class="h2">4 ceremonias, 1 objetivo, de 2 semanas a 2 meses</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:sprint-ciclo-->
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sprint-ciclo-title sprint-ciclo-desc"><title id="sprint-ciclo-title">El Sprint y sus ceremonias según la cátedra</title><desc id="sprint-ciclo-desc">Un Sprint es un time box fijo de 2 semanas a 2 meses con cuatro ceremonias y un objetivo: Sprint Planning, trabajo con Daily Scrum, Sprint Review y Sprint Retrospective. Las historias del Product Backlog entran si cumplen la DoR, el Incremento cumple la DoD y se muestra en la Review, y la retrospectiva deja un plan de acción para el Sprint siguiente. Sprint 0 y refinamiento quedan fuera de los cuatro eventos.</desc><defs><marker id="sprint-ciclo-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="sprint-ciclo-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="sprint-ciclo-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><rect class="dg-zone" x="28" y="24" width="904" height="200" rx="8"/>
+<text class="dg-tag" x="44" y="48" text-anchor="start">SPRINT · TIME BOX FIJO DE 2 SEMANAS A 2 MESES · 4 CEREMONIAS, 1 OBJETIVO</text>
+<path class="dg-line" d="M236 128 H268" marker-end="url(#sprint-ciclo-arrow)"/>
+<path class="dg-line" d="M464 128 H496" marker-end="url(#sprint-ciclo-arrow)"/>
+<path class="dg-line" d="M692 128 H724" marker-end="url(#sprint-ciclo-arrow)"/>
+<path class="dg-line" d="M138 272 V176" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="146" y="252" text-anchor="start">entra si cumple la DoR</text>
+<path class="dg-line" d="M366 272 V176" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="374" y="252" text-anchor="start">guía el trabajo</text>
+<path class="dg-line" d="M594 176 V272" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="602" y="252" text-anchor="start">se muestra</text>
+<path class="dg-line" d="M822 176 V272" marker-end="url(#sprint-ciclo-arrow)"/>
+<text class="dg-lbl" x="830" y="252" text-anchor="start">deja</text>
+<rect class="dg-mask" x="40" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="138" y="115" text-anchor="middle">Sprint Planning</text>
+<text class="dg-sub" x="138" y="133" text-anchor="middle">1ª tarea: PO explica HU</text>
+<text class="dg-sub" x="138" y="151" text-anchor="middle">objetivo + tareas</text>
+<rect class="dg-mask" x="268" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="268" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="366" y="115" text-anchor="middle">Trabajo + Daily</text>
+<text class="dg-sub" x="366" y="133" text-anchor="middle">15 min · 3 preguntas</text>
+<text class="dg-sub" x="366" y="151" text-anchor="middle">impedimentos</text>
+<rect class="dg-mask" x="496" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="496" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="594" y="115" text-anchor="middle">Sprint Review</text>
+<text class="dg-sub" x="594" y="133" text-anchor="middle">PO + demo</text>
+<text class="dg-sub" x="594" y="151" text-anchor="middle">a stakeholders</text>
+<rect class="dg-mask" x="724" y="80" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="724" y="80" width="196" height="96" rx="6"/>
+<text class="dg-name" x="822" y="115" text-anchor="middle">Retrospectiva</text>
+<text class="dg-sub" x="822" y="133" text-anchor="middle">última tarea</text>
+<text class="dg-sub" x="822" y="151" text-anchor="middle">cómo mejorar</text>
+<rect class="dg-mask" x="40" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-store" x="40" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="138" y="312" text-anchor="middle">Product Backlog</text>
+<text class="dg-sub" x="138" y="330" text-anchor="middle">ordenado por el PO</text>
+<rect class="dg-mask" x="268" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-store" x="268" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="366" y="312" text-anchor="middle">Sprint Backlog</text>
+<text class="dg-sub" x="366" y="330" text-anchor="middle">con el Sprint Goal</text>
+<rect class="dg-mask" x="496" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-focal" x="496" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="594" y="312" text-anchor="middle">Incremento</text>
+<text class="dg-sub" x="594" y="330" text-anchor="middle">cumple la DoD</text>
+<rect class="dg-mask" x="724" y="272" width="196" height="88" rx="6"/>
+<rect class="dg-store" x="724" y="272" width="196" height="88" rx="6"/>
+<text class="dg-name" x="822" y="312" text-anchor="middle">Plan de acción</text>
+<text class="dg-sub" x="822" y="330" text-anchor="middle">fecha y responsable</text>
+<rect class="dg-mask" x="40" y="392" width="428" height="72" rx="6"/>
+<rect class="dg-ghost" x="40" y="392" width="428" height="72" rx="6"/>
+<text class="dg-name" x="254" y="424" text-anchor="middle">Sprint 0 · puesta a punto</text>
+<text class="dg-sub" x="254" y="442" text-anchor="middle">no está en la Guía · máximo 2 Sprints</text>
+<rect class="dg-mask" x="492" y="392" width="428" height="72" rx="6"/>
+<rect class="dg-ghost" x="492" y="392" width="428" height="72" rx="6"/>
+<text class="dg-name" x="706" y="424" text-anchor="middle">Refinamiento · lo modera el PO</text>
+<text class="dg-sub" x="706" y="442" text-anchor="middle">Scrum lo ve como parte de la Planning</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<rect class="dg-box" x="128" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="532" text-anchor="start">ceremonia</text>
+<rect class="dg-focal" x="248" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="276" y="532" text-anchor="start">lo que se entrega</text>
+<rect class="dg-ghost" x="424" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="452" y="532" text-anchor="start">fuera de las 4 ceremonias</text></svg>
+<!--/diagram:sprint-ciclo-->
+      </div>
+    </div>
+    <div class="notes">El Sprint es un ciclo iterativo de duración fija, entre 2 semanas y 2 meses según la cátedra (la Guía 2020 dice un mes o menos). Tiene un objetivo, un backlog de sprint y ceremonias. La diapositiva menciona la cancelación; según la guía solo la decide el PO. Abajo: Sprint 0 y refinamiento, que no son de las cuatro ceremonias.</div>
+  </section>
+
+  <section class="slide titled" data-title="Sprint 0">
+    <div class="bar"><p class="kicker">Scrum parte 2, p7</p><h2 class="h2">Sprint 0: la puesta a punto</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Qué es</h4><ul class="dim" style="padding-left:22px;margin:0"><li><b>No es parte de la guía Scrum</b></li><li>Planificación macro y puesta a punto</li><li>Dura como máximo <b>lo equivalente a 2 Sprints</b></li></ul></div>
+        <div class="card violet"><h4>Tareas comunes</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Arquitectura, equipos, capacitaciones</li><li>Backlog inicial y <b>pivote</b> para estimar</li><li>Entornos; <b>DoR y DoD iniciales</b></li></ul></div>
+      </div>
+      <div class="callout mt-l">Se parece al inicio de un proyecto en cascada, pero <b>acotado</b>: se planifica lo mínimo para arrancar.</div>
+    </div>
+    <div class="notes">Ejemplo con una web de reservas de restaurantes: definir la arquitectura (web propia, correo por un servicio externo), quién es PO, armar entornos y elegir una historia pivote de 3 puntos. El pivote es la referencia para la estimación ágil. No es parte de la guía Scrum ni cuenta entre las 4 ceremonias.</div>
+  </section>
+
+  <section class="slide titled" data-title="Sprint Planning">
+    <div class="bar"><p class="kicker">Primera tarea del Sprint · p9 y p10</p><h2 class="h2">Sprint Planning y Definition of Ready</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Cuatro pasos</h4><ol class="dim" style="padding-left:28px;margin:0"><li>El PO explica las HU candidatas</li><li>El equipo estima cuáles puede terminar</li><li>Se acuerda el <b>objetivo del Sprint</b></li><li>El equipo separa las HU en <b>tareas</b></li></ol></div>
+        <div class="card violet"><h4>DoR: contrato de equipo</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Dice si una HU <b>puede entrar</b> al Sprint</li><li>Se puede actualizar</li><li>Ej.: flujos, criterios de aceptación, pantallas, dependencias resueltas</li></ul></div>
+      </div>
+      <div class="callout mt-l"><b>DoR</b> = puerta de entrada al Sprint · <b>DoD</b> = puerta de salida al Incremento.</div>
+    </div>
+    <div class="notes">La DoR no figura en la Guía 2020, pero es de la cátedra y entra en el parcial. Ejemplo: una historia que depende de una API de otra área que no está publicada no cumple la DoR.</div>
+  </section>
+
+  <section class="slide titled" data-title="Estimación ágil">
+    <div class="bar"><p class="kicker">p11 y p12</p><h2 class="h2">Estimar con puntos y planning poker</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Puntos de estimación</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Experiencia + <b>incertidumbre</b> + complejidad</li><li>Relativos a un <b>pivote</b></li><li>Talles de camiseta, vasos de Starbucks, planning poker</li></ul></div>
+        <div class="card violet"><h4>Planning poker (Fibonacci)</h4><ol class="dim" style="padding-left:28px;margin:0"><li>El PO presenta una historia</li><li>Cada uno elige su carta</li><li>Se muestran <b>a la vez</b></li><li><b>Los dos extremos</b> explican</li><li>Se vuelve a votar</li></ol></div>
+      </div>
+    </div>
+    <div class="notes">Ejemplo: pivote de 3 puntos (ver los datos de un restaurante). Historia nueva: recibir la confirmación de la reserva por WhatsApp. Ronda 1: 3, 5, 5, 13. El del 13 avisa que nunca integraron WhatsApp: eso es incertidumbre. Ronda 2: 5, 8, 8, 8, y queda en 8. No se promedia ni gana la mayoría: hablan los extremos y se vuelve a votar.</div>
+  </section>
+
+  <section class="slide titled" data-title="Slicing y splitting">
+    <div class="bar"><p class="kicker">p13 a p17</p><h2 class="h2">Slicing parte historias; splitting parte en tareas</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:hu-slicing-->
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="hu-slicing-title hu-slicing-desc"><title id="hu-slicing-title">Épica, historia de usuario y tarea: slicing y splitting</title><desc id="hu-slicing-desc">Una épica se parte en historias de usuario con slicing durante el refinamiento (siete técnicas) y cada historia se parte en tareas con splitting durante la Sprint Planning (tres criterios).</desc><defs><marker id="hu-slicing-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="hu-slicing-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="hu-slicing-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M216 112 H376" marker-end="url(#hu-slicing-arrow)"/>
+<path class="dg-line" d="M580 112 H740" marker-end="url(#hu-slicing-arrow)"/>
+<rect class="dg-mask" x="40" y="64" width="176" height="96" rx="6"/>
+<rect class="dg-ghost" x="40" y="64" width="176" height="96" rx="6"/>
+<text class="dg-name" x="128" y="99" text-anchor="middle">Épica</text>
+<text class="dg-sub" x="128" y="117" text-anchor="middle">demasiado grande</text>
+<text class="dg-sub" x="128" y="135" text-anchor="middle">para un Sprint</text>
+<rect class="dg-mask" x="380" y="64" width="200" height="96" rx="6"/>
+<rect class="dg-focal" x="380" y="64" width="200" height="96" rx="6"/>
+<text class="dg-name" x="480" y="99" text-anchor="middle">Historia de usuario</text>
+<text class="dg-sub" x="480" y="117" text-anchor="middle">Como… quiero…</text>
+<text class="dg-sub" x="480" y="135" text-anchor="middle">para…</text>
+<rect class="dg-mask" x="744" y="64" width="176" height="96" rx="6"/>
+<rect class="dg-box" x="744" y="64" width="176" height="96" rx="6"/>
+<text class="dg-name" x="832" y="99" text-anchor="middle">Tarea</text>
+<text class="dg-sub" x="832" y="117" text-anchor="middle">trabajo técnico</text>
+<text class="dg-sub" x="832" y="135" text-anchor="middle">de hasta 8 horas</text>
+<text class="dg-tag" x="304" y="188" text-anchor="middle">SLICING</text>
+<text class="dg-lbl" x="304" y="208" text-anchor="middle">en el refinamiento</text>
+<text class="dg-tag" x="656" y="188" text-anchor="middle">SPLITTING</text>
+<text class="dg-lbl" x="656" y="208" text-anchor="middle">en la Sprint Planning</text>
+<rect class="dg-zone" x="40" y="236" width="424" height="236" rx="8"/>
+<text class="dg-tag" x="56" y="260" text-anchor="start">SLICING · PARTIR HISTORIAS · 7 TÉCNICAS</text>
+<text class="dg-note" x="56" y="292" text-anchor="start">Roles: comprador / vendedor</text>
+<text class="dg-note" x="56" y="316" text-anchor="start">Pasos del flujo: buscar, carrito, envío, pagar</text>
+<text class="dg-note" x="56" y="340" text-anchor="start">Principal / alternativo: tarjeta vencida</text>
+<text class="dg-note" x="56" y="364" text-anchor="start">Regla de negocio: envío gratis desde $30.000</text>
+<text class="dg-note" x="56" y="388" text-anchor="start">Datos de entrada: filtros de km y marca</text>
+<text class="dg-note" x="56" y="412" text-anchor="start">Datos de salida: email o pantalla</text>
+<text class="dg-note" x="56" y="436" text-anchor="start">Operaciones: publicar, modificar, dar de baja</text>
+<rect class="dg-zone" x="496" y="236" width="424" height="236" rx="8"/>
+<text class="dg-tag" x="512" y="260" text-anchor="start">SPLITTING · PARTIR EN TAREAS · 3 CRITERIOS</text>
+<text class="dg-note" x="512" y="292" text-anchor="start">Tipo de actividad: diseño, desarrollo, pruebas</text>
+<text class="dg-note" x="512" y="316" text-anchor="start">Componente técnico: front-end, back-end</text>
+<text class="dg-note" x="512" y="340" text-anchor="start">Tecnología o herramienta: Postman, Selenium</text>
+<text class="dg-note-accent" x="512" y="388" text-anchor="start">Ejemplo de la cátedra:</text>
+<text class="dg-note" x="512" y="412" text-anchor="start">«Como comprador, quiero recibir un email</text>
+<text class="dg-note" x="512" y="436" text-anchor="start">con la confirmación de la compra…»</text>
+<line class="dg-rule" x1="40" y1="484" x2="920" y2="484"/>
+<text class="dg-tag" x="40" y="512" text-anchor="start">LEYENDA</text>
+<rect class="dg-ghost" x="128" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="512" text-anchor="start">demasiado grande</text>
+<rect class="dg-focal" x="296" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="324" y="512" text-anchor="start">unidad de valor para el usuario</text>
+<rect class="dg-box" x="564" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="592" y="512" text-anchor="start">unidad de trabajo</text></svg>
+<!--/diagram:hu-slicing-->
+      </div>
+    </div>
+    <div class="notes">Slicing ocurre en el refinamiento y deja historias que siguen dando valor al usuario: roles, pasos del flujo, principal o alternativo, regla de negocio, datos de entrada, datos de salida, operaciones. Splitting ocurre en la planning y deja tareas técnicas: por tipo de actividad, componente técnico, tecnología o herramienta. Historia de usuario: Como, quiero, para.</div>
+  </section>
+
+  <section class="slide titled" data-title="Refinamiento">
+    <div class="bar"><p class="kicker">p15</p><h2 class="h2">Backlog Refinement: lo modera el PO</h2></div>
+    <div class="body">
+      <div class="grid g2">
+        <div class="card card-accent"><h4>Qué se hace</h4><ul class="dim" style="padding-left:22px;margin:0"><li>Entender las historias</li><li>Evaluar completitud y dependencias</li><li>¿Entra en un Sprint o hay que partirla?</li></ul></div>
+        <div class="card violet"><h4>Lo distintivo</h4><ul class="dim" style="padding-left:22px;margin:0"><li><b>Única reunión que modera el PO</b>, no el Scrum Master</li><li>Scrum la ve como parte de la planning</li><li>Se puede invitar a externos</li></ul></div>
+      </div>
+    </div>
+    <div class="notes">Pregunta probable de parcial: qué reunión modera el PO en lugar del Scrum Master. Respuesta: el refinamiento del backlog.</div>
+  </section>
+
+  <section class="slide titled" data-title="Daily">
+    <div class="bar"><p class="kicker">15 minutos · Scrum parte 3, p7</p><h2 class="h2">Daily Scrum: tres preguntas</h2></div>
+    <div class="body">
+      <div class="grid g3">
+        <div class="card card-accent"><h4>¿Qué hice ayer?</h4></div>
+        <div class="card violet"><h4>¿Qué haré hoy?</h4></div>
+        <div class="card card-accent"><h4>¿Tengo algún impedimento?</h4></div>
+      </div>
+      <div class="callout mt-l">Con tareas de <b>máximo 8 horas</b>, un desvío se ve al día siguiente. Misma hora todos los días.</div>
+    </div>
+    <div class="notes">La Guía 2020 sacó las tres preguntas, pero la cátedra las enseña: en el parcial se responden. Los impedimentos se acuerdan en la Daily y se resuelven fuera de ella.</div>
+  </section>
+
+  <section class="slide titled" data-title="Review y Retrospectiva">
+    <div class="bar"><p class="kicker">p8 y p9</p><h2 class="h2">Review mira el producto; la Retro, la forma de trabajar</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:26px">
+        <thead><tr><th style="width:18%"></th><th style="width:41%">Sprint Review</th><th>Sprint Retrospective</th></tr></thead>
+        <tbody>
+          <tr><td>Se revisa</td><td>El <b>incremento</b> que cumple la DoD</td><td>Cómo mejorar de cara al Sprint siguiente</td></tr>
+          <tr><td>Cómo</td><td>El PO explica a los <b>stakeholders</b>; el equipo hace una <b>demo</b></td><td>Con un objetivo, de temas y no de personas, con respeto</td></tr>
+          <tr><td>Qué sale</td><td>Cambios al backlog; presupuesto y roadmap revisados</td><td>Planes de acción con <b>fecha y responsable</b></td></tr>
+          <tr><td>Orden</td><td>Antes</td><td><b>Última tarea del Sprint</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Siete pasos de la retro: antes (objetivo, planificación), durante (dinámicas, priorizar, planes de acción) y en el Sprint siguiente (ejecutar y seguir los planes). El paso más olvidado es el seguimiento.</div>
+  </section>
+
+  <section class="slide titled" data-title="Starfish">
+    <div class="bar"><p class="kicker">Dinámica · p11</p><h2 class="h2">Starfish: qué hacer con cada práctica</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:retro-starfish-->
+<svg viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="retro-starfish-title retro-starfish-desc"><title id="retro-starfish-title">Retrospectiva Starfish: cinco brazos</title><desc id="retro-starfish-desc">La estrella de mar tiene cinco brazos: comenzar a hacer, seguir haciendo, dejar de hacer, hacer más y hacer menos. Cada brazo clasifica una práctica según el valor que da hoy.</desc><defs><marker id="retro-starfish-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="retro-starfish-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="retro-starfish-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M480 272 L480 68"/>
+<path class="dg-line" d="M480 272 L160 212"/>
+<path class="dg-line" d="M480 272 L800 212"/>
+<path class="dg-line" d="M480 272 L256 412"/>
+<path class="dg-line" d="M480 272 L704 412"/>
+<circle class="dg-mask" cx="480" cy="272" r="64"/>
+<circle class="dg-focal" cx="480" cy="272" r="64"/>
+<text class="dg-name" x="480" y="270" text-anchor="middle">Starfish</text>
+<text class="dg-sub" x="480" y="290" text-anchor="middle">¿qué hacemos con</text>
+<text class="dg-sub" x="480" y="306" text-anchor="middle">cada práctica?</text>
+<rect class="dg-mask" x="360" y="24" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="360" y="24" width="240" height="88" rx="6"/>
+<text class="dg-name" x="480" y="55" text-anchor="middle">Seguir haciendo</text>
+<text class="dg-sub" x="480" y="73" text-anchor="middle">da valor tal como está</text>
+<text class="dg-sub" x="480" y="91" text-anchor="middle">ej.: actividades del TP</text>
+<rect class="dg-mask" x="40" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="160" y="199" text-anchor="middle">Comenzar a hacer</text>
+<text class="dg-sub" x="160" y="217" text-anchor="middle">creemos que dará valor</text>
+<text class="dg-sub" x="160" y="235" text-anchor="middle">ej.: ejemplos prácticos</text>
+<rect class="dg-mask" x="680" y="168" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="680" y="168" width="240" height="88" rx="6"/>
+<text class="dg-name" x="800" y="199" text-anchor="middle">Dejar de hacer</text>
+<text class="dg-sub" x="800" y="217" text-anchor="middle">ya no aporta valor</text>
+<text class="dg-sub" x="800" y="235" text-anchor="middle">ej.: clases sin recreo</text>
+<rect class="dg-mask" x="136" y="368" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="136" y="368" width="240" height="88" rx="6"/>
+<text class="dg-name" x="256" y="399" text-anchor="middle">Hacer más</text>
+<text class="dg-sub" x="256" y="417" text-anchor="middle">da más valor del esperado</text>
+<text class="dg-sub" x="256" y="435" text-anchor="middle">ej.: repasos al inicio</text>
+<rect class="dg-mask" x="584" y="368" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="584" y="368" width="240" height="88" rx="6"/>
+<text class="dg-name" x="704" y="399" text-anchor="middle">Hacer menos</text>
+<text class="dg-sub" x="704" y="417" text-anchor="middle">antes valía, ahora poco</text>
+<text class="dg-sub" x="704" y="435" text-anchor="middle">ej.: menos evaluaciones</text>
+<line class="dg-rule" x1="40" y1="504" x2="920" y2="504"/>
+<text class="dg-tag" x="40" y="532" text-anchor="start">LEYENDA</text>
+<rect class="dg-box" x="128" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="532" text-anchor="start">brazo: decisión sobre una práctica</text>
+<rect class="dg-focal" x="416" y="520" width="20" height="16" rx="4"/>
+<text class="dg-note" x="444" y="532" text-anchor="start">el equipo, en la retro</text></svg>
+<!--/diagram:retro-starfish-->
+      </div>
+    </div>
+    <div class="notes">Dos parejas y uno solo: comenzar y dejar (empezar o cortar), hacer más y hacer menos (ajustar algo que ya se hace), seguir haciendo (no se toca). Los ejemplos son los de la cátedra sobre la materia.</div>
+  </section>
+
+  <section class="slide titled" data-title="Sailing Boat">
+    <div class="bar"><p class="kicker">Dinámica · p12</p><h2 class="h2">Sailing Boat es un FODA con un objetivo</h2></div>
+    <div class="body">
+      <div class="fig">
+<!--diagram:retro-velero-->
+<svg viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="retro-velero-title retro-velero-desc"><title id="retro-velero-title">Retrospectiva Sailing Boat y su equivalencia con FODA</title><desc id="retro-velero-desc">El barco es el equipo y la isla el objetivo. El viento son las fortalezas que impulsan, el ancla las debilidades que frenan, el sol las oportunidades y las rocas las amenazas o riesgos: son los cuatro cuadrantes del FODA.</desc><defs><marker id="retro-velero-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="retro-velero-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="retro-velero-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line-link" d="M380 260 H244" marker-end="url(#retro-velero-arrow-link)"/>
+<rect class="dg-mask" x="290" y="236" width="44" height="16" rx="2"/>
+<text class="dg-lbl" x="312" y="248" text-anchor="middle">rumbo</text>
+<path class="dg-line-accent" d="M680 84 L580 212" marker-end="url(#retro-velero-arrow-accent)"/>
+<path class="dg-line-accent" d="M280 84 L380 212" marker-end="url(#retro-velero-arrow-accent)"/>
+<path class="dg-line" d="M440 304 L360 392" marker-end="url(#retro-velero-arrow)"/>
+<path class="dg-line" d="M520 304 L600 392" marker-end="url(#retro-velero-arrow)"/>
+<rect class="dg-mask" x="40" y="40" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="40" y="40" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="268" y="60" text-anchor="end">O</text>
+<text class="dg-name" x="160" y="71" text-anchor="middle">Sol · oportunidades</text>
+<text class="dg-sub" x="160" y="89" text-anchor="middle">FODA: O (externo +)</text>
+<text class="dg-sub" x="160" y="107" text-anchor="middle">ej.: tenemos a los profes</text>
+<rect class="dg-mask" x="680" y="40" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="680" y="40" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="908" y="60" text-anchor="end">F</text>
+<text class="dg-name" x="800" y="71" text-anchor="middle">Viento · fortalezas</text>
+<text class="dg-sub" x="800" y="89" text-anchor="middle">FODA: F (interno +)</text>
+<text class="dg-sub" x="800" y="107" text-anchor="middle">ej.: buena química</text>
+<rect class="dg-mask" x="40" y="216" width="200" height="88" rx="6"/>
+<rect class="dg-store" x="40" y="216" width="200" height="88" rx="6"/>
+<text class="dg-name" x="140" y="256" text-anchor="middle">Isla · objetivo</text>
+<text class="dg-sub" x="140" y="274" text-anchor="middle">ej.: promocionar</text>
+<rect class="dg-mask" x="380" y="216" width="200" height="88" rx="6"/>
+<rect class="dg-focal" x="380" y="216" width="200" height="88" rx="6"/>
+<text class="dg-name" x="480" y="256" text-anchor="middle">Barco · el equipo</text>
+<text class="dg-sub" x="480" y="274" text-anchor="middle">nosotros</text>
+<rect class="dg-mask" x="200" y="396" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="200" y="396" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="428" y="416" text-anchor="end">D</text>
+<text class="dg-name" x="320" y="427" text-anchor="middle">Ancla · debilidades</text>
+<text class="dg-sub" x="320" y="445" text-anchor="middle">FODA: D (interno −)</text>
+<text class="dg-sub" x="320" y="463" text-anchor="middle">ej.: temas que no sabemos</text>
+<rect class="dg-mask" x="520" y="396" width="240" height="88" rx="6"/>
+<rect class="dg-box" x="520" y="396" width="240" height="88" rx="6"/>
+<text class="dg-tag" x="748" y="416" text-anchor="end">A</text>
+<text class="dg-name" x="640" y="427" text-anchor="middle">Rocas · amenazas</text>
+<text class="dg-sub" x="640" y="445" text-anchor="middle">FODA: A (externo −)</text>
+<text class="dg-sub" x="640" y="463" text-anchor="middle">ej.: problemas los miércoles</text>
+<line class="dg-rule" x1="40" y1="524" x2="920" y2="524"/>
+<text class="dg-tag" x="40" y="552" text-anchor="start">LEYENDA</text>
+<path class="dg-line-accent" d="M128 548 H152" marker-end="url(#retro-velero-arrow-accent)"/>
+<text class="dg-note" x="160" y="552" text-anchor="start">impulsa o ilumina</text>
+<path class="dg-line" d="M308 548 H332" marker-end="url(#retro-velero-arrow)"/>
+<text class="dg-note" x="340" y="552" text-anchor="start">frena o pone en riesgo</text>
+<path class="dg-line-link" d="M520 548 H544" marker-end="url(#retro-velero-arrow-link)"/>
+<text class="dg-note" x="552" y="552" text-anchor="start">hacia el objetivo</text></svg>
+<!--/diagram:retro-velero-->
+      </div>
+    </div>
+    <div class="notes">Viento: fortalezas. Sol: oportunidades. Ancla: debilidades. Rocas: riesgos y amenazas. Isla: objetivo. Barco: el equipo. Conecta con el FODA de la Clase 5, que se usaba para identificar riesgos.</div>
+  </section>
+
+  <section class="slide titled" data-title="Robot">
+    <div class="bar"><p class="kicker">Actividad integradora · p13 a p17</p><h2 class="h2">El robot Transformer en 4 Sprints</h2></div>
+    <div class="body">
+      <table class="t" style="font-size:24px">
+        <thead><tr><th>Sprint</th><th>Objetivo</th><th>Giro</th><th>Qué muestra (lectura propia)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Piernas y apoyo</td><td>Roles en 3 min</td><td>Time box: 2 + 5 + 3 minutos</td></tr>
+          <tr><td>2</td><td>Cabeza y torso</td><td>Igual duración</td><td>La retro anterior ya se aplica</td></tr>
+          <tr><td>3</td><td>Brazos y armas</td><td>Una persona rota de equipo</td><td>Cambiar gente baja el rendimiento</td></tr>
+          <tr><td>4</td><td>Transformación</td><td>Robots pacifistas: sin armas</td><td>Responder al cambio sobre seguir un plan</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">Objetivo general: mantenerse en pie y transformarse en máximo 5 movimientos, como un criterio de aceptación. La última columna es una interpretación propia; las diapositivas solo dan la consigna.</div>
+  </section>
+
+  <section class="slide titled" data-title="Repaso">
+    <div class="bar"><p class="kicker">Repaso</p><h2 class="h2">Sin mirar: cuatro preguntas</h2></div>
+    <div class="body">
+      <div class="stack">
+        <div class="recall" style="font-size:28px">1 · ¿Cuánto dura un Sprint y cuánto el Sprint 0, según la cátedra?</div>
+        <div class="recall" style="font-size:28px">2 · ¿En qué se diferencian la DoR y la DoD? ¿Y el slicing del splitting?</div>
+        <div class="recall" style="font-size:28px">3 · ¿Qué reunión modera el PO? ¿Cuál es la última tarea del Sprint?</div>
+        <div class="recall" style="font-size:28px">4 · ¿Qué es cada elemento del velero en un FODA?</div>
+      </div>
+    </div>
+    <div class="notes">Responder antes de abrir las lecciones escritas: clases/10-ceremonias-scrum.html y clases/11-retrospectiva.html, que traen respuestas, ejemplos y preguntas.</div>
+  </section>
+
+  <div class="deck-footer"><span>Taller de Gestión de Proyectos Digitales · Clases 10 y 11</span><span class="slide-number" data-current="1" data-total="13"></span></div>
+</div>
+<script src="../assets/runtime.js"></script>
+</body>
+</html>

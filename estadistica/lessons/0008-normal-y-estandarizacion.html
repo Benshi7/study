@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 8 — Distribución Normal y Estandarización</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 5 · Distribuciones Continuas · Lección 1 / n</span>
+<h1>Distribución Normal y Estandarización</h1>
+<p class="subtitle">No hace falta calcular con la tabla Z a mano — eso lo hace la app. Lo que hay que tener firme es qué significa Z y por qué estandarizamos.</p>
+
+<h2>La forma de la campana</h2>
+<table>
+<tr><th>Propiedad</th><th>Qué significa</th></tr>
+<tr><td>Acampanada, simétrica, unimodal</td><td>Un solo pico, y las dos mitades son espejo una de la otra</td></tr>
+<tr><td class="formula">Me = Mo = μ</td><td>Media, mediana y moda coinciden en el centro</td></tr>
+<tr><td>Dos parámetros: μ y σ</td><td>μ mueve el centro (posición); σ estira o achica la campana (dispersión)</td></tr>
+<tr><td>Área total = 1</td><td>El área bajo toda la curva representa el 100% de la probabilidad</td></tr>
+</table>
+<div class="box">
+Al ser continua, <span class="formula">P(X=a) = 0</span> siempre — un punto exacto no tiene área. Por eso <span class="formula">P(X≤a) = P(X&lt;a)</span> y <span class="formula">P(X≥a) = P(X&gt;a)</span>: incluir o no el signo igual no cambia nada en una Normal (a diferencia de la Binomial, donde sí importa).
+</div>
+
+<h2>¿Qué es estandarizar y por qué sirve?</h2>
+<div class="box">
+<span class="formula">Z = (x − μ) / σ</span>
+</div>
+<p>Z mide <strong>a cuántos desvíos estándar está x de la media</strong>. Restás la media (para centrar en 0) y dividís por el desvío (para medir en "unidades de dispersión" en vez de en las unidades originales del problema).</p>
+<p class="source">Fuente: <a href="https://www.mathsisfun.com/data/standard-normal-distribution.html" target="_blank">Math is Fun — Standard Normal Distribution</a>: estandarizar te permite usar <strong>una sola tabla de referencia</strong> para cualquier problema, en vez de necesitar una tabla distinta para cada combinación de μ y σ. Es la razón de ser de la estandarización — no es un paso arbitrario, es lo que hace comparables a distribuciones distintas.</p>
+
+<div class="example">
+Dos alumnos rindieron examenes distintos. Alumno A sacó 80 en un examen con μ=70, σ=10. Alumno B sacó 85 en otro examen con μ=75, σ=15.<br><br>
+Sin estandarizar, B parece "mejor" (85 > 80). Pero estandarizando:<br>
+<span class="formula">Z_A = (80−70)/10 = 1,0</span> &nbsp;·&nbsp; <span class="formula">Z_B = (85−75)/15 ≈ 0,67</span><br><br>
+A está 1 desvío por encima de su media; B está solo 0,67 desvíos por encima de la suya. <strong>A rindió relativamente mejor</strong>, aunque su nota cruda sea menor.
+</div>
+
+<h2>Regla empírica (68-95-99,7)</h2>
+<table>
+<tr><th>Rango</th><th>% de los valores</th></tr>
+<tr><td class="formula">μ ± 1σ</td><td>68%</td></tr>
+<tr><td class="formula">μ ± 2σ</td><td>95%</td></tr>
+<tr><td class="formula">μ ± 3σ</td><td>99,7%</td></tr>
+</table>
+<div class="box">
+Los porcentajes son aproximados: los valores exactos son 68,27% / 95,45% / 99,73%. En particular, el 95% real corresponde a <span class="formula">μ ± 1,96σ</span> (no ±2σ) — por eso en intervalos de confianza y tablas se usa 1,96.
+</div>
+<p>Sirve para estimar de un vistazo, sin tabla ni app, si un valor es "normal" o "raro" dentro de la distribución: si algo está a más de 2σ de la media, ya es un valor poco frecuente (menos del 5% de los casos quedan fuera de ese rango).</p>
+
+<h2>Los 5 patrones de pregunta con Normal</h2>
+<p>La app hace la cuenta — pero identificar QUÉ pedirle es el trabajo conceptual real:</p>
+<table>
+<tr><th>Te preguntan...</th><th>Patrón</th></tr>
+<tr><td>"probabilidad de que X sea mayor/menor que un valor"</td><td>Probabilidad simple: estandarizar y consultar</td></tr>
+<tr><td>"probabilidad de que X esté entre dos valores"</td><td>P(a&lt;X&lt;b) = P(X&lt;b) − P(X&lt;a)</td></tr>
+<tr><td>"¿qué valor de X corresponde a tal percentil?"</td><td>Fractil: vas de probabilidad → valor de x (camino inverso)</td></tr>
+<tr><td>"hallar μ o σ desconocido, dado un percentil"</td><td>Se despeja el parámetro faltante de la fórmula de Z</td></tr>
+<tr><td>"hallar los dos parámetros (μ y σ) desconocidos"</td><td>Necesitás dos percentiles dados → sistema de 2 ecuaciones</td></tr>
+</table>
+<div class="warn">
+El patrón más fácil de subestimar es el <strong>fractil</strong> (percentil → valor de x): es el mismo Z de siempre, pero resuelto "al revés". Si el enunciado te da una probabilidad y te pide un valor de la variable (no al revés), estás en fractil, no en probabilidad simple.
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz" data-quiz>
+<p class="q">1. Un enunciado te da P(X&lt;a) = 0,90 y te pide hallar el valor de a. ¿Qué tipo de cálculo es?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. Probabilidad simple</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. Probabilidad "entre"</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. No se puede resolver con Normal</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. Fractil (percentil → valor)</span></label>
+<div class="feedback wrong" data-for="a">Probabilidad simple es al revés: te dan un valor de x y pedís la probabilidad. Acá te dan la probabilidad y pedís el valor.</div>
+<div class="feedback wrong" data-for="b">"Entre" necesita dos valores de x para calcular una probabilidad — acá solo hay un dato y se pide un valor, no una probabilidad.</div>
+<div class="feedback wrong" data-for="c">Sí se puede — es exactamente el tipo de pregunta que resuelve la Normal despejando x = μ + z·σ.</div>
+<div class="feedback correct" data-for="d">Te dan la probabilidad (0,90) y pedís el valor de x correspondiente — es el camino inverso, el patrón de fractil.</div>
+</div>
+
+<div class="quiz" data-quiz>
+<p class="q">2. X ~ N(100, 15). ¿Aproximadamente qué porcentaje de valores está entre 85 y 115, usando la regla empírica (sin calcular con tabla)?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. 95%</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. 99,7%</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. 68%</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. 50%</span></label>
+<div class="feedback wrong" data-for="a">95% correspondería a μ±2σ = [70, 130], un rango más amplio que 85-115.</div>
+<div class="feedback wrong" data-for="b">99,7% sería μ±3σ = [55, 145], un rango mucho más amplio.</div>
+<div class="feedback correct" data-for="c">85 y 115 están a exactamente 1σ (15) de la media (100): μ±1σ = [85,115] → 68%, según la regla empírica.</div>
+<div class="feedback wrong" data-for="d">50% no corresponde a ningún múltiplo entero de σ en la regla empírica.</div>
+</div>
+
+<div class="quiz" data-quiz>
+<p class="q">3. ¿Por qué es útil convertir cualquier Normal a su versión estandarizada N(0,1) antes de consultar la tabla/app?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. Porque cambia la forma de la distribución a algo más simple</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. Porque permite usar una sola tabla de referencia para cualquier combinación de μ y σ</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. Porque solo las distribuciones estandarizadas tienen área total 1</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. No aporta ninguna ventaja real, es solo convención</span></label>
+<div class="feedback wrong" data-for="a">La forma (acampanada, simétrica) no cambia — lo que cambia es la escala en la que medís la posición de un valor.</div>
+<div class="feedback correct" data-for="b">Sin estandarizar, necesitarías una tabla distinta para cada combinación posible de μ y σ. Estandarizando, todas las Normales se llevan a la misma escala (N(0,1)) y una sola tabla sirve para todas.</div>
+<div class="feedback wrong" data-for="c">Toda Normal (estandarizada o no) tiene área total 1 — esa propiedad no depende de estandarizar.</div>
+<div class="feedback wrong" data-for="d">Sí aporta una ventaja concreta: comparar valores de distribuciones distintas en una misma escala, y usar una única tabla de referencia.</div>
+</div>
+
+<div class="ask">
+¿Alguna trampa te generó dudas? Decime cuál y armamos otro ejemplo.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/standard-normal-distribution.html" target="_blank">Math is Fun — Standard Normal Distribution</a>.
+<div class="nav-row">
+  <span>← <a href="0007-frecuencia-y-probabilidad.html">Lección 7 — De la frecuencia a la probabilidad</a></span>
+  <span><a href="0009-intervalos-de-confianza.html">Lección 9 — Intervalos de confianza</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

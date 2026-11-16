@@ -1,0 +1,95 @@
+<svg viewBox="0 0 980 756" role="img" aria-label="Diagrama de Gantt de las 40 actividades" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif" font-size="11">
+<line x1="300.0" y1="26" x2="300.0" y2="726" stroke="#ddd" stroke-dasharray="3 3"/>
+<text x="303.0" y="22" fill="#777">abr 2026</text>
+<line x1="410.8" y1="26" x2="410.8" y2="726" stroke="#ddd" stroke-dasharray="3 3"/>
+<text x="413.8" y="22" fill="#777">may 2026</text>
+<line x1="516.6" y1="26" x2="516.6" y2="726" stroke="#ddd" stroke-dasharray="3 3"/>
+<text x="519.6" y="22" fill="#777">jun 2026</text>
+<line x1="627.5" y1="26" x2="627.5" y2="726" stroke="#ddd" stroke-dasharray="3 3"/>
+<text x="630.5" y="22" fill="#777">jul 2026</text>
+<line x1="743.4" y1="26" x2="743.4" y2="726" stroke="#ddd" stroke-dasharray="3 3"/>
+<text x="746.4" y="22" fill="#777">ago 2026</text>
+<line x1="849.2" y1="26" x2="849.2" y2="726" stroke="#ddd" stroke-dasharray="3 3"/>
+<text x="852.2" y="22" fill="#777">sep 2026</text>
+<text x="292" y="47" text-anchor="end" fill="#222">1. Definición del proyecto y alcance</text>
+<rect x="300.0" y="38" width="15.1" height="12" rx="2" fill="#2b7bb9" stroke="#222" stroke-width="2"><title>1 · Definición del proyecto y alcance · holgura 0 d.h.</title></rect>
+<text x="292" y="64" text-anchor="end" fill="#222">2. Identificación inicial de stakeholders</text>
+<rect x="305.0" y="55" width="15.1" height="12" rx="2" fill="#2b7bb9" stroke="none"><title>2 · Identificación inicial de stakeholders · holgura 120 d.h.</title></rect>
+<text x="292" y="81" text-anchor="end" fill="#222">3. Relevamiento preliminar de sistemas y fuente</text>
+<rect x="305.0" y="72" width="20.2" height="12" rx="2" fill="#2b7bb9" stroke="#222" stroke-width="2"><title>3 · Relevamiento preliminar de sistemas y fuentes · holgura 0 d.h.</title></rect>
+<text x="292" y="98" text-anchor="end" fill="#222">4. Aprobación del Charter</text>
+<rect x="325.2" y="89" width="15.1" height="12" rx="2" fill="#2b7bb9" stroke="#222" stroke-width="2"><title>4 · Aprobación del Charter · holgura 0 d.h.</title></rect>
+<text x="292" y="115" text-anchor="end" fill="#222">5. Relevamiento de necesidades de vecinos</text>
+<rect x="340.3" y="106" width="25.2" height="12" rx="2" fill="#e07b1f" stroke="none"><title>5 · Relevamiento de necesidades de vecinos · holgura 2 d.h.</title></rect>
+<text x="292" y="132" text-anchor="end" fill="#222">6. Relevamiento de necesidades de áreas de gobi</text>
+<rect x="340.3" y="123" width="25.2" height="12" rx="2" fill="#e07b1f" stroke="none"><title>6 · Relevamiento de necesidades de áreas de gobierno · holgura 111 d.h.</title></rect>
+<text x="292" y="149" text-anchor="end" fill="#222">7. Relevamiento de fuentes de datos y APIs</text>
+<rect x="340.3" y="140" width="35.3" height="12" rx="2" fill="#e07b1f" stroke="#222" stroke-width="2"><title>7 · Relevamiento de fuentes de datos y APIs · holgura 0 d.h.</title></rect>
+<text x="292" y="166" text-anchor="end" fill="#222">8. Definición de requerimientos funcionales</text>
+<rect x="365.5" y="157" width="25.2" height="12" rx="2" fill="#e07b1f" stroke="#222" stroke-width="2"><title>8 · Definición de requerimientos funcionales · holgura 0 d.h.</title></rect>
+<text x="292" y="183" text-anchor="end" fill="#222">9. Definición de requerimientos no funcionales</text>
+<rect x="365.5" y="174" width="25.2" height="12" rx="2" fill="#e07b1f" stroke="#222" stroke-width="2"><title>9 · Definición de requerimientos no funcionales · holgura 0 d.h.</title></rect>
+<text x="292" y="200" text-anchor="end" fill="#222">10. Validación de requerimientos</text>
+<rect x="390.7" y="191" width="25.2" height="12" rx="2" fill="#e07b1f" stroke="#222" stroke-width="2"><title>10 · Validación de requerimientos · holgura 0 d.h.</title></rect>
+<text x="292" y="217" text-anchor="end" fill="#222">11. Diseño de arquitectura de la solución</text>
+<rect x="415.9" y="208" width="25.2" height="12" rx="2" fill="#2e8b57" stroke="none"><title>11 · Diseño de arquitectura de la solución · holgura 15 d.h.</title></rect>
+<text x="292" y="234" text-anchor="end" fill="#222">12. Diseño de la capa geográfica común</text>
+<rect x="415.9" y="225" width="35.3" height="12" rx="2" fill="#2e8b57" stroke="none"><title>12 · Diseño de la capa geográfica común · holgura 24 d.h.</title></rect>
+<text x="292" y="251" text-anchor="end" fill="#222">13. Diseño del sistema de reportes</text>
+<rect x="415.9" y="242" width="35.3" height="12" rx="2" fill="#2e8b57" stroke="#222" stroke-width="2"><title>13 · Diseño del sistema de reportes · holgura 0 d.h.</title></rect>
+<text x="292" y="268" text-anchor="end" fill="#222">14. Diseño de validación y seguimiento</text>
+<rect x="441.1" y="259" width="25.2" height="12" rx="2" fill="#2e8b57" stroke="#222" stroke-width="2"><title>14 · Diseño de validación y seguimiento · holgura 0 d.h.</title></rect>
+<text x="292" y="285" text-anchor="end" fill="#222">15. Diseño de integraciones y APIs</text>
+<rect x="441.1" y="276" width="30.2" height="12" rx="2" fill="#2e8b57" stroke="none"><title>15 · Diseño de integraciones y APIs · holgura 24 d.h.</title></rect>
+<text x="292" y="302" text-anchor="end" fill="#222">16. Diseño UX/UI</text>
+<rect x="451.1" y="293" width="40.3" height="12" rx="2" fill="#2e8b57" stroke="#222" stroke-width="2"><title>16 · Diseño UX/UI · holgura 0 d.h.</title></rect>
+<text x="292" y="319" text-anchor="end" fill="#222">17. Aprobación del diseño</text>
+<rect x="491.5" y="310" width="10.1" height="12" rx="2" fill="#2e8b57" stroke="#222" stroke-width="2"><title>17 · Aprobación del diseño · holgura 0 d.h.</title></rect>
+<text x="292" y="336" text-anchor="end" fill="#222">18. Desarrollo de la capa geográfica</text>
+<rect x="501.5" y="327" width="75.6" height="12" rx="2" fill="#7b4fb0" stroke="#222" stroke-width="2"><title>18 · Desarrollo de la capa geográfica · holgura 0 d.h.</title></rect>
+<text x="292" y="353" text-anchor="end" fill="#222">19. Desarrollo del módulo de reportes</text>
+<rect x="501.5" y="344" width="75.6" height="12" rx="2" fill="#7b4fb0" stroke="none"><title>19 · Desarrollo del módulo de reportes · holgura 52 d.h.</title></rect>
+<text x="292" y="370" text-anchor="end" fill="#222">20. Desarrollo de validación colaborativa</text>
+<rect x="577.1" y="361" width="25.2" height="12" rx="2" fill="#7b4fb0" stroke="none"><title>20 · Desarrollo de validación colaborativa · holgura 52 d.h.</title></rect>
+<text x="292" y="387" text-anchor="end" fill="#222">21. Desarrollo del seguimiento de incidencias</text>
+<rect x="602.3" y="378" width="25.2" height="12" rx="2" fill="#7b4fb0" stroke="none"><title>21 · Desarrollo del seguimiento de incidencias · holgura 52 d.h.</title></rect>
+<text x="292" y="404" text-anchor="end" fill="#222">22. Desarrollo de vista de gestión</text>
+<rect x="501.5" y="395" width="75.6" height="12" rx="2" fill="#7b4fb0" stroke="none"><title>22 · Desarrollo de vista de gestión · holgura 62 d.h.</title></rect>
+<text x="292" y="421" text-anchor="end" fill="#222">23. Desarrollo de APIs e integraciones</text>
+<rect x="577.1" y="412" width="60.5" height="12" rx="2" fill="#7b4fb0" stroke="#222" stroke-width="2"><title>23 · Desarrollo de APIs e integraciones · holgura 0 d.h.</title></rect>
+<text x="292" y="438" text-anchor="end" fill="#222">24. Integración con fuentes oficiales</text>
+<rect x="637.6" y="429" width="30.2" height="12" rx="2" fill="#9b5a42" stroke="none"><title>24 · Integración con fuentes oficiales · holgura 34 d.h.</title></rect>
+<text x="292" y="455" text-anchor="end" fill="#222">25. Integración con canales digitales</text>
+<rect x="637.6" y="446" width="40.3" height="12" rx="2" fill="#9b5a42" stroke="none"><title>25 · Integración con canales digitales · holgura 32 d.h.</title></rect>
+<text x="292" y="472" text-anchor="end" fill="#222">26. Pruebas de intercambio de datos</text>
+<rect x="677.9" y="463" width="25.2" height="12" rx="2" fill="#9b5a42" stroke="none"><title>26 · Pruebas de intercambio de datos · holgura 32 d.h.</title></rect>
+<text x="292" y="489" text-anchor="end" fill="#222">27. Pruebas funcionales</text>
+<rect x="703.1" y="480" width="40.3" height="12" rx="2" fill="#6b7280" stroke="#222" stroke-width="2"><title>27 · Pruebas funcionales · holgura 0 d.h.</title></rect>
+<text x="292" y="506" text-anchor="end" fill="#222">28. Pruebas de integración</text>
+<rect x="743.4" y="497" width="25.2" height="12" rx="2" fill="#6b7280" stroke="none"><title>28 · Pruebas de integración · holgura 32 d.h.</title></rect>
+<text x="292" y="523" text-anchor="end" fill="#222">29. Pruebas de usabilidad</text>
+<rect x="743.4" y="514" width="35.3" height="12" rx="2" fill="#6b7280" stroke="none"><title>29 · Pruebas de usabilidad · holgura 35 d.h.</title></rect>
+<text x="292" y="540" text-anchor="end" fill="#222">30. Pruebas de rendimiento y seguridad</text>
+<rect x="743.4" y="531" width="35.3" height="12" rx="2" fill="#6b7280" stroke="#222" stroke-width="2"><title>30 · Pruebas de rendimiento y seguridad · holgura 0 d.h.</title></rect>
+<text x="292" y="557" text-anchor="end" fill="#222">31. Corrección de errores</text>
+<rect x="778.6" y="548" width="35.3" height="12" rx="2" fill="#6b7280" stroke="#222" stroke-width="2"><title>31 · Corrección de errores · holgura 0 d.h.</title></rect>
+<text x="292" y="574" text-anchor="end" fill="#222">32. Aprobación final de pruebas</text>
+<rect x="818.9" y="565" width="20.2" height="12" rx="2" fill="#6b7280" stroke="#222" stroke-width="2"><title>32 · Aprobación final de pruebas · holgura 0 d.h.</title></rect>
+<text x="292" y="591" text-anchor="end" fill="#222">33. Preparación del entorno productivo</text>
+<rect x="839.1" y="582" width="20.2" height="12" rx="2" fill="#a3a31a" stroke="none"><title>33 · Preparación del entorno productivo · holgura 2 d.h.</title></rect>
+<text x="292" y="608" text-anchor="end" fill="#222">34. Capacitación y documentación</text>
+<rect x="839.1" y="599" width="30.2" height="12" rx="2" fill="#a3a31a" stroke="#222" stroke-width="2"><title>34 · Capacitación y documentación · holgura 0 d.h.</title></rect>
+<text x="292" y="625" text-anchor="end" fill="#222">35. Puesta en funcionamiento</text>
+<rect x="869.3" y="616" width="15.1" height="12" rx="2" fill="#a3a31a" stroke="#222" stroke-width="2"><title>35 · Puesta en funcionamiento · holgura 0 d.h.</title></rect>
+<text x="292" y="642" text-anchor="end" fill="#222">36. Monitoreo inicial</text>
+<rect x="884.4" y="633" width="25.2" height="12" rx="2" fill="#a3a31a" stroke="#222" stroke-width="2"><title>36 · Monitoreo inicial · holgura 0 d.h.</title></rect>
+<text x="292" y="659" text-anchor="end" fill="#222">37. Evaluación de resultados</text>
+<rect x="909.6" y="650" width="20.2" height="12" rx="2" fill="#1aa3b8" stroke="none"><title>37 · Evaluación de resultados · holgura 4 d.h.</title></rect>
+<text x="292" y="676" text-anchor="end" fill="#222">38. Documentación final</text>
+<rect x="909.6" y="667" width="30.2" height="12" rx="2" fill="#1aa3b8" stroke="#222" stroke-width="2"><title>38 · Documentación final · holgura 0 d.h.</title></rect>
+<text x="292" y="693" text-anchor="end" fill="#222">39. Transferencia a responsables operativos</text>
+<rect x="939.8" y="684" width="10.1" height="12" rx="2" fill="#1aa3b8" stroke="#222" stroke-width="2"><title>39 · Transferencia a responsables operativos · holgura 0 d.h.</title></rect>
+<text x="292" y="710" text-anchor="end" fill="#222">40. Cierre formal del proyecto</text>
+<rect x="949.9" y="701" width="10.1" height="12" rx="2" fill="#1aa3b8" stroke="#222" stroke-width="2"><title>40 · Cierre formal del proyecto · holgura 0 d.h.</title></rect>
+<text x="300" y="746" fill="#777">Borde grueso = actividad crítica (holgura 0). Una barra por actividad; color por fase.</text>
+</svg>

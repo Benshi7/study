@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 1 — Independencia vs. Exclusión Mutua</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Probabilidad Básica · Lección 1 / n</span>
+<h1>Independencia vs. Exclusión Mutua</h1>
+<p class="subtitle">La trampa más frecuente del final. Diez minutos, un solo concepto — pero el que más se confunde.</p>
+
+<h2>El problema</h2>
+<p>Dos sucesos A y B pueden describirse con dos preguntas totalmente distintas:</p>
+<ol>
+  <li><strong>¿Pueden ocurrir al mismo tiempo?</strong> — pregunta sobre el espacio muestral.</li>
+  <li><strong>¿La ocurrencia de uno cambia la probabilidad del otro?</strong> — pregunta sobre las probabilidades.</li>
+</ol>
+<p>La pregunta 1 define <strong>exclusión mutua</strong>. La pregunta 2 define <strong>independencia</strong>. Son ejes distintos — y el multiple choice explota exactamente esa mezcla.</p>
+
+<h2>Por qué son casi siempre incompatibles</h2>
+<div class="box">
+Si A y B son <strong>mutuamente excluyentes</strong>, entonces <span class="formula">P(A∩B) = 0</span>. Pero si además fueran <strong>independientes</strong>, tendría que cumplirse <span class="formula">P(A∩B) = P(A)·P(B)</span>. Para que ambas cosas sean ciertas a la vez, <span class="formula">P(A)·P(B) = 0</span> — uno de los dos sucesos tendría probabilidad cero. Fuera de ese caso trivial: <strong>mutuamente excluyentes implica dependientes</strong>.
+</div>
+<p class="source">Esta relación la confirma <a href="https://www.mathsisfun.com/data/probability-events-mutually-exclusive.html" target="_blank">Math is Fun — Mutually Exclusive Events</a>: los sucesos mutuamente excluyentes son en realidad dependientes, porque "si ocurre uno, la probabilidad del otro cae a cero".</p>
+
+<div class="example">
+A = "gano en el bingo", B = "día soleado".<br>
+Son <strong>independientes</strong> (ganar el bingo no depende del clima).<br>
+NO son <strong>mutuamente excluyentes</strong> (puede ganar el bingo en un día soleado sin problema).
+</div>
+
+<h2>Regla para memorizar</h2>
+<table>
+<tr><th>Si A y B son...</th><th>Entonces...</th></tr>
+<tr><td>Independientes</td><td><strong>No</strong> son mutuamente excluyentes (salvo caso trivial)</td></tr>
+<tr><td>Mutuamente excluyentes</td><td><strong>No</strong> son independientes (salvo caso trivial)</td></tr>
+<tr><td>No mutuamente excluyentes</td><td>Pueden ser independientes o no — hay que probarlo</td></tr>
+</table>
+
+<h2>Cómo probar independencia</h2>
+<p>Alcanza con que se cumpla <strong>una</strong> de estas tres:</p>
+<div class="box">
+<span class="formula">P(A∩B) = P(A)·P(B)</span> &nbsp;o&nbsp; <span class="formula">P(A) = P(A/B)</span> &nbsp;o&nbsp; <span class="formula">P(B) = P(B/A)</span>
+</div>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz" data-quiz>
+<p class="q">1. A y B son mutuamente excluyentes. ¿Qué se puede afirmar sobre su independencia?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. Son independientes siempre</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. No son independientes (salvo caso trivial)</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. Son complementarios necesariamente</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. No se puede saber nada</span></label>
+<div class="feedback wrong" data-for="a">Si fueran ambas cosas, P(A)·P(B) tendría que ser 0. Volvé a leer la regla.</div>
+<div class="feedback correct" data-for="b">P(A∩B)=0 por ser excluyentes, y para ser independientes necesitarías P(A∩B)=P(A)·P(B), lo cual solo pasa si P(A) o P(B) es cero.</div>
+<div class="feedback wrong" data-for="c">Complementario exige además que la unión sea todo el espacio muestral — no alcanza con ser excluyentes.</div>
+<div class="feedback wrong" data-for="d">Sí se puede — hay una relación directa entre exclusión mutua e independencia.</div>
+</div>
+
+<div class="quiz" data-quiz>
+<p class="q">2. A = "sale cara en una moneda", B = "sale un 6 en un dado", lanzados juntos. ¿Qué relación tienen?</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. Mutuamente excluyentes e independientes</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. Mutuamente excluyentes, no independientes</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. Independientes y no mutuamente excluyentes</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. Ninguna relación se puede determinar</span></label>
+<div class="feedback wrong" data-for="a">Imposible que sean ambas cosas a la vez salvo caso trivial — revisá la regla.</div>
+<div class="feedback wrong" data-for="b">Sí pueden ocurrir juntos (cara Y 6 en la misma tirada), así que no son excluyentes.</div>
+<div class="feedback correct" data-for="c">Un dado y una moneda no se afectan entre sí (independientes), y pueden salir "cara" y "6" en la misma tirada sin problema (no excluyentes).</div>
+<div class="feedback wrong" data-for="d">Se puede: pensá si un resultado afecta al otro, y si pueden coexistir.</div>
+</div>
+
+<div class="quiz" data-quiz>
+<p class="q">3. Extraés dos cartas de un mazo SIN reposición. A = "la primera es un as", B = "la segunda es un as". ¿Qué relación tienen A y B?</p>
+<label><input type="radio" name="q3" value="a"><span class="opt">a. Dependientes, y no mutuamente excluyentes</span></label>
+<label><input type="radio" name="q3" value="b"><span class="opt">b. Independientes</span></label>
+<label><input type="radio" name="q3" value="c"><span class="opt">c. Mutuamente excluyentes</span></label>
+<label><input type="radio" name="q3" value="d"><span class="opt">d. Complementarios</span></label>
+<div class="feedback correct" data-for="a">Sin reposición → dependientes (la probabilidad de B cambia según si A ocurrió). Y pueden ocurrir juntas (as en la primera Y as en la segunda), así que no son excluyentes.</div>
+<div class="feedback wrong" data-for="b">Sin reposición cambia la composición del mazo entre extracciones — eso es dependencia, no independencia.</div>
+<div class="feedback wrong" data-for="c">Sí pueden ocurrir juntas — sacar dos ases en fila es posible.</div>
+<div class="feedback wrong" data-for="d">Complementario exige exclusión mutua Y que la unión cubra todo el espacio — ninguna de las dos se cumple acá.</div>
+</div>
+
+<div class="ask">
+¿Algo no cerró? Preguntame directamente en el chat — puedo armar otro ejemplo, cambiar los números, o explicarlo con un diagrama de árbol distinto.
+</div>
+
+<footer>
+Lectura recomendada: <a href="https://www.mathsisfun.com/data/probability-events-mutually-exclusive.html" target="_blank">Math is Fun — Mutually Exclusive Events</a> y <a href="https://www.mathsisfun.com/data/probability-events-independent.html" target="_blank">Math is Fun — Independent Events</a>.
+<div class="nav-row">
+  <span>Ver también → <a href="../reference/glosario-probabilidad-basica.html">Glosario de referencia — Probabilidad Básica</a></span>
+  <span>Siguiente → <a href="0002-condicional-vs-conjunta.html">Lección 2 — Condicional vs. conjunta</a></span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

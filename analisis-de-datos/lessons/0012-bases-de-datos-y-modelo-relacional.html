@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelo relacional</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0012 · Bloque 2: SQL</div>
+
+<div class="kicker">Lección 0012</div>
+<h1>Bases de datos y modelo relacional</h1>
+<p class="lede">Las secciones 1 a 4 de "Fundamentos de Bases de Datos". Lo vivís todos los días, pero el choice pregunta <strong>la clasificación de la cátedra</strong>: qué tipo de base para qué caso de uso y qué hace cada perfil.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la 0011: ¿qué gráfico usás para una distribución? ¿Qué devuelve <code>df.iloc[0]</code>?</p>
+</div>
+
+<h2>¿Qué es una base de datos?</h2>
+<p>Una <em>colección organizada de datos estructurados, almacenados electrónicamente, diseñada para ser escrita, consultada, administrada y actualizada de forma eficiente</em>. Tiene cuatro propiedades: <strong>organización</strong> (tablas, esquemas, relaciones), <strong>persistencia</strong> (los datos sobreviven al proceso que los creó), <strong>acceso eficiente</strong> y <strong>consistencia</strong> (reglas de integridad).</p>
+<p>Sin base de datos hay Excel dispersos, datos duplicados y contradictorios, y no hay control de acceso. Con base de datos hay una <strong>fuente única de la verdad</strong> (<em>Single Source of Truth</em>), datos normalizados, roles y permisos, y relaciones explícitas.</p>
+<span class="sidenote">Fuente: <a href="../raw/unicaba_fundamentos_sql.pdf">unicaba_fundamentos_sql.pdf</a>, secciones 1 y 2.</span>
+
+<h2>Tipos de bases de datos según el propósito</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Tipo</th><th>Estructura</th><th>Ejemplos</th><th>Caso de uso del slide</th></tr>
+  <tr><td><strong>Relacional (SQL)</strong></td><td>Tablas, filas, columnas; integridad referencial</td><td>SQL Server, PostgreSQL, MySQL, Oracle</td><td>Facturación y stock de una PyME</td></tr>
+  <tr><td><strong>Documental (NoSQL)</strong></td><td>Documentos JSON/BSON, flexibles</td><td>MongoDB, CouchDB</td><td>Catálogo de e-commerce con atributos variables</td></tr>
+  <tr><td><strong>Clave-valor</strong></td><td>key → value, altísima velocidad</td><td>Redis, DynamoDB</td><td>Carrito y sesiones en una app de alto tráfico</td></tr>
+  <tr><td><strong>Columnar</strong></td><td>Organizada por columnas, ideal para analítica</td><td>Snowflake, BigQuery, Redshift</td><td>Dashboards con millones de ventas</td></tr>
+  <tr><td><strong>Grafos</strong></td><td>Nodos y aristas, relaciones complejas</td><td>Neo4j, Amazon Neptune</td><td>Recomendaciones de una red social</td></tr>
+  <tr><td><strong>Time series</strong></td><td>Optimizada para datos temporales</td><td>InfluxDB, TimescaleDB</td><td>Sensores IoT y métricas de servidores</td></tr>
+</table>
+</div>
+
+<div class="box trap">
+  <span class="label">Clasificá por el caso de uso, no por tu stack</span>
+  <p>En el slide, <strong>NoSQL = documental</strong>. La columnar va aparte: "Relacionales, NoSQL, columnares y más". La pregunta siempre te da una <strong>palabra clave</strong> del caso de uso:</p>
+  <ul>
+    <li><em>Facturación</em> o <em>stock</em>: relacional.</li>
+    <li><em>Atributos variables</em>: documental.</li>
+    <li><em>Sesiones</em> o <em>carrito</em>: clave-valor.</li>
+    <li><em>Dashboards</em> o <em>millones de registros</em>: columnar.</li>
+    <li><em>Recomendaciones</em>: grafos.</li>
+    <li><em>Sensores</em>: time series.</li>
+  </ul>
+  <p>El tipo se refiere al <strong>motor</strong>. Un Postgres con una columna JSONB sigue siendo relacional, y analizar esos datos después en Databricks o con pandas no convierte la base de origen en columnar.</p>
+</div>
+
+<h2>El modelo relacional</h2>
+<p>Propuesto por <strong>Edgar F. Codd en 1970</strong>. Organiza los datos en <strong>tablas</strong> (cada una representa una entidad) con filas y columnas, vinculadas mediante <strong>claves</strong>.</p>
+<div class="table-wrap">
+<table>
+  <tr><th>Componente</th><th>Qué es</th></tr>
+  <tr><td>Tabla (entidad / relación)</td><td>Representa un objeto del mundo real: Clientes, Pedidos</td></tr>
+  <tr><td>Fila / tupla · Columna / atributo</td><td>Un registro · una característica</td></tr>
+  <tr><td><strong>Clave primaria (PK)</strong></td><td>Identificador <strong>único e irrepetible</strong> de cada fila</td></tr>
+  <tr><td><strong>Clave foránea (FK)</strong></td><td>Columna que <strong>referencia la PK de otra tabla</strong></td></tr>
+  <tr><td><strong>Integridad referencial</strong></td><td>Garantiza que una FK <strong>siempre apunte a un registro existente</strong> en la tabla padre</td></tr>
+</table>
+</div>
+
+<pre class="diagram">1 : 1   Persona ─── DNI / Pasaporte        cada registro de A tiene exactamente uno en B
+1 : N   Cliente ──< Pedidos                un cliente, muchos pedidos
+N : M   Productos >──< Pedidos             se resuelve con una TABLA INTERMEDIA (Detalle_Pedido)</pre>
+
+<h2>Perfiles del ecosistema</h2>
+<pre class="diagram">DBA  →  Arquitecto de Datos  →  Ingeniero de Datos  →  Data Scientist  →  ANALISTA (foco de la materia)</pre>
+<div class="table-wrap">
+<table>
+  <tr><th>Perfil</th><th>Qué hace según el slide</th></tr>
+  <tr><td>DBA</td><td>Instala, configura, monitorea y mantiene el DBMS: tuning, backups, seguridad</td></tr>
+  <tr><td>Arquitecto de Datos</td><td>Diseña la estrategia y la estructura de datos del negocio; define estándares, modelos y plataformas</td></tr>
+  <tr><td>Ingeniero de Datos</td><td>Construye y mantiene pipelines, ETL/ELT, data warehouses y lakes; mueve y transforma datos</td></tr>
+  <tr><td>Data Scientist</td><td>Modelos predictivos, machine learning y estadística</td></tr>
+  <tr><td>Analista de Datos</td><td>Consulta, explora y visualiza datos para responder preguntas de negocio</td></tr>
+</table>
+</div>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0012-bases-de-datos-y-modelo-relacional"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "Un e-commerce necesita un catálogo de productos con atributos que varían mucho entre productos. Según la cátedra, ¿qué tipo de base conviene?",
+   "options": ["Documental", "Relacional", "Grafos", "Columnar"], "answer": 0,
+   "why": "Documentos JSON flexibles para atributos variables: es el caso de uso del slide para MongoDB."},
+  {"q": "Carrito de compras y sesiones de usuario en una app de altísimo tráfico. ¿Qué tipo de base?",
+   "options": ["Clave-valor", "Relacional", "Documental", "Grafos"], "answer": 0,
+   "why": "Estructura key → value con altísima velocidad (Redis, DynamoDB)."},
+  {"q": "Dashboards analíticos sobre millones de registros de ventas. ¿Qué tipo de base?",
+   "options": ["Columnar", "Clave-valor", "Grafos", "Documental"], "answer": 0,
+   "why": "Las columnares (Snowflake, BigQuery, Redshift) son ideales para analítica."},
+  {"q": "Motor de recomendaciones de una red social. ¿Qué tipo de base?",
+   "options": ["Grafos", "Columnar", "Clave-valor", "Relacional"], "answer": 0,
+   "why": "Nodos y aristas para relaciones complejas (Neo4j)."},
+  {"q": "¿Qué garantiza la integridad referencial?",
+   "options": ["Que cada FK apunte a un registro existente", "Que cada tabla tenga exactamente una sola columna", "Que los datos se guarden siempre en disco", "Que ninguna consulta tarde más de un segundo"], "answer": 0,
+   "why": "La FK siempre tiene que referenciar un registro que exista en la tabla padre."},
+  {"q": "¿Qué es una clave primaria (PK)?",
+   "options": ["Identificador único e irrepetible de cada fila", "Columna que apunta a otra tabla relacionada", "Índice que acelera las búsquedas por apellido", "Primera columna que aparece en cualquier tabla"], "answer": 0,
+   "why": "La PK identifica cada fila; la FK es la que referencia a otra tabla."},
+  {"q": "¿Cómo se resuelve una relación muchos a muchos (N:M), como Productos ↔ Pedidos?",
+   "options": ["Con una tabla intermedia", "Con una clave primaria", "Duplicando las dos tablas", "Con un índice único"], "answer": 0,
+   "why": "Con una tabla intermedia, en el ejemplo del slide <em>Detalle_Pedido</em>."},
+  {"q": "Un cliente puede tener muchos pedidos. ¿Qué tipo de relación es?",
+   "options": ["1:N", "1:1", "N:M", "0:1"], "answer": 0,
+   "why": "Uno a muchos: es el ejemplo del slide."},
+  {"q": "¿Quién propuso el modelo relacional, y cuándo?",
+   "options": ["Edgar Codd, 1970", "Klaus Schwab, 2016", "Edgar Codd, 1990", "Ralph Kimball, 1970"], "answer": 0,
+   "why": "Edgar F. Codd, 1970."},
+  {"q": "¿Qué perfil instala, configura, monitorea y mantiene el motor de base de datos?",
+   "options": ["DBA", "Arquitecto", "Ingeniero", "Analista"], "answer": 0,
+   "why": "El DBA se ocupa del tuning, los backups y la seguridad. El ingeniero construye pipelines y el arquitecto diseña estándares y modelos."},
+  {"q": "¿Qué propiedad de una base de datos significa que \"los datos sobreviven al proceso que los creó\"?",
+   "options": ["Persistencia", "Organización", "Consistencia", "Integridad"], "answer": 0,
+   "why": "Persistencia: se almacenan en disco de forma durable."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Asociás cada caso de uso con su tipo de base de datos, explicás PK, FK e integridad referencial, y ubicás a cada perfil del ecosistema.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/unicaba_fundamentos_sql.pdf">Fundamentos de Bases de Datos e Introducción a SQL</a>, secciones 1 a 4. Resumen: <a href="../reference/sql.html">Referencia · SQL</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si la clasificación de la cátedra choca con tu experiencia (por ejemplo, Postgres usado como documental con JSONB), traelo al chat.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0011-pandas-y-matplotlib.html">← 0011 · Pandas y Matplotlib</a>
+  <a href="0013-data-warehouse-y-medallion.html">0013 · Data Warehouse y Medallion →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

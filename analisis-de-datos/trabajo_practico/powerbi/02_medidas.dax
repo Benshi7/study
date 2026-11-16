@@ -1,0 +1,72 @@
+// =====================================================================
+// 02_medidas.dax — Medidas del modelo. Crear todas en la tabla `polizas`
+// (o en una tabla vacía "Medidas"). Carpeta de visualización sugerida entre corchetes.
+// Regla del TP: los indicadores se calculan SUMANDO y DIVIDIENDO, nunca promediando claimnb.
+// =====================================================================
+
+// ---- Base ----
+Pólizas        = COUNTROWS ( polizas )
+Exposición     = SUM ( polizas[exposure] )
+Total siniestros     = SUM ( polizas[siniestros] )
+Monto total          = SUM ( polizas[monto] )
+Monto con tope = SUM ( polizas[monto_topeado] )
+
+// ---- Indicadores del caso ----
+Frecuencia           = DIVIDE ( [Total siniestros], [Exposición] )
+Severidad            = DIVIDE ( [Monto total], [Total siniestros] )
+Severidad con tope   = DIVIDE ( [Monto con tope], [Total siniestros] )
+Prima pura           = DIVIDE ( [Monto total], [Exposición] )
+Prima pura con tope  = DIVIDE ( [Monto con tope], [Exposición] )
+
+// ---- Referencia: toda la cartera (ignora los segmentadores) ----
+Frecuencia cartera          = CALCULATE ( [Frecuencia],           REMOVEFILTERS ( polizas ) )
+Severidad cartera           = CALCULATE ( [Severidad con tope],   REMOVEFILTERS ( polizas ) )
+Prima pura cartera          = CALCULATE ( [Prima pura],           REMOVEFILTERS ( polizas ) )
+Prima pura cartera con tope = CALCULATE ( [Prima pura con tope],  REMOVEFILTERS ( polizas ) )
+
+// ---- Relatividades (1,00 = promedio de la cartera) ----
+Rel. frecuencia          = DIVIDE ( [Frecuencia],          [Frecuencia cartera] )
+Rel. severidad (tope)    = DIVIDE ( [Severidad con tope],  [Severidad cartera] )
+Rel. prima pura          = DIVIDE ( [Prima pura],          [Prima pura cartera] )
+Rel. prima pura (tope)   = DIVIDE ( [Prima pura con tope], [Prima pura cartera con tope] )
+
+// ---- Peso y aviso de muestra chica ----
+% exposición = DIVIDE ( [Exposición], CALCULATE ( [Exposición], REMOVEFILTERS ( polizas ) ) )
+Aviso muestra = IF ( [% exposición] < 0.02, "⚠ segmento chico (<2 % de la exposición)", BLANK () )
+
+// ---- Etiqueta de color para relatividades (formato condicional: > 1,1 caro / < 0,9 barato) ----
+Color relatividad =
+    SWITCH ( TRUE (),
+        ISBLANK ( [Rel. prima pura (tope)] ), BLANK (),
+        [Rel. prima pura (tope)] >= 1.1, "#C0504D",
+        [Rel. prima pura (tope)] <= 0.9, "#4F81BD",
+        "#9AA0A6" )
+
+// ---- H3: concentración del costo ----
+Siniestros grandes     = SUM ( polizas[siniestros_grandes] )
+% monto recortado      = 1 - DIVIDE ( [Monto con tope], [Monto total] )
+Tope siniestro =
+    CALCULATE ( MAX ( parametros[valor] ), parametros[nombre] = "tope_siniestro" )
+Percentil del tope =
+    CALCULATE ( MAX ( parametros[valor] ), parametros[nombre] = "tope_percentil" )
+
+// ---- Página 4: calidad ----
+Pólizas con conteo corregido = CALCULATE ( [Pólizas], polizas[flag_claimnb_corregido] = 1 )
+Pólizas del lote bajo        = CALCULATE ( [Pólizas], polizas[flag_lote_idpol_bajo] = 1 )
+Pólizas con exposición recortada = CALCULATE ( [Pólizas], polizas[flag_exposure_recortada] = 1 )
+// Frecuencia "antes": usa el ClaimNb original. Da ≈ 0,1007 en toda la cartera.
+// (Pequeña diferencia con el 0,1007 de docs/05: allá la exposición era la original sin recortar.)
+Frecuencia antes = DIVIDE ( SUM ( polizas[claimnb_declarado] ), [Exposición] )
+Variación frecuencia = DIVIDE ( [Frecuencia], [Frecuencia antes] ) - 1
+
+// =====================================================================
+// OPCIONAL — tope dinámico (el público elige el percentil/tope en un segmentador)
+// 1) Modelado > Nuevo parámetro > Rango numérico: nombre "Tope", mínimo 5000, máximo 100000,
+//    incremento 1000, valor por defecto 16451 (crea la tabla Tope y la medida [Valor Tope]).
+// 2) Relación: siniestros[idpol] (muchos) -> polizas[idpol] (uno), dirección única.
+// =====================================================================
+Prima pura (tope elegido) =
+    DIVIDE (
+        SUMX ( siniestros, MIN ( siniestros[monto], [Valor Tope] ) ),
+        [Exposición]
+    )

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 28 · Índices</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 28 · Unidad 4 · Organización física</p>
+    <h1 class="masthead__title">Los tres tipos de índice, y cuál ordena físicamente</h1>
+    <p class="masthead__standfirst">
+      La lección con más probabilidad de aparecer en el parcial. Y con una trampa
+      en el material que conviene ver antes de estudiarla.
+    </p>
+    <p class="masthead__meta">
+      <span>~12 minutos</span>
+      <span>Unidad 4 — Conceptos, pp. 4–8</span>
+      <span>Prioridad para el parcial: máxima</span>
+    </p>
+  </header>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Tres fuentes independientes dicen que esto se toma</span>
+    <ol>
+      <li>
+        El docente dio la pregunta <b>textual</b> en clase:
+        <em>"¿cuál de todos los índices ordena físicamente los campos?"</em> — más el
+        "justifique".
+      </li>
+      <li>
+        Las pautas de examen piden <em>"nombre de los tipos y para qué sirve cada uno,
+        qué beneficio tiene cada uno"</em>.
+      </li>
+      <li>
+        El modelo <code>bd parcial 1a</code> pregunta: <em>"Explique cada tipo de Índices:
+        Agrupados, Principal y Secundarios. <b>De un ejemplo.</b>"</em>
+      </li>
+    </ol>
+    <p>
+      Y el <b>tercer error</b> que el docente dice que marca siempre es no acordarse para
+      qué sirve cada tipo. Esta lección está armada para atacar exactamente eso.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Qué es un índice</h2>
+
+  <p>
+    Venías de la <a href="0027-almacenamiento-y-archivos.html">lección 27</a> con una
+    pregunta abierta: si el fichero tiene un millón de registros, ¿hay que leerlos todos?
+    Ésta es la respuesta, con la definición textual del material:
+  </p>
+
+  <blockquote class="callout">
+    "Un índice es una <b>estructura de datos que mapea los valores de una o más columnas
+    de una tabla a las filas correspondientes</b> en dicha tabla. Esto permite un acceso
+    más rápido y eficiente a los datos <b>en lugar de realizar una búsqueda secuencial</b>."
+  </blockquote>
+
+  <p>
+    Guardá esa última cláusula. <b>Un índice no hace nada más que evitar la búsqueda
+    secuencial.</b> Si en el parcial te piden "para qué sirve", ahí está la respuesta en
+    siete palabras.
+  </p>
+
+  <h2><span class="num">02</span>Los tres tipos</h2>
+
+  <p>El material los presenta por <b>qué columna indexan</b>:</p>
+
+  <blockquote class="callout">
+    "<b>Índice principal</b>: se crea en la columna o columnas que forman la clave primaria
+    de una tabla.<br>
+    <b>Índices secundarios</b>: son aquellos que se crean en columnas que no forman parte
+    de la clave primaria de una tabla."
+  </blockquote>
+
+  <p>
+    Y el <b>agrupado</b> aparece aparte, definido por lo que le hace al fichero en lugar de
+    por qué columna toma:
+  </p>
+
+  <blockquote class="callout">
+    "En un índice agrupado, <b>las filas de la tabla se ordenan en el mismo orden que el
+    índice</b>, lo que significa que las filas que tienen valores similares en la columna
+    indexada están <b>físicamente almacenadas juntas en el disco</b>."
+  </blockquote>
+
+  <figure class="full">
+    <img src="../assets/diagrams/tipos-de-indice.svg"
+         alt="Tres paneles comparan los tipos de índice. El principal tiene una entrada por bloque sobre un fichero ya ordenado. El agrupado, resaltado, reordena las filas para que los valores iguales queden juntos. El secundario es una estructura separada cuyos punteros cruzan hacia un fichero que conserva su orden.">
+    <figcaption>
+      <b>El eje que los separa es el orden físico del fichero.</b> Sólo el del medio lo toca.
+    </figcaption>
+  </figure>
+
+  <details class="reveal">
+    <summary>Antes de leer la tabla: nombrá los tres tipos y un beneficio de cada uno</summary>
+    <div class="reveal__body">
+      <p>
+        Hacelo de memoria, en voz alta o en papel. Si podés, escribí también el
+        <b>costo</b> de cada uno — es la mitad que todos olvidan, y las pautas piden
+        "qué beneficio tiene cada uno".
+      </p>
+      <p>
+        Recién después mirá la tabla. Leerla sin haber intentado recuperarla primero es
+        lo que produce la sensación de saberlo sin saberlo.
+      </p>
+    </div>
+  </details>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Tipo</th><th>Sobre qué se crea</th><th>Beneficios y costos</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Principal</b><br><span style="color:var(--ink-soft)">o primario</span></td>
+          <td>La columna o columnas de la <b>clave primaria</b>.
+              <b>Sólo uno por tabla</b>, "ya que la clave primaria es única en la tabla".</td>
+          <td>
+            <b>Unicidad</b> — no puede haber dos filas con el mismo valor de clave<br>
+            <b>Búsqueda eficiente</b> por clave primaria<br>
+            <b>Base de las restricciones de integridad referencial</b>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Agrupado</b></td>
+          <td>El <b>campo agrupado</b>. Reordena el fichero: los valores iguales quedan
+              juntos en disco.</td>
+          <td>
+            Ordenamiento físico <b>(+)</b><br>
+            Búsqueda eficiente <b>(+)</b><br>
+            Ahorro de espacio <b>(+)</b><br>
+            Limitaciones en la modificación de datos <b>(−)</b>
+          </td>
+        </tr>
+        <tr>
+          <td><b>Secundario</b></td>
+          <td>Columnas que <b>no</b> forman parte de la clave primaria. Crea una
+              "estructura de índice <b>separada</b>".</td>
+          <td>
+            No afecta el ordenamiento físico <b>(+)</b><br>
+            Búsqueda eficiente <b>(+)</b><br>
+            Mayor espacio de almacenamiento <b>(−)</b><br>
+            Mayor flexibilidad <b>(+)</b><br>
+            Uso excesivo degrada el rendimiento <b>(−)</b>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    El material cierra el secundario con una advertencia de diseño que vale como frase de
+    cierre en una respuesta de desarrollo: "es importante cuidadosamente planificar y
+    evaluar la necesidad de índices secundarios <b>en función de los requerimientos de
+    consulta y rendimiento</b>".
+  </p>
+
+  <h2><span class="num">03</span>Denso y no denso</h2>
+
+  <p>Una clasificación aparte, que cruza a las anteriores. Textual:</p>
+
+  <blockquote class="callout">
+    "<b>Índice denso</b>: tiene una entrada de índice por <b>cada valor de la clave de
+    búsqueda</b> (y, por tanto, cada registro) del fichero de datos.<br>
+    <b>Índice no denso</b>: sólo tiene entradas para <b>algunos</b> de los valores de
+    búsqueda."
+  </blockquote>
+
+  <blockquote class="callout">
+    "Por consiguiente, un índice principal es un índice escaso o <b>No Denso</b>, porque
+    incluye una entrada por cada <b>bloque de disco</b> del fichero de datos en lugar de
+    una entrada por cada valor de búsqueda (es decir, por cada registro)."
+  </blockquote>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La regla, en una línea</span>
+    <p>
+      <b>Si el índice apunta a bloques, es no denso. Si apunta a registros uno por uno,
+      es denso.</b> No hay que memorizar la tabla: se deduce de a qué le apunta cada uno.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>La trampa</h2>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">El material se contradice consigo mismo</span>
+    <p>
+      Las páginas del <b>principal</b> lo definen como "el índice de la clave primaria" y
+      le adjudican la <b>unicidad</b>. El <b>ordenamiento físico</b> se lo dan al
+      <b>agrupado</b>.
+    </p>
+    <p>
+      Pero la página de <b>denso / no denso</b> está copiada textual de Elmasri (p. 431),
+      donde el índice principal <b>sí</b> implica que el fichero está ordenado por esa
+      clave — de ahí que tenga "una entrada por bloque". Si el fichero no estuviera
+      ordenado, esa frase no tendría sentido.
+    </p>
+    <p>
+      <b>Son dos marcos distintos pegados en el mismo material.</b> Si razonás desde el
+      párrafo de densidad, contestás "principal" y te lo marcan mal.
+    </p>
+  </div>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Qué contestar en el parcial</span>
+    <p>
+      A <em>"¿cuál de todos los índices ordena físicamente los campos?"</em> la respuesta
+      es <b>el agrupado</b>. Y la justificación, con las palabras del material: porque
+      "las filas de la tabla se ordenan en el mismo orden que el índice", de modo que
+      "están físicamente almacenadas juntas en el disco".
+    </p>
+    <p>
+      <b>No razones desde el párrafo de densidad, y no le corrijas el material al docente
+      en la hoja.</b> Está en <code>MISSION.md</code> como regla general: cuando Elmasri y
+      la cátedra difieren, gana la cátedra.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Un ejemplo de cada uno</h2>
+
+  <p>
+    El modelo de parcial pide "de un ejemplo", así que conviene llevarlos preparados.
+    Tomemos la tabla de la Unidad 3:
+  </p>
+
+  <div class="rel">
+    CabeceraFact (<b>#NFact</b>, Fecha, <i>(FK)CodCli</i>)
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Tipo</th><th>Ejemplo sobre esa tabla</th><th>Qué consulta acelera</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Principal</b></td>
+          <td>Sobre <code>NFact</code>, la clave primaria.</td>
+          <td>"Traeme la factura 4318." Y garantiza que no existan dos facturas 4318.</td>
+        </tr>
+        <tr>
+          <td><b>Agrupado</b></td>
+          <td>Sobre <code>CodCli</code>: las facturas del mismo cliente quedan juntas
+              en disco.</td>
+          <td>"Traeme todas las facturas del cliente 3." Se leen de bloques contiguos.</td>
+        </tr>
+        <tr>
+          <td><b>Secundario</b></td>
+          <td>Sobre <code>Fecha</code>, que no es clave primaria. Estructura aparte.</td>
+          <td>"Traeme las facturas de enero." Sin tocar el orden físico del fichero.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Fijate por qué el agrupado sirve justo para el segundo caso: el cliente 3 tiene
+    <b>muchas</b> facturas. Agrupar por un campo con valores repetidos es lo que hace que
+    "las filas con valores similares estén almacenadas juntas y puedan ser leídas más
+    eficientemente". Sobre la clave primaria no habría nada que agrupar: cada valor
+    aparece una sola vez.
+  </p>
+
+  <h2><span class="num">06</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 4 · La pregunta del docente</span>
+    <p class="quiz__q">
+      ¿Cuál de todos los índices ordena físicamente los campos?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Y la justificación: las filas de la tabla se ordenan en el mismo orden que el índice, de modo que quedan físicamente almacenadas juntas en el disco. Es la pregunta textual que dio el docente en clase.">El índice agrupado</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ésta es la trampa. En Elmasri el principal sí implica orden físico, pero en el material de la cátedra el principal aporta unicidad y el orden físico es del agrupado. En el parcial gana la cátedra.">El índice principal</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Justo al revés: el material define el secundario diciendo que no afecta el ordenamiento físico, porque crea una estructura de índice separada.">El índice secundario</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 4 · Para qué sirve cada uno</span>
+    <p class="quiz__q">
+      ¿Qué índice tiene como <b>costo</b> el mayor espacio de almacenamiento?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El secundario, porque crea una estructura de índice separada del fichero de datos. El material le marca además que un uso excesivo degrada el rendimiento.">El secundario, por su estructura aparte</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al agrupado el material le atribuye lo contrario: ahorro de espacio como beneficio. Su costo son las limitaciones en la modificación de datos.">El agrupado, por su orden físico</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al principal el material no le marca costos: le lista tres beneficios — unicidad, búsqueda eficiente y base de la integridad referencial.">El principal, por su clave única</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 4 · Justificar</span>
+    <p class="quiz__q">
+      ¿Por qué en una tabla puede haber un solo índice principal?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Textual del material: solo puede haber un índice primario, ya que la clave primaria es única en la tabla. Una tabla tiene una sola clave primaria, entonces un solo índice principal.">Porque la clave primaria es única</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ése es el razonamiento de Elmasri, y es correcto en su marco: hay un solo orden físico posible. Pero el material de la cátedra lo justifica por la unicidad de la clave, no por el orden.">Porque el orden físico es único</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Los bloques no tienen nada que ver con el límite. La entrada por bloque explica por qué el principal es no denso, que es otra pregunta distinta.">Porque cada fila ocupa un bloque</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 4 · Densidad</span>
+    <p class="quiz__q">
+      ¿Por qué el índice principal es un índice <b>no denso</b>?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Porque incluye una entrada por cada bloque de disco del fichero, en lugar de una por cada registro. Denso significa una entrada por cada valor de la clave de búsqueda, y por tanto por cada registro.">Tiene una entrada por cada bloque</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso sería un índice denso, que es exactamente la definición contraria. El principal no llega a ese nivel de detalle: le alcanza con apuntar al bloque.">Tiene una entrada por cada registro</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La densidad no se mide por tabla. Se mide comparando la cantidad de entradas del índice contra la cantidad de registros del fichero de datos.">Tiene una entrada por cada tabla</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Unidad 4 — Conceptos</b>, páginas 4 a 8
+      (<code>raw/Material_Examen/unidad 4 conceptos.pdf</code>), equivalente a los slides
+      9 a 17 del deck <code>Clase Indices y Txn</code>. Todas las citas son textuales.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — capítulo 14, "Estructuras de indexación para
+      los ficheros", <b>§14.1, páginas 430 a 437</b> (en el PDF de <code>raw/</code>:
+      páginas 455 a 463). Leelo con una advertencia: el libro usa <b>otra taxonomía</b> —
+      llama "principal" al índice sobre el campo de ordenación y reserva "agrupado" para
+      un campo de ordenación que no es clave. Sirve para entender el mecanismo;
+      <b>para contestar, la cátedra</b>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Pedime que te tome los tres tipos a ciegas: yo te doy un
+      caso — "una tabla de empleados que se consulta siempre por departamento" — y vos me
+      decís qué índice va y por qué. Eso es lo que evalúa el parcial.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0027-almacenamiento-y-archivos.html">Anterior: 0027</a>
+    <a href="../reference/0003-indices-y-transacciones.html">Referencia: índices y ACID</a>
+    <a href="0041-transacciones-y-acid.html">Siguiente: 0041 · Transacciones</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

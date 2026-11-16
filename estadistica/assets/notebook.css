@@ -1,0 +1,3 @@
+/* Compatibility shim: the shared stylesheet now lives in course.css
+   (same family as bases-de-datos). Pages should link course.css directly. */
+@import url("course.css");

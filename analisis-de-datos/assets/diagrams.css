@@ -1,0 +1,118 @@
+/* Diagram skin (diagram-design profile "adi-unicaba"): the study suite's palette as tokens,
+   so the same inline SVG reads in light and dark, inside lessons, the suite and standalone pages. */
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  --dg-paper: #ffffff;
+  --dg-paper-2: #fff4f8;
+  --dg-ink: #2b1422;
+  --dg-muted: #5b3a4c;
+  --dg-soft: #8a6a7b;
+  --dg-rule: rgba(43, 20, 34, 0.12);
+  --dg-rule-solid: #f1d6e3;
+  --dg-accent: #d81b72;
+  --dg-accent-tint: rgba(216, 27, 114, 0.08);
+  --dg-accent-band: rgba(216, 27, 114, 0.14);
+  --dg-store: rgba(43, 20, 34, 0.05);
+  --dg-band: rgba(43, 20, 34, 0.06);
+  --dg-band-outer: rgba(91, 58, 76, 0.10);
+  --dg-page: var(--dg-paper);
+  --dg-sans: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --dg-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+  --dg-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --dg-paper: #140b11;
+    --dg-paper-2: #1e1219;
+    --dg-ink: #f8e9f1;
+    --dg-muted: #e2c6d5;
+    --dg-soft: #b894a8;
+    --dg-rule: rgba(248, 233, 241, 0.12);
+    --dg-rule-solid: #3a2331;
+    --dg-accent: #ff5fa2;
+    --dg-accent-tint: rgba(255, 95, 162, 0.12);
+    --dg-accent-band: rgba(255, 95, 162, 0.2);
+    --dg-store: rgba(248, 233, 241, 0.05);
+    --dg-band: rgba(248, 233, 241, 0.06);
+    --dg-band-outer: rgba(226, 198, 213, 0.1);
+  }
+}
+:root[data-theme="dark"] {
+  --dg-paper: #140b11;
+  --dg-paper-2: #1e1219;
+  --dg-ink: #f8e9f1;
+  --dg-muted: #e2c6d5;
+  --dg-soft: #b894a8;
+  --dg-rule: rgba(248, 233, 241, 0.12);
+  --dg-rule-solid: #3a2331;
+  --dg-accent: #ff5fa2;
+  --dg-accent-tint: rgba(255, 95, 162, 0.12);
+  --dg-accent-band: rgba(255, 95, 162, 0.2);
+  --dg-store: rgba(248, 233, 241, 0.05);
+  --dg-band: rgba(248, 233, 241, 0.06);
+  --dg-band-outer: rgba(226, 198, 213, 0.1);
+}
+
+/* ---- SVG roles ---- */
+svg.dg { display: block; width: 100%; height: auto; }
+.dg .bg { fill: var(--dg-page); }
+.dg .mask { fill: var(--dg-page); }
+.dg .node { fill: var(--dg-paper); stroke: var(--dg-ink); stroke-width: 1; }
+.dg .node-soft { fill: var(--dg-paper); stroke: var(--dg-muted); stroke-width: 1; }
+.dg .store { fill: var(--dg-store); stroke: var(--dg-muted); stroke-width: 1; }
+.dg .focal { fill: var(--dg-accent-tint); stroke: var(--dg-accent); stroke-width: 1.4; }
+.dg .mark { fill: var(--dg-muted); }
+.dg .mark-accent { fill: var(--dg-accent); }
+.dg .series { fill: none; stroke: var(--dg-ink); stroke-width: 1.6; stroke-linejoin: round; }
+.dg .axis { fill: none; stroke: var(--dg-soft); stroke-width: 1; }
+.dg .hub { fill: var(--dg-ink); stroke: var(--dg-ink); stroke-width: 1; }
+.dg .zone { fill: var(--dg-paper-2); stroke: var(--dg-rule-solid); stroke-width: 1; }
+.dg .band { fill: var(--dg-band); }
+.dg .band-outer { fill: var(--dg-band-outer); }
+.dg .band-focal { fill: var(--dg-accent-band); }
+.dg .layer { fill: var(--dg-paper-2); stroke: var(--dg-muted); stroke-width: 1; }
+.dg .layer-focal { fill: var(--dg-accent-tint); stroke: var(--dg-accent); stroke-width: 1.4; }
+.dg .dot { fill: var(--dg-ink); }
+.dg .rule { stroke: var(--dg-rule); stroke-width: 0.8; fill: none; }
+.dg .leader { stroke: var(--dg-rule-solid); stroke-width: 1; fill: none; stroke-dasharray: 2 3; }
+
+.dg .edge { fill: none; stroke: var(--dg-muted); stroke-width: 1.2; }
+.dg .edge-accent { fill: none; stroke: var(--dg-accent); stroke-width: 1.4; }
+.dg .edge-soft { fill: none; stroke: var(--dg-soft); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.dg .edge-dashed { stroke-dasharray: 4 3; }
+.dg .tree { fill: none; stroke: var(--dg-muted); stroke-width: 1; }
+.dg .m-muted { fill: var(--dg-muted); }
+.dg .m-accent { fill: var(--dg-accent); }
+.dg .m-soft { fill: var(--dg-soft); }
+
+.dg text { font-family: var(--dg-sans); }
+.dg .name { fill: var(--dg-ink); font-size: 12px; font-weight: 700; }
+.dg .name-lg { fill: var(--dg-ink); font-size: 16px; font-weight: 700; }
+.dg .name-mono { fill: var(--dg-ink); font-family: var(--dg-mono); font-size: 12px; font-weight: 500; }
+.dg .body { fill: var(--dg-ink); font-size: 12px; }
+.dg .name-accent { fill: var(--dg-accent); }
+.dg .name-inverse { fill: var(--dg-page); font-size: 16px; font-weight: 700; }
+.dg .sub { fill: var(--dg-muted); font-family: var(--dg-mono); font-size: 9px; }
+.dg .sub-inverse { fill: var(--dg-page); font-family: var(--dg-mono); font-size: 9px; opacity: 0.8; }
+.dg .sub-accent { fill: var(--dg-accent); font-family: var(--dg-mono); font-size: 9px; }
+.dg .field { fill: var(--dg-ink); font-family: var(--dg-mono); font-size: 9px; }
+.dg .note { fill: var(--dg-soft); font-size: 12px; font-style: italic; }
+.dg .eyebrow { fill: var(--dg-soft); font-family: var(--dg-mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; }
+.dg .label { fill: var(--dg-soft); font-family: var(--dg-mono); font-size: 8px; letter-spacing: 0.06em; }
+.dg .label-accent { fill: var(--dg-accent); font-family: var(--dg-mono); font-size: 8px; letter-spacing: 0.06em; }
+.dg .card { fill: var(--dg-paper); }
+.dg .fo { font-family: var(--dg-mono); font-size: 9px; line-height: 1.25; color: var(--dg-muted); }
+
+/* ---- Figure wrapper inside lessons / references ---- */
+.dg-figure { margin: 1.6rem 0; --dg-page: var(--bg, var(--dg-paper)); }
+.dg-figure .dg-scroll { overflow-x: auto; }
+.dg-figure svg.dg { min-width: 560px; }
+.dg-figure figcaption {
+  font-family: var(--sans, var(--dg-sans));
+  font-size: 0.8rem;
+  color: var(--muted, var(--dg-soft));
+  margin-top: 0.5rem;
+}
+@media print { .dg-figure { break-inside: avoid; } }

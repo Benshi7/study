@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 330" width="780" height="330"
+     role="img" aria-labelledby="estrella-title estrella-desc">
+  <title id="estrella-title">Esquema en estrella y esquema copo de nieve</title>
+  <desc id="estrella-desc">A la izquierda, un esquema en estrella: una tabla de hechos Ventas en el centro, con clave primaria compuesta por las claves de cuatro dimensiones (Cliente, Producto, Fecha y Sucursal), cada una conectada directo a los hechos. A la derecha, el mismo esquema como copo de nieve: la dimensión Producto se normaliza en Familia y Rubro, y Sucursal en Ciudad, así que aparecen más tablas y más uniones.</desc>
+  <style>
+    .dg-fact { fill: rgba(122,46,14,0.10); stroke: #7a2e0e; stroke-width: 1.6; }
+    .dg-dim  { fill: #fffef9; stroke: #1a1a17; stroke-width: 1; }
+    .dg-snow { fill: #fffef9; stroke: #56544c; stroke-width: 1; stroke-dasharray: 4 3; }
+    .dg-line { stroke: #56544c; stroke-width: 1.2; fill: none; }
+    .dg-name { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dg-sub  { fill: #56544c; font: 400 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .dg-head { fill: #7a2e0e; font: 600 10px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; letter-spacing: 0.12em; }
+    @media (prefers-color-scheme: dark) {
+      .dg-fact { fill: rgba(224,138,92,0.14); stroke: #e08a5c; }
+      .dg-dim  { fill: #16161a; stroke: #e8e4d9; }
+      .dg-snow { fill: #16161a; stroke: #a8a498; }
+      .dg-line { stroke: #a8a498; }
+      .dg-name { fill: #e8e4d9; }
+      .dg-sub  { fill: #a8a498; }
+      .dg-head { fill: #e08a5c; }
+    }
+  </style>
+
+  <text class="dg-head" x="190" y="22" text-anchor="middle">ESTRELLA</text>
+  <text class="dg-head" x="590" y="22" text-anchor="middle">COPO DE NIEVE</text>
+
+  <!-- estrella -->
+  <line class="dg-line" x1="190" y1="140" x2="190" y2="72"/>
+  <line class="dg-line" x1="190" y1="190" x2="190" y2="258"/>
+  <line class="dg-line" x1="130" y1="165" x2="84" y2="165"/>
+  <line class="dg-line" x1="250" y1="165" x2="296" y2="165"/>
+  <rect class="dg-fact" x="130" y="140" width="120" height="50" rx="3"/>
+  <text class="dg-name" x="190" y="161" text-anchor="middle">VENTAS</text><text class="dg-sub" x="190" y="177" text-anchor="middle">hechos · PK compuesta</text>
+  <rect class="dg-dim" x="130" y="38" width="120" height="34" rx="3"/><text class="dg-name" x="190" y="60" text-anchor="middle">Cliente</text>
+  <rect class="dg-dim" x="130" y="258" width="120" height="34" rx="3"/><text class="dg-name" x="190" y="280" text-anchor="middle">Fecha</text>
+  <rect class="dg-dim" x="8" y="148" width="76" height="34" rx="3"/><text class="dg-name" x="46" y="170" text-anchor="middle">Producto</text>
+  <rect class="dg-dim" x="296" y="148" width="86" height="34" rx="3"/><text class="dg-name" x="339" y="170" text-anchor="middle">Sucursal</text>
+
+  <!-- copo de nieve -->
+  <line class="dg-line" x1="590" y1="140" x2="590" y2="72"/>
+  <line class="dg-line" x1="590" y1="190" x2="590" y2="258"/>
+  <line class="dg-line" x1="530" y1="165" x2="506" y2="165"/>
+  <line class="dg-line" x1="650" y1="165" x2="676" y2="165"/>
+  <rect class="dg-fact" x="530" y="140" width="120" height="50" rx="3"/>
+  <text class="dg-name" x="590" y="161" text-anchor="middle">VENTAS</text><text class="dg-sub" x="590" y="177" text-anchor="middle">hechos</text>
+  <rect class="dg-dim" x="530" y="38" width="120" height="34" rx="3"/><text class="dg-name" x="590" y="60" text-anchor="middle">Cliente</text>
+  <rect class="dg-dim" x="530" y="258" width="120" height="34" rx="3"/><text class="dg-name" x="590" y="280" text-anchor="middle">Fecha</text>
+  <rect class="dg-dim" x="456" y="148" width="50" height="34" rx="3"/><text class="dg-name" x="481" y="170" text-anchor="middle">Prod.</text>
+  <rect class="dg-snow" x="404" y="148" width="52" height="34" rx="3"/><text class="dg-name" x="430" y="170" text-anchor="middle">Familia</text>
+  <rect class="dg-snow" x="404" y="196" width="52" height="34" rx="3"/><text class="dg-name" x="430" y="218" text-anchor="middle">Rubro</text>
+  <line class="dg-line" x1="430" y1="182" x2="430" y2="196"/>
+  <rect class="dg-dim" x="676" y="148" width="64" height="34" rx="3"/><text class="dg-name" x="708" y="170" text-anchor="middle">Sucursal</text>
+  <rect class="dg-snow" x="676" y="196" width="64" height="34" rx="3"/><text class="dg-name" x="708" y="218" text-anchor="middle">Ciudad</text>
+  <line class="dg-line" x1="708" y1="182" x2="708" y2="196"/>
+
+  <text class="dg-sub" x="190" y="316" text-anchor="middle">cada dimensión, una sola unión al hecho</text>
+  <text class="dg-sub" x="590" y="316" text-anchor="middle">dimensiones normalizadas: menos redundancia, más JOIN</text>
+</svg>

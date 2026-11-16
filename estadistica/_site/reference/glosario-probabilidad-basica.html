@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glosario de referencia — Probabilidad Básica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Ficha de referencia · Bloque 01</span>
+<h1>Glosario — Probabilidad Básica</h1>
+<p class="subtitle">Para consultar de un vistazo antes de resolver ejercicios. No sustituye la lección.</p>
+
+<h2>Definiciones de probabilidad</h2>
+<table>
+<tr><th>Nombre</th><th>Fórmula</th><th>Cuándo se usa</th></tr>
+<tr><td class="term">Laplace (clásica)</td><td class="formula">P(A) = favorables / posibles</td><td>Espacio muestral equiprobable</td></tr>
+<tr><td class="term">Frecuencial</td><td class="formula">P(A) ≈ éxitos / ensayos</td><td>Aproximación empírica, muchas repeticiones</td></tr>
+<tr><td class="term">Axiomática (Kolmogorov)</td><td class="formula">P(A)≥0 · P(E)=1 · aditividad</td><td>Base formal; de ahí se deriva 0≤P(A)≤1</td></tr>
+</table>
+
+<div class="two-col">
+<div>
+<h2>Relaciones entre sucesos</h2>
+<table>
+<tr><th>Término</th><th>Definición</th></tr>
+<tr><td class="term">Excluyentes</td><td>A∩B = ∅</td></tr>
+<tr><td class="term">Independientes</td><td>P(A∩B)=P(A)·P(B)</td></tr>
+<tr><td class="term">Exhaustivos</td><td>A∪B = E</td></tr>
+<tr><td class="term">Complementarios</td><td>Exhaustivos Y excluyentes</td></tr>
+</table>
+</div>
+<div>
+<h2>Combinación de sucesos</h2>
+<table>
+<tr><th>Situación</th><th>Fórmula</th></tr>
+<tr><td>A o B, excluyentes</td><td class="formula">P(A)+P(B)</td></tr>
+<tr><td>A o B, general</td><td class="formula">P(A)+P(B)−P(A∩B)</td></tr>
+<tr><td>A y B, independientes</td><td class="formula">P(A)·P(B)</td></tr>
+<tr><td>A y B, dependientes</td><td class="formula">P(A)·P(B/A)</td></tr>
+<tr><td>Complemento</td><td class="formula">P(Ā) = 1 − P(A)</td></tr>
+<tr><td>De Morgan</td><td class="formula">(A∪B)' = Ā∩B̄ · (A∩B)' = Ā∪B̄</td></tr>
+</table>
+</div>
+</div>
+
+<div class="warn">
+<strong>La trampa más común del final:</strong> independencia y exclusión mutua son ejes distintos.
+Si A y B son mutuamente excluyentes → <strong>no</strong> son independientes (salvo caso trivial P=0).
+Si A y B son independientes → <strong>no</strong> son mutuamente excluyentes (salvo caso trivial).
+</div>
+
+<h2>Con reposición vs. sin reposición</h2>
+<p><span class="term">Con reposición</span> → independiente → <span class="formula">P(A)·P(B)</span>.
+<span class="term">Sin reposición</span> → dependiente → <span class="formula">P(A)·P(B/A)</span>, segundo espacio reducido.</p>
+<div class="box">Convención de la cátedra: si el enunciado no aclara, se asume <strong>sin reposición</strong>.</div>
+
+<h2>Probabilidad total vs. Bayes</h2>
+<table>
+<tr><th>Pregunta que responde</th><th>Fórmula</th></tr>
+<tr><td>Total: "¿P(B) sumando todos los caminos?"</td><td class="formula">P(B) = Σ P(Aᵢ)·P(B/Aᵢ)</td></tr>
+<tr><td>Bayes: "ya ocurrió B, ¿P de que la causa fue Aₖ?"</td><td class="formula">P(Aₖ/B) = P(Aₖ)·P(B/Aₖ) / Σ P(Aᵢ)·P(B/Aᵢ)</td></tr>
+</table>
+
+<h2>Traducción de enunciados</h2>
+<table>
+<tr><td>como máximo / a lo sumo k</td><td class="formula">P(x ≤ k)</td></tr>
+<tr><td>como mínimo / por lo menos k</td><td class="formula">P(x ≥ k)</td></tr>
+<tr><td>más de la mitad</td><td class="formula">P(x &gt; n/2)</td></tr>
+<tr><td>ninguno / alguno</td><td class="formula">P(x=0) / P(x≥1)</td></tr>
+</table>
+
+<footer>
+Fuente: material de cátedra (<code>knowledge-base/01-probabilidad-basica.md</code>).
+<div class="nav-row">
+  <span>Ver lección → <a href="../lessons/0001-independencia-vs-exclusion-mutua.html">0001 — Independencia vs. exclusión mutua</a></span>
+  <span>Ver también → <a href="machete-final.html">Machete final</a> · <a href="super-glosario.html">Super glosario</a></span>
+</div>
+</footer>
+
+</body>
+</html>

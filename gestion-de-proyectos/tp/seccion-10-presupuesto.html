@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sección 10 · Gestión de costos · Presupuesto</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">TP · Sección 10</p>
+  <h1>Gestión de costos · Presupuesto</h1>
+  <p class="subtitle">¿Cuánto cuesta?</p>
+  <p class="meta"><span>Fuente: Clase 4 (p6–37)</span><span><span class="chip ok">Guía lista</span></span></p>
+</header>
+
+<div class="win">
+  <strong>Qué tiene que quedar escrito</strong>
+  Un presupuesto en tres capas: costo del proyecto, más reserva de contingencia (que sale de los EMV), igual línea base, más reserva de gestión, igual presupuesto total. La mano de obra usa las duraciones del Gantt.
+</div>
+
+<h2>Qué espera la cátedra</h2>
+<ul>
+  <li><strong>PESTEL</strong> (Clase 4, p6–9): seis lentes sobre el entorno (político, económico, social, tecnológico, ecológico y legal). Por cada letra, una frase de cómo mueve un costo; si no toca ningún costo ni riesgo, se descarta.</li>
+  <li><strong>Clasificar costos</strong> (p13–14): fijo o variable, y directo o indirecto; son dos ejes independientes.</li>
+  <li><strong>Estimar</strong> (p16–18): a partir de recursos y tiempos, con la tasa de cada recurso; técnicas análoga, paramétrica y experta.</li>
+  <li><strong>Reservas</strong> (p19–21): la de contingencia cubre riesgos identificados y sale del análisis de riesgos; la de gestión cubre lo imprevisto y requiere aprobación de la alta dirección o del comité de cambios.</li>
+  <li><strong>Ingresos</strong> (p26–27): son el otro lado del Canvas; publicidad y comisiones son flujos válidos.</li>
+</ul>
+
+<h2>Punto de partida del equipo</h2>
+<ul>
+  <li><strong>Sin números inventados:</strong> las tarifas, cantidades de personas y porcentajes son valores a acordar por el equipo. Ninguno figura como dato del proyecto.</li>
+  <li>Las duraciones vienen del Gantt (sección 6) y la contingencia, de la matriz de riesgos (sección 9).</li>
+  <li>El presupuesto de alto nivel del Charter debe coincidir con el total final.</li>
+  <li>Factor legal a evaluar en PESTEL: la Ley 25.326 (a verificar).</li>
+</ul>
+
+<h2>Plantilla para copiar</h2>
+<p class="hint">Lo que no está confirmado figura como <code>[completar]</code>. Lo marcado con <span class="tag-propuesta">propuesta para votar</span> todavía no lo decidió el equipo.</p>
+<pre class="tpl" id="tpl" tabindex="0">&gt; Frase puente: El Gantt estima [completar] días de trabajo y la matriz de riesgos suma una reserva de contingencia de [completar]. Con esos dos datos, el presupuesto del proyecto es el siguiente.
+
+# Presupuesto
+
+## PESTEL (una frase por letra: cómo mueve un costo)
+| Factor | Cómo afecta los costos del proyecto |
+|--------|-------------------------------------|
+| Político | [completar] |
+| Económico | [completar] |
+| Social | [completar] |
+| Tecnológico | [completar] |
+| Ecológico | [completar] |
+| Legal (Ley 25.326, a verificar) | [completar] |
+
+## Mano de obra (duración tomada del Gantt)
+| Actividad (sección 6) | Personas | Tarifa por persona-día (a acordar) | Días | Costo = personas × tarifa × días |
+|-----------------------|----------|------------------------------------|------|-----------------------------------|
+| [completar] | [completar] | [completar] | [completar] | [calcular] |
+
+## Otros costos
+| Concepto | Directo o indirecto | Fijo o variable | Monto |
+|----------|---------------------|-----------------|-------|
+| [completar] | [completar] | [completar] | [completar] |
+
+## Escalera del presupuesto
+| Capa | Monto |
+|------|-------|
+| Costo del proyecto (mano de obra + otros costos) | [calcular] |
+| + Reserva de contingencia (suma de EMV, sección 9, criterio decidido) | [completar] |
+| = Línea base de costos | [calcular] |
+| + Reserva de gestión ([completar]% de la línea base, propuesta para votar) | [calcular] |
+| = Presupuesto total (debe coincidir con el Charter) | [calcular] |
+
+## Ingresos (bloque del Canvas)
+- Fuentes: [completar]  (decisión pendiente: quién paga)</pre>
+<div class="btn-row"><button type="button" class="btn" data-copy="#tpl">Copiar plantilla</button></div>
+
+<h2>De dónde viene y a dónde va</h2>
+<div class="pair">
+  <div class="connect"><strong>Viene de</strong><p>Sección 6 (duraciones y actividades), sección 9 (EMV) y sección 5 (presupuesto de alto nivel). Clase 4: reglas de costos y reservas.</p></div>
+  <div class="connect"><strong>Va a</strong><ul>
+  <li>Sección 5: el total tiene que coincidir con el presupuesto de alto nivel del Charter.</li>
+  <li>Defensa oral: «¿de dónde sale la reserva?» y «¿por qué esta mano de obra?» se responden con las secciones 9 y 6.</li>
+</ul></div>
+</div>
+
+<h2>Frase puente</h2>
+<p class="note"><strong>Para abrir la sección</strong>
+Citar <strong>dos datos</strong>: la duración total del Gantt y la reserva que suman los EMV: «El Gantt suma [X] días y la matriz reserva [Y]. Con esos datos…».</p>
+
+<h2>Checklist de la sección</h2>
+<ul class="todo-list">
+  <li>La mano de obra usa las duraciones de la sección 6, actividad por actividad.</li>
+  <li>La reserva de contingencia es la suma de EMV de la sección 9, con el criterio declarado.</li>
+  <li>La reserva de gestión es un porcentaje explícito y se aclara quién la aprueba.</li>
+  <li>Los costos están clasificados (fijo o variable, directo o indirecto).</li>
+  <li>El total coincide con el presupuesto de alto nivel del Charter.</li>
+  <li>Hay una frase de PESTEL por cada letra, o se descartó con motivo.</li>
+</ul>
+<p class="hint">El estado de la sección, el responsable y el revisor se registran en el <a href="avance.html">tablero de avance</a>.</p>
+
+<div class="decisions-here">
+  <strong>Decisiones abiertas que afectan esta sección</strong>
+  <ul>
+    <li><a href="decisiones.html?d=ingresos">¿Quién paga el proyecto y cómo se sostiene?</a></li>
+    <li><a href="decisiones.html?d=emv-criterio">¿Cómo sumamos los EMV para la reserva de contingencia?</a></li>
+  </ul>
+</div>
+
+<div class="source">
+  <strong>Fuente</strong>
+  Clase 4, p6–37. Concepto de fondo: <a class="local-only" title="Solo disponible en la copia completa" href="../clases/04-costos-pestel.html">lección Costos y PESTEL</a>, con un presupuesto de punta a punta.
+</div>
+
+<nav class="nav">
+  <a href="seccion-09-riesgos.html">← Sección 9 · Riesgos</a>
+  <a href="avance.html">Tablero de avance →</a>
+</nav>
+</main>
+<script src="assets/tp-data.js"></script>
+<script src="assets/tp-common.js"></script>
+</body>
+</html>

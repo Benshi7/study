@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="udeci">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slow Change Dimension · slides</title>
+<link rel="stylesheet" href="../../assets/ppt/fonts.css">
+<link rel="stylesheet" href="../../assets/ppt/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/ppt/themes/udeci.css">
+<link rel="stylesheet" href="../../assets/ppt/animations/animations.css">
+<link rel="stylesheet" href="../deck.css">
+<script src="../../assets/ppt/mode.js"></script>
+<!-- Deck de estudio sobre los PPT "Slow Change Dimension" y "TP Slow Change Dimension" de la cátedra.
+     Los ejemplos A–D y el producto 1 son del deck; las fotos de CUSTOMER_GROUP son las del modelo de parcial 1a
+     (assets/seeds/scd.js) y los resultados se calcularon sobre ellas. Diagramas y recuadros "En criollo" / "Ojo" son nuestros. -->
+</head>
+<body data-themes="udeci,minimal-white,editorial-serif,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/ppt/themes/">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ar" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ah"/></marker>
+  <marker id="arA" viewBox="0 0 12 10" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,5 L0,10 z" class="ahA"/></marker>
+</defs></svg>
+
+<div class="deck">
+
+<!-- ============ PORTADA ============ -->
+<section class="slide center tc" data-title="Portada">
+  <div style="max-width:1300px;margin:0 auto">
+    <p class="kicker">Desarrollo Base de Datos · Data Warehouse · teoría y práctica del 2.º parcial</p>
+    <h1 class="h1" style="font-size:112px;line-height:1">Slow Change<br><span class="gradient-text">Dimension</span></h1>
+    <div class="divider-accent" style="margin:28px auto"></div>
+    <p class="lede" style="margin:0 auto 14px;font-size:32px;max-width:none">Cómo guarda un DW la historia de lo que cambia de a poco, y cómo se consulta.</p>
+    <p class="small">Basado en los PPT de la cátedra (teoría y TP). Los recuadros “En criollo” y “Ojo” son explicación nuestra.<br>← → avanzar · O ver todas · T cambiar tema · L claro/oscuro · F pantalla completa</p>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section class="slide" data-title="Qué se toma">
+  <p class="kicker">Mapa</p>
+  <h2 class="h2">Lo que el profe dijo que toma</h2>
+  <div class="two" style="margin-top:10px">
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">Las dos consultas</div><h4>Estado actual y estado a una fecha</h4><p>“Para slow change dimension tenemos que saber esas dos cosas, nomás.”</p></div>
+    <div class="card card-accent"><div class="src">Modelo de parcial 1a</div><ul><li>(a) Una <b>vista con la información actual</b>, campos en castellano</li><li>(b) Un <b>indicador</b> Externo / Propio con <code>CASE</code></li><li>(c) Todos los clientes <b>a una fecha</b></li></ul></div>
+  </div>
+  <div class="three" style="grid-template-columns:repeat(3,1fr);margin-top:22px">
+    <div class="card card-soft"><div class="src">1 · Concepto</div><p>Por qué las dimensiones necesitan otra estrategia de carga, y los tipos de SCD.</p></div>
+    <div class="card card-soft"><div class="src">2 · Tipo 2</div><p>Fotos con fecha de inicio y de fin: cómo se registra un cambio.</p></div>
+    <div class="card card-soft"><div class="src">3 · Consultas y vistas</div><p>Actual, a una fecha, con nombre, vistas histórica y actual, indicador.</p></div>
+  </div>
+</section>
+
+<!-- ============ 1 · CONCEPTO ============ -->
+<section class="slide" data-title="Hechos y dimensiones">
+  <p class="kicker">1 · Concepto</p>
+  <h2 class="h2">Los hechos se acumulan; las dimensiones cambian de a poco</h2>
+  <svg class="dg" viewBox="0 0 1728 316" role="img" aria-labelledby="hd-title hd-desc" style="margin-top:6px">
+    <title id="hd-title">Hechos que crecen contra una dimensión que cambia lento</title>
+    <desc id="hd-desc">Cada día aparecen nuevas ventas en la tabla de hechos. La dimensión producto, en cambio, se mantiene igual mucho tiempo y cambia de rubro una sola vez.</desc>
+    <text x="0" y="24" class="ey">HECHOS · CADA DÍA HAY VENTAS NUEVAS</text>
+    <g>
+      <rect x="0" y="216" width="104" height="36" rx="4" class="store"/><rect x="0" y="172" width="104" height="36" rx="4" class="store"/><rect x="0" y="128" width="104" height="36" rx="4" class="store"/>
+      <rect x="136" y="216" width="104" height="36" rx="4" class="store"/><rect x="136" y="172" width="104" height="36" rx="4" class="store"/><rect x="136" y="128" width="104" height="36" rx="4" class="store"/><rect x="136" y="84" width="104" height="36" rx="4" class="store"/>
+      <rect x="272" y="216" width="104" height="36" rx="4" class="store"/><rect x="272" y="172" width="104" height="36" rx="4" class="store"/>
+      <rect x="408" y="216" width="104" height="36" rx="4" class="store"/><rect x="408" y="172" width="104" height="36" rx="4" class="store"/><rect x="408" y="128" width="104" height="36" rx="4" class="store"/><rect x="408" y="84" width="104" height="36" rx="4" class="store"/><rect x="408" y="40" width="104" height="36" rx="4" class="store"/>
+      <rect x="544" y="216" width="104" height="36" rx="4" class="store"/><rect x="544" y="172" width="104" height="36" rx="4" class="store"/><rect x="544" y="128" width="104" height="36" rx="4" class="store"/>
+      <text x="52" y="288" class="sb" text-anchor="middle">lun</text><text x="188" y="288" class="sb" text-anchor="middle">mar</text><text x="324" y="288" class="sb" text-anchor="middle">mié</text><text x="460" y="288" class="sb" text-anchor="middle">jue</text><text x="596" y="288" class="sb" text-anchor="middle">vie</text>
+    </g>
+    <text x="800" y="24" class="eyA">DIMENSIÓN · EL PRODUCTO 1 CAMBIA UNA VEZ</text>
+    <rect x="800" y="120" width="520" height="72" rx="6" class="box"/><text x="824" y="166" class="nm-s">Rubro 1</text>
+    <rect x="1328" y="120" width="400" height="72" rx="6" class="foc"/><text x="1352" y="166" class="nm-s">Rubro 88</text>
+    <line x1="1324" y1="96" x2="1324" y2="216" class="lnA"/>
+    <text x="1324" y="84" class="lb" text-anchor="middle" style="fill:var(--accent)">01/05/2023</text>
+    <text x="800" y="248" class="tx2">Meses: estáticos · municipios: muy lento</text>
+    <text x="800" y="284" class="tx2">edad del cliente, familia del producto: algo más rápido</text>
+  </svg>
+  <div class="two" style="margin-top:10px">
+    <div class="card card-soft"><p>La <b>estrategia de carga de las dimensiones</b> es clave al alimentar un DW: no son incrementales como los hechos, <b>cambian poco a poco</b>.</p></div>
+    <div class="card card-soft"><p>Cuando algo cambia hay dos grandes opciones: <b>registrar el historial</b> de cambios o <b>reemplazar</b> los valores.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Tipos de SCD">
+  <p class="kicker">1 · Concepto</p>
+  <h2 class="h2">Los tipos de SCD</h2>
+  <table class="t head" style="margin-top:6px">
+    <thead><tr><th style="width:14%">Tipo</th><th style="width:28%">Estrategia</th><th>Qué pasa con la historia</th><th style="width:15%">Origen</th></tr></thead>
+    <tbody>
+      <tr><td>Tipo 1</td><td>Sobreescribir</td><td>Se pierde. Es el más simple: sin modelado especial ni filas nuevas.</td><td>Kimball</td></tr>
+      <tr style="background:var(--accent-tint)"><td>Tipo 2</td><td><b>Añadir fila</b></td><td><b>Se guarda toda</b>: cada cambio es una fila nueva con fecha de inicio y de fin.</td><td>Kimball</td></tr>
+      <tr><td>Tipo 3</td><td>Añadir columna</td><td>Se guarda poca: una columna con el valor anterior.</td><td>Kimball</td></tr>
+      <tr><td>Tipo 4</td><td>Tabla de historia separada</td><td>La historia vive en otra tabla.</td><td>Comunidad</td></tr>
+      <tr><td>Tipo 6</td><td>Híbrido</td><td>Combina los anteriores.</td><td>Comunidad</td></tr>
+    </tbody>
+  </table>
+  <div class="ojo"><span class="lbl">Ojo en el choice</span><p>Kimball planteó los <b>tipos 1, 2 y 3</b>; la comunidad sumó el <b>4 y el 6</b>. El deck sólo desarrolla el 1 y el 2: el detalle de 3, 4 y 6 de esta tabla es nuestro.</p></div>
+</section>
+
+<section class="slide" data-title="Tipo 1 contra tipo 2">
+  <p class="kicker">1 · Concepto</p>
+  <h2 class="h2">El mismo cambio, con tipo 1 y con tipo 2</h2>
+  <p class="sub">El producto 1 pasa de rubro 1 a rubro 88 el 01/05/2023.</p>
+  <svg class="dg" viewBox="0 0 1728 300" role="img" aria-labelledby="t12-title t12-desc">
+    <title id="t12-title">Tipo 1 sobreescribe, tipo 2 agrega una fila</title>
+    <desc id="t12-desc">Con tipo 1 la única fila del producto pasa a rubro 88 y el rubro 1 se pierde. Con tipo 2 la fila vieja se cierra el 30/04/2023 y se agrega una nueva con rubro 88 desde el 01/05/2023 hasta 31/12/2100.</desc>
+    <text x="0" y="20" class="ey">TIPO 1 · SOBREESCRIBIR</text>
+    <rect x="0" y="40" width="600" height="48" rx="6" class="hd"/><text x="20" y="72" class="hdT">Id_Producto</text><text x="240" y="72" class="hdT">Rubro</text>
+    <rect x="0" y="88" width="600" height="56" class="box"/><text x="20" y="124" class="row">1</text><text x="240" y="124" class="row"><tspan text-decoration="line-through" style="fill:var(--text-3)">1</tspan>  <tspan font-weight="700">88</tspan></text>
+    <text x="0" y="188" class="tx2">Una sola fila. Ya no se puede saber</text>
+    <text x="0" y="220" class="tx2">en qué rubro estaba antes.</text>
+    <text x="720" y="20" class="eyA">TIPO 2 · AÑADIR FILA</text>
+    <rect x="720" y="40" width="1008" height="48" rx="6" class="hd"/><text x="740" y="72" class="hdT">Id_Producto</text><text x="940" y="72" class="hdT">Rubro</text><text x="1100" y="72" class="hdT">Fecha_Inicio</text><text x="1400" y="72" class="hdT">Fecha_Fin</text>
+    <rect x="720" y="88" width="1008" height="56" class="box"/><text x="740" y="124" class="row">1</text><text x="940" y="124" class="row">1</text><text x="1100" y="124" class="row">2023-02-15</text><text x="1400" y="124" class="row">2023-04-30</text>
+    <rect x="720" y="144" width="1008" height="56" class="foc"/><text x="740" y="180" class="rowK">1</text><text x="940" y="180" class="rowK">88</text><text x="1100" y="180" class="rowK">2023-05-01</text><text x="1400" y="180" class="rowK">2100-12-31</text>
+    <text x="720" y="244" class="tx2">Dos fotos del mismo producto. La vigente termina en 2100-12-31.</text>
+    <text x="720" y="280" class="tx2">Permite guardar <tspan font-weight="700">ilimitada</tspan> información de cambios.</text>
+  </svg>
+  <div class="crio"><span class="lbl">En criollo</span><p>Pensá cada fila del tipo 2 como una <b>foto</b>: muestra cómo era el producto entre dos fechas. Es lo que hace al DW <b>variante en el tiempo y no volátil</b>.</p></div>
+</section>
+
+<!-- ============ 2 · TIPO 2 ============ -->
+<section class="slide" data-title="Las columnas del tipo 2">
+  <p class="kicker">2 · Tipo 2</p>
+  <h2 class="h2">Dos columnas nuevas: desde cuándo y hasta cuándo</h2>
+  <div class="two" style="margin-top:10px">
+    <div class="card card-accent"><div class="src">Fecha_Inicio</div><h4>Desde cuándo vale la foto</h4><p>Fecha en que entró en vigencia el registro. Por defecto se usa una fecha <b>muy antigua</b>, por ejemplo <code>01/01/1000</code>.</p></div>
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">Fecha_Fin</div><h4>Hasta cuándo vale</h4><p>Fecha en que dejó de estar en vigencia. Por defecto una fecha <b>muy futurista</b>: <code>31/12/2100</code>. La foto que la tiene es la <b>vigente</b>.</p></div>
+  </div>
+  <div class="card card-soft" style="margin-top:22px"><h4>La regla que une las fotos</h4><p style="font-size:32px">Fecha_Fin de la foto vieja = <b>Fecha_Inicio de la nueva − 1 día</b>.</p><p>Así las fotos no se pisan ni dejan huecos: cada día del calendario cae en <b>exactamente una</b>.</p></div>
+  <div class="ojo"><span class="lbl">Convención del profe</span><p>La “fecha actual” es <b>2100-12-31</b>. En el examen copiá la fecha de fin abierta que traiga la tabla.</p></div>
+</section>
+
+<section class="slide" data-title="Registrar un cambio">
+  <p class="kicker">2 · Tipo 2</p>
+  <h2 class="h2">Registrar un cambio: cerrar la vieja, abrir la nueva</h2>
+  <svg class="dg" viewBox="0 0 1728 304" role="img" aria-labelledby="chg-title chg-desc" style="margin-top:6px">
+    <title id="chg-title">Los pasos para registrar un cambio en tipo 2</title>
+    <desc id="chg-desc">Antes hay una foto vigente hasta 2100-12-31. El UPDATE le pone fecha de fin 2023-04-30. El INSERT agrega la foto nueva con rubro 88 desde 2023-05-01 hasta 2100-12-31.</desc>
+    <text x="0" y="20" class="ey">1 · ANTES</text>
+    <text x="600" y="20" class="ey">2 · UPDATE CIERRA LA VIEJA</text>
+    <text x="1200" y="20" class="eyA">3 · INSERT ABRE LA NUEVA</text>
+    <line x1="528" y1="96" x2="596" y2="96" class="ln" marker-end="url(#ar)"/>
+    <line x1="1128" y1="96" x2="1196" y2="96" class="ln" marker-end="url(#ar)"/>
+    <g transform="translate(0,40)"><rect width="528" height="44" rx="6" class="hd"/><text x="16" y="30" class="hdT">Id</text><text x="80" y="30" class="hdT">Rubro</text><text x="184" y="30" class="hdT">Inicio</text><text x="360" y="30" class="hdT">Fin</text>
+      <rect y="44" width="528" height="52" class="box"/><text x="16" y="78" class="row">1</text><text x="80" y="78" class="row">1</text><text x="184" y="78" class="row">2023-02-15</text><text x="360" y="78" class="row">2100-12-31</text></g>
+    <g transform="translate(600,40)"><rect width="528" height="44" rx="6" class="hd"/><text x="16" y="30" class="hdT">Id</text><text x="80" y="30" class="hdT">Rubro</text><text x="184" y="30" class="hdT">Inicio</text><text x="360" y="30" class="hdT">Fin</text>
+      <rect y="44" width="528" height="52" class="box"/><text x="16" y="78" class="row">1</text><text x="80" y="78" class="row">1</text><text x="184" y="78" class="row">2023-02-15</text>
+      <rect x="348" y="48" width="176" height="44" rx="4" class="grp"/><text x="360" y="78" class="rowK" style="fill:var(--accent)">2023-04-30</text></g>
+    <g transform="translate(1200,40)"><rect width="528" height="44" rx="6" class="hd"/><text x="16" y="30" class="hdT">Id</text><text x="80" y="30" class="hdT">Rubro</text><text x="184" y="30" class="hdT">Inicio</text><text x="360" y="30" class="hdT">Fin</text>
+      <rect y="44" width="528" height="52" class="box"/><text x="16" y="78" class="row">1</text><text x="80" y="78" class="row">1</text><text x="184" y="78" class="row">2023-02-15</text><text x="360" y="78" class="row">2023-04-30</text>
+      <rect y="96" width="528" height="52" class="foc"/><text x="16" y="130" class="rowK">1</text><text x="80" y="130" class="rowK">88</text><text x="184" y="130" class="rowK">2023-05-01</text><text x="360" y="130" class="rowK">2100-12-31</text></g>
+    <text x="600" y="184" class="sb">nuevo inicio − 1 = 2023-04-30</text>
+  </svg>
+  <pre class="code sm" style="margin-top:4px"><span class="k">UPDATE</span> Tabla <span class="k">SET</span> Fecha_Fin = '2023-04-30'
+<span class="k">WHERE</span> Id_Producto = 1 <span class="k">AND</span> Fecha_Fin = '2100-12-31';   <span style="color:#a58a97">-- sólo la foto vigente</span>
+<span class="k">INSERT INTO</span> Tabla <span class="k">VALUES</span> (1, 88, 1, 1, '2023-05-01', '2100-12-31');</pre>
+  <div class="ojo"><span class="lbl">Ojo</span><p>El deck escribe el UPDATE con <code>WHERE Id_producto = 1</code> a secas. Con una sola foto funciona, pero en el <b>segundo</b> cambio pisaría la fecha de fin de <b>todas</b> las fotos del producto (lo probamos: la de 2023-04-30 pasa a 2023-12-31). Agregá <code>AND Fecha_Fin = '2100-12-31'</code>.</p></div>
+</section>
+
+<section class="slide" data-title="Las fotos en el tiempo">
+  <p class="kicker">2 · Tipo 2</p>
+  <h2 class="h2">Las fotos del cliente 9989, en una línea de tiempo</h2>
+  <svg class="dg" viewBox="0 0 1728 268" role="img" aria-labelledby="tl-title tl-desc" style="margin-top:6px">
+    <title id="tl-title">Cuatro fotos del cliente 9989</title>
+    <desc id="tl-desc">La foto A va de agosto de 2020 a septiembre de 2021, la B hasta febrero de 2023, la C hasta abril de 2023 y la D desde mayo de 2023 hasta 2100. El 1 de abril de 2023 cae en la foto C; la foto actual es la D.</desc>
+    <line x1="1232" y1="36" x2="1232" y2="184" class="lnA" stroke-width="3"/>
+    <text x="1232" y="24" class="lb" text-anchor="middle" style="fill:var(--accent)">01/04/2023 → C</text>
+    <rect x="80" y="80" width="468" height="72" class="box"/><text x="314" y="126" class="nm" text-anchor="middle">A</text>
+    <rect x="548" y="80" width="612" height="72" class="box"/><text x="854" y="126" class="nm" text-anchor="middle">B</text>
+    <rect x="1160" y="80" width="108" height="72" class="foc"/><text x="1214" y="126" class="nm" text-anchor="middle">C</text>
+    <rect x="1268" y="80" width="380" height="72" class="store"/><text x="1440" y="126" class="nm" text-anchor="middle">D</text>
+    <path d="M1648,80 L1660,96 L1648,112 L1660,128 L1648,152" fill="none" stroke="var(--text-3)" stroke-width="2"/>
+    <text x="1676" y="126" class="sb">2100</text>
+    <line x1="80" y1="184" x2="1648" y2="184" stroke="var(--border-strong)" stroke-width="1.5"/>
+    <line x1="260" y1="184" x2="260" y2="196" stroke="var(--text-3)"/><text x="260" y="220" class="sb" text-anchor="middle">2021</text>
+    <line x1="692" y1="184" x2="692" y2="196" stroke="var(--text-3)"/><text x="692" y="220" class="sb" text-anchor="middle">2022</text>
+    <line x1="1124" y1="184" x2="1124" y2="196" stroke="var(--text-3)"/><text x="1124" y="220" class="sb" text-anchor="middle">2023</text>
+    <text x="1440" y="252" class="sb" text-anchor="middle">Fecha_Fin = 2100-12-31 → actual</text>
+  </svg>
+  <table class="t head mini" style="margin-top:4px">
+    <thead><tr><th>Foto</th><th>Rubro</th><th>Fecha_Inicio</th><th>Fecha_Fin</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>1</td><td>2020-08-12</td><td>2021-09-09</td></tr>
+      <tr><td>B</td><td>1</td><td>2021-09-10</td><td>2023-02-01</td></tr>
+      <tr style="background:var(--accent-tint)"><td><b>C</b></td><td>1</td><td>2023-02-02</td><td>2023-04-30</td></tr>
+      <tr><td>D</td><td>88</td><td>2023-05-01</td><td>2100-12-31</td></tr>
+    </tbody>
+  </table>
+  <p class="small" style="margin-top:8px">Fotos del ejemplo del deck. El dibujo respeta las proporciones de tiempo, salvo el salto hasta 2100.</p>
+</section>
+
+<!-- ============ 3 · CONSULTAS ============ -->
+<section class="slide" data-title="Las dos consultas">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">Las dos consultas que hay que saber</h2>
+  <div class="two" style="margin-top:8px">
+    <div class="card card-accent"><div class="src">Estado a una fecha</div><h4>¿Cómo estaba el cliente el 01/04/2023?</h4>
+      <pre class="code sm" style="margin-top:6px"><span class="k">SELECT</span> * <span class="k">FROM</span> Tabla
+<span class="k">WHERE</span> '2023-04-01'
+  <span class="k">BETWEEN</span> Fecha_Inicio <span class="k">AND</span> Fecha_Fin;</pre>
+      <p style="margin-top:12px">→ <b>Foto C</b>. La fecha va <b>a la izquierda</b> del BETWEEN.</p></div>
+    <div class="card" style="border:2.5px solid var(--accent);background:var(--accent-tint)"><div class="src">Estado actual</div><h4>¿Cómo está hoy?</h4>
+      <pre class="code sm" style="margin-top:6px"><span class="k">SELECT</span> * <span class="k">FROM</span> Tabla
+<span class="k">WHERE</span> Fecha_Fin = '2100-12-31';</pre>
+      <p style="margin-top:12px">→ <b>Foto D</b>. No se compara con la fecha de hoy: se busca la fecha de fin abierta.</p></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>En las dos, <b>siempre una sola foto cumple</b> por cliente: el BETWEEN incluye los extremos y las fotos no se pisan porque cada fin es el inicio siguiente menos un día.</p></div>
+  <div class="ojo"><span class="lbl">Errata del deck</span><p>La slide pregunta por el “01/04/<b>2022</b>”, pero la consulta usa <code>'2023/04/01'</code> y la respuesta es C. Con 2022 la foto sería B. Lo correcto es 2023.</p></div>
+</section>
+
+<section class="slide" data-title="Qué filas entran">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">Antes de sumar o promediar: ¿qué fotos entran?</h2>
+  <table class="t head" style="margin-top:6px;font-size:27px">
+    <thead><tr><th style="width:28%">El enunciado dice…</th><th style="width:26%">Fotos</th><th>Condición</th></tr></thead>
+    <tbody>
+      <tr><td>“histórico”, “a lo largo del tiempo”</td><td>todas</td><td>ninguna sobre fechas</td></tr>
+      <tr><td>“actual”, “vigente”</td><td>la vigente</td><td><code>Fecha_Fin = '2100-12-31'</code></td></tr>
+      <tr><td>“al 31/12/2021”</td><td>la que cubre ese día</td><td><code>'2021-12-31' BETWEEN Fecha_Inicio AND Fecha_Fin</code></td></tr>
+      <tr><td>“hasta el 31/12/2021”</td><td>las que empezaron hasta ahí</td><td><code>Fecha_Inicio &lt;= '2021-12-31'</code></td></tr>
+      <tr><td>“anteriores a la actual”</td><td>todas menos la vigente</td><td><code>Fecha_Fin &lt;&gt; '2100-12-31'</code></td></tr>
+    </tbody>
+  </table>
+  <div class="ojo"><span class="lbl">Ojo</span><p>La histórica <b>ya incluye</b> la última foto: no se suma aparte. <code>AVG</code> sobre fotos es un promedio simple (cada foto pesa igual). Y sobre la vista actual no se puede calcular nada histórico.</p></div>
+</section>
+
+<section class="slide" data-title="CUSTOMER_GROUP del modelo 1a">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">La tabla del modelo de parcial: 8 fotos de un cliente</h2>
+  <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:start;margin-top:4px">
+    <table class="t head mini">
+      <thead><tr><th>Start_Dt</th><th>End_Dt</th><th>Officer_Id</th><th>Banking</th></tr></thead>
+      <tbody>
+        <tr><td>2005-05-01</td><td>2007-11-01</td><td>110</td><td>3</td></tr>
+        <tr><td>2007-11-02</td><td>2014-11-02</td><td>110</td><td>3</td></tr>
+        <tr><td>2014-11-03</td><td>2015-05-03</td><td>110</td><td>3</td></tr>
+        <tr><td>2015-05-04</td><td>2016-12-01</td><td>110</td><td>3</td></tr>
+        <tr><td>2016-12-02</td><td>2021-12-01</td><td>11</td><td>3</td></tr>
+        <tr style="background:var(--accent-tint)"><td><b>2021-12-02</b></td><td><b>2022-02-01</b></td><td><b>−15</b></td><td>3</td></tr>
+        <tr><td>2022-02-02</td><td>2023-02-01</td><td>11</td><td>3</td></tr>
+        <tr style="background:var(--surface-2)"><td>2023-02-02</td><td><b>2100-12-31</b></td><td>978</td><td>3</td></tr>
+      </tbody>
+    </table>
+    <div>
+      <p class="res">Cliente 125269 · resultados reales</p>
+      <ul class="bl sm" style="margin:0">
+        <li><b>Actual</b> <small>la última foto: Officer_Id 978</small></li>
+        <li><b>Al 10/12/2021</b> <small>cae en la foto resaltada: −15</small></li>
+        <li><b>Último día de 2021</b> <small>la misma foto: −15</small></li>
+        <li><b>Banking_Group_Id al 14/02/2021</b> <small>la foto 2016–2021: 3</small></li>
+      </ul>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Son los pedidos del deck y del TP. Mirá que cada <b>End_Dt</b> es el <b>Start_Dt de la fila siguiente menos un día</b>. Los ejercicios con corrector están en la lección 0052.</p></div>
+</section>
+
+<section class="slide" data-title="Actual con nombre">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">El estado actual, con el nombre del cliente</h2>
+  <div class="two" style="margin-top:6px;align-items:start">
+    <pre class="code sm" style="margin:0"><span class="k">SELECT</span> A.*, B.CG_Name
+<span class="k">FROM</span> CUSTOMER_GROUP A
+<span class="k">INNER JOIN</span> CUSTOMER_NAME B
+  <span class="k">ON</span> A.Customer_Group_Id = B.CG_Id
+<span class="k">WHERE</span> A.End_Dt = '2100-12-31'      <span style="color:#a58a97">-- última foto</span>
+  <span class="k">AND</span> A.Customer_Group_Id = 125269; <span style="color:#a58a97">-- el pedido</span></pre>
+    <div class="card card-soft"><h4>Cómo leerla</h4><ul>
+      <li>El <b>JOIN</b> trae el nombre, que vive en otra tabla (en el deck, <code>LK_Clientes</code>).</li>
+      <li>El <b>filtro de la foto</b> y el <b>del cliente</b> van los dos en el <code>WHERE</code>.</li>
+      <li>El cliente se puede filtrar por cualquiera de las dos tablas: son la misma clave.</li></ul></div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Es el ejercicio 5 del deck. En el modelo de parcial las columnas se llaman distinto (<code>CG_Name</code>, <code>Start_Dt</code>, <code>End_Dt</code>): copiá los nombres de la tabla que te den.</p></div>
+</section>
+
+<section class="slide" data-title="Vista histórica y vista actual">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">Dos vistas sobre la misma tabla</h2>
+  <svg class="dg" viewBox="0 0 1728 268" role="img" aria-labelledby="vw-title vw-desc" style="margin-top:6px">
+    <title id="vw-title">Vista histórica y vista actual sobre CUSTOMER_GROUP</title>
+    <desc id="vw-desc">De la tabla CUSTOMER_GROUP salen dos vistas: la histórica, con todas las fotos y los campos en español, y la actual, sólo con la foto vigente.</desc>
+    <path d="M440,112 H592 Q600,112 600,104 V76 Q600,68 608,68 H756" class="ln" marker-end="url(#ar)"/>
+    <path d="M440,160 H592 Q600,160 600,168 V196 Q600,204 608,204 H756" class="lnA" marker-end="url(#arA)"/>
+    <rect x="0" y="80" width="440" height="112" rx="8" class="store"/><text x="24" y="124" class="nm">CUSTOMER_GROUP</text><text x="24" y="160" class="sb">todas las fotos · nombres en inglés</text>
+    <rect x="760" y="24" width="520" height="96" rx="8" class="box"/><text x="784" y="64" class="nm-s">P_Mstr_LK_Clientes_Hist</text><text x="784" y="96" class="sb">todas las fotos · español · con fechas</text>
+    <rect x="760" y="160" width="520" height="96" rx="8" class="foc"/><text x="784" y="200" class="nm-s">P_Mstr_LK_Clientes</text><text x="784" y="232" class="sb">WHERE End_Dt = '2100-12-31'</text>
+    <text x="1320" y="64" class="tx">Preguntas con fecha:</text><text x="1320" y="96" class="tx2">“al 14/02/2021” → histórica</text>
+    <text x="1320" y="200" class="tx">Estado actual:</text><text x="1320" y="232" class="tx2">la actual (sin filtrar fechas)</text>
+  </svg>
+  <pre class="code sm" style="margin-top:10px"><span class="k">CREATE VIEW</span> P_Mstr_LK_Clientes <span class="k">AS</span>
+<span class="k">SELECT</span> Customer_Group_Id <span class="k">AS</span> Id_Cliente, Start_Dt <span class="k">AS</span> Fecha_Inicio, Officer_Id <span class="k">AS</span> Id_Oficial,
+       Banking_Group_Id <span class="k">AS</span> Id_Banca   <span style="color:#a58a97">-- … el resto de los campos, en castellano</span>
+<span class="k">FROM</span> CUSTOMER_GROUP
+<span class="k">WHERE</span> End_Dt = '2100-12-31';</pre>
+  <div class="ojo"><span class="lbl">Ojo</span><p>Sobre la vista <b>actual</b>, “¿cómo estaba el 14/02/2021?” devolvería el valor de hoy: esa pregunta <b>sólo</b> se responde con la histórica. En la actual, <code>Fecha_Fin</code> se puede omitir: siempre valdría lo mismo.</p></div>
+</section>
+
+<section class="slide" data-title="El indicador">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">El indicador del modelo 1a: Externo o Propio</h2>
+  <p class="sub">“Externo” si el oficial tiene código <b>menor a 21</b> y la banca es <b>mayor a 4</b>; “Propio” en el resto.</p>
+  <div class="two" style="align-items:start">
+    <pre class="code sm" style="margin:0"><span class="k">CREATE VIEW</span> Clientes_Actual <span class="k">AS</span>
+<span class="k">SELECT</span> Customer_Group_Id <span class="k">AS</span> Id_Cliente,
+       Officer_Id        <span class="k">AS</span> Id_Oficial,
+       Banking_Group_Id  <span class="k">AS</span> Id_Banca,
+       <span class="k">CASE WHEN</span> Officer_Id &lt; 21
+             <span class="k">AND</span> Banking_Group_Id &gt; 4
+            <span class="k">THEN</span> 'Externo'
+            <span class="k">ELSE</span> 'Propio'
+       <span class="k">END AS</span> Ind_Staff
+<span class="k">FROM</span> CUSTOMER_GROUP
+<span class="k">WHERE</span> End_Dt = '2100-12-31';</pre>
+    <div>
+      <table class="t head mini">
+        <thead><tr><th>Cliente</th><th>Oficial</th><th>Banca</th><th>Ind_Staff</th></tr></thead>
+        <tbody>
+          <tr><td>125269</td><td>978</td><td>3</td><td>Propio</td></tr>
+          <tr><td>3362</td><td>30</td><td>7</td><td>Propio</td></tr>
+          <tr><td>22365</td><td>12</td><td>2</td><td>Propio</td></tr>
+          <tr style="background:var(--accent-tint)"><td><b>9946</b></td><td><b>18</b></td><td><b>6</b></td><td><b>Externo</b></td></tr>
+        </tbody>
+      </table>
+      <p class="small" style="margin-top:10px">Fotos actuales del seed de la lección 0052 (el 125269 es el del modelo; los otros tres son inventados para que haya casos de los dos lados).</p>
+    </div>
+  </div>
+  <div class="crio"><span class="lbl">En criollo</span><p>Las <b>dos</b> condiciones tienen que cumplirse (<code>AND</code>). El 3362 tiene banca 7 pero oficial 30: es Propio. El 22365 tiene oficial 12 pero banca 2: también Propio.</p></div>
+</section>
+
+<section class="slide" data-title="Diccionario de CUSTOMER_GROUP">
+  <p class="kicker">3 · Consultas y vistas</p>
+  <h2 class="h2">Los campos del TP, en castellano</h2>
+  <table class="t head" style="margin-top:6px;font-size:25px">
+    <thead><tr><th style="width:36%">Campo</th><th>Significado (del deck)</th></tr></thead>
+    <tbody>
+      <tr><td>Customer_Group_Id</td><td>Número de documento</td></tr>
+      <tr><td>Customer_Group_Start_Dt</td><td>Fecha de inicio de la foto</td></tr>
+      <tr><td>Customer_Group_End_Dt</td><td>Fecha de fin de la foto</td></tr>
+      <tr><td>Original_Bank_Id</td><td>Id de banco (el 17 es Bco. Francés)</td></tr>
+      <tr><td>Officer_Id</td><td>Id de ejecutivo de cuentas</td></tr>
+      <tr><td>Banking_Group_Id</td><td>Id de banca a la que pertenece el cliente</td></tr>
+      <tr><td>Economic_Sector_Id · SIC_Cd</td><td>Sector económico · código de actividad comercial</td></tr>
+      <tr><td>Customer_Group_Name · Type_Cd</td><td>Nombre del cliente · tipo de grupo</td></tr>
+      <tr><td>Inactivation_Dt · Load_Id</td><td>Fecha de inactivación · identificador de carga</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ AUTOEVALUACIÓN ============ -->
+<section class="slide" data-title="Autoevaluación">
+  <p class="kicker">Autoevaluación</p>
+  <h2 class="h2">¿Lo tenés? Tocá cada pregunta para ver la respuesta</h2>
+  <div class="qz">
+    <details><summary>¿Qué tipo de SCD guarda toda la historia agregando filas?</summary><p>El tipo 2. El tipo 1 sobreescribe y pierde la historia.</p></details>
+    <details><summary>¿Qué tipos planteó Kimball?</summary><p>1, 2 y 3. El 4 y el 6 los sumó la comunidad.</p></details>
+    <details><summary>Si la foto nueva empieza el 2023-05-01, ¿cuándo termina la vieja?</summary><p>El 2023-04-30: inicio nuevo menos un día.</p></details>
+    <details><summary>¿Con qué condición se pide el estado actual?</summary><p>Fecha_Fin = '2100-12-31'.</p></details>
+    <details><summary>¿Cómo se pide el estado al 10/12/2021?</summary><p>'2021-12-10' BETWEEN Fecha_Inicio AND Fecha_Fin.</p></details>
+    <details><summary>¿Cuántas fotos de un cliente cumplen esa condición?</summary><p>Siempre una sola.</p></details>
+    <details><summary>“¿Qué banca tenía al 14/02/2021?”: ¿vista actual o histórica?</summary><p>Histórica. La actual sólo tiene la foto vigente.</p></details>
+    <details><summary>¿Qué le falta al UPDATE del deck para un segundo cambio?</summary><p>AND Fecha_Fin = '2100-12-31', para cerrar sólo la foto vigente.</p></details>
+  </div>
+  <p class="small" style="margin-top:auto">A practicar: lección 0052 (8 ejercicios con corrector, incluye el modelo 1a) y el conjunto SCD del Constructor SQL de la suite.</p>
+</section>
+
+<div class="deck-footer"><span class="dim2">Slow Change Dimension</span><span class="slide-number" data-current="1" data-total="16"></span></div>
+</div>
+<script src="../../assets/ppt/runtime.js"></script>
+</body>
+</html>

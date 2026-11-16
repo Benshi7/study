@@ -1,0 +1,147 @@
+
+create table CLIENTES
+(
+	cliente_Id integer,
+	Fecha_Inicio_vigencia date,
+	Fecha_fin_Vigencia date,
+	banco_Id smallint,
+	Oficial_Id smallint,
+	
+	primary key (cliente_Id, Fecha_Inicio_vigencia)
+
+);
+
+insert into CLIENTES values(12345, '2025-10-01', '2026-08-14', 120, 12);
+insert into CLIENTES values(12677, '2024-11-01', '2025-01-02', 120, 12);
+insert into CLIENTES values(12677, '2025-01-03', '2026-05-24', 200, 12);
+insert into CLIENTES values(12677, '2026-05-25', '2100-12-31', 120, 20);
+insert into CLIENTES values(12345, '2026-08-15', '2100-12-31', 100, 12);
+
+SELECT *
+from	CLIENTES;
+
+create view VW_Clientes_Hist
+as
+SELECT 	cliente_Id as cliente_id,
+	Fecha_Inicio_vigencia,
+	Fecha_fin_Vigencia,
+	banco_Id,
+	Oficial_Id
+from	CLIENTES c ;
+
+
+create view VW_Clientes
+as
+SELECT	cliente_Id,
+	banco_Id,
+	Oficial_Id
+from	VW_Clientes_Hist
+where Fecha_fin_Vigencia = '2100-12-31';
+
+SELECT cliente_Id,
+	banco_Id,
+	Oficial_Id
+from	VW_Clientes_Hist
+where cliente_id = 12677
+and Fecha_fin_Vigencia = '2100-12-31';
+
+SELECT *
+from VW_Clientes
+where cliente_id = 12677;
+
+select cliente_id, oficial_id
+from VW_Clientes_Hist vch 
+where '2025-03-06' between vch.Fecha_Inicio_vigencia and vch.Fecha_fin_vigencia;
+
+select cliente_id, oficial_id
+from VW_Clientes_Hist vch 
+where cliente_id = 12677 and '2025-03-06' between vch.Fecha_Inicio_vigencia and vch.Fecha_fin_vigencia;
+
+select *
+from VW_Clientes_Hist
+
+
+create view VW_Clientes_con_Ind
+as
+select	cliente_id,
+		banco_id,
+		oficial_id,
+		case 
+			when banco_id < 200 then 'AMBA' else 'NO AMBA' 
+		End as Ind_region
+from	CLIENTES c;
+
+select *
+from VW_Clientes_con_Ind;
+
+
+case banco_id 
+	when 100 then 'A'
+	when 110 then 'B'
+	when 120 then 'C'
+	when 130 then 'D'
+	else 'Z'
+end
+
+
+SELECT *
+from	CLIENTES c 
+WHERE 	(cliente_id, fecha_fin_vigencia)
+		in (
+
+SELECT cliente_id, fecha_inicio_vigencia --date(fecha_inicio_vigencia, '-1 days')
+from	CLIENTES c 
+WHERE fecha_fin_vigencia = '2100-12-31');
+
+
+SELECT c.*
+from	CLIENTES c
+		inner join 
+		(
+
+			SELECT cliente_id,  
+					date(fecha_inicio_vigencia, '-1 days') as fecha_fin_vig_ant
+			from	CLIENTES c 
+			WHERE fecha_fin_vigencia = '2100-12-31'
+		) as T
+		on c.cliente_id = T.cliente_id 
+		and c.Fecha_fin_Vigencia = T.fecha_fin_vig_ant ;
+
+
+SELECT *
+from	CLIENTES c 
+WHERE 	(cliente_id, date(fecha_fin_vigencia, '+1 days'))
+		in (
+
+SELECT cliente_id, fecha_inicio_vigencia --date(fecha_inicio_vigencia, '-1 days')
+from	CLIENTES c 
+WHERE fecha_fin_vigencia = '2100-12-31');
+
+alter table CLIENTES drop column banco_id;
+alter table CLIENTES add column saldo decimal(18, 4) not null default 0.0;
+
+SELECT U.*
+FROM 	(
+			select id_art from ARTICULOS_A
+			union all
+			select * from ARTICULOS_B
+		) U
+WHERE u.id_art not in
+		(
+			SELECT	aa.Id_Art
+			from	ARTICULOS_A aa 
+					inner join ARTICULOS_B ab 
+					on aa.id_art = ab.Id_Art 
+		);
+
+SELECT	aa.Id_Art 
+from	ARTICULOS_A aa 
+		left outer join ARTICULOS_B ab 
+			on aa.Id_Art = ab.Id_Art 
+where	ab.Id_Art is NULL
+UNION 
+SELECT 	ab.Id_Art 
+from	ARTICULOS_A aa 
+		right outer join ARTICULOS_B ab 
+		on aa.Id_Art = ab.Id_Art 
+where aa.Id_Art is null

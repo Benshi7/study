@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Mock exam for the agile parcial (18/11/2026), multiple choice.
+     Every answer follows the cátedra slides as summarised in lessons 08 to 12b; nothing here comes from outside sources.
+     Question ids (8.3, 12b.2, M.1…) are stable so the student can report failures by id. Add questions at the end of each block. -->
+<title>Simulacro · Parcial ágil</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .sim-setup { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 1rem 0 1.4rem; }
+  .sim-btn {
+    font: 600 .85rem var(--sans); padding: .6rem 1rem; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--accent); background: var(--card); color: var(--accent-ink);
+  }
+  .sim-btn.primary { background: var(--accent); color: var(--on-accent); }
+  .sim-btn:disabled { opacity: .5; cursor: default; }
+  .sim-bar {
+    position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center;
+    justify-content: space-between; background: var(--bg); border-bottom: 2px solid var(--accent);
+    padding: .6rem 0; font: .8rem var(--sans); color: var(--muted);
+  }
+  .sim-q { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 1rem; margin: 1.1rem 0; }
+  .sim-q .prompt { margin: 0 0 .7rem; font-weight: 600; }
+  .sim-q .tag { font: .72rem var(--sans); color: var(--accent-ink); display: block; margin-bottom: .25rem; }
+  .sim-q .options { display: grid; gap: .45rem; }
+  .sim-q button {
+    text-align: left; font: inherit; color: var(--fg); background: var(--bg); cursor: pointer;
+    border: 1px solid var(--rule); border-radius: 6px; padding: .55rem .75rem;
+  }
+  .sim-q button:hover:not(:disabled) { border-color: var(--accent); }
+  .sim-q button.is-picked { border-color: var(--violet); background: var(--violet-soft); }
+  .sim-q button.is-ok { border-color: var(--ok); background: var(--ok-soft); }
+  .sim-q button.is-bad { border-color: var(--bad); background: var(--bad-soft); }
+  .sim-q button:disabled { cursor: default; }
+  .sim-q .why { font-size: .9rem; margin: .7rem 0 0; }
+  .sim-q.unanswered { border-color: var(--warn); }
+  .sim-result { border: 2px solid var(--accent); border-radius: 10px; padding: 1rem 1.2rem; margin: 1.4rem 0; background: var(--accent-soft); }
+  .sim-result .big { font: 700 2rem var(--sans); color: var(--accent-ink); margin: 0; }
+  .sim-topics { display: grid; gap: .45rem; margin: 1rem 0 0; font: .82rem var(--sans); }
+  .sim-topic { display: grid; grid-template-columns: minmax(9rem, 14rem) 1fr 3.2rem; gap: .6rem; align-items: center; }
+  .sim-track { height: .6rem; border-radius: 99px; background: var(--rule); overflow: hidden; }
+  .sim-fill { height: 100%; background: var(--ok); }
+  .sim-fill.low { background: var(--bad); }
+  .sim-fill.mid { background: var(--warn); }
+  .sim-report { width: 100%; min-height: 5.5rem; font: .8rem ui-monospace, monospace; margin-top: .6rem;
+    background: var(--card); color: var(--fg); border: 1px solid var(--rule); border-radius: 6px; padding: .6rem; }
+  [hidden] { display: none !important; }
+  @media (max-width: 520px) { .sim-topic { grid-template-columns: 1fr 3.2rem; } .sim-track { grid-column: 1 / -1; order: 3; } }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Parcial de metodologías ágiles · miércoles 18/11/2026</p>
+  <h1>Simulacro del parcial: opción múltiple</h1>
+  <p class="subtitle">Banco de 75 preguntas nuevas sobre las clases 8 a 12. Cada intento sortea un examen distinto y se corrige recién al entregar.</p>
+  <p class="meta"><span>⏱ 20 a 40 minutos</span><span>Fuente: diapositivas de la cátedra (lecciones 8 a 12b)</span></p>
+</header>
+
+<div class="win">
+  <strong>Cómo usarlo</strong>
+  Elegir la cantidad de preguntas, responder sin abrir las lecciones y entregar. El resultado muestra el puntaje por tema y, para cada error, la explicación y la lección que conviene releer. Meta razonable antes del miércoles: dos intentos seguidos con 85 % o más.
+</div>
+
+<p class="note"><strong>Regla del parcial.</strong> Cuando la cátedra y la Guía de Scrum 2020 difieren, se responde como la cátedra: equipo de 3 a 9, Sprint de 2 semanas a 2 meses, Daily con tres preguntas, DoR existe. La clase 13 (IA aplicada) no entra en el parcial.</p>
+
+<section id="setup">
+  <h2 id="empezar-un-intento">Empezar un intento</h2>
+  <div class="sim-setup">
+    <button class="sim-btn primary" data-n="30">30 preguntas (recomendado)</button>
+    <button class="sim-btn" data-n="20">20 preguntas</button>
+    <button class="sim-btn" data-n="75">Las 75</button>
+    <button class="sim-btn" id="retry-failed" hidden>Solo las que fallé la última vez</button>
+  </div>
+  <p class="quiz-score" id="history"></p>
+</section>
+
+<section id="exam" hidden>
+  <div class="sim-bar">
+    <span id="progress"></span>
+    <span id="clock"></span>
+    <button class="sim-btn primary" id="submit">Entregar</button>
+  </div>
+  <div id="questions"></div>
+  <p><button class="sim-btn primary" id="submit2">Entregar</button></p>
+</section>
+
+<section id="result" hidden>
+  <h2 id="resultado">Resultado</h2>
+  <div class="sim-result">
+    <p class="big" id="score"></p>
+    <p id="score-detail"></p>
+    <div class="sim-topics" id="topics"></div>
+  </div>
+  <h3>Para reportar al agente</h3>
+  <p>Copiar este resumen y pegarlo en el chat: con eso se arma el registro de aprendizaje y, si hace falta, una clase de repaso.</p>
+  <textarea class="sim-report" id="report" readonly></textarea>
+  <div class="sim-setup">
+    <button class="sim-btn" id="copy">Copiar resumen</button>
+    <button class="sim-btn primary" id="again">Nuevo intento</button>
+  </div>
+  <h3 id="review-title">Revisión</h3>
+  <p class="quiz-score">Abajo quedan las preguntas corregidas: en verde la correcta, en rojo la elegida si estaba mal.</p>
+</section>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="parcial-agil-guia.html">← Guía del parcial</a>
+  <a href="../reference/agil-glosario.html">Glosario y hoja de repaso →</a>
+</nav>
+</main>
+
+<script>
+// Each question: [id, prompt, [correct, why], [wrong, why], [wrong, why], [wrong, why]]. The first option is always the correct one; options are shuffled on render.
+const TOPICS = {
+  "8":   { name: "Clase 8 · Agilidad, Manifiesto, Cynefin", href: "08-agilidad-manifiesto-cynefin.html" },
+  "9":   { name: "Clase 9 · Scrum: roles y artefactos",     href: "09-scrum-roles-artefactos.html" },
+  "10":  { name: "Clase 10 · Sprint, Planning, estimación", href: "10-ceremonias-scrum.html" },
+  "11":  { name: "Clase 11 · Daily, Review, Retro",         href: "11-retrospectiva.html" },
+  "12a": { name: "Clase 12a · Lean y XP",                   href: "12a-lean-xp.html" },
+  "12b": { name: "Clase 12b · Kanban",                      href: "12b-kanban.html" },
+  "M":   { name: "Integradoras · mezclan clases",           href: "parcial-agil-guia.html#enfoques" },
+};
+
+const BANK = [
+  // ---- Clase 8 ----
+  ["8.1", "¿Cuándo y dónde nació el Manifiesto Ágil, y cuántas personas lo firmaron?",
+    ["Febrero de 2001, en Utah, con 17 firmantes", "Es el dato de la cátedra: febrero de 2001, Utah, 17 representantes de distintas metodologías."],
+    ["Febrero de 2001, en Utah, con 12 firmantes", "El lugar y la fecha están bien, pero 12 es la cantidad de principios, no de firmantes."],
+    ["Durante los años 90, en Chrysler, con 17 firmantes", "Chrysler en los 90 es el origen de XP, no del Manifiesto."],
+    ["Durante los años 50, en Toyota, con 4 firmantes", "Toyota en los 50 es el origen de Kanban; 4 son los valores."]],
+  ["8.2", "¿Qué decretaron los firmantes del Manifiesto?",
+    ["4 valores y 12 principios", "Cuatro valores y doce principios."],
+    ["12 valores y 4 principios", "Está invertido: son 4 valores y 12 principios."],
+    ["5 valores y 12 prácticas", "Cinco bases y doce prácticas es XP."],
+    ["3 pilares y 7 principios", "Tres pilares es Scrum; siete son las mudas de Lean."]],
+  ["8.3", "Completar el valor del Manifiesto: «Colaboración con el cliente sobre…».",
+    ["…negociación contractual", "Colaboración con el cliente sobre negociación contractual."],
+    ["…documentación extensiva", "Ese par es «software funcionando sobre documentación extensiva»."],
+    ["…procesos y herramientas", "Ese par es «individuos e interacciones sobre procesos y herramientas»."],
+    ["…seguimiento de un plan", "Ese par es «respuesta ante el cambio sobre seguir un plan»."]],
+  ["8.4", "Según los principios del Manifiesto que cita la cátedra, ¿cada cuánto se entrega software funcionando?",
+    ["Entre dos semanas y dos meses", "Principio 3: entregar entre dos semanas y dos meses. Coincide con la duración del Sprint de la cátedra."],
+    ["Una sola vez, al cierre", "Eso describe la cascada: el valor llega al final del proyecto."],
+    ["Todos los días, sin excepción", "A diario trabajan juntos negocio y desarrollo; la entrega es entre dos semanas y dos meses."],
+    ["Cada seis meses como mínimo", "El principio pide períodos cortos: de dos semanas a dos meses."]],
+  ["8.5", "¿Cuál de estas características pertenece a la columna «cascada» de la comparación de la cátedra?",
+    ["El cliente no participa activamente", "En cascada el cliente no participa activamente; en ágil es parte del equipo."],
+    ["El valor llega en cada iteración", "Eso es ágil: valor al final de cada iteración."],
+    ["Se planifican períodos cortos", "Eso es ágil; cascada planifica todo al inicio."],
+    ["Los equipos son reducidos", "Eso es ágil; cascada trabaja con equipos extensos."]],
+  ["8.6", "¿Qué significa «Cynefin» y para qué sirve?",
+    ["«Hábitat» en galés; ayuda a tomar decisiones", "Significa hábitat en galés, ayuda a tomar decisiones y abarca cinco dominios."],
+    ["«Registro visual» en japonés; muestra el flujo", "«Registro visual» es el significado de Kanban."],
+    ["«Desperdicio» en japonés; ordena los procesos", "«Desperdicio» es muda, de Lean."],
+    ["«Mejora continua» en japonés; guía la retro", "«Mejora continua» es Kaizen."]],
+  ["8.7", "«Implementar el producto que vende mi compañía en un nuevo cliente». ¿Qué dominio de Cynefin es y qué enfoque le asigna la cátedra?",
+    ["Complicado, con cascada", "Es el ejemplo de la cátedra para el dominio complicado: hay experiencia y se puede analizar. Cascada."],
+    ["Complejo, con ágil", "Complejo es «consolas para satélites en Java»."],
+    ["Simple, con buenas prácticas", "Simple es «necesito controlar mis gastos»."],
+    ["Caótico, con ágil", "Caótico es «consolas en un lenguaje propietario de la NASA»."]],
+  ["8.8", "¿Qué se hace en el dominio desordenado de Cynefin?",
+    ["Accionar para llegar a alguno de los otros cuatro", "En el desordenado se acciona para llegar a uno de los cuatro dominios anteriores."],
+    ["Aplicar cascada con contratos más estrictos", "Cascada corresponde al dominio complicado."],
+    ["Aplicar buenas prácticas ya conocidas por todos", "Las buenas prácticas corresponden al dominio simple."],
+    ["Esperar a que el contexto se ordene solo", "La cátedra pide accionar, no esperar."]],
+  ["8.9", "¿Qué firmantes del Manifiesto representan a Scrum, según la cátedra?",
+    ["Jeff Sutherland y Ken Schwaber", "Sutherland y Schwaber (Scrum); Kent Beck representa a XP."],
+    ["Kent Beck y Taiichi Ohno", "Beck es XP y Ohno es el creador de Lean y Kanban en Toyota; Ohno no firmó."],
+    ["Dave Snowden y Kent Beck", "Snowden creó Cynefin; Beck representa a XP."],
+    ["Edwards Deming y Taiichi Ohno", "Deming da nombre al ciclo PDCA y Ohno a Lean y Kanban."]],
+  ["8.10", "La cátedra advierte algo sobre la palabra «ágil». ¿Qué?",
+    ["Que ágil no es lo mismo que rápido", "Ágil es dar valor temprano, recibir feedback temprano y adaptarse; no es sinónimo de rápido."],
+    ["Que ágil significa trabajar sin ningún plan", "El Manifiesto valora más responder al cambio, pero no elimina el plan."],
+    ["Que ágil sirve para cualquier tipo de proyecto", "Cynefin muestra lo contrario: el dominio complicado va en cascada."],
+    ["Que ágil exige equipos grandes y especializados", "La comparación de la cátedra asocia ágil con equipos reducidos."]],
+
+  // ---- Clase 9 ----
+  ["9.1", "¿Cuáles son los tres pilares de Scrum?",
+    ["Transparencia, inspección y adaptación", "Los tres pilares del empirismo en Scrum."],
+    ["Comunicación, simplicidad y coraje", "Esas son bases de XP."],
+    ["Mostrar, limitar y optimizar", "Esas son las tres reglas de Kanban."],
+    ["Planificar, hacer y verificar", "Eso es parte del ciclo PDCA de Lean."]],
+  ["9.2", "¿En qué se basa Scrum, según la cátedra?",
+    ["En el empirismo: decidir con lo observado", "Scrum se basa en el empirismo."],
+    ["En un plan detallado fijado al inicio", "Eso es cascada."],
+    ["En eliminar los siete tipos de desperdicio", "Eso es Lean."],
+    ["En doce prácticas de ingeniería de software", "Eso es XP."]],
+  ["9.3", "¿Cómo describe la cátedra a Scrum?",
+    ["Ligero, fácil de entender, difícil de dominar", "Es un framework ligero, fácil de entender y muy difícil de dominar."],
+    ["Pesado, difícil de entender, fácil de dominar", "Es lo opuesto a lo que dice la cátedra."],
+    ["Detallado, apto solo para empresas muy grandes", "No lo limita a empresas grandes; es un marco liviano."],
+    ["Rígido, con fases cerradas y aprobaciones formales", "Eso describe una cascada."]],
+  ["9.4", "¿Qué hace el Product Owner?",
+    ["Mantiene el backlog actualizado, refinado y priorizado", "Es una sola persona y el equipo debe respetar sus decisiones."],
+    ["Modera las ceremonias y elimina los impedimentos", "Eso es el Scrum Master."],
+    ["Asigna las tareas diarias a cada desarrollador", "El equipo es autoorganizado: nadie le asigna tareas."],
+    ["Dirige el cronograma como un Project Manager", "En Scrum no hay Project Manager."]],
+  ["9.5", "¿Con qué criterio se ordena el Product Backlog?",
+    ["Por valor de negocio", "«Lista única… ordenada por valor de negocio»."],
+    ["Por fecha de carga", "El orden no es cronológico: es por valor de negocio."],
+    ["Por dificultad técnica", "La estimación figura en cada ítem, pero el orden es por valor de negocio."],
+    ["Por orden alfabético", "El orden es por valor de negocio."]],
+  ["9.6", "En MoSCoW, ¿qué significa «Should have»?",
+    ["Entra al MVP si no compromete cronograma ni presupuesto", "Should: incluir en el MVP si no compromete cronograma y presupuesto."],
+    ["Debe estar en el MVP sin ninguna condición previa", "Eso es Must have."],
+    ["Queda fuera del MVP y pasa a la fase 2", "Eso es Could have."],
+    ["Tiene baja prioridad o directamente se descarta", "Eso es Won't have."]],
+  ["9.7", "¿Qué es la Definition of Done?",
+    ["Un contrato del Equipo Scrum, en forma de checklist", "Checklist acordado con las condiciones para considerar terminada una historia."],
+    ["Una lista de tareas que arma el Scrum Master", "Es un acuerdo de todo el Equipo Scrum, no una lista del Scrum Master."],
+    ["Un criterio que decide el cliente en cada entrega", "No se decide caso por caso: es un contrato del equipo."],
+    ["Una condición para que la historia entre al Sprint", "Eso es la Definition of Ready."]],
+  ["9.8", "¿Qué afirmación sobre el Product Backlog es correcta?",
+    ["Nunca está completo: se agregan y quitan ítems", "El Product Backlog nunca está completo."],
+    ["Se cierra al terminar el Sprint 0 del proyecto", "No se cierra: evoluciona durante todo el producto."],
+    ["Solo contiene las tareas del Sprint en curso", "Eso es el Sprint Backlog."],
+    ["Lo administra el Scrum Master junto al cliente", "Lo administra el Product Owner."]],
+  ["9.9", "¿Cómo se define el Sprint Backlog y quién lo acuerda?",
+    ["Actividades del Sprint; lo acuerdan PO y equipo", "Detalla las actividades que el equipo espera realizar en el Sprint; se acuerda entre PO y equipo según objetivos y capacidad."],
+    ["Todo lo deseable del producto; lo define el PO", "Eso es el Product Backlog."],
+    ["Historias ya terminadas; las aprueba el cliente", "Las historias que alcanzaron la DoD forman el Incremento."],
+    ["Impedimentos del equipo; los lleva el Scrum Master", "El Sprint Backlog es el trabajo del Sprint, no una lista de impedimentos."]],
+  ["9.10", "¿Qué características tiene el equipo de desarrollo, según la cátedra?",
+    ["Autoorganizado y multifuncional, de 3 a 9 personas", "Autoorganizado, multifuncional, sin discriminación por roles, entre 3 y 9."],
+    ["Dirigido por el Scrum Master, de 10 personas o más", "Nadie lo dirige y el tamaño de la cátedra es 3 a 9."],
+    ["Dividido por especialidad, con un jefe por área", "Es multifuncional y sin discriminación por roles."],
+    ["Elegido por el cliente, sin un tamaño definido", "El tamaño de la cátedra es de 3 a 9 personas."]],
+
+  // ---- Clase 10 ----
+  ["10.1", "¿Qué dice la cátedra sobre el Sprint 0?",
+    ["No está en la guía Scrum; dura hasta 2 Sprints", "Planificación macro y puesta a punto; como máximo lo equivalente a 2 Sprints."],
+    ["Es obligatorio según la guía; dura un Sprint", "No es parte de la guía Scrum."],
+    ["Es la retrospectiva inicial; dura quince minutos", "Quince minutos dura la Daily."],
+    ["Es el primer Sprint con entrega; dura dos meses", "Es preparación, no un Sprint de entrega."]],
+  ["10.2", "En el Sprint 0 se «desarrolla el pivote». ¿Qué es el pivote?",
+    ["Una historia de referencia para estimar las demás", "Los puntos son relativos: se estima comparando con el pivote."],
+    ["La persona que reemplaza al Product Owner ausente", "El pivote no es un rol."],
+    ["El cambio de rumbo que piden los stakeholders", "Acá «pivote» es la referencia de estimación, no un cambio de estrategia."],
+    ["La primera versión del producto en producción", "No es una versión del producto."]],
+  ["10.3", "¿Cuál es la primera tarea del Sprint?",
+    ["La Sprint Planning", "La Planning es la primera tarea: ahí se define el trabajo a realizar."],
+    ["La Daily Scrum", "La Daily se hace todos los días, pero el Sprint abre con la Planning."],
+    ["La Sprint Review", "La Review va al final, antes de la Retrospectiva."],
+    ["La Sprint Retrospective", "La Retrospectiva es la última tarea del Sprint."]],
+  ["10.4", "¿Cuál es el último de los cuatro pasos de la Sprint Planning?",
+    ["El equipo separa las historias en tareas", "Orden: el PO explica las historias, el equipo estima cuáles puede terminar, se acuerda el objetivo y el equipo separa en tareas (splitting)."],
+    ["El PO explica las historias candidatas", "Ese es el primer paso."],
+    ["Se acuerda el objetivo del Sprint", "Ese es el tercer paso."],
+    ["El equipo estima cuáles puede terminar", "Ese es el segundo paso."]],
+  ["10.5", "¿Qué combinan los puntos de estimación ágil?",
+    ["Experiencia, incertidumbre y complejidad", "Combinan experiencia, incertidumbre y complejidad. No son horas."],
+    ["Horas, costo y cantidad de personas", "Los puntos no son horas ni costos."],
+    ["Valor de negocio, prioridad y riesgo", "El valor de negocio ordena el backlog; los puntos miden el esfuerzo relativo."],
+    ["Optimista, más probable y pesimista", "Esos son los tres valores de PERT, de la parte cascada."]],
+  ["10.6", "¿Qué serie usan las cartas del planning poker?",
+    ["La serie de Fibonacci", "1, 2, 3, 5, 8, 13, 21…"],
+    ["Los talles de camiseta", "Los talles son otra técnica de estimación, no las cartas del poker."],
+    ["Los números del 1 al 10", "Las cartas siguen Fibonacci."],
+    ["Los vasos de Starbucks", "Es otra técnica de estimación que nombra la cátedra."]],
+  ["10.7", "En planning poker, ¿qué pasa después de que todos muestran sus cartas al mismo tiempo?",
+    ["Los dos extremos exponen su opinión", "Hablan los dos extremos y se vuelve a votar."],
+    ["El PO elige el valor que considera", "El PO presenta la historia; estima el equipo."],
+    ["Se calcula el promedio de las cartas", "No se promedia: se busca entender la diferencia."],
+    ["El Scrum Master define el valor final", "El Scrum Master no decide la estimación."]],
+  ["10.8", "«Envío gratis a partir de $30.000» es el ejemplo de la cátedra para una técnica de slicing. ¿Cuál?",
+    ["Por regla de negocio", "Envío gratis desde $30.000 es una regla de negocio."],
+    ["Por datos de entrada", "Datos de entrada son los filtros para autos: km, transmisión, marca."],
+    ["Por pasos del flujo", "Pasos del flujo son buscar, carrito, envío, pagar."],
+    ["Por datos de salida", "Datos de salida son el email de compra y el aviso en pantalla."]],
+  ["10.9", "«Publicar, modificar, dar de baja» es el ejemplo de la cátedra para otra técnica de slicing. ¿Cuál?",
+    ["Por operaciones", "Publicar, modificar y dar de baja son operaciones."],
+    ["Por roles", "Por roles es comprador y vendedor."],
+    ["Por flujo alternativo", "Flujo alternativo es fondos insuficientes o tarjeta vencida."],
+    ["Por regla de negocio", "Regla de negocio es el envío gratis desde $30.000."]],
+  ["10.10", "¿Cuál es la estructura de una historia de usuario?",
+    ["Como [rol], quiero [acción], para [objetivo]", "«Como comprador, quiero guardar un producto, para comprarlo en otro momento»."],
+    ["Dado [contexto], cuando [acción], entonces [resultado]", "Ese formato es de criterios de aceptación en otras fuentes; no es la estructura de la cátedra."],
+    ["Si [causa], entonces [riesgo], con [impacto]", "Se parece a la plantilla de riesgos de la parte cascada."],
+    ["Para [cliente], que [necesita], el [producto]", "Se parece a una declaración de propuesta de valor."]],
+  ["10.11", "¿Cuál es la jerarquía correcta?",
+    ["Épica → historia de usuario → tarea", "Con slicing se llega de la épica a historias; con splitting, de la historia a tareas."],
+    ["Tarea → historia de usuario → épica", "Está invertida."],
+    ["Historia de usuario → épica → tarea", "La épica es lo más grande."],
+    ["Épica → tarea → historia de usuario", "La tarea es lo más chico."]],
+  ["10.12", "¿Con qué criterios se hace el splitting de una historia en tareas?",
+    ["Tipo de actividad, componente técnico, tecnología", "Por tipo de actividad, por componente técnico y por tecnología o herramienta."],
+    ["Roles, pasos del flujo, reglas de negocio", "Esas son técnicas de slicing."],
+    ["Must, Should, Could y Won't have", "Eso es MoSCoW, para priorizar."],
+    ["Experiencia, incertidumbre y complejidad del ítem", "Eso es lo que combinan los puntos de estimación."]],
+  ["10.13", "¿Qué dice la cátedra sobre el Backlog Refinement?",
+    ["Lo modera el PO y se puede invitar gente externa", "Es la única reunión que modera el PO; Scrum la ve como parte de la planning; se puede invitar a gente de fuera del equipo."],
+    ["Lo modera el Scrum Master y es solo del equipo", "La modera el PO y admite invitados."],
+    ["Es la última tarea del Sprint, tras la Review", "La última tarea es la Retrospectiva."],
+    ["Se hace todos los días, durante quince minutos", "Eso es la Daily."]],
+  ["10.14", "¿Qué afirmación sobre la Definition of Ready es correcta?",
+    ["Es un contrato de equipo y se puede actualizar", "Indica si una historia puede incluirse en el Sprint y se actualiza si hace falta."],
+    ["Es un checklist fijo que define la guía Scrum", "La Guía 2020 no la menciona; es un acuerdo del equipo."],
+    ["Es la lista de historias que ya están terminadas", "Eso se relaciona con la DoD y el Incremento."],
+    ["Es el objetivo que se acuerda en la Planning", "Eso es el Sprint Goal."]],
+
+  // ---- Clase 11 ----
+  ["11.1", "¿Cuánto dura la Daily y cuándo se hace?",
+    ["15 minutos, todos los días a la misma hora", "15 minutos, todos los días, a la misma hora."],
+    ["30 minutos, día por medio y sin horario", "Dura 15 minutos y es diaria."],
+    ["15 minutos, una vez por semana", "Es diaria."],
+    ["Una hora, al comienzo de cada Sprint", "Eso se parece más a una Planning."]],
+  ["11.2", "¿Cuál de estas NO es una de las tres preguntas de la Daily?",
+    ["¿Cuántos puntos estimé para mi historia?", "La estimación se hace en la Planning o el refinamiento, no en la Daily."],
+    ["¿Qué hice ayer?", "Es una de las tres."],
+    ["¿Qué voy a hacer hoy?", "Es una de las tres."],
+    ["¿Tengo algún impedimento?", "Es una de las tres."]],
+  ["11.3", "¿Para qué conviene que las tareas duren como máximo 8 horas?",
+    ["Para detectar desvíos rápido en la Daily", "Si una tarea de 8 horas sigue abierta al día siguiente, el desvío se ve enseguida."],
+    ["Para poder estimarlas con talles de camiseta", "La estimación es de historias y no depende de ese límite."],
+    ["Para que entren más historias en el Sprint", "El límite no agranda la capacidad."],
+    ["Para cumplir la semana de cuarenta horas", "Eso es una práctica de XP y no tiene que ver con el tamaño de las tareas."]],
+  ["11.4", "¿Qué se hace en la segunda parte de la Sprint Review?",
+    ["Acordar próximos pasos: backlog, presupuesto y roadmap", "Primero se revisa el incremento; después se identifican cambios al backlog y se revisan presupuesto y roadmap."],
+    ["Definir planes de acción con fecha y responsable", "Eso es la Retrospectiva."],
+    ["Separar las historias del Sprint en tareas", "Eso es el splitting, en la Planning."],
+    ["Responder las tres preguntas de cada miembro", "Eso es la Daily."]],
+  ["11.5", "¿Cuáles son las tres reglas de la Retrospectiva?",
+    ["Tener objetivo, hablar de temas, priorizar el respeto", "Debe tener un objetivo, se habla de temas y no de personas, y se prioriza el respeto."],
+    ["Mostrar el proceso, limitar WIP, optimizar el flujo", "Son las reglas de Kanban."],
+    ["Durar quince minutos, ser diaria, misma hora", "Son características de la Daily."],
+    ["Invitar stakeholders, mostrar demo, revisar el roadmap", "Eso es la Review."]],
+  ["11.6", "En los siete pasos de la Retrospectiva, ¿cuáles se hacen ANTES de la reunión?",
+    ["Setear el objetivo y realizar la planificación", "Antes: 1 objetivo y 2 planificación. Durante: dinámicas, priorizar, planes de acción. Sprint siguiente: ejecutar y seguir."],
+    ["Aplicar dinámicas y priorizar los temas", "Eso es durante la reunión."],
+    ["Ejecutar y seguir los planes de acción", "Eso es en el Sprint siguiente."],
+    ["Priorizar los temas y definir planes de acción", "Eso es durante la reunión."]],
+  ["11.7", "¿Qué deben tener los planes de acción que salen de una Retrospectiva?",
+    ["Fecha y responsable", "Planes de acción con fecha y responsable, que se ejecutan y se siguen en el Sprint siguiente."],
+    ["Puntos y prioridad", "Eso es propio de los ítems del backlog."],
+    ["Costo y aprobación", "No es lo que pide la cátedra."],
+    ["Firma del cliente", "La Retrospectiva es del equipo."]],
+  ["11.8", "El equipo quiere incorporar una práctica que nunca probó. ¿En qué brazo de Starfish va?",
+    ["Comenzar a hacer", "Algo nuevo que se empieza."],
+    ["Hacer más", "Hacer más es para algo que ya se hace y conviene reforzar."],
+    ["Seguir haciendo", "Seguir haciendo es para lo que ya se hace y da valor así."],
+    ["Dejar de hacer", "Dejar de hacer es para lo que ya no aporta."]],
+  ["11.9", "En la dinámica Sailing Boat, ¿qué representa el sol?",
+    ["Las oportunidades", "Viento = fortalezas, sol = oportunidades, ancla = debilidades, rocas = amenazas."],
+    ["Las fortalezas", "Las fortalezas son el viento."],
+    ["El objetivo", "El objetivo es la isla."],
+    ["Las amenazas", "Las amenazas son las rocas."]],
+  ["11.10", "En Sailing Boat, ¿qué elemento representa las debilidades del equipo?",
+    ["El ancla", "El ancla frena al barco desde adentro: debilidades."],
+    ["Las rocas", "Las rocas son amenazas o riesgos, externas."],
+    ["El viento", "El viento impulsa: fortalezas."],
+    ["La isla", "La isla es el objetivo."]],
+  ["11.11", "¿Cómo resume la cátedra la diferencia entre Starfish y Sailing Boat?",
+    ["Starfish es un brainstorming; Sailing Boat es un FODA", "Starfish busca acciones de mejora rápidas; Sailing Boat muestra cómo está el equipo frente a nuevos desafíos."],
+    ["Starfish es un FODA; Sailing Boat es un brainstorming", "Está invertido."],
+    ["Starfish es de la Review; Sailing Boat, de la Retro", "Las dos son dinámicas de Retrospectiva."],
+    ["Starfish estima historias; Sailing Boat las prioriza", "Ninguna estima ni prioriza el backlog."]],
+  ["11.12", "¿Cuáles son los brazos de la versión simplificada de Starfish?",
+    ["Start, stop, continue (keep)", "La versión simple tiene tres brazos: start, stop, continue/keep."],
+    ["Plan, do, check, act", "Eso es el ciclo PDCA."],
+    ["Must, should, could", "Eso es MoSCoW."],
+    ["To do, WIP, done", "Esas son las columnas del tablero Kanban."]],
+  ["11.13", "¿Cuál es la única ceremonia que se repite dentro de un mismo Sprint?",
+    ["La Daily", "Así lo repasa la cátedra: la Daily es la única que se repite."],
+    ["La Planning", "Se hace una vez, al inicio."],
+    ["La Review", "Se hace una vez, al final."],
+    ["La Retrospectiva", "Se hace una vez: es la última tarea."]],
+
+  // ---- Clase 12a ----
+  ["12a.1", "¿En qué ciclo se basa Lean, según la cátedra?",
+    ["En el ciclo de Deming (PDCA)", "Plan, Do, Check, Act."],
+    ["En el ciclo del Sprint", "Eso es Scrum."],
+    ["En el planning poker", "Es una técnica de estimación."],
+    ["En el marco Cynefin", "Cynefin clasifica dominios para decidir el enfoque."]],
+  ["12a.2", "¿Quién creó Lean y de qué forma parte?",
+    ["Taiichi Ohno; forma parte de Kaizen", "El mismo origen que Kanban: Ohno, Toyota, Kaizen (mejora continua)."],
+    ["Kent Beck; forma parte de XP", "Beck es XP, nacido en Chrysler."],
+    ["Ken Schwaber; forma parte de Scrum", "Schwaber es Scrum."],
+    ["Dave Snowden; forma parte de Cynefin", "Snowden es Cynefin."]],
+  ["12a.3", "¿Qué dos tipos de muda son «del operario»?",
+    ["Movimiento y espera", "Movimiento (del operario) y espera (del operario)."],
+    ["Transporte y defectos", "Esos dos son «del producto»."],
+    ["Inventario y sobreproducción", "Inventario es de materias primas; sobreproducción, de costos de producción."],
+    ["Sobreprocesamiento y transporte", "Sobreprocesamiento es del proceso o herramienta; transporte, del producto."]],
+  ["12a.4", "Según la cátedra, ¿a qué afecta la sobreproducción?",
+    ["A los costos de producción", "Sobreproducción (costos de producción)."],
+    ["Al operario", "Del operario son movimiento y espera."],
+    ["A las materias primas", "Eso es inventario."],
+    ["Al proceso o herramienta", "Eso es sobreprocesamiento."]],
+  ["12a.5", "El equipo desarrolla una funcionalidad que nadie pidió ni usa. ¿Qué muda es?",
+    ["Sobreproducción", "Producir más de lo pedido: en software, funcionalidades extra."],
+    ["Sobreprocesamiento", "Sobreprocesamiento es agregar pasos o procesos de más a algo que sí se pidió."],
+    ["Transporte", "Transporte es mover el producto sin agregar valor."],
+    ["Inventario", "Inventario es trabajo acumulado sin terminar."]],
+  ["12a.6", "Un cambio de texto necesita tres aprobaciones. ¿Qué muda es?",
+    ["Sobreprocesamiento", "Procesos extra que no agregan valor (proceso o herramienta)."],
+    ["Sobreproducción", "Sobreproducción es hacer cosas que nadie pidió."],
+    ["Defectos", "Defectos son errores del producto."],
+    ["Movimiento", "Movimiento es el desplazamiento innecesario del operario."]],
+  ["12a.7", "En XP, ¿qué significa la práctica «integración continua» para la cátedra?",
+    ["Hacer commit al menos una vez por día", "Integración continua: commit al menos una vez por día."],
+    ["Tener al cliente como parte del equipo", "Eso es cliente in situ."],
+    ["Mejorar el código a medida que crece", "Eso es refactorización."],
+    ["Programar de a dos en una misma máquina", "Eso es programación de pares."]],
+  ["12a.8", "¿Qué tipos de testing nombra la cátedra dentro de las prácticas de XP?",
+    ["Unitario, de regresión y de aceptación (UAT)", "Pruebas unitarias, de regresión y UAT."],
+    ["De carga, de estrés y de seguridad", "No son los que nombra la cátedra."],
+    ["Manual, exploratorio y de humo", "No son los que nombra la cátedra."],
+    ["Alfa, beta y de usabilidad", "No son los que nombra la cátedra."]],
+  ["12a.9", "En las cinco bases de XP, ¿para qué es el «coraje»?",
+    ["Para plantear los temas", "Coraje (para plantear los temas)."],
+    ["Para omitir los detalles", "Eso es simplicidad."],
+    ["Para escuchar al cliente", "Eso es retroalimentación (del cliente)."],
+    ["Para hablar cara a cara", "Eso es comunicación."]],
+  ["12a.10", "¿Qué práctica de XP dice que «todos deben entender el código»?",
+    ["Propiedad colectiva", "Propiedad colectiva: todos deben entender el código."],
+    ["Código estándar", "Código estándar es seguir las convenciones del proyecto o la industria."],
+    ["Diseño simple", "Diseño simple es que sea fácil de entender y mantener."],
+    ["Metáfora", "La metáfora sirve para explicar temas complejos."]],
+
+  // ---- Clase 12b ----
+  ["12b.1", "¿Qué significa «Kanban»?",
+    ["Registro visual", "Kanban significa registro visual: la tarjeta, el tablero."],
+    ["Mejora continua", "Eso es Kaizen."],
+    ["Desperdicio", "Eso es muda."],
+    ["Hábitat", "Eso es Cynefin, en galés."]],
+  ["12b.2", "¿Dónde y cuándo nació Kanban?",
+    ["En Toyota, en los años 50, con Taiichi Ohno", "Toyota, Taiichi Ohno, años 50, dentro de Kaizen."],
+    ["En Chrysler, en los años 90, con Kent Beck", "Eso es XP."],
+    ["En Utah, en el año 2001, con 17 firmantes", "Eso es el Manifiesto Ágil."],
+    ["En Gales, en el año 1999, con Dave Snowden", "Eso es Cynefin."]],
+  ["12b.3", "¿Cuál de estas NO es una de las tres reglas de Kanban?",
+    ["Estimar cada tarjeta con puntos", "La estimación en puntos es de Scrum; no es una regla de Kanban."],
+    ["Mostrar el proceso", "Es la regla 1."],
+    ["Limitar el trabajo en curso", "Es la regla 2."],
+    ["Optimizar el flujo", "Es la regla 3."]],
+  ["12b.4", "¿Qué columnas tiene el tablero Kanban básico de la cátedra?",
+    ["To do, WIP y Done", "Tres columnas; la de WIP se puede abrir en varias etapas."],
+    ["Must, Should y Could", "Eso es MoSCoW."],
+    ["Planning, Daily y Review", "Son ceremonias de Scrum."],
+    ["Backlog, Sprint e Incremento", "Son artefactos de Scrum."]],
+  ["12b.5", "¿Qué significa trabajar con «pull»?",
+    ["Se toma trabajo solo cuando hay capacidad", "Pull: la etapa tira del trabajo cuando tiene lugar."],
+    ["Se empuja trabajo a la etapa que sigue", "Eso es push."],
+    ["Se reparte el trabajo en Sprints fijos", "Eso es Scrum; Kanban no usa Sprints."],
+    ["Se asigna el trabajo desde la gerencia", "Pull no depende de una asignación externa."]],
+  ["12b.6", "¿Cuál es una contra de Jira, según la cátedra?",
+    ["Licencia cara a partir de 10 usuarios", "También: interfaz difícil al principio y demasiado potente para proyectos chicos."],
+    ["Seguimiento difícil con equipos grandes", "Esa es la contra de Trello."],
+    ["Puesta a punto compleja y poco agradable", "Esas son contras de Azure DevOps."],
+    ["Falta de plug-ins y de configuración", "Al contrario: es muy configurable y tiene muchísimos plug-ins."]],
+  ["12b.7", "Una gran corporación que ya usa la suite de Microsoft quiere un tablero. ¿Qué herramienta encaja mejor, según la cátedra?",
+    ["Azure DevOps", "Integrado con Microsoft (pipelines, repositorios) y pensado para grandes corporaciones."],
+    ["Trello", "Trello conviene a equipos chicos; con equipos grandes se complica."],
+    ["Jira", "Jira sirve para equipos grandes, pero la integración con Microsoft es el punto fuerte de Azure DevOps."],
+    ["Planning poker", "Es una técnica de estimación, no una herramienta de tableros."]],
+  ["12b.8", "¿Cuál es la diferencia principal entre Kanban y Scrum en cómo entra el trabajo?",
+    ["Kanban es flujo continuo; Scrum usa Sprints fijos", "Kanban no usa Sprints: el trabajo entra y sale de forma continua, con un límite por columna."],
+    ["Kanban usa Sprints fijos; Scrum es flujo continuo", "Está invertido."],
+    ["Kanban planifica todo al inicio; Scrum, al final", "Ninguno planifica todo al inicio: eso es cascada."],
+    ["Kanban prohíbe los tableros; Scrum los exige", "El tablero es la base de Kanban."]],
+  ["12b.9", "Una tarjeta lleva muchos días en la misma columna. ¿Qué indica?",
+    ["Que ahí se está formando un cuello de botella", "Por eso la tarjeta lleva fecha de inicio y fin."],
+    ["Que la historia ya cumple la Definition of Done", "Si estuviera terminada, estaría en Done."],
+    ["Que el límite de WIP es demasiado bajo", "El límite hace visible el problema; no es la causa."],
+    ["Que el equipo está aplicando bien el pull", "Con pull el trabajo avanza cuando hay capacidad; una tarjeta estancada es una alerta."]],
+
+  // ---- Integradoras ----
+  ["M.1", "¿Qué objetivo corresponde a cada enfoque, según la cátedra?",
+    ["Lean: eliminar desperdicio · Kanban: eliminar cuellos de botella", "Lean optimiza los procesos eliminando el desperdicio; Kanban elimina cuellos de botella."],
+    ["Lean: eliminar cuellos de botella · Kanban: eliminar desperdicio", "Está invertido."],
+    ["Lean: calidad técnica del código · Kanban: Sprints de largo fijo", "Calidad técnica es XP y Sprints fijos es Scrum."],
+    ["Lean: clasificar los dominios · Kanban: priorizar el backlog", "Clasificar dominios es Cynefin y priorizar el backlog es tarea del PO (MoSCoW)."]],
+  ["M.2", "¿Cuál de estos enfoques nació en el desarrollo de software y no en una fábrica?",
+    ["XP", "XP viene de los equipos de Kent Beck en Chrysler; Lean y Kanban vienen de Toyota."],
+    ["Lean", "Lean nació en Toyota."],
+    ["Kanban", "Kanban nació en Toyota."],
+    ["Kaizen", "Kaizen es la filosofía de mejora continua de la que forman parte Lean y Kanban."]],
+  ["M.3", "¿Qué relación hay entre Lean y Kanban, según el profesor?",
+    ["Kanban ataca la muda de espera al eliminar cuellos de botella", "Espera del operario → cuello de botella → Kanban → se elimina la espera. Lean dice qué eliminar; Kanban, cómo."],
+    ["Kanban reemplaza a Lean porque elimina todas las mudas", "Kanban ataca los cuellos de botella; Lean apunta a todo el desperdicio."],
+    ["Lean es una práctica de XP y Kanban es otra", "Ninguno es una práctica de XP."],
+    ["No tienen relación: nacieron en empresas distintas", "Los dos nacen en Toyota, con Ohno, dentro de Kaizen."]],
+  ["M.4", "Un equipo no sabe quién decide las prioridades ni cuándo se revisa el trabajo. ¿Qué enfoque le da esa estructura?",
+    ["Scrum: roles, ceremonias y artefactos", "Scrum es el marco que reparte responsabilidades y fija cuándo se planifica, revisa y mejora."],
+    ["Lean: las siete mudas", "Lean señala desperdicios; no define roles ni reuniones."],
+    ["XP: programación de pares", "XP apunta a la calidad técnica."],
+    ["Cynefin: los cinco dominios", "Cynefin ayuda a elegir el enfoque; no organiza al equipo."]],
+  ["M.5", "¿Qué tienen en común la Retrospectiva de Scrum, Kaizen y el ciclo PDCA?",
+    ["Los tres apuntan a la mejora continua", "La Retro mejora la forma de trabajar en cada Sprint; Kaizen es mejora continua; PDCA es su ciclo."],
+    ["Los tres son técnicas de estimación ágil", "Las técnicas de estimación son planning poker, talles, vasos."],
+    ["Los tres son artefactos de Scrum", "Los artefactos son Product Backlog, Sprint Backlog e Incremento."],
+    ["Los tres nacieron con el Manifiesto de 2001", "Kaizen y PDCA son muy anteriores."]],
+  ["M.6", "¿En qué reunión se usa el slicing y en cuál el splitting?",
+    ["Slicing en el refinamiento; splitting en la Planning", "Slicing parte épicas en historias (refinamiento); splitting parte una historia en tareas (Planning)."],
+    ["Slicing en la Planning; splitting en el refinamiento", "Está invertido. Las historias tienen que existir antes de la Planning: el slicing las arma en el refinamiento, y recién en la Planning (paso 4) cada una se parte en tareas con splitting."],
+    ["Slicing en la Review; splitting en la Retrospectiva", "Ninguna de las dos parte trabajo."],
+    ["Slicing en la Daily; splitting en el Sprint 0", "No es lo que indica la cátedra."]],
+  ["M.7", "Una historia cumplió la DoR, se desarrolló y alcanzó la DoD. ¿Qué recorrido hizo?",
+    ["Product Backlog → Sprint Backlog → Incremento", "La DoR es la puerta de entrada al Sprint y la DoD la de salida hacia el Incremento."],
+    ["Sprint Backlog → Product Backlog → Incremento", "El Product Backlog va primero."],
+    ["Incremento → Sprint Backlog → Product Backlog", "Está invertido."],
+    ["Product Backlog → Incremento → Sprint Backlog", "El Incremento es el final del recorrido."]],
+  ["M.8", "¿Qué persona conecta a XP con el Manifiesto Ágil?",
+    ["Kent Beck: recolectó las prácticas de XP y firmó el Manifiesto", "XP es previo al Manifiesto; Beck fue uno de los 17 firmantes."],
+    ["Taiichi Ohno: creó XP en Toyota y firmó el Manifiesto", "Ohno es Lean y Kanban, y no firmó el Manifiesto."],
+    ["Ken Schwaber: creó XP en Chrysler y firmó el Manifiesto", "Schwaber firmó por Scrum."],
+    ["Dave Snowden: creó XP en Gales y firmó el Manifiesto", "Snowden es Cynefin."]],
+  ["M.9", "¿Qué valor del Manifiesto se parece más a la práctica «cliente in situ» de XP?",
+    ["Colaboración con el cliente sobre negociación contractual", "El cliente es parte del equipo, como en la columna ágil de la comparación con cascada."],
+    ["Software funcionando sobre documentación extensiva", "Ese valor habla del producto, no de la relación con el cliente."],
+    ["Respuesta ante el cambio sobre seguir un plan", "Ese valor habla de adaptarse."],
+    ["Individuos e interacciones sobre procesos y herramientas", "Habla del equipo en general; el más cercano es el del cliente."]],
+];
+
+// ---------- engine ----------
+const $ = (s) => document.querySelector(s);
+const STORE = "simulacro-agil-v1";
+let current = [];   // [{q, picked}]
+let startedAt = 0, timer = null, graded = false;
+
+function shuffled(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function topicOf(id) { return id.split(".")[0]; }
+function load() { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } }
+function save(d) { try { localStorage.setItem(STORE, JSON.stringify(d)); } catch (e) {} }
+
+// Round-robin across topics so every draw covers all classes.
+function draw(n) {
+  const groups = {};
+  BANK.forEach((q) => (groups[topicOf(q[0])] ||= []).push(q));
+  const piles = Object.keys(TOPICS).map((k) => shuffled(groups[k] || []));
+  const out = [];
+  while (out.length < n && piles.some((p) => p.length)) {
+    for (const p of piles) { if (p.length && out.length < n) out.push(p.pop()); }
+  }
+  return shuffled(out);
+}
+
+function start(questions) {
+  graded = false;
+  current = questions.map((q) => ({ q, picked: null }));
+  const box = $("#questions"); box.innerHTML = "";
+  current.forEach((item, i) => {
+    const [id, prompt, ...opts] = item.q;
+    const el = document.createElement("div"); el.className = "sim-q"; el.id = "q" + i;
+    const tag = document.createElement("span"); tag.className = "tag"; tag.textContent = `Pregunta ${i + 1} · ${id}`;
+    const p = document.createElement("p"); p.className = "prompt"; p.textContent = prompt;
+    const o = document.createElement("div"); o.className = "options";
+    shuffled(opts.map((opt, k) => ({ text: opt[0], why: opt[1], ok: k === 0 }))).forEach((opt) => {
+      const b = document.createElement("button"); b.type = "button"; b.textContent = opt.text;
+      b.addEventListener("click", () => {
+        if (graded) return;
+        o.querySelectorAll("button").forEach((x) => x.classList.remove("is-picked"));
+        b.classList.add("is-picked"); item.picked = opt; el.classList.remove("unanswered"); progress();
+      });
+      opt.el = b; o.appendChild(b);
+    });
+    item.opts = [...o.children];
+    el.append(tag, p, o); box.appendChild(el);
+  });
+  $("#setup").hidden = true; $("#result").hidden = true; $("#exam").hidden = false;
+  $("#submit").hidden = false; $("#submit2").hidden = false;
+  startedAt = Date.now(); clearInterval(timer); timer = setInterval(tick, 1000); tick(); progress();
+  window.scrollTo({ top: $("#exam").offsetTop - 10 });
+}
+
+function elapsed() { const s = Math.floor((Date.now() - startedAt) / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
+function tick() { $("#clock").textContent = "Tiempo: " + elapsed(); }
+function progress() { $("#progress").textContent = `Respondidas: ${current.filter((c) => c.picked).length} de ${current.length}`; }
+
+function submit() {
+  const missing = current.findIndex((c) => !c.picked);
+  if (missing >= 0) {
+    current.forEach((c, i) => $("#q" + i).classList.toggle("unanswered", !c.picked));
+    if (!confirm("Quedan preguntas sin responder (marcadas en amarillo). ¿Entregar igual? Cuentan como incorrectas.")) {
+      $("#q" + missing).scrollIntoView({ block: "center" }); return;
+    }
+  }
+  graded = true; clearInterval(timer);
+  const time = elapsed();
+  const per = {}; const failed = [];
+  current.forEach((c, i) => {
+    const id = c.q[0], t = topicOf(id), ok = !!(c.picked && c.picked.ok);
+    (per[t] ||= { ok: 0, n: 0 }); per[t].n++; if (ok) per[t].ok++; else failed.push(id);
+    const el = $("#q" + i);
+    el.querySelectorAll("button").forEach((b) => (b.disabled = true));
+    const okBtn = [...el.querySelectorAll("button")].find((b) => b.textContent === c.q[2][0]);
+    okBtn.classList.add("is-ok");
+    if (c.picked && !ok) { c.picked.el.classList.remove("is-picked"); c.picked.el.classList.add("is-bad"); }
+    const why = document.createElement("p"); why.className = "why";
+    const lesson = TOPICS[t];
+    why.innerHTML = (ok ? "✓ " : c.picked ? "✗ " : "— Sin responder. ");
+    why.append(document.createTextNode(ok ? c.q[2][1] : (c.picked ? c.picked.why + " " : "") + "Correcta: " + c.q[2][0] + ". " + c.q[2][1]));
+    if (!ok) { const a = document.createElement("a"); a.href = lesson.href; a.textContent = " Repasar: " + lesson.name; why.append(a); }
+    el.appendChild(why);
+  });
+  const total = current.length, right = total - failed.length, pct = Math.round((right / total) * 100);
+  $("#score").textContent = `${right} de ${total} · ${pct} %`;
+  $("#score-detail").textContent = `Tiempo: ${time}. ` + (pct >= 85 ? "Muy bien: el objetivo era 85 % o más." : pct >= 60 ? "Base armada. Releer las lecciones de los temas más flojos y repetir." : "Conviene volver a las lecciones antes de otro intento.");
+  const tp = $("#topics"); tp.innerHTML = "";
+  Object.keys(TOPICS).filter((k) => per[k]).forEach((k) => {
+    const r = per[k], p = Math.round((r.ok / r.n) * 100);
+    const row = document.createElement("div"); row.className = "sim-topic";
+    row.innerHTML = `<a href="${TOPICS[k].href}"></a><div class="sim-track"><div class="sim-fill ${p < 50 ? "low" : p < 80 ? "mid" : ""}" style="width:${p}%"></div></div><span>${r.ok}/${r.n}</span>`;
+    row.querySelector("a").textContent = TOPICS[k].name; tp.appendChild(row);
+  });
+  const today = new Date().toLocaleDateString("es-AR");
+  $("#report").value = `Simulacro ágil ${today}: ${right}/${total} (${pct} %), ${time}.\n` +
+    "Por tema: " + Object.keys(TOPICS).filter((k) => per[k]).map((k) => `${k} ${per[k].ok}/${per[k].n}`).join(" · ") + "\n" +
+    (failed.length ? "Fallé: " + failed.join(", ") : "Sin errores.");
+  const d = load(); d.lastFailed = failed; (d.history ||= []).push({ date: today, right, total, pct }); d.history = d.history.slice(-10); save(d);
+  $("#submit").hidden = true; $("#submit2").hidden = true; $("#result").hidden = false;
+  $("#exam").before($("#result")); $("#result").scrollIntoView();
+  $("#progress").textContent = `Corregido: ${right} de ${total}`;
+}
+
+function showSetup() {
+  const d = load();
+  $("#retry-failed").hidden = !(d.lastFailed && d.lastFailed.length);
+  $("#history").textContent = d.history && d.history.length ? "Intentos anteriores: " + d.history.map((h) => `${h.date} ${h.right}/${h.total} (${h.pct} %)`).join(" · ") : "";
+  $("#setup").hidden = false; $("#exam").hidden = true; $("#result").hidden = true;
+  window.scrollTo({ top: 0 });
+}
+
+document.querySelectorAll("[data-n]").forEach((b) => b.addEventListener("click", () => start(draw(+b.dataset.n))));
+$("#retry-failed").addEventListener("click", () => { const ids = new Set(load().lastFailed || []); start(shuffled(BANK.filter((q) => ids.has(q[0])))); });
+$("#submit").addEventListener("click", submit); $("#submit2").addEventListener("click", submit);
+$("#again").addEventListener("click", showSetup);
+$("#copy").addEventListener("click", () => { const t = $("#report"); t.select(); try { navigator.clipboard.writeText(t.value); } catch (e) { document.execCommand("copy"); } $("#copy").textContent = "Copiado"; setTimeout(() => ($("#copy").textContent = "Copiar resumen"), 1500); });
+showSetup();
+</script>
+</body>
+</html>

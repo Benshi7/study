@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sección 9 · Gestión de riesgos · Matriz de riesgos</title>
+<script src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/course.css">
+<link rel="stylesheet" href="assets/tp.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">TP · Sección 9</p>
+  <h1>Gestión de riesgos · Matriz de riesgos</h1>
+  <p class="subtitle">¿Qué puede pasar y qué hacemos?</p>
+  <p class="meta"><span>Fuente: Clase 5 (p17–41)</span><span><span class="chip ok">Guía lista</span></span></p>
+</header>
+
+<div class="win">
+  <strong>Qué tiene que quedar escrito</strong>
+  Un registro de riesgos redactados con la plantilla de la cátedra, con probabilidad, impacto y <strong>EMV</strong> para cada uno, una respuesta y un responsable. La suma de los EMV alimenta la reserva de contingencia del presupuesto.
+</div>
+
+<h2>Qué espera la cátedra</h2>
+<ul>
+  <li><strong>Identificar</strong> (Clase 5, p23–26): participa todo el equipo y los interesados; técnicas: tormenta de ideas, Delphi, FODA y análisis de documentos. Categorías (p25): de la organización, técnico, externo y de dirección de proyectos.</li>
+  <li><strong>Redactar</strong> (p17): <em>Ante [evento], podría ocasionar [problema], lo que impactaría en [restricción afectada]</em>. Si falta alguna de las tres partes, es una queja y no un riesgo.</li>
+  <li><strong>Priorizar</strong> (p27–29): probabilidad × impacto en una matriz con colores: aceptable, aceptable con atención e inaceptable.</li>
+  <li><strong>Cuantificar</strong> (p31): EMV = probabilidad × impacto, en dinero; con ese valor se genera la reserva de contingencia.</li>
+  <li><strong>Responder</strong> (p33–35): evitar, transferir, mitigar o aceptar.</li>
+</ul>
+<p class="note"><strong>Ojo con la suma.</strong> La diapositiva 32 resta las oportunidades a las amenazas (37.000 − 17.000 = 20.000); sumar todo daría 54.000. Hay que declarar el criterio en el documento; está en la decisión sobre cómo sumar los EMV.</p>
+
+<h2>Punto de partida del equipo</h2>
+<ul>
+  <li><strong>Hipótesis (a verificar):</strong> el perfil por hogar implica datos personales sensibles y podría alcanzarlo la Ley 25.326. Se registra como riesgo legal hasta confirmarlo.</li>
+  <li><strong>Riesgos de alto nivel del Charter:</strong> todos tienen que aparecer acá.</li>
+  <li><strong>Riesgos de cronograma:</strong> un retraso en el camino crítico del Gantt.</li>
+  <li>Las probabilidades e impactos <em>no están estimados</em>; se acuerdan en equipo con los criterios de la Clase 5.</li>
+</ul>
+
+<h2>Plantilla para copiar</h2>
+<p class="hint">Lo que no está confirmado figura como <code>[completar]</code>. Lo marcado con <span class="tag-propuesta">propuesta para votar</span> todavía no lo decidió el equipo.</p>
+<pre class="tpl" id="tpl" tabindex="0">&gt; Frase puente: Las actividades del camino crítico [completar] y los stakeholders [completar] son los puntos donde el proyecto es más vulnerable. Tomándolos como punto de partida, identificamos los siguientes riesgos.
+
+# Matriz de riesgos
+
+## FODA de partida (interno y externo)
+- Fortalezas: [completar]      - Oportunidades: [completar]
+- Debilidades: [completar]     - Amenazas: [completar]
+
+## Registro
+| # | Riesgo (Ante [evento], podría ocasionar [problema], lo que impactaría en [restricción]) | Categoría | P | I ($) | EMV = P × I | Respuesta (evitar, transferir, mitigar, aceptar) | Responsable |
+|---|------------------------------------------------------------------------------------------|-----------|---|-------|-------------|--------------------------------------------------|-------------|
+| R1 | Ante un incumplimiento o cambio en el tratamiento de datos personales del perfil por hogar (Ley 25.326, a verificar), podría ocasionar el rediseño o bloqueo del módulo, lo que impactaría en alcance, tiempo y costo | Externo (regulatorio) | [completar] | [completar] | [calcular] | [completar] | [completar] |
+| R2 | Ante la falta de datos o de apoyo de las áreas de gobierno (a confirmar), podría ocasionar demoras en las integraciones, lo que impactaría en cronograma y costo (propuesta para votar) | De la organización | [completar] | [completar] | [calcular] | [completar] | [completar] |
+| R3 | [completar: riesgo sobre el camino crítico del Gantt] | [completar] | [completar] | [completar] | [calcular] | [completar] | [completar] |
+
+## Cuantificación
+- Amenazas: suma de EMV = [completar]
+- Oportunidades: suma de EMV = [completar]
+- Criterio adoptado (decisión emv-criterio): [completar]
+- Reserva de contingencia resultante (pasa a la sección 10): [completar]</pre>
+<div class="btn-row"><button type="button" class="btn" data-copy="#tpl">Copiar plantilla</button></div>
+
+<h2>De dónde viene y a dónde va</h2>
+<div class="pair">
+  <div class="connect"><strong>Viene de</strong><p>Sección 5 (riesgos de alto nivel), sección 6 (actividades y camino crítico) y sección 7 (stakeholders). Clase 4: PESTEL como fuente de factores externos.</p></div>
+  <div class="connect"><strong>Va a</strong><ul>
+  <li>Sección 10: la suma de EMV según el criterio elegido es la reserva de contingencia.</li>
+  <li>Sección 5: los riesgos de alto nivel del Charter se revisan contra este registro.</li>
+</ul></div>
+</div>
+
+<h2>Frase puente</h2>
+<p class="note"><strong>Para abrir la sección</strong>
+Citar el <strong>camino crítico del Gantt</strong> o los stakeholders de mayor poder: «El camino crítico pasa por [actividades]. Un retraso ahí retrasa todo el proyecto, así que…».</p>
+
+<h2>Checklist de la sección</h2>
+<ul class="todo-list">
+  <li>Cada riesgo está redactado con la plantilla: evento, problema y restricción afectada.</li>
+  <li>Cada riesgo tiene P, I, EMV, respuesta y responsable.</li>
+  <li>Los riesgos de alto nivel del Charter están todos acá.</li>
+  <li>Hay al menos un riesgo sobre el camino crítico.</li>
+  <li>El criterio de suma de EMV está declarado y coincide con la sección 10.</li>
+  <li>El riesgo sobre la Ley 25.326 está confirmado o marcado como «a verificar».</li>
+</ul>
+<p class="hint">El estado de la sección, el responsable y el revisor se registran en el <a href="avance.html">tablero de avance</a>.</p>
+
+<div class="decisions-here">
+  <strong>Decisiones abiertas que afectan esta sección</strong>
+  <ul>
+    <li><a href="decisiones.html?d=emv-criterio">¿Cómo sumamos los EMV para la reserva de contingencia?</a></li>
+    <li><a href="decisiones.html?d=segmento">¿Qué segmento de vecinos priorizamos?</a></li>
+    <li><a href="decisiones.html?d=alcance-mvp">¿Qué entra en el alcance del proyecto?</a></li>
+  </ul>
+</div>
+
+<div class="source">
+  <strong>Fuente</strong>
+  Clase 5, p17–41. Concepto de fondo: <a class="local-only" title="Solo disponible en la copia completa" href="../clases/05-riesgos-foda.html">lección Riesgos y FODA</a>, con un ejemplo de cinco riesgos y su reserva.
+</div>
+
+<nav class="nav">
+  <a href="seccion-08-comunicacion.html">← Sección 8 · Comunicación</a>
+  <a href="seccion-10-presupuesto.html">Sección 10 · Presupuesto →</a>
+</nav>
+</main>
+<script src="assets/tp-data.js"></script>
+<script src="assets/tp-common.js"></script>
+</body>
+</html>

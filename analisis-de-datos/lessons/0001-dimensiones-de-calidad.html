@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dimensiones de calidad</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0001 · Bloque 1: Introducción a los datos</div>
+
+<div class="kicker">Lección 0001</div>
+<h1>Diagnosticar un error de datos en una palabra</h1>
+<p class="lede">Un escenario de "error" en la carga de datos → la dimensión de calidad que falla. Es el tipo de pregunta que más te costó.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Tapá la pantalla y escribí en un papel las <strong>seis dimensiones</strong> del slide 3 y la pregunta que responde cada una. Después seguí leyendo y compará. Equivocarte acá está bien: el esfuerzo de recordar es lo que fija el conocimiento.</p>
+</div>
+
+<h2>Las seis dimensiones del slide 3</h2>
+
+<span class="sidenote">Nombres literales de la cátedra: <em>Configuración</em>, no "conformidad"; <em>Tempestividad</em>, no "actualidad". Fuente: <a href="../raw/001_INTRODUCCION_parte_2.pdf#page=3">Intro parte 2, slide 3</a>.</span>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Dimensión</th><th>Pregunta que responde</th></tr>
+  <tr><td><strong>Completitud</strong></td><td>¿Están todos los datos que deberían estar?</td></tr>
+  <tr><td><strong>Configuración</strong></td><td>¿Los datos se generan del modo correcto?</td></tr>
+  <tr><td><strong>Consistencia</strong></td><td>¿Los datos son consistentes en todos los sistemas?</td></tr>
+  <tr><td><strong>Tempestividad</strong></td><td>¿Los datos están disponibles a tiempo?</td></tr>
+  <tr><td><strong>Duplicados</strong> (unicidad)</td><td>¿Los datos se repiten innecesariamente?</td></tr>
+  <tr><td><strong>Integridad</strong></td><td>¿Los datos no están alterados o rotos?</td></tr>
+</table>
+</div>
+
+<p>A estas se suma <strong>Precisión</strong> (slide 9): en qué medida el dato <em>refleja con exactitud</em> la información que se quiere registrar. La cátedra agrega: <em>"la mejor manera de minimizar los errores es evitar la carga manual"</em>.</p>
+
+<h2>El árbol de decisión</h2>
+
+<pre class="diagram">¿Falta un dato OBLIGATORIO?                  → COMPLETITUD
+¿El mismo hecho difiere entre sistemas?      → CONSISTENCIA
+¿Habla de tiempo o de "datos viejos"?        → TEMPESTIVIDAD
+¿El registro aparece repetido?               → DUPLICADOS
+¿El valor estaba mal ya al cargarlo?         → PRECISIÓN
+¿Se generó con formato/proceso incorrecto?   → CONFIGURACIÓN
+¿Está corrupto, truncado o alterado?         → INTEGRIDAD</pre>
+
+<h3>Modelo mental: la vida del dato</h3>
+<!-- diagram:vida-dato -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 720 412" style="max-width:720px;margin-inline:auto" role="img" aria-labelledby="vida-dato-title vida-dato-desc" xmlns="http://www.w3.org/2000/svg"><title id="vida-dato-title">La vida del dato y las dimensiones de calidad</title><desc id="vida-dato-desc">Tres etapas del dato (nace, viaja, se usa) con la dimensión de calidad que falla en cada una, y una banda con completitud, duplicados y precisión, que pueden fallar en cualquier etapa.</desc><defs><marker id="vida-dato-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="vida-dato-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="vida-dato-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge" d="M232,44 L256,44" marker-end="url(#vida-dato-arrow)"/><path class="edge" d="M464,44 L488,44" marker-end="url(#vida-dato-arrow)"/><rect class="zone" x="24" y="244" width="672" height="92" rx="8"/><text class="eyebrow" x="40" y="262" text-anchor="start">EN CUALQUIER ETAPA</text><rect class="mask" x="24" y="24" width="208" height="40" rx="6"/><rect class="store" x="24" y="24" width="208" height="40" rx="6"/><text class="name" x="128" y="48" text-anchor="middle">Nace</text><text class="sub" x="128" y="80" text-anchor="middle">se genera o se carga</text><rect class="mask" x="256" y="24" width="208" height="40" rx="6"/><rect class="store" x="256" y="24" width="208" height="40" rx="6"/><text class="name" x="360" y="48" text-anchor="middle">Viaja / se guarda</text><text class="sub" x="360" y="80" text-anchor="middle">transferencia · almacenamiento</text><rect class="mask" x="488" y="24" width="208" height="40" rx="6"/><rect class="store" x="488" y="24" width="208" height="40" rx="6"/><text class="name" x="592" y="48" text-anchor="middle">Se usa</text><text class="sub" x="592" y="80" text-anchor="middle">reportes · decisiones</text><rect class="mask" x="24" y="96" width="208" height="56" rx="6"/><rect class="focal" x="24" y="96" width="208" height="56" rx="6"/><text class="name" x="128" y="122" text-anchor="middle">Configuración</text><text class="sub-accent" x="128" y="136" text-anchor="middle">¿se generó del modo correcto?</text><rect class="mask" x="256" y="96" width="208" height="56" rx="6"/><rect class="focal" x="256" y="96" width="208" height="56" rx="6"/><text class="name" x="360" y="122" text-anchor="middle">Integridad</text><text class="sub-accent" x="360" y="136" text-anchor="middle">¿llegó sin romperse?</text><rect class="mask" x="488" y="96" width="208" height="56" rx="6"/><rect class="node" x="488" y="96" width="208" height="56" rx="6"/><text class="name" x="592" y="122" text-anchor="middle">Tempestividad</text><text class="sub" x="592" y="136" text-anchor="middle">¿está disponible a tiempo?</text><rect class="mask" x="488" y="168" width="208" height="56" rx="6"/><rect class="node" x="488" y="168" width="208" height="56" rx="6"/><text class="name" x="592" y="194" text-anchor="middle">Consistencia</text><text class="sub" x="592" y="208" text-anchor="middle">¿dice lo mismo en todos lados?</text><text class="note" x="128" y="176" text-anchor="middle">nunca estuvo bien</text><text class="note" x="360" y="176" text-anchor="middle">estuvo bien, se rompió después</text><rect class="mask" x="40" y="272" width="200" height="48" rx="6"/><rect class="node" x="40" y="272" width="200" height="48" rx="6"/><text class="name" x="140" y="294" text-anchor="middle">Completitud</text><text class="sub" x="140" y="308" text-anchor="middle">¿están los obligatorios?</text><rect class="mask" x="260" y="272" width="200" height="48" rx="6"/><rect class="node" x="260" y="272" width="200" height="48" rx="6"/><text class="name" x="360" y="294" text-anchor="middle">Duplicados</text><text class="sub" x="360" y="308" text-anchor="middle">¿se repite sin necesidad?</text><rect class="mask" x="480" y="272" width="200" height="48" rx="6"/><rect class="node" x="480" y="272" width="200" height="48" rx="6"/><text class="name" x="580" y="294" text-anchor="middle">Precisión</text><text class="sub" x="580" y="308" text-anchor="middle">¿refleja la realidad?</text><text class="note" x="360" y="364" text-anchor="middle">Configuración vs integridad: ¿estuvo bien alguna vez?</text><line class="rule" x1="24" y1="380" x2="696" y2="380"/><text class="eyebrow" x="24" y="404" text-anchor="start">LEYENDA</text><rect class="focal" x="104" y="396" width="16" height="12" rx="3"/><text class="sub" x="128" y="405" text-anchor="start">el par que se confunde en el choice</text></svg></div><figcaption>Dimensiones de calidad según la etapa en que falla el dato. <a href="../diagrams/vida-dato.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:vida-dato -->
+<p><strong>Configuración vs integridad:</strong> preguntate <em>¿estuvo bien alguna vez?</em> Si nació mal (no cumple el estándar definido), es configuración. Si nació bien y se rompió después, es integridad.</p>
+
+<div class="box trap">
+  <span class="label">Las dos trampas donde caíste</span>
+  <p><strong>1. El dato opcional.</strong> La completitud se mide <em>"en función de la definición del negocio o del dueño del dato"</em>. Un campo opcional <strong>no se considera</strong>: si están todos los obligatorios, la completitud es 100%. Además se mide <strong>por registro</strong>: en el ejemplo del slide 7, de 8 clientes solo 4 tienen todos los obligatorios, así que la completitud es 50%.<span class="sidenote">Tu hábito de DE (el profiler te marca % de nulls por columna) es <strong>profiling</strong>, que mide. La completitud es un <strong>juicio contra una regla de negocio</strong>. Lo vemos en la lección 0002.</span></p>
+  <p><strong>2. Precisión vs tempestividad.</strong> Si el dato <em>era correcto cuando se cargó</em> y el problema es que llega tarde, es tempestividad. Precisión es cuando el valor ya estaba mal al registrarse.</p>
+</div>
+
+<div class="box trap">
+  <span class="label">Distractor recurrente</span>
+  <p>Si entre las opciones aparece <strong>"Limpieza"</strong>, descartala. La limpieza es un <strong>proceso</strong> (el que corrige el error), no una dimensión de calidad.</p>
+</div>
+
+<h2>Práctica</h2>
+<p class="muted">Las opciones se mezclan cada vez que abrís la página. Al terminar, podés repetir solo las que fallaste.</p>
+
+<div class="quiz" data-quiz-id="0001-dimensiones-de-calidad"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "En la tabla Clientes, Jorge Pérez vive en Moreno, y así aparece en todos los reportes salvo en uno, que muestra la localidad donde vivía antes de mudarse. ¿Qué dimensión falla?",
+   "options": ["Consistencia", "Precisión", "Limpieza", "Completitud"], "answer": 0,
+   "why": "El mismo hecho tiene valores distintos según el reporte: es una contradicción entre fuentes (\"salvo en uno\"). \"Limpieza\" es un proceso, no una dimensión. Ojo de DE: en un reporte histórico (as-of, SCD2) la localidad vieja sería correcta, pero la consigna ya lo plantea como error. En el choice, el enunciado define el mundo."},
+  {"q": "El reporte de stock se actualiza cada 48 horas y el equipo comercial promete productos que ya se agotaron. ¿Qué dimensión falla principalmente?",
+   "options": ["Tempestividad", "Precisión", "Consistencia", "Completitud"], "answer": 0,
+   "why": "El dato era correcto cuando se cargó; el problema es que no está disponible a tiempo. Si el enunciado menciona frecuencia o \"datos viejos\", es tempestividad."},
+  {"q": "Según el negocio, un cliente se compone de nombre, apellido, DNI, mail y dirección. Hay 10 clientes: todos tienen esos datos, pero 5 no tienen cargado el <em>segundo nombre</em>. ¿Cuál es la completitud?",
+   "options": ["100%", "50%", "90%", "10%"], "answer": 0,
+   "why": "El segundo nombre es opcional, y un dato opcional no se considera (slide 6). Todos los registros tienen los obligatorios, así que la completitud es 100%."},
+  {"q": "De 8 clientes, solo 4 tienen cargados <em>todos</em> los atributos obligatorios. ¿Cuál es la completitud?",
+   "options": ["50%", "100%", "25%", "75%"], "answer": 0,
+   "why": "Es el ejemplo literal del slide 7: se mide por registro contra la definición del negocio. 4 de 8 da 50%."},
+  {"q": "El cliente con ID 0042 aparece tres veces en la misma tabla, con los mismos datos. ¿Qué dimensión falla?",
+   "options": ["Duplicados", "Consistencia", "Integridad", "Completitud"], "answer": 0,
+   "why": "El dato se repite innecesariamente. No es consistencia, porque los valores no se contradicen: son idénticos."},
+  {"q": "Al cargar un DNI, el operador tipea 12.345.687 en lugar de 12.345.678. ¿Qué dimensión falla?",
+   "options": ["Precisión", "Tempestividad", "Duplicados", "Configuración"], "answer": 0,
+   "why": "El valor no refleja con exactitud la realidad desde el momento en que se registró. Es el caso típico de carga manual."},
+  {"q": "Un archivo llega truncado a la mitad por un corte durante la transferencia y las últimas filas quedan rotas. ¿Qué dimensión falla?",
+   "options": ["Integridad", "Precisión", "Consistencia", "Tempestividad"], "answer": 0,
+   "why": "La pregunta del slide para integridad es: \"¿los datos no están alterados o rotos?\"."},
+  {"q": "Un sistema genera las fechas como 2026/25/09 cuando el estándar definido es AAAA-MM-DD. ¿Qué dimensión falla?",
+   "options": ["Configuración", "Integridad", "Duplicados", "Completitud"], "answer": 0,
+   "why": "El dato no se genera del modo correcto (formato o proceso). No está roto ni alterado después: nació mal configurado."},
+  {"q": "¿Cuál de estos términos NO es una dimensión de calidad de datos?",
+   "options": ["Limpieza", "Integridad", "Tempestividad", "Completitud"], "answer": 0,
+   "why": "La limpieza (data cleansing) es el proceso que corrige los errores. Las dimensiones son lo que se evalúa."},
+  {"q": "El mismo cliente tiene un mail en el CRM y otro distinto en el sistema de facturación. ¿Qué dimensión falla?",
+   "options": ["Consistencia", "Duplicados", "Precisión", "Integridad"], "answer": 0,
+   "why": "Es el mismo hecho con valores distintos en dos sistemas: consistencia. La pregunta del slide es \"¿son consistentes en todos los sistemas?\"."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Frente a cualquier escenario de "error en los datos", podés nombrar la dimensión que falla en una palabra y justificarla con la pregunta del slide.</p>
+</div>
+
+<div class="box recall">
+  <span class="label">Conexión con el EDA (bloque 4)</span>
+  <p>El profe de EDA no usa dimensiones: habla de <strong>problemas en los datos</strong> (faltantes, duplicados, tipos incorrectos, valores inconsistentes) y de tres <strong>tratamientos</strong> (eliminar, corregir, imputar). Faltantes ≈ Completitud, tipos incorrectos ≈ Configuración. La tabla completa está en la <a href="0016-el-eda-y-su-flujo.html">lección 0016</a>.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/001_INTRODUCCION_parte_2.pdf#page=3">Intro parte 2, slides 3 a 10</a> (dimensiones, precisión, completitud y unicidad). Son imágenes: miralas directamente, no te quedes con el texto extraído.</p>
+  <p>Resumen para repasar: <a href="../reference/calidad-y-gobierno.html">Referencia · Calidad y gobierno de datos</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si algún escenario te parece ambiguo (por ejemplo, integridad vs configuración), preguntámelo en el chat. Para eso estoy.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="../index.html">← Índice</a>
+  <a href="0002-procesos-y-gobierno.html">Lección 0002 · Procesos y gobierno de datos →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

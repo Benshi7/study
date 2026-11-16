@@ -1,0 +1,11 @@
+fecha,producto,categoria,cliente,cantidad,precio_unitario,total
+2026-04-01,Notebook Dell XPS,Electrónica,Empresa A,2,1500,3000
+2026-04-01,Mouse Logitech,Accesorios,Cliente B,5,25,125
+2026-04-02,Teclado Mecánico,Accesorios,Cliente C,3,80,240
+2026-04-02,Monitor Samsung 27",Electrónica,Empresa D,1,400,400
+2026-04-03,Silla Ergonómica,Muebles,Cliente E,2,300,600
+2026-04-03,Escritorio,Muebles,Empresa F,1,700,700
+2026-04-04,Auriculares Sony,Electrónica,Cliente G,4,120,480
+2026-04-04,Cámara Web Logitech,Electrónica,Cliente H,2,90,180
+2026-04-05,Disco SSD 1TB,Electrónica,Empresa I,3,150,450
+2026-04-05,Hub USB,Accesorios,Cliente J,6,20,120

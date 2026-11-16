@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 13 · Especialización: la notación ISA de la cátedra</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 13 · Unidad 2 · Diseño conceptual</p>
+    <h1 class="masthead__title">Especialización: dos marcas y cuatro combinaciones</h1>
+    <p class="masthead__standfirst">
+      El docente dijo que toma "especialización: exclusiva o solapada, y la parte de
+      exclusividad". Todo el tema se reduce a <b>dos marcas que se dibujan o no se
+      dibujan</b>. Esta lección es para copiarlas a mano hasta que salgan solas.
+    </p>
+    <p class="masthead__meta">
+      <span>~12 minutos</span>
+      <span>Clase 2, slides 20&ndash;27</span>
+      <span>Base: TP1 Farmacia, TP2 Clínica</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Qué es, en una frase</h2>
+
+  <p>
+    <b>Especialización</b> es partir una entidad en subconjuntos que comparten sus atributos
+    pero además tienen atributos propios. La cátedra lo define así, textual:
+  </p>
+
+  <blockquote class="callout callout--catedra">
+    <span class="callout__label">Clase 2, slide 20</span>
+    "Hay casos en donde una entidad puede tener atributos compartidos y atributos propios,
+    tal es el caso por ejemplo de la entidad persona, la cual puede compartir los atributos
+    id persona, nombre y apellido, mientras que a su vez puede derivarse en otras entidades
+    de nivel inferior que poseen sus propios atributos."
+  </blockquote>
+
+  <p>
+    La entidad de arriba es el <em class="term">supertipo</em> (o <em class="term">superclase</em>).
+    Las de abajo son los <em class="term">subtipos</em> (o <em class="term">subclases</em>).
+    El vínculo se llama <b>ISA</b> &mdash; <i>"es un"</i> o <i>"es una"</i> &mdash; y se dibuja
+    con un <b>triángulo</b> apuntando hacia abajo.
+  </p>
+
+  <blockquote class="callout callout--catedra">
+    <span class="callout__label">Clase 2, slide 24</span>
+    "A estos subconjuntos menores que dependen de uno mayor se les suele denominar
+    <b>SubClases</b> de la entidad Vehículo, y a su padre, Vehículo, la <b>SuperClase</b>
+    de estos subconjuntos menores."
+  </blockquote>
+
+  <p>
+    <b>Generalización</b> es exactamente lo mismo mirado desde abajo: partís de varias
+    entidades y descubrís el padre común. La cátedra cierra el punto en una línea que vale
+    la pena saber de memoria porque es candidata a pregunta teórica:
+    <b>"especialización y generalización son dos caras de una misma moneda"</b>
+    (slide 22).
+  </p>
+
+  <h2><span class="num">02</span>Las dos marcas. Esto es todo el tema</h2>
+
+  <p>
+    Sobre ese triángulo se dibujan <b>dos restricciones independientes</b>. Independientes
+    quiere decir que cada una se decide por separado, y por eso salen cuatro combinaciones.
+    Las reglas de dibujo las dicta la propia cátedra en los slides 25 y 26:
+  </p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Restricción</th><th>Pregunta que responde</th><th>Cómo se dibuja</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Total</b></td>
+        <td>¿<i>Todo</i> registro del supertipo cae en algún subtipo?</td>
+        <td><b>Círculo</b> entre el supertipo y el triángulo</td>
+      </tr>
+      <tr>
+        <td><b>Parcial</b></td>
+        <td>¿Puede haber registros que no caen en ninguno?</td>
+        <td><b>Sin círculo</b></td>
+      </tr>
+      <tr>
+        <td><b>Exclusiva</b></td>
+        <td>¿Un registro cae en <i>un solo</i> subtipo?</td>
+        <td><b>Arco</b> cruzando las patas del triángulo</td>
+      </tr>
+      <tr>
+        <td><b>Solapada</b></td>
+        <td>¿Puede caer en <i>varios</i> a la vez?</td>
+        <td><b>Sin arco</b></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">La regla en cinco palabras</span>
+    <b>Círculo = total. Arco = exclusiva.</b> La ausencia de la marca es la otra opción.
+    No hay un símbolo para "parcial" ni uno para "solapada": simplemente no dibujás nada.
+  </blockquote>
+
+  <p>
+    Ojo con el vocabulario, porque acá la cátedra y el libro usan palabras distintas para
+    lo mismo. <b>Exclusiva = disjunta = disyunta.</b> Elmasri dice "disjunta"; el docente
+    dijo "<b>exclusiva</b>" y habló de "la parte de exclusividad". Usá la palabra del
+    docente en la hoja.
+  </p>
+
+  <h2><span class="num">03</span>Las cuatro combinaciones, con los ejemplos de la cátedra</h2>
+
+  <p>
+    Esto es lo mejor que tiene el deck: los slides 25 y 26 traen <b>exactamente un ejemplo
+    de cada una de las cuatro combinaciones</b>. Si te sabés estos cuatro dibujos, tenés el
+    tema entero. Son los que están reproducidos acá abajo, con la notación de la cátedra:
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/especializacion-cuatro-combinaciones.svg"
+         alt="Grilla de dos por dos con las cuatro combinaciones de especialización: parcial exclusiva (Empleado de restaurante), parcial solapada (Participantes de película), total exclusiva (Ficha), total solapada (Equipo de fútbol).">
+    <figcaption>
+      Las cuatro combinaciones con los ejemplos originales de la Clase 2, slides 25 y 26.
+      El color no significa nada &mdash; en el parcial vas a tener una sola lapicera. Lo que
+      cuenta es <b>si el círculo está o no está</b> y <b>si el arco está o no está</b>.
+    </figcaption>
+  </figure>
+
+  <p>Y las justificaciones textuales del docente, que son el modelo de cómo se argumenta:</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr><th>Ejemplo</th><th>Combinación</th><th>Justificación de la cátedra (textual)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Empleado_Restaurante<br>→ Camarero / Cocinero / Lava_platos</td>
+        <td><b>Parcial<br>Exclusiva</b></td>
+        <td>"Parcial: puede haber más empleados."<br>"Exclusiva: un empleado sólo realiza una tarea."</td>
+      </tr>
+      <tr>
+        <td>Participantes_Película<br>→ Productor / Director / Actores</td>
+        <td><b>Parcial<br>Solapada</b></td>
+        <td>"Parcial: puede haber más participantes en una película."<br>"Solapada: un participante puede ser actor y director."</td>
+      </tr>
+      <tr>
+        <td>Ficha<br>→ Ficha_autor / Ficha_tema</td>
+        <td><b>Total<br>Exclusiva</b></td>
+        <td>"Total: sólo hay 2 tipos de fichas."<br>"Exclusiva: una ficha es del tipo autor o del tipo tema."</td>
+      </tr>
+      <tr>
+        <td>Equipo_fútbol<br>→ Delantero / Defensa / Portero / Centrocampista</td>
+        <td><b>Total<br>Solapada</b></td>
+        <td>"Total: sólo puede haber esos tipos de jugadores en el equipo."<br>"Solapada: un jugador puede jugar de delantero y de defensor."</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <blockquote class="callout callout--key">
+    <span class="callout__label">El patrón de la justificación</span>
+    Mirá cómo argumenta el docente y copiale la fórmula. <b>Total/parcial se justifica
+    hablando del conjunto</b> ("sólo hay 2 tipos", "puede haber más"). <b>Exclusiva/solapada
+    se justifica hablando de un individuo</b> ("un empleado sólo…", "un jugador puede…").
+    Si tu justificación no tiene esa forma, probablemente estés mezclando las dos
+    restricciones.
+  </blockquote>
+
+  <h2><span class="num">04</span>Una advertencia sobre el deck</h2>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Atención · el deck tiene dos notaciones</span>
+    <p>
+      El <b>slide 27</b> ("Simbología ISA · Total, Exclusiva") muestra un diagrama de
+      Vehículo → Diesel / Nafta dibujado en la notación de <b>Elmasri</b>: línea doble para
+      la participación total, un pequeño círculo con una letra adentro, y el símbolo de
+      subconjunto (⊂) sobre cada pata. <b>No es la notación de los slides 25 y 26.</b>
+    </p>
+    <p>
+      Dibujá la de los slides 25 y 26: <b>triángulo, círculo, arco</b>. Son los únicos
+      slides donde el docente escribe la regla de dibujo explícita ("se grafica con un
+      círculo", "se grafica con elipse"), son cuatro ejemplos completos y son la notación
+      con la que está resuelto el TP1. La del slide 27 es una figura suelta del libro.
+    </p>
+  </blockquote>
+
+  <h2><span class="num">05</span>Ahora dibujás vos</h2>
+
+  <p>
+    Cerrá esta página. Papel y lapicera. Para cada uno de estos cuatro enunciados
+    <b>dibujá el ISA completo</b> (supertipo, triángulo, subtipos) y decidí las dos marcas.
+    Escribí al lado la justificación con la fórmula del docente. Después abrí el desplegable
+    y comparás en otro color.
+  </p>
+
+  <ol class="paso">
+    <li><b>TP1 Farmacia.</b> "Cada farmacia tiene sus propios empleados y un solo
+      farmacéutico a cargo. Del <b>personal propio</b> hay que conocer fecha de ingreso y
+      antigüedad. Del <b>farmacéutico</b>, la matrícula y la fecha de graduación."</li>
+    <li><b>Universidad.</b> "De las personas de la facultad registramos alumnos y docentes.
+      Hay personal administrativo que no es ni una cosa ni la otra. Un docente puede estar
+      cursando una carrera de posgrado en la misma facultad."</li>
+    <li><b>Biblioteca.</b> "Todo ejemplar del catálogo es o bien un libro, o bien una
+      revista. De los libros guardamos el ISBN; de las revistas, la periodicidad."</li>
+    <li><b>Banco.</b> "Algunos clientes son además <b>empleados</b> de la casa, y de ellos
+      guardamos el legajo interno. Otros son <b>accionistas</b>, y guardamos su cantidad de
+      acciones. Hay quienes son las dos cosas, y la enorme mayoría no es ninguna."</li>
+    <li><b>Biblioteca, el personal.</b> "Todo empleado de la biblioteca o atiende el
+      mostrador, o cataloga material, o hace las dos cosas. De los que atienden guardamos el
+      turno; de los que catalogan, la especialidad."</li>
+    <li><b>Club.</b> "Algunos socios compiten en natación y otros en atletismo; el
+      reglamento no permite competir en dos disciplinas. La mayoría de los socios no compite
+      en ninguna."</li>
+  </ol>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">La trampa que traen el 5 y el 6 · no le hagas una caja</span>
+    <p>
+      Los dos enunciados te tientan a inventar un subtipo de más:
+    </p>
+    <ul>
+      <li>En el 5, <i>"o hace las dos cosas"</i> tienta a crear un subtipo
+        <b>"Todólogo"</b> para la intersección.</li>
+      <li>En el 6, <i>"la mayoría no compite en ninguna"</i> tienta a crear un subtipo
+        <b>"No compite"</b> para el resto.</li>
+    </ul>
+    <p>
+      <b>Las dos cajas sobran, y por el mismo motivo.</b> Esos dos hechos ya están dichos por
+      las marcas: <b>la intersección la modela el arco ausente</b> (solapada) y
+      <b>el resto lo modela el círculo ausente</b> (parcial). Si dibujás la caja, estás
+      diciendo dos veces lo mismo &mdash; y encima creás una entidad sin ningún atributo
+      propio, que es la prueba de que no es un subtipo legítimo.
+    </p>
+    <p>
+      <b>Test:</b> si el subtipo que estás por dibujar no tiene atributos propios ni
+      relaciones propias, no es un subtipo. Es una marca que te falta poner.
+    </p>
+  </blockquote>
+
+  <blockquote class="callout callout--trap">
+    <span class="callout__label">Antes de dibujar · aplicá el test ISA</span>
+    Leé la frase de abajo hacia arriba: <i>"un <b>subtipo</b> es un <b>supertipo</b>"</i>.
+    <b>Si no suena bien, no es una especialización.</b> "Una caja de ahorro es un cliente"
+    es falso &mdash; un cliente <em>tiene</em> una cuenta, y "tener" es un
+    <b>rombo</b>, no un triángulo. El verbo del enunciado te delata: <b>ser</b> → ISA,
+    <b>tener</b> → relación.
+  </blockquote>
+
+  <details class="reveal">
+    <summary>Comparar con la corrección</summary>
+    <div class="reveal__body">
+      <ol>
+        <li>
+          <b>Empleado → Personal_propio / Farmacéutico. Total y exclusiva.</b>
+          Círculo y arco. Total porque el enunciado sólo contempla esos dos tipos de
+          empleado; exclusiva porque un empleado o es propio o es farmacéutico, no las dos.
+          Así está resuelto en <code>Rta-TP-Farmacia.erdplus</code>
+          (<code>totalSpecialization: true</code>, <code>Disjointed</code>) &mdash; es el
+          único punto de esa resolución que podés tomar como confirmado.
+        </li>
+        <li>
+          <b>Persona → Alumno / Docente. Parcial y solapada.</b>
+          Ni círculo ni arco, el diagrama más "pelado" de los cuatro. Parcial porque el
+          administrativo no cae en ningún subtipo; solapada porque el docente-alumno de
+          posgrado cae en los dos. Las dos frases del enunciado están puestas justamente
+          para forzar cada marca: aprendé a olfatearlas.
+        </li>
+        <li>
+          <b>Ejemplar → Libro / Revista. Total y exclusiva.</b>
+          Círculo y arco. "Todo ejemplar es o bien… o bien…" es la formulación canónica de
+          total + exclusiva. Es el mismo caso que la Ficha del slide 25.
+        </li>
+        <li>
+          <b>Cliente → Empleado / Accionista. Parcial y solapada.</b>
+          Ni círculo ni arco. "Las dos cosas" → solapada. "La enorme mayoría no es ninguna"
+          → parcial. Fijate que los dos subtipos traen <b>atributo propio</b> (legajo,
+          cantidad de acciones): sin eso no habría razón para especializar.
+        </li>
+        <li>
+          <b>Empleado → Atención / Catalogación. Total y solapada.</b>
+          Círculo sí, arco no. "Todo empleado o… o… o las dos cosas" es la formulación
+          canónica de total + solapada: el "todo" cierra el conjunto, el "las dos cosas"
+          abre el solapamiento. Es el caso del Equipo_fútbol del slide 26.
+        </li>
+        <li>
+          <b>Socio → Nadador / Atleta. Parcial y exclusiva.</b>
+          Círculo no, arco sí. <b>Dos subtipos, no tres:</b> "No compite" no va como caja,
+          va como el círculo que no dibujás. "El reglamento no permite competir en dos
+          disciplinas" → exclusiva, y fijate que la exclusividad acá viene de una
+          <b>regla de negocio</b>, no de la naturaleza de las cosas. "La mayoría no compite
+          en ninguna" → parcial. Es el caso del Empleado_Restaurante del slide 25.
+        </li>
+      </ol>
+      <p>
+        <b>Sobre el "no compite" del 6:</b> da igual si los socios que quedan afuera no
+        compiten en nada o compiten en un deporte que el modelo no contempla. Las dos
+        lecturas producen exactamente la misma marca: hay registros del supertipo que no
+        caen en ningún subtipo, o sea <b>parcial</b>. No hace falta que el enunciado lo
+        desambigüe.
+      </p>
+      <p>
+        Con los seis ya dibujaste <b>las cuatro combinaciones</b>: 1 y 3 son total+exclusiva,
+        2 y 4 parcial+solapada, 5 es total+solapada y 6 parcial+exclusiva. Si alguna de las
+        cuatro todavía no te sale sola, ésa es la que tenés que repetir.
+      </p>
+      <p>
+        <b>Lo que te tiene que quedar:</b> las palabras del enunciado que disparan cada
+        marca. <i>"Todo X es…"</i>, <i>"sólo hay"</i>, <i>"se clasifican en"</i> → <b>total</b>.
+        <i>"puede haber otros"</i>, <i>"algunos"</i>, <i>"todavía no"</i> → <b>parcial</b>.
+        <i>"o bien… o bien"</i>, <i>"sólo una"</i> → <b>exclusiva</b>.
+        <i>"puede ser A y B"</i>, <i>"las dos"</i>, <i>"a la vez"</i> → <b>solapada</b>.
+      </p>
+    </div>
+  </details>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">¿Qué significa el círculo entre el supertipo y el triángulo ISA?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+        data-feedback="Correcto. Círculo = total: todo registro del supertipo pertenece a algún subtipo. Sin círculo, la especialización es parcial.">Que la especialización es total</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. La exclusividad se marca con el arco que cruza las patas, no con el círculo. Son dos marcas independientes.">Que los subtipos son exclusivos</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Que los subtipos se puedan solapar se marca justamente NO dibujando el arco. El círculo habla de otra cosa.">Que los subtipos se solapan entre sí</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. La existencia de atributos propios es lo que motiva la especialización, pero no es lo que marca el círculo.">Que los subtipos tienen atributos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">"Un participante de la película puede ser actor y director." ¿Qué restricción fija esa frase?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+        data-feedback="Correcto. Un individuo cae en dos subtipos a la vez, así que la especialización es solapada: se dibuja sin arco. Es el ejemplo del slide 26.">Solapada, y se dibuja sin arco</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Exclusiva sería lo contrario: cada participante en un solo subtipo. Acá el enunciado dice explícitamente que cae en dos.">Exclusiva, y se dibuja con arco</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Esa frase habla de un individuo, no del conjunto. Total o parcial se decide preguntando si sobra alguien afuera de los subtipos.">Total, y se dibuja con círculo</button></li>
+      <li><button class="quiz__opt"
+        data-feedback="No. Esa frase habla de un individuo, no del conjunto. Parcial se justifica diciendo que puede haber más participantes.">Parcial, y se dibuja sin círculo</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b><code>raw/B Clase 2 Diseño Conceptual Udeci.pptx</code>, slides 20 a 27.</b>
+      Los slides 25 y 26 son los que tenés que mirar: traen los cuatro ejemplos con la
+      regla de dibujo escrita al lado. Las mismas figuras están en
+      <code>raw/Material_Examen/unidad 2.pdf</code>, páginas 11 y 12.
+    </p>
+    <p>
+      De apoyo, Elmasri &amp; Navathe cap. 4, sección 4.3 "Restricciones sobre la
+      especialización y la generalización" &mdash; pero acordate de que usa "disjunta"
+      donde el docente dice "<b>exclusiva</b>", y que dibuja la d/o dentro del círculo en
+      lugar del arco. Estudiá el concepto ahí y <b>dibujá como la cátedra</b>.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si querés más enunciados para clasificar las cuatro
+      combinaciones, pedímelos en el chat y te tiro una tanda. Es un tema que se fija
+      dibujando, no leyendo.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../reference/0004-notacion-der-a-mano.html">Referencia: notación a mano</a>
+    <a href="0014-contar-registros-del-supertipo.html">Siguiente: 0014 · contar registros</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="../PARCIAL.md">Mapa del parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 330" width="720" height="330"
+     role="img" aria-labelledby="tipos-indice-title tipos-indice-desc">
+  <title id="tipos-indice-title">Los tres tipos de índice y su relación con el orden físico</title>
+  <desc id="tipos-indice-desc">Tres paneles comparados. En el primero, el índice principal: el fichero de índice tiene una sola entrada por cada bloque de disco, y el fichero de datos está ordenado por la clave primaria; por eso el índice principal es no denso. En el segundo, resaltado, el índice agrupado: las filas que comparten el mismo valor del campo agrupado quedan físicamente almacenadas juntas en el disco, porque el fichero se ordena en el mismo orden que el índice; es el único de los tres que ordena físicamente. En el tercero, el índice secundario: es una estructura separada cuyas entradas están ordenadas, pero los punteros cruzan hacia un fichero de datos que conserva su propio orden, de modo que el orden físico no se ve afectado.</desc>
+
+  <style>
+    .ix-paper  { fill: #fffef9; }
+    .ix-panel  { fill: none; stroke: rgba(26,26,23,0.14); stroke-width: 1; }
+    .ix-focal  { fill: none; stroke: #7a2e0e; stroke-width: 1.4; }
+    .ix-chip   { fill: rgba(26,26,23,0.05); stroke: #56544c; stroke-width: 1; }
+    .ix-chipA  { fill: rgba(122,46,14,0.10); stroke: #7a2e0e; stroke-width: 1.2; }
+    .ix-blk    { fill: none; stroke: #1a1a17; stroke-width: 1.2; }
+    .ix-blkA   { fill: none; stroke: #7a2e0e; stroke-width: 1.4; }
+    .ix-row    { fill: rgba(26,26,23,0.05); stroke: rgba(26,26,23,0.20); stroke-width: 0.8; }
+    .ix-rowA   { fill: rgba(122,46,14,0.10); stroke: rgba(122,46,14,0.35); stroke-width: 0.8; }
+    .ix-arr    { fill: none; stroke: #56544c; stroke-width: 1.1; }
+    .ix-arrA   { fill: none; stroke: #7a2e0e; stroke-width: 1.2; }
+    .ix-name   { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .ix-nameA  { fill: #7a2e0e; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .ix-eyeb   { font: 600 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; fill: #56544c; }
+    .ix-eyebA  { font: 600 8px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; fill: #7a2e0e; }
+    .ix-val    { fill: #1a1a17; font: 400 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .ix-cap    { fill: #56544c; font: 400 11px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .ix-capA   { fill: #7a2e0e; font: 600 11px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .ix-lbl    { fill: #8a877c; font: 400 8.5px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; letter-spacing: 0.04em; }
+
+    @media (prefers-color-scheme: dark) {
+      .ix-paper { fill: #16161a; }
+      .ix-panel { stroke: rgba(232,228,217,0.16); }
+      .ix-focal { stroke: #e08a5c; }
+      .ix-chip  { fill: rgba(232,228,217,0.07); stroke: #a8a498; }
+      .ix-chipA { fill: rgba(224,138,92,0.16); stroke: #e08a5c; }
+      .ix-blk   { stroke: #e8e4d9; }
+      .ix-blkA  { stroke: #e08a5c; }
+      .ix-row   { fill: rgba(232,228,217,0.07); stroke: rgba(232,228,217,0.22); }
+      .ix-rowA  { fill: rgba(224,138,92,0.16); stroke: rgba(224,138,92,0.40); }
+      .ix-arr   { stroke: #a8a498; }
+      .ix-arrA  { stroke: #e08a5c; }
+      .ix-name  { fill: #e8e4d9; }
+      .ix-nameA { fill: #e08a5c; }
+      .ix-eyeb  { fill: #a8a498; }
+      .ix-eyebA { fill: #e08a5c; }
+      .ix-val   { fill: #e8e4d9; }
+      .ix-cap   { fill: #a8a498; }
+      .ix-capA  { fill: #e08a5c; }
+      .ix-lbl   { fill: #77746a; }
+    }
+  </style>
+
+  <rect class="ix-paper" x="0" y="0" width="720" height="330"/>
+
+  <defs>
+    <marker id="ix-tip" viewBox="0 0 8 8" refX="7" refY="4"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,1 L7,4 L0,7" fill="none" stroke="#56544c" stroke-width="1.1"/>
+    </marker>
+    <marker id="ix-tipA" viewBox="0 0 8 8" refX="7" refY="4"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,1 L7,4 L0,7" fill="none" stroke="#7a2e0e" stroke-width="1.2"/>
+    </marker>
+  </defs>
+
+  <!-- ============ PANEL 1 · PRINCIPAL ============ -->
+  <g transform="translate(0,0)">
+    <rect class="ix-panel" x="4" y="4" width="228" height="322" rx="4"/>
+    <text class="ix-eyeb" x="20" y="28">TIPO 1</text>
+    <text class="ix-name" x="20" y="48">Índice principal</text>
+    <text class="ix-lbl" x="20" y="64">sobre la clave primaria</text>
+
+    <text class="ix-lbl" x="20" y="90">ÍNDICE</text>
+    <text class="ix-lbl" x="128" y="90">DATOS (ordenados)</text>
+
+    <!-- index chips: one per block -->
+    <g>
+      <rect class="ix-chip" x="20" y="98" width="42" height="20" rx="2"/>
+      <text class="ix-val" x="34" y="112">10</text>
+      <rect class="ix-chip" x="20" y="158" width="42" height="20" rx="2"/>
+      <text class="ix-val" x="34" y="172">40</text>
+      <rect class="ix-chip" x="20" y="218" width="42" height="20" rx="2"/>
+      <text class="ix-val" x="34" y="232">70</text>
+    </g>
+
+    <!-- data blocks, 3 rows each, sorted -->
+    <g>
+      <rect class="ix-blk" x="128" y="94" width="84" height="52" rx="3"/>
+      <rect class="ix-row" x="134" y="99" width="72" height="13"/><text class="ix-val" x="139" y="109">10</text>
+      <rect class="ix-row" x="134" y="113" width="72" height="13"/><text class="ix-val" x="139" y="123">20</text>
+      <rect class="ix-row" x="134" y="127" width="72" height="13"/><text class="ix-val" x="139" y="137">30</text>
+
+      <rect class="ix-blk" x="128" y="154" width="84" height="52" rx="3"/>
+      <rect class="ix-row" x="134" y="159" width="72" height="13"/><text class="ix-val" x="139" y="169">40</text>
+      <rect class="ix-row" x="134" y="173" width="72" height="13"/><text class="ix-val" x="139" y="183">50</text>
+      <rect class="ix-row" x="134" y="187" width="72" height="13"/><text class="ix-val" x="139" y="197">60</text>
+
+      <rect class="ix-blk" x="128" y="214" width="84" height="52" rx="3"/>
+      <rect class="ix-row" x="134" y="219" width="72" height="13"/><text class="ix-val" x="139" y="229">70</text>
+      <rect class="ix-row" x="134" y="233" width="72" height="13"/><text class="ix-val" x="139" y="243">80</text>
+      <rect class="ix-row" x="134" y="247" width="72" height="13"/><text class="ix-val" x="139" y="257">90</text>
+    </g>
+
+    <path class="ix-arr" d="M62,108 L128,108" marker-end="url(#ix-tip)"/>
+    <path class="ix-arr" d="M62,168 L128,168" marker-end="url(#ix-tip)"/>
+    <path class="ix-arr" d="M62,228 L128,228" marker-end="url(#ix-tip)"/>
+
+    <text class="ix-cap" x="20" y="292">Una entrada por <tspan class="ix-capA">bloque</tspan>,</text>
+    <text class="ix-cap" x="20" y="308">no por registro → <tspan class="ix-capA">no denso</tspan>.</text>
+  </g>
+
+  <!-- ============ PANEL 2 · AGRUPADO (focal) ============ -->
+  <g transform="translate(246,0)">
+    <rect class="ix-focal" x="4" y="4" width="228" height="322" rx="4"/>
+    <text class="ix-eyebA" x="20" y="28">TIPO 2 · LA RESPUESTA</text>
+    <text class="ix-nameA" x="20" y="48">Índice agrupado</text>
+    <text class="ix-lbl" x="20" y="64">sobre el campo agrupado</text>
+
+    <text class="ix-lbl" x="20" y="90">ÍNDICE</text>
+    <text class="ix-lbl" x="128" y="90">DATOS (reordenados)</text>
+
+    <g>
+      <rect class="ix-chipA" x="20" y="108" width="42" height="20" rx="2"/>
+      <text class="ix-val" x="37" y="122">A</text>
+      <rect class="ix-chipA" x="20" y="198" width="42" height="20" rx="2"/>
+      <text class="ix-val" x="37" y="212">B</text>
+    </g>
+
+    <g>
+      <rect class="ix-blkA" x="128" y="94" width="84" height="66" rx="3"/>
+      <rect class="ix-rowA" x="134" y="99" width="72" height="13"/><text class="ix-val" x="139" y="109">A</text>
+      <rect class="ix-rowA" x="134" y="113" width="72" height="13"/><text class="ix-val" x="139" y="123">A</text>
+      <rect class="ix-rowA" x="134" y="127" width="72" height="13"/><text class="ix-val" x="139" y="137">A</text>
+      <rect class="ix-rowA" x="134" y="141" width="72" height="13"/><text class="ix-val" x="139" y="151">A</text>
+
+      <rect class="ix-blkA" x="128" y="184" width="84" height="66" rx="3"/>
+      <rect class="ix-rowA" x="134" y="189" width="72" height="13"/><text class="ix-val" x="139" y="199">B</text>
+      <rect class="ix-rowA" x="134" y="203" width="72" height="13"/><text class="ix-val" x="139" y="213">B</text>
+      <rect class="ix-rowA" x="134" y="217" width="72" height="13"/><text class="ix-val" x="139" y="227">B</text>
+      <rect class="ix-rowA" x="134" y="231" width="72" height="13"/><text class="ix-val" x="139" y="241">B</text>
+    </g>
+
+    <path class="ix-arrA" d="M62,118 L128,118" marker-end="url(#ix-tipA)"/>
+    <path class="ix-arrA" d="M62,208 L128,208" marker-end="url(#ix-tipA)"/>
+
+    <text class="ix-capA" x="20" y="292">Las filas se ordenan igual</text>
+    <text class="ix-capA" x="20" y="308">que el índice: ORDEN FÍSICO.</text>
+  </g>
+
+  <!-- ============ PANEL 3 · SECUNDARIO ============ -->
+  <g transform="translate(492,0)">
+    <rect class="ix-panel" x="4" y="4" width="224" height="322" rx="4"/>
+    <text class="ix-eyeb" x="20" y="28">TIPO 3</text>
+    <text class="ix-name" x="20" y="48">Índice secundario</text>
+    <text class="ix-lbl" x="20" y="64">sobre una columna no clave</text>
+
+    <text class="ix-lbl" x="20" y="90">ÍNDICE</text>
+    <text class="ix-lbl" x="124" y="90">DATOS (sin tocar)</text>
+
+    <!-- index entries: ordered -->
+    <g>
+      <rect class="ix-chip" x="20" y="98" width="38" height="16" rx="2"/><text class="ix-val" x="34" y="110">1</text>
+      <rect class="ix-chip" x="20" y="118" width="38" height="16" rx="2"/><text class="ix-val" x="34" y="130">2</text>
+      <rect class="ix-chip" x="20" y="138" width="38" height="16" rx="2"/><text class="ix-val" x="34" y="150">3</text>
+      <rect class="ix-chip" x="20" y="158" width="38" height="16" rx="2"/><text class="ix-val" x="34" y="170">4</text>
+    </g>
+
+    <!-- data file in its own arbitrary order -->
+    <g>
+      <rect class="ix-blk" x="124" y="94" width="80" height="52" rx="3"/>
+      <rect class="ix-row" x="130" y="99" width="68" height="13"/><text class="ix-val" x="135" y="109">3</text>
+      <rect class="ix-row" x="130" y="113" width="68" height="13"/><text class="ix-val" x="135" y="123">1</text>
+      <rect class="ix-row" x="130" y="127" width="68" height="13"/><text class="ix-val" x="135" y="137">4</text>
+
+      <rect class="ix-blk" x="124" y="154" width="80" height="38" rx="3"/>
+      <rect class="ix-row" x="130" y="159" width="68" height="13"/><text class="ix-val" x="135" y="169">2</text>
+      <rect class="ix-row" x="130" y="173" width="68" height="13"/><text class="ix-val" x="135" y="183">5</text>
+    </g>
+
+    <!-- crossing pointers -->
+    <path class="ix-arr" d="M58,106 C88,106 96,120 124,120" marker-end="url(#ix-tip)"/>
+    <path class="ix-arr" d="M58,126 C88,126 96,166 124,166" marker-end="url(#ix-tip)"/>
+    <path class="ix-arr" d="M58,146 C88,146 96,106 124,106" marker-end="url(#ix-tip)"/>
+    <path class="ix-arr" d="M58,166 C88,166 96,134 124,134" marker-end="url(#ix-tip)"/>
+
+    <text class="ix-cap" x="20" y="292">Estructura <tspan class="ix-capA">separada</tspan>. El orden</text>
+    <text class="ix-cap" x="20" y="308">físico del fichero no se toca.</text>
+  </g>
+
+</svg>

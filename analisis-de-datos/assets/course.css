@@ -1,0 +1,443 @@
+/* Shared stylesheet for every lesson and reference page.
+   Tufte-inspired: one reading column, margin notes on wide screens,
+   restrained color, prints cleanly. */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* Two skins share every component below; only these tokens change.
+   Skin:  <html data-skin="sepia"> (default is "rosa").   Mode: data-theme="light|dark" or the OS setting.
+   assets/theme.js sets both attributes and remembers the choice. */
+
+/* ---- Rosa, light (default): the study suite's palette, toned down for long reading ---- */
+:root {
+  --bg: #ffffff;
+  --ink: #2b1422;
+  --muted: #7a5b6c;
+  --rule: #f1d6e3;
+  --accent: #c2185b;
+  --accent-soft: #fde8f1;
+  --ok: #17784a;
+  --ok-soft: #e1f3e9;
+  --bad: #bf2630;
+  --bad-soft: #fbe3e4;
+  --card: #fff6fa;
+  --code-bg: #fbeef4;
+  --body-font: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --head-font: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --head-weight: 700;
+  --h2-style: normal;
+  --body-size: 17px;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Charter, Georgia, serif;
+  --sans: "Atkinson Hyperlegible", "Gill Sans", "Segoe UI", Calibri, system-ui, sans-serif;
+  --mono: "JetBrains Mono", "Cascadia Code", Consolas, "DejaVu Sans Mono", monospace;
+  color-scheme: light;
+}
+
+/* ---- Rosa, dark ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #140b11;
+    --ink: #f8e9f1;
+    --muted: #c3a0b3;
+    --rule: #3a2331;
+    --accent: #ff6fa9;
+    --accent-soft: #3b1529;
+    --ok: #6fd39c;
+    --ok-soft: #173325;
+    --bad: #ff8a8f;
+    --bad-soft: #3d1a1e;
+    --card: #1e1219;
+    --code-bg: #241620;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #140b11;
+  --ink: #f8e9f1;
+  --muted: #c3a0b3;
+  --rule: #3a2331;
+  --accent: #ff6fa9;
+  --accent-soft: #3b1529;
+  --ok: #6fd39c;
+  --ok-soft: #173325;
+  --bad: #ff8a8f;
+  --bad-soft: #3d1a1e;
+  --card: #1e1219;
+  --code-bg: #241620;
+  color-scheme: dark;
+}
+
+/* ---- Sepia, light: the original Tufte look ---- */
+:root[data-skin="sepia"] {
+  --bg: #fffff8;
+  --ink: #1f1f1c;
+  --muted: #6b6a63;
+  --rule: #d9d6c8;
+  --accent: #8a3b12;
+  --accent-soft: #f4e9dc;
+  --ok: #2f6b3a;
+  --ok-soft: #e4f0e3;
+  --bad: #9b2226;
+  --bad-soft: #f6e3e1;
+  --card: #fbfaf2;
+  --code-bg: #f3f1e6;
+  --body-font: var(--serif);
+  --head-font: var(--serif);
+  --head-weight: 400;
+  --h2-style: italic;
+  --body-size: 18px;
+  --sans: "Gill Sans", "Gill Sans MT", "Segoe UI", Calibri, system-ui, sans-serif;
+  color-scheme: light;
+}
+
+/* ---- Sepia, dark ---- */
+@media (prefers-color-scheme: dark) {
+  :root[data-skin="sepia"]:not([data-theme="light"]) {
+    --bg: #1b1b19;
+    --ink: #e8e6dc;
+    --muted: #a3a195;
+    --rule: #3a3934;
+    --accent: #e39a63;
+    --accent-soft: #33271d;
+    --ok: #8fcf98;
+    --ok-soft: #1f3322;
+    --bad: #f08a8a;
+    --bad-soft: #3a2020;
+    --card: #232320;
+    --code-bg: #2a2a26;
+    color-scheme: dark;
+  }
+}
+:root[data-skin="sepia"][data-theme="dark"] {
+  --bg: #1b1b19;
+  --ink: #e8e6dc;
+  --muted: #a3a195;
+  --rule: #3a3934;
+  --accent: #e39a63;
+  --accent-soft: #33271d;
+  --ok: #8fcf98;
+  --ok-soft: #1f3322;
+  --bad: #f08a8a;
+  --bad-soft: #3a2020;
+  --card: #232320;
+  --code-bg: #2a2a26;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: var(--body-size); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body-font);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3rem 1rem 5rem;
+  position: relative;
+}
+
+/* ---------- Typography ---------- */
+
+h1, h2, h3 { font-family: var(--head-font); font-weight: var(--head-weight); line-height: 1.2; text-wrap: balance; }
+h1 { font-size: 2.1rem; margin: 0.3rem 0 0.6rem; }
+h2 { font-size: 1.45rem; margin: 2.6rem 0 0.8rem; font-style: var(--h2-style); }
+h3 { font-size: 1.15rem; margin: 1.8rem 0 0.5rem; }
+p, li { font-size: 1rem; }
+a { color: var(--accent); text-underline-offset: 2px; }
+strong { font-weight: 600; }
+small, .muted { color: var(--muted); }
+
+.kicker {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lede { font-size: 1.15rem; color: var(--muted); margin-top: 0; }
+
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+
+pre.diagram {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  background: var(--card);
+  border-left: 3px solid var(--rule);
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+pre.code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  background: var(--code-bg);
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  margin: 0.6rem 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ---------- Margin notes (Tufte sidenotes) ---------- */
+
+.sidenote {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--muted);
+  margin: 0.4rem 0 1rem;
+  padding-left: 0.8rem;
+  border-left: 2px solid var(--rule);
+}
+
+@media (min-width: 1180px) {
+  .sidenote {
+    float: right;
+    clear: right;
+    width: 15rem;
+    margin-right: -17.5rem;
+    margin-top: 0.2rem;
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* ---------- Tables ---------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.92rem;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+th {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.table-wrap { overflow-x: auto; }
+
+/* ---------- Callout blocks ---------- */
+
+.box {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+}
+.box > :first-child { margin-top: 0; }
+.box > :last-child { margin-bottom: 0; }
+.box .label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.box.win   { border-left: 4px solid var(--ok); }
+.box.recall { border-left: 4px solid var(--accent); background: var(--accent-soft); }
+.box.trap  { border-left: 4px solid var(--bad); }
+.box.source { border-left: 4px solid var(--muted); }
+.box.ask   { border-style: dashed; }
+
+/* ---------- Respuestas guía plegables (lecciones de notebooks) ---------- */
+
+details.answers {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--ok);
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  margin: 1rem 0 1.5rem;
+}
+details.answers > summary {
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+details.answers[open] > summary { margin-bottom: 0.6rem; }
+details.answers > :last-child { margin-bottom: 0.4rem; }
+@media print { details.answers { display: block; } }
+
+/* ---------- Quiz widget (assets/quiz.js) ---------- */
+
+.quiz { margin: 1.5rem 0; }
+
+.q {
+  border-top: 1px solid var(--rule);
+  padding: 1.2rem 0 0.4rem;
+}
+.q-num {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.q-text { margin: 0.25rem 0 0.8rem; }
+
+.q-options { display: grid; gap: 0.45rem; }
+
+.q-option {
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+}
+.q-option:hover:not(:disabled) { border-color: var(--accent); }
+.q-option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.q-option:disabled { cursor: default; }
+.q-option.correct { background: var(--ok-soft); border-color: var(--ok); }
+.q-option.wrong { background: var(--bad-soft); border-color: var(--bad); }
+
+.q-feedback {
+  font-size: 0.9rem;
+  margin: 0.7rem 0 0.6rem;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--rule);
+}
+.q-feedback.ok { border-color: var(--ok); }
+.q-feedback.bad { border-color: var(--bad); }
+.q-feedback strong { font-family: var(--sans); font-size: 0.8rem; letter-spacing: 0.05em; }
+
+.quiz-score {
+  font-family: var(--sans);
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.quiz-score button, .btn {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--bg);
+  background: var(--accent);
+  border: 0;
+  border-radius: 4px;
+  padding: 0.45rem 0.9rem;
+  margin: 0.6rem 0.4rem 0 0;
+  cursor: pointer;
+}
+
+/* ---------- Navigation ---------- */
+
+nav.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 3rem;
+  padding-top: 1rem;
+}
+.topbar {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.topbar a { color: var(--muted); }
+
+/* ---------- Reference pages: denser, two columns when printed ---------- */
+
+body.reference main { max-width: 56rem; }
+body.reference h2 { margin-top: 2rem; }
+.ref-grid { display: grid; gap: 0 2rem; }
+@media (min-width: 900px) { .ref-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- Index page ---------- */
+
+.toc { list-style: none; padding: 0; }
+.toc li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.toc .progress { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+
+/* ---------- Print ---------- */
+
+@media print {
+  html { font-size: 11pt; }
+  body { background: #fff; color: #000; }
+  main { max-width: none; padding: 0; }
+  .q-options, .quiz-score, nav.lesson-nav, .box.ask, .no-print { display: none !important; }
+  .sidenote { float: none; width: auto; margin: 0.3rem 0; }
+  a { color: #000; text-decoration: none; }
+  h2 { break-after: avoid; }
+  table, pre, .box { break-inside: avoid; }
+}
+
+/* ---------- Theme switcher (assets/theme.js) ---------- */
+
+.theme-switch {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+}
+.theme-switch button {
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 11px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.theme-switch button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+.theme-switch .sep { width: 1px; background: var(--rule); margin: 4px 2px; }
+@media print { .theme-switch { display: none; } }

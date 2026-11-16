@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boxplots y outliers</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0019 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0019 · Notebook 3 (en equipo)</div>
+<h1>Calcular los límites de un boxplot y decidir qué hacer con un outlier</h1>
+<p class="lede">Es la lección más "de examen" del bloque: tiene fórmulas, un ejemplo con números en la lámina y una decisión que depende del contexto.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>¿Qué porcentaje de los datos queda por debajo de Q1? ¿Y entre Q1 y Q3? En la <a href="0018-histogramas-y-asimetria.html">0018</a>, ¿desde qué valor de <code>mean radius</code> las barras se volvían muy bajas?</p>
+</div>
+
+<h2>Anatomía del boxplot</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Elemento</th><th>Qué es</th></tr>
+  <tr><td>Línea del medio de la caja</td><td><strong>Mediana (Q2)</strong>: el 50% de los datos está por debajo</td></tr>
+  <tr><td>Bordes de la caja</td><td><strong>Q1</strong> (percentil 25) abajo y <strong>Q3</strong> (percentil 75) arriba</td></tr>
+  <tr><td>Alto de la caja</td><td><strong>RIC = Q3 − Q1</strong>: ahí está el <strong>50% central</strong> de los datos</td></tr>
+  <tr><td>Límite inferior</td><td><strong>Li = Q1 − 1,5 · RIC</strong></td></tr>
+  <tr><td>Límite superior</td><td><strong>Ls = Q3 + 1,5 · RIC</strong></td></tr>
+  <tr><td>Bigotes</td><td>Llegan hasta el valor más extremo que <strong>no</strong> es atípico (no llegan a Li o Ls)</td></tr>
+  <tr><td>Puntos sueltos</td><td><strong>Valores atípicos</strong>: x &lt; Li o x &gt; Ls</td></tr>
+</table>
+</div>
+<p>Cómo se interpreta (lámina 15): <strong>caja más alta → mayor variabilidad</strong>. Si la distribución es simétrica, los bigotes miden lo mismo; si es asimétrica, son desiguales y el más largo apunta hacia la cola.</p>
+
+<div class="box trap">
+  <span class="label">No confundas</span>
+  <p>Li y Ls <strong>no son el mínimo y el máximo</strong>, ni tampoco la punta de los bigotes. Son la frontera para decidir qué es atípico. Si Li queda por debajo del mínimo real, no hay outliers abajo y el bigote termina en el mínimo. Y si la infografía de Gemini te dice "RIC = Q2 − Q1", está mal.</p>
+</div>
+
+<h2>El ejemplo de la lámina, paso a paso</h2>
+<p>Salarios mensuales en miles de $:</p>
+<div class="table-wrap">
+<table>
+  <tr><th>Paso</th><th>Cálculo</th><th>Lectura</th></tr>
+  <tr><td>Cuartiles</td><td>Q1 = 26 · Mediana = 33,5 · Q3 = 41</td><td>El 25% gana menos de 26 mil; la mitad, menos de 33,5 mil</td></tr>
+  <tr><td>RIC</td><td>41 − 26 = <strong>15</strong></td><td>El 50% central está entre 26 y 41 mil</td></tr>
+  <tr><td>Li</td><td>26 − 1,5 × 15 = <strong>3,5</strong></td><td>Menos de 3,5 mil es atípico → <strong>2</strong> es atípico bajo</td></tr>
+  <tr><td>Ls</td><td>41 + 1,5 × 15 = <strong>63,5</strong></td><td>Más de 63,5 mil es atípico → <strong>75</strong> es atípico alto</td></tr>
+  <tr><td>Bigotes</td><td>12 y 60</td><td>Mínimo y máximo <em>sin</em> contar los atípicos</td></tr>
+</table>
+</div>
+
+<h2>Outliers: por qué importan y qué hacer</h2>
+<p>Pueden <strong>distorsionar</strong> la media y la correlación. Ejemplo de la lámina 21: el mismo conjunto da <strong>r = 0,2 con outliers y r = 0,8 sin ellos</strong>. Se detectan con boxplots (puntos fuera de los bigotes), con scatterplots y con la regla de Li y Ls.</p>
+<p>Pero <strong>un outlier no es automáticamente un error</strong>:</p>
+<ul>
+  <li><strong>Error de carga o medición</strong> (edad 250) → se corrige o se elimina.</li>
+  <li><strong>Valor real pero extremo</strong> (un tumor muy grande) → se mantiene. Muchas veces es lo más interesante del análisis.</li>
+</ul>
+<p>La decisión depende del <strong>contexto</strong>.</p>
+
+<h2>Comparar variables con escalas distintas: z-score</h2>
+<p>Si ponés <code>mean area</code> (cientos) y <code>mean smoothness</code> (≈ 0,1) en el mismo boxplot, la caja de smoothness queda aplastada contra el cero. Se resuelve <strong>estandarizando</strong>:</p>
+<p style="text-align:center; font-size:1.15em"><strong>z = (x − media) / desvío estándar</strong></p>
+<p>Cada variable queda con media 0 y desvío 1; z = 2 significa "2 desvíos por encima del promedio". <strong>No cambia la forma</strong> de la distribución, solo la escala. Por eso la cantidad de outliers de cada variable tampoco cambia.</p>
+
+<h2>Los comandos del notebook</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Código</th><th>Qué hace</th></tr>
+  <tr><td><code>df[["mean radius"]].boxplot()</code></td><td>Boxplot de una variable</td></tr>
+  <tr><td><code>s.quantile(0.25)</code></td><td>Q1 (<code>0.75</code> da Q3)</td></tr>
+  <tr><td><code>s[(s &lt; li) | (s &gt; ls)]</code></td><td>Máscara booleana: valores fuera de los límites. <code>|</code> es "o"</td></tr>
+  <tr><td><code>df.iloc[:, 0:5].boxplot(rot=20)</code></td><td>Primeras 5 columnas, con los nombres rotados</td></tr>
+  <tr><td><code>(df[cols] - df[cols].mean()) / df[cols].std()</code></td><td>Z-score de varias columnas a la vez</td></tr>
+  <tr><td><code>df.select_dtypes("number").columns.drop("target")</code></td><td>Columnas numéricas menos <code>target</code></td></tr>
+  <tr><td><code>df.boxplot(column="mean radius", by="target")</code></td><td>Un boxplot por diagnóstico</td></tr>
+</table>
+</div>
+
+<div class="box trap">
+  <span class="label">Las celdas con COMPLETAR</span>
+  <p>§2: <code>q3 = s.quantile(0.75)</code> y <code>li = q1 - 1.5 * ric</code>. §6: <code>outliers_por_diagnostico("worst area")</code>, con comillas.</p>
+</div>
+
+<h2>Respuestas guía</h2>
+<p class="muted">Calculadas sobre <code>sample_dataset.csv</code>.</p>
+
+<details class="answers"><summary>§1–2 · Q1, mediana, Q3, límites y outliers de <code>mean radius</code></summary>
+<p><strong>Q1 = 11,67 · Mediana = 13,28 · Q3 = 15,75 · RIC = 4,07</strong></p>
+<p><strong>Li = 5,56 · Ls = 21,85</strong>. Hay <strong>11 outliers, todos por arriba</strong>: 22,01 · 22,27 · 23,09 · 23,27 · 23,29 · 24,25 · 24,63 · 25,22 · 25,73 · 27,42 · 28,11.</p>
+<p>¿Por qué no hay outliers abajo? Porque el mínimo real (6,98) es mayor que Li (5,56): ningún valor cae por debajo del límite.</p>
+<p>¿Es simétrica? No: la mediana está más cerca de Q1 (a 1,61) que de Q3 (a 2,47), el bigote superior es más largo y los puntos sueltos están arriba. Es asimetría positiva, igual que en el histograma.</p>
+</details>
+
+<details class="answers"><summary>§3 · Boxplot e histograma lado a lado</summary>
+<p>Los outliers son la <strong>cola derecha</strong> del histograma: las barras bajitas a la derecha de la línea roja (Ls = 21,85). Cada punto suelto del boxplot es una de esas observaciones de la cola. El boxplot resume; el histograma muestra la forma completa.</p>
+</details>
+
+<details class="answers"><summary>§4 · ¿Se ve la caja de <code>mean smoothness</code>? ¿Y estandarizadas?</summary>
+<p>No: vale ≈ 0,1 y comparte eje con <code>mean area</code>, que llega a 2501, así que su caja queda aplastada en el cero. Pasa porque las variables tienen <strong>escalas distintas</strong>.</p>
+<p>Estandarizadas, la que más outliers tiene es <strong><code>mean area</code> (14)</strong>, seguida de <code>mean radius</code> (11) y <code>mean perimeter</code> (10). La única con un outlier <strong>por abajo</strong> es <code>mean smoothness</code> (1 abajo y 4 arriba).</p>
+</details>
+
+<details class="answers"><summary>§5 · Las 3 variables con más outliers</summary>
+<p><code>radius error</code> (32), <code>smoothness error</code> (26) y <code>perimeter error</code> (25). Las tres son del tipo <strong><code>error</code></strong>: el error estándar de la medición. Son las variables con la cola derecha más larga (skew entre 2,3 y 3,6, <a href="0018-histogramas-y-asimetria.html">0018</a>).</p>
+</details>
+
+<details class="answers"><summary>§6 · ¿A qué diagnóstico corresponden? ¿Eliminarlos?</summary>
+<p>Los 11 outliers de <code>mean radius</code> son <strong>todos malignos</strong>. Lo mismo pasa con <code>worst area</code> (21 de 21) y <code>mean concave points</code> (7 de 7). En <code>mean texture</code> están mezclados: 4 malignos y 2 benignos.</p>
+<p><strong>No hay que eliminarlos</strong>: no son errores de medición sino tumores realmente grandes. Son justamente los casos que responden la pregunta guía. Si los borrás, te quedás sin los malignos más claros.</p>
+</details>
+
+<h2>Práctica</h2>
+<div class="quiz" data-quiz-id="0019-boxplots-y-outliers"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "Q1 = 20 y Q3 = 30. ¿Cuánto vale el RIC?",
+   "options": ["10", "50", "25", "15"], "answer": 0,
+   "why": "RIC = Q3 − Q1 = 30 − 20 = 10."},
+  {"q": "Q1 = 20 y Q3 = 30. ¿Cuánto vale el límite superior Ls?",
+   "options": ["45", "40", "35", "60"], "answer": 0,
+   "why": "Ls = Q3 + 1,5 · RIC = 30 + 1,5 · 10 = 45."},
+  {"q": "Q1 = 20 y Q3 = 30. ¿Cuál de estos valores es atípico?",
+   "options": ["4", "6", "44", "25"], "answer": 0,
+   "why": "Li = 20 − 15 = 5 y Ls = 45. Solo 4 queda fuera de [5, 45]."},
+  {"q": "¿Qué porcentaje de los datos contiene la caja del boxplot?",
+   "options": ["El 50% central", "El 75% inferior", "El 80% central", "El 25% superior"], "answer": 0,
+   "why": "La caja va de Q1 a Q3: el 50% central. El 80% de la infografía es un error."},
+  {"q": "El bigote superior es mucho más largo que el inferior. ¿Qué indica?",
+   "options": ["Asimetría con cola a la derecha", "Distribución perfectamente simétrica", "Asimetría con cola a la izquierda", "Que no hay valores atípicos"], "answer": 0,
+   "why": "Bigotes desiguales indican asimetría; el largo apunta hacia la cola."},
+  {"q": "Li = 5,56 y el mínimo de la variable es 6,98. ¿Qué podés afirmar?",
+   "options": ["No hay outliers por abajo", "Hay un outlier en 6,98", "El bigote inferior llega a 5,56", "La variable tiene datos faltantes"], "answer": 0,
+   "why": "Ningún valor es menor que Li. El bigote termina en el mínimo real, 6,98."},
+  {"q": "Los outliers de tamaño de tumor son todos malignos. En un EDA, ¿qué hacés?",
+   "options": ["Los mantenés porque son casos reales", "Los eliminás porque distorsionan la media", "Los reemplazás por la mediana del grupo", "Los imputás con la media de benignos"], "answer": 0,
+   "why": "No son errores: son tumores realmente grandes y diferencian el diagnóstico. Un outlier no es automáticamente un error."},
+  {"q": "¿Para qué estandarizás (z-score) antes de comparar boxplots de varias variables?",
+   "options": ["Para llevarlas a la misma escala", "Para eliminar los valores atípicos", "Para volverlas simétricas", "Para completar los faltantes"], "answer": 0,
+   "why": "Media 0 y desvío 1. No cambia la forma ni elimina outliers: solo la escala."},
+  {"q": "Un valor tiene z = 2. ¿Qué significa?",
+   "options": ["Está 2 desvíos sobre la media", "Es el doble de la media", "Está en el percentil 2", "Es un error de carga"], "answer": 0,
+   "why": "z = (x − media) / desvío. z = 2 → dos desvíos estándar por encima del promedio."},
+  {"q": "Según la lámina, ¿qué le pasó a r al quitar los outliers del ejemplo?",
+   "options": ["Pasó de 0,2 a 0,8", "Pasó de 0,8 a 0,2", "Quedó igual en 0,5", "Pasó de −0,2 a 0,2"], "answer": 0,
+   "why": "Con outliers r = 0,2; sin outliers r = 0,8. Los outliers pueden esconder una relación fuerte."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Con Q1 y Q3 calculás RIC, Li y Ls de memoria, clasificás cualquier valor como atípico o no, y justificás si mantenerlo o eliminarlo según el contexto.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>Notebook <code>3_CIA_EDA</code> y las láminas 15, 16, 21 y 22 del <a href="../material_eda/1-Teoría-Conceptual/003_ANALISIS_EXPLORATORIO_Data_Science_RESUMIDO_2_2026.pdf">PDF de teoría</a>. Para profundizar: <a href="https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm">NIST/SEMATECH e-Handbook · What are outliers in the data?</a>, que usa la misma regla de 1,5 · RIC.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Como DE seguramente filtraste outliers en un pipeline. Si querés, comparamos la regla del RIC con lo que harías en un control de calidad automático.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0018-histogramas-y-asimetria.html">← 0018 · Notebook 2</a>
+  <a href="0020-relaciones-y-correlacion.html">0020 · Notebooks 4 y 5 →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

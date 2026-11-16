@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Visible copy in neutral Spanish (no voseo). Source: cátedra PDF raw/«Clase 7 - Kanban Lean y XP.pdf» (= class 12, 28/10), pp. 6–10, slides in
+     clases/img/klx-pNN.jpg, plus the professor's remarks; Kanban Guide 2025 and Wikipedia are complement. Diagrams between markers come from tools/diagramas.py. Split from the former 12-lean-xp-kanban. -->
+<title>Clase 12b · Kanban</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagram.css">
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 12 (2 de 2) · 28/10/2026 · Parcial del 18/11</p>
+  <h1>Kanban: eliminar cuellos de botella limitando el trabajo en curso</h1>
+  <p class="subtitle">La pregunta que el profesor casi siempre toma, la regla que dijo que puede tomar y cómo se une con Lean.</p>
+  <p class="meta"><span>⏱ 20 minutos</span><span>Fuente: PDF de la cátedra «Kanban, Lean y XP»</span><span><a href="../slides/12-lean-xp-kanban/index.html">Ver las slides</a></span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder responder cuál es el objetivo de Kanban con las palabras de la cátedra, explicar por qué limitar el trabajo en curso elimina cuellos de botella, distinguir pull de push, armar un tablero con sus tarjetas, elegir una herramienta según el proyecto y encadenar Lean con Kanban.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> la <a href="12a-lean-xp.html">Clase 12a</a>: la muda de <strong>espera</strong>. También de <a href="10-ceremonias-scrum.html">Scrum</a>, que sirve de comparación.</p>
+  <p><span class="to">Alimenta</span> la <a href="parcial-agil-guia.html">guía del parcial</a> del 18/11.</p>
+</div>
+
+<h2 id="repaso-previo">Antes de empezar · repaso de la Clase 12a</h2>
+<details class="recall">
+  <summary>Sin mirar: los siete tipos de muda de la cátedra. ¿Cuáles son «del operario»?</summary>
+  <p>Transporte, inventario, movimiento, espera, sobreprocesamiento, sobreproducción y defectos. «Del operario»: <strong>movimiento</strong> y <strong>espera</strong>. La espera es la que conecta con Kanban. Repasar en la <a href="12a-lean-xp.html#lean">Clase 12a</a>.</p>
+</details>
+
+<p class="note"><strong>Aviso del profesor.</strong> En clase dijo que en los parciales <strong>casi siempre pregunta cuál es el objetivo de Kanban</strong>, y que puede tomar la regla de <a href="#limitar-wip">limitar el trabajo en curso</a>. La <a href="#objetivos">Idea 1</a> tiene la respuesta modelo; la de los otros enfoques está en la <a href="parcial-agil-guia.html#enfoques">guía del parcial</a>.</p>
+
+<h2 id="objetivos">Idea 1 · El objetivo de Kanban: la pregunta que casi siempre toma</h2>
+<p><strong>Kanban, según la cátedra.</strong> La diapositiva de la clase 12 lo dice así:</p>
+<div class="pair">
+<figure class="slide">
+  <img src="img/klx-p06.jpg" alt="Diapositiva de la cátedra: Kanban fue creada en Toyota por Taiichi Ohno en los 50 como parte de la metodología Kaizen para eliminar cuellos de botella. Significa registro visual. Maneja el concepto de pull. Basado en las buenas prácticas de las automotrices de USA. Tres reglas: mostrar el proceso, limitar el trabajo en curso, optimizar el flujo." loading="lazy">
+  <figcaption>Cátedra, «Kanban, Lean y XP», p. 6.</figcaption>
+</figure>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Dato (cátedra)</th><th>Para recordar</th></tr></thead>
+<tbody>
+<tr><td><strong>Origen</strong></td><td>Toyota, <strong>Taiichi Ohno</strong>, años 50, dentro de <strong>Kaizen</strong> (mejora continua)</td></tr>
+<tr><td><strong>Objetivo</strong></td><td><strong>Eliminar cuellos de botella</strong></td></tr>
+<tr><td><strong>Significado</strong></td><td>«Registro visual»: la tarjeta, el tablero</td></tr>
+<tr><td><strong>Concepto clave</strong></td><td><strong>Pull</strong>: se toma trabajo cuando hay capacidad</td></tr>
+<tr><td><strong>Inspiración</strong></td><td>Buenas prácticas de las automotrices de EE. UU.</td></tr>
+<tr><td><strong>3 reglas</strong></td><td>1. <strong>Mostrar el proceso</strong> · 2. <strong>Limitar el trabajo en curso</strong> · 3. <strong>Optimizar el flujo</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Respuesta modelo para el parcial.</strong> «Kanban nació en Toyota (Taiichi Ohno, años 50, dentro de Kaizen) con el objetivo de <strong>eliminar cuellos de botella</strong>. Para eso aplica tres reglas: <strong>mostrar el proceso</strong> en un tablero, <strong>limitar el trabajo en curso</strong> (WIP) y <strong>optimizar el flujo</strong>, trabajando con <strong>pull</strong>.»<br>Se arranca con lo que dice la diapositiva y se completa con las tres reglas: así queda claro que se sabe también el <em>cómo</em>.</p>
+
+<h3 id="limitar-wip">La regla que el profesor marcó: limitar el trabajo en curso</h3>
+<p>Dijo que es posible que la tome. Hay que poder explicar <strong>qué es</strong>, <strong>cómo se hace</strong> y <strong>por qué funciona</strong>:</p>
+<ul>
+<li><strong>Qué es:</strong> poner un número máximo de tarjetas en cada columna del tablero (el límite de WIP, por <em>work in progress</em>). Si «En pruebas» tiene límite 2, no puede haber una tercera historia en pruebas.</li>
+<li><strong>Cómo se hace:</strong> cuando una columna llega a su límite, la anterior <strong>no le pasa más trabajo</strong>: espera a que salga una tarjeta (pull). La consigna del equipo pasa a ser «dejar de empezar, empezar a terminar».</li>
+<li><strong>Por qué funciona:</strong> (1) el <strong>cuello de botella se ve</strong>, porque es la columna que siempre está llena y frena a las demás: así se cumple el objetivo de eliminarlo. (2) Hay <strong>menos cosas a medias</strong>: menos cambio de tarea y menos trabajo parcialmente terminado, que son desperdicios Lean. (3) Cada ítem <strong>termina antes</strong>, porque no compite con otros veinte.</li>
+</ul>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Ejemplo (propio)</th><th>Sin límite de WIP</th><th>Con límite de WIP = 2</th></tr></thead>
+<tbody>
+<tr><td>Una persona con 6 historias de 1 día cada una</td><td>Empieza las 6 a la vez y avanza un poco cada día: <strong>todas terminan recién el día 6</strong>, más el tiempo perdido al cambiar de una a otra</td><td>Trabaja de a dos: <strong>las primeras terminan el día 2</strong>, y el usuario ya tiene valor mientras sigue con el resto</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note"><strong>Complemento.</strong> La Kanban Guide (2025) dice algo compatible: define Kanban como «una estrategia para optimizar el flujo de valor» y pide controlar explícitamente el WIP. Para el parcial, usar las palabras de la cátedra.</p>
+
+<h2 id="kanban">Idea 2 · El tablero: WIP, pull y push</h2>
+<p>La cátedra define cómo se implementa: un <strong>tablero con 3 columnas</strong> y <strong>tarjetas</strong> con unos datos mínimos.</p>
+<div class="pair">
+<figure class="slide">
+  <img src="img/klx-p07.jpg" alt="Diapositiva de la cátedra: Kanban, implementación. Tablero con 3 columnas: To do; WIP (work in progress, se puede abrir en varias columnas); Done. Tarjetas con mínimamente los siguientes datos: descripción, responsable, fecha de inicio y fin. Se pueden agregar todos los datos adicionales que necesiten." loading="lazy">
+  <figcaption>Cátedra, «Kanban, Lean y XP», p. 7.</figcaption>
+</figure>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Elemento (cátedra)</th><th>Qué lleva</th></tr></thead>
+<tbody>
+<tr><td><strong>Tablero</strong></td><td>3 columnas: <strong>To do</strong> (por hacer), <strong>WIP</strong> (<em>work in progress</em>, en curso) y <strong>Done</strong> (hecho). La columna WIP <strong>se puede abrir en varias</strong>, una por etapa (por ejemplo «En curso» y «Revisión»).</td></tr>
+<tr><td><strong>Tarjeta</strong></td><td>Como mínimo: <strong>descripción</strong>, <strong>responsable</strong> y <strong>fecha de inicio y fin</strong>. Se pueden agregar todos los datos que haga falta.</td></tr>
+</tbody>
+</table>
+</div>
+<p>Las fechas de la tarjeta sirven para algo más que el registro: si una tarjeta lleva muchos días en la misma columna, ahí se está formando el cuello de botella. El diagrama abre la columna WIP en dos («En curso» y «Revisión») y le pone un límite a cada una.</p>
+
+<figure class="diagram">
+<!--diagram:kanban-flujo-->
+<svg viewBox="0 0 960 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="kanban-flujo-title kanban-flujo-desc"><title id="kanban-flujo-title">Tablero Kanban: límites de WIP, pull y cuello de botella</title><desc id="kanban-flujo-desc">Cuatro columnas: Por hacer con cuatro tarjetas, En curso con tres de un límite de tres, Revisión con dos de un límite de dos y Hecho con tres. La columna Revisión llena es el cuello de botella: nada nuevo entra hasta que salga una tarjeta, y el trabajo se tira (pull) cuando hay capacidad.</desc><defs><marker id="kanban-flujo-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="kanban-flujo-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="kanban-flujo-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><path class="dg-line" d="M800 348 H140" marker-end="url(#kanban-flujo-arrow)"/>
+<rect class="dg-mask" x="296" y="324" width="348" height="16" rx="2"/>
+<text class="dg-lbl" x="470" y="336" text-anchor="middle">pull: se toma trabajo solo cuando hay capacidad</text>
+<rect class="dg-zone" x="40" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="52" y="48" text-anchor="start">POR HACER</text>
+<text class="dg-tag" x="232" y="48" text-anchor="end">sin límite</text>
+<rect class="dg-mask" x="60" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="99" text-anchor="middle">Historia 7</text>
+<rect class="dg-mask" x="60" y="128" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="128" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="155" text-anchor="middle">Historia 8</text>
+<rect class="dg-mask" x="60" y="184" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="184" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="211" text-anchor="middle">Historia 9</text>
+<rect class="dg-mask" x="60" y="240" width="164" height="44" rx="6"/>
+<rect class="dg-ghost" x="60" y="240" width="164" height="44" rx="6"/>
+<text class="dg-name" x="142" y="267" text-anchor="middle">Historia 10</text>
+<rect class="dg-zone" x="260" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="272" y="48" text-anchor="start">EN CURSO</text>
+<text class="dg-tag" x="452" y="48" text-anchor="end">WIP 3 / 3</text>
+<rect class="dg-mask" x="280" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-box" x="280" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="362" y="99" text-anchor="middle">Historia 4</text>
+<rect class="dg-mask" x="280" y="128" width="164" height="44" rx="6"/>
+<rect class="dg-box" x="280" y="128" width="164" height="44" rx="6"/>
+<text class="dg-name" x="362" y="155" text-anchor="middle">Historia 5</text>
+<rect class="dg-mask" x="280" y="184" width="164" height="44" rx="6"/>
+<rect class="dg-box" x="280" y="184" width="164" height="44" rx="6"/>
+<text class="dg-name" x="362" y="211" text-anchor="middle">Historia 6</text>
+<rect class="dg-zone" x="480" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="492" y="48" text-anchor="start">REVISIÓN</text>
+<text class="dg-tag" x="672" y="48" text-anchor="end">WIP 2 / 2</text>
+<rect class="dg-mask" x="500" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-focal" x="500" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="582" y="99" text-anchor="middle">Historia 2</text>
+<rect class="dg-mask" x="500" y="128" width="164" height="44" rx="6"/>
+<rect class="dg-focal" x="500" y="128" width="164" height="44" rx="6"/>
+<text class="dg-name" x="582" y="155" text-anchor="middle">Historia 3</text>
+<rect class="dg-zone" x="700" y="24" width="204" height="288" rx="8"/>
+<text class="dg-tag" x="712" y="48" text-anchor="start">HECHO</text>
+<text class="dg-tag" x="892" y="48" text-anchor="end">terminadas</text>
+<rect class="dg-mask" x="720" y="72" width="164" height="44" rx="6"/>
+<rect class="dg-store" x="720" y="72" width="164" height="44" rx="6"/>
+<text class="dg-name" x="802" y="99" text-anchor="middle">Historia 1</text>
+<text class="dg-note" x="40" y="396" text-anchor="start">Cuello de botella: Revisión está llena, así que En curso no puede entregar y Por hacer no avanza.</text>
+<text class="dg-note" x="40" y="420" text-anchor="start">El límite de WIP vuelve visible el problema el mismo día en que aparece.</text>
+<line class="dg-rule" x1="40" y1="456" x2="920" y2="456"/>
+<text class="dg-tag" x="40" y="484" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="472" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="484" text-anchor="start">cuello de botella</text>
+<path class="dg-line" d="M304 480 H328" marker-end="url(#kanban-flujo-arrow)"/>
+<text class="dg-note" x="336" y="484" text-anchor="start">dirección del pull</text></svg>
+<!--/diagram:kanban-flujo-->
+<figcaption>Un tablero con límites de WIP. Los números son un ejemplo propio. <a href="../diagramas/kanban-flujo.html">Ver en grande</a>.</figcaption>
+</figure>
+
+<h3>WIP, pull y push</h3>
+<ul>
+<li><strong>WIP (trabajo en curso):</strong> los ítems empezados y no terminados. La guía exige controlar explícitamente cuántos hay entre que se inician y se terminan, y dice que eso mejora el foco y la colaboración.</li>
+<li><strong>Pull (tirar):</strong> un ítem nuevo se empieza solo cuando hay una señal clara de capacidad, por ejemplo cuando el WIP baja del límite. Wikipedia lo contrasta con <strong>push</strong>: en un sistema push el trabajo se empuja al proceso cuando alguien lo pide, sin mirar la capacidad.</li>
+</ul>
+
+<figure class="diagram">
+<!--diagram:push-pull-->
+<svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="push-pull-title push-pull-desc"><title id="push-pull-title">Push contra pull: dónde se esconde el cuello de botella</title><desc id="push-pull-desc">En push cada etapa empuja trabajo a la siguiente sin mirar su capacidad y la cola se acumula frente a la etapa lenta. En pull cada etapa toma trabajo solo cuando tiene lugar bajo su límite de WIP, así que la etapa llena queda a la vista y frena a las anteriores.</desc><defs><marker id="push-pull-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="push-pull-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="push-pull-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-row" x="40" y="44" text-anchor="start">Push · se empuja trabajo sin mirar la capacidad</text>
+<path class="dg-line" d="M280 96 H356" marker-end="url(#push-pull-arrow)"/>
+<path class="dg-line" d="M600 96 H676" marker-end="url(#push-pull-arrow)"/>
+<rect class="dg-mask" x="40" y="64" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="64" width="240" height="64" rx="6"/>
+<text class="dg-name" x="160" y="92" text-anchor="middle">Análisis</text>
+<text class="dg-sub" x="160" y="110" text-anchor="middle">termina y empuja</text>
+<rect class="dg-mask" x="360" y="64" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="360" y="64" width="240" height="64" rx="6"/>
+<text class="dg-name" x="480" y="92" text-anchor="middle">Desarrollo</text>
+<text class="dg-sub" x="480" y="110" text-anchor="middle">termina y empuja</text>
+<rect class="dg-mask" x="680" y="64" width="240" height="64" rx="6"/>
+<rect class="dg-focal" x="680" y="64" width="240" height="64" rx="6"/>
+<text class="dg-name" x="800" y="92" text-anchor="middle">Pruebas</text>
+<text class="dg-sub" x="800" y="110" text-anchor="middle">cola: 9 ítems esperando</text>
+<text class="dg-note-accent" x="800" y="156" text-anchor="middle">la cola crece y nadie la ve a tiempo</text>
+<text class="dg-row" x="40" y="220" text-anchor="start">Pull · cada etapa toma trabajo cuando tiene lugar (límite de WIP)</text>
+<path class="dg-line" d="M280 260 H356" marker-end="url(#push-pull-arrow)"/>
+<path class="dg-line-link" d="M356 288 H284" marker-end="url(#push-pull-arrow-link)"/>
+<path class="dg-line" d="M600 260 H676" marker-end="url(#push-pull-arrow)"/>
+<path class="dg-line-link" d="M676 288 H604" marker-end="url(#push-pull-arrow-link)"/>
+<rect class="dg-mask" x="40" y="240" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="240" width="240" height="64" rx="6"/>
+<text class="dg-name" x="160" y="268" text-anchor="middle">Análisis</text>
+<text class="dg-sub" x="160" y="286" text-anchor="middle">WIP 2 de 3 · toma si hay lugar</text>
+<rect class="dg-mask" x="360" y="240" width="240" height="64" rx="6"/>
+<rect class="dg-box" x="360" y="240" width="240" height="64" rx="6"/>
+<text class="dg-name" x="480" y="268" text-anchor="middle">Desarrollo</text>
+<text class="dg-sub" x="480" y="286" text-anchor="middle">WIP 3 de 3 · espera la señal</text>
+<rect class="dg-mask" x="680" y="240" width="240" height="64" rx="6"/>
+<rect class="dg-focal" x="680" y="240" width="240" height="64" rx="6"/>
+<text class="dg-name" x="800" y="268" text-anchor="middle">Pruebas</text>
+<text class="dg-sub" x="800" y="286" text-anchor="middle">WIP 2 de 2 · llena, frena</text>
+<text class="dg-note" x="480" y="340" text-anchor="middle">La columna llena se ve en el tablero: ahí está el cuello de botella para atacar.</text>
+<line class="dg-rule" x1="40" y1="404" x2="920" y2="404"/>
+<text class="dg-tag" x="40" y="432" text-anchor="start">LEYENDA</text>
+<path class="dg-line" d="M128 428 H152" marker-end="url(#push-pull-arrow)"/>
+<text class="dg-note" x="160" y="432" text-anchor="start">trabajo</text>
+<path class="dg-line-link" d="M240 428 H264" marker-end="url(#push-pull-arrow-link)"/>
+<text class="dg-note" x="272" y="432" text-anchor="start">señal de capacidad (pull)</text>
+<rect class="dg-focal" x="472" y="420" width="20" height="16" rx="4"/>
+<text class="dg-note" x="500" y="432" text-anchor="start">cuello de botella</text></svg>
+<!--/diagram:push-pull-->
+<figcaption>Push contra pull con las mismas tres etapas. En push la cola se acumula sin que nadie la vea; en pull la columna llena avisa. Diagrama propio. <a href="../diagramas/push-pull.html">Ver en grande</a>.</figcaption>
+</figure>
+
+<h3>Ejemplo: el tablero de un equipo con una sola persona que prueba</h3>
+<p>El equipo de la web de reservas tiene cuatro desarrolladores y una persona que prueba. Columnas: <em>Por hacer</em> (To do) → <em>En desarrollo</em> (WIP 4) → <em>En pruebas</em> (WIP 2) → <em>Hecho</em> (Done): la columna WIP de la cátedra, abierta en dos. Cada tarjeta lleva la historia (descripción), quién la tiene (responsable) y las fechas de inicio y fin.</p>
+<ol class="chain">
+  <li><strong>«En pruebas» llega a 2 de 2</strong><span class="q">Los desarrolladores terminan más rápido de lo que se prueba</span></li>
+  <li data-in="no hay lugar para entregar"><strong>«En desarrollo» se llena: 4 de 4</strong><span class="q">Nadie puede tomar una tarjeta nueva de «Por hacer»</span></li>
+  <li data-in="el tablero lo muestra el mismo día"><strong>El cuello de botella queda a la vista: las pruebas</strong><span class="q">Falta capacidad para probar, no para programar</span></li>
+  <li data-in="el equipo decide"><strong>Los desarrolladores libres ayudan a probar</strong><span class="q">Sale una tarjeta, entra otra: el flujo vuelve a moverse</span></li>
+</ol>
+<p>En un sistema <strong>push</strong>, los desarrolladores seguirían empezando historias y la pila sin probar crecería sin que nadie la vea hasta el final. Y no hay Sprints: el trabajo entra y sale de forma continua.</p>
+<p class="note"><strong>Las tres reglas en el ejemplo.</strong> <em>Mostrar el proceso</em>: el tablero con sus columnas. <em>Limitar el trabajo en curso</em>: los números 4 y 2. <em>Optimizar el flujo</em>: lo que el equipo hace cuando el límite le muestra el problema (ayudar a probar, sumar capacidad, cambiar el límite).</p>
+
+<h3 id="herramientas">Herramientas comunes: Trello, Jira y Azure DevOps</h3>
+<p>La cátedra compara tres herramientas. La pregunta probable no es de memoria sino de criterio: <strong>cuál conviene según el tamaño del proyecto y del equipo</strong>.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Herramienta</th><th>A favor (cátedra)</th><th>En contra (cátedra)</th><th>Conviene para…</th></tr></thead>
+<tbody>
+<tr><td><strong>Trello</strong></td><td>Fácil de usar; la versión gratuita alcanza; muchos power-ups</td><td>Con equipos grandes se complica el seguimiento y el escalamiento</td><td>Equipos y proyectos chicos</td></tr>
+<tr><td><strong>Jira</strong></td><td>Muy configurable; arma tableros y gráficos; muchísimos plug-ins</td><td>Licencia cara a partir de 10 usuarios; interfaz difícil al principio; demasiado potente para proyectos chicos</td><td>Equipos medianos o grandes que necesitan métricas</td></tr>
+<tr><td><strong>Azure DevOps</strong></td><td>Integrado con la suite de Microsoft (pipelines, repositorios); pensado para grandes corporaciones; muchas empresas tienen convenios que lo abaratan</td><td>Puesta a punto compleja; visualmente poco agradable; no recomendable para proyectos chicos</td><td>Empresas grandes que ya trabajan con Microsoft</td></tr>
+</tbody>
+</table>
+</div>
+<p>La última columna es una síntesis propia de los pros y contras. En la actividad de la clase, los equipos armaron en Trello <strong>el Sprint actual de su proyecto</strong>, con historias de usuario partidas en tareas (el <em>splitting</em> de la <a href="10-ceremonias-scrum.html">Clase 10</a>). O sea que un tablero Kanban también sirve para mostrar el trabajo de un Sprint de Scrum, aunque Kanban como método no use Sprints.</p>
+<p class="note"><strong>Complemento.</strong> La Kanban Guide (2025) propone medir el flujo con cuatro métricas: WIP (ítems empezados y no terminados), throughput (ítems terminados por unidad de tiempo), antigüedad de cada ítem (cuánto lleva abierto) y cycle time (cuánto tardó de punta a punta). No están en la cátedra.</p>
+
+<h2 id="lean-kanban">Idea 3 · Pregunta de final: ¿qué relación hay entre Lean y Kanban?</h2>
+<p>El profesor la planteó como una cadena, «lo que no debería pasar»:</p>
+<ol class="chain">
+  <li><strong>El operario está esperando a que otro termine algo</strong><span class="q">Eso es muda de <strong>espera</strong> (del operario)</span></li>
+  <li data-in="la espera aparece siempre en el mismo lugar"><strong>Hay un cuello de botella</strong><span class="q">Una etapa no da abasto y frena a las demás</span></li>
+  <li data-in="¿cómo lo eliminamos?"><strong>Con Kanban</strong><span class="q">Mostrar el proceso, limitar el trabajo en curso, optimizar el flujo</span></li>
+  <li data-in="el flujo deja de trabarse"><strong>Se ataca el desperdicio de espera</strong><span class="q">Kanban es una herramienta para cumplir el objetivo de Lean</span></li>
+</ol>
+<p class="note"><strong>Respuesta modelo.</strong> «Lean busca eliminar los desperdicios. Uno de ellos es la <strong>espera</strong>: cuando un operario espera a que otro termine, hay un <strong>cuello de botella</strong>. Kanban nació en Toyota justamente para <strong>eliminar cuellos de botella</strong>: muestra el proceso en un tablero, limita el trabajo en curso para que la etapa saturada quede a la vista y trabaja con pull, así nadie recibe trabajo que no puede procesar. Por eso <strong>Kanban es una forma concreta de atacar la muda de espera</strong>: Lean dice <em>qué</em> eliminar y Kanban da el <em>cómo</em>.»</p>
+<p>De paso, limitar el WIP también reduce otra muda: el <strong>inventario</strong> (trabajo empezado y no terminado).</p>
+
+<h2 id="comparar">Idea 4 · Kanban junto a los otros enfoques</h2>
+<p>La pregunta del objetivo puede venir por cualquiera de los cuatro enfoques. La comparación completa (objetivo en una frase, qué controla cada uno y qué problema resuelve) está en la <a href="parcial-agil-guia.html#enfoques">guía del parcial</a>, porque mezcla todas las clases ágiles. Lo mínimo para esta lección:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th></th><th>Scrum</th><th>Kanban</th></tr></thead>
+<tbody>
+<tr><td>Ritmo</td><td><strong>Sprints</strong> de duración fija (2 semanas a 2 meses)</td><td><strong>Flujo continuo</strong>: el trabajo entra y sale cuando hay capacidad</td></tr>
+<tr><td>Qué limita</td><td>El <strong>tiempo</strong>: lo que entra en un Sprint</td><td>La <strong>cantidad en curso</strong>: el WIP por columna</td></tr>
+<tr><td>Roles y ceremonias</td><td>3 roles y 4 ceremonias definidas</td><td>La cátedra no define ninguno: 3 reglas y un tablero</td></tr>
+<tr><td>Origen</td><td>Software; sus creadores firmaron el Manifiesto</td><td>Toyota, años 50: la fábrica</td></tr>
+</tbody>
+</table>
+</div>
+<p>La fila de roles y la de qué limita son una síntesis propia de las diapositivas. No son excluyentes: un equipo Scrum puede llevar su Sprint en un tablero Kanban, como en la actividad de Trello.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: el objetivo de Kanban según la cátedra, su origen y sus tres reglas.</summary>
+  <p>Eliminar cuellos de botella. Toyota, Taiichi Ohno, años 50, dentro de Kaizen; significa «registro visual»; maneja pull. Reglas: mostrar el proceso, limitar el trabajo en curso, optimizar el flujo.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: ¿por qué limitar el trabajo en curso elimina cuellos de botella? Explicarlo con un tablero.</summary>
+  <p>Con un máximo por columna, la etapa lenta se llena y frena a las anteriores: el cuello de botella queda a la vista y se puede atacar. Además hay menos trabajo a medias y cada ítem termina antes.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: las columnas del tablero de la cátedra, los datos mínimos de una tarjeta y qué herramienta conviene para un proyecto chico.</summary>
+  <p>To do, WIP (que se puede abrir en varias columnas) y Done. Tarjeta: descripción, responsable, fecha de inicio y fin. Proyecto chico: Trello, porque es fácil de usar y la versión gratuita alcanza; Jira y Azure DevOps son demasiado para eso.</p>
+</details>
+<details class="recall">
+  <summary>Sin volver arriba: la cadena que une Lean con Kanban.</summary>
+  <p>Espera del operario (muda) → cuello de botella → Kanban (mostrar, limitar, optimizar, pull) → se elimina la espera. Lean dice qué eliminar; Kanban, cómo.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">¿Cuál es el objetivo de Kanban?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: la cátedra dice que Kanban se creó en Toyota «para eliminar cuellos de botella», con tres reglas: mostrar el proceso, limitar el trabajo en curso y optimizar el flujo (clase 12).">Eliminar cuellos de botella: proceso visible, WIP limitado</button>
+    <button data-why="No: eso es Scrum. Kanban no se organiza en Sprints de duración fija.">Entregar incrementos al final de cada Sprint fijo</button>
+    <button data-why="No: ese es el foco de Lean, del que Kanban toma ideas, pero el objetivo propio de Kanban es el flujo.">Clasificar y eliminar los siete tipos de desperdicio</button>
+    <button data-why="No: esas son prácticas de XP, centradas en la calidad técnica.">Asegurar calidad con pruebas y programación en pareja</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Un operario pasa horas esperando a que otro termine su parte. ¿Qué muda es y con qué se ataca?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: la espera del operario es muda; si se repite en el mismo lugar hay un cuello de botella, y Kanban nació para eliminarlo (clase 12).">Espera; se ataca con Kanban</button>
+    <button data-why="No: el movimiento es el desplazamiento innecesario del operario, no estar parado esperando.">Movimiento; se ataca con XP</button>
+    <button data-why="No: el inventario son materias primas o trabajo acumulado; acá lo que sobra es tiempo ocioso.">Inventario; se ataca con Scrum</button>
+    <button data-why="No: los defectos son errores del producto; acá el problema es el flujo.">Defectos; se ataca con pruebas</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">¿Por qué limitar el trabajo en curso ayuda a eliminar cuellos de botella?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: con límite, la etapa lenta se llena y frena a las anteriores; queda a la vista y se puede atacar. Además hay menos trabajo a medias.">Porque la columna llena muestra dónde está el cuello</button>
+    <button data-why="No: limitar el WIP no agrega gente; muestra dónde falta capacidad.">Porque obliga a sumar más personas a cada columna</button>
+    <button data-why="No: el límite no acorta los Sprints; Kanban trabaja con flujo continuo.">Porque acorta bastante la duración de todos los Sprints</button>
+    <button data-why="No: empujar trabajo sin mirar la capacidad es push, y esconde el cuello de botella.">Porque permite empujar más trabajo a la etapa siguiente</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">En un tablero Kanban, la columna «Revisión» llegó a su límite de WIP. ¿Qué ocurre en un sistema pull?</p>
+  <div class="options">
+    <button data-ok data-why="Correcto: nadie empieza ítems nuevos hasta que haya capacidad; el límite vuelve visible el cuello de botella.">Nada nuevo entra hasta que salga una tarjeta</button>
+    <button data-why="No: eso sería un sistema push, que empuja trabajo sin mirar la capacidad.">Se sigue empujando más trabajo a Revisión igual</button>
+    <button data-why="No: no se amplía el límite por defecto; es el punto del control.">Se duplica el límite para que nada frene</button>
+    <button data-why="No: el pull no cancela el Sprint; Kanban no se organiza por Sprints en las fuentes leídas.">Se cancela el Sprint y se empieza otro</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Según la cátedra, ¿qué datos lleva como mínimo una tarjeta Kanban?</p>
+  <div class="options">
+    <button data-why="No: la estimación y la prioridad pueden agregarse, pero no son el mínimo de la cátedra.">Descripción, estimación en puntos y su prioridad</button>
+    <button data-why="No: el criterio de aceptación es de la historia de usuario (Clase 10), no el mínimo de la tarjeta.">Historia, criterio de aceptación y el Sprint</button>
+    <button data-why="No: el límite de WIP es de la columna, no de la tarjeta.">Columna, límite de WIP y el responsable</button>
+    <button data-ok data-why="Correcto: descripción, responsable y fecha de inicio y fin (p. 7). Se pueden agregar todos los datos adicionales que se necesiten.">Descripción, responsable, fechas de inicio y fin</button>
+  </div>
+</div>
+<div class="quiz">
+  <p class="prompt">Un equipo de cuatro personas arma un proyecto chico sin presupuesto. ¿Qué herramienta conviene, según los pros y contras de la cátedra?</p>
+  <div class="options">
+    <button data-why="No: Jira es caro desde 10 usuarios y la cátedra lo considera demasiado potente para proyectos chicos.">Jira, por sus plug-ins y sus gráficos</button>
+    <button data-ok data-why="Correcto: es fácil de usar y la versión gratuita alcanza; su contra (escalar con equipos grandes) no aplica acá.">Trello, por fácil y con versión gratuita</button>
+    <button data-why="No: Azure DevOps tiene una puesta a punto compleja y la cátedra no lo recomienda para proyectos chicos.">Azure DevOps, porque se integra con Microsoft</button>
+    <button data-why="No: la cátedra presenta las tres como herramientas comunes para implementar Kanban.">Ninguna, porque Kanban se hace en papel</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="trampas">Trampas de opción múltiple</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>La opción tentadora</th><th>Por qué está mal</th></tr></thead>
+<tbody>
+<tr><td>«El objetivo de Kanban es eliminar el desperdicio»</td><td>Ese es el de Lean. Kanban: <strong>eliminar cuellos de botella</strong></td></tr>
+<tr><td>«Kanban significa mejora continua»</td><td>Significa <strong>«registro visual»</strong>. Mejora continua es Kaizen</td></tr>
+<tr><td>«Kanban nació en Chrysler en los 90»</td><td>Eso es XP. Kanban: <strong>Toyota, Taiichi Ohno, años 50</strong></td></tr>
+<tr><td>«Kanban maneja el concepto de push»</td><td>Maneja <strong>pull</strong>: se toma trabajo cuando hay capacidad</td></tr>
+<tr><td>«Se inspiró en las automotrices japonesas»</td><td>La diapositiva dice: basado en las buenas prácticas de las automotrices de <strong>USA</strong></td></tr>
+<tr><td>«Las 3 reglas: transparencia, inspección, adaptación»</td><td>Esos son los pilares de Scrum. Reglas: <strong>mostrar el proceso, limitar el trabajo en curso, optimizar el flujo</strong></td></tr>
+<tr><td>«El tablero tiene Backlog, Sprint y Done»</td><td>Cátedra: <strong>To do, WIP y Done</strong>; WIP se puede abrir en varias columnas</td></tr>
+<tr><td>«La tarjeta lleva como mínimo la estimación en puntos»</td><td>Mínimo: <strong>descripción, responsable, fecha de inicio y fin</strong></td></tr>
+<tr><td>«Limitar el WIP sirve para que el equipo haga más cosas a la vez»</td><td>Al revés: menos cosas a la vez, para que la etapa saturada se vea y cada ítem termine antes</td></tr>
+<tr><td>«Jira conviene a un proyecto chico»</td><td>Demasiado potente para proyectos pequeños y caro desde 10 usuarios; proyecto chico → <strong>Trello</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%207%20-%20Kanban%20Lean%20y%20XP.pdf">PDF de la cátedra «Clase 7: Kanban, Lean y XP»</a> (clase 12 del cronograma), pp. 6–10, y lo que dijo el profesor en clase. Complemento: <a href="https://kanbanguides.org/the-kanban-guide/">The Kanban Guide (2025)</a> y <a href="https://en.wikipedia.org/wiki/Kanban_(development)">Wikipedia · Kanban (development)</a>.<br>Para repasar: <a href="../reference/agil-glosario.html">glosario y hoja de repaso ágil</a> (imprimible).
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: «tómame la pregunta del objetivo de Kanban como en el parcial», «dame un tablero trabado y yo encuentro el cuello de botella» o «¿qué diferencia hay entre Kanban y Scrum?».
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="12a-lean-xp.html">← Clase 12a · Lean y XP</a>
+  <a href="parcial-agil-guia.html">Guía del parcial →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

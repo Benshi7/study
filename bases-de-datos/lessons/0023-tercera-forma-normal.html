@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 23 · Tercera forma normal</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 23 · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Tercera forma normal: la dependencia transitiva</h1>
+    <p class="masthead__standfirst">
+      El último paso caza al atributo que depende de otro atributo que no es clave.
+      Y cierra el modelo — casi.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Clase 3, slides 10–12</span>
+      <span>Elimina anomalías 3 y 4</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La definición de la cátedra</h2>
+
+  <blockquote class="callout">
+    "Una estructura de datos está en <b>Tercera Forma Normal</b> si se encuentra en 2FN
+    y no existe dependencia transitiva."
+  </blockquote>
+
+  <p>Y en el resumen de la slide 12 agrega la versión operativa, que es la que conviene:</p>
+
+  <blockquote class="callout">
+    "…no existe dependencia transitiva (<b>ninguno de sus atributos depende de un campo
+    no clave</b>)."
+  </blockquote>
+
+  <div class="callout callout--key">
+    <span class="callout__label">El test, en una pregunta</span>
+    <p>
+      Para cada atributo no clave, preguntate: <b>¿de quién depende realmente?</b>
+      Si la respuesta es "de la clave", está bien. Si la respuesta es
+      <b>"de este otro atributo que tampoco es clave"</b>, ahí tenés la transitiva.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>El diagnóstico</h2>
+
+  <p>La slide 10 lo señala sin vueltas:</p>
+
+  <blockquote class="callout">
+    "En nuestro ejemplo, el campo con dependencia transitiva es el <b>NomCli</b>, ya que
+    éste depende del <b>CodCli</b> y no del <b>NFact</b>, que recordemos, es la clave
+    primaria de la tabla."
+  </blockquote>
+
+  <p>Escrito como cadena, que es como se ve mejor:</p>
+
+  <div class="rel">
+    NFact <b>&rarr;</b> CodCli <b>&rarr;</b> NomCli
+  </div>
+
+  <p>
+    La factura determina el cliente, y el cliente determina el nombre. Entonces la factura
+    determina el nombre — pero <b>de rebote</b>, pasando por un atributo que no es clave.
+    Eso es la transitividad, y es exactamente por qué el <code>CodCli</code> 3 puede
+    aparecer como Carlos, Carla y Carlitos: el nombre está atado a la factura en lugar de
+    estar atado al cliente.
+  </p>
+
+  <h2><span class="num">03</span>El paso, con los datos</h2>
+
+  <p>
+    <b>Regla operativa:</b> el atributo dependiente se va a una tabla nueva junto con
+    <b>el atributo del que depende</b>, y ése pasa a ser la clave primaria de la tabla nueva.
+    En la tabla original queda sólo el intermediario, ahora como clave foránea.
+  </p>
+
+  <h3>Antes</h3>
+
+  <div class="rel">
+    CabeceraFact (<b>#NFact</b>, Fecha, CodCli, NomCli)
+  </div>
+
+  <h3>Después</h3>
+
+  <div class="paso">
+    <div>
+      <h3>CabeceraFact</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>Nfact</th><th>Fecha</th><th>CodCli</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">1</td><td>12/01/2006</td><td>3</td></tr>
+            <tr><td class="pk">2</td><td>13/01/2006</td><td>4</td></tr>
+            <tr><td class="pk">3</td><td>14/01/2006</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>Cli</h3>
+      <div class="tbl-wrap">
+        <table class="datos">
+          <thead><tr><th>CodCli</th><th>NomCli</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">3</td><td>Carlos</td></tr>
+            <tr><td class="pk">4</td><td>Pablo</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="num">04</span>El modelo definitivo</h2>
+
+  <p>La slide 11, tal cual la escribe el profe:</p>
+
+  <div class="rel">
+    CabeceraFact (<b>#NFact</b>, Fecha, CodCli)<br>
+    RenglonFact (<b>#NFact</b>, <b>#CProd</b>, Canti, PUnit)<br>
+    Prod (<b>#CProd</b>, Descri)<br>
+    Cli (<b>#CodCli</b>, NomCli)
+  </div>
+
+  <p>
+    De una tabla con diez columnas y ocho filas repetidas, a cuatro tablas donde cada hecho
+    está guardado <b>una sola vez</b>. Ese es el producto de la normalización.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Anomalía</th><th>La eliminó</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1 · dos fechas en la factura 1</td><td>1FN</td></tr>
+        <tr><td>2 · dos <code>CodCli</code> en la factura 1</td><td>1FN</td></tr>
+        <tr><td>3 · <code>CodCli</code> 4 como Carlos y Pablo</td><td>3FN</td></tr>
+        <tr><td>4 · <code>CodCli</code> 3 con tres nombres</td><td>3FN</td></tr>
+        <tr><td>5 · <code>CProd</code> 37 como Uvas y Peras</td><td>2FN</td></tr>
+        <tr><td>6 · <code>CProd</code> 39 como Kiwi y Kivi</td><td>2FN</td></tr>
+        <tr><td><b>7 · <code>CProd</code> 39 con dos <code>PUnit</code></b></td><td><b>ninguna</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">El modelo está en 3FN y todavía tiene un problema</span>
+    <p>
+      Mirá <code>RenglonFact(#NFact, #CProd, Canti, PUnit)</code>. Está en 3FN, no hay nada
+      que reprocharle desde la teoría. Y sin embargo el producto 39 sigue pudiendo valer
+      10 en una factura y 11 en otra.
+    </p>
+    <p>
+      <b>Estar en 3FN no garantiza que el modelo sea correcto.</b> Garantiza que no tiene
+      redundancia por dependencias parciales ni transitivas. Lo que hace o no hace ese
+      <code>PUnit</code> es una decisión de negocio que el profe resuelve aparte —
+      <a href="0024-donde-vive-el-precio.html">lección 24</a>.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Dos cosas del libro que suman</h2>
+
+  <h3>La definición formal de transitiva</h3>
+
+  <p>
+    Elmasri exige que el intermediario <code>Z</code> <q>ni sea clave candidata ni un
+    subconjunto de ninguna clave de R</q>. O sea: si el intermediario resulta ser clave,
+    <b>no</b> es dependencia transitiva y no hay nada que arreglar. Es la letra chica que
+    evita descomponer de más.
+  </p>
+
+  <h3>No hace falta ir en orden</h3>
+
+  <blockquote class="callout">
+    "Las dependencias transitiva y parcial que violan 3FN pueden eliminarse en
+    <b>cualquier orden</b>."
+  </blockquote>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Cómo usar esto</span>
+    <p>
+      En el parcial, <b>mostrá los tres pasos en orden igual</b>: la cátedra evalúa el
+      procedimiento, no sólo el resultado, y el orden 1FN → 2FN → 3FN es el que enseñó.
+    </p>
+    <p>
+      Pero si al revisar tu resultado encontrás algo suelto, no tenés que rehacer todo
+      desde el principio: podés corregir esa dependencia sola. El destino es el mismo.
+    </p>
+  </div>
+
+  <h2><span class="num">06</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Detectar</span>
+    <p class="quiz__q">
+      <code>Empleado(#Legajo, Nombre, CodDepto, NombreDepto)</code>.
+      ¿Qué forma normal se viola?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="3FN: NombreDepto depende de CodDepto, que no es clave. La cadena es Legajo → CodDepto → NombreDepto. Se arregla con Depto(#CodDepto, NombreDepto) y dejando CodDepto como foránea en Empleado.">La 3FN, por NombreDepto</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="2FN no puede violarse acá: la clave es Legajo, un solo atributo, así que no existe dependencia parcial posible. Mirá de qué depende NombreDepto realmente.">La 2FN, por NombreDepto</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="1FN está bien: todos los valores son atómicos y no hay grupo repetitivo. El problema es de otro tipo, y está entre CodDepto y NombreDepto.">La 1FN, por tener dos temas</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · La letra chica</span>
+    <p class="quiz__q">
+      <code>Persona(#DNI, Nombre, NroPasaporte, PaisEmisor)</code>, donde
+      <code>NroPasaporte</code> es único por persona. ¿<code>PaisEmisor</code> viola 3FN?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="NroPasaporte es único, así que es clave candidata. Elmasri exige que el intermediario NO sea clave candidata para que haya transitividad. Al serlo, no hay violación: es la letra chica que evita descomponer de más.">No, porque NroPasaporte es candidata</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La forma engaña: parece DNI → NroPasaporte → PaisEmisor. Pero fijate en la condición de Elmasri sobre qué tiene que ser el intermediario para que la dependencia cuente como transitiva.">Sí, hay una cadena de dos saltos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Alcance</span>
+    <p class="quiz__q">
+      Tu modelo quedó en 3FN. ¿Qué podés afirmar?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Exacto, y es la lección entera. 3FN elimina la redundancia causada por dependencias parciales y transitivas. No dice nada sobre si elegiste bien las entidades, si el modelo contesta las consultas pedidas, ni sobre el PUnit del renglón.">No hay parciales ni transitivas. Nada más.</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ojalá. El propio ejemplo del profe termina en 3FN con la anomalía 7 intacta: el producto 39 puede seguir teniendo dos precios distintos. 3FN es una garantía acotada, no un certificado de calidad.">El modelo ya no tiene ninguna anomalía.</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Clase 3 — Normalización</b>, slides 10 a 12. El modelo definitivo de la sección 04
+      es textual de la slide 11.
+    </p>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 10.3.6 "Tercera forma normal"
+      (pág. 304) y 10.4.2 "Definición general de la tercera forma normal" (pág. 308).
+      En el PDF de <code>raw/</code>: páginas 330 y 334.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si querés, tirame una tabla cualquiera de tu cabeza y la
+      normalizamos juntos de punta a punta. Es lo que más fija el procedimiento.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0022-segunda-forma-normal.html">Anterior: 0022</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0024-donde-vive-el-precio.html">Siguiente: 0024 · Dónde vive el precio</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

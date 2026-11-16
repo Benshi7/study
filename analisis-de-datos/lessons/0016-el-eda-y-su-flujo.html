@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El EDA y su flujo</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0016 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0016</div>
+<h1>El EDA en cinco pasos, y qué notebook cubre cada uno</h1>
+<p class="lede">Es la teoría del profe nuevo (PDF <em>003 Análisis Exploratorio</em>) comprimida en una página. Todos los notebooks dicen "¿Dónde estamos en el flujo del EDA?": esta lección es ese mapa.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>De la Unidad 1: ¿cuáles son los cinco tipos de análisis? ¿Y en qué dos grandes ramas se dividían los tipos de datos? Escribilo y después compará con esta lección.</p>
+</div>
+
+<h2>Qué es el EDA</h2>
+<p>Definición de la lámina: <strong>el proceso de explorar y resumir un conjunto de datos para comprender sus principales características, detectar patrones, identificar posibles problemas y generar hipótesis</strong>. En síntesis: entender los datos <em>antes</em> de modelar o decidir.</p>
+<p>Cuatro verbos: <strong>explorar y describir → detectar patrones → generar hipótesis → aportar a la toma de decisiones</strong>.</p>
+
+<div class="box trap">
+  <span class="label">Choque con la Unidad 1</span>
+  <p>En la Unidad 1 (<a href="../learning-records/0011-descriptivo-vs-exploratorio.md">registro 0011</a>) quedó que la hipótesis <em>sobre las causas</em> aparece en el <strong>diagnóstico</strong>. Acá el EDA también "genera hipótesis". No se contradicen: el EDA <strong>plantea</strong> hipótesis para validar después ("¿el radio diferencia malignos de benignos?") y no las prueba. El diagnóstico pregunta <strong>por qué</strong> pasó algo. Si la consigna habla de causa, sigue siendo diagnóstico.</p>
+</div>
+
+<h2>Antes del flujo: de dónde vienen los datos</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Fuente</th><th>Qué es</th><th>¿Controlamos cómo se recolectó?</th><th>Ejemplo de la lámina</th></tr>
+  <tr><td><strong>Primaria</strong></td><td>Datos que recolectamos <em>de primera mano</em> (encuestas, entrevistas, experimentos)</td><td>Sí</td><td>Encuesta de satisfacción de clientes</td></tr>
+  <tr><td><strong>Secundaria</strong></td><td>Datos ya recolectados por otra persona u organización</td><td>No</td><td>Datos de consumo del INDEC, Banco Mundial</td></tr>
+  <tr><td><strong>Terciaria</strong></td><td>Datos compilados o integrados por terceros desde varias fuentes (en general secundarias)</td><td>No</td><td>Bases comerciales de consumidores</td></tr>
+</table>
+</div>
+<p>El dataset de los notebooks (<em>Breast Cancer Wisconsin</em>, UCI 1995) es <strong>secundario</strong> para nosotros: lo recolectó la Universidad de Wisconsin y no controlamos cómo se midió. El notebook 8 te lo pregunta.</p>
+
+<h2>Los cinco pasos</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Paso</th><th>Pregunta</th><th>Herramientas</th><th>Notebook</th></tr>
+  <tr><td><strong>01 Definir preguntas</strong></td><td>¿Qué queremos responder?</td><td>Objetivo del análisis</td><td>Pregunta guía de todos: ¿qué diferencia un tumor maligno de uno benigno?</td></tr>
+  <tr><td><strong>02 Conocer los datos</strong></td><td>¿Cuántas filas y columnas? ¿Qué contienen?</td><td><code>head</code>, <code>shape</code>, <code>dtypes</code>, <code>info</code></td><td>0</td></tr>
+  <tr><td><strong>03 Clasificar variables</strong></td><td>¿Cada variable es categórica o numérica?</td><td>La tabla de abajo</td><td>0 y 8</td></tr>
+  <tr><td><strong>04 Evaluar la calidad</strong></td><td>¿Hay faltantes, duplicados, tipos incorrectos, outliers?</td><td><code>isna</code>, <code>duplicated</code>, boxplots</td><td>0, 3, 7</td></tr>
+  <tr><td><strong>05 Explorar y analizar</strong></td><td>¿Cómo se distribuye cada variable y cómo se relacionan?</td><td>Descriptivos, histogramas, boxplots, scatter, correlación</td><td>1 a 5</td></tr>
+</table>
+</div>
+<span class="sidenote">Los notebooks 6 y 7 (reportes automáticos) cubren 02, 04 y 05 de una vez. El 8 recorre los cinco pasos de punta a punta.</span>
+
+<h2>Paso 03: clasificar variables</h2>
+<div class="table-wrap">
+<table>
+  <tr><th></th><th>Tipo</th><th>Definición</th><th>Ejemplo</th><th>Gráficos</th></tr>
+  <tr><td rowspan="2"><strong>Categóricas</strong><br><span class="muted">conjunto limitado de categorías</span></td><td>Nominal</td><td>Sin orden</td><td>País, género</td><td rowspan="2">Tabla de frecuencias, barras, torta</td></tr>
+  <tr><td>Ordinal</td><td>Con orden natural</td><td>Nivel educativo (bajo, medio, alto)</td></tr>
+  <tr><td rowspan="2"><strong>Numéricas</strong><br><span class="muted">representan cantidades</span></td><td>Discreta</td><td>Valores enteros y contables</td><td>Cantidad de hijos</td><td>Tablas resumen, histogramas, barras</td></tr>
+  <tr><td>Continua</td><td>Cualquier valor dentro de un rango</td><td>Edad, ingresos, temperatura</td><td>Tablas resumen, histogramas, boxplots, dispersión</td></tr>
+</table>
+</div>
+
+<div class="box trap">
+  <span class="label">Mismo árbol, otras palabras</span>
+  <p>La Unidad 1 decía <strong>cualitativos / cuantitativos</strong>, con <em>binarias</em> del lado cualitativo (<a href="0006-repaso-intercalado-bloque-1.html">lección 0006</a>). El profe nuevo dice <strong>categóricas / numéricas</strong> y no menciona binarias. Equivalen: cualitativo = categórico, cuantitativo = numérico. Una binaria como <code>target</code> (0/1) es <strong>categórica nominal</strong>.</p>
+  <p><strong>Tipo de dato ≠ tipo de variable.</strong> <code>target</code> se guarda como <code>int64</code>, pero el 0 y el 1 son etiquetas (maligno / benigno), no cantidades. El <em>dtype</em> es cómo lo guarda Python; el tipo de variable depende de qué representa.</p>
+</div>
+
+<h2>Paso 04: los problemas en los datos</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Problema</th><th>Ejemplo de la lámina</th><th>Cómo detectarlo</th><th>Dimensión de la Unidad 1 (aproximación propia)</th></tr>
+  <tr><td><strong>Valores faltantes (NaN)</strong></td><td>Edad = NaN</td><td>Conteo y visualización de faltantes</td><td>Completitud</td></tr>
+  <tr><td><strong>Registros duplicados</strong></td><td>Misma fila cargada dos veces</td><td>Conteo de duplicados, columnas clave</td><td>Duplicados</td></tr>
+  <tr><td><strong>Tipos de datos incorrectos</strong></td><td>Edad <code>"30"</code> como texto</td><td>Revisar el tipo de cada variable</td><td>Configuración</td></tr>
+  <tr><td><strong>Valores inconsistentes</strong></td><td>Edad -5, fecha <code>2024-13-01</code>, "Arg" y "Argentina"</td><td>Rangos válidos, formatos, valores atípicos</td><td>Configuración (si viene de otro sistema: Consistencia)</td></tr>
+</table>
+</div>
+<span class="sidenote">La última columna no está en la teoría del profe: es un puente para no mezclar vocabularios. En un examen de EDA usá los nombres de la izquierda.</span>
+
+<p>Una vez detectados, hay tres <strong>tratamientos</strong>:</p>
+<ul>
+  <li><strong>Eliminar</strong>: cuando el registro no aporta valor o tiene errores graves.</li>
+  <li><strong>Corregir</strong>: cuando se puede recuperar la información (formato, tipo de dato).</li>
+  <li><strong>Imputar</strong>: cuando falta información y se puede estimar (media, mediana, categoría más frecuente).</li>
+</ul>
+<p>En el EDA primero se <strong>detecta y mide</strong>; el tratamiento se decide después. Por eso el notebook 0 cuenta los faltantes pero no los toca.</p>
+
+<h2>Paso 05: medidas descriptivas</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Grupo</th><th>Medidas</th><th>Ejemplo de la lámina: 2, 4, 4, 6, 10</th></tr>
+  <tr><td><strong>Tendencia central</strong> (valor típico)</td><td>Media, mediana, moda</td><td>Media 5,2 · Mediana 4 · Moda 4</td></tr>
+  <tr><td><strong>Dispersión</strong> (qué tan desparramados)</td><td>Mínimo y máximo, rango, desvío estándar</td><td>Mín 2 · Máx 10 · Rango 8</td></tr>
+  <tr><td><strong>Posición</strong> (dónde cae un dato)</td><td>Cuartiles (4 partes), percentiles (100 partes)</td><td>Q1 = 3 · Q2 = 4 · Q3 = 8 · P90: el 90% es ≤ ese valor</td></tr>
+</table>
+</div>
+
+<div class="box trap">
+  <span class="label">La lámina y pandas no dan lo mismo</span>
+  <p>Con <code>pd.Series([2, 4, 4, 6, 10]).describe()</code> pandas da <strong>25% = 4 y 75% = 6</strong>, no 3 y 8: la lámina calcula los cuartiles con otro método (mediana de cada mitad). Para el desvío, la lámina dice 2,68, pero el cálculo da <strong>2,71</strong> (poblacional) o <strong>3,03</strong> (muestral, el que usa pandas). En un ejercicio a mano usá el método de la lámina; en los notebooks, confiá en lo que devuelve pandas. Lo verifiqué ejecutando el código.</p>
+</div>
+
+<div class="box trap">
+  <span class="label">Ojo con la infografía</span>
+  <p>La <em>Guía Fundamental del EDA</em> (PNG, generada con Gemini) tiene errores: dice <strong>RIC = Q2 − Q1</strong> (es <strong>Q3 − Q1</strong>) y que la caja contiene el "80% central" (es el <strong>50%</strong>). Para estudiar usá el PDF, el mapa mental y la tabla "Guía visual"; esos coinciden con los notebooks.</p>
+</div>
+
+<h2>Práctica</h2>
+<div class="quiz" data-quiz-id="0016-el-eda-y-su-flujo"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "Según la lámina, ¿cuál NO es un objetivo del EDA?",
+   "options": ["Probar qué variable causa el resultado", "Detectar patrones y valores atípicos", "Generar hipótesis para validar después", "Conocer cómo se distribuyen los datos"], "answer": 0,
+   "why": "El EDA explora, describe, detecta patrones y genera hipótesis. No establece causalidad: es una de sus limitaciones."},
+  {"q": "Usás los datos de consumo que publica el INDEC. ¿Qué tipo de fuente es?",
+   "options": ["Secundaria", "Primaria", "Terciaria", "Exploratoria"], "answer": 0,
+   "why": "Los recolectó otra organización y no controlás cómo. Es el ejemplo literal de fuente secundaria."},
+  {"q": "Una empresa compra una base que combina datos de compras de varias fuentes. ¿Qué tipo de fuente es?",
+   "options": ["Terciaria", "Secundaria", "Primaria", "Descriptiva"], "answer": 0,
+   "why": "Compilada e integrada por terceros desde múltiples fuentes: terciaria."},
+  {"q": "Ejecutás <code>df.shape</code> y <code>df.head()</code>. ¿En qué paso del flujo estás?",
+   "options": ["02 Conocer los datos", "03 Clasificar variables", "04 Evaluar la calidad", "05 Explorar y analizar"], "answer": 0,
+   "why": "Cantidad de filas y columnas y primeras observaciones: paso 02."},
+  {"q": "Contás faltantes y duplicados. ¿En qué paso del flujo estás?",
+   "options": ["04 Evaluar la calidad", "02 Conocer los datos", "05 Explorar y analizar", "01 Definir preguntas"], "answer": 0,
+   "why": "Faltantes, duplicados, tipos incorrectos, inconsistencias y outliers son el paso 04."},
+  {"q": "La columna <code>target</code> vale 0 (maligno) o 1 (benigno) y es <code>int64</code>. ¿Qué tipo de variable es?",
+   "options": ["Categórica nominal", "Numérica discreta", "Numérica continua", "Categórica ordinal"], "answer": 0,
+   "why": "El dtype es entero, pero 0 y 1 son etiquetas sin orden. Tipo de dato ≠ tipo de variable."},
+  {"q": "Satisfacción del cliente: baja, media o alta. ¿Qué tipo de variable es?",
+   "options": ["Categórica ordinal", "Categórica nominal", "Numérica discreta", "Numérica continua"], "answer": 0,
+   "why": "Categorías con un orden natural: ordinal."},
+  {"q": "La edad aparece cargada como el texto <code>\"30\"</code>. ¿Qué problema de datos es?",
+   "options": ["Tipo de dato incorrecto", "Valor faltante en la columna", "Registro duplicado en tabla", "Valor atípico muy alto"], "answer": 0,
+   "why": "Un número guardado como texto es el ejemplo de la lámina para tipo de dato incorrecto."},
+  {"q": "Falta el ingreso de algunos clientes y decidís completarlo con la mediana. ¿Qué tratamiento aplicás?",
+   "options": ["Imputar", "Corregir", "Eliminar", "Clasificar"], "answer": 0,
+   "why": "Estimar el valor faltante (media, mediana, moda) es imputar."},
+  {"q": "En los datos 2, 4, 4, 6, 10, ¿cuál es el rango?",
+   "options": ["8", "4", "10", "5,2"], "answer": 0,
+   "why": "Rango = máximo − mínimo = 10 − 2 = 8. 5,2 es la media y 4 es la mediana y la moda."},
+  {"q": "¿A qué grupo de medidas pertenecen los cuartiles y percentiles?",
+   "options": ["Posición", "Dispersión", "Tendencia central", "Correlación"], "answer": 0,
+   "why": "Indican la ubicación de un dato dentro de la distribución: posición."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Ves cualquier celda de los notebooks y sabés en qué paso del flujo está y por qué. Y no mezclás el vocabulario del profe nuevo con el de la Unidad 1.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../material_eda/1-Teoría-Conceptual/003_ANALISIS_EXPLORATORIO_Data_Science_RESUMIDO_2_2026.pdf">PDF 003 Análisis Exploratorio</a>, láminas 1 a 11, y el <a href="../material_eda/1-Teoría-Conceptual/Mapa%20Mental">mapa mental</a> (es un PNG sin extensión: abrilo con un visor de imágenes). Para profundizar: el capítulo 4 de <a href="https://r4ds.hadley.nz/eda">R for Data Science</a> (Wickham), que define el EDA como un ciclo de preguntas. Resumen: <a href="../reference/eda.html">Referencia · EDA</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Como Data Engineer, el paso 04 es tu terreno (profiling). Preguntame si querés comparar lo que hace pandas con un perfilado en SQL o con Great Expectations.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0015-taller-sql-chinook.html">← 0015 · Taller SQL</a>
+  <a href="0017-conocer-los-datos.html">0017 · Notebooks 0 y 1 →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 43 · Planificaciones, serialización y bloqueos</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 43 · Unidad 6 · Administración de transacciones · Opcional</p>
+    <h1 class="masthead__title">Intercalar sin romper: serialización y bloqueos</h1>
+    <p class="masthead__standfirst">
+      El planificador intercala transacciones para ganar velocidad. La regla para que eso no rompa
+      nada es la serialización, y se consigue con bloqueos o con versiones.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Clase de transacciones (capturas)</span>
+      <span>Prioridad para el parcial: opcional</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Lección opcional</span>
+    <p>
+      No está en lo que el docente nombró para el 2do parcial. Sirve para reconocer conceptos en
+      un choice. Viene después de la <a href="0042-problemas-de-concurrencia.html">0042</a>, que
+      muestra los problemas que esto resuelve.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Planificación en serie y no en serie</h2>
+
+  <p>
+    Una <b>planificación</b> es el orden en que se ejecutan las operaciones de varias
+    transacciones. El slide muestra dos tipos:
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/txn-planif-serie.png" alt="Planificación A: T1 entera y después T2. Planificación B: T2 entera y después T1.">
+    <figcaption><b>En serie</b>: una transacción entera y después la otra (T1 → T2 o T2 → T1). Siempre correctas, pero sin concurrencia.</figcaption>
+  </figure>
+
+  <figure class="full">
+    <img src="../assets/diagrams/txn-planif-no-serie.png" alt="Planificaciones C y D: las operaciones de T1 y T2 se intercalan.">
+    <figcaption><b>No en serie</b>: las operaciones se intercalan (T1, T2, T1, T2). Algunas dan el resultado correcto y otras no.</figcaption>
+  </figure>
+
+  <h2><span class="num">02</span>Serialización</h2>
+
+  <blockquote class="callout">
+    "Es una propiedad en bases de datos que garantiza que, al ejecutar múltiples transacciones
+    simultáneamente, <b>el resultado final sea idéntico al que se obtendría si las transacciones
+    se ejecutaran una por una en secuencia</b> (en serie). Esto protege la integridad de los datos
+    evitando errores por concurrencia."
+  </blockquote>
+
+  <p>
+    Una planificación intercalada es <b>serializable</b> si equivale a alguna en serie. Para
+    decidirlo se miran sólo las operaciones que <b>chocan</b>.
+  </p>
+
+  <h3>Operaciones en conflicto</h3>
+
+  <p>Dos operaciones están en conflicto si se cumplen <b>las tres</b> condiciones:</p>
+  <ul>
+    <li>son de <b>transacciones distintas</b>;</li>
+    <li>acceden al <b>mismo dato</b>;</li>
+    <li><b>al menos una es WRITE</b>.</li>
+  </ul>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Par sobre el mismo X</th><th>¿Conflicto?</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td><code>READ(X)</code> y <code>READ(X)</code></td><td>No</td><td>Leer no cambia nada: el orden no importa</td></tr>
+        <tr><td><code>READ(X)</code> y <code>WRITE(X)</code></td><td><b>Sí</b></td><td>La lectura ve un valor distinto según cuál va primero</td></tr>
+        <tr><td><code>WRITE(X)</code> y <code>WRITE(X)</code></td><td><b>Sí</b></td><td>El valor que queda depende de cuál escribe último</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>C y D, las dos planificaciones del slide</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th>Planificación C</th><th>Planificación D</th></tr></thead>
+      <tbody>
+        <tr><td><b>Qué pasa con X</b></td><td>T2 lee X <b>antes</b> de que T1 lo escriba, y escribe después</td><td>T2 lee X <b>después</b> de que T1 lo escribió</td></tr>
+        <tr><td><b>Resultado</b></td><td>Se pierde la resta de T1: es la <b>pérdida de actualización</b></td><td>Igual al de la planificación A (T1 → T2)</td></tr>
+        <tr><td><b>¿Serializable?</b></td><td><b>No</b></td><td><b>Sí</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    En D, todos los conflictos sobre X van en el orden T1 antes que T2, y Y sólo lo toca T1. Por
+    eso equivale a correr T1 entera y después T2. En C, T1 escribe X después de que T2 lo leyó,
+    pero T2 escribe X después que T1: los conflictos van en los dos sentidos y no hay orden en
+    serie que dé lo mismo.
+  </p>
+
+  <h2><span class="num">03</span>Cómo se consigue: bloqueos y MVCC</h2>
+
+  <p>El slide nombra las dos técnicas principales:</p>
+
+  <h3>Bloqueos (locks)</h3>
+
+  <blockquote class="callout">
+    "Se asignan permisos <b>exclusivos o compartidos</b> a los datos. Un ejemplo es el
+    <b>bloqueo de dos fases (2PL)</b>, donde las transacciones adquieren y liberan bloqueos de
+    forma ordenada antes de operar."
+  </blockquote>
+
+  <ul>
+    <li><b>Compartido</b> (de lectura): varias transacciones pueden tenerlo a la vez sobre el mismo dato.</li>
+    <li><b>Exclusivo</b> (de escritura): sólo una lo tiene; las demás esperan hasta que lo libere.</li>
+  </ul>
+
+  <p>
+    El slide no lo dice, pero así funciona el <b>2PL</b>: cada transacción tiene una fase de
+    <b>crecimiento</b>, en la que sólo adquiere bloqueos, y una de <b>decrecimiento</b>, en la que
+    sólo los libera. Una vez que libera el primero, ya no puede pedir ninguno más. Con esa regla,
+    la planificación queda serializable.
+  </p>
+
+  <h3>Deadlock</h3>
+
+  <p>
+    El precio de bloquear: T1 tiene X y espera Y; T2 tiene Y y espera X. Ninguna puede seguir.
+    Es un <b>deadlock</b> (bloqueo mortal). El slide de tipos de fallos lo pone bajo
+    "Problemas de concurrencia", junto con la violación de la serialización
+    (<a href="0044-estados-fallos-y-recuperacion.html">lección 0044</a>). El motor lo resuelve
+    abortando una de las dos.
+  </p>
+
+  <h3>MVCC, control de concurrencia multiversión</h3>
+
+  <blockquote class="callout">
+    "En lugar de bloquear los datos, el sistema <b>mantiene versiones históricas</b> de los mismos,
+    permitiendo que cada transacción lea una versión consistente sin interferir con las escrituras
+    simultáneas."
+  </blockquote>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Bloqueos contra MVCC, en una línea</span>
+    <p>
+      Con <b>bloqueos</b>, el que quiere leer un dato que otro está escribiendo <b>espera</b>. Con
+      <b>MVCC</b>, lee la <b>versión anterior</b> y sigue. El resumen del audio la llama "MBC": es
+      un error de transcripción, la sigla es MVCC.
+    </p>
+  </div>
+
+  <h3>El planificador</h3>
+
+  <p>
+    El componente que decide el orden es el <b>planificador de transacciones</b> (scheduler). En
+    clase se lo comparó con el planificador de procesos del sistema operativo: los dos reparten un
+    recurso compartido entre muchos que lo piden. La diferencia es que el del DBMS además tiene
+    que respetar la serialización. Cuando no puede garantizarla, bloquea.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 5 · Definición</span>
+    <p class="quiz__q">¿Cuándo una planificación es serializable?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Serializable: el resultado es idéntico al de ejecutar las transacciones una por una, en algún orden. Puede estar intercalada; lo que importa es el resultado.">Cuando su resultado es igual al de alguna ejecución en serie</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es una planificación en serie. Una serializable puede intercalar operaciones, siempre que el resultado equivalga a una en serie.">Cuando ejecuta las transacciones una detrás de la otra</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Si no hubiera ningún conflicto sería trivialmente serializable, pero no hace falta: alcanza con que los conflictos respeten un orden en serie, como en la planificación D.">Cuando ninguna operación está en conflicto con otra</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 5 · Conflicto</span>
+    <p class="quiz__q">¿Cuál de estos pares de operaciones <b>no</b> está en conflicto?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="READ y READ nunca chocan: ninguna cambia el dato, así que el orden no altera nada. El conflicto exige al menos un WRITE.">READ(X) de T1 y READ(X) de T2</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Transacciones distintas, mismo dato y uno es WRITE: cumple las tres condiciones, es conflicto.">READ(X) de T1 y WRITE(X) de T2</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Dos WRITE sobre el mismo dato de transacciones distintas: el valor final depende del orden. Es conflicto.">WRITE(X) de T1 y WRITE(X) de T2</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 5 · Las del slide</span>
+    <p class="quiz__q">En la planificación C del slide, T2 lee X antes de que T1 lo escriba y lo escribe después. ¿Qué pasa?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="No es serializable: la escritura de T2 pisa la de T1, y ningún orden en serie da ese resultado. Es la pérdida de actualización.">No es serializable: se pierde la actualización de T1</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Esa es la planificación D: ahí T2 lee X después de la escritura de T1, y sí equivale a T1 → T2.">Es serializable: equivale a ejecutar T1 y luego T2</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ninguna transacción falla en la planificación C: el problema aparece aunque las dos terminen bien.">Es una lectura sucia porque T1 falla al final</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 5 · Técnicas</span>
+    <p class="quiz__q">¿Qué técnica deja que una transacción lea sin esperar a la que está escribiendo el mismo dato?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="MVCC: el sistema guarda versiones del dato, y quien lee usa una versión consistente sin bloquear ni ser bloqueado por las escrituras.">MVCC, control de concurrencia multiversión</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Con 2PL, si otro tiene un bloqueo exclusivo sobre el dato, el que quiere leer espera hasta que lo libere.">Bloqueo de dos fases, 2PL</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un bloqueo exclusivo es justamente lo que impide que otro lea o escriba el dato hasta que se libere.">Bloqueo exclusivo sobre el dato</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 5 · Deadlock</span>
+    <p class="quiz__q">T1 bloquea X y pide Y; T2 bloquea Y y pide X. ¿Qué es?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Deadlock: cada una espera un dato que tiene la otra, y ninguna puede avanzar. El motor aborta una para destrabar.">Un deadlock</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La pérdida de actualización pasa justamente sin bloqueos. Acá los bloqueos funcionan; el problema es que las dos quedan esperando.">Una pérdida de actualización</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Nadie llegó a leer nada no confirmado: las dos están detenidas esperando el bloqueo de la otra.">Una lectura sucia entre las dos</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Capturas de la clase (<code>raw/Clase Transacciones (capturas)/</code>, 07 a 09 y 12 a 14).
+      Las planificaciones A–D, la definición de 2PL y la de deadlock son de <b>Elmasri &amp;
+      Navathe</b>, caps. 17 y 18.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0042-problemas-de-concurrencia.html">Anterior: 0042 · Problemas de concurrencia</a>
+    <a href="0044-estados-fallos-y-recuperacion.html">Siguiente: 0044 · Estados, fallos y recuperación</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machete Final — Fundamentos de Estadística y Probabilidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+<style>
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .card { border: 1px solid var(--line, #2a332e); border-radius: 8px; padding: 0.9rem 1.1rem; background: rgba(127,127,127,0.04); }
+  .card h3 { margin: 0 0 0.5rem; font-family: var(--font-display, serif); font-size: 1.05rem; }
+  .card ul { margin: 0.3rem 0 0.3rem 1.1rem; padding: 0; }
+  .card li { margin: 0.2rem 0; }
+  .tag { display:inline-block; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--accent, #f2b544); font-weight:600; }
+  .f { font-family: "Fira Code", monospace; background: rgba(127,127,127,0.12); padding: 0.05rem 0.35rem; border-radius: 4px; white-space: nowrap; }
+  .trap { color: var(--bad, #ff6b5e); font-weight: 600; }
+  @media print {
+    :root {
+      --paper: #ffffff; --paper-raised: #f5f2ea; --ink: #111111; --ink-dim: #444444;
+      --line: #b8b8b8; --accent: #6b4a00; --accent-dim: #7a5a10;
+      --good: #2d6a1f; --bad: #a3202e; --code-bg: #eeeeee; --formula: #0f5a55;
+    }
+    html, body { background: #ffffff; color: #111111; }
+    h1, h2, h3, strong, th, td { color: #111111; }
+    .tag { color: #6b4a00; }
+    .trap { color: #a3202e; }
+    .f { background: #eeeeee; color: #0f5a55; border: 1px solid #cccccc; }
+    .card { break-inside: avoid; background: #ffffff; border-color: #999999; }
+    .ask { display: none; }
+    body { font-size: 11px; max-width: none; padding: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<span class="kicker">Referencia · Machete de repaso · UNICABA — FEP</span>
+<h1>Machete Final</h1>
+<p class="subtitle">Todo el temario en cápsulas. La app calcula; vos tenés que reconocer QUÉ usar y por qué. Las <span class="trap">trampas en rojo</span> son las que más caen en multiple choice.</p>
+
+<div class="cards">
+
+<div class="card">
+<span class="tag">U1–U2 · Descriptiva</span>
+<h3>Variables y tendencia central</h3>
+<ul>
+<li><strong>Cualitativa</strong> (nominal/ordinal) vs <strong>Cuantitativa</strong> (discreta = conteo / continua = medición).</li>
+<li>Muestra (estadístico: x̄, s) vs Población (parámetro: μ, σ).</li>
+<li><span class="f">Media x̄</span>, <span class="f">Mediana Me</span> (50%), <span class="f">Moda Mo</span> (más frecuente).</li>
+<li>Percentil Pk continua: <span class="f">Pk = Lᵢ + [(k·N/100 − Fₐ)/f]·i</span>. Posición = n·k/100; buscar intervalo por <strong>F acumulada</strong>.</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U1–U2 · Descriptiva</span>
+<h3>Dispersión y forma</h3>
+<ul>
+<li>Varianza S², Desvío S, <span class="f">CV = S/x̄ ·100</span>.</li>
+<li><span class="trap">Dos umbrales de CV:</span> homogeneidad → <span class="f">CV&lt;20%</span>; media representativa → <span class="f">CV&lt;10%</span>.</li>
+<li><span class="f">RIC = Q3 − Q1</span> (50% central, robusto). Muy asimétrica ⇒ describir con <strong>Mediana + RIC</strong>.</li>
+<li><span class="trap">Asimetría: Mo &gt; x̄ ⇒ NEGATIVA · Mo &lt; x̄ ⇒ POSITIVA</span> · Mo = x̄ ⇒ simétrica.</li>
+<li>Boxplot: caja Q1–Q3, línea = Me, bigotes = 25% extremos.</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U4 · Probabilidad</span>
+<h3>Reglas base</h3>
+<ul>
+<li>Complemento: <span class="f">P(A') = 1 − P(A)</span>. "Al menos uno" = <span class="f">1 − P(ninguno)</span>.</li>
+<li>Suma: <span class="f">P(A∪B) = P(A)+P(B) − P(A∩B)</span>.</li>
+<li>Condicional: <span class="f">P(A/B) = P(A∩B)/P(B)</span>.</li>
+<li>Producto: <span class="f">P(A∩B) = P(A)·P(B/A)</span>.</li>
+<li><span class="trap">Independientes ≠ Excluyentes.</span> Indep: <span class="f">P(A∩B)=P(A)·P(B)</span>. Excluyentes: <span class="f">P(A∩B)=0</span> (y por eso son DEPENDIENTES).</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U4 · Probabilidad</span>
+<h3>Total y Bayes</h3>
+<ul>
+<li>Prob. total (denominador, suma todos los caminos): <span class="f">P(B)=ΣP(Aᵢ)·P(B/Aᵢ)</span>.</li>
+<li>Bayes (invierte una condicional): <span class="f">P(Aᵢ/B)=P(Aᵢ)·P(B/Aᵢ)/P(B)</span>.</li>
+<li>Tabla de contingencia: probabilidades directo de la tabla; chequear independencia comparando <span class="f">P(A/B)</span> vs <span class="f">P(A)</span>.</li>
+<li><span class="trap">"Si es mala, ¿de qué proveedor?"</span> = Bayes (causa dado el efecto), NO probabilidad total.</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U4 · Discretas</span>
+<h3>Binomial vs Poisson</h3>
+<ul>
+<li><strong>Binomial</strong>: n intentos FIJOS, p constante. <span class="f">E=n·p</span>, <span class="f">V=n·p·q</span>. ("de 20 clientes, cuántos…")</li>
+<li><strong>Poisson</strong>: tasa por intervalo, sin n fijo. <span class="f">E=V=λ</span>. <span class="trap">Escalar la tasa: λ = tasa × tiempo.</span></li>
+<li>"Más de la mitad" de n: <span class="f">X &gt; n/2</span> → como X es entera, ajustar (ej. n=9 ⇒ X≥5).</li>
+<li>VA discreta general: <span class="f">E(x)=Σx·P(x)</span>; baja fluctuación si <span class="f">CV&lt;0,2</span>.</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U5 · Normal</span>
+<h3>N(μ, σ) y estandarización</h3>
+<ul>
+<li>Simétrica: <span class="f">Me=Mo=μ</span>; <span class="f">P(X&gt;μ)=0,5</span>; continua ⇒ <span class="f">P(X=a)=0</span>.</li>
+<li><span class="f">Z = (x−μ)/σ</span> = a cuántos σ está x de μ.</li>
+<li>Regla empírica: <span class="f">μ±1σ→68%</span>, <span class="f">±2σ→95%</span>, <span class="f">±3σ→99,7%</span> (aprox.; el 95% exacto es <span class="f">±1,96σ</span>).</li>
+<li>Patrones: simple (x→prob), "entre" = resta, <strong>fractil</strong> (prob→x, despejar <span class="f">x=μ+z·σ</span>).</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U5–U6 · Normal / Suma</span>
+<h3>Combinación de variables</h3>
+<ul>
+<li><strong>Suma de n iguales</strong> W=Σx: <span class="f">μ=n·μ</span>, <span class="f">σ=√n·σ</span>.</li>
+<li><strong>Promedio</strong> x̄: <span class="f">μ=μ</span>, <span class="f">σ=σ/√n</span> (error estándar).</li>
+<li><strong>Suma de DISTINTAS</strong>: <span class="f">μ=Σμᵢ</span>, <span class="f">σ=√(Σσᵢ²)</span>.</li>
+<li><strong>Lineal</strong> Y=k·X: <span class="f">μ=k·μ</span>, <span class="f">σ=k·σ</span>.</li>
+<li><span class="trap">Se suma la VARIANZA, no el desvío.</span> TCL: x̄≈Normal si n≥30.</li>
+<li><strong>Búsqueda de parámetros</strong>: 2 percentiles dados → sistema de 2 ecuaciones para μ y σ.</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U7 · Intervalos de confianza</span>
+<h3>¿Qué IC uso?</h3>
+<ul>
+<li>Media, σ conocido → <span class="f">x̄ ± Z·σ/√n</span>.</li>
+<li>Media, σ desconocido → <span class="f">x̄ ± t·S/√n</span>, <span class="f">ν = n−1</span>.</li>
+<li>Proporción → <span class="f">p̂ ± Z·√(p̂·q̂/n)</span>, <span class="f">p̂ = éxitos/n</span>. Validez: <span class="f">n·p̂≥15</span> y <span class="f">n·q̂≥15</span>.</li>
+<li>Sin estimación previa de p, para calcular n: <span class="f">p̂ = 0,5</span>. Con n&lt;30 y σ desconocido se asume población Normal.</li>
+<li>Tamaño muestra: <span class="f">n=(Z·σ/E)²</span> · <span class="f">n=Z²·p̂·q̂/E²</span>. <strong>Redondear ↑ siempre.</strong></li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U7 · Intervalos de confianza</span>
+<h3>Interpretación y trucos</h3>
+<ul>
+<li><span class="trap">95% NO es P(μ en el intervalo).</span> Es el % de intervalos que, repitiendo el muestreo, contendrían a μ (propiedad del método).</li>
+<li>Confianza ↑ ⇒ intervalo más ancho · n ↑ ⇒ más angosto.</li>
+<li>"Reducir error 60%" ⇒ <span class="f">E_nuevo=0,40·E</span>; "a la mitad" ⇒ <span class="f">E/2</span> y <span class="f">n ×4</span>.</li>
+<li>Confianza inversa: <span class="f">E=(sup−inf)/2</span> → <span class="f">Z=E·√n/σ</span> → nivel.</li>
+<li><span class="trap">Amplitud = 2·E</span> (el ancho total). "Amplitud ≤ 2%" ⇒ E=0,01.</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U8 · Regresión y correlación</span>
+<h3>Correlación (r)</h3>
+<ul>
+<li><span class="f">−1 ≤ r ≤ 1</span>: signo = dirección, |valor| = fuerza. <span class="f">|r|≥0,7</span> = fuerte.</li>
+<li>r &gt; 0 directa · r &lt; 0 inversa · r = 0 sin relación LINEAL (puede haber curva).</li>
+<li><span class="trap">Correlación ≠ causalidad</span> (ojo variable de confusión).</li>
+<li>Diagrama de dispersión: leer signo y fuerza a ojo (positiva/negativa, fuerte/moderada).</li>
+</ul>
+</div>
+
+<div class="card">
+<span class="tag">U8 · Regresión y correlación</span>
+<h3>Recta y R²</h3>
+<ul>
+<li>Recta: <span class="f">ŷ = a + b·x</span>. b = pendiente (Δy por unidad de x), a = y cuando x=0.</li>
+<li>Signo de b = signo de r. Recta pasa por <span class="f">(x̄, ȳ)</span>.</li>
+<li><strong>Predecir</strong> = meter x en la recta. <span class="trap">Extrapolar fuera del rango = riesgoso.</span></li>
+<li><span class="trap">R² = r²</span> = % de variación de Y explicada por X (0 a 1, sin signo). Ej: r=0,73 ⇒ R²=53,29% (no 73%). Cátedra: R²&gt;0,5 buen ajuste.</li>
+</ul>
+</div>
+
+<div class="card" style="border-color: var(--accent-dim, #8a6a25);">
+<span class="tag">Detector de distribución</span>
+<h3>¿Qué modelo es?</h3>
+<ul>
+<li>Conteo con n fijo + p → <strong>Binomial</strong>.</li>
+<li>Conteo por tasa/tiempo → <strong>Poisson</strong> (escalar λ).</li>
+<li>Medición continua con μ y σ → <strong>Normal</strong>.</li>
+<li>Promedio o total de n mediciones → <strong>Normal</strong> (σ/√n ó √n·σ).</li>
+<li>Estimar μ/porcentaje de una población → <strong>IC</strong> (Z / t / proporción).</li>
+</ul>
+</div>
+
+</div>
+
+<div class="ask">
+Este machete es para memorizar. Si querés que profundice cualquier cápsula en una lección aparte, o que te tome oral sobre una unidad, decime cuál.
+</div>
+
+<footer>
+Basado en tus TP1–TP6, los dos parciales y el cronograma de la cátedra (Lic. Prof. Terluc — UNICABA, FEP 2026).
+</footer>
+
+</body>
+</html>

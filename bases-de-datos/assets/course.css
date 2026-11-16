@@ -1,0 +1,675 @@
+/* ============================================================================
+   course.css — shared stylesheet for every lesson and reference sheet.
+   Tufte-inspired: generous measure, quiet chrome, sidenotes, prints cleanly.
+   Every lesson links this file. Do not fork it per lesson.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* Two skins share every component below; only these tokens change.
+   Skin:  <html data-skin="sepia"> (default is "rosa").   Mode: data-theme="light|dark" or the OS setting.
+   assets/theme.js sets both attributes and remembers the choice. */
+
+/* ---- Rosa, light (default): same palette as the Análisis de Datos suite ---- */
+:root {
+  --ink:          #2b1422;
+  --ink-soft:     #5c4152;
+  --ink-faint:    #7a5b6c;
+  --paper:        #ffffff;
+  --paper-sunk:   #fff6fa;
+  --rule:         #f1d6e3;
+  --accent:       #c2185b;
+  --accent-soft:  #fde8f1;
+  --good:         #17784a;
+  --good-soft:    #e1f3e9;
+  --bad:          #bf2630;
+  --bad-soft:     #fbe3e4;
+  --note:         #2a5578;
+  --note-soft:    #e3ecf4;
+
+  --serif: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --sans:  "Atkinson Hyperlegible", "Gill Sans", "Segoe UI", Calibri, system-ui, sans-serif;
+  --mono:  "JetBrains Mono", "Cascadia Code", Consolas, "DejaVu Sans Mono", monospace;
+  --head-font:   "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --head-weight: 700;
+  --h3-font:     var(--head-font);
+  --nums:        normal;
+
+  --measure: 38rem;
+  color-scheme: light;
+}
+
+/* ---- Rosa, dark ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:         #f8e9f1;
+    --ink-soft:    #d9bccb;
+    --ink-faint:   #c3a0b3;
+    --paper:       #140b11;
+    --paper-sunk:  #1e1219;
+    --rule:        #3a2331;
+    --accent:      #ff6fa9;
+    --accent-soft: #3b1529;
+    --good:        #6fd39c;
+    --good-soft:   #173325;
+    --bad:         #ff8a8f;
+    --bad-soft:    #3d1a1e;
+    --note:        #8ab6dd;
+    --note-soft:   #1a2430;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink:         #f8e9f1;
+  --ink-soft:    #d9bccb;
+  --ink-faint:   #c3a0b3;
+  --paper:       #140b11;
+  --paper-sunk:  #1e1219;
+  --rule:        #3a2331;
+  --accent:      #ff6fa9;
+  --accent-soft: #3b1529;
+  --good:        #6fd39c;
+  --good-soft:   #173325;
+  --bad:         #ff8a8f;
+  --bad-soft:    #3d1a1e;
+  --note:        #8ab6dd;
+  --note-soft:   #1a2430;
+  color-scheme: dark;
+}
+
+/* ---- Sepia, light: the original Tufte look ---- */
+:root[data-skin="sepia"] {
+  --ink:          #1a1a17;
+  --ink-soft:     #56544c;
+  --ink-faint:    #8a877c;
+  --paper:        #fffef9;
+  --paper-sunk:   #f5f2e8;
+  --rule:         #ddd8c8;
+  --accent:       #7a2e0e;
+  --accent-soft:  #f0e2d8;
+  --good:         #2f6b3f;
+  --good-soft:    #e2efe4;
+  --bad:          #8c2c22;
+  --bad-soft:     #f6e2df;
+  --note:         #2a5578;
+  --note-soft:    #e3ecf4;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+           Georgia, "Times New Roman", serif;
+  --sans:  "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif;
+  --mono:  "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --head-font:   var(--serif);
+  --head-weight: 400;
+  --h3-font:     var(--sans);
+  --nums:        oldstyle-num;
+  color-scheme: light;
+}
+
+/* ---- Sepia, dark ---- */
+@media (prefers-color-scheme: dark) {
+  :root[data-skin="sepia"]:not([data-theme="light"]) {
+    --ink:         #e8e4d9;
+    --ink-soft:    #a8a498;
+    --ink-faint:   #77746a;
+    --paper:       #16161a;
+    --paper-sunk:  #1e1e23;
+    --rule:        #33323a;
+    --accent:      #e08a5c;
+    --accent-soft: #2c211c;
+    --good:        #7fc08e;
+    --good-soft:   #1c2a20;
+    --bad:         #e08a80;
+    --bad-soft:    #2c1d1b;
+    --note:        #8ab6dd;
+    --note-soft:   #1a2430;
+    color-scheme: dark;
+  }
+}
+:root[data-skin="sepia"][data-theme="dark"] {
+  --ink:         #e8e4d9;
+  --ink-soft:    #a8a498;
+  --ink-faint:   #77746a;
+  --paper:       #16161a;
+  --paper-sunk:  #1e1e23;
+  --rule:        #33323a;
+  --accent:      #e08a5c;
+  --accent-soft: #2c211c;
+  --good:        #7fc08e;
+  --good-soft:   #1c2a20;
+  --bad:         #e08a80;
+  --bad-soft:    #2c1d1b;
+  --note:        #8ab6dd;
+  --note-soft:   #1a2430;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.05rem/1.65 var(--serif);
+  font-kerning: normal;
+  font-variant-numeric: var(--nums);
+  padding: 3rem 1.5rem 6rem;
+}
+
+/* ---------- layout ------------------------------------------------------- */
+
+.sheet { max-width: var(--measure); margin: 0 auto; }
+
+/* A wide block that breaks the measure — diagrams, tables. */
+.full {
+  max-width: min(56rem, 100%);
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* ---------- masthead ----------------------------------------------------- */
+
+.masthead { margin-bottom: 3rem; }
+
+.masthead__kicker {
+  font: 600 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.6rem;
+}
+
+.masthead__title {
+  font-family: var(--head-font);
+  font-weight: var(--head-weight);
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.7rem;
+}
+
+.masthead__standfirst {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 1.4rem;
+  max-width: 34rem;
+}
+
+.masthead__meta {
+  font: 0.78rem/1.5 var(--sans);
+  color: var(--ink-faint);
+  border-top: 1px solid var(--rule);
+  padding-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+}
+
+/* ---------- headings ----------------------------------------------------- */
+
+h2 {
+  font-family: var(--head-font);
+  font-weight: var(--head-weight);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 3.2rem 0 1rem;
+}
+
+h2 .num {
+  font: 600 0.68rem/1 var(--sans);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.45rem;
+  text-transform: uppercase;
+}
+
+h3 {
+  font: 600 1.02rem/1.35 var(--sans);
+  font-family: var(--h3-font);
+  letter-spacing: 0.005em;
+  margin: 2rem 0 0.6rem;
+}
+
+p { margin: 0 0 1.05rem; }
+
+a { color: var(--accent); text-underline-offset: 0.15em; text-decoration-thickness: 0.06em; }
+a:hover { text-decoration-thickness: 0.12em; }
+
+strong { font-weight: 600; }
+
+em.term {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+code, kbd, samp {
+  font: 0.86em/1.5 var(--mono);
+  background: var(--paper-sunk);
+  padding: 0.1em 0.34em;
+  border-radius: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+ul, ol { padding-left: 1.4rem; margin: 0 0 1.05rem; }
+li { margin-bottom: 0.4rem; }
+li > ul, li > ol { margin-top: 0.4rem; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 3rem 0;
+}
+
+/* ---------- callouts ----------------------------------------------------- */
+
+.callout {
+  border-left: 3px solid var(--rule);
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  margin: 1.6rem 0;
+  font-size: 0.97rem;
+}
+.callout > :last-child { margin-bottom: 0; }
+
+.callout__label {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.callout--trap  { border-color: var(--bad);  background: var(--bad-soft); }
+.callout--trap  .callout__label { color: var(--bad); }
+.callout--catedra { border-color: var(--note); background: var(--note-soft); }
+.callout--catedra .callout__label { color: var(--note); }
+.callout--key   { border-color: var(--accent); background: var(--accent-soft); }
+.callout--key   .callout__label { color: var(--accent); }
+
+.callout--trap, .callout--catedra, .callout--key {
+  padding: 0.85rem 1rem 0.85rem 1.1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ---------- figures ------------------------------------------------------ */
+
+figure {
+  margin: 2.2rem 0;
+}
+
+figure svg { display: block; width: 100%; height: auto; }
+
+figcaption {
+  font: 0.82rem/1.5 var(--sans);
+  color: var(--ink-soft);
+  margin-top: 0.75rem;
+  padding-left: 0.1rem;
+}
+figcaption b { color: var(--ink); font-weight: 600; }
+
+/* Diagram tokens — inline SVGs use these so they follow the theme. */
+svg { --svg-ink: var(--ink); --svg-rule: var(--ink-soft); --svg-paper: var(--paper); }
+
+/* ---------- tables ------------------------------------------------------- */
+
+.tbl-wrap { overflow-x: auto; margin: 1.8rem 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font: 0.9rem/1.45 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.9rem 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+thead th {
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1.5px solid var(--ink-soft);
+  white-space: nowrap;
+}
+
+tbody tr:last-child td { border-bottom: 1.5px solid var(--ink-soft); }
+
+/* ---------- retrieval practice: think-then-reveal ------------------------ */
+
+.reveal {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  margin: 1.8rem 0;
+  background: var(--paper-sunk);
+}
+
+.reveal > summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font: 600 0.92rem/1.45 var(--sans);
+  list-style: none;
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+.reveal > summary::-webkit-details-marker { display: none; }
+.reveal > summary::before {
+  content: "▸";
+  color: var(--accent);
+  font-size: 0.8em;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+.reveal[open] > summary::before { transform: rotate(90deg); }
+.reveal > summary:hover { color: var(--accent); }
+
+.reveal__body {
+  padding: 0 1rem 0.9rem 2.2rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.9rem;
+  font-size: 0.97rem;
+}
+.reveal__body > :last-child { margin-bottom: 0; }
+
+/* ---------- quiz (see quiz.js) ------------------------------------------- */
+
+.quiz {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 5px 5px 0;
+  padding: 1.1rem 1.2rem;
+  margin: 1.8rem 0;
+  background: var(--paper-sunk);
+}
+
+.quiz__label {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.quiz__q { font-weight: 600; margin: 0 0 0.9rem; font-size: 1rem; }
+.quiz__q code { font-weight: 400; }
+
+.quiz__options { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+.quiz__options li { margin: 0; }
+
+.quiz__opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 0.93rem/1.45 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.6rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.quiz__opt:hover:not(:disabled) { border-color: var(--accent); }
+.quiz__opt:disabled { cursor: default; }
+
+.quiz__opt.is-correct { border-color: var(--good); background: var(--good-soft); }
+.quiz__opt.is-wrong   { border-color: var(--bad);  background: var(--bad-soft); }
+.quiz__opt.is-missed  { border-color: var(--good); border-style: dashed; }
+
+.quiz__feedback {
+  margin: 0.9rem 0 0;
+  font: 0.92rem/1.55 var(--sans);
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--rule);
+}
+.quiz__feedback.is-correct { border-color: var(--good); }
+.quiz__feedback.is-wrong   { border-color: var(--bad); }
+.quiz__feedback b { font-weight: 600; }
+
+/* ---------- source / footer ---------------------------------------------- */
+
+.source {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  margin: 2.4rem 0;
+  font-size: 0.95rem;
+}
+.source__label {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: block;
+  margin-bottom: 0.45rem;
+}
+.source > :last-child { margin-bottom: 0; }
+
+.ask {
+  background: var(--accent-soft);
+  border-radius: 5px;
+  padding: 1rem 1.2rem;
+  margin: 2.4rem 0 0;
+  font: 0.95rem/1.6 var(--sans);
+}
+.ask > :last-child { margin-bottom: 0; }
+.ask b { color: var(--accent); }
+
+.nav {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font: 0.85rem/1.6 var(--sans);
+  color: var(--ink-faint);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+}
+.nav a { color: var(--ink-soft); text-decoration: none; }
+.nav a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---------- print -------------------------------------------------------- */
+
+@media print {
+  :root {
+    --ink: #000; --ink-soft: #444; --ink-faint: #666;
+    --paper: #fff; --paper-sunk: #f6f6f6; --rule: #ccc;
+    --accent: #000; --accent-soft: #f2f2f2;
+  }
+  body { padding: 0; font-size: 10.5pt; }
+  .sheet { max-width: none; }
+  h2, h3, figure, table, .callout, .quiz, .reveal { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  .reveal[open] > summary::before, .reveal > summary::before { content: ""; }
+  .reveal:not([open]) .reveal__body { display: block; }
+  .quiz__opt { border-color: #999; }
+  .nav, .ask { display: none; }
+  a { color: #000; text-decoration: underline; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #666; }
+}
+
+/* ---------- normalisation steps (Unidad 3) -------------------------------- */
+
+/* Compact data table for showing actual rows. Monospace keeps columns scannable
+   so the reader can spot a repeated or contradictory value at a glance. */
+.datos { font: 0.82rem/1.4 var(--mono); }
+.datos th, .datos td { padding: 0.28rem 0.6rem 0.28rem 0; white-space: nowrap; }
+.datos td.pk  { color: var(--accent); font-weight: 600; }
+.datos td.bad { color: var(--bad); font-weight: 600; }
+.datos tbody tr td.dim { color: var(--ink-faint); }
+
+/* Two relations side by side — the shape every normalisation step produces. */
+.paso { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin: 1.8rem 0; }
+.paso > div > h3 { margin: 0 0 0.5rem; }
+.paso--tres { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 720px) { .paso, .paso--tres { grid-template-columns: 1fr; } }
+
+/* Relation schemas in the cátedra's own notation: # marks the primary key. */
+.rel {
+  font: 0.9rem/1.8 var(--mono);
+  background: var(--paper-sunk);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  padding: 0.9rem 1rem;
+  margin: 1.4rem 0;
+  overflow-x: auto;
+}
+.rel b { color: var(--accent); font-weight: 600; }
+.rel i { color: var(--note); font-style: normal; }
+.rel .gone { color: var(--ink-faint); text-decoration: line-through; }
+
+/* Step banner — numbered move inside a worked exercise. */
+.move {
+  border-top: 1.5px solid var(--ink-soft);
+  padding-top: 0.6rem;
+  margin: 2.4rem 0 1rem;
+}
+.move__n {
+  font: 600 0.68rem/1.4 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.move__t { font: 600 1rem/1.4 var(--sans); margin: 0; }
+
+/* ---------- repaso final: question cards (practica/repaso-final.html) -------
+   A card is one probable exam question: the prompt, the keywords the answer
+   must contain, and a model answer behind a reveal. The toolbar can hide the
+   keywords and answers ("modo examen") so the card is attempted cold, and each
+   card can be marked "la sé" / "repasar" to drive a second, shorter pass.
+   Contract documented at the top of assets/repaso.js.
+   -------------------------------------------------------------------------- */
+
+.toolbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+  margin: 2rem 0; padding: 0.7rem 0.9rem;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.toolbar__btn {
+  font: 600 0.78rem/1 var(--mono, "SF Mono", Menlo, Consolas, monospace);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.5rem 0.75rem; cursor: pointer;
+  color: var(--ink); background: var(--paper-sunk);
+  border: 1px solid var(--rule); border-radius: 3px;
+}
+.toolbar__btn:hover { border-color: var(--accent); color: var(--accent); }
+.toolbar__btn[aria-pressed="true"] {
+  background: var(--accent); border-color: var(--accent); color: var(--paper);
+}
+.toolbar__count { margin-left: auto; font: 400 0.8rem/1 inherit; color: var(--ink-faint); }
+
+.card {
+  margin: 1.5rem 0; padding: 1.1rem 1.2rem;
+  border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+  border-radius: 3px; background: var(--paper);
+}
+.card[data-status="ok"]  { border-left-color: var(--ink-faint); opacity: 0.62; }
+.card[data-status="rev"] { border-left-width: 6px; background: var(--accent-soft); }
+
+.card__head { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline; margin-bottom: 0.5rem; }
+.card__tag {
+  font: 700 0.66rem/1 var(--mono, "SF Mono", Menlo, Consolas, monospace);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+}
+.card__conf {
+  font: 400 0.66rem/1 var(--mono, "SF Mono", Menlo, Consolas, monospace);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 0.22rem 0.5rem;
+}
+.card__conf--alta { color: var(--accent); border-color: var(--accent); }
+.card__q { margin: 0 0 0.7rem; font-size: 1.04rem; font-weight: 600; }
+
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0 0 0.8rem; padding: 0; }
+.chips__label {
+  font: 700 0.62rem/1.5 var(--mono, "SF Mono", Menlo, Consolas, monospace);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint);
+  width: 100%; margin-bottom: 0.1rem;
+}
+.chip {
+  font: 600 0.78rem/1 inherit; padding: 0.32rem 0.55rem;
+  background: var(--accent-soft); color: var(--accent);
+  border: 1px solid transparent; border-radius: 3px;
+}
+.chip--must { border-color: var(--accent); }
+
+.card__mark { display: flex; gap: 0.4rem; margin-top: 0.8rem; }
+.mark {
+  font: 600 0.72rem/1 var(--mono, "SF Mono", Menlo, Consolas, monospace);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.4rem 0.6rem; cursor: pointer;
+  background: none; color: var(--ink-faint);
+  border: 1px solid var(--rule); border-radius: 3px;
+}
+.mark:hover { color: var(--accent); border-color: var(--accent); }
+.mark[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+body.exam-mode .chips,
+body.exam-mode .card .reveal { display: none; }
+body.hide-known .card[data-status="ok"] { display: none; }
+
+@media print {
+  .toolbar, .card__mark { display: none; }
+  .card { break-inside: avoid; opacity: 1 !important; }
+}
+
+/* ---------- code blocks (Unidad 5: SQL) -----------------------------------
+   Plain <pre><code> for read-only SQL. Interactive SQL lives in sqlbox.css. */
+pre {
+  font: 0.84rem/1.55 var(--mono);
+  background: var(--paper-sunk);
+  border-left: 3px solid var(--rule);
+  border-radius: 0 4px 4px 0;
+  padding: 0.85rem 1rem;
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  font-variant-numeric: tabular-nums;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+pre .k { color: var(--accent); font-weight: 600; }   /* keyword highlight, optional */
+pre .c { color: var(--ink-faint); }                    /* comment, optional */
+@media print { pre { border: 1px solid #ccc; white-space: pre-wrap; } }
+
+/* ---------- Theme switcher (assets/theme.js) ---------- */
+
+.theme-switch {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper-sunk);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+}
+.theme-switch button {
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 11px;
+  background: transparent;
+  color: var(--ink-faint);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.theme-switch button[aria-pressed="true"] { background: var(--accent); color: var(--paper); }
+.theme-switch .sep { width: 1px; background: var(--rule); margin: 4px 2px; }
+@media print { .theme-switch { display: none; } }

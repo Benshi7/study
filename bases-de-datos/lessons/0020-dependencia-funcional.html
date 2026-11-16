@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 20 · Dependencia funcional</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 20 · Unidad 3 · Diseño de Base de Datos</p>
+    <h1 class="masthead__title">Dependencia funcional: la única herramienta que vas a usar</h1>
+    <p class="masthead__standfirst">
+      Las tres formas normales son tres preguntas sobre lo mismo. Si entendés esto,
+      no tenés que memorizar ninguna de las tres.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Elmasri, cap. 10.2</span>
+      <span>Base de las lecciones 21–23</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Qué dice una flecha</h2>
+
+  <p>
+    Se escribe <code>X &rarr; Y</code> y se lee <b>"X determina Y"</b>. La definición
+    formal de Elmasri es más útil de lo que parece:
+  </p>
+
+  <blockquote class="callout">
+    "Dos tuplas <code>t1</code> y <code>t2</code> que cumplen que <code>t1[X] = t2[X]</code>,
+    deben cumplir también que <code>t1[Y] = t2[Y]</code>."
+  </blockquote>
+
+  <p>Traducido a algo que podés usar mirando una tabla:</p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La prueba, en una frase</span>
+    <p>
+      <code>X &rarr; Y</code> vale si <b>no puede haber dos filas con el mismo X y distinto Y</b>.
+      Si encontrás dos filas que empatan en X y difieren en Y, la dependencia no vale.
+    </p>
+  </div>
+
+  <p>
+    Volvé a la tabla de la <a href="0019-las-anomalias.html">lección 19</a>:
+    <code>CodCli 3</code> aparece con <code>NomCli</code> Carlos, Carla y Carlitos.
+    ¿Vale <code>CodCli &rarr; NomCli</code>?
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Acá se equivoca casi todo el mundo</span>
+    <p>
+      <b>Sí vale.</b> Y los datos que la contradicen son justamente el error a corregir.
+    </p>
+    <p>
+      Elmasri lo dice con todas las letras: una dependencia funcional
+      <q>es una propiedad de la semántica o significado de los atributos</q>.
+      La declara el diseñador porque entiende el negocio, y después el DBMS la hace cumplir.
+      <b>No se descubre mirando los datos: se decide mirando la realidad.</b>
+    </p>
+    <p>
+      Los datos sirven sólo en una dirección: para <b>refutar</b> una dependencia que
+      creías que valía, o para detectar que los datos están sucios. Nunca para confirmarla.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Los tres tipos que importan</h2>
+
+  <p>
+    De todas las dependencias que hay en una tabla, la normalización sólo mira tres formas.
+    Cada una corresponde a una forma normal.
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/tipos-de-dependencia.svg"
+         alt="Tres paneles. En el primero, NFact junto con CProd determinan Canti: dependencia total, correcta. En el segundo, sólo NFact determina Fecha: dependencia parcial, rompe 2FN. En el tercero, NFact determina CodCli y CodCli determina NomCli: dependencia transitiva, rompe 3FN.">
+    <figcaption>
+      <b>Los tres tipos, sobre la misma tabla de facturación.</b>
+      La clave primaria es <code>(NFact, CProd)</code> — por eso los dos primeros paneles
+      la muestran completa. Fijate que el problema nunca es la flecha en sí:
+      es <b>de dónde sale</b>.
+    </figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Tipo</th><th>Definición</th><th>Rompe</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Total</b><br><span style="font-weight:400;color:var(--ink-soft)">(o completa)</span></td>
+          <td>Sale de la clave <b>entera</b>. Si le sacás cualquier atributo a la clave, la dependencia deja de valer.</td>
+          <td>Nada. Es lo correcto.</td>
+        </tr>
+        <tr>
+          <td><b>Parcial</b></td>
+          <td>Le alcanza con <b>parte</b> de la clave. Sacándole un atributo a la clave, la dependencia sigue valiendo.</td>
+          <td><b>2FN</b></td>
+        </tr>
+        <tr>
+          <td><b>Transitiva</b></td>
+          <td>Va de la clave a Y <b>pasando por</b> un atributo Z que no es clave: <code>clave &rarr; Z &rarr; Y</code>.</td>
+          <td><b>3FN</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Consecuencia práctica</span>
+    <p>
+      Si la clave primaria es de <b>un solo atributo</b>, no puede haber dependencias
+      parciales — no hay "parte de la clave". Elmasri lo dice explícito:
+      <q>si ésta contiene un único atributo, no es necesario aplicar la verificación</q>.
+    </p>
+    <p>
+      Es decir: en una tabla con clave simple, <b>2FN se cumple sola</b>. Sólo tenés que
+      revisar 3FN. Eso te ahorra la mitad del trabajo en cualquier ejercicio.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Cómo se saca el mapa de dependencias</h2>
+
+  <p>
+    Este es el procedimiento que conviene hacer <b>antes</b> de tocar nada. Sobre la tabla
+    de facturación:
+  </p>
+
+  <ol>
+    <li>
+      <b>Identificá la clave primaria.</b> ¿Qué combinación mínima de atributos no se repite?
+      Acá: <code>(NFact, CProd)</code> — un renglón es una factura más un producto.
+    </li>
+    <li>
+      <b>Para cada atributo no clave, preguntá "¿de qué depende de verdad?"</b>
+      No de qué está al lado en la tabla: de qué depende <em>en el negocio</em>.
+    </li>
+    <li>
+      <b>Clasificá cada respuesta</b> con la tabla de arriba.
+    </li>
+  </ol>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Atributo</th><th>Depende de</th><th>Tipo</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>Canti</code></td><td><code>(NFact, CProd)</code></td><td>Total ✓</td></tr>
+        <tr><td><code>Fecha</code></td><td><code>NFact</code></td><td>Parcial</td></tr>
+        <tr><td><code>CodCli</code></td><td><code>NFact</code></td><td>Parcial</td></tr>
+        <tr><td><code>Descri</code></td><td><code>CProd</code></td><td>Parcial</td></tr>
+        <tr><td><code>NomCli</code></td><td><code>CodCli</code></td><td>Transitiva</td></tr>
+        <tr><td><code>PUnit</code></td><td><b>depende del negocio</b></td><td>a decidir</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Ese cuadro <b>es</b> la normalización. Los tres pasos que vienen no hacen más que
+    ejecutarlo: cada dependencia que no sea total contra la clave se va a llevar sus
+    atributos a una tabla propia.
+  </p>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · La prueba</span>
+    <p class="quiz__q">
+      En una tabla ves dos filas con el mismo <code>CProd</code> y distinta
+      <code>Descri</code>. ¿Qué concluís?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. La dependencia CProd → Descri vale por el significado: un producto tiene una descripción. Los datos que la violan son datos sucios, y son justamente la anomalía que la normalización viene a hacer imposible.">Los datos están mal, no la dependencia</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al revés. Una dependencia funcional no se lee de los datos: se declara desde el significado del negocio. Que los datos la violen prueba que el modelo permite basura, no que la regla sea falsa.">La dependencia no vale, según los datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un producto con dos descripciones no es un caso legítimo, es el error 5 y 6 de la lista del profe. Si en tu negocio un producto SÍ pudiera tener dos descripciones, entonces te falta un atributo que las distinga.">Un producto tiene dos descripciones</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Clasificar</span>
+    <p class="quiz__q">
+      Clave primaria <code>(NFact, CProd)</code>. Sabés que <code>CProd &rarr; Descri</code>.
+      ¿Qué tipo de dependencia es respecto de esa clave?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Parcial: le alcanza con CProd, que es sólo una parte de la clave. Sacando NFact la dependencia sigue valiendo, y ése es exactamente el test de parcialidad. Rompe 2FN.">Parcial, porque le sobra el NFact</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Transitiva sería si pasara por un atributo NO clave intermedio, como clave → Z → Descri. Acá CProd forma parte de la clave, no es un intermediario ajeno.">Transitiva, porque pasa por CProd</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Total sería si necesitara la clave ENTERA. Pero no necesita NFact para nada: la descripción del producto es la misma en cualquier factura.">Total, porque CProd está en clave</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · El atajo</span>
+    <p class="quiz__q">
+      Una tabla tiene clave primaria de un solo atributo. ¿Qué podés afirmar sin
+      revisar nada?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Si la clave es un solo atributo no existe 'parte de la clave', así que ninguna dependencia parcial es posible. Está en 2FN por construcción. Todavía puede violar 3FN, que es lo único que te queda por revisar.">Está en 2FN, y falta revisar 3FN</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="2FN sí está garantizada, pero 3FN no. Una clave simple no impide en absoluto una dependencia transitiva: NFact → CodCli → NomCli es exactamente ese caso.">Está en 3FN, no hay nada que ver</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 10.2.1 "Definición de dependencia
+      funcional" (pág. 292) y las definiciones de dependencia total/parcial en 10.3.5 y
+      transitiva en 10.3.6 (págs. 304–305).
+      En el PDF de <code>raw/</code>: páginas 318 y 330.
+    </p>
+    <p>
+      Es el capítulo más formal de la materia y el que más rinde leer con lápiz.
+      La Figura 10.3 es el mapa de dependencias que estamos imitando acá.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Pasame cualquier tabla y sacamos juntos el mapa de
+      dependencias. Es el ejercicio que más rinde de toda la unidad: si el mapa está bien,
+      las tres formas normales salen solas.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0019-las-anomalias.html">Anterior: 0019</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0021-primera-forma-normal.html">Siguiente: 0021 · 1FN</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

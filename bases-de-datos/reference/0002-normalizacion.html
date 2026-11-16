@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Normalización</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Referencia 02 · Para imprimir</p>
+    <h1 class="masthead__title">Normalización y pasaje a relacional</h1>
+    <p class="masthead__standfirst">
+      Todo lo de la Unidad 3 en una hoja. Definiciones textuales de la cátedra,
+      procedimiento y reglas de mapeo.
+    </p>
+  </header>
+
+  <h2><span class="num">A</span>Las tres formas normales — definición de la cátedra</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>FN</th><th>Definición textual (Clase 3, slide 12)</th><th>Enemigo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>1FN</b></td>
+          <td>"…si no posee atributos que puedan repetirse para la misma clave primaria."</td>
+          <td>Grupo repetitivo</td>
+        </tr>
+        <tr>
+          <td><b>2FN</b></td>
+          <td>"…si se encuentra en 1FN y todos sus atributos dependen funcionalmente de la <b>totalidad</b> de la clave primaria."</td>
+          <td>Dependencia parcial</td>
+        </tr>
+        <tr>
+          <td><b>3FN</b></td>
+          <td>"…si se encuentra en 2FN y no existe dependencia transitiva (ninguno de sus atributos depende de un <b>campo no clave</b>)."</td>
+          <td>Dependencia transitiva</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">B</span>El procedimiento, en seis movimientos</h2>
+
+  <ol>
+    <li>
+      <b>Sacá los derivados.</b> Todo lo que se calcula a partir de otro atributo
+      (<code>Total = Cant × Precio</code>) sale del modelo antes de empezar.
+    </li>
+    <li>
+      <b>Identificá la clave primaria.</b> La combinación mínima que no se repite.
+      Sin esto, nada de lo que sigue tiene sentido.
+    </li>
+    <li>
+      <b>Armá el mapa de dependencias.</b> Para cada atributo no clave:
+      "¿de qué depende <em>de verdad</em>?" Clasificá: total, parcial o transitiva.
+    </li>
+    <li>
+      <b>1FN</b> — el grupo repetitivo se va a una tabla nueva.
+      Clave = clave de la original + lo que distinga cada fila nueva.
+    </li>
+    <li>
+      <b>2FN</b> — lo que depende de <em>parte</em> de la clave se muda a una tabla nueva.
+      Esa parte de la clave pasa a ser la clave primaria de la nueva.
+      <br><b>Atajo: clave simple ⇒ 2FN automática.</b>
+    </li>
+    <li>
+      <b>3FN</b> — lo que depende de un atributo no clave se muda junto con él.
+      Ese atributo pasa a ser la clave de la nueva y queda como foránea en la original.
+    </li>
+  </ol>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Los tres movimientos son el mismo</span>
+    <p>
+      Mirá 4, 5 y 6: en los tres <b>se saca un conjunto de atributos a una tabla nueva y se
+      le da como clave primaria aquello de lo que dependían</b>. Cambia sólo qué es ese
+      "aquello": parte de la clave en 2FN, un atributo no clave en 3FN.
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Errores que cuestan puntos</span>
+    <ul>
+      <li><b>Copiar en vez de mudar.</b> El atributo se va. Si queda en las dos tablas, no normalizaste nada.</li>
+      <li><b>Olvidar la clave foránea.</b> Al mudar algo, el enganche tiene que quedar del lado original.</li>
+      <li><b>Clave incompleta en la asociativa.</b> Va la unión de las dos claves, no una sola.</li>
+      <li><b>Revisar 2FN en tablas de clave simple.</b> Perdés tiempo: es automática.</li>
+      <li><b>No verificar.</b> Reconstruí la tabla original con joins. Si no vuelve igual, perdiste datos.</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">C</span>Del DER al relacional — las reglas de mapeo</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>En el DER</th><th>En el relacional</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Entidad fuerte</td><td>Tabla, con su clave primaria.</td></tr>
+        <tr><td>Atributo simple</td><td>Columna.</td></tr>
+        <tr><td>Atributo compuesto <br><span style="color:var(--ink-soft)">(óvalo con hijos)</span></td><td><b>Columnas</b>, una por hoja. El padre desaparece; se usa como prefijo: <code>Direccion_Calle</code>.</td></tr>
+        <tr><td>Atributo multivaluado <br><span style="color:var(--ink-soft)">(óvalo doble)</span></td><td><b>Tabla propia.</b> Clave = clave del dueño + el valor.</td></tr>
+        <tr><td>Atributo derivado <br><span style="color:var(--ink-soft)">(óvalo punteado)</span></td><td><b>Nada.</b> No se guarda.</td></tr>
+        <tr><td>Relación <code>1 : N</code></td><td>La clave del lado <b>1</b> baja como <b>FK al lado N</b>. Sin tabla nueva.</td></tr>
+        <tr><td>Relación <code>1 : 1</code></td><td>FK en cualquiera de las dos — preferí la de participación total.</td></tr>
+        <tr><td>Relación <code>N : N</code></td><td><b>Tabla asociativa.</b> Clave = unión de las dos claves.</td></tr>
+        <tr><td>Atributo del rombo</td><td>Columna de la <b>tabla asociativa</b>.</td></tr>
+        <tr><td>Entidad débil</td><td>Tabla con clave = clave del fuerte + su clave parcial.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Por qué la FK va del lado N</span>
+    <p>
+      Porque del lado 1 no entraría. Guardar muchos pedidos en la fila del proveedor exige
+      varias columnas para un mismo atributo: eso es un grupo repetitivo y viola 1FN.
+      <b>La regla no es arbitraria: es la única opción que respeta 1FN.</b>
+    </p>
+  </div>
+
+  <h2><span class="num">D</span>Dónde vive un precio (o cualquier valor que cambie)</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Situación</th><th>Modelo</th><th>Cuándo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>A</b> · del renglón</td>
+          <td><code>Renglon(#Doc, #Prod, Cant, <b>Precio</b>)</code></td>
+          <td>El precio se pacta en cada operación.</td>
+        </tr>
+        <tr>
+          <td><b>B</b> · del producto</td>
+          <td><code>Prod(#CProd, Descri, <b>Precio</b>)</code></td>
+          <td>Un precio por producto. Nada sobre el tiempo.</td>
+        </tr>
+        <tr>
+          <td><b>C</b> · histórico</td>
+          <td><code>Prod(#CProd, Descri)</code><br><code>PrecioProd(#CProd, <b>#FechaDesde</b>, Precio)</code></td>
+          <td>"Interesa saber cómo varió a lo largo del tiempo."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <b>El patrón histórico completo cabe en una frase:</b> el tiempo entra en la clave
+    primaria. Dos valores que antes se contradecían pasan a ser dos hechos fechados.
+    Vuelve en la Unidad 9 con el nombre <em class="term">Slowly Changing Dimension</em>.
+  </p>
+
+  <h2><span class="num">E</span>Notación de la cátedra</h2>
+
+  <div class="rel">
+    PEDIDO (<b>#NRO_PEDIDO</b>, FECHA, <i>(FK)ID_PROVEEDOR</i>, <i>(FK)ID_DEPARTAMENTO</i>)<br>
+    PEDIDO_MATERIAL (<b>#NRO_PEDIDO</b>, <b>#ID_MATERIAL</b>, CANTIDAD)
+  </div>
+
+  <ul>
+    <li><code>#</code> antes del atributo &rarr; <b>clave primaria</b>.</li>
+    <li>Clave compuesta &rarr; <b>todos</b> sus atributos llevan <code>#</code>.</li>
+    <li><code>(FK)</code> antes del atributo &rarr; <b>clave foránea</b>.</li>
+    <li>La clave primaria se escribe primero, después el resto.</li>
+  </ul>
+
+  <p class="callout callout--catedra">
+    <span class="callout__label">Fuentes</span>
+    Clase 2, slides 28 y 34–35 · Clase 3, slides 2–17 ·
+    resolución del ejercicio del 10/09/2026 ·
+    <code>Clase3_Ej1_Proveedores_RS.erdplus</code> ·
+    Elmasri &amp; Navathe 5ª ed., capítulos 7 y 10.
+  </p>
+
+  <nav class="nav">
+    <a href="../index.html">Índice</a>
+    <a href="../lessons/0019-las-anomalias.html">Unidad 3: empezá en la 0019</a>
+    <a href="0004-notacion-der-a-mano.html">Referencia: notación a mano</a>
+    <a href="0001-cardinalidad.html">Referencia: cardinalidad</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

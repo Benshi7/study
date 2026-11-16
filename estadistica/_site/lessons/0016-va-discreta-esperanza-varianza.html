@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 16 — VA discreta: esperanza, varianza y CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+<style>
+  .tw { overflow-x: auto; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  td.c, th.c { text-align: center; }
+  tr.tot td { font-weight: 700; border-top: 2px solid var(--accent-dim); }
+  .example table, .calc table, .box table { background: transparent; }
+  .calc {
+    border-radius: 3px; padding: 1.1rem 1.3rem; margin: 1.3rem 0; font-size: 0.95rem;
+    background: var(--paper-raised); border-left: 3px solid var(--formula);
+  }
+  .calc::before {
+    content: "\1F5A9  EN LA FX-991EX"; display: block; font-size: 0.68rem; letter-spacing: 0.12em;
+    font-weight: 700; margin-bottom: 0.5rem; color: var(--formula); font-family: var(--font-mono);
+  }
+  .key {
+    display: inline-block; border: 1px solid var(--accent-dim); border-bottom-width: 2px; border-radius: 4px;
+    padding: 0 0.4rem; margin: 0.1rem 0.1rem; font-size: 0.82rem; font-weight: 600; color: var(--accent);
+    background: var(--code-bg); line-height: 1.55; white-space: nowrap;
+  }
+  .out { color: var(--good); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .calc ol, .example ol, .box ol { margin: 0.4rem 0 0.4rem 1.2rem; padding: 0; }
+  .calc li, .example li, .box li { margin: 0.35rem 0; }
+  .fig { margin: 1.3rem 0; text-align: center; }
+  .fig svg { max-width: 100%; height: auto; }
+  .fig figcaption { font-size: 0.85rem; color: var(--ink-dim); margin-top: 0.3rem; }
+  .plots { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin: 1.3rem 0; }
+  .plots .fig { margin: 0; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 4px; padding: 0.6rem 0.4rem; }
+  .svg-axis { stroke: var(--ink-dim); stroke-width: 1.2; fill: none; }
+  .svg-curve { stroke: var(--formula); stroke-width: 2; fill: none; }
+  .svg-fill { fill: rgba(230, 195, 132, 0.38); stroke: none; }
+  .svg-mark { stroke: var(--accent-dim); stroke-width: 1; stroke-dasharray: 3 3; }
+  .svg-t { fill: var(--ink-dim); font-size: 11px; font-family: var(--font-body); }
+  .svg-tb { fill: var(--ink); font-size: 11.5px; font-family: var(--font-body); font-weight: 600; }
+  .svg-dot { fill: var(--accent); fill-opacity: 0.85; }
+  .svg-line { stroke: var(--formula); stroke-width: 1.6; fill: none; }
+  .quiz label span.opt { flex: 1; }
+</style>
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Variable aleatoria discreta · Lección mecánica</span>
+<h1>VA discreta: esperanza, varianza y CV</h1>
+<p class="subtitle">Una tabla de probabilidades, una esperanza, una varianza y un veredicto: ¿baja o alta fluctuación? Todo con números del TP3.</p>
+
+
+<h2>El problema</h2>
+<p>Una variable aleatoria discreta se describe con una tabla: los valores posibles <span class="formula">x</span> y la probabilidad <span class="formula">P(x)</span> de cada uno. Con esa tabla no se “promedia” nada que ya haya ocurrido: se calcula lo que se <strong>espera</strong> en el largo plazo (esperanza) y <strong>cuánto se aleja</strong> lo que ocurra de eso (varianza y desvío). La pregunta de interpretación es siempre la misma: ¿esa fluctuación es chica o grande <em>en relación</em> con lo esperado? Eso lo responde el CV.</p>
+
+<h2>Las fórmulas de la cátedra</h2>
+<div class="tw"><table>
+<tr><th>Qué</th><th>Fórmula</th><th>Notas</th></tr>
+<tr><td>Condición de distribución</td><td><span class="formula">P(x) ≥ 0  y  Σ P(x) = 1</span></td><td>Siempre verifícala: si falta un dato (A, B, C), sale de aquí</td></tr>
+<tr><td>Esperanza</td><td><span class="formula">μ = E(X) = Σ x·P(x)</span></td><td>No tiene por qué ser un valor posible (en el dado, 3,5)</td></tr>
+<tr><td>Varianza</td><td><span class="formula">σ² = Var(X) = Σ (x − μ)²·P(x) = Σ x²·P(x) − μ²</span></td><td>Las dos formas dan lo mismo; la segunda es más corta</td></tr>
+<tr><td>Desvío</td><td><span class="formula">σ = √Var(X)</span></td><td>Mismas unidades que X</td></tr>
+<tr><td>Coef. de variación</td><td><span class="formula">CV = σ / μ</span></td><td>CV &lt; 0,2 ⇒ baja fluctuación; CV &gt; 0,2 ⇒ alta variabilidad o incertidumbre</td></tr>
+</table></div>
+<div class="box">
+Acumuladas: <span class="formula">F(r) = P(X ≤ r)</span> (izquierda) y <span class="formula">G(r) = P(X ≥ r)</span> (derecha). Con un dado: P(X &lt; 5) = F(4) = 4/6; P(X &gt; 5) = G(6) = 1/6; P(3 ≤ X ≤ 6) = F(6) − F(2) = 5/6. Su E = 3,5 y su Var = 2,917.
+</div>
+
+
+<h2>Ejemplo resuelto 1 — TP3, ejercicio 2 (autos vendidos un sábado)</h2>
+<div class="example">
+<strong>Datos:</strong> X = autos vendidos. P(0) = 0,1; P(1) = 0,2; P(2) = 0,3; P(3) = 0,3; P(4) = 0,1. Se pide cuántos espera vender y la variabilidad absoluta y relativa.
+<div class="tw"><table>
+<tr><th class="n">x</th><th class="n">P(x)</th><th class="n">x·P(x)</th><th class="n">x²·P(x)</th><th class="n">(x − μ)²·P(x)</th></tr>
+<tr><td class="n">0</td><td class="n">0,1</td><td class="n">0,0</td><td class="n">0,0</td><td class="n">0,441</td></tr>
+<tr><td class="n">1</td><td class="n">0,2</td><td class="n">0,2</td><td class="n">0,2</td><td class="n">0,242</td></tr>
+<tr><td class="n">2</td><td class="n">0,3</td><td class="n">0,6</td><td class="n">1,2</td><td class="n">0,003</td></tr>
+<tr><td class="n">3</td><td class="n">0,3</td><td class="n">0,9</td><td class="n">2,7</td><td class="n">0,243</td></tr>
+<tr><td class="n">4</td><td class="n">0,1</td><td class="n">0,4</td><td class="n">1,6</td><td class="n">0,361</td></tr>
+<tr class="tot"><td class="n">Total</td><td class="n">1,0</td><td class="n">2,1</td><td class="n">5,7</td><td class="n">1,29</td></tr>
+</table></div>
+<ol>
+<li><strong>Verificación:</strong> <span class="formula">0,1 + 0,2 + 0,3 + 0,3 + 0,1 = 1</span> ✓</li>
+<li><strong>Esperanza:</strong> <span class="formula">E(X) = 0 + 0,2 + 0,6 + 0,9 + 0,4 = 2,1 autos</span>. Se espera vender 2,1 autos un sábado.</li>
+<li><strong>Varianza (forma corta):</strong> <span class="formula">Σ x²P = 0 + 0,2 + 1,2 + 2,7 + 1,6 = 5,7</span>; <span class="formula">Var = 5,7 − 2,1² = 5,7 − 4,41 = 1,29</span>. Con la forma larga, la última columna suma lo mismo: 1,29.</li>
+<li><strong>Desvío:</strong> <span class="formula">σ = √1,29 = 1,136 autos</span> (variabilidad absoluta).</li>
+<li><strong>CV:</strong> <span class="formula">1,136 / 2,1 = 0,54</span> (variabilidad relativa). Como 0,54 &gt; 0,2 hay <strong>alta fluctuación</strong>: la dispersión es el 54 % de lo que se espera vender, así que la venta de un sábado es muy incierta.</li>
+</ol>
+</div>
+
+
+<h2>Ejemplo resuelto 2 — TP3, ejercicio 3 (facturas procesadas por día)</h2>
+<div class="example">
+<strong>Datos:</strong> el empleado A falta el 10 % de los días y el B el 8 %. Si va A se procesan 50 facturas; si solo va B, 25; si van ambos, solo A procesa (50). Construye la distribución y calcula E(X), indicando si la fluctuación es baja.
+<div class="tw"><table>
+<tr><th class="n">x (facturas)</th><th>Situación</th><th>Cuenta</th><th class="n">P(x)</th></tr>
+<tr><td class="n">0</td><td>A y B faltan</td><td>0,10 · 0,08</td><td class="n">0,008</td></tr>
+<tr><td class="n">25</td><td>A falta, B va</td><td>0,10 · 0,92</td><td class="n">0,092</td></tr>
+<tr><td class="n">50</td><td>A va (B da igual)</td><td>0,90</td><td class="n">0,900</td></tr>
+</table></div>
+<ol>
+<li><strong>Verificación:</strong> <span class="formula">0,008 + 0,092 + 0,9 = 1</span> ✓ (la tercera fila es simplemente 1 − 0,10, porque con A presente no importa B).</li>
+<li><span class="formula">E(X) = 0·0,008 + 25·0,092 + 50·0,9 = 2,3 + 45 = 47,3 facturas</span></li>
+<li><span class="formula">Σ x²P = 625·0,092 + 2500·0,9 = 57,5 + 2250 = 2307,5</span>; <span class="formula">Var = 2307,5 − 47,3² = 2307,5 − 2237,29 = 70,21</span></li>
+<li><span class="formula">σ = √70,21 = 8,379</span>; <span class="formula">CV = 8,379 / 47,3 = 0,177 ≈ 0,18</span>. Como 0,18 &lt; 0,2: <strong>baja fluctuación</strong>, y entonces tiene sentido usar la esperanza (47,3) como “facturación diaria típica”.</li>
+</ol>
+</div>
+
+<h3>Dos tablas más (cátedra) para comparar</h3>
+<div class="tw"><table>
+<tr><th>Caso</th><th>Distribución</th><th class="n">E</th><th class="n">Var</th><th class="n">CV</th></tr>
+<tr><td>Suma de 2 bolillas {1,2,3}, con reposición</td><td>2,3,4,5,6 con 1/9, 2/9, 3/9, 2/9, 1/9</td><td class="n">4</td><td class="n">1,33</td><td class="n">0,2887 (alta)</td></tr>
+<tr><td>Suma de 2 bolillas {3,4,5}, sin reposición</td><td>7, 8, 9 con 1/3 cada una</td><td class="n">8</td><td class="n">0,67</td><td class="n">0,102 (baja)</td></tr>
+</table></div>
+<p>Compara la dispersión: con reposición hay 5 sumas posibles y Var = 1,33; sin reposición solo hay 3 (la bolilla no puede repetirse) y Var = 0,67. En la diapositiva de la cátedra el CV del primer caso figura como 28,83 %; el cálculo exacto es 28,87 %. Ambos superan 20 %, la conclusión no cambia.</p>
+
+
+<div class="calc">
+<strong>E(X) y σ desde una tabla de probabilidades</strong>
+<ol>
+<li>Activa Freq: <span class="key">SHIFT</span> <span class="key">MENU</span> <span class="key">▼</span> <span class="key">3</span> → <span class="key">1</span> <em>On</em>. Luego <span class="key">MENU</span> <span class="key">6</span> → <span class="key">1</span> (1-Variable).</li>
+<li>En <span class="formula">x</span> carga 0 <span class="key">=</span> 1 <span class="key">=</span> 2 <span class="key">=</span> 3 <span class="key">=</span> 4 <span class="key">=</span>. Con <span class="key">▶</span> baja a <span class="formula">Freq</span> y carga las probabilidades <strong>multiplicadas por 10</strong> (1, 2, 3, 3, 1). Si P tiene tres decimales usa ×1000 (en el ejemplo de las facturas: 8, 92, 900). El manual no documenta decimales en Freq; multiplicar por una potencia de 10 da exactamente lo mismo.</li>
+<li><span class="key">AC</span>, <span class="key">OPTN</span> <span class="key">2</span> (1-Variable Calc), recorre con <span class="key">▼</span>.</li>
+</ol>
+<p><strong>Qué sale:</strong> <span class="out">x̄ = 2,1</span> es <strong>E(X)</strong> · <span class="out">σx = 1,1358</span> es el desvío de X · <span class="bad">sx = 1,1972</span> <strong>no</strong> se usa · <span class="out">n = 10</span> (solo es el factor de escala que elegiste, no tiene significado probabilístico). El CV: σx ÷ x̄ = 0,54.</p>
+<p>Por qué <strong>σx</strong>: la tabla describe la distribución completa de X, no una muestra. Es la misma cuenta Σ(x − μ)²·P.</p>
+</div>
+
+<div class="warn">
+<ul>
+<li><strong>Olvidar “− μ²”</strong> en la forma corta: Σx²P = 5,7 no es la varianza; Var = 5,7 − 4,41 = 1,29.</li>
+<li><strong>Confundir Var con σ:</strong> si la pregunta es “varianza”, no saques la raíz; si es “desvío” o “variabilidad absoluta”, sí. Var = 1 y Var = 0 son los casos en que σ = Var.</li>
+<li><strong>Usar sx en la calculadora</strong> con una tabla de probabilidades: corresponde σx.</li>
+<li><strong>No chequear Σp = 1</strong> antes de calcular: un P mal copiado arrastra toda la cuenta; y si falta una probabilidad, se despeja de 1 − (suma de las otras).</li>
+<li><strong>CV con Var en vez de σ</strong>, o interpretar CV = 0,54 como “54 autos”: es una proporción de la esperanza, sin unidades.</li>
+<li>“Como mínimo un error” es P(X ≥ 1) = 1 − P(0) = 1 − 0,4 = 0,6 (TP3, ej. 1).</li>
+</ul>
+</div>
+
+<h2>Practica: calcula antes de mirar las opciones</h2>
+<div class="quiz">
+<p class="q">1. La distribución de X es: x = 0, 1, 2, 3 con P(x) = 0,1; 0,3; A; 0,2. ¿Cuánto vale A?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a')"><span class="opt">a. 0,6</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b')"><span class="opt">b. 0,4</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c')"><span class="opt">c. 0,2</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d')"><span class="opt">d. 1</span></label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1e')"><span class="opt">e. 0,3</span></label>
+<div id="q1a" class="feedback wrong">0,6 es la suma de las otras tres probabilidades. A es lo que falta para llegar a 1, es decir 1 − 0,6.</div>
+<div id="q1b" class="feedback correct">Las probabilidades deben sumar 1: A = 1 − (0,1 + 0,3 + 0,2) = 1 − 0,6 = 0,4.</div>
+<div id="q1c" class="feedback wrong">Copiaste el valor vecino (P(3) = 0,2). Nada obliga a que A sea igual a otra probabilidad: se despeja de la suma = 1.</div>
+<div id="q1d" class="feedback wrong">1 es el total de la distribución, no el valor de una sola probabilidad.</div>
+<div id="q1e" class="feedback wrong">No hay motivo para repetir P(1): A se obtiene restando de 1 las otras probabilidades.</div>
+</div>
+<div class="quiz">
+<p class="q">2. Con la tabla x = 0, 1, 2, 3 y P = 0,1; 0,3; 0,4; 0,2, ¿cuánto vale E(X)?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a')"><span class="opt">a. 1,5</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b')"><span class="opt">b. 1,0</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c')"><span class="opt">c. 6</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d')"><span class="opt">d. 1,7</span></label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2e')"><span class="opt">e. 0,25</span></label>
+<div id="q2a" class="feedback wrong">Es el promedio simple de 0, 1, 2 y 3. La esperanza pondera cada valor por su probabilidad: Σ x·P(x).</div>
+<div id="q2b" class="feedback wrong">1 es la suma de las probabilidades (no de x·P). Eso solo sirve de chequeo.</div>
+<div id="q2c" class="feedback wrong">6 es Σx = 0 + 1 + 2 + 3. La esperanza usa x·P(x), no la suma de los valores.</div>
+<div id="q2d" class="feedback correct">E(X) = 0·0,1 + 1·0,3 + 2·0,4 + 3·0,2 = 0 + 0,3 + 0,8 + 0,6 = 1,7.</div>
+<div id="q2e" class="feedback wrong">Es el promedio de las probabilidades (1/4). No tiene relación con la esperanza de X.</div>
+</div>
+<div class="quiz">
+<p class="q">3. Misma tabla (E(X) = 1,7; Σx²·P(x) = 3,7). ¿Cuánto vale la varianza?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a')"><span class="opt">a. 0,81</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b')"><span class="opt">b. 3,7</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c')"><span class="opt">c. 0,9</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d')"><span class="opt">d. 2,89</span></label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3e')"><span class="opt">e. 1,7</span></label>
+<div id="q3a" class="feedback correct">Var = Σx²P − μ² = 3,7 − 1,7² = 3,7 − 2,89 = 0,81.</div>
+<div id="q3b" class="feedback wrong">3,7 es Σx²P. Falta restar μ² (= 2,89) para obtener la varianza.</div>
+<div id="q3c" class="feedback wrong">0,9 es el desvío (√0,81). La pregunta pide varianza.</div>
+<div id="q3d" class="feedback wrong">2,89 es μ² (1,7 al cuadrado), solo una de las dos piezas de la fórmula.</div>
+<div id="q3e" class="feedback wrong">Eso es la esperanza, no la varianza.</div>
+</div>
+<div class="quiz">
+<p class="q">4. Una variable discreta tiene E(X) = 10 y σ = 3. Con la convención de la cátedra, ¿qué se concluye?</p>
+<label><input type="radio" name="q4" onclick="showFeedback('q4a')"><span class="opt">a. CV = 3,33: fluctuación enorme</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4b')"><span class="opt">b. CV = 0,30 &lt; 1: baja fluctuación</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4c')"><span class="opt">c. CV = 0,09: baja fluctuación</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4d')"><span class="opt">d. CV = 30 autos</span></label>
+<label><input type="radio" name="q4" onclick="showFeedback('q4e')"><span class="opt">e. CV = 0,30 &gt; 0,2: alta fluctuación (incertidumbre)</span></label>
+<div id="q4a" class="feedback wrong">Dividiste E entre σ (10/3). El CV es σ/μ = 0,30.</div>
+<div id="q4b" class="feedback wrong">El umbral de la cátedra no es 1, es 0,2. Con 0,30 la fluctuación es alta.</div>
+<div id="q4c" class="feedback wrong">Elevaste σ al cuadrado (9) antes de dividir, es decir usaste Var/μ. El CV usa σ, no la varianza.</div>
+<div id="q4d" class="feedback wrong">El CV no tiene unidades: es una proporción (0,30) de la esperanza, no una cantidad de unidades.</div>
+<div id="q4e" class="feedback correct">CV = σ/μ = 3/10 = 0,30. Supera 0,2, así que la variable tiene alta variabilidad relativa.</div>
+</div>
+<div class="quiz">
+<p class="q">5. En la calculadora cargaste x = 0, 1, 2, 3, 4 con Freq = 1, 2, 3, 3, 1 (las probabilidades ×10). Pantalla: x̄ = 2,1; σx = 1,1358; sx = 1,1972. ¿Qué valor es el desvío de la variable X?</p>
+<label><input type="radio" name="q5" onclick="showFeedback('q5a')"><span class="opt">a. sx = 1,1972</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5b')"><span class="opt">b. x̄ = 2,1</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5c')"><span class="opt">c. σx = 1,1358, porque la tabla describe toda la distribución</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5d')"><span class="opt">d. n = 10</span></label>
+<label><input type="radio" name="q5" onclick="showFeedback('q5e')"><span class="opt">e. Ninguno: la calculadora no sirve para variables aleatorias</span></label>
+<div id="q5a" class="feedback wrong">sx divide por n − 1 y se usa con datos de una muestra. Aquí n = 10 es solo la escala que elegiste (×10), no un tamaño muestral.</div>
+<div id="q5b" class="feedback wrong">Eso es la media, o sea E(X). El desvío es otro estadístico.</div>
+<div id="q5c" class="feedback correct">La tabla de probabilidades es la distribución completa de X (no una muestra), así que se divide por n: σx. Coincide con Σ(x − μ)²·P.</div>
+<div id="q5d" class="feedback wrong">n es la suma de las Freq que cargaste (1+2+3+3+1), solo un factor de escala.</div>
+<div id="q5e" class="feedback wrong">Sí sirve: cargando probabilidades (o múltiplos enteros) como Freq, x̄ = E(X) y σx = σ de X.</div>
+</div>
+
+<div class="ask">
+¿Quieres que te dé una tabla con una incógnita (A, B, C) para despejarla con E(X) conocido, como el ejercicio 4 del TP3? Dímelo y la armamos.
+</div>
+
+<footer>
+Ejemplos del TP3 (ejercicios 1, 2, 3 y 5) y de la teoría de la cátedra — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0015-descriptiva-datos-agrupados.html">Lección 15 — Descriptiva con datos agrupados</a></span>
+  <span><a href="0017-binomial-poisson-calculo.html">Lección 17 — Binomial y Poisson: el cálculo</a> →</span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

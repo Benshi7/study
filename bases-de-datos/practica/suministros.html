@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUMINISTROS · 31 consultas del profe</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+<style>
+  .sqlbox .reveal--hint { margin: 0.4rem 0 0.8rem; }
+  .sqlbox .reveal--hint > summary { padding: 0.45rem 0.8rem; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Práctica · 2do parcial · SQL</p>
+    <h1 class="masthead__title">SUMINISTROS: las 31 consultas del profe</h1>
+    <p class="masthead__standfirst">
+      Los ejercicios de <code>raw/SUMINISTROS/Ejercicios-Sql-Consultas.docx</code>, textuales, sobre
+      la base que subió el profe. Es la <b>misma base</b> del modelo de parcial 1a/1b: si estos te
+      salen, la hoja de atrás del parcial también.
+    </p>
+    <p class="masthead__meta">
+      <span>31 consultas + 4 INSERT, con corrección automática</span>
+      <span>Columnas como en <code>SUMINISTROS.sql</code>: P_Id, C_Id, T_Id</span>
+      <span>Motor: SQLite 3.45 en el navegador</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">El método del profe, textual</span>
+    <p>
+      "Lee atentamente el enunciado, hasta que hayas creído entender qué se pide. Obtén
+      manualmente los resultados para los datos de ejemplo. Expresa la consulta mediante una
+      sentencia SELECT de SQL. ¿Se te ocurre alguna otra forma?" Hacé el paso 2 de verdad:
+      mirá las tablas (botón <b>Tablas</b>) y adiviná cuántas filas salen <b>antes</b> de
+      comprobar. Si tu número no coincide, entendiste otra cosa.
+    </p>
+  </div>
+
+  <h2 id="mer"><span class="num">00</span>Del diagrama al JOIN</h2>
+
+  <p>
+    Esto es lo que van a dar por sabido: te dan un diagrama y vos sabés por dónde caminar.
+    En el DER, ENVÍO es una relación <b>ternaria N:N:N</b> entre proveedor, componente y
+    artículo, con un atributo propio (cantidad). Al pasar al MER se vuelve una tabla con la PK
+    compuesta por las tres FK:
+  </p>
+
+<pre><code>                 PROVEEDORES (<u>P_Id</u>, PNombre, Categoria, Ciudad)
+                      ▲
+                      │ P_Id
+<b>ENVIOS</b> (<u>P_Id, C_Id, T_Id</u>, Cantidad) ── C_Id ──▶ COMPONENTES (<u>C_Id</u>, CNombre, Color, Peso, Ciudad)
+                      │ T_Id
+                      ▼
+                 ARTICULOS (<u>T_Id</u>, TNombre, Ciudad)</code></pre>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Tres reglas para leer cualquier MER</span>
+    <p>
+      <b>1.</b> Cada flecha es un <code>JOIN … ON fk = pk</code>; no hay otro camino.
+      <b>2.</b> Para cruzar dos entidades (proveedor y artículo) pasás <b>siempre</b> por la tabla
+      de la relación (ENVIOS). <b>3.</b> Si una columna se repite (acá <code>Ciudad</code> está
+      en tres tablas), cada una significa otra cosa: alias obligatorio y preguntate
+      "¿la ciudad <em>de quién</em>?".
+    </p>
+  </div>
+
+  <h2 id="traductor"><span class="num">··</span>El traductor: frase del enunciado → SQL</h2>
+
+  <p>
+    Todo el banco se resuelve con estas filas. Leela una vez ahora; después, en cada ejercicio,
+    intentá reconocer la fila <b>antes</b> de abrir la pista.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Si el enunciado dice…</th><th>…pensá en</th><th>Ej.</th></tr></thead>
+      <tbody>
+        <tr><td>"los valores de", "la lista de"</td><td><code>SELECT DISTINCT</code></td><td>2, 3</td></tr>
+        <tr><td>un dato de <b>otra</b> tabla ("artículos <b>de MADRID</b>")</td><td><code>JOIN</code> o <code>IN (SELECT …)</code></td><td>7</td></tr>
+        <tr><td>dos condiciones de la <b>misma</b> fila ("para T1 el C1")</td><td><code>WHERE … AND …</code></td><td>5</td></tr>
+        <tr><td>"T1 <b>o</b> T2"</td><td><code>IN ('T1', 'T2')</code></td><td>10</td></tr>
+        <tr><td>"T1 <b>y</b> T2" (las dos)</td><td>dos filas: <code>= 'T1' AND x IN (SELECT … 'T2')</code></td><td>9, 23</td></tr>
+        <tr><td>"ningún otro tiene menos", "el más"</td><td><code>= (SELECT MIN/MAX …)</code> o <code>NOT EXISTS</code></td><td>8</td></tr>
+        <tr><td>"el número de", "el total" (sin "cada")</td><td>agregada, <b>sin</b> <code>GROUP BY</code></td><td>15</td></tr>
+        <tr><td>"para cada", "por cada"</td><td><code>GROUP BY</code> esas columnas</td><td>16, 24</td></tr>
+        <tr><td>condición sobre un total o un conteo ("total superior a", "al menos dos", "no más de")</td><td><code>HAVING</code></td><td>27, 28, 31</td></tr>
+        <tr><td>"la media <b>de su</b> componente"</td><td>subconsulta <b>correlacionada</b> (mira la fila de afuera)</td><td>20</td></tr>
+        <tr><td>"todos sus …", "una misma ciudad"</td><td><code>HAVING COUNT(DISTINCT …) = 1</code></td><td>29</td></tr>
+        <tr><td>"todos los existentes"</td><td><code>HAVING COUNT(DISTINCT …) = (SELECT COUNT(*) …)</code></td><td>30</td></tr>
+        <tr><td>"al menos uno que … al menos uno que …"</td><td><code>IN</code> anidados, leídos de adentro hacia afuera</td><td>12, 18</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">WHERE antes, HAVING después</span>
+    <p>
+      El orden en que el motor ejecuta: <code>FROM</code> → <code>WHERE</code> (filas) →
+      <code>GROUP BY</code> → <code>HAVING</code> (grupos) → <code>SELECT</code> →
+      <code>ORDER BY</code>. Un <code>SUM</code> en el <code>WHERE</code> es error porque los
+      grupos todavía no existen. Si la condición es sobre <b>una fila</b> ("de color ROJO"),
+      va en <code>WHERE</code> aunque haya <code>GROUP BY</code>. Repasalo en la
+      <a href="../lessons/0035-group-by-having.html">0035</a>.
+    </p>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cómo se corrige</span>
+    <p>
+      Se compara tu resultado contra el de la solución: mismas filas, sin importar el nombre de
+      las columnas ni el orden (salvo en el 6, que pide orden). Ojo con <code>DISTINCT</code>:
+      "los valores de" no repite. <b>Ctrl+Enter</b> comprueba. Lo que escribís queda guardado en
+      este navegador.
+    </p>
+  </div>
+
+  <h2 id="t01"><span class="num">01</span>Tanda 1 · ejercicios 1 a 10</h2>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 1 de 31</span>
+    <p class="sqlbox__task">Obtener todos los detalles de todos los artículos de CACERES.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Una tabla, un filtro. &quot;Todos los detalles&quot; = todas las columnas.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT *
+FROM ARTICULOS
+WHERE Ciudad = 'CACERES';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 2 de 31</span>
+    <p class="sqlbox__task">Obtener todos los valores de P# para los proveedores que abastecen el artículo T1.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Quién abastece qué está en ENVIOS. &quot;Los valores de&quot; = sin repetidos.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT P_Id
+FROM ENVIOS
+WHERE T_Id = 'T1';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 3 de 31</span>
+    <p class="sqlbox__task">Obtener la lista de pares de atributos (COLOR, CIUDAD) de la tabla componentes eliminando los pares duplicados.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>DISTINCT se aplica a la fila entera, no a una columna.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT Color, Ciudad
+FROM COMPONENTES;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 4 de 31</span>
+    <p class="sqlbox__task">Obtener de la tabla de artículos los valores de T# y CIUDAD donde el nombre de la ciudad acaba en D o contiene al menos una E.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Dos LIKE unidos por OR. % es &quot;cualquier cosa&quot;.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT T_Id, Ciudad
+FROM ARTICULOS
+WHERE Ciudad LIKE '%D' OR Ciudad LIKE '%E%';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 5 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de P# para los proveedores que suministran para el artículo T1 el componente C1.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Las dos condiciones son de la MISMA fila de ENVIOS: un solo WHERE con AND.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT P_Id
+FROM ENVIOS
+WHERE T_Id = 'T1' AND C_Id = 'C1';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros" data-ordered>
+    <span class="sqlbox__label">Ejercicio 6 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de TNOMBRE en orden alfabético para los artículos abastecidos por el proveedor P1.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>El nombre está en ARTICULOS y el proveedor en ENVIOS: JOIN (o IN). Acá el orden se corrige.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT A.TNombre
+FROM ARTICULOS A
+JOIN ENVIOS E ON E.T_Id = A.T_Id
+WHERE E.P_Id = 'P1'
+ORDER BY A.TNombre;
+
+-- Otra forma:
+-- SELECT TNombre FROM ARTICULOS
+-- WHERE T_Id IN (SELECT T_Id FROM ENVIOS WHERE P_Id = 'P1')
+-- ORDER BY TNombre;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 7 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de C# para los componentes suministrados para cualquier artículo de MADRID.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;De MADRID&quot; es un dato del artículo, no del envío.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT E.C_Id
+FROM ENVIOS E
+JOIN ARTICULOS A ON A.T_Id = E.T_Id
+WHERE A.Ciudad = 'MADRID';
+
+-- Otra forma:
+-- SELECT DISTINCT C_Id FROM ENVIOS
+-- WHERE T_Id IN (SELECT T_Id FROM ARTICULOS WHERE Ciudad = 'MADRID');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 8 de 31</span>
+    <p class="sqlbox__task">Obtener todos los valores de C# de los componentes tales que ningún otro componente tenga un valor de peso inferior.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Ninguno tiene menos&quot; = tiene el mínimo. Comparar contra una subconsulta que devuelve un solo valor.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT C_Id
+FROM COMPONENTES
+WHERE Peso = (SELECT MIN(Peso) FROM COMPONENTES);
+
+-- Otra forma, literal al enunciado:
+-- SELECT C_Id FROM COMPONENTES C
+-- WHERE NOT EXISTS (SELECT * FROM COMPONENTES O WHERE O.Peso < C.Peso);
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 9 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de P# para los proveedores que suministren los artículos T1 y T2.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Trampa clásica: ninguna fila tiene T_Id = &#x27;T1&#x27; AND T_Id = &#x27;T2&#x27;. Son dos filas distintas de ENVIOS.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT P_Id
+FROM ENVIOS
+WHERE T_Id = 'T1'
+  AND P_Id IN (SELECT P_Id FROM ENVIOS WHERE T_Id = 'T2');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 10 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de P# para los proveedores que suministran para un artículo de SEVILLA o MADRID un componente ROJO.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Ciudad del artículo y color del componente: ENVIOS con dos JOIN. El &quot;o&quot; es un IN con lista.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT E.P_Id
+FROM ENVIOS E
+JOIN ARTICULOS A    ON A.T_Id = E.T_Id
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+WHERE A.Ciudad IN ('SEVILLA', 'MADRID')
+  AND C.Color = 'ROJO';
+</script>
+  </div>
+
+  <h2 id="t02"><span class="num">02</span>Tanda 2 · ejercicios 11 a 20</h2>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 11 de 31</span>
+    <p class="sqlbox__task">Obtener, mediante subconsultas, los valores de C# para los componentes suministrados para algún artículo de SEVILLA por un proveedor de SEVILLA.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Dos IN sobre la misma fila de ENVIOS: uno para el artículo, otro para el proveedor.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT C_Id
+FROM ENVIOS
+WHERE T_Id IN (SELECT T_Id FROM ARTICULOS   WHERE Ciudad = 'SEVILLA')
+  AND P_Id IN (SELECT P_Id FROM PROVEEDORES WHERE Ciudad = 'SEVILLA');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 12 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de T# para los artículos que usan al menos un componente que se puede obtener con el proveedor P1.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Leelo de adentro hacia afuera: primero &quot;componentes de P1&quot;, después &quot;artículos que usan alguno de esos&quot;.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT T_Id
+FROM ENVIOS
+WHERE C_Id IN (SELECT C_Id FROM ENVIOS WHERE P_Id = 'P1');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 13 de 31</span>
+    <p class="sqlbox__task">Obtener todas las ternas (CIUDAD, C#, CIUDAD) tales que un proveedor de la primera ciudad suministre el componente especificado para un artículo montado en la segunda ciudad.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Hay tres columnas Ciudad en la base: con alias sabés de qué tabla sale cada una.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT P.Ciudad, E.C_Id, A.Ciudad
+FROM ENVIOS E
+JOIN PROVEEDORES P ON P.P_Id = E.P_Id
+JOIN ARTICULOS A   ON A.T_Id = E.T_Id;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 14 de 31</span>
+    <p class="sqlbox__task">Repetir el ejercicio anterior, pero sin recuperar las ternas en los que los dos valores de ciudad sean los mismos.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Lo mismo, con una condición que compara dos columnas entre sí.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT P.Ciudad, E.C_Id, A.Ciudad
+FROM ENVIOS E
+JOIN PROVEEDORES P ON P.P_Id = E.P_Id
+JOIN ARTICULOS A   ON A.T_Id = E.T_Id
+WHERE P.Ciudad <> A.Ciudad;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 15 de 31</span>
+    <p class="sqlbox__task">Obtener el número de suministros, el de artículos distintos suministrados y la cantidad total de artículos suministrados por el proveedor P2.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Tres agregadas en un solo SELECT. No dice &quot;para cada&quot;: no hay GROUP BY. COUNT(*), COUNT(DISTINCT …), SUM.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT COUNT(*), COUNT(DISTINCT T_Id), SUM(Cantidad)
+FROM ENVIOS
+WHERE P_Id = 'P2';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 16 de 31</span>
+    <p class="sqlbox__task">Para cada artículo y componente suministrado obtener los valores de C#, T# y la cantidad total correspondiente.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Para cada artículo y componente&quot; = GROUP BY por esas dos columnas.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT C_Id, T_Id, SUM(Cantidad)
+FROM ENVIOS
+GROUP BY C_Id, T_Id;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 17 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de T# de los artículos abastecidos al menos por un proveedor que no viva en MADRID y que no esté en la misma ciudad en la que se monta el artículo.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Al menos un proveedor&quot; = alcanza con un envío que cumpla. JOIN a las dos ciudades y dos &lt;&gt;.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT E.T_Id
+FROM ENVIOS E
+JOIN PROVEEDORES P ON P.P_Id = E.P_Id
+JOIN ARTICULOS A   ON A.T_Id = E.T_Id
+WHERE P.Ciudad <> 'MADRID'
+  AND P.Ciudad <> A.Ciudad;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 18 de 31</span>
+    <p class="sqlbox__task">Obtener los valores de P# para los proveedores que suministran al menos un componente suministrado al menos por un proveedor que suministra al menos un componente ROJO.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Tres niveles. De adentro hacia afuera: componentes rojos → proveedores que los envían → componentes de esos proveedores → proveedores de esos componentes.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT P_Id
+FROM ENVIOS
+WHERE C_Id IN (SELECT C_Id FROM ENVIOS
+               WHERE P_Id IN (SELECT P_Id FROM ENVIOS
+                              WHERE C_Id IN (SELECT C_Id FROM COMPONENTES
+                                             WHERE Color = 'ROJO')));
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 19 de 31</span>
+    <p class="sqlbox__task">Obtener los identificadores de artículos, T#, para los que se ha suministrado algún componente del que se haya suministrado una media superior a 320 artículos.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>La subconsulta agrupa por componente y filtra con HAVING AVG(…). Afuera, IN.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT T_Id
+FROM ENVIOS
+WHERE C_Id IN (SELECT C_Id
+               FROM ENVIOS
+               GROUP BY C_Id
+               HAVING AVG(Cantidad) > 320);
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 20 de 31</span>
+    <p class="sqlbox__task">Seleccionar los identificadores de proveedores que hayan realizado algún envío con Cantidad mayor que la media de los envíos realizados para el componente a que corresponda dicho envío.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;La media de SU componente&quot;: la subconsulta depende de la fila de afuera. Correlacionada, con dos alias de ENVIOS.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT E.P_Id
+FROM ENVIOS E
+WHERE E.Cantidad > (SELECT AVG(E2.Cantidad)
+                    FROM ENVIOS E2
+                    WHERE E2.C_Id = E.C_Id);
+</script>
+  </div>
+
+  <h2 id="pausa"><span class="num">··</span>Pausa: reconocer el patrón sin escribir</h2>
+
+  <p>
+    En el parcial lo difícil no es la sintaxis: es <b>ver</b> qué herramienta pide el enunciado.
+    Estas cinco frases salen de los ejercicios que faltan. Elegí sin mirar arriba.
+  </p>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Frase 1</span>
+    <p class="quiz__q">"Los componentes que se suministren para los artículos T1 y T2."</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso. Son dos filas distintas de ENVIOS: una con T1 y otra con T2. Un IN busca la segunda fila a partir del componente de la primera.">T_Id = 'T1' AND C_Id IN (… T2)</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ninguna fila puede tener T_Id igual a T1 y a T2 a la vez: el resultado sale siempre vacío.">T_Id = 'T1' AND T_Id = 'T2'</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="IN ('T1','T2') es un O: trae los que van a T1, a T2 o a los dos. El enunciado pide los dos.">T_Id IN ('T1', 'T2') sin nada más</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Frase 2</span>
+    <p class="quiz__q">"Los componentes suministrados en una cantidad total superior a 500."</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="WHERE mira de a una fila, antes de agrupar: todavía no existe ningún total. SQLite tira error por usar una agregada en WHERE.">WHERE SUM(Cantidad) &gt; 500</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso compara cada envío suelto contra 500, no la suma de los envíos del componente.">WHERE Cantidad &gt; 500</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso. 'Total' es una suma por componente: GROUP BY componente y la condición sobre el grupo va en HAVING.">HAVING SUM(Cantidad) &gt; 500</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Frase 3</span>
+    <p class="quiz__q">"Envíos con cantidad mayor que la media de los envíos <b>de su</b> componente."</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Eso compara contra la media de TODOS los envíos, que es un solo número. El enunciado pide una media distinta para cada componente.">subconsulta con AVG de toda ENVIOS</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso. 'De su componente' quiere decir que la subconsulta mira la fila de afuera: WHERE E2.C_Id = E.C_Id. Es correlacionada.">subconsulta con AVG que mira afuera</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="HAVING filtra grupos enteros. Acá se filtran envíos sueltos, comparando cada uno con la media de su grupo.">HAVING con AVG sobre los proveedores</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Frase 4</span>
+    <p class="quiz__q">"Los artículos que reciben envíos de <b>todos</b> los componentes existentes."</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="Un JOIN junta filas, no verifica que estén todas. T1 recibe sólo C1 y C3, y con el JOIN aparecería igual.">JOIN con COMPONENTES y DISTINCT</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="IN pregunta si el valor está en la lista, o sea, 'alguno'. 'Todos' necesita contar o una doble negación.">C_Id IN (SELECT C_Id …)</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso. Agrupás por artículo y comparás cuántos componentes distintos recibió contra cuántos existen. La otra forma es un doble NOT EXISTS.">COUNT(DISTINCT C_Id) = total</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Frase 5</span>
+    <p class="quiz__q">"Los proveedores que residan en Sevilla y no suministren más de dos artículos distintos."</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso. 'Residan en Sevilla' es un dato de cada fila: va en WHERE. 'No más de dos distintos' es un conteo del grupo: va en HAVING.">Sevilla en WHERE, el dos en HAVING</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Un conteo no existe hasta que agrupás: no puede ir en WHERE.">las dos condiciones en el WHERE</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Funciona, pero filtra después de agrupar algo que podía descartarse antes. La cátedra espera WHERE para filas y HAVING para grupos.">las dos condiciones en el HAVING</button></li>
+    </ul>
+  </div>
+
+
+  <h2 id="t03"><span class="num">03</span>Tanda 3 · ejercicios 21 a 31</h2>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 21 de 31</span>
+    <p class="sqlbox__task">Seleccionar los identificadores de componentes suministrados para el artículo 'T2' por el proveedor 'P2'.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Como el 5: las dos condiciones son de la misma fila.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT C_Id
+FROM ENVIOS
+WHERE T_Id = 'T2' AND P_Id = 'P2';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 22 de 31</span>
+    <p class="sqlbox__task">Seleccionar todos los datos de los envíos realizados de componentes cuyo color no sea 'ROJO'.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Todos los datos de los envíos&quot; = E.*, no las columnas del JOIN.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT E.*
+FROM ENVIOS E
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+WHERE C.Color <> 'ROJO';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 23 de 31</span>
+    <p class="sqlbox__task">Seleccionar los identificadores de componentes que se suministren para los artículos 'T1' y 'T2'.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Es el 9 con otra columna. &quot;T1 y T2&quot; = dos filas.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT C_Id
+FROM ENVIOS
+WHERE T_Id = 'T1'
+  AND C_Id IN (SELECT C_Id FROM ENVIOS WHERE T_Id = 'T2');
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 24 de 31</span>
+    <p class="sqlbox__task">Seleccionar el identificador de proveedor y el número de envíos de componentes de color 'ROJO' llevados a cabo por cada proveedor.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>WHERE filtra los envíos rojos ANTES de agrupar; GROUP BY por proveedor después.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT E.P_Id, COUNT(*)
+FROM ENVIOS E
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+WHERE C.Color = 'ROJO'
+GROUP BY E.P_Id;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 25 de 31</span>
+    <p class="sqlbox__task">Seleccionar los colores de componentes suministrados por el proveedor 'P1'.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>El color está en COMPONENTES; el proveedor, en ENVIOS.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT DISTINCT C.Color
+FROM ENVIOS E
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+WHERE E.P_Id = 'P1';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 26 de 31</span>
+    <p class="sqlbox__task">Seleccionar los datos de envío y nombre de ciudad de aquellos envíos que cumplan que el artículo, proveedor y componente son de la misma ciudad.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Tres JOIN y dos igualdades entre ciudades (si A = B y B = C, alcanza).</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT E.*, P.Ciudad
+FROM ENVIOS E
+JOIN PROVEEDORES P  ON P.P_Id = E.P_Id
+JOIN COMPONENTES C  ON C.C_Id = E.C_Id
+JOIN ARTICULOS A    ON A.T_Id = E.T_Id
+WHERE P.Ciudad = C.Ciudad
+  AND C.Ciudad = A.Ciudad;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 27 de 31</span>
+    <p class="sqlbox__task">Seleccionar los nombres de los componentes que son suministrados en una cantidad total superior a 500. <em>(Mostrá C# y CNOMBRE.)</em></p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Total superior a&quot; = condición sobre un SUM: HAVING. Ojo: C3 y C4 se llaman igual (C4B).</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT C.C_Id, C.CNombre
+FROM COMPONENTES C
+JOIN ENVIOS E ON E.C_Id = C.C_Id
+GROUP BY C.C_Id, C.CNombre
+HAVING SUM(E.Cantidad) > 500;
+
+-- GROUP BY C.CNombre solo junta C3 y C4, que se llaman igual (C4B).
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 28 de 31</span>
+    <p class="sqlbox__task">Seleccionar los identificadores de proveedores que residan en Sevilla y no suministren más de dos artículos distintos.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Residan en Sevilla&quot; filtra filas (WHERE). &quot;No más de dos distintos&quot; filtra grupos (HAVING COUNT(DISTINCT …) &lt;= 2).</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT P.P_Id
+FROM PROVEEDORES P
+LEFT JOIN ENVIOS E ON E.P_Id = P.P_Id
+WHERE P.Ciudad = 'SEVILLA'
+GROUP BY P.P_Id
+HAVING COUNT(DISTINCT E.T_Id) <= 2;
+
+-- El LEFT JOIN cuenta también a un proveedor de Sevilla sin envíos (0 <= 2).
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 29 de 31</span>
+    <p class="sqlbox__task">Seleccionar los identificadores de artículos para los cuales todos sus componentes se fabrican en una misma ciudad.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Todos en una misma ciudad&quot; = el grupo del artículo tiene UNA sola ciudad distinta.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT E.T_Id
+FROM ENVIOS E
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+GROUP BY E.T_Id
+HAVING COUNT(DISTINCT C.Ciudad) = 1;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 30 de 31</span>
+    <p class="sqlbox__task">Seleccionar los identificadores de artículos para los que se provean envíos de todos los componentes existentes en la base de datos.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>&quot;Todos los existentes&quot;: contar los distintos del artículo y compararlo con el total de COMPONENTES.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT T_Id
+FROM ENVIOS
+GROUP BY T_Id
+HAVING COUNT(DISTINCT C_Id) = (SELECT COUNT(*) FROM COMPONENTES);
+
+-- Otra forma (doble NOT EXISTS: no hay componente que no le hayan enviado):
+-- SELECT T_Id FROM ARTICULOS A
+-- WHERE NOT EXISTS (SELECT * FROM COMPONENTES C
+--                   WHERE NOT EXISTS (SELECT * FROM ENVIOS E
+--                                     WHERE E.T_Id = A.T_Id AND E.C_Id = C.C_Id));
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">Ejercicio 31 de 31</span>
+    <p class="sqlbox__task">Seleccionar los códigos de proveedor y artículo que suministran al menos dos componentes de color 'ROJO'.</p>
+    <details class="reveal reveal--hint"><summary>Pista: el patrón</summary><div class="reveal__body"><p>Grupo = par (proveedor, artículo). WHERE deja sólo rojos; HAVING cuenta componentes distintos.</p></div></details>
+    <textarea class="sqlbox__code" spellcheck="false"></textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT E.P_Id, E.T_Id
+FROM ENVIOS E
+JOIN COMPONENTES C ON C.C_Id = E.C_Id
+WHERE C.Color = 'ROJO'
+GROUP BY E.P_Id, E.T_Id
+HAVING COUNT(DISTINCT E.C_Id) >= 2;
+</script>
+  </div>
+
+
+  <h2 id="insert"><span class="num">04</span>INSERT como lo pide la cátedra</h2>
+
+  <p>
+    La cátedra recomienda <b>nombrar siempre las columnas</b>:
+    <code>INSERT INTO T (col1, col2) VALUES (…)</code>. Tres razones concretas: el orden lo
+    elegís vos y no depende de cómo se creó la tabla; si mañana alguien agrega una columna con
+    <code>DEFAULT</code>, tu INSERT sigue andando; y en un <code>INSERT … SELECT</code> dejás
+    escrito qué columna de origen va a cuál de destino. Más en la
+    <a href="../lessons/0037-dml-insert-update-delete.html">0037</a>.
+  </p>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">INSERT 1 de 4 · alta con columnas nombradas</span>
+    <p class="sqlbox__task">Dar de alta el proveedor <b>P6</b>, LUCIA, categoría 10, de MALAGA. Nombrá las columnas, como recomienda la cátedra.</p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO PROVEEDORES (
+
+)
+VALUES (
+
+);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO PROVEEDORES (P_Id, PNombre, Categoria, Ciudad)
+VALUES ('P6', 'LUCIA', 10, 'MALAGA');
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM PROVEEDORES WHERE P_Id = 'P6';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">INSERT 2 de 4 · el orden lo elegís vos</span>
+    <p class="sqlbox__task">Cargá el artículo <b>T8</b>, PRENSA, montado en MALAGA, pero escribí <b>la ciudad primero</b>. Sin la lista de columnas, esto no se puede.</p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO ARTICULOS (Ciudad, 
+VALUES (&#x27;MALAGA&#x27;, </textarea>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO ARTICULOS (Ciudad, T_Id, TNombre)
+VALUES ('MALAGA', 'T8', 'PRENSA');
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT T_Id, TNombre, Ciudad FROM ARTICULOS WHERE T_Id = 'T8';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">INSERT 3 de 4 · padre antes que hijo</span>
+    <p class="sqlbox__task">Registrá que el proveedor <b>P6</b> (LUCIA, categoría 10, MALAGA) envió 150 unidades del componente C2 para el artículo T6. P6 todavía <b>no existe</b>: las FK están activas.</p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO ENVIOS (P_Id, C_Id, T_Id, Cantidad)
+VALUES (&#x27;P6&#x27;, &#x27;C2&#x27;, &#x27;T6&#x27;, 150);</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO PROVEEDORES (P_Id, PNombre, Categoria, Ciudad)
+VALUES ('P6', 'LUCIA', 10, 'MALAGA');
+
+INSERT INTO ENVIOS (P_Id, C_Id, T_Id, Cantidad)
+VALUES ('P6', 'C2', 'T6', 150);
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT E.P_Id, P.PNombre, E.C_Id, E.T_Id, E.Cantidad
+FROM ENVIOS E JOIN PROVEEDORES P ON P.P_Id = E.P_Id
+WHERE E.P_Id = 'P6';
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="suministros">
+    <span class="sqlbox__label">INSERT 4 de 4 · INSERT … SELECT</span>
+    <p class="sqlbox__task">Ya existe la tabla <code>PROVEEDORES_SEVILLA (Id, Nombre)</code>. Llenala con <b>un solo</b> INSERT … SELECT con los proveedores de SEVILLA. Las columnas de origen y destino se llaman distinto: se emparejan por posición.</p>
+    <textarea class="sqlbox__code" spellcheck="false">INSERT INTO PROVEEDORES_SEVILLA (Id, Nombre)
+</textarea>
+    <script type="text/plain" class="sqlbox__setup">
+CREATE TABLE PROVEEDORES_SEVILLA (
+  Id     CHAR(2)     PRIMARY KEY,
+  Nombre VARCHAR(50) NOT NULL
+);
+</script>
+    <script type="text/plain" class="sqlbox__solution">
+INSERT INTO PROVEEDORES_SEVILLA (Id, Nombre)
+SELECT P_Id, PNombre
+FROM PROVEEDORES
+WHERE Ciudad = 'SEVILLA';
+</script>
+    <script type="text/plain" class="sqlbox__check">
+SELECT * FROM PROVEEDORES_SEVILLA;
+</script>
+  </div>
+
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b> de la cátedra (<code>raw/DML_Base de Datos.pptx</code>): GROUP BY, HAVING,
+      subconsultas, IN y EXISTS, INSERT. Para profundizar: <b>Elmasri &amp; Navathe, 5ª ed.</b>,
+      §8.5.2–8.5.4 (anidadas, correlacionadas, EXISTS), §8.5.7–8.5.8 (agregadas, GROUP BY,
+      HAVING) y §8.6 (INSERT). El banco de ejercicios es un clásico de los cursos de SQL en
+      España (de ahí SEVILLA y CACERES).
+    </p>
+    <p>
+      <a href="https://www.sqlite.org/lang_select.html">SQLite — SELECT</a> ·
+      <a href="https://www.sqlite.org/lang_aggfunc.html">SQLite — funciones de agregación</a> ·
+      <a href="https://www.sqlite.org/lang_insert.html">SQLite — INSERT</a>
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> El paso 4 del método del profe ("¿otra forma?") es el que más
+      enseña: cuando un ejercicio te salga, escribilo de la otra manera (JOIN ↔ IN, IN ↔ EXISTS)
+      y pasámelo. Y si un enunciado te parece ambiguo, preguntame: algunos lo son.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../lessons/0035-group-by-having.html">0035 · GROUP BY / HAVING</a>
+    <a href="../lessons/0036-subconsultas-exists.html">0036 · Subconsultas y EXISTS</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+    <a href="../index.html">Inicio</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/suministros.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

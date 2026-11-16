@@ -1,0 +1,7 @@
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+jupyter>=1.0
+nbconvert>=7.0
+ipykernel>=6.0
+# sqlite3 viene incluido con Python: no hace falta instalar nada para la base

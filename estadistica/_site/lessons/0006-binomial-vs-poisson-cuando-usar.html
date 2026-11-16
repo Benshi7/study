@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 6 — Binomial vs. Poisson: cuál usar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/notebook.css">
+</head>
+<body>
+
+<span class="kicker">Unidad 4 · Distribuciones Discretas · Lección 2 / n</span>
+<h1>Binomial vs. Poisson: cuál usar</h1>
+<p class="subtitle">No es un tema de calcular — es de reconocer el patrón del enunciado. El cálculo lo hace la app; identificar la distribución correcta lo tenés que hacer vos.</p>
+
+<h2>La pregunta que importa</h2>
+<p>Ante cualquier enunciado de distribución discreta, antes de tocar la app hacete una sola pregunta: <strong>¿el problema tiene un número fijo de intentos (n)?</strong></p>
+<table>
+<tr><th>Si el enunciado tiene...</th><th>Usás</th></tr>
+<tr><td>Un número fijo de pruebas <strong>n</strong>, y una probabilidad de éxito <strong>p</strong> en cada una</td><td class="term">Binomial</td></tr>
+<tr><td>Una <strong>tasa promedio</strong> por unidad de tiempo o espacio, sin un n de "intentos" definido</td><td class="term">Poisson</td></tr>
+</table>
+
+<div class="example">
+<strong>Binomial:</strong> "de 10 alumnos rendidos, la probabilidad de aprobar cada uno es 0,7" → hay un n (10 alumnos) y una p (0,7) por intento. Cada alumno es un "ensayo".<br><br>
+<strong>Poisson:</strong> "en un local entran 15 autos por minuto" → no hay un "número de intentos": es un conteo de eventos que ocurren en un continuo de tiempo, sin un n fijo detrás.
+</div>
+
+<div class="warn">
+La frase que delata Poisson: una <strong>tasa</strong> ("X por minuto", "Y por hora", "Z por km²"), no un conteo de intentos con éxito/fracaso. Si podés identificar claramente "esto pasó o no pasó, n veces", es Binomial.
+</div>
+
+<h2>El gotcha de Poisson: recalcular λ</h2>
+<p>Si te dan la tasa en una unidad de tiempo (ej. "15 por minuto") pero te preguntan por otra extensión de tiempo (ej. "en 3 minutos"), <strong>no reutilices el λ original</strong> — hay que recalcularlo proporcionalmente:</p>
+<div class="box">
+<span class="formula">λ_nuevo = tasa_original · nueva_extensión</span>
+</div>
+<div class="example">
+Dan 15 autos/minuto, preguntan por la probabilidad en 3 minutos → <span class="formula">λ = 15 · 3 = 45</span>, no 15.
+</div>
+<p>Este es un error puramente conceptual (no de cálculo): usar el λ dado tal cual, sin ajustarlo a la ventana de tiempo que realmente te preguntan, invalida todo el resultado aunque la app haga bien la cuenta después.</p>
+
+<h2>Otro punto conceptual: redefinir el "éxito"</h2>
+<p>En Binomial, si el enunciado te pide algo sobre los que <strong>NO</strong> cumplen la condición original (ej. "los que no compran" en vez de "los que compran"), el éxito cambia y con él la p:</p>
+<div class="box">
+<span class="formula">p' = 1 − p</span> (si "éxito" se invierte)
+</div>
+<p>No es que la distribución cambie de forma — sigue siendo Binomial — pero armarla con el p equivocado (el de la condición original en vez del invertido) te lleva a la opción incorrecta del multiple choice.</p>
+
+<h2>Chequeo rápido de coherencia</h2>
+<table>
+<tr><th>Señal en una opción de multiple choice</th><th>Qué significa</th></tr>
+<tr><td>Un valor de x mayor que n en una Binomial</td><td>Imposible — Binomial tiene dominio acotado [0, n]</td></tr>
+<tr><td>Un valor de x negativo en Poisson</td><td>Imposible — Poisson solo admite 0, 1, 2, ... (sin cota superior)</td></tr>
+<tr><td>Varianza y desvío con el mismo número</td><td>Sospechoso — salvo que Var(x)=0 o Var(x)=1, siempre son distintos (σ=√Var)</td></tr>
+</table>
+
+<h2>Practicá — decidí antes de mirar las opciones</h2>
+
+<div class="quiz">
+<p class="q">1. "Un call center recibe en promedio 8 llamadas por hora". ¿Qué distribución modela el número de llamadas en una hora?</p>
+<label><input type="radio" name="q1" onclick="showFeedback('q1a', false)"> Binomial(n=8, p desconocido)</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1b', true)"> Poisson(λ=8)</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1c', false)"> Binomial(n desconocido, p=8)</label>
+<label><input type="radio" name="q1" onclick="showFeedback('q1d', false)"> No se puede determinar sin más datos</label>
+<div id="q1a" class="feedback wrong">No hay un n de "intentos" definido — es una tasa promedio, no un conteo de pruebas con éxito/fracaso.</div>
+<div id="q1b" class="feedback correct">Es una tasa promedio por unidad de tiempo, sin n fijo de intentos — el patrón clásico de Poisson, con λ = 8.</div>
+<div id="q1c" class="feedback wrong">p tiene que ser un valor entre 0 y 1, nunca 8 — esa opción invierte los parámetros y además usa la distribución incorrecta.</div>
+<div id="q1d" class="feedback wrong">Con "tasa promedio por unidad de tiempo, sin n de pruebas" ya hay suficiente información para identificar Poisson.</div>
+</div>
+
+<div class="quiz">
+<p class="q">2. Mismo call center (8 llamadas/hora en promedio). Te preguntan por la probabilidad de recibir cierta cantidad de llamadas en 30 minutos. ¿Qué λ usás?</p>
+<label><input type="radio" name="q2" onclick="showFeedback('q2a', true)"> λ = 4</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2b', false)"> λ = 8</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2c', false)"> λ = 16</label>
+<label><input type="radio" name="q2" onclick="showFeedback('q2d', false)"> λ = 0,5</label>
+<div id="q2a" class="feedback correct">30 minutos es la mitad de la hora original: λ = 8 · (30/60) = 4. Siempre hay que recalcular λ proporcional a la nueva ventana de tiempo.</div>
+<div id="q2b" class="feedback wrong">Ese es el λ para 1 hora completa, no para 30 minutos — hay que ajustar la ventana de tiempo.</div>
+<div id="q2c" class="feedback wrong">16 sería el doble, como si preguntaran por 2 horas — la ventana de 30 minutos es más chica, no más grande.</div>
+<div id="q2d" class="feedback wrong">Ese valor no corresponde a ningún ajuste proporcional razonable desde λ=8 con una ventana de 30 minutos.</div>
+</div>
+
+<div class="quiz">
+<p class="q">3. En una encuesta, originalmente p(compra) = 0,65. El enunciado ahora pide la probabilidad de que, de 10 personas, "ninguna compre". ¿Qué p usás para armar la Binomial?</p>
+<label><input type="radio" name="q3" onclick="showFeedback('q3a', false)"> p = 0,65, porque no cambia nada</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3b', false)"> p = 1, porque "ninguna" implica certeza</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3c', false)"> Hace falta usar Poisson en vez de Binomial</label>
+<label><input type="radio" name="q3" onclick="showFeedback('q3d', true)"> p = 0,35, porque "éxito" ahora es "no comprar"</label>
+<div id="q3a" class="feedback wrong">Si "éxito" pasa a ser "no comprar", la probabilidad de éxito ya no es 0,65 — hay que invertirla.</div>
+<div id="q3b" class="feedback wrong">p=1 significaría que "no comprar" es seguro para cada persona, lo cual no es lo que dice el enunciado.</div>
+<div id="q3c" class="feedback wrong">Sigue habiendo un n fijo (10 personas) y una p de éxito/fracaso por persona — sigue siendo Binomial, solo cambia el valor de p.</div>
+<div id="q3d" class="feedback correct">"Ninguna compre" redefine el éxito como "no comprar": p' = 1−0,65 = 0,35. Se sigue armando una Binomial normal, pero con el p correcto.</div>
+</div>
+
+<div class="ask">
+¿Alguna trampa te generó dudas? Decime cuál y la vemos con otro enunciado.
+</div>
+
+<footer>
+Fuente: material de cátedra (<code>knowledge-base/03-distribuciones-discretas.md</code>).
+<div class="nav-row">
+  <span>← <a href="0005-normal-binomial-al-menos-uno.html">Lección 5 — Normal + Binomial ("al menos uno")</a></span>
+  <span>Siguiente → <a href="0007-frecuencia-y-probabilidad.html">Lección 7 — De la frecuencia a la probabilidad</a></span>
+</div>
+</footer>
+
+<script>
+function showFeedback(id, correct) {
+  var target = document.getElementById(id);
+  var quiz = target.closest('.quiz');
+  quiz.querySelectorAll('.feedback').forEach(function(el){ el.style.display = 'none'; });
+  target.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

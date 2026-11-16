@@ -1,0 +1,800 @@
+{
+  "_aviso": "DATOS FICTICIOS. Los puntos de reportes, eventos, cortes y ciclovías se ajustaron a calles reales de Palermo (OpenStreetMap, 2026-10-13) pero no representan incidencias, eventos ni comercios reales. Los desfases (min/horas/dias) son relativos al momento en que se abre el mock.",
+  "zona": {
+    "nombre": "Palermo (Plaza Italia · Palermo Soho · Bosques)",
+    "centro": [
+      -34.5865,
+      -58.4235
+    ],
+    "zoom": 15,
+    "limites_aprox": {
+      "sur_oeste": [
+        -34.599,
+        -58.442
+      ],
+      "nor_este": [
+        -34.565,
+        -58.405
+      ]
+    },
+    "puntos_referencia_aprox": {
+      "plaza_italia": [
+        -34.5808,
+        -58.4209
+      ],
+      "plaza_serrano": [
+        -34.5883,
+        -58.4297
+      ],
+      "bosques_planetario": [
+        -34.5695,
+        -58.4117
+      ]
+    }
+  },
+  "persona": {
+    "id": "lucia",
+    "nombre": "Lucía F.",
+    "edad": 36,
+    "rol": "Cuidadora",
+    "hogar": "Dos chicos en edad escolar",
+    "ficticia": true
+  },
+  "hogar": {
+    "nombre": "Mi hogar",
+    "direccion_ficticia": "Pasaje ficticio 1200",
+    "coord": [
+      -34.59045,
+      -58.42655
+    ],
+    "lugares": [
+      {
+        "id": "escuela",
+        "nombre": "Escuela primaria (ficticia)",
+        "tipo": "escuela",
+        "coord": [
+          -34.5868,
+          -58.424
+        ]
+      },
+      {
+        "id": "plaza",
+        "nombre": "Plaza del barrio (ficticia)",
+        "tipo": "plaza",
+        "coord": [
+          -34.5884,
+          -58.4296
+        ]
+      },
+      {
+        "id": "subte",
+        "nombre": "Estación de subte más cercana (Plaza Italia, línea D)",
+        "tipo": "subte",
+        "coord": [
+          -34.58146,
+          -58.42111
+        ]
+      }
+    ],
+    "recorrido_escuela": {
+      "nombre": "Casa → escuela (07:30)",
+      "hora": "07:30",
+      "linea": [
+        [
+          -34.59045,
+          -58.42655
+        ],
+        [
+          -34.5893,
+          -58.4256
+        ],
+        [
+          -34.588,
+          -58.4248
+        ],
+        [
+          -34.5868,
+          -58.424
+        ]
+      ]
+    }
+  },
+  "favoritos": [
+    {
+      "id": "fav-casa",
+      "nombre": "Casa",
+      "coord": [
+        -34.59045,
+        -58.42655
+      ]
+    },
+    {
+      "id": "fav-escuela",
+      "nombre": "Escuela",
+      "coord": [
+        -34.5868,
+        -58.424
+      ]
+    },
+    {
+      "id": "fav-plaza",
+      "nombre": "Plaza",
+      "coord": [
+        -34.5884,
+        -58.4296
+      ]
+    }
+  ],
+  "categorias_reporte": [
+    {
+      "id": "obstruccion",
+      "nombre": "Obstrucción en la vía"
+    },
+    {
+      "id": "bache",
+      "nombre": "Bache o calzada rota"
+    },
+    {
+      "id": "luz",
+      "nombre": "Luminaria apagada"
+    },
+    {
+      "id": "arbol",
+      "nombre": "Árbol o ramas caídas"
+    },
+    {
+      "id": "semaforo",
+      "nombre": "Semáforo sin funcionar"
+    },
+    {
+      "id": "residuos",
+      "nombre": "Residuos acumulados"
+    },
+    {
+      "id": "vereda",
+      "nombre": "Vereda rota"
+    },
+    {
+      "id": "agua",
+      "nombre": "Pérdida de agua"
+    },
+    {
+      "id": "bici",
+      "nombre": "Ciclovía obstruida"
+    },
+    {
+      "id": "senal",
+      "nombre": "Señalización faltante"
+    }
+  ],
+  "estados_reporte": [
+    {
+      "id": "recibido",
+      "texto": "Recibido",
+      "proximo_paso": "Lo estamos revisando. Te avisamos cuando alguien más confirme que sigue vigente."
+    },
+    {
+      "id": "revisando",
+      "texto": "Revisando que siga vigente",
+      "proximo_paso": "Otras personas de tu zona pueden confirmar si el problema sigue ahí."
+    },
+    {
+      "id": "derivado",
+      "texto": "Enviado al área responsable",
+      "proximo_paso": "El área responsable ya tiene tu reporte. Te avisamos cuando lo tome."
+    },
+    {
+      "id": "resuelto",
+      "texto": "Resuelto",
+      "proximo_paso": "El área marcó el problema como resuelto. Si sigue ahí, podés reabrirlo."
+    }
+  ],
+  "areas_ficticias": [
+    "Espacio Público",
+    "Movilidad",
+    "Alumbrado",
+    "Arbolado",
+    "Tránsito",
+    "Limpieza",
+    "Agua y saneamiento"
+  ],
+  "reportes": [
+    {
+      "id": "r01",
+      "categoria": "obstruccion",
+      "titulo": "Contenedor en medio de la vereda",
+      "descripcion": "Un contenedor de obra bloquea el paso frente a la escuela.",
+      "coord": [
+        -34.5871,
+        -58.4243
+      ],
+      "estado": "derivado",
+      "hace_min": 1560,
+      "confirmaciones": 7,
+      "usuario": "vecina_12",
+      "mio": true,
+      "area": "Espacio Público"
+    },
+    {
+      "id": "r02",
+      "categoria": "bache",
+      "titulo": "Bache profundo en la calzada",
+      "descripcion": "Bache de unos 40 cm de ancho en el carril derecho.",
+      "coord": [
+        -34.58876,
+        -58.42173
+      ],
+      "estado": "derivado",
+      "hace_min": 2900,
+      "confirmaciones": 12,
+      "usuario": "vecino_08",
+      "mio": false,
+      "area": "Movilidad"
+    },
+    {
+      "id": "r03",
+      "categoria": "luz",
+      "titulo": "Luminaria apagada en la esquina",
+      "descripcion": "Tres luminarias seguidas sin funcionar; la esquina queda oscura de noche.",
+      "coord": [
+        -34.5897,
+        -58.4281
+      ],
+      "estado": "revisando",
+      "hace_min": 240,
+      "confirmaciones": 2,
+      "usuario": "vecino_31",
+      "mio": false,
+      "area": "Alumbrado"
+    },
+    {
+      "id": "r04",
+      "categoria": "arbol",
+      "titulo": "Rama grande caída sobre la vereda",
+      "descripcion": "Cayó una rama después de la lluvia; ocupa media vereda.",
+      "coord": [
+        -34.5859,
+        -58.4228
+      ],
+      "estado": "recibido",
+      "hace_min": 35,
+      "confirmaciones": 1,
+      "usuario": "vecina_45",
+      "mio": false,
+      "area": "Arbolado"
+    },
+    {
+      "id": "r05",
+      "categoria": "semaforo",
+      "titulo": "Semáforo intermitente",
+      "descripcion": "El semáforo parpadea en amarillo hace rato.",
+      "coord": [
+        -34.58494,
+        -58.42039
+      ],
+      "estado": "derivado",
+      "hace_min": 95,
+      "confirmaciones": 9,
+      "usuario": "vecino_19",
+      "mio": false,
+      "area": "Tránsito"
+    },
+    {
+      "id": "r06",
+      "categoria": "residuos",
+      "titulo": "Bolsas de residuos acumuladas",
+      "descripcion": "Bolsas fuera del horario de recolección junto al contenedor.",
+      "coord": [
+        -34.59113,
+        -58.42987
+      ],
+      "estado": "revisando",
+      "hace_min": 420,
+      "confirmaciones": 2,
+      "usuario": "vecino_77",
+      "mio": false,
+      "area": "Limpieza"
+    },
+    {
+      "id": "r07",
+      "categoria": "vereda",
+      "titulo": "Baldosas sueltas en la vereda",
+      "descripcion": "Varias baldosas levantadas; riesgo de tropiezo.",
+      "coord": [
+        -34.5875,
+        -58.4268
+      ],
+      "estado": "derivado",
+      "hace_min": 4300,
+      "confirmaciones": 15,
+      "usuario": "vecina_03",
+      "mio": false,
+      "area": "Espacio Público"
+    },
+    {
+      "id": "r08",
+      "categoria": "agua",
+      "titulo": "Pérdida de agua en la calle",
+      "descripcion": "Sale agua desde una tapa; corre por el cordón.",
+      "coord": [
+        -34.5919,
+        -58.4252
+      ],
+      "estado": "resuelto",
+      "hace_min": 5800,
+      "confirmaciones": 11,
+      "usuario": "vecino_26",
+      "mio": false,
+      "area": "Agua y saneamiento"
+    },
+    {
+      "id": "r09",
+      "categoria": "bici",
+      "titulo": "Auto estacionado sobre la ciclovía",
+      "descripcion": "Vehículo detenido sobre el carril de bicicletas.",
+      "coord": [
+        -34.5831,
+        -58.4221
+      ],
+      "estado": "recibido",
+      "hace_min": 12,
+      "confirmaciones": 0,
+      "usuario": "vecina_58",
+      "mio": false,
+      "area": "Movilidad"
+    },
+    {
+      "id": "r10",
+      "categoria": "senal",
+      "titulo": "Cartel de «Pare» caído",
+      "descripcion": "El cartel está en el piso desde ayer.",
+      "coord": [
+        -34.5863,
+        -58.4286
+      ],
+      "estado": "derivado",
+      "hace_min": 1700,
+      "confirmaciones": 6,
+      "usuario": "vecino_40",
+      "mio": false,
+      "area": "Tránsito"
+    },
+    {
+      "id": "r11",
+      "categoria": "bache",
+      "titulo": "Hundimiento en la bocacalle",
+      "descripcion": "La calzada se hundió cerca de la rampa.",
+      "coord": [
+        -34.5928,
+        -58.4279
+      ],
+      "estado": "revisando",
+      "hace_min": 600,
+      "confirmaciones": 2,
+      "usuario": "vecino_15",
+      "mio": false,
+      "area": "Movilidad"
+    },
+    {
+      "id": "r12",
+      "categoria": "luz",
+      "titulo": "Luminaria titilando en la plaza",
+      "descripcion": "Prende y apaga cada pocos segundos.",
+      "coord": [
+        -34.5882,
+        -58.4292
+      ],
+      "estado": "resuelto",
+      "hace_min": 7200,
+      "confirmaciones": 5,
+      "usuario": "vecina_62",
+      "mio": false,
+      "area": "Alumbrado"
+    },
+    {
+      "id": "r13",
+      "categoria": "obstruccion",
+      "titulo": "Andamio sin señalizar",
+      "descripcion": "Andamio sobre la vereda sin cinta ni cartel.",
+      "coord": [
+        -34.5851,
+        -58.4249
+      ],
+      "estado": "recibido",
+      "hace_min": 55,
+      "confirmaciones": 1,
+      "usuario": "vecino_90",
+      "mio": false,
+      "area": "Espacio Público"
+    },
+    {
+      "id": "r14",
+      "categoria": "obstruccion",
+      "titulo": "Calle cortada por un derrumbe (dudoso)",
+      "descripcion": "Reporte sin fotos ni confirmaciones; contradice lo que ven otras personas.",
+      "coord": [
+        -34.5937,
+        -58.4233
+      ],
+      "estado": "revisando",
+      "hace_min": 18,
+      "confirmaciones": 0,
+      "ya_no_esta": 3,
+      "usuario": "usuario_nuevo_5",
+      "mio": false,
+      "area": "Espacio Público",
+      "sospechoso": true,
+      "nota_demo": "Sirve para mostrar la validación colaborativa: tres personas indican «ya no está» y el reporte queda marcado como sin confirmar."
+    }
+  ],
+  "eventos": [
+    {
+      "id": "e01",
+      "titulo": "Presentación del nuevo blend",
+      "anfitrion": "Café Brisa Norte (marca ficticia)",
+      "categoria": "gastronomía",
+      "descripcion": "Degustación abierta del nuevo café de especialidad.",
+      "coord": [
+        -34.588,
+        -58.4299
+      ],
+      "inicio_en_min": 150,
+      "duracion_min": 120,
+      "costo": "Gratis"
+    },
+    {
+      "id": "e02",
+      "titulo": "Firma de ejemplares con autoría local",
+      "anfitrion": "Librería Tinta Fresca (ficticia)",
+      "categoria": "cultura",
+      "descripcion": "Charla breve y firma de libros infantiles.",
+      "coord": [
+        -34.5894,
+        -58.4271
+      ],
+      "inicio_en_min": 300,
+      "duracion_min": 90,
+      "costo": "Gratis"
+    },
+    {
+      "id": "e03",
+      "titulo": "Clase abierta de movimiento al aire libre",
+      "anfitrion": "Estudio Vuelo (ficticio)",
+      "categoria": "deporte",
+      "descripcion": "Clase para todas las edades en la plaza.",
+      "coord": [
+        -34.5884,
+        -58.4296
+      ],
+      "inicio_en_min": 1100,
+      "duracion_min": 60,
+      "costo": "Gratis"
+    },
+    {
+      "id": "e04",
+      "titulo": "Feria de diseño de autor",
+      "anfitrion": "Manzana Verde (colectivo ficticio)",
+      "categoria": "feria",
+      "descripcion": "Puestos de diseño, ilustración y objetos.",
+      "coord": [
+        -34.58579,
+        -58.4257
+      ],
+      "inicio_en_min": -60,
+      "duracion_min": 300,
+      "costo": "Gratis"
+    },
+    {
+      "id": "e05",
+      "titulo": "Taller de mecánica básica de bicicletas",
+      "anfitrion": "Rueda Libre Bicicletería (ficticia)",
+      "categoria": "movilidad",
+      "descripcion": "Cómo cambiar una cámara y ajustar frenos.",
+      "coord": [
+        -34.58242,
+        -58.41993
+      ],
+      "inicio_en_min": 1500,
+      "duracion_min": 120,
+      "costo": "Con inscripción"
+    },
+    {
+      "id": "e06",
+      "titulo": "Ciclo de cine al aire libre",
+      "anfitrion": "Cine Club Medianoche (ficticio)",
+      "categoria": "cultura",
+      "descripcion": "Proyección nocturna en el parque.",
+      "coord": [
+        -34.5712,
+        -58.4123
+      ],
+      "inicio_en_min": 2880,
+      "duracion_min": 150,
+      "costo": "Gratis"
+    },
+    {
+      "id": "e07",
+      "titulo": "Muestra de productos de huerta urbana",
+      "anfitrion": "Raíz Cercana (marca ficticia)",
+      "categoria": "feria",
+      "descripcion": "Venta directa de verduras y plantines.",
+      "coord": [
+        -34.59037,
+        -58.42643
+      ],
+      "inicio_en_min": 420,
+      "duracion_min": 180,
+      "costo": "Gratis"
+    }
+  ],
+  "cortes_transito": [
+    {
+      "id": "c01",
+      "titulo": "Corte parcial por obra",
+      "motivo": "Obra de repavimentación (ficticia)",
+      "linea": [
+        [
+          -34.5878,
+          -58.4252
+        ],
+        [
+          -34.5867,
+          -58.4239
+        ]
+      ],
+      "inicio_hace_min": 600,
+      "fin_en_min": 420,
+      "cerca_de": "escuela",
+      "impacto": "alto",
+      "alternativa": "Usar la calle paralela; sumar unos 5 minutos al recorrido."
+    },
+    {
+      "id": "c02",
+      "titulo": "Corte por evento en la calle",
+      "motivo": "Feria (ficticia)",
+      "linea": [
+        [
+          -34.5862,
+          -58.426
+        ],
+        [
+          -34.5857,
+          -58.425
+        ]
+      ],
+      "inicio_hace_min": 60,
+      "fin_en_min": 240,
+      "cerca_de": null,
+      "impacto": "medio",
+      "alternativa": "Desvío por la avenida cercana."
+    },
+    {
+      "id": "c03",
+      "titulo": "Corte de un carril por bacheo",
+      "motivo": "Trabajo de bacheo (ficticio)",
+      "linea": [
+        [
+          -34.5893,
+          -58.4222
+        ],
+        [
+          -34.5887,
+          -58.4208
+        ]
+      ],
+      "inicio_hace_min": 30,
+      "fin_en_min": 180,
+      "cerca_de": null,
+      "impacto": "bajo",
+      "alternativa": "Circular por el carril libre con precaución."
+    }
+  ],
+  "ciclovias": [
+    {
+      "id": "b01",
+      "nombre": "Ciclovía troncal (ficticia, trazado aproximado)",
+      "linea": [
+        [
+          -34.58092,
+          -58.42303
+        ],
+        [
+          -34.58425,
+          -58.42371
+        ],
+        [
+          -34.587,
+          -58.4256
+        ],
+        [
+          -34.5905,
+          -58.4272
+        ]
+      ],
+      "estado": "habilitada"
+    },
+    {
+      "id": "b02",
+      "nombre": "Ciclovía del parque (ficticia, trazado aproximado)",
+      "linea": [
+        [
+          -34.5808,
+          -58.4209
+        ],
+        [
+          -34.57639,
+          -58.41639
+        ],
+        [
+          -34.571,
+          -58.413
+        ]
+      ],
+      "estado": "habilitada"
+    },
+    {
+      "id": "b03",
+      "nombre": "Ciclovía transversal (ficticia, trazado aproximado)",
+      "linea": [
+        [
+          -34.588,
+          -58.431
+        ],
+        [
+          -34.588,
+          -58.427
+        ],
+        [
+          -34.5885,
+          -58.423
+        ]
+      ],
+      "estado": "con obstrucción",
+      "nota": "Coincide con el reporte r09 (auto estacionado)."
+    }
+  ],
+  "subte": {
+    "_verificar": "Estaciones Plaza Italia, Palermo y Ministro Carranza (línea D) con coordenadas verificadas contra OpenStreetMap (Overpass, 2026-10-13); el trazado entre ellas es esquemático. El estado y el mensaje son ficticios.",
+    "linea": "D",
+    "color_referencial": "#1F7A4D",
+    "estaciones": [
+      {
+        "id": "s01",
+        "nombre": "Plaza Italia",
+        "coord": [
+          -34.58146,
+          -58.42111
+        ]
+      },
+      {
+        "id": "s02",
+        "nombre": "Palermo",
+        "coord": [
+          -34.57849,
+          -58.42562
+        ]
+      },
+      {
+        "id": "s03",
+        "nombre": "Ministro Carranza",
+        "coord": [
+          -34.5752,
+          -58.43468
+        ]
+      }
+    ],
+    "estado": "demoras",
+    "mensaje": "Demoras por revisión técnica (ficticio). Frecuencia estimada de 9 minutos.",
+    "actualizado_hace_min": 8
+  },
+  "avisos_hogar": [
+    {
+      "id": "a01",
+      "tipo": "corte",
+      "titulo": "Corte parcial cerca de la escuela",
+      "detalle": "Hay un corte por obra cerca del recorrido a la escuela. Podés salir 5 minutos antes o usar la calle paralela.",
+      "ref": "c01",
+      "prioridad": 1
+    },
+    {
+      "id": "a02",
+      "tipo": "ciclovia",
+      "titulo": "Ciclovía obstruida en el tramo transversal",
+      "detalle": "Hay un auto sobre la ciclovía. Si vas en bici, sumá unos minutos.",
+      "ref": "b03",
+      "prioridad": 3
+    },
+    {
+      "id": "a03",
+      "tipo": "subte",
+      "titulo": "Línea D con demoras",
+      "detalle": "Frecuencia estimada de 9 minutos. Considerá otro medio si tenés apuro.",
+      "ref": "subte",
+      "prioridad": 2
+    },
+    {
+      "id": "a04",
+      "tipo": "reporte",
+      "titulo": "Tu reporte avanzó",
+      "detalle": "El contenedor frente a la escuela fue enviado al área responsable.",
+      "ref": "r01",
+      "prioridad": 2
+    },
+    {
+      "id": "a05",
+      "tipo": "evento",
+      "titulo": "Feria cerca de casa",
+      "detalle": "Feria de diseño de autor hasta esta tarde, a pocas cuadras.",
+      "ref": "e04",
+      "prioridad": 4
+    }
+  ],
+  "fuentes": [
+    {
+      "id": "f01",
+      "area": "Área de Movilidad (ficticia)",
+      "tipo": "oficial",
+      "capa": "cortes_transito",
+      "capa_nombre": "Cortes de tránsito",
+      "registros": 42,
+      "registros_en_zona": 3,
+      "ultima_sync_hace_min": 4,
+      "estado": "actualizado",
+      "calidad": 94,
+      "efecto_demo": "Sin cambios visibles en el mapa; solo reinicia el contador a «hace 0 min»."
+    },
+    {
+      "id": "f02",
+      "area": "Área de Transporte (ficticia)",
+      "tipo": "oficial",
+      "capa": "subte",
+      "capa_nombre": "Estado del subte",
+      "registros": 16,
+      "registros_en_zona": 3,
+      "ultima_sync_hace_min": 8,
+      "estado": "actualizado",
+      "calidad": 97,
+      "efecto_demo": "El contador vuelve a «hace 0 min»; el popup del subte muestra «Actualizado hace 0 min»."
+    },
+    {
+      "id": "f03",
+      "area": "Área de Espacio Público (ficticia)",
+      "tipo": "oficial",
+      "capa": "ciclovias",
+      "capa_nombre": "Red de ciclovías",
+      "registros": 57,
+      "registros_en_zona": 3,
+      "ultima_sync_hace_min": 190,
+      "estado": "con_demora",
+      "calidad": 82,
+      "efecto_demo": "Pasa a «Actualizado hace 0 min» y desaparece la etiqueta «Datos con demora» de la capa de ciclovías en el mapa del vecino."
+    },
+    {
+      "id": "f04",
+      "area": "Área de Cultura (ficticia)",
+      "tipo": "oficial",
+      "capa": "eventos",
+      "capa_nombre": "Eventos",
+      "registros": 31,
+      "registros_en_zona": 7,
+      "ultima_sync_hace_min": 1500,
+      "estado": "sin_conexion",
+      "calidad": 71,
+      "efecto_demo": "Recupera la conexión: pasa a «Actualizado hace 0 min» y desaparece la etiqueta «Sin conexión con la fuente» de los eventos."
+    },
+    {
+      "id": "f05",
+      "area": "Participación vecinal (ficticia)",
+      "tipo": "colaborativa",
+      "capa": "reportes",
+      "capa_nombre": "Reportes vecinales",
+      "registros": 14,
+      "registros_en_zona": 14,
+      "ultima_sync_hace_min": 1,
+      "estado": "actualizado",
+      "calidad": 89,
+      "efecto_demo": "Sin cambios visibles en el mapa; ilustra que los reportes complementan a las fuentes oficiales."
+    }
+  ],
+  "cartel_permanente": "Prototipo conceptual, datos ficticios"
+}

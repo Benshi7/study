@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Warehouse y Medallion</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/diagrams.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0013 · Bloque 2: SQL</div>
+
+<div class="kicker">Lección 0013</div>
+<h1>Data Warehouse, estrella y Medallion</h1>
+<p class="lede">Es la sección 5 de los slides de SQL, tu terreno como DE. Entra en el parcial porque se dio el 24/8.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la 0012: ¿cómo se resuelve una relación N:M? ¿Qué garantiza la integridad referencial?</p>
+</div>
+
+<h2>Data Warehouse</h2>
+<p>Un <strong>DWH</strong> es una <em>base de datos analítica centralizada que integra datos de múltiples fuentes operacionales, organizada para facilitar el análisis histórico y la toma de decisiones</em>.</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Característica</th><th>OLTP (operacional)</th><th>OLAP (Data Warehouse)</th></tr>
+  <tr><td>Objetivo</td><td>Transacciones del día a día</td><td>Análisis e informes históricos</td></tr>
+  <tr><td>Operaciones</td><td>INSERT, UPDATE, DELETE</td><td>SELECT (consultas complejas)</td></tr>
+  <tr><td>Datos</td><td>Actuales, detallados</td><td>Históricos, agregados</td></tr>
+  <tr><td>Usuarios</td><td>Operarios, sistemas</td><td>Analistas, directivos, BI</td></tr>
+  <tr><td>Ejemplos</td><td>CRM, ERP, e-commerce</td><td>Power BI, Tableau, Looker</td></tr>
+</table>
+</div>
+<span class="sidenote">Fuente: <a href="../raw/unicaba_fundamentos_sql.pdf">unicaba_fundamentos_sql.pdf</a>, sección 5.</span>
+
+<h2>Fact vs Dimension</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Fact table</th><th>Dimension table</th></tr>
+  <tr><td>Hechos <strong>medibles</strong>: métricas numéricas (ventas, cantidad, importe, costo)</td><td>Atributos <strong>descriptivos</strong> del contexto: qué, quién, cuándo, dónde</td></tr>
+  <tr><td>Tiene <strong>FK</strong> hacia las dimensiones</td><td>Tiene la <strong>PK</strong> que la fact referencia</td></tr>
+  <tr><td>Centro del esquema estrella · ej. <code>fact_ventas</code></td><td>Responde las preguntas de negocio · ej. <code>dim_cliente</code>, <code>dim_fecha</code></td></tr>
+</table>
+</div>
+
+<!-- diagram:estrella -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 800 556" style="max-width:800px;margin-inline:auto" role="img" aria-labelledby="estrella-title estrella-desc" xmlns="http://www.w3.org/2000/svg"><title id="estrella-title">Esquema estrella</title><desc id="estrella-desc">Modelo en estrella con la tabla de hechos fact_ventas en el centro y cuatro dimensiones alrededor (fecha, cliente, tienda, producto), unidas por relaciones uno a muchos.</desc><defs><marker id="estrella-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="estrella-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="estrella-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge" d="M400,196 L400,120"/><path class="edge" d="M500,264 L584,264"/><path class="edge" d="M216,264 L300,264"/><path class="edge" d="M400,332 L400,408"/><rect class="mask" x="406" y="180" width="12" height="10" rx="2"/><text class="label" x="412" y="188" text-anchor="middle">N</text><rect class="mask" x="406" y="128" width="12" height="10" rx="2"/><text class="label" x="412" y="136" text-anchor="middle">1</text><rect class="mask" x="506" y="246" width="12" height="10" rx="2"/><text class="label" x="512" y="254" text-anchor="middle">N</text><rect class="mask" x="566" y="246" width="12" height="10" rx="2"/><text class="label" x="572" y="254" text-anchor="middle">1</text><rect class="mask" x="222" y="246" width="12" height="10" rx="2"/><text class="label" x="228" y="254" text-anchor="middle">1</text><rect class="mask" x="282" y="246" width="12" height="10" rx="2"/><text class="label" x="288" y="254" text-anchor="middle">N</text><rect class="mask" x="406" y="340" width="12" height="10" rx="2"/><text class="label" x="412" y="348" text-anchor="middle">N</text><rect class="mask" x="406" y="392" width="12" height="10" rx="2"/><text class="label" x="412" y="400" text-anchor="middle">1</text><rect class="mask" x="300" y="196" width="200" height="136" rx="6"/><rect class="focal" x="300" y="196" width="200" height="136" rx="6"/><rect class="mask" x="308" y="204" width="36" height="12" rx="2"/><rect class="focal" x="308" y="204" width="36" height="12" rx="2"/><text class="eyebrow" x="326" y="213" text-anchor="middle">FACT</text><text class="name" x="352" y="215" text-anchor="start">fact_ventas</text><line class="rule" x1="300" y1="224" x2="500" y2="224"/><text class="field" x="312" y="242" text-anchor="start">→ fecha_id</text><text class="field" x="312" y="258" text-anchor="start">→ cliente_id</text><text class="field" x="312" y="274" text-anchor="start">→ producto_id</text><text class="field" x="312" y="290" text-anchor="start">→ tienda_id</text><text class="field" x="312" y="306" text-anchor="start">monto</text><text class="field" x="312" y="322" text-anchor="start">cantidad</text><rect class="mask" x="312" y="32" width="176" height="88" rx="6"/><rect class="node" x="312" y="32" width="176" height="88" rx="6"/><rect class="mask" x="320" y="40" width="36" height="12" rx="2"/><rect class="node-soft" x="320" y="40" width="36" height="12" rx="2"/><text class="eyebrow" x="338" y="49" text-anchor="middle">DIM</text><text class="name" x="364" y="51" text-anchor="start">dim_fecha</text><line class="rule" x1="312" y1="60" x2="488" y2="60"/><text class="field" x="324" y="78" text-anchor="start"># fecha_id</text><text class="field" x="324" y="94" text-anchor="start">año · mes · día</text><text class="field" x="324" y="110" text-anchor="start">trimestre</text><rect class="mask" x="584" y="220" width="176" height="88" rx="6"/><rect class="node" x="584" y="220" width="176" height="88" rx="6"/><rect class="mask" x="592" y="228" width="36" height="12" rx="2"/><rect class="node-soft" x="592" y="228" width="36" height="12" rx="2"/><text class="eyebrow" x="610" y="237" text-anchor="middle">DIM</text><text class="name" x="636" y="239" text-anchor="start">dim_cliente</text><line class="rule" x1="584" y1="248" x2="760" y2="248"/><text class="field" x="596" y="266" text-anchor="start"># cliente_id</text><text class="field" x="596" y="282" text-anchor="start">nombre</text><text class="field" x="596" y="298" text-anchor="start">segmento · ciudad</text><rect class="mask" x="40" y="220" width="176" height="88" rx="6"/><rect class="node" x="40" y="220" width="176" height="88" rx="6"/><rect class="mask" x="48" y="228" width="36" height="12" rx="2"/><rect class="node-soft" x="48" y="228" width="36" height="12" rx="2"/><text class="eyebrow" x="66" y="237" text-anchor="middle">DIM</text><text class="name" x="92" y="239" text-anchor="start">dim_tienda</text><line class="rule" x1="40" y1="248" x2="216" y2="248"/><text class="field" x="52" y="266" text-anchor="start"># tienda_id</text><text class="field" x="52" y="282" text-anchor="start">nombre</text><text class="field" x="52" y="298" text-anchor="start">ciudad · región</text><rect class="mask" x="312" y="408" width="176" height="88" rx="6"/><rect class="node" x="312" y="408" width="176" height="88" rx="6"/><rect class="mask" x="320" y="416" width="36" height="12" rx="2"/><rect class="node-soft" x="320" y="416" width="36" height="12" rx="2"/><text class="eyebrow" x="338" y="425" text-anchor="middle">DIM</text><text class="name" x="364" y="427" text-anchor="start">dim_producto</text><line class="rule" x1="312" y1="436" x2="488" y2="436"/><text class="field" x="324" y="454" text-anchor="start"># producto_id</text><text class="field" x="324" y="470" text-anchor="start">nombre</text><text class="field" x="324" y="486" text-anchor="start">categoría · precio</text><line class="rule" x1="24" y1="516" x2="776" y2="516"/><text class="eyebrow" x="24" y="540" text-anchor="start">LEYENDA</text><text class="sub" x="104" y="543" text-anchor="start"># clave primaria (PK)</text><text class="sub" x="264" y="543" text-anchor="start">→ clave foránea (FK)</text><text class="sub" x="424" y="543" text-anchor="start">1 — N: una fila de la dim, muchas en la fact</text></svg></div><figcaption>Estrella: las FK de la fact apuntan a la PK de cada dimensión. <a href="../diagrams/estrella.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:estrella -->
+
+<h2>Arquitectura Medallion</h2>
+<p>Patrón para organizar los datos en <strong>capas de refinamiento progresivo</strong>. Se usa mucho en Data Lakes y en plataformas como Microsoft Fabric, Databricks y Delta Lake.</p>
+<div class="table-wrap">
+<table>
+  <tr><th>Capa</th><th>Contenido</th><th>Vocabulario del slide</th></tr>
+  <tr><td><strong>BRONZE</strong> · raw / ingesta</td><td>Datos crudos tal como llegan (CSV, APIs, tablas operacionales). <strong>Sin transformación.</strong> Se preserva el histórico completo</td><td>landing zone · full load · sin limpieza</td></tr>
+  <tr><td><strong>SILVER</strong> · cleaned / conformed</td><td>Datos <strong>limpiados, validados y estandarizados</strong>: se eliminan duplicados, se corrigen tipos, se aplican reglas de negocio básicas</td><td>ODS · staging · datos normalizados</td></tr>
+  <tr><td><strong>GOLD</strong> · business / curated</td><td>Datos <strong>agregados y modelados</strong> para consumo analítico: facts y dims, KPIs, métricas</td><td>Data Warehouse · Data Mart · Power BI</td></tr>
+</table>
+</div>
+
+<!-- diagram:medallion -->
+<figure class="dg-figure"><div class="dg-scroll"><svg class="dg" viewBox="0 0 580 476" style="max-width:580px;margin-inline:auto" role="img" aria-labelledby="medallion-title medallion-desc" xmlns="http://www.w3.org/2000/svg"><title id="medallion-title">Arquitectura Medallion</title><desc id="medallion-desc">Tres capas de refinamiento: Bronze con datos crudos, Silver con datos limpios y validados (destacada) y Gold con datos modelados para BI.</desc><defs><marker id="medallion-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-muted" points="0 0, 8 3, 0 6"/></marker><marker id="medallion-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-accent" points="0 0, 8 3, 0 6"/></marker><marker id="medallion-arrow-soft" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="m-soft" points="0 0, 8 3, 0 6"/></marker></defs><rect class="bg" width="100%" height="100%"/><path class="edge-accent" d="M102,80 C102,0 290,0 290,80" marker-end="url(#medallion-arrow-accent)"/><text class="label-accent" x="196" y="50" text-anchor="middle">LIMPIEZA</text><path class="edge" d="M290,80 C290,0 478,0 478,80" marker-end="url(#medallion-arrow)"/><text class="label" x="384" y="50" text-anchor="middle">MODELADO</text><rect class="mask" x="16" y="80" width="172" height="380" rx="6"/><rect class="node-soft" x="16" y="80" width="172" height="380" rx="6"/><path class="band-outer" d="M16,86 Q16,80 22,80 H182 Q188,80 188,86 V130 H16 Z"/><text class="name-lg" x="102" y="106" text-anchor="middle">Bronze</text><text class="sub" x="102" y="144" text-anchor="middle">raw / ingesta</text><text class="eyebrow" x="32" y="180" text-anchor="start">QUÉ PASA</text><foreignObject x="32" y="186" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">datos crudos, sin transformar</div></foreignObject><text class="eyebrow" x="32" y="220" text-anchor="start">EN EL SLIDE</text><foreignObject x="32" y="226" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">landing zone · full load</div></foreignObject><text class="eyebrow" x="32" y="260" text-anchor="start">QUIÉN</text><foreignObject x="32" y="266" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">Data Engineer (ingesta)</div></foreignObject><line class="rule" x1="32" y1="344" x2="172" y2="344"/><text class="eyebrow" x="32" y="360" text-anchor="start">EJEMPLO</text><text class="sub" x="32" y="374" text-anchor="start">CSV tal como llegó</text><text class="sub" x="32" y="388" text-anchor="start">histórico completo</text><rect class="mask" x="204" y="80" width="172" height="380" rx="6"/><rect class="focal" x="204" y="80" width="172" height="380" rx="6"/><path class="band-focal" d="M204,86 Q204,80 210,80 H370 Q376,80 376,86 V130 H204 Z"/><text class="name-lg" x="290" y="106" text-anchor="middle">Silver</text><text class="sub-accent" x="290" y="144" text-anchor="middle">cleaned / conformed</text><text class="eyebrow" x="220" y="180" text-anchor="start">QUÉ PASA</text><foreignObject x="220" y="186" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">limpiar, validar, estandarizar</div></foreignObject><text class="eyebrow" x="220" y="220" text-anchor="start">EN EL SLIDE</text><foreignObject x="220" y="226" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">ODS · staging · normalizado</div></foreignObject><text class="eyebrow" x="220" y="260" text-anchor="start">QUIÉN</text><foreignObject x="220" y="266" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">Data Engineer (cleansing)</div></foreignObject><line class="rule" x1="220" y1="344" x2="360" y2="344"/><text class="eyebrow" x="220" y="360" text-anchor="start">EJEMPLO</text><text class="sub-accent" x="220" y="374" text-anchor="start">sin duplicados</text><text class="sub-accent" x="220" y="388" text-anchor="start">tipos corregidos</text><rect class="mask" x="392" y="80" width="172" height="380" rx="6"/><rect class="node" x="392" y="80" width="172" height="380" rx="6"/><path class="band" d="M392,86 Q392,80 398,80 H558 Q564,80 564,86 V130 H392 Z"/><text class="name-lg" x="478" y="106" text-anchor="middle">Gold</text><text class="sub" x="478" y="144" text-anchor="middle">business / curated</text><text class="eyebrow" x="408" y="180" text-anchor="start">QUÉ PASA</text><foreignObject x="408" y="186" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">agregar y modelar para BI</div></foreignObject><text class="eyebrow" x="408" y="220" text-anchor="start">EN EL SLIDE</text><foreignObject x="408" y="226" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">DWH · Data Mart · Power BI</div></foreignObject><text class="eyebrow" x="408" y="260" text-anchor="start">QUIÉN</text><foreignObject x="408" y="266" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="fo">Data Analyst · BI (consume)</div></foreignObject><line class="rule" x1="408" y1="344" x2="548" y2="344"/><text class="eyebrow" x="408" y="360" text-anchor="start">EJEMPLO</text><text class="sub" x="408" y="374" text-anchor="start">fact_ventas · dim_cliente</text><text class="sub" x="408" y="388" text-anchor="start">KPIs y métricas</text></svg></div><figcaption>Medallion: la limpieza (Bronze → Silver) conecta con el data cleansing del bloque 1. <a href="../diagrams/medallion.html">Ver en grande</a></figcaption></figure>
+<!-- /diagram:medallion -->
+<div class="box">
+  <span class="label">Conectá con el bloque 1</span>
+  <p>El paso de Bronze a Silver es el <strong>data cleansing</strong> de la <a href="0002-procesos-y-gobierno.html">lección 0002</a>, donde se corrigen <strong>duplicados, consistencia y configuración</strong>. Gold es lo que consume el <strong>Data Analyst</strong> para generar <strong>insights</strong>. Y toda la cadena es la metáfora del "petróleo": extraer (Bronze), refinar (Silver) y distribuir (Gold).</p>
+</div>
+
+<div class="box trap">
+  <span class="label">"¿En qué capa se limpia?" → en la capa de destino</span>
+  <p>Cada capa es <strong>el dato más el proceso que lo produce</strong>. El job que lee Bronze, deduplica y escribe es <em>el proceso de Silver</em>. Por eso "se eliminan duplicados en Silver", aunque técnicamente ocurra "entre" las dos capas. <strong>Bronze nunca transforma</strong>: si lo limpiaras, dejaría de ser crudo. Regla: la transformación pertenece a la capa que <strong>resulta</strong> de ella. Limpiar es Silver; agregar y modelar es Gold.</p>
+</div>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0013-data-warehouse-y-medallion"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Qué operaciones caracterizan a un sistema OLTP?",
+   "options": ["INSERT, UPDATE y DELETE", "SELECT con consultas complejas", "Solo lectura de históricos", "CREATE, ALTER y DROP"], "answer": 0,
+   "why": "OLTP = transacciones del día a día. OLAP = SELECT con consultas complejas sobre históricos."},
+  {"q": "Un CRM, un ERP y un e-commerce son ejemplos de…",
+   "options": ["OLTP", "OLAP", "DWH", "BI"], "answer": 0,
+   "why": "Son sistemas operacionales. Power BI, Tableau y Looker son los ejemplos del lado OLAP."},
+  {"q": "¿Qué datos tiene típicamente un sistema OLAP / Data Warehouse?",
+   "options": ["Históricos y agregados", "Actuales y detallados", "Crudos sin transformar", "Solo datos transaccionales"], "answer": 0,
+   "why": "OLAP: históricos y agregados, para análisis e informes."},
+  {"q": "¿Qué contiene una fact table?",
+   "options": ["Métricas numéricas medibles del negocio", "Atributos descriptivos del contexto analizado", "Usuarios y permisos del motor", "Datos crudos tal como llegan"], "answer": 0,
+   "why": "Ventas, cantidad, importe, costo, más las FK hacia las dimensiones."},
+  {"q": "En un esquema estrella, ¿hacia dónde apuntan las claves foráneas?",
+   "options": ["De la fact a cada dimensión", "De cada dimensión a la fact", "Entre dimensiones sin pasar por fact", "No existen claves foráneas en estrella"], "answer": 0,
+   "why": "Las FK de la fact apuntan a la PK de cada dimensión."},
+  {"q": "¿En qué capa Medallion están los datos crudos, sin transformar, con el histórico completo?",
+   "options": ["Bronze", "Silver", "Gold", "Staging"], "answer": 0,
+   "why": "Bronze = raw / ingesta: landing zone, full load, sin limpieza."},
+  {"q": "¿En qué capa se eliminan duplicados, se corrigen tipos y se aplican reglas de negocio básicas?",
+   "options": ["Silver", "Bronze", "Gold", "Landing"], "answer": 0,
+   "why": "Silver = cleaned / conformed. Es donde ocurre el data cleansing."},
+  {"q": "¿En qué capa están las facts, las dims y los KPIs que consume Power BI?",
+   "options": ["Gold", "Silver", "Bronze", "Raw"], "answer": 0,
+   "why": "Gold = business / curated: Data Warehouse, Data Mart, reportes."},
+  {"q": "¿Qué es un Data Warehouse, según la cátedra?",
+   "options": ["Base analítica centralizada que integra múltiples fuentes", "Base operacional para las transacciones del día", "Archivo Excel compartido entre varias áreas internas", "Motor clave-valor para guardar sesiones de usuario"], "answer": 0,
+   "why": "Integra datos de múltiples fuentes operacionales para análisis histórico y toma de decisiones."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Distinguís OLTP de OLAP con los 5 criterios del slide, explicás fact vs dim y la estrella, y ubicás cada operación en su capa Medallion.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><a href="../raw/unicaba_fundamentos_sql.pdf">unicaba_fundamentos_sql.pdf</a>, sección 5. Resumen: <a href="../reference/sql.html">Referencia · SQL</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si en tu trabajo usás Medallion con otra semántica (por ejemplo, Silver ya modelado en estrella), traelo al chat. Para el examen vale la del slide.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0012-bases-de-datos-y-modelo-relacional.html">← 0012 · Modelo relacional</a>
+  <a href="0014-sql-select-y-agregacion.html">0014 · SELECT y agregación →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 35 · Consultas sumarias: GROUP BY y HAVING</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/sqlbox.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 35 · Unidad 5 · Lenguaje de consulta de datos</p>
+    <h1 class="masthead__title">Agregar, agrupar, y filtrar grupos</h1>
+    <p class="masthead__standfirst">
+      Las funciones agregadas convierten muchas filas en un número. GROUP BY decide
+      cuántos números sacás, y HAVING filtra después de calcularlos.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Deck "DML", slides 15–24</span>
+      <span>Prioridad para el 2do parcial: muy alta</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Las cinco funciones</h2>
+
+  <p>
+    <code>SUM()</code>, <code>COUNT()</code>, <code>AVG()</code>, <code>MIN()</code>,
+    <code>MAX()</code>. Sin <code>GROUP BY</code>, toda la tabla es un grupo y el resultado
+    es <b>una sola fila</b>.
+  </p>
+
+<pre><code><span class="k">SELECT</span> COUNT(*) <span class="k">AS</span> Cantidad_Habitaciones
+<span class="k">FROM</span>   HABITACION
+<span class="k">WHERE</span>  Cod_Torre = 1;</code></pre>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">COUNT(*) no es COUNT(columna)</span>
+    <p>
+      El deck lo dice: COUNT cuenta "el número de filas de una tabla <b>o</b> el número de
+      valores no nulos de una columna". <code>COUNT(*)</code> cuenta filas.
+      <code>COUNT(Cod_Prepaga)</code> salta los NULL: en <code>PACIENTE</code> da 8, no 10.
+      Y <code>COUNT(DISTINCT Cod_Prepaga)</code> da 3: cuántas prepagas distintas se usan.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>GROUP BY: una fila por grupo</h2>
+
+<pre><code><span class="k">SELECT</span>   S.Nombre, COUNT(*) <span class="k">AS</span> Consultas
+<span class="k">FROM</span>     HISTORIA_CLINICA H
+<span class="k">JOIN</span>     SERVICIO S <span class="k">ON</span> S.Cod_Servicio = H.Cod_Servicio
+<span class="k">GROUP BY</span> S.Nombre;</code></pre>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La regla del SELECT agrupado</span>
+    <p>
+      Con <code>GROUP BY</code>, cada columna del <code>SELECT</code> tiene que estar en el
+      <code>GROUP BY</code> o adentro de una función agregada. Si pedís
+      <code>H.Fecha</code> sin agruparla, ¿cuál de todas las fechas del grupo mostraría el
+      motor? Los motores estrictos dan error. SQLite elige una cualquiera, y eso es peor.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>WHERE filtra filas; HAVING filtra grupos</h2>
+
+  <p>
+    "La cláusula HAVING especifica una condición de búsqueda para los grupos seleccionados
+    por la cláusula GROUP BY." El orden real de ejecución explica la diferencia:
+  </p>
+
+  <ol>
+    <li><code>FROM</code> y los <code>JOIN</code> arman las filas.</li>
+    <li><code>WHERE</code> descarta <b>filas</b>. Todavía no hay grupos, así que acá no se puede usar <code>COUNT</code>.</li>
+    <li><code>GROUP BY</code> arma los grupos y calcula las agregadas.</li>
+    <li><code>HAVING</code> descarta <b>grupos</b>, mirando esos totales.</li>
+    <li><code>SELECT</code> proyecta y <code>ORDER BY</code> ordena.</li>
+  </ol>
+
+  <h2><span class="num">04</span>Práctica</h2>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">1 de 4 · Consigna TP5, pedido 3</span>
+    <p class="sqlbox__task">Informar la cantidad de habitaciones de la Torre 1.</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT
+FROM HABITACION
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT COUNT(*) AS Cantidad_Habitaciones
+FROM HABITACION
+WHERE Cod_Torre = 1;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">2 de 4 · GROUP BY</span>
+    <p class="sqlbox__task">Cantidad de consultas por servicio (nombre del servicio y cantidad).</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT S.Nombre, COUNT(*)
+FROM HISTORIA_CLINICA H
+JOIN SERVICIO S ON S.Cod_Servicio = H.Cod_Servicio;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT S.Nombre, COUNT(*) AS Consultas
+FROM HISTORIA_CLINICA H
+JOIN SERVICIO S ON S.Cod_Servicio = H.Cod_Servicio
+GROUP BY S.Nombre;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="clinica">
+    <span class="sqlbox__label">3 de 4 · HAVING</span>
+    <p class="sqlbox__task">Los servicios con más de dos consultas (nombre y cantidad).</p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT S.Nombre, COUNT(*) AS Consultas
+FROM HISTORIA_CLINICA H
+JOIN SERVICIO S ON S.Cod_Servicio = H.Cod_Servicio
+WHERE COUNT(*) > 2
+GROUP BY S.Nombre;</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT S.Nombre, COUNT(*) AS Consultas
+FROM HISTORIA_CLINICA H
+JOIN SERVICIO S ON S.Cod_Servicio = H.Cod_Servicio
+GROUP BY S.Nombre
+HAVING COUNT(*) > 2;
+</script>
+  </div>
+
+  <div class="sqlbox" data-seed="envios">
+    <span class="sqlbox__label">4 de 4 · Tablas del modelo de examen</span>
+    <p class="sqlbox__task">
+      Con las tablas de <a href="../raw/Material_Examen/bd parcial 1b.jpg">bd parcial 1b</a>:
+      la cantidad promedio de los envíos de componentes de color ROJO. Es la mitad del ejercicio
+      "a" de ese examen; la otra mitad está en la <a href="0036-subconsultas-exists.html">0036</a>.
+    </p>
+    <textarea class="sqlbox__code" spellcheck="false">SELECT AVG(E.CANTIDAD)
+FROM ENVIOS E
+</textarea>
+    <script type="text/plain" class="sqlbox__solution">
+SELECT AVG(E.CANTIDAD)
+FROM ENVIOS E
+JOIN COMPONENTES C ON C.C = E.C
+WHERE C.COLOR = 'ROJO';
+</script>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Dónde va el filtro</span>
+    <p class="quiz__q">
+      "Cantidad de consultas por servicio, contando sólo las de 2026 en adelante."
+      ¿Dónde va la condición de la fecha?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="En el WHERE. La fecha es de cada fila, no del grupo: hay que descartar las consultas viejas antes de agrupar y contar.">En el WHERE, antes de agrupar</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="HAVING mira grupos ya armados. Una fecha no es una propiedad del grupo de un servicio, que tiene muchas fechas distintas.">En el HAVING, después de agrupar</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El GROUP BY decide cómo se arman los grupos, no qué filas entran. Agrupar por fecha haría un grupo por día.">Dentro del GROUP BY, como clave</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Contar con NULL</span>
+    <p class="quiz__q">PROFESIONAL tiene 8 filas y 4 de ellas tienen <code>Cod_Jefe</code> NULL. ¿Qué devuelve <code>SELECT COUNT(*), COUNT(Cod_Jefe)</code>?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="COUNT(columna) no cuenta los NULL.">8 y 8</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 20: COUNT cuenta &quot;el número de filas de una tabla o el número de valores no nulos de una columna&quot;. COUNT(*) cuenta filas; COUNT(Cod_Jefe), valores no nulos.">8 y 4</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="COUNT(*) cuenta filas enteras, tengan o no NULL.">4 y 4</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Orden de las cláusulas</span>
+    <p class="quiz__q">¿Cuál es el orden en que se escriben, según el resumen del deck?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+          data-feedback="HAVING filtra grupos: va después de GROUP BY.">SELECT, FROM, WHERE, HAVING, GROUP BY, ORDER BY</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="WHERE filtra filas antes de agrupar: va antes de GROUP BY.">SELECT, FROM, GROUP BY, WHERE, HAVING, ORDER BY</button></li>
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto. Slide 17, &quot;En resumen…&quot;. WHERE filtra filas, GROUP BY arma los grupos y HAVING los filtra.">SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Deck "DML"</b>, slides 15–24. <b>Elmasri &amp; Navathe, 5ª ed.</b> — §8.5.7
+      "Funciones agregadas en SQL" y §8.5.8 "Agrupamiento: las cláusulas GROUP BY y HAVING".
+    </p>
+    <p><a href="https://www.sqlite.org/lang_aggfunc.html">SQLite — Built-in Aggregate Functions</a>.</p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Contame en voz alta en qué orden se ejecuta una consulta con
+      WHERE, GROUP BY y HAVING, y te digo si está bien.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0034-joins.html">Anterior: 0034 · JOIN</a>
+    <a href="0036-subconsultas-exists.html">Siguiente: 0036 · Subconsultas</a>
+    <a href="../reference/0006-sql-ddl-dml.html">Referencia: SQL</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+<script src="../assets/seeds/clinica.js"></script>
+<script src="../assets/seeds/envios.js"></script>
+<script src="../assets/sqlbox.js"></script>
+</body>
+</html>

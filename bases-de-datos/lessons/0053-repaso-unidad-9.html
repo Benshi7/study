@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 53 · Repaso de la Unidad 9</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 53 · Unidad 9 · Repaso</p>
+    <h1 class="masthead__title">Definiciones y diferencias de Data Warehouse, estilo choice</h1>
+    <p class="masthead__standfirst">
+      El docente adelantó que la teoría del 2do parcial es choice en papel, con cosas como la
+      diferencia entre data warehouse, data marts y OLAP, o la definición de cada tema. Este
+      repaso junta las diferencias que más se confunden y las pregunta mezcladas.
+    </p>
+    <p class="masthead__meta">
+      <span>~20 minutos</span>
+      <span>Repasa las lecciones 0049, 0050, 0051 y 0052</span>
+      <span>Prioridad para el 2do parcial: alta (teoría choice)</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Cómo usarla</span>
+    <p>
+      Hacela <b>mañana</b>, no el mismo día que las lecciones: recordar con un poco de olvido
+      de por medio enseña más que releer. Las preguntas están mezcladas a propósito: lo difícil
+      de un choice es distinguir dos cosas parecidas, no recordar una sola.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Las diferencias que se confunden</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Par</th><th>La diferencia en una línea</th></tr></thead>
+      <tbody>
+        <tr><td><b>DW · Data Mart</b></td><td>El DW es corporativo y de visión homogénea; el Data Mart, departamental y de visión parcial.</td></tr>
+        <tr><td><b>DW · OLAP</b></td><td>El DW guarda los datos; OLAP es el procesamiento analítico que se hace sobre datos de un DW o de un data mart.</td></tr>
+        <tr><td><b>OLTP · OLAP</b></td><td>OLTP ejecuta muchas transacciones simples; OLAP analiza grandes volúmenes de forma multidimensional.</td></tr>
+        <tr><td><b>ODS · DW</b></td><td>El ODS es un área provisional donde se limpian los datos; el DW es el repositorio histórico y no volátil.</td></tr>
+        <tr><td><b>MOLAP · ROLAP · HOLAP</b></td><td>Multidimensional con precálculo; relacional con detalle; híbrido con detalle relacional y agregados multidimensionales.</td></tr>
+        <tr><td><b>Estrella · copo de nieve</b></td><td>Dimensiones desnormalizadas (una unión) contra dimensiones normalizadas (más uniones, menos espacio).</td></tr>
+        <tr><td><b>Inmon · Kimball</b></td><td>Top-down con DW normalizado contra bottom-up con data marts desnormalizados.</td></tr>
+        <tr><td><b>MDM · DQ · ETL</b></td><td>Gestión de datos maestros; reglas de calidad; proceso que lleva los datos de las fuentes al DW.</td></tr>
+        <tr><td><b>CRM · ERP</b></td><td>Relación con clientes; procesos de la empresa, sobre todo financieros.</td></tr>
+        <tr><td><b>SCD tipo 1 · tipo 2</b></td><td>Sobrescribir el valor contra añadir una fila con inicio y fin.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">02</span>Preguntas</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 15 · Data Warehouse o Data Mart</span>
+    <p class="quiz__q">
+      Un repositorio corporativo, centralizado, que cruza toda la empresa y ofrece una visión homogénea. ¿Qué es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es el DW: corporativo, neutral a las aplicaciones y compartido por toda la empresa. El Data Mart es departamental y de visión parcial.">Un Data Warehouse, de alcance corporativo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El Data Mart es departamental y de visión parcial, requerido por una aplicación específica. No cruza toda la empresa.">Un Data Mart, de alcance departamental</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El cubo es información pre-agregada para analizar; no es un repositorio corporativo de datos.">Un cubo OLAP, de alcance multidimensional</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 15 · DW y OLAP</span>
+    <p class="quiz__q">
+      ¿Cuál es la relación entre un Data Warehouse y OLAP?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="OLAP es el procesamiento analítico; sus datos provienen de un data mart, un almacén centralizado o un data warehouse. No son lo mismo: uno guarda, el otro analiza.">OLAP analiza datos que vienen de un data mart o de un DW</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No: el DW es el repositorio de datos y OLAP es el tipo de procesamiento analítico que se hace sobre datos como esos.">Son dos nombres distintos para el mismo repositorio de datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso describe a un sistema OLTP, que genera las transacciones. OLAP lee y analiza, no registra.">OLAP es el sistema que alimenta al DW con las transacciones</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 15 · OLTP u OLAP, la definición</span>
+    <p class="quiz__q">
+      ¿Cuál define a OLAP?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Esa es la definición del deck. Su núcleo es el cubo y sirve para informes complejos, tendencias y previsiones.">Análisis multidimensional de grandes volúmenes de datos, a alta velocidad</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso define a OLTP, el sistema transaccional: inserciones, actualizaciones y eliminaciones rápidas.">Procesamiento de muchas transacciones simples y simultáneas, en milisegundos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es DQ, la calidad de datos. No es un tipo de procesamiento en línea.">Conjunto de reglas que aseguran un mínimo de calidad de los datos recibidos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 15 · Qué es BI</span>
+    <p class="quiz__q">
+      Según el deck, ¿qué es la inteligencia de negocios (BI)?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El deck lo dice así: BI no se compra, se construye. Se vincula a una arquitectura y a aplicaciones para la toma de decisión.">Una arquitectura y aplicaciones sobre datos integrados, que se construye</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El deck lo descarta: BI no es una marca, ni un producto, ni un sistema. No se compra.">Un producto de software que se compra ya armado a un proveedor externo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El deck también lo descarta: BI no es una base de datos. Se apoya en una, pero es más amplio.">Una base de datos especializada, optimizada sólo para generar reportes</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 15 · ODS contra DW</span>
+    <p class="quiz__q">
+      ¿En qué se diferencia el ODS de un Data Warehouse?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El ODS es un área lógica provisional: ahí los datos se borran, se arreglan y se revisan. El DW es el repositorio histórico y no volátil.">El ODS es un área provisional donde se limpian los datos antes de cargarlos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es al revés: el DW es histórico y no volátil; el ODS es un área provisional previa.">El ODS guarda toda la historia y el DW sólo conserva los datos del día</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Ninguno de los dos es eso: el ODS es un área de limpieza y el DW un repositorio de datos.">El ODS es un cubo multidimensional y el DW una tabla de hechos aislada</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">6 de 15 · MDM o DQ</span>
+    <p class="quiz__q">
+      Un conjunto de procesos, políticas y tecnologías para gestionar los datos de las entidades de negocio centrales. ¿Qué es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso es MDM: gestiona, genera y mantiene los datos asociados a las entidades centrales del negocio.">MDM, gestión de datos maestros de las entidades de negocio centrales</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="DQ son reglas que aseguran un mínimo de calidad de lo que se recibe; no gestiona las entidades centrales.">DQ, reglas que aseguran un mínimo de calidad de los datos recibidos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="ETL es el proceso que lleva los datos de las fuentes al DW; no es una gestión de datos maestros.">ETL, proceso que extrae, transforma y carga los datos hacia el almacén</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">7 de 15 · Qué es el ETL</span>
+    <p class="quiz__q">
+      ¿Qué significan las siglas ETL?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es el proceso que lleva los datos de las fuentes al Data Warehouse, con limpieza, integración y depuración en el medio.">Extracción, Transformación y Carga</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No existe tal significado: ETL es extracción, transformación y carga.">Estructura, Tabla y Lectura de datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Tampoco: eso mezcla términos de transacciones. ETL es un proceso de carga de datos.">Evaluación, Transacción y Log de datos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">8 de 15 · El centro de la estrella</span>
+    <p class="quiz__q">
+      ¿Qué hay en el centro de un esquema en estrella?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="La tabla de hechos va en el centro, y a su alrededor las dimensiones; por eso se llama estrella.">La tabla de hechos, rodeada de varias tablas de dimensiones</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es al revés: los hechos están en el centro y las dimensiones alrededor.">Una tabla de dimensión, rodeada de varias tablas de hechos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El cubo es otra estructura (multidimensional). La estrella es un esquema relacional con hechos y dimensiones.">Un cubo OLAP que guarda todas las agregaciones precalculadas</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">9 de 15 · Estrella o copo de nieve</span>
+    <p class="quiz__q">
+      Un esquema que normaliza las dimensiones para ahorrar espacio, a costa de más JOINs. ¿Cuál es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es la extensión de la estrella que agrega dimensiones normalizadas: menos redundancia, peor rendimiento.">El esquema copo de nieve</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La estrella es el esquema más simple: una unión por dimensión, optimizada para consultar, sin normalizar.">El esquema en estrella</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="MOLAP es un modelo de almacenamiento multidimensional, no un esquema relacional de hechos y dimensiones.">El esquema de cubo MOLAP</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">10 de 15 · MOLAP o ROLAP</span>
+    <p class="quiz__q">
+      ¿Qué diferencia a MOLAP de ROLAP?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Esa es la diferencia central: dónde se guardan los datos. MOLAP precalcula los resúmenes; ROLAP trabaja sobre tablas.">MOLAP guarda los datos en una estructura multidimensional y ROLAP en una base relacional</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es al revés: ROLAP es el relacional (SQL sobre tablas) y MOLAP el multidimensional (cubos).">MOLAP usa SQL sobre tablas relacionales y ROLAP guarda los datos en cubos precalculados</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Son modelos distintos de almacenamiento de un sistema OLAP, con ventajas y desventajas opuestas.">No hay diferencia de fondo: son dos nombres distintos para el mismo modelo de OLAP</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">11 de 15 · Inmon o Kimball</span>
+    <p class="quiz__q">
+      ¿Qué diferencia a Inmon de Kimball en el modelo de datos?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El deck lo resume así: Inmon apuesta por una estructura normalizada frente a la desnormalización de Kimball.">Inmon propone un DW normalizado y Kimball uno desnormalizado en estrella</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es al revés: Inmon usa las tres formas normales; Kimball, estrellas desnormalizadas.">Inmon propone un modelo desnormalizado y Kimball uno normalizado en 3FN</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No: coinciden en el objetivo, pero difieren en el orden (top-down o bottom-up) y en el modelo.">Los dos proponen el mismo modelo y sólo cambian el nombre de las tablas</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">12 de 15 · Qué estudia SCD</span>
+    <p class="quiz__q">
+      ¿A qué se refiere Slow Change Dimension?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Es la definición del deck: ventas y pedidos crecen todos los días; la categoría de un cliente o producto cambia despacio.">A los datos de las dimensiones, que cambian poco a poco y no son incrementales</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Al revés: los hechos son incrementales (cada día hay nuevas ventas). Lo lento son las dimensiones.">A los hechos, que se agregan muy lentamente a la tabla central del esquema</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No es de rendimiento: el nombre habla de la velocidad con la que cambian los datos de una dimensión.">A las consultas de estado que tardan mucho tiempo en devolver su resultado</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">13 de 15 · SCD tipo 1 o 2</span>
+    <p class="quiz__q">
+      ¿Qué diferencia a un SCD tipo 1 de uno tipo 2?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El tipo 1 no guarda historia ni agrega filas; el tipo 2 la guarda con Fecha_Inicio y Fecha_Fin.">El tipo 1 sobrescribe el valor y el tipo 2 agrega una fila por cada cambio</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Es al revés: añadir fila es el tipo 2; sobrescribir es el tipo 1.">El tipo 1 agrega una fila por cada cambio y el tipo 2 sobrescribe el valor</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Agregar una columna es el tipo 3 y la tabla de historia separada es el tipo 4. Los tipos 1 y 2 son sobrescribir y añadir fila.">El tipo 1 agrega una columna nueva y el tipo 2 una tabla de historia aparte</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">14 de 15 · CRM o ERP</span>
+    <p class="quiz__q">
+      Un software que centraliza todas las interacciones con los clientes para mejorar su satisfacción y retención. ¿Qué es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El CRM centraliza las interacciones con clientes, partners y stakeholders. Su objetivo es la mejor experiencia de cliente.">Un CRM</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El ERP gestiona procesos organizacionales, sobre todo financieros: cuentas a pagar, facturas, planificación.">Un ERP</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El ODS es un área provisional de un DW; no es un software de relación con clientes.">Un ODS</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">15 de 15 · Un rasgo del OLTP</span>
+    <p class="quiz__q">
+      ¿Cuál de estos NO es una característica de un sistema OLTP?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Eso es OLAP. El OLTP procesa transacciones simples, no análisis de grandes volúmenes.">Leer grandes volúmenes de datos para extraer tendencias de ventas</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí lo es: el OLTP admite un procesamiento rápido, con tiempos de respuesta calculados en milisegundos.">Responder a cada transacción con tiempos calculados en milisegundos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sí lo es: el OLTP permanece disponible 24/7, con copias de seguridad incrementales constantes.">Permanecer disponible las 24 horas del día, los 7 días de la semana</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Decks <code>raw/Intro Datawarehouse .pptx</code> y <code>raw/Slow Change Dimension.pptx</code>,
+      a través de las lecciones <a href="0049-oltp-olap-y-data-warehouse.html">0049</a>,
+      <a href="0050-componentes-de-un-dw.html">0050</a>, <a href="0051-modelo-estrella-y-copo-de-nieve.html">0051</a>
+      y <a href="0052-slow-change-dimension.html">0052</a>. Las preguntas son propias, con la
+      forma que el docente describió; no son del examen.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Las que falles, anotalas y pasámelas: armo una lista de tus
+      confusiones y las repasamos juntos.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0052-slow-change-dimension.html">Anterior: 0052 · Slow Change Dimension</a>
+    <a href="0054-conjuntos-en-sql.html">Siguiente: 0054 · Conjuntos en SQL</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+    <a href="../suite/index.html#simulacro">Simulacro de la suite</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

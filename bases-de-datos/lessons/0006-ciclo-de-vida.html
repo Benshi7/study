@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 6 · El ciclo de vida de una base de datos</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 06 · Unidad 1 · Sistemas de Gestión de Base de Datos</p>
+    <h1 class="masthead__title">El ciclo de vida de una base de datos</h1>
+    <p class="masthead__standfirst">
+      Cuatro etapas, en círculo. Es la pregunta 1 de un parcial tomado, y se pide
+      <b>graficar y explicar</b>: el dibujo vale tanto como el texto.
+    </p>
+    <p class="masthead__meta">
+      <span>~8 minutos</span>
+      <span>Clase 1, slides 19–20</span>
+      <span>Cae en el parcial</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Cómo viene la pregunta</h2>
+
+  <p>
+    Textual, del parcial en <code>raw/Examen1.webp</code>:
+  </p>
+
+  <blockquote class="callout">
+    "1) Grafique y explique que es Ciclo de Vida de un Sistema de información."
+  </blockquote>
+
+  <p>
+    Dos verbos, dos entregables. <b>Graficar</b> es el círculo de cuatro etapas.
+    <b>Explicar</b> es una línea por etapa más una frase sobre por qué es un ciclo y no
+    una lista. Si hacés sólo una de las dos cosas, te falta la mitad del punto.
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/ciclo-de-vida-bd.svg"
+         alt="Anillo dividido en cuatro cuartos recorridos en sentido horario: Análisis (requerimientos, objetivos), Diseño (conceptual, lógico, físico), Implementación (pruebas y mantenimiento) y Captura (generación de datos, calidad de datos). Desde Captura la flecha vuelve a Análisis.">
+    <figcaption>
+      <b>El ciclo tal como lo da la cátedra</b> (Clase 1, slide 19).
+      Fijate en lo que NO tiene: no tiene principio marcado ni final. Es un anillo cerrado.
+      Ese detalle es la mitad de la respuesta.
+    </figcaption>
+  </figure>
+
+  <h2><span class="num">02</span>Las cuatro etapas</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Etapa</th><th>Qué produce</th><th>Cómo lo dice la cátedra</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Análisis</b></td>
+          <td>Requerimientos y objetivos.</td>
+          <td>"Plantea la definición de objetivos y genera una especificación de requerimientos <b>en base a las necesidades de la organización</b>."</td>
+        </tr>
+        <tr>
+          <td><b>Diseño</b><br><i>y modelamiento de datos</i></td>
+          <td>Conceptual → lógico → físico.</td>
+          <td>"Se definen en forma creciente <b>en términos de especificidad</b> los elementos que constituirán el sistema de información. Esta etapa define los <b>objetos (entidades)</b> que deben ser utilizados."</td>
+        </tr>
+        <tr>
+          <td><b>Implementación</b></td>
+          <td>Elección del motor, pruebas, mantenimiento.</td>
+          <td>"Según los objetivos a realizar y los objetos definidos en la etapa previa darán paso a la <b>selección de la base de datos y metodología</b> a implementar."</td>
+        </tr>
+        <tr>
+          <td><b>Captura</b><br><i>y operación</i></td>
+          <td>Generación de datos y calidad de datos.</td>
+          <td>"Involucra a los <b>usuarios finales</b> accediéndola constantemente, y a los <b>desarrolladores</b> realizando programas que permitan mantenerla actualizada y responder a nuevos requerimientos."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">La palabra que tenés que soltar: especificidad</span>
+    <p>
+      La etapa de Diseño se abre en <b>conceptual → lógico → físico</b>, y no es un capricho
+      de la cátedra: es el mismo recorrido de los
+      <a href="0003-tres-niveles.html">tres niveles</a> y es exactamente lo que vas a hacer
+      en el DER. Cada paso agrega especificidad y le saca generalidad:
+      el conceptual no sabe qué motor vas a usar, el físico ya sabe hasta el índice.
+    </p>
+    <p>
+      Si en la respuesta escribís esos tres sub-pasos dentro de Diseño, mostrás que
+      entendiste el ciclo entero, no que memorizaste cuatro palabras.
+    </p>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">El error que va a cometer medio curso</span>
+    <p>
+      Buscás "ciclo de vida" y te aparece el de <b>ingeniería de software</b>:
+      <i>análisis de requerimientos → diseño → implementación → testing y validación →
+      despliegue → mantenimiento</i>, en línea, con una flecha de vuelta rotulada
+      "nuevas necesidades". <b>Ése no es el que se toma.</b>
+    </p>
+    <p>
+      Tres diferencias que te delatan si dibujás el equivocado:
+    </p>
+    <ul>
+      <li>El de software tiene <b>seis</b> etapas; el de la cátedra tiene <b>cuatro</b>.</li>
+      <li>El de software es <b>lineal</b> con un retorno; el de la cátedra es un
+        <b>anillo</b>, sin principio ni fin marcados.</li>
+      <li>El de software no abre Diseño en conceptual/lógico/físico, y <b>no tiene Captura</b> —
+        que es justo la etapa que existe porque estamos hablando de <em class="term">datos</em>,
+        no de código.</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">03</span>Por qué es un ciclo, y no una lista</h2>
+
+  <p>
+    Acá está el punto conceptual, y es el que separa la respuesta de 6 de la de 9.
+    Un proyecto de software se termina. Una base de datos <b>no se termina</b>: entra en
+    producción y ahí recién empieza a vivir.
+  </p>
+
+  <p>
+    La etapa de Captura es la que cierra el anillo. Mientras los usuarios finales cargan y
+    consultan datos, pasan dos cosas al mismo tiempo:
+  </p>
+
+  <ul>
+    <li><b>Aparecen requerimientos nuevos.</b> La organización cambia, y el modelo que
+      servía deja de servir. Eso reabre el Análisis.</li>
+    <li><b>Aparecen problemas de calidad de datos.</b> Duplicados, campos que la gente usa
+      para algo distinto de lo que se pensó, nulos donde no debería haberlos. Eso reabre
+      el Diseño.</li>
+  </ul>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Cómo lo encadena el docente</span>
+    <p>
+      La slide 20 dice que Operación y Captura "requieren de la utilización del
+      <b>DBMS</b>, especialmente en las tareas de <b>definición y manipulación</b> de la
+      Base de Datos". Traducido: el ciclo de vida se conecta con el
+      <a href="0002-el-dbms.html">DBMS</a> y con DDL/DML.
+      Si la pregunta 1 y la pregunta 4 del parcial (capacidades del DBMS) caen juntas,
+      es porque en la Clase 1 vienen juntas.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>La respuesta, tal como la escribirías</h2>
+
+  <p>
+    Una hoja, sin apuro. Primero el dibujo — círculo, cuatro cuartos, flechas en sentido
+    horario, los nombres adentro o al lado. Después el texto:
+  </p>
+
+  <blockquote class="callout">
+    <p>
+      El ciclo de vida es la secuencia de etapas por las que atraviesa una base de datos
+      desde que se detecta la necesidad hasta que está en operación, y que <b>se repite</b>,
+      porque la operación genera nuevas necesidades.
+    </p>
+    <p>
+      <b>Análisis:</b> se definen objetivos y se releva una especificación de requerimientos
+      según las necesidades de la organización.
+      <b>Diseño y modelamiento:</b> se definen los objetos o entidades del sistema, con
+      especificidad creciente — conceptual, lógico y físico.
+      <b>Implementación:</b> se selecciona el motor y la metodología, se construye, se prueba
+      y se mantiene.
+      <b>Captura y operación:</b> los usuarios finales usan la base y los desarrolladores la
+      mantienen actualizada; acá importan la generación y la calidad de los datos.
+    </p>
+    <p>
+      Desde la operación surgen requerimientos nuevos que vuelven a abrir el análisis:
+      por eso se grafica como un ciclo cerrado y no como una lista.
+    </p>
+  </blockquote>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Identificar el correcto</span>
+    <p class="quiz__q">
+      En el parcial dibujás un diagrama lineal de seis cajas que termina en
+      <i>Despliegue → Mantenimiento</i>, con una flecha de retorno. ¿Qué pasa?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Ése es el ciclo de vida del SOFTWARE, no el de la base de datos que dio la cátedra. Le faltan las dos marcas propias del de BD: la etapa de Captura y la apertura de Diseño en conceptual, lógico y físico.">Es el ciclo de vida del software, no el de la cátedra</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No es lo mismo dicho de otra forma. El de la cátedra tiene cuatro etapas y una de ellas — Captura — no existe en el de software, justamente porque acá el producto son datos que se siguen cargando, no un binario que se despliega.">Es lo mismo, sólo que con más detalle</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No alcanza con que sea circular. El problema no es la forma sino el contenido: etapas distintas, y falta Captura.">Sirve igual: lo importante es la flecha de retorno</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Qué etapa es</span>
+    <p class="quiz__q">
+      Estás decidiendo si el modelo va a PostgreSQL o a SQL Server, y con qué metodología se
+      va a cargar. ¿En qué etapa estás?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Implementación. La cátedra la define exactamente así: 'darán paso a la selección de la base de datos y metodología a implementar'. La elección del motor NO es diseño conceptual — el conceptual es agnóstico del producto.">Implementación</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No: el diseño define los objetos y entidades, y su parte física define estructuras de almacenamiento, pero elegir el producto concreto y la metodología de carga ya es implementación según la definición del docente.">Diseño</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Captura es la operación: usuarios finales cargando y consultando, desarrolladores manteniendo. Para llegar ahí el motor ya tiene que estar elegido.">Captura</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Por qué cierra</span>
+    <p class="quiz__q">
+      ¿Qué justifica dibujarlo como círculo en vez de como lista?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Exacto. La operación produce dos cosas que reabren el ciclo: requerimientos nuevos, porque la organización cambia, y problemas de calidad de datos. Por eso no hay una etapa final.">Que la operación genera requerimientos nuevos y vuelve a abrir el análisis</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Las etapas sí tienen un orden y se recorren en un sentido. Que sea circular no significa que dé lo mismo por dónde empezar: significa que después de la última se vuelve a la primera.">Que las cuatro etapas se pueden hacer en cualquier orden</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="No es una cuestión de dibujo. Es conceptual: si lo dibujás como lista estás afirmando que la base de datos se termina en algún momento, y no se termina.">Que queda más prolijo en la hoja</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b><code>raw/Clase 1  Udeci.pptx</code>, slides 19 y 20.</b> La slide 19 tiene el
+      gráfico del anillo; la slide 20 tiene el texto de las cuatro etapas, que es el que está
+      citado entre comillas en esta lección. El mismo contenido está en
+      <code>raw/Material_Examen/unidad 1.pdf</code>, p. 5.
+    </p>
+    <p>
+      El gráfico original de la cátedra, extraído del pptx, está en
+      <code>assets/diagrams/ciclo-de-vida-bd-catedra.png</code> — miralo una vez para
+      quedarte con la forma, y después dibujalo de memoria.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Dibujá el círculo en una hoja sin mirar y escribí las cuatro
+      etapas con una línea cada una. Pasámelo y te lo corrijo con criterio de parcial:
+      lo que miro es si aparecen <i>especificidad creciente</i>, <i>conceptual/lógico/físico</i>
+      y el cierre del ciclo.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0005-claves-e-integridad.html">Anterior: 0005</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <span>Siguiente: 0007 · Modelo de datos y entidad</span>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

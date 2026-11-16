@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 2 · El DBMS por dentro</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 02 · Unidad 1 · Sistemas de Gestión de Base de Datos</p>
+    <h1 class="masthead__title">El DBMS por dentro: qué hace y quién lo usa</h1>
+    <p class="masthead__standfirst">
+      Base de datos y DBMS no son lo mismo, y en un parcial eso se nota enseguida.
+      Uno son los datos; el otro es el software que los gobierna.
+    </p>
+    <p class="masthead__meta">
+      <span>~8 minutos</span>
+      <span>Elmasri &amp; Navathe, cap. 1</span>
+      <span>Clase 1 de la cátedra</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>La definición, y las cuatro funciones</h2>
+
+  <blockquote class="callout">
+    "Un sistema de administración de datos (DBMS) es una colección de programas que permite
+    a los usuarios crear y mantener una base de datos. El DBMS es un sistema de software de
+    propósito general que facilita los procesos de definición, construcción, manipulación y
+    compartición de bases de datos entre varios usuarios y aplicaciones."
+  </blockquote>
+
+  <p>
+    Esas cuatro palabras del final son la respuesta completa a "¿qué hace un DBMS?".
+    Memorizalas por lo que significan, no por la lista:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Función</th><th>En qué consiste</th><th>Con qué se hace</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Definir</b></td>
+          <td>Especificar tipos de datos, estructuras y restricciones.</td>
+          <td>DDL — <code>CREATE TABLE</code></td>
+        </tr>
+        <tr>
+          <td><b>Construir</b></td>
+          <td>Almacenar los datos en un medio controlado por el DBMS.</td>
+          <td>Carga inicial, <code>INSERT</code></td>
+        </tr>
+        <tr>
+          <td><b>Manipular</b></td>
+          <td>Consultar, actualizar para reflejar cambios del minimundo, generar informes.</td>
+          <td>DML — <code>SELECT</code>, <code>UPDATE</code></td>
+        </tr>
+        <tr>
+          <td><b>Compartir</b></td>
+          <td>Permitir que varios usuarios y programas accedan <b>a la vez</b>.</td>
+          <td>Transacciones, bloqueos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Y hay dos funciones más que Elmasri agrega aparte, porque no son de uso diario sino de
+    supervivencia: <b>protección</b> (contra caídas de hardware o software, y contra accesos
+    no autorizados) y <b>mantenimiento</b> a lo largo de un ciclo de vida que puede durar
+    años, dejando evolucionar el sistema cuando cambian los requisitos.
+  </p>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Error de definición</span>
+    <p>
+      "Una base de datos es un programa donde guardo información" es <b>falso</b>, y es la
+      respuesta que más se escribe en los parciales. La base de datos son
+      <b>los datos</b>. El DBMS es <b>el software</b>. Al conjunto de los dos —
+      más las aplicaciones que los usan — se lo llama <em class="term">sistema de bases de datos</em>.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>El catálogo: por qué el DBMS es autodescriptivo</h2>
+
+  <p>
+    Esta es la característica que de verdad separa un DBMS de un montón de archivos, y la
+    que menos se entiende. Un sistema de bases de datos no contiene sólo la base:
+    contiene además <b>una descripción completa de su propia estructura</b>.
+  </p>
+
+  <p>
+    Esa descripción vive en el <em class="term">catálogo</em>, y su contenido se llama
+    <em class="term">metadatos</em>: qué tablas hay, qué columnas tiene cada una, de qué
+    tipo, con qué restricciones.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Por qué importa</span>
+    <p>
+      El software del DBMS <b>no fue escrito para tu base</b>. Es de propósito general:
+      el mismo Oracle corre la base de una universidad, la de un banco y la de una farmacia.
+      Puede hacerlo porque, cada vez que necesita saber algo sobre la estructura, lo
+      <b>consulta en el catálogo</b> en lugar de tenerlo escrito adentro.
+    </p>
+  </div>
+
+  <p>
+    Compará con el mundo de archivos: ahí la estructura del archivo — y en el caso extremo
+    hasta la posición exacta de un campo dentro del registro — está codificada dentro de
+    cada programa que lo abre. De ahí sale la propiedad que da nombre a la siguiente clase:
+    la <em class="term">independencia programa–datos</em>.
+  </p>
+
+  <h2><span class="num">03</span>Las cuatro características del enfoque de bases de datos</h2>
+
+  <p>
+    Elmasri las lista juntas, y es una lista que se pregunta tal cual. Tres de las cuatro
+    ya aparecieron; la tercera es la que se desarrolla en la <a href="0003-tres-niveles.html">lección 3</a>.
+  </p>
+
+  <ol>
+    <li><b>Naturaleza autodescriptiva</b> — el catálogo y los metadatos.</li>
+    <li><b>Aislamiento entre programas y datos, y abstracción de datos.</b></li>
+    <li><b>Soporte de varias vistas de los datos</b> — cada grupo de usuarios ve su recorte.</li>
+    <li><b>Compartición de datos y procesamiento de transacciones multiusuario.</b></li>
+  </ol>
+
+  <h2><span class="num">04</span>Quiénes usan la base</h2>
+
+  <p>
+    El temario pide "usuarios de la base de datos" como tema propio. No es relleno: cada
+    tipo de usuario justifica una parte distinta del sistema.
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Usuario</th><th>Qué hace</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>DBA</b> (administrador)</td>
+            <td>Autoriza accesos, controla el uso, consigue recursos, atiende el rendimiento y la seguridad. Es quien responde cuando la base se cae.</td></tr>
+        <tr><td><b>Diseñador</b></td>
+            <td>Releva requisitos con los usuarios, identifica los datos y elige las estructuras. Es el rol que estás aprendiendo a ocupar en la Unidad 2.</td></tr>
+        <tr><td><b>Usuario final</b></td>
+            <td>Consulta y actualiza. Se subdivide en <b>casuales</b> (consultas distintas cada vez), <b>paramétricos</b> (siempre la misma operación, por ejemplo un cajero) y <b>sofisticados</b> (analistas, que escriben sus propias consultas complejas).</td></tr>
+        <tr><td><b>Analista de sistemas y programador</b></td>
+            <td>Construye las aplicaciones que hablan con el DBMS.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 2 · El catálogo</span>
+    <p class="quiz__q">
+      ¿Qué guarda el catálogo del DBMS?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Exacto: metadatos. La descripción de la estructura — tablas, columnas, tipos, restricciones — no los datos en sí. Es lo que permite que un DBMS de propósito general trabaje con cualquier base sin haber sido escrito para ella.">La descripción de la base, no sus datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Los datos de las tablas están en la base de datos almacenada, no en el catálogo. El catálogo guarda la descripción: qué tablas hay, qué columnas, de qué tipo, con qué restricciones.">Los datos de la base, ya indexados</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El registro de operaciones es el log de transacciones, que es otra cosa y se ve en la Unidad 6. El catálogo guarda metadatos: la descripción de la estructura.">El registro de las operaciones hechas</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 2 · Funciones</span>
+    <p class="quiz__q">
+      Un cajero de banco cobra una cuota mientras, en la misma sucursal, otro cajero cobra
+      otra. ¿Qué función del DBMS está en juego?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Compartición: varios usuarios y programas accediendo simultáneamente. Es la función que obliga a todo el aparato de transacciones y bloqueos de la Unidad 6. Sin ella, un DBMS sería un archivo con mejores modales.">Compartición entre usuarios simultáneos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Manipular es consultar y actualizar, y sí está pasando. Pero lo que hace difícil este caso no es la actualización: es que ocurran DOS a la vez sobre los mismos datos. Eso es compartición.">Manipulación de los datos guardados</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Construir es el proceso de almacenar los datos en el medio controlado por el DBMS, típicamente la carga. Acá el problema es la simultaneidad de dos operaciones.">Construcción de la base sobre disco</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 1.1 (definición de DBMS, pág. 5),
+      sección 1.3 (las cuatro características, pág. 9 a 13) y sección 1.4
+      ("Actores en escena", los usuarios).
+      En el PDF de <code>raw/</code>: páginas 31, 35 a 39 y siguientes.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si querés que te arme una pregunta de parcial sobre esto
+      para ver si lo podés responder por escrito, pedímelo.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0001-que-resuelve-una-base-de-datos.html">Anterior: 0001</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0003-tres-niveles.html">Siguiente: 0003 · Los tres niveles</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

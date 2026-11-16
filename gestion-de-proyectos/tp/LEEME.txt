@@ -1,0 +1,34 @@
+TP CASCADA - CARPETA DEL EQUIPO
+Modernización del Mapa Interactivo de la Ciudad (GCBA)
+Taller de Gestión de Proyectos Digitales - UNICABA 2026
+
+QUÉ ES
+Material compartido para escribir el TP entre todos: guías por sección, decisiones para votar y tablero de avance.
+Entrega: 14/10/2026. Defensa oral: 18/11/2026.
+
+CÓMO ABRIRLO
+1. Descomprimir el zip completo (no abrirlo desde adentro del zip).
+2. Doble clic en index.html. Funciona sin internet, sin cuentas y sin instalar nada.
+   Las tipografías se cargan online; sin conexión se ven con las del sistema.
+
+CÓMO VOTAR
+1. Abrir decisiones.html, escribir el nombre y elegir una opción por decisión (el motivo es opcional).
+2. Tocar "Copiar mis votos" y pegar el mensaje en el grupo. El código empieza con TPV1.
+3. Para ver el resultado, pegar en "Recuento" los códigos que llegaron al grupo.
+   Si alguien votó más de una vez, cuenta el voto más reciente.
+4. "Exportar decisiones cerradas" genera el texto para pegar en el documento del TP.
+
+AVANCE
+En avance.html cada persona marca estado, responsable y revisor de cada sección.
+"Copiar estado" genera un código (empieza con TPS1.) para el grupo; "Integrar estado" mezcla el de otra persona
+con el propio: por sección gana la edición más reciente.
+
+DÓNDE SE GUARDAN LOS DATOS
+Solo en el navegador de cada persona. Si se borra el historial del navegador, se pierden.
+Algunos navegadores guardan por archivo o por carpeta: abrir siempre desde la misma carpeta y con el mismo navegador.
+Por las dudas, pegar en el grupo el código de votos y el de estado.
+
+ACTUALIZAR
+Cuando alguien comparta una versión nueva (por ejemplo, con decisiones nuevas), reemplazar la carpeta completa.
+Los votos ya emitidos siguen valiendo mientras las decisiones conserven su identificador (id).
+Los links atenuados apuntan a material de la copia completa (PDFs de la cátedra) y no funcionan en esta carpeta.

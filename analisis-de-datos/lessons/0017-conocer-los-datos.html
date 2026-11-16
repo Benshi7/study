@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conocer los datos</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0017 · Bloque 4: EDA</div>
+
+<div class="kicker">Lección 0017 · Notebooks 0 y 1</div>
+<h1>La primera mirada: estructura, faltantes y <code>describe()</code></h1>
+<p class="lede">Los dos notebooks introductorios, con las salidas reales de <code>sample_dataset.csv</code>. Al terminar respondés las tres preguntas del notebook 0: <em>¿cuántos datos tenemos, de qué tipo son y qué tan completos están?</em></p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>De la <a href="0011-pandas-y-matplotlib.html">lección 0011</a>: ¿qué devuelve <code>df.shape</code>? ¿Y <code>df.isna().sum()</code>?</p>
+</div>
+
+<h2>El dataset</h2>
+<p><strong>Breast Cancer Wisconsin (Diagnostic)</strong>. Cada fila es una muestra de una masa mamaria obtenida por punción. Sobre la imagen se miden <strong>10 características de los núcleos</strong> de las células (radio, textura, perímetro, área, suavidad, compacidad, concavidad, puntos cóncavos, simetría, dimensión fractal), y cada una aparece tres veces:</p>
+<ul>
+  <li><code>mean …</code>: el promedio de todos los núcleos de la imagen.</li>
+  <li><code>… error</code>: el error estándar de esa medida.</li>
+  <li><code>worst …</code>: el promedio de los 3 núcleos "peores" (más grandes).</li>
+</ul>
+<p>10 × 3 = 30 columnas, más <code>target</code>: <strong>0 = maligno, 1 = benigno</strong>. La versión de clase está <strong>ensuciada a propósito</strong>: tiene faltantes y la columna <code>area error</code> convertida en texto.</p>
+
+<h2>Notebook 0: los comandos y lo que devuelven</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Código</th><th>Qué hace</th><th>Salida real</th></tr>
+  <tr><td><code>pd.read_csv("sample_dataset.csv")</code></td><td>Carga el CSV en un DataFrame</td><td>Si da <code>FileNotFoundError</code>, el archivo no está subido en el panel <em>Archivos</em> de Colab</td></tr>
+  <tr><td><code>df.head()</code> / <code>head(20)</code></td><td>Primeras 5 (o 20) filas</td><td>Se ven <code>NaN</code>, 31 columnas y escalas muy distintas</td></tr>
+  <tr><td><code>df.dtypes</code> <span class="muted">(atributo)</span></td><td>Tipo de cada columna</td><td>29 <code>float64</code>, 1 <code>int64</code> (<code>target</code>), 1 <code>object</code> (<code>area error</code>)</td></tr>
+  <tr><td><code>df['area error'].unique()</code></td><td>Valores distintos, <strong>incluido NaN</strong></td><td><code>['A', nan, 'B', 'C']</code></td></tr>
+  <tr><td><code>.nunique()</code></td><td>Cuenta los distintos <strong>sin</strong> NaN</td><td>3</td></tr>
+  <tr><td><code>.value_counts(dropna=False)</code></td><td>Frecuencia de cada valor, contando NaN</td><td>A 489 · NaN 75 · B 4 · C 1</td></tr>
+  <tr><td><code>df.info()</code></td><td>Filas, columnas, no nulos y tipo, todo junto</td><td>569 entries; cada columna con menos de 569 non-null tiene faltantes</td></tr>
+  <tr><td><code>df.shape</code> <span class="muted">(atributo)</span></td><td>(filas, columnas)</td><td><strong>(569, 31)</strong></td></tr>
+  <tr><td><code>df.isna().sum()</code></td><td>Faltantes por columna (True = 1)</td><td>Entre 0 (<code>target</code>) y 190</td></tr>
+  <tr><td><code>df.isna().sum() / df.shape[0]</code></td><td>Proporción de faltantes (atajo: <code>df.isna().mean()</code>)</td><td>De ~10% (<code>mean perimeter</code>) a ~33% (<code>concavity error</code>)</td></tr>
+  <tr><td><code>….sort_values().plot(kind="bar")</code></td><td>Ordena y grafica en barras</td><td>Gráfico de % de faltantes por columna</td></tr>
+  <tr><td><code>df.dropna().shape</code></td><td>Elimina las filas con al menos un NaN</td><td><strong>(0, 31)</strong>: no queda ninguna</td></tr>
+</table>
+</div>
+
+<div class="box trap">
+  <span class="label">Por qué <code>dropna()</code> deja 0 filas</span>
+  <p>Ninguna columna supera el 33% de faltantes, pero para sobrevivir una fila tiene que estar completa en las 30 columnas <em>a la vez</em>. Si los faltantes están repartidos al azar, la probabilidad es el producto: con los porcentajes reales da ≈ <strong>0,13%</strong>, o sea menos de una fila esperada sobre 569. Moraleja: <strong>eliminar filas con faltantes no siempre es una opción</strong>. Por eso existen corregir e imputar.</p>
+</div>
+
+<h2>Notebook 1: estadística descriptiva</h2>
+<p><code>df.describe()</code> resume cada columna <strong>numérica</strong> (ignora <code>area error</code>, que es texto) y <strong>no cuenta los NaN</strong>. Por eso <code>count</code> cambia de columna a columna. Con <code>.T</code> la tabla se transpone: cada variable pasa a ser una fila, mucho más legible con 30 columnas.</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Variable</th><th>count</th><th>mean</th><th>std</th><th>min</th><th>25%</th><th>50%</th><th>75%</th><th>max</th></tr>
+  <tr><td>mean radius</td><td>482</td><td>14,06</td><td>3,50</td><td>6,98</td><td>11,67</td><td>13,28</td><td>15,75</td><td>28,11</td></tr>
+  <tr><td>mean area</td><td>403</td><td>661,52</td><td>356,67</td><td>143,5</td><td>428,1</td><td>556,7</td><td>796,0</td><td>2501,0</td></tr>
+  <tr><td>mean smoothness</td><td>384</td><td>0,097</td><td>0,015</td><td>0,053</td><td>0,087</td><td>0,097</td><td>0,107</td><td>0,163</td></tr>
+</table>
+</div>
+
+<p>Tres lecturas rápidas, que vuelven en el notebook 8:</p>
+<ol>
+  <li><strong>count &lt; 569</strong> → hay faltantes.</li>
+  <li><strong>media vs mediana (50%)</strong>: en <code>mean area</code> la media (661,5) supera bastante a la mediana (556,7), así que hay una cola de valores altos (asimetría positiva). En <code>mean smoothness</code> son casi iguales: es aproximadamente simétrica.</li>
+  <li><strong>max vs 75%</strong>: en <code>mean area</code> el 75% de las muestras está por debajo de 796, pero el máximo es 2501. Hay valores extremos (los vas a ver como outliers en la <a href="0019-boxplots-y-outliers.html">0019</a>).</li>
+</ol>
+
+<div class="table-wrap">
+<table>
+  <tr><th>Código</th><th>Para qué</th></tr>
+  <tr><td><code>df[["a", "b"]].agg(["mean", "median"])</code></td><td>Comparar media y mediana de varias columnas a la vez</td></tr>
+  <tr><td><code>describe(percentiles=[.05, .25, .5, .75, .95])</code></td><td>Agregar P5 y P95. Si el mín o el máx quedan muy lejos, hay valores extremos</td></tr>
+  <tr><td><code>describe(include=["object", "category"])</code></td><td>Resumen de categóricas: <strong>count</strong> 494 · <strong>unique</strong> 3 · <strong>top</strong> A · <strong>freq</strong> 489</td></tr>
+  <tr><td><code>df["target"].value_counts(normalize=True)</code></td><td>Balance de clases: <strong>62,7% benigno (357) · 37,3% maligno (212)</strong></td></tr>
+</table>
+</div>
+
+<h2>Respuestas guía</h2>
+<p class="muted">Intentá contestarlas en clase antes de abrir cada una.</p>
+
+<details class="answers"><summary>¿Qué significan A, B y C en <code>area error</code>?</summary>
+<p>No se sabe: en el dataset original es numérica, como las demás <code>… error</code>. La versión de clase la modificó para practicar un <strong>tipo de dato incorrecto / valores inconsistentes</strong>. Además es casi constante: 489 de 494 valores no nulos son A, así que no aporta información para diferenciar diagnósticos. En la vida real: preguntar a quien generó el dato antes de decidir.</p>
+</details>
+
+<details class="answers"><summary>¿Cómo leemos el gráfico de % de faltantes?</summary>
+<p><code>target</code> tiene 0% faltantes (bien: es lo que queremos explicar). El resto va de ~10% a ~33%. Las peores (<code>concavity error</code>, <code>perimeter error</code>, <code>mean concave points</code>) tienen un tercio de las filas vacías. Por ahora no se trata, se mide.</p>
+</details>
+
+<details class="answers"><summary>Para pensar (notebook 1): si 489 de 494 son "A", ¿sirve la variable?</summary>
+<p>Muy poco: una variable casi constante no ayuda a distinguir grupos. ydata-profiling la marca con la alerta <code>Imbalance</code> (<a href="0021-eda-automatico-y-practica.html">lección 0021</a>).</p>
+</details>
+
+<details class="answers"><summary>¿Están balanceadas las clases?</summary>
+<p>No del todo: 63% benigno y 37% maligno. No es un desbalance extremo, pero hay que tenerlo en cuenta al comparar grupos. Por ejemplo, un histograma de benignos va a tener barras más altas solo porque hay más casos.</p>
+</details>
+
+<h2>Práctica</h2>
+<div class="quiz" data-quiz-id="0017-conocer-los-datos"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Qué devuelve <code>df.shape</code> en <code>sample_dataset.csv</code>?",
+   "options": ["(569, 31)", "(31, 569)", "(569, 30)", "(482, 31)"], "answer": 0,
+   "why": "569 filas (muestras) y 31 columnas (30 características + target). Es un atributo: va sin paréntesis."},
+  {"q": "¿Cuál de estos se escribe <strong>sin</strong> paréntesis porque es un atributo?",
+   "options": ["df.dtypes", "df.info", "df.describe", "df.head"], "answer": 0,
+   "why": "<code>dtypes</code> y <code>shape</code> son atributos. <code>info()</code>, <code>describe()</code> y <code>head()</code> son métodos."},
+  {"q": "En <code>area error</code> hay A, B, C y NaN. ¿Qué devuelve <code>nunique()</code>?",
+   "options": ["3", "4", "494", "569"], "answer": 0,
+   "why": "<code>nunique()</code> no cuenta el NaN. <code>unique()</code>, en cambio, lo muestra como un valor más."},
+  {"q": "Por defecto, ¿<code>value_counts()</code> cuenta los NaN?",
+   "options": ["No, hace falta dropna=False", "Sí, siempre los incluye primero", "Solo en columnas numéricas", "Solo si se usa normalize=True"], "answer": 0,
+   "why": "Hay que pasarle <code>dropna=False</code> para incluir los faltantes."},
+  {"q": "¿Por qué el <code>count</code> de <code>describe()</code> varía entre columnas?",
+   "options": ["Porque no cuenta los NaN", "Porque descarta los outliers", "Porque redondea los decimales", "Porque ordena las columnas"], "answer": 0,
+   "why": "count = valores no nulos de cada columna. <code>mean radius</code> tiene 482 sobre 569."},
+  {"q": "<code>df.dropna().shape</code> devuelve <code>(0, 31)</code>. ¿Qué significa?",
+   "options": ["Todas las filas tienen algún NaN", "Todas las columnas están vacías", "El CSV no se pudo leer", "No hay ningún valor faltante"], "answer": 0,
+   "why": "dropna elimina las filas con al menos un faltante, y no sobrevivió ninguna."},
+  {"q": "En <code>mean area</code>, media = 661,5 y mediana = 556,7. ¿Qué sugiere?",
+   "options": ["Cola de valores altos a la derecha", "Distribución simétrica con forma de campana", "Cola de valores bajos a la izquierda", "Que la columna tiene datos duplicados"], "answer": 0,
+   "why": "Media &gt; mediana: los valores extremos altos arrastran la media. Es asimetría positiva."},
+  {"q": "¿Qué hace <code>df.describe().T</code>?",
+   "options": ["Transpone: cada variable queda en una fila", "Filtra solo las variables de tipo texto", "Calcula la correlación entre las columnas", "Elimina las filas que tienen faltantes"], "answer": 0,
+   "why": ".T transpone la tabla. Con 30 columnas se lee mucho mejor."},
+  {"q": "¿Qué devuelve <code>describe(include=[\"object\"])</code> para <code>area error</code>?",
+   "options": ["count, unique, top y freq", "mean, std, min y max", "Q1, Q2, Q3 y RIC", "skew, kurtosis, min y max"], "answer": 0,
+   "why": "Para categóricas: 494 no nulos, 3 únicos, el más frecuente (A) y su frecuencia (489)."},
+  {"q": "¿Cómo obtenés la <strong>proporción</strong> de cada clase de <code>target</code>?",
+   "options": ["value_counts(normalize=True)", "value_counts(dropna=False)", "describe(include=\"all\")", "isna().sum() / shape[0]"], "answer": 0,
+   "why": "normalize=True devuelve proporciones: 0,627 benigno y 0,373 maligno."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Ejecutás la primera mirada de cualquier dataset (estructura, tipos, faltantes, descriptivos, balance) y sabés leer cada salida sin adivinar.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p>Los notebooks <code>0_CIA_INTRO_EDA</code> y <code>1_CIA_EDA</code> (en <code>material_eda/2-Notebooks Introductorios/</code>). Ejecutalos en Colab: las salidas de arriba son las que vas a ver. Documentación: <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html">pandas · DataFrame.describe</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>Si algo de la salida en Colab no coincide con esta lección (por ejemplo, <code>object</code> vs <code>str</code> según la versión de pandas), traémelo y lo vemos.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0016-el-eda-y-su-flujo.html">← 0016 · El flujo del EDA</a>
+  <a href="0018-histogramas-y-asimetria.html">0018 · Notebook 2 →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

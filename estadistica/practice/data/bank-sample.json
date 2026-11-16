@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sample-descriptiva-01", "topic": "descriptiva", "kind": "numeric", "difficulty": 1, "source": "sample",
+    "stem": "Se midieron cinco tiempos de entrega (en horas): 4, 8, 6, 5, 7. ¿Cuál es el coeficiente de variación (usando el desvío muestral)?",
+    "options": ["26,4 %", "23,6 %", "3,8 %", "1,6 %", "39,5 %"], "answer": 0,
+    "steps": [
+      {"label": "Media", "text": "x̄ = (4 + 8 + 6 + 5 + 7)/5 = 6.", "formula": "x̄ = Σx / n", "calc": "MENU 6 Statistics → 1-Variable → cargar los 5 datos → OPTN → 1-Variable Calc → x̄ = 6"},
+      {"label": "Desvío muestral", "text": "s = √(10/4) = 1,5811.", "formula": "s = √(Σ(x − x̄)² / (n − 1))", "calc": "En la misma pantalla: sx = 1,5811"},
+      {"label": "Coeficiente de variación", "text": "CV = s / x̄ = 1,5811 / 6 = 0,2635 → 26,4 %.", "formula": "CV = s / x̄ · 100", "calc": "1,5811 ÷ 6 × 100 = 26,35"}
+    ],
+    "why": "El CV relaciona el desvío con la media: 1,5811 / 6 = 26,4 %. Con el criterio de la cátedra (CV > 20 %) es una muestra heterogénea.",
+    "traps": ["", "Usaste el desvío poblacional (÷ n) en vez del muestral (÷ n − 1): 1,4142 / 6 = 23,6 %.", "Invertiste el cociente: x̄ / s = 3,8.", "Te quedaste con s sin dividir por la media.", "Dividiste s por el rango (4) en vez de por la media."]
+  },
+  {
+    "id": "sample-binomial-01", "topic": "binomial", "kind": "numeric", "difficulty": 1, "source": "sample",
+    "stem": "El 30 % de las piezas de un lote son defectuosas. Se inspeccionan 10 piezas independientes. ¿Cuál es la probabilidad de encontrar a lo sumo 2 defectuosas?",
+    "options": ["0,3828", "0,2335", "0,1493", "0,6172", "0,6496"], "answer": 0,
+    "steps": [
+      {"label": "Distribución", "text": "X ~ Binomial(n = 10, p = 0,3).", "formula": "X ~ Bin(10; 0,3)"},
+      {"label": "Evento", "text": "\"A lo sumo 2\" es P(X ≤ 2), justo lo que entrega la acumulada.", "formula": "P(X ≤ 2) = CD(2)"},
+      {"label": "Cálculo", "text": "P(X ≤ 2) = 0,3828.", "calc": "MENU 7 → ▼ 1 Binomial CD → Variable → x = 2, N = 10, p = 0,3 → 0,3828"}
+    ],
+    "why": "Binomial CD devuelve P(X ≤ x): con x = 2, N = 10 y p = 0,3 da 0,3828.",
+    "traps": ["", "Calculaste P(X = 2) con Binomial PD en vez de la acumulada.", "Calculaste P(X < 2) = P(X ≤ 1): confundiste \"a lo sumo\" con \"menos de\".", "Tomaste el complemento 1 − 0,3828 (sería P(X ≥ 3)).", "Acumulaste hasta 3 en lugar de hasta 2."]
+  },
+  {
+    "id": "sample-normal-01", "topic": "normal", "kind": "numeric", "difficulty": 1, "source": "sample",
+    "stem": "El coeficiente intelectual de una población se distribuye N(μ = 100; σ = 15). ¿Cuál es la probabilidad de que una persona tenga más de 115?",
+    "options": ["0,1587", "0,8413", "0,3413", "0,0228", "0,3174"], "answer": 0,
+    "steps": [
+      {"label": "Estandarizar", "text": "z = (115 − 100) / 15 = 1.", "formula": "z = (x − μ) / σ"},
+      {"label": "Cola derecha", "text": "P(X > 115) = 1 − Φ(1) = 1 − 0,8413.", "formula": "P(Z > 1) = 1 − Φ(1)"},
+      {"label": "Resultado", "text": "0,1587.", "calc": "MENU 7 → 2 Normal CD → Lower = 115, Upper = 1E99, σ = 15, μ = 100 → 0,1587"}
+    ],
+    "why": "z = 1 y se pide la cola derecha: 1 − Φ(1) = 0,1587.",
+    "traps": ["", "Diste la cola izquierda Φ(1) y no el complemento.", "Calculaste P(0 < Z < 1) = Φ(1) − 0,5.", "Estandarizaste mal (usaste z = 2).", "Duplicaste la cola (prueba bilateral): 2 · 0,1587."]
+  },
+  {
+    "id": "sample-ic-media-01", "topic": "ic-media", "kind": "numeric", "difficulty": 2, "source": "sample",
+    "stem": "Con n = 36 observaciones se obtuvo x̄ = 50 y se sabe que σ = 12. Construí un IC del 95 % para la media poblacional.",
+    "options": ["(46,08 ; 53,92)", "(46,71 ; 53,29)", "(26,48 ; 73,52)", "(49,35 ; 50,65)", "(44,85 ; 55,15)"], "answer": 0,
+    "steps": [
+      {"label": "Error estándar", "text": "σ/√n = 12/6 = 2.", "formula": "EE = σ / √n"},
+      {"label": "Margen", "text": "E = 1,96 · 2 = 3,92.", "formula": "E = z · EE"},
+      {"label": "Intervalo", "text": "50 ± 3,92 → (46,08 ; 53,92).", "calc": "50 − 3,92 = 46,08 ; 50 + 3,92 = 53,92"}
+    ],
+    "why": "σ conocida: se usa z = 1,96 y E = 1,96 · 12/√36 = 3,92.",
+    "traps": ["", "Usaste z = 1,645 (que corresponde a 90 %).", "No dividiste σ por √n.", "Dividiste σ por n en lugar de por √n.", "Usaste z = 2,576 (que corresponde a 99 %)."]
+  },
+  {
+    "id": "sample-bayes-01", "topic": "condicional-bayes", "kind": "numeric", "difficulty": 2, "source": "sample",
+    "stem": "La máquina 1 produce el 60 % de las piezas y la máquina 2 el 40 %. El 2 % de las piezas de la máquina 1 y el 5 % de las de la máquina 2 son defectuosas. Se elige una pieza defectuosa: ¿cuál es la probabilidad de que sea de la máquina 2?",
+    "options": ["0,625", "0,400", "0,050", "0,375", "0,032"], "answer": 0,
+    "steps": [
+      {"label": "Probabilidad total", "text": "P(D) = 0,6 · 0,02 + 0,4 · 0,05 = 0,012 + 0,020 = 0,032.", "formula": "P(D) = Σ P(Mᵢ)·P(D|Mᵢ)"},
+      {"label": "Conjunta", "text": "P(M2 ∩ D) = 0,4 · 0,05 = 0,020."},
+      {"label": "Bayes", "text": "P(M2 | D) = 0,020 / 0,032 = 0,625.", "formula": "P(M2|D) = P(M2 ∩ D) / P(D)"}
+    ],
+    "why": "Es una probabilidad condicional invertida: conjunta de la rama dividida por la probabilidad total.",
+    "traps": ["", "Diste la probabilidad previa P(M2) = 0,4.", "Diste P(D | M2) = 0,05, que ya era dato.", "Calculaste P(M1 | D) = 0,375, la otra máquina.", "Diste P(D) = 0,032 (la probabilidad total)."]
+  },
+  {
+    "id": "sample-tamano-01", "topic": "tamano-muestra", "kind": "numeric", "difficulty": 2, "source": "sample",
+    "stem": "Se quiere estimar una media con 95 % de confianza y σ = 10. La amplitud total del intervalo debe ser 4. ¿Cuál es el tamaño de muestra mínimo?",
+    "options": ["97", "96", "25", "385", "10"], "answer": 0,
+    "steps": [
+      {"label": "Error máximo", "text": "Amplitud = 2E = 4, entonces E = 2.", "formula": "amplitud = 2E"},
+      {"label": "Fórmula", "text": "n = (z·σ/E)² = (1,96 · 10 / 2)² = 9,8² = 96,04.", "formula": "n = (zσ/E)²", "calc": "(1,96 × 10 ÷ 2)² = 96,04"},
+      {"label": "Redondeo", "text": "Siempre hacia arriba: n = 97."}
+    ],
+    "why": "E = 2 (la mitad de la amplitud); n = 96,04, que se redondea hacia arriba a 97.",
+    "traps": ["", "Redondeaste hacia abajo: 96,04 → 96.", "Tomaste la amplitud total (4) como E: (1,96·10/4)² ≈ 24,01 → 25.", "Tomaste E = 1.", "No elevaste al cuadrado: z·σ/E = 9,8 → 10."]
+  }
+]

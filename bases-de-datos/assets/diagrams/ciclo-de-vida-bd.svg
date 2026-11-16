@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420"
+     role="img" aria-labelledby="ciclo-vida-title ciclo-vida-desc">
+  <title id="ciclo-vida-title">Ciclo de vida de una base de datos</title>
+  <desc id="ciclo-vida-desc">Anillo dividido en cuatro cuartos que se recorren en sentido horario y vuelven al punto de partida. Arriba a la izquierda, Análisis: requerimientos y objetivos. Arriba a la derecha, Diseño: conceptual, lógico y físico. Abajo a la derecha, Implementación: pruebas y mantenimiento. Abajo a la izquierda, Captura: generación de datos y calidad de datos. Desde Captura la flecha vuelve a Análisis, porque el ciclo no termina.</desc>
+
+  <style>
+    .cy-paper { fill: #fffef9; }
+    .cy-q     { stroke: #1a1a17; stroke-width: 1; }
+    .cy-q1    { fill: rgba(26,26,23,0.05); }
+    .cy-q2    { fill: rgba(26,26,23,0.10); }
+    .cy-q3    { fill: rgba(26,26,23,0.15); }
+    .cy-q4    { fill: rgba(26,26,23,0.20); }
+    .cy-arrow { fill: #7a2e0e; }
+    .cy-name  { fill: #1a1a17; font: 600 13px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; letter-spacing: 0.04em; }
+    .cy-sub   { fill: #56544c; font: 400 10px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .cy-hub   { fill: #8a877c; font: 500 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; letter-spacing: 0.14em; }
+    .cy-acc   { fill: #7a2e0e; font: italic 11px "Iowan Old Style", Palatino, Georgia, serif; }
+
+    @media (prefers-color-scheme: dark) {
+      .cy-paper { fill: #16161a; }
+      .cy-q     { stroke: #e8e4d9; }
+      .cy-q1    { fill: rgba(232,228,217,0.05); }
+      .cy-q2    { fill: rgba(232,228,217,0.10); }
+      .cy-q3    { fill: rgba(232,228,217,0.15); }
+      .cy-q4    { fill: rgba(232,228,217,0.20); }
+      .cy-arrow { fill: #e08a5c; }
+      .cy-name  { fill: #e8e4d9; }
+      .cy-sub   { fill: #a8a498; }
+      .cy-hub   { fill: #77746a; }
+      .cy-acc   { fill: #e08a5c; }
+    }
+  </style>
+
+  <rect width="720" height="420" class="cy-paper"/>
+
+  <!-- ─── Los cuatro cuartos del anillo, en sentido horario ─── -->
+
+  <!-- Análisis · arriba a la izquierda -->
+  <path d="M 240 210 A 120 120 0 0 1 360 90 L 360 140 A 70 70 0 0 0 290 210 Z" class="cy-q cy-q1"/>
+  <!-- Diseño · arriba a la derecha -->
+  <path d="M 360 90 A 120 120 0 0 1 480 210 L 430 210 A 70 70 0 0 0 360 140 Z" class="cy-q cy-q2"/>
+  <!-- Implementación · abajo a la derecha -->
+  <path d="M 480 210 A 120 120 0 0 1 360 330 L 360 280 A 70 70 0 0 0 430 210 Z" class="cy-q cy-q3"/>
+  <!-- Captura · abajo a la izquierda -->
+  <path d="M 360 330 A 120 120 0 0 1 240 210 L 290 210 A 70 70 0 0 0 360 280 Z" class="cy-q cy-q4"/>
+
+  <!-- ─── Puntas de flecha sobre las juntas: marcan el sentido del recorrido ─── -->
+  <path d="M 353 88  L 367 95  L 353 102 Z" class="cy-arrow"/>
+  <path d="M 448 203 L 455 217 L 462 203 Z" class="cy-arrow"/>
+  <path d="M 367 298 L 353 305 L 367 312 Z" class="cy-arrow"/>
+  <path d="M 258 217 L 265 203 L 272 217 Z" class="cy-arrow"/>
+
+  <!-- ─── El centro: el ciclo no tiene principio ni fin ─── -->
+  <text x="360" y="206" class="cy-hub" text-anchor="middle">CICLO DE VIDA</text>
+  <text x="360" y="222" class="cy-hub" text-anchor="middle">BASE DE DATOS</text>
+
+  <!-- ─── Etiquetas ─── -->
+
+  <text x="222" y="148" class="cy-name" text-anchor="end">ANÁLISIS</text>
+  <text x="222" y="167" class="cy-sub"  text-anchor="end">requerimientos</text>
+  <text x="222" y="182" class="cy-sub"  text-anchor="end">objetivos</text>
+
+  <text x="498" y="140" class="cy-name">DISEÑO</text>
+  <text x="498" y="159" class="cy-sub">conceptual</text>
+  <text x="498" y="174" class="cy-sub">lógico</text>
+  <text x="498" y="189" class="cy-sub">físico</text>
+
+  <text x="498" y="258" class="cy-name">IMPLEMENTACIÓN</text>
+  <text x="498" y="277" class="cy-sub">pruebas</text>
+  <text x="498" y="292" class="cy-sub">mantenimiento</text>
+
+  <text x="222" y="258" class="cy-name" text-anchor="end">CAPTURA</text>
+  <text x="222" y="277" class="cy-sub"  text-anchor="end">generación de datos</text>
+  <text x="222" y="292" class="cy-sub"  text-anchor="end">calidad de datos</text>
+
+  <!-- ─── El cierre del ciclo, que es lo que hay que explicar ─── -->
+  <text x="360" y="378" class="cy-acc" text-anchor="middle">de Captura se vuelve a Análisis: los datos en uso generan requerimientos nuevos</text>
+</svg>

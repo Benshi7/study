@@ -1,0 +1,18 @@
+CÓMO VER EL MAPA DEL DASHBOARD (página "Mapa")
+==============================================
+
+El mapa usa el visual "Mapa" de Power BI. Power BI Desktop lo trae BLOQUEADO por defecto,
+y esa opción se guarda en cada computadora, no dentro del archivo .pbix.
+Si al abrir TP_freMTPL2.pbix el mapa aparece bloqueado:
+
+1. Archivo -> Opciones y configuración -> Opciones
+2. GLOBAL -> Seguridad
+3. Marcar "Uso de elementos visuales de mapa y mapa coroplético"
+   (si aparece, marcar también "Usar objeto visual de Azure Maps")
+4. Aceptar, CERRAR Power BI por completo y volver a abrir el archivo.
+
+Si sigue bloqueado y entraste con una cuenta de la facultad, puede ser una política de esa
+cuenta: probá cerrando sesión en Power BI (arriba a la derecha).
+
+Para la exposición: presentar desde una compu donde ya se haya probado,
+y llevar una captura de la página Mapa como plan B.

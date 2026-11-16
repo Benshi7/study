@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 42 · Problemas de concurrencia</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 42 · Unidad 6 · Administración de transacciones · Opcional</p>
+    <h1 class="masthead__title">Cuando dos transacciones tocan el mismo dato</h1>
+    <p class="masthead__standfirst">
+      Por qué un DBMS multiusuario necesita controlar la concurrencia, y los problemas que
+      aparecen si no lo hace. Son ejemplos de manual y se reconocen fácil en un choice.
+    </p>
+    <p class="masthead__meta">
+      <span>~15 minutos</span>
+      <span>Clase de transacciones (capturas)</span>
+      <span>Prioridad para el parcial: opcional</span>
+    </p>
+  </header>
+
+  <div class="callout callout--catedra">
+    <span class="callout__label">Lección opcional</span>
+    <p>
+      El docente no nombró este tema entre lo que entra al 2do parcial. Está acá por si aparece
+      algún concepto suelto en el choice. La base son las capturas de la clase
+      (<code>raw/Clase Transacciones (capturas)/</code>); todavía no tenemos el PPT.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>Monousuario y multiusuario</h2>
+
+  <blockquote class="callout">
+    "Un DBMS es <b>monousuario</b> si sólo lo puede utilizar un usuario a la vez, y es
+    <b>multiusuario</b> si varios usuarios pueden utilizar el sistema simultáneamente."
+  </blockquote>
+
+  <p>
+    Los multiusuario tienen <b>problemas de concurrencia</b>, y para eso disponen de un
+    <b>módulo de procesamiento concurrente</b> con un <b>planificador de transacciones</b>. El
+    slide distingue dos formas de procesar:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Procesamiento</th><th>Qué pasa</th><th>En el gráfico del slide</th></tr></thead>
+      <tbody>
+        <tr><td><b>Interpolado</b> (intercalado)</td><td>Una sola CPU alterna entre transacciones: un rato A, un rato B, otra vez A…</td><td>A y B entre t1 y t2</td></tr>
+        <tr><td><b>Paralelo</b></td><td>Varias CPU ejecutan transacciones a la vez de verdad</td><td>C en CPU1 y D en CPU2, entre t3 y t4</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">02</span>read_item y write_item</h2>
+
+  <p>
+    Para estudiar la concurrencia, cada transacción se reduce a dos operaciones sobre un dato
+    <code>X</code>:
+  </p>
+  <ul>
+    <li><code>read_item(X)</code>: trae el valor de X de la base a una variable de la transacción.</li>
+    <li><code>write_item(X)</code>: guarda el valor de esa variable en X, en la base.</li>
+  </ul>
+  <p>
+    Entre las dos, la transacción hace cuentas en su memoria (<code>X := X − N</code>). Ese cálculo
+    <b>no lo ve nadie más</b> hasta el <code>write_item</code>. Todos los problemas salen de lo que
+    hace otra transacción en ese intervalo.
+  </p>
+
+  <h2><span class="num">03</span>Los tres problemas del slide</h2>
+
+  <h3>Pérdida de actualización</h3>
+
+  <figure class="full">
+    <img src="../assets/diagrams/txn-perdida-actualizacion.png" alt="T1 lee X y resta N; T2 lee X y suma M; T1 escribe X; T2 escribe X y pisa lo de T1.">
+    <figcaption>Captura de la clase. <b>T2 leyó X antes de que T1 lo escribiera</b>: cuando T2 escribe, borra la resta de T1.</figcaption>
+  </figure>
+
+  <blockquote class="callout">
+    "Dos transacciones modifican el mismo dato y una actualización sobrescribe a la otra.
+    Consecuencia: <b>pérdida de información</b>."
+  </blockquote>
+
+  <h3>Suma incorrecta</h3>
+
+  <figure class="full">
+    <img src="../assets/diagrams/txn-suma-incorrecta.png" alt="T3 suma valores mientras T1 resta N de X y suma N a Y. T3 lee X ya restado e Y todavía sin sumar.">
+    <figcaption>T3 suma <b>X después</b> de que se le restó N, e <b>Y antes</b> de que se le sume N: el total queda N por debajo.</figcaption>
+  </figure>
+
+  <blockquote class="callout">
+    "Mientras una transacción calcula un total, otra modifica algunos registros.
+    Consecuencia: <b>resultado inconsistente</b>."
+  </blockquote>
+
+  <h3>Pérdida de la actualización temporal (lectura sucia)</h3>
+
+  <figure class="full">
+    <img src="../assets/diagrams/txn-actualizacion-temporal.png" alt="T1 escribe X; T2 lee ese X y lo usa; después T1 falla y X vuelve a su valor anterior.">
+    <figcaption>T1 escribe X y después <b>falla</b>: X vuelve a su valor antiguo, pero T2 ya trabajó con un valor que nunca quedó confirmado.</figcaption>
+  </figure>
+
+  <blockquote class="callout">
+    "Una transacción lee datos modificados por otra transacción que <b>aún no fue confirmada</b>.
+    Consecuencia: puede trabajar con datos incorrectos."
+  </blockquote>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">Dos errores del resumen del audio</span>
+    <p>
+      <b>1.</b> El resumen dice que en la suma incorrecta T3 lee "X antes de la modificación e Y
+      después". El slide dice lo contrario: <b>X después de restarle N, Y antes de sumarle N</b>.
+      El efecto es el mismo (un total que nunca existió), pero si el choice cita el slide, vale
+      el slide. <br>
+      <b>2.</b> El resumen explica la lectura sucia como una diferencia entre los buffers y el
+      disco. Lo que importa es otra cosa: <b>se leyó un dato que no estaba confirmado</b> (sin
+      COMMIT).
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Lecturas sucias, no repetibles y fantasma</h2>
+
+  <p>
+    El slide "¿Por qué es necesaria la serialización?" nombra los problemas con otros tres
+    nombres. Son los que aparecen en cualquier motor comercial:
+  </p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Problema</th><th>Definición del slide</th><th>Palabra clave</th></tr></thead>
+      <tbody>
+        <tr><td><b>Lectura sucia</b></td><td>Una transacción lee datos modificados por otra que aún no confirmó los cambios.</td><td><i>no confirmado</i></td></tr>
+        <tr><td><b>Lectura no repetible</b></td><td>Los datos leídos cambian porque otra transacción los modificó durante el proceso.</td><td><i>leo dos veces el mismo dato y cambió</i></td></tr>
+        <tr><td><b>Lectura fantasma</b></td><td>Aparecen filas nuevas inesperadas porque otra transacción insertó datos mientras se ejecutaba la consulta.</td><td><i>filas nuevas</i></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Cómo no confundir no repetible con fantasma</span>
+    <p>
+      En la <b>no repetible</b> cambia el <b>valor</b> de una fila que ya había leído (alguien hizo
+      un UPDATE). En la <b>fantasma</b> cambia la <b>cantidad</b> de filas (alguien hizo un
+      INSERT). La lectura sucia es la misma idea que la "actualización temporal" de la sección 03.
+    </p>
+  </div>
+
+  <h2><span class="num">05</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 5 · Reconocer</span>
+    <p class="quiz__q">
+      T1 y T2 leen el mismo saldo de 100. T1 le resta 30 y escribe 70; después T2 le suma 50 y
+      escribe 150. ¿Qué problema es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Pérdida de actualización: T2 partió del 100 original y su escritura borró la resta de T1. El valor correcto era 120.">Pérdida de actualización</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La lectura sucia necesita que alguien lea un dato no confirmado y que después se deshaga. Acá ninguna falla: las dos leyeron el valor confirmado de 100.">Lectura sucia o actualización temporal</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La lectura fantasma es sobre filas nuevas que aparecen por un INSERT. Acá hay un solo dato, que se escribe dos veces.">Lectura fantasma por inserción</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 5 · La consecuencia</span>
+    <p class="quiz__q">
+      Una transacción calcula el total de todas las cuentas mientras otra transfiere plata entre
+      dos de ellas. ¿Qué puede pasar?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Suma incorrecta: el total puede contar una cuenta antes de la transferencia y la otra después. El resultado es inconsistente, un total que nunca existió.">El total queda inconsistente: suma incorrecta</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Nadie sobrescribe la escritura de otro: la que suma sólo lee. El problema está en lo que lee, a mitad de la transferencia.">Se pierde la actualización de la transferencia</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Sin control de concurrencia, el motor no detecta nada: el total sale mal y sin error. Por eso hace falta la serialización.">El motor detecta el error y cancela la suma</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 5 · Lectura sucia</span>
+    <p class="quiz__q">¿Qué define a una lectura sucia?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Leer un dato modificado por otra transacción que todavía no confirmó. Si esa transacción después falla, se trabajó con un valor que nunca existió.">Leer datos modificados por una transacción que aún no confirmó</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es la lectura no repetible: el mismo dato da distinto en dos lecturas porque otra transacción lo modificó en el medio.">Leer dos veces un dato y obtener dos valores distintos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Eso es la lectura fantasma: aparecen filas nuevas porque otra transacción insertó mientras corría la consulta.">Encontrar filas nuevas que otra transacción insertó</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">4 de 5 · Fantasma</span>
+    <p class="quiz__q">
+      Una consulta cuenta los pacientes de un médico dos veces en la misma transacción y la
+      segunda vez da uno más, porque otra transacción insertó un turno. ¿Qué es?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Lectura fantasma: apareció una fila nueva por un INSERT de otra transacción. Cambió la cantidad de filas, no el valor de una que ya existía.">Lectura fantasma</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La no repetible es cuando cambia el valor de una fila que ya leíste (UPDATE). Acá la fila es nueva: es un INSERT.">Lectura no repetible</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Lo insertado puede estar confirmado sin problema; lo que define el caso es que aparece una fila nueva entre dos lecturas.">Lectura sucia</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">5 de 5 · Procesamiento</span>
+    <p class="quiz__q">Una sola CPU alterna entre dos transacciones, un rato cada una. ¿Cómo se llama ese procesamiento?</p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Interpolado (intercalado): con una CPU no hay simultaneidad real, se alternan. El paralelo necesita varias CPU.">Procesamiento interpolado</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Paralelo es cuando varias CPU ejecutan transacciones a la vez, como C y D en el gráfico del slide.">Procesamiento paralelo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="Monousuario es un DBMS que sólo admite un usuario a la vez. Acá hay dos transacciones concurrentes: es multiusuario.">Procesamiento monousuario</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      Capturas de la clase de transacciones, en <code>raw/Clase Transacciones (capturas)/</code>
+      (01 a 04, 13). Los ejemplos de T1, T2 y T3 son de <b>Elmasri &amp; Navathe</b>, cap. 17
+      ("¿Por qué es necesario el control de la concurrencia?").
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0041-transacciones-y-acid.html">Anterior: 0041 · Transacciones y ACID</a>
+    <a href="0043-planificaciones-y-serializacion.html">Siguiente: 0043 · Planificaciones y serialización</a>
+    <a href="../PARCIAL2.md">Mapa del 2do parcial</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

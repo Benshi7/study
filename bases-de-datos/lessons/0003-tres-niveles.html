@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 3 · Los tres niveles y la independencia de datos</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Lección 03 · Unidad 1 · Sistemas de Gestión de Base de Datos</p>
+    <h1 class="masthead__title">Los tres niveles y la independencia de datos</h1>
+    <p class="masthead__standfirst">
+      La arquitectura de tres esquemas existe por una sola razón: para que puedas cambiar
+      una capa sin romper la de arriba. Eso es toda la idea.
+    </p>
+    <p class="masthead__meta">
+      <span>~10 minutos</span>
+      <span>Elmasri &amp; Navathe, cap. 2</span>
+      <span>Clase 2, slides 3–4</span>
+    </p>
+  </header>
+
+  <h2><span class="num">01</span>Abstracción: qué se oculta en cada nivel</h2>
+
+  <p>
+    La Clase 2 lo define bien: abstraer es <i>"la supresión de detalles de la organización,
+    dejando de lado detalles no relevantes"</i>. La pregunta es <b>irrelevantes para quién</b>,
+    y por eso hay tres niveles y no uno.
+  </p>
+
+  <figure class="full">
+    <img src="../assets/diagrams/tres-niveles.svg"
+         alt="Pila de cuatro bandas: tres vistas del nivel externo sobre una única banda de nivel conceptual, sobre una única banda de nivel interno, sobre la base de datos almacenada. Entre externo y conceptual está el mapeo externo/conceptual, donde vive la independencia lógica. Entre conceptual e interno está el mapeo conceptual/interno, donde vive la independencia física.">
+    <figcaption>
+      <b>Arquitectura de tres esquemas (ANSI/SPARC).</b>
+      Fijate en la forma: <i>muchas</i> vistas arriba, <i>una sola</i> descripción en el medio,
+      <i>una sola</i> implementación abajo. Y en que cada independencia vive en una frontera
+      distinta — por eso son dos conceptos separados y no uno.
+    </figcaption>
+  </figure>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Nivel</th><th>Su esquema describe</th><th>Le oculta al de arriba</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Interno</b></td>
+          <td>La estructura de almacenamiento físico: rutas de acceso, índices, formato en disco.</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><b>Conceptual</b></td>
+          <td>Toda la base para la comunidad de usuarios: entidades, tipos de datos, relaciones, restricciones.</td>
+          <td>Cómo y dónde se guarda.</td>
+        </tr>
+        <tr>
+          <td><b>Externo</b> (o de vistas)</td>
+          <td>La parte que le interesa a <b>un grupo</b> de usuarios.</td>
+          <td>El resto de la base entera.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Lo que casi nadie dice</span>
+    <p>
+      Los tres esquemas son <b>sólo descripciones</b>. Los datos que existen de verdad
+      están únicamente en el nivel físico. Cuando un usuario pide algo contra su vista, el
+      DBMS traduce esa solicitud a una contra el esquema conceptual, y ésa a una contra el
+      interno. Esas traducciones se llaman <em class="term">mapeos</em>, y son las flechas
+      invisibles del dibujo.
+    </p>
+  </div>
+
+  <h2><span class="num">02</span>Independencia de datos: la definición exacta</h2>
+
+  <blockquote class="callout">
+    La independencia de datos es "la capacidad de cambiar el esquema en un nivel de un
+    sistema de bases de datos sin tener que cambiar el esquema en el siguiente nivel más alto".
+  </blockquote>
+
+  <p>Esa única frase se parte en dos, según qué frontera cruces:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>Independencia lógica</th><th>Independencia física</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Cambiás…</b></td>
+          <td>el esquema <b>conceptual</b></td>
+          <td>el esquema <b>interno</b></td>
+        </tr>
+        <tr>
+          <td><b>…sin tocar</b></td>
+          <td>los esquemas externos ni las aplicaciones</td>
+          <td>el esquema conceptual</td>
+        </tr>
+        <tr>
+          <td><b>Ejemplo</b></td>
+          <td>Agregar la columna <code>email</code> a Estudiante. La vista de Contaduría, que nunca la nombra, no se entera.</td>
+          <td>Crear un índice para acelerar las búsquedas por año. La consulta se escribe igual; sólo corre más rápido.</td>
+        </tr>
+        <tr>
+          <td><b>¿Se logra?</b></td>
+          <td><b>Muy difícil.</b></td>
+          <td><b>Casi siempre sí.</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--trap">
+    <span class="callout__label">La pregunta con trampa</span>
+    <p>
+      Elmasri dice algo que suena al revés de lo intuitivo, y por eso se pregunta:
+      <q>la independencia física de datos existe en la mayoría de las bases de datos</q>,
+      mientras que <q>la independencia lógica de datos es muy difícil de conseguir</q>.
+    </p>
+    <p>
+      ¿Por qué? Porque ocultar <b>dónde</b> está un dato en el disco es fácil — a nadie le
+      importaba. Pero permitir que cambie <b>qué</b> datos hay y con qué restricciones,
+      sin tocar ni una línea de las aplicaciones que los usan, es un requisito mucho
+      más estricto. La lógica toca el significado; la física, sólo la mecánica.
+    </p>
+  </div>
+
+  <p>
+    Un detalle honesto que conviene saber: Elmasri aclara que <b>pocos DBMS implementan la
+    arquitectura completa</b>, porque los dos niveles de mapeo cuestan tiempo de ejecución.
+    Es un modelo para pensar y diseñar, no una foto de cómo está construido Oracle.
+  </p>
+
+  <h2><span class="num">03</span>Práctica</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">1 de 3 · Ubicar el nivel</span>
+    <p class="quiz__q">
+      El DBA crea un índice sobre <code>Estudiante.Año</code> para acelerar un reporte.
+      ¿Qué esquema cambió?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="El interno: los índices y rutas de acceso son estructura de almacenamiento. Nada del conceptual cambia — las mismas entidades, los mismos atributos, las mismas restricciones. Por eso ninguna consulta hay que reescribirla.">El interno, sin tocar el conceptual</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El conceptual describe entidades, atributos, relaciones y restricciones. Un índice no es ninguna de esas cosas: es una ruta de acceso, y las rutas de acceso viven en el nivel interno.">El conceptual, sin tocar el externo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El externo son las vistas de cada grupo de usuarios. Un índice es invisible desde ahí: justamente de eso se trata la independencia física.">El externo, sin tocar los demás</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">2 de 3 · Nombrar la independencia</span>
+    <p class="quiz__q">
+      Se agrega el atributo <code>Prepaga</code> a Paciente. La vista de Facturación, que
+      nunca lo menciona, sigue funcionando sin cambios. ¿Qué se demostró?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Cambió el esquema conceptual y los externos no se enteraron: eso es independencia lógica. Y es la difícil — si en vez de agregar hubieras QUITADO un atributo que la vista sí usa, se habría roto.">Independencia lógica de los datos</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="La física es cambiar el esquema INTERNO sin tocar el conceptual. Acá se tocó justamente el conceptual, que es el nivel de arriba. Fijate en qué frontera del dibujo ocurrió el cambio.">Independencia física de los datos</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">3 de 3 · Dónde viven los datos</span>
+    <p class="quiz__q">
+      De los tres esquemas, ¿en cuál están guardados los datos reales?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+          data-feedback="Correcto, y es un punto que se pregunta. Los tres esquemas son SÓLO descripciones. Los datos existen únicamente en el nivel físico, en la base de datos almacenada — la banda punteada del dibujo.">En ninguno: los tres son descripciones</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El esquema interno describe cómo se almacenan los datos, pero no es los datos. Es la descripción del almacenamiento. Los datos están en la base de datos almacenada.">En el interno, que es el más bajo</button></li>
+      <li><button class="quiz__opt"
+          data-feedback="El conceptual es la descripción de toda la base para la comunidad de usuarios. Describe entidades y relaciones, no contiene tuplas.">En el conceptual, que los describe</button></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="source">
+    <span class="source__label">Fuente primaria</span>
+    <p>
+      <b>Elmasri &amp; Navathe, 5ª ed.</b> — sección 2.2 "Arquitectura de tres esquemas e
+      independencia de los datos", páginas 31 a 33
+      (páginas 57 a 59 del PDF en <code>raw/</code>). La Figura 2.2 es el dibujo original.
+    </p>
+  </div>
+
+  <div class="ask">
+    <p>
+      <b>Soy tu profe acá.</b> Si te cuesta separar lógica de física, tirame un cambio
+      cualquiera y te digo de cuál se trata y por qué — es la mejor forma de fijarlo.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="0002-el-dbms.html">Anterior: 0002</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="0004-estructura-relacional.html">Siguiente: 0004 · La estructura relacional</a>
+  </nav>
+
+</main>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Qué imprime? II</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+<main>
+
+<div class="topbar"><a href="../index.html">← Índice</a> · Lección 0009 · Bloque 3: Python</div>
+
+<div class="kicker">Lección 0009</div>
+<h1>¿Qué imprime? (II): funciones, colecciones y valores especiales</h1>
+<p class="lede">Los 12 bloques del notebook "Kahoot interactivo, parte 2". Acá están las trampas más finas: floats, <code>None</code>, copias de listas y <code>get()</code>.</p>
+
+<div class="box recall">
+  <span class="label">Antes de leer: recuperá de memoria</span>
+  <p>Sin mirar la lección 0008: ¿qué devuelve <code>input()</code> si el usuario escribe un número? ¿Qué hace <code>remove(3)</code> sobre una lista?</p>
+</div>
+
+<h2>Lo que cubren los 12 bloques</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Bloque</th><th>Lo que tenés que saber</th></tr>
+  <tr><td>Indentación</td><td>Las líneas indentadas bajo el <code>if</code> son su bloque; si la condición es falsa, se saltean <em>todas</em>.</td></tr>
+  <tr><td><code>import</code></td><td><code>math.sqrt(49)</code> devuelve <code>7.0</code> (float). <code>math.pi</code> es π.</td></tr>
+  <tr><td>Pandas</td><td><code>pd.DataFrame(dict)</code> arma una tabla; <code>tabla["col"]</code> selecciona una columna; <code>.mean()</code> calcula el promedio.</td></tr>
+  <tr><td>Funciones</td><td><code>def</code> la define; los <strong>argumentos</strong> entran; <code>return</code> devuelve. Una función sin <code>return</code> devuelve <strong><code>None</code></strong>.</td></tr>
+  <tr><td>Tupla / set</td><td>La <strong>tupla</strong> es ordenada e <strong>inmutable</strong> (asignar da <code>TypeError</code>). El <strong>set</strong> guarda <strong>elementos únicos</strong>.</td></tr>
+  <tr><td>Strings</td><td><code>find()</code> devuelve la posición, o <strong><code>-1</code></strong> si no encuentra · <code>count()</code> · <code>startswith()</code>/<code>endswith()</code> · <code>split()</code> devuelve una lista</td></tr>
+  <tr><td>Números</td><td><code>abs(-18)</code> = 18 · <code>round(3.14159, 2)</code> = 3.14 · <code>int(8.9)</code> = <strong>8</strong> (trunca, no redondea)</td></tr>
+  <tr><td>Floats</td><td><code>0.1 + 0.2</code> da <code>0.30000000000000004</code>, así que <code>== 0.3</code> es <strong>False</strong>. <code>(5.0).is_integer()</code> es True.</td></tr>
+  <tr><td><code>not</code> / <code>None</code></td><td><code>not</code> invierte un booleano. <code>None</code> = ausencia de valor; se compara con <code>is None</code>.</td></tr>
+  <tr><td>Listas (+)</td><td><code>extend()</code> agrega varios · <code>insert(i, x)</code> · <code>pop(i)</code> saca por <strong>posición</strong> y devuelve el elemento · <code>index()</code> · <code>count()</code> · <code>reverse()</code></td></tr>
+  <tr><td>Copiar</td><td><code>copia = original.copy()</code> crea otra lista. <code>copia = original</code> crea <strong>otro nombre para la misma lista</strong>.</td></tr>
+  <tr><td>Dicts (+)</td><td><code>keys()</code>, <code>values()</code>, <code>items()</code>. <code>get("k", defecto)</code> no falla si falta la clave; <code>d["k"]</code> da <code>KeyError</code>.</td></tr>
+</table>
+</div>
+<span class="sidenote">Fuente: notebook "(Clase_1)_2_Colab_Introduccion_Python_Kahoot_Interactivo", bloques 1 a 12.</span>
+
+<div class="box trap">
+  <span class="label">La trampa de la copia</span>
+<pre class="code">original = [1, 2, 3]
+alias = original          # misma lista, otro nombre
+alias.append(4)
+print(original)           # [1, 2, 3, 4]  ← ¡cambió!</pre>
+  <p>El notebook enseña <code>.copy()</code> justamente para evitar esto. Como DE lo sabés, pero en un choice rápido es fácil pasarlo por alto.</p>
+</div>
+
+<h2>Práctica</h2>
+
+<div class="quiz" data-quiz-id="0009-que-imprime-2"></div>
+<script type="application/json" class="quiz-data">
+[
+  {"q": "¿Cuántas líneas imprime?<pre class=\"code\">edad = 15\n\nif edad &gt;= 18:\n    print(\"Mayor de edad\")\n    print(\"Puede ingresar\")\n\nprint(\"Fin del programa\")</pre>",
+   "options": ["1", "2", "3", "0"], "answer": 0,
+   "why": "Las dos líneas indentadas pertenecen al if, que es falso. Solo se imprime \"Fin del programa\", que está fuera del bloque."},
+  {"q": "¿Qué imprime?<pre class=\"code\">import math\nprint(math.sqrt(49))</pre>",
+   "options": ["7.0", "7", "49", "Error"], "answer": 0,
+   "why": "<code>math.sqrt</code> siempre devuelve un float."},
+  {"q": "¿Qué imprime?<pre class=\"code\">import pandas as pd\ntabla = pd.DataFrame({\"producto\": [\"A\", \"B\", \"C\"],\n                      \"ventas\": [120, 180, 90]})\nprint(tabla[\"ventas\"].mean())</pre>",
+   "options": ["130.0", "390", "3", "180"], "answer": 0,
+   "why": "(120 + 180 + 90) / 3 = 130.0. <code>mean()</code> es el promedio; la suma sería 390."},
+  {"q": "¿Qué imprime la ÚLTIMA línea?<pre class=\"code\">def saludar(nombre):\n    print(\"Hola\", nombre)\n\nr = saludar(\"Ana\")\nprint(r)</pre>",
+   "options": ["None", "Ana", "Hola", "Error"], "answer": 0,
+   "why": "<code>saludar</code> imprime pero no tiene <code>return</code>, así que devuelve None. La primera línea de salida es \"Hola Ana\"."},
+  {"q": "¿Qué palabra clave usa una función para devolver un resultado?",
+   "options": ["return", "def", "print", "output"], "answer": 0,
+   "why": "<code>def</code> define la función; <code>return</code> devuelve el valor."},
+  {"q": "¿Cuántos elementos tiene este conjunto?<pre class=\"code\">numeros = {1, 2, 2, 3, 3, 3}\nprint(len(numeros))</pre>",
+   "options": ["3", "6", "1", "0"], "answer": 0,
+   "why": "Un set conserva solo elementos únicos: {1, 2, 3}."},
+  {"q": "¿Qué pasa?<pre class=\"code\">coordenadas = (40.0, -73.0)\ncoordenadas[0] = 1</pre>",
+   "options": ["TypeError", "ValueError", "IndexError", "KeyError"], "answer": 0,
+   "why": "Las tuplas son inmutables: no se pueden modificar una vez creadas."},
+  {"q": "¿Qué imprime?<pre class=\"code\">texto = \"hola python, hola datos\"\nprint(texto.find(\"python\"))</pre>",
+   "options": ["5", "6", "1", "-1"], "answer": 0,
+   "why": "\"hola \" ocupa las posiciones 0 a 4; \"python\" empieza en la 5."},
+  {"q": "¿Qué imprime?<pre class=\"code\">texto = \"hola python, hola datos\"\nprint(texto.find(\"java\"))</pre>",
+   "options": ["-1", "0", "None", "Error"], "answer": 0,
+   "why": "<code>find()</code> devuelve -1 si no encuentra el texto; no lanza error."},
+  {"q": "¿Qué imprime?<pre class=\"code\">print(int(4.99))</pre>",
+   "options": ["4", "5", "4.99", "4.0"], "answer": 0,
+   "why": "<code>int()</code> TRUNCA: descarta la parte decimal, no redondea. Para redondear está <code>round()</code>."},
+  {"q": "¿Qué imprime?<pre class=\"code\">resultado = 0.1 + 0.2\nprint(resultado == 0.3)</pre>",
+   "options": ["False", "True", "None", "Error"], "answer": 0,
+   "why": "<code>0.1 + 0.2</code> da 0.30000000000000004 porque algunos decimales no se representan exacto. <code>round(resultado, 1) == 0.3</code> sí es True."},
+  {"q": "¿Qué imprime?<pre class=\"code\">valor = None\nprint(valor is None)</pre>",
+   "options": ["True", "False", "None", "Error"], "answer": 0,
+   "why": "None representa la ausencia de valor, y <code>is None</code> es la forma de preguntarlo."},
+  {"q": "¿Qué imprime?<pre class=\"code\">numeros = [10, 20, 30]\nnumeros.extend([40, 50])\nnumeros.insert(1, 15)\neliminado = numeros.pop(3)\nprint(eliminado)</pre>",
+   "options": ["30", "20", "40", "15"], "answer": 0,
+   "why": "Después de extend e insert la lista queda [10, 15, 20, 30, 40, 50]. <code>pop(3)</code> saca la posición 3, que es 30."},
+  {"q": "¿Qué imprime?<pre class=\"code\">original = [1, 2, 3]\ncopia = original.copy()\ncopia.append(4)\nprint(len(original))</pre>",
+   "options": ["3", "4", "1", "0"], "answer": 0,
+   "why": "<code>copy()</code> crea una lista nueva: modificar la copia no toca la original."},
+  {"q": "¿Qué imprime?<pre class=\"code\">original = [1, 2, 3]\ncopia = original\ncopia.append(4)\nprint(len(original))</pre>",
+   "options": ["4", "3", "1", "0"], "answer": 0,
+   "why": "Sin <code>.copy()</code>, las dos variables apuntan a la MISMA lista."},
+  {"q": "¿Qué imprime?<pre class=\"code\">persona = {\"nombre\": \"Ana\", \"edad\": 25}\nprint(persona.get(\"curso\", \"No informado\"))</pre>",
+   "options": ["No informado", "KeyError lanzado", "None devuelto", "Cadena vacía"], "answer": 0,
+   "why": "<code>get</code> devuelve el valor por defecto si la clave no existe. Sin segundo argumento devolvería None."},
+  {"q": "¿Qué pasa?<pre class=\"code\">persona = {\"nombre\": \"Ana\", \"edad\": 25}\nprint(persona[\"curso\"])</pre>",
+   "options": ["KeyError", "None", "IndexError", "ValueError"], "answer": 0,
+   "why": "Acceder con corchetes a una clave inexistente lanza KeyError. Esa es la diferencia con <code>get()</code>."}
+]
+</script>
+
+<div class="box win">
+  <span class="label">Tu logro de esta lección</span>
+  <p>Predecís la salida del notebook 2 completo, incluidas las trampas de precisión de los floats, <code>int()</code> que trunca, la función sin <code>return</code> y el alias de listas.</p>
+</div>
+
+<div class="box source">
+  <span class="label">Fuente principal</span>
+  <p><code>raw/notebooks/(Clase_1)_2_Colab_Introduccion_Python_Kahoot_Interactivo_[Alumnos].ipynb</code>. Resumen: <a href="../reference/python.html">Referencia · Python</a>.</p>
+</div>
+
+<div class="box ask">
+  <span class="label">¿Dudas?</span>
+  <p>¿Querés entender <em>por qué</em> 0.1 + 0.2 no da 0.3 (IEEE 754)? Preguntame, aunque para el examen alcanza con saber que pasa.</p>
+</div>
+
+<nav class="lesson-nav">
+  <a href="0008-que-imprime-1.html">← 0008 · ¿Qué imprime? (I)</a>
+  <a href="0010-errores-y-bucles.html">0010 · Errores, bucles e imports →</a>
+</nav>
+
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

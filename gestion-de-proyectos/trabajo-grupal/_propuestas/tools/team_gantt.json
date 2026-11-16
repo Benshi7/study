@@ -1,0 +1,1182 @@
+{
+ "title": "CRONOGRAMA DE ACTIVIDADES Y DIAGRAMA DE GANTT (01/04/2026 - 30/09/2026)",
+ "note": "Período operativo ficticio del proyecto. Duración en días hábiles. La columna 'Responsable' queda disponible para asignación del equipo.",
+ "activities": [
+  {
+   "id": 1,
+   "phase": "Inicio",
+   "name": "Definición del proyecto y alcance",
+   "start": {
+    "__date__": "2026-04-01"
+   },
+   "end": {
+    "__date__": "2026-04-03"
+   },
+   "dur": 3,
+   "deps_raw": "-",
+   "responsable": "",
+   "entregable": "Project Charter"
+  },
+  {
+   "id": 2,
+   "phase": "Inicio",
+   "name": "Identificación inicial de stakeholders",
+   "start": {
+    "__date__": "2026-04-02"
+   },
+   "end": {
+    "__date__": "2026-04-06"
+   },
+   "dur": 3,
+   "deps_raw": "1",
+   "responsable": "",
+   "entregable": "Registro inicial"
+  },
+  {
+   "id": 3,
+   "phase": "Inicio",
+   "name": "Relevamiento preliminar de sistemas y fuentes",
+   "start": {
+    "__date__": "2026-04-02"
+   },
+   "end": {
+    "__date__": "2026-04-07"
+   },
+   "dur": 4,
+   "deps_raw": "1",
+   "responsable": "",
+   "entregable": "Relevamiento inicial"
+  },
+  {
+   "id": 4,
+   "phase": "Inicio",
+   "name": "Aprobación del Charter",
+   "start": {
+    "__date__": "2026-04-08"
+   },
+   "end": {
+    "__date__": "2026-04-10"
+   },
+   "dur": 3,
+   "deps_raw": "1-3",
+   "responsable": "",
+   "entregable": "Charter aprobado"
+  },
+  {
+   "id": 5,
+   "phase": "Análisis",
+   "name": "Relevamiento de necesidades de vecinos",
+   "start": {
+    "__date__": "2026-04-13"
+   },
+   "end": {
+    "__date__": "2026-04-17"
+   },
+   "dur": 5,
+   "deps_raw": "4",
+   "responsable": "",
+   "entregable": "Requerimientos de usuario"
+  },
+  {
+   "id": 6,
+   "phase": "Análisis",
+   "name": "Relevamiento de necesidades de áreas de gobierno",
+   "start": {
+    "__date__": "2026-04-13"
+   },
+   "end": {
+    "__date__": "2026-04-17"
+   },
+   "dur": 5,
+   "deps_raw": "4",
+   "responsable": "",
+   "entregable": "Requerimientos internos"
+  },
+  {
+   "id": 7,
+   "phase": "Análisis",
+   "name": "Relevamiento de fuentes de datos y APIs",
+   "start": {
+    "__date__": "2026-04-13"
+   },
+   "end": {
+    "__date__": "2026-04-21"
+   },
+   "dur": 7,
+   "deps_raw": "4",
+   "responsable": "",
+   "entregable": "Inventario de fuentes"
+  },
+  {
+   "id": 8,
+   "phase": "Análisis",
+   "name": "Definición de requerimientos funcionales",
+   "start": {
+    "__date__": "2026-04-20"
+   },
+   "end": {
+    "__date__": "2026-04-24"
+   },
+   "dur": 5,
+   "deps_raw": "5-7",
+   "responsable": "",
+   "entregable": "Requerimientos funcionales"
+  },
+  {
+   "id": 9,
+   "phase": "Análisis",
+   "name": "Definición de requerimientos no funcionales",
+   "start": {
+    "__date__": "2026-04-20"
+   },
+   "end": {
+    "__date__": "2026-04-24"
+   },
+   "dur": 5,
+   "deps_raw": "5-7",
+   "responsable": "",
+   "entregable": "Requerimientos no funcionales"
+  },
+  {
+   "id": 10,
+   "phase": "Análisis",
+   "name": "Validación de requerimientos",
+   "start": {
+    "__date__": "2026-04-27"
+   },
+   "end": {
+    "__date__": "2026-05-01"
+   },
+   "dur": 5,
+   "deps_raw": "8-9",
+   "responsable": "",
+   "entregable": "Requerimientos aprobados"
+  },
+  {
+   "id": 11,
+   "phase": "Diseño",
+   "name": "Diseño de arquitectura de la solución",
+   "start": {
+    "__date__": "2026-05-04"
+   },
+   "end": {
+    "__date__": "2026-05-08"
+   },
+   "dur": 5,
+   "deps_raw": "10",
+   "responsable": "",
+   "entregable": "Arquitectura"
+  },
+  {
+   "id": 12,
+   "phase": "Diseño",
+   "name": "Diseño de la capa geográfica común",
+   "start": {
+    "__date__": "2026-05-04"
+   },
+   "end": {
+    "__date__": "2026-05-12"
+   },
+   "dur": 7,
+   "deps_raw": "10",
+   "responsable": "",
+   "entregable": "Diseño geográfico"
+  },
+  {
+   "id": 13,
+   "phase": "Diseño",
+   "name": "Diseño del sistema de reportes",
+   "start": {
+    "__date__": "2026-05-04"
+   },
+   "end": {
+    "__date__": "2026-05-12"
+   },
+   "dur": 7,
+   "deps_raw": "10",
+   "responsable": "",
+   "entregable": "Diseño de reportes"
+  },
+  {
+   "id": 14,
+   "phase": "Diseño",
+   "name": "Diseño de validación y seguimiento",
+   "start": {
+    "__date__": "2026-05-11"
+   },
+   "end": {
+    "__date__": "2026-05-15"
+   },
+   "dur": 5,
+   "deps_raw": "13",
+   "responsable": "",
+   "entregable": "Flujo de incidencias"
+  },
+  {
+   "id": 15,
+   "phase": "Diseño",
+   "name": "Diseño de integraciones y APIs",
+   "start": {
+    "__date__": "2026-05-11"
+   },
+   "end": {
+    "__date__": "2026-05-18"
+   },
+   "dur": 6,
+   "deps_raw": "10-12",
+   "responsable": "",
+   "entregable": "Diseño de integración"
+  },
+  {
+   "id": 16,
+   "phase": "Diseño",
+   "name": "Diseño UX/UI",
+   "start": {
+    "__date__": "2026-05-13"
+   },
+   "end": {
+    "__date__": "2026-05-22"
+   },
+   "dur": 8,
+   "deps_raw": "10-14",
+   "responsable": "",
+   "entregable": "Prototipos"
+  },
+  {
+   "id": 17,
+   "phase": "Diseño",
+   "name": "Aprobación del diseño",
+   "start": {
+    "__date__": "2026-05-25"
+   },
+   "end": {
+    "__date__": "2026-05-26"
+   },
+   "dur": 2,
+   "deps_raw": "11-16",
+   "responsable": "",
+   "entregable": "Diseño aprobado"
+  },
+  {
+   "id": 18,
+   "phase": "Desarrollo",
+   "name": "Desarrollo de la capa geográfica",
+   "start": {
+    "__date__": "2026-05-27"
+   },
+   "end": {
+    "__date__": "2026-06-16"
+   },
+   "dur": 15,
+   "deps_raw": "17",
+   "responsable": "",
+   "entregable": "Capa geográfica"
+  },
+  {
+   "id": 19,
+   "phase": "Desarrollo",
+   "name": "Desarrollo del módulo de reportes",
+   "start": {
+    "__date__": "2026-05-27"
+   },
+   "end": {
+    "__date__": "2026-06-16"
+   },
+   "dur": 15,
+   "deps_raw": "17",
+   "responsable": "",
+   "entregable": "Módulo de reportes"
+  },
+  {
+   "id": 20,
+   "phase": "Desarrollo",
+   "name": "Desarrollo de validación colaborativa",
+   "start": {
+    "__date__": "2026-06-17"
+   },
+   "end": {
+    "__date__": "2026-06-23"
+   },
+   "dur": 5,
+   "deps_raw": "19",
+   "responsable": "",
+   "entregable": "Validación"
+  },
+  {
+   "id": 21,
+   "phase": "Desarrollo",
+   "name": "Desarrollo del seguimiento de incidencias",
+   "start": {
+    "__date__": "2026-06-24"
+   },
+   "end": {
+    "__date__": "2026-06-30"
+   },
+   "dur": 5,
+   "deps_raw": "19-20",
+   "responsable": "",
+   "entregable": "Seguimiento"
+  },
+  {
+   "id": 22,
+   "phase": "Desarrollo",
+   "name": "Desarrollo de vista de gestión",
+   "start": {
+    "__date__": "2026-05-27"
+   },
+   "end": {
+    "__date__": "2026-06-16"
+   },
+   "dur": 15,
+   "deps_raw": "17",
+   "responsable": "",
+   "entregable": "Panel de gestión"
+  },
+  {
+   "id": 23,
+   "phase": "Desarrollo",
+   "name": "Desarrollo de APIs e integraciones",
+   "start": {
+    "__date__": "2026-06-17"
+   },
+   "end": {
+    "__date__": "2026-07-02"
+   },
+   "dur": 12,
+   "deps_raw": "15,18",
+   "responsable": "",
+   "entregable": "Integraciones"
+  },
+  {
+   "id": 24,
+   "phase": "Integración",
+   "name": "Integración con fuentes oficiales",
+   "start": {
+    "__date__": "2026-07-03"
+   },
+   "end": {
+    "__date__": "2026-07-10"
+   },
+   "dur": 6,
+   "deps_raw": "18,23",
+   "responsable": "",
+   "entregable": "Fuentes integradas"
+  },
+  {
+   "id": 25,
+   "phase": "Integración",
+   "name": "Integración con canales digitales",
+   "start": {
+    "__date__": "2026-07-03"
+   },
+   "end": {
+    "__date__": "2026-07-14"
+   },
+   "dur": 8,
+   "deps_raw": "23",
+   "responsable": "",
+   "entregable": "Canales integrados"
+  },
+  {
+   "id": 26,
+   "phase": "Integración",
+   "name": "Pruebas de intercambio de datos",
+   "start": {
+    "__date__": "2026-07-15"
+   },
+   "end": {
+    "__date__": "2026-07-21"
+   },
+   "dur": 5,
+   "deps_raw": "24-25",
+   "responsable": "",
+   "entregable": "Integraciones validadas"
+  },
+  {
+   "id": 27,
+   "phase": "Pruebas",
+   "name": "Pruebas funcionales",
+   "start": {
+    "__date__": "2026-07-22"
+   },
+   "end": {
+    "__date__": "2026-07-31"
+   },
+   "dur": 8,
+   "deps_raw": "18-23",
+   "responsable": "",
+   "entregable": "Resultados de testing"
+  },
+  {
+   "id": 28,
+   "phase": "Pruebas",
+   "name": "Pruebas de integración",
+   "start": {
+    "__date__": "2026-08-03"
+   },
+   "end": {
+    "__date__": "2026-08-07"
+   },
+   "dur": 5,
+   "deps_raw": "26-27",
+   "responsable": "",
+   "entregable": "Integración validada"
+  },
+  {
+   "id": 29,
+   "phase": "Pruebas",
+   "name": "Pruebas de usabilidad",
+   "start": {
+    "__date__": "2026-08-03"
+   },
+   "end": {
+    "__date__": "2026-08-11"
+   },
+   "dur": 7,
+   "deps_raw": "16,27",
+   "responsable": "",
+   "entregable": "Evaluación UX"
+  },
+  {
+   "id": 30,
+   "phase": "Pruebas",
+   "name": "Pruebas de rendimiento y seguridad",
+   "start": {
+    "__date__": "2026-08-03"
+   },
+   "end": {
+    "__date__": "2026-08-11"
+   },
+   "dur": 7,
+   "deps_raw": "27",
+   "responsable": "",
+   "entregable": "Evaluación técnica"
+  },
+  {
+   "id": 31,
+   "phase": "Pruebas",
+   "name": "Corrección de errores",
+   "start": {
+    "__date__": "2026-08-12"
+   },
+   "end": {
+    "__date__": "2026-08-20"
+   },
+   "dur": 7,
+   "deps_raw": "27-30",
+   "responsable": "",
+   "entregable": "Versión corregida"
+  },
+  {
+   "id": 32,
+   "phase": "Pruebas",
+   "name": "Aprobación final de pruebas",
+   "start": {
+    "__date__": "2026-08-24"
+   },
+   "end": {
+    "__date__": "2026-08-27"
+   },
+   "dur": 4,
+   "deps_raw": "31",
+   "responsable": "",
+   "entregable": "Solución validada"
+  },
+  {
+   "id": 33,
+   "phase": "Implementación",
+   "name": "Preparación del entorno productivo",
+   "start": {
+    "__date__": "2026-08-28"
+   },
+   "end": {
+    "__date__": "2026-09-02"
+   },
+   "dur": 4,
+   "deps_raw": "32",
+   "responsable": "",
+   "entregable": "Entorno preparado"
+  },
+  {
+   "id": 34,
+   "phase": "Implementación",
+   "name": "Capacitación y documentación",
+   "start": {
+    "__date__": "2026-08-28"
+   },
+   "end": {
+    "__date__": "2026-09-04"
+   },
+   "dur": 6,
+   "deps_raw": "32",
+   "responsable": "",
+   "entregable": "Materiales y capacitación"
+  },
+  {
+   "id": 35,
+   "phase": "Implementación",
+   "name": "Puesta en funcionamiento",
+   "start": {
+    "__date__": "2026-09-07"
+   },
+   "end": {
+    "__date__": "2026-09-09"
+   },
+   "dur": 3,
+   "deps_raw": "33-34",
+   "responsable": "",
+   "entregable": "Solución implementada"
+  },
+  {
+   "id": 36,
+   "phase": "Implementación",
+   "name": "Monitoreo inicial",
+   "start": {
+    "__date__": "2026-09-10"
+   },
+   "end": {
+    "__date__": "2026-09-16"
+   },
+   "dur": 5,
+   "deps_raw": "35",
+   "responsable": "",
+   "entregable": "Informe inicial"
+  },
+  {
+   "id": 37,
+   "phase": "Cierre",
+   "name": "Evaluación de resultados",
+   "start": {
+    "__date__": "2026-09-17"
+   },
+   "end": {
+    "__date__": "2026-09-22"
+   },
+   "dur": 4,
+   "deps_raw": "36",
+   "responsable": "",
+   "entregable": "Evaluación"
+  },
+  {
+   "id": 38,
+   "phase": "Cierre",
+   "name": "Documentación final",
+   "start": {
+    "__date__": "2026-09-17"
+   },
+   "end": {
+    "__date__": "2026-09-24"
+   },
+   "dur": 6,
+   "deps_raw": "36",
+   "responsable": "",
+   "entregable": "Documentación"
+  },
+  {
+   "id": 39,
+   "phase": "Cierre",
+   "name": "Transferencia a responsables operativos",
+   "start": {
+    "__date__": "2026-09-25"
+   },
+   "end": {
+    "__date__": "2026-09-28"
+   },
+   "dur": 2,
+   "deps_raw": "36-38",
+   "responsable": "",
+   "entregable": "Transferencia"
+  },
+  {
+   "id": 40,
+   "phase": "Cierre",
+   "name": "Cierre formal del proyecto",
+   "start": {
+    "__date__": "2026-09-29"
+   },
+   "end": {
+    "__date__": "2026-09-30"
+   },
+   "dur": 2,
+   "deps_raw": "37-39",
+   "responsable": "",
+   "entregable": "Acta de cierre"
+  }
+ ],
+ "sheet2": {
+  "1": {
+   "phase": "Inicio",
+   "name": "Definición del proyecto y alcance",
+   "preds_raw": "-",
+   "dur": 3,
+   "slack": 0,
+   "critical": true
+  },
+  "2": {
+   "phase": "Inicio",
+   "name": "Identificación inicial de stakeholders",
+   "preds_raw": "1",
+   "dur": 3,
+   "slack": 120,
+   "critical": false
+  },
+  "3": {
+   "phase": "Inicio",
+   "name": "Relevamiento preliminar de sistemas y fuentes",
+   "preds_raw": "1",
+   "dur": 4,
+   "slack": 0,
+   "critical": true
+  },
+  "4": {
+   "phase": "Inicio",
+   "name": "Aprobación del Charter",
+   "preds_raw": "1-3",
+   "dur": 3,
+   "slack": 0,
+   "critical": true
+  },
+  "5": {
+   "phase": "Análisis",
+   "name": "Relevamiento de necesidades de vecinos",
+   "preds_raw": "4",
+   "dur": 5,
+   "slack": 2,
+   "critical": false
+  },
+  "6": {
+   "phase": "Análisis",
+   "name": "Relevamiento de necesidades de áreas de gobierno",
+   "preds_raw": "4",
+   "dur": 5,
+   "slack": 111,
+   "critical": false
+  },
+  "7": {
+   "phase": "Análisis",
+   "name": "Relevamiento de fuentes de datos y APIs",
+   "preds_raw": "4",
+   "dur": 7,
+   "slack": 0,
+   "critical": true
+  },
+  "8": {
+   "phase": "Análisis",
+   "name": "Definición de requerimientos funcionales",
+   "preds_raw": "5-7",
+   "dur": 5,
+   "slack": 0,
+   "critical": true
+  },
+  "9": {
+   "phase": "Análisis",
+   "name": "Definición de requerimientos no funcionales",
+   "preds_raw": "5-7",
+   "dur": 5,
+   "slack": 0,
+   "critical": true
+  },
+  "10": {
+   "phase": "Análisis",
+   "name": "Validación de requerimientos",
+   "preds_raw": "8-9",
+   "dur": 5,
+   "slack": 0,
+   "critical": true
+  },
+  "11": {
+   "phase": "Diseño",
+   "name": "Diseño de arquitectura de la solución",
+   "preds_raw": "10",
+   "dur": 5,
+   "slack": 15,
+   "critical": false
+  },
+  "12": {
+   "phase": "Diseño",
+   "name": "Diseño de la capa geográfica común",
+   "preds_raw": "10",
+   "dur": 7,
+   "slack": 24,
+   "critical": false
+  },
+  "13": {
+   "phase": "Diseño",
+   "name": "Diseño del sistema de reportes",
+   "preds_raw": "10",
+   "dur": 7,
+   "slack": 0,
+   "critical": true
+  },
+  "14": {
+   "phase": "Diseño",
+   "name": "Diseño de validación y seguimiento",
+   "preds_raw": "13",
+   "dur": 5,
+   "slack": 0,
+   "critical": true
+  },
+  "15": {
+   "phase": "Diseño",
+   "name": "Diseño de integraciones y APIs",
+   "preds_raw": "10-12",
+   "dur": 6,
+   "slack": 24,
+   "critical": false
+  },
+  "16": {
+   "phase": "Diseño",
+   "name": "Diseño UX/UI",
+   "preds_raw": "10-14",
+   "dur": 8,
+   "slack": 0,
+   "critical": true
+  },
+  "17": {
+   "phase": "Diseño",
+   "name": "Aprobación del diseño",
+   "preds_raw": "11-16",
+   "dur": 2,
+   "slack": 0,
+   "critical": true
+  },
+  "18": {
+   "phase": "Desarrollo",
+   "name": "Desarrollo de la capa geográfica",
+   "preds_raw": "17",
+   "dur": 15,
+   "slack": 0,
+   "critical": true
+  },
+  "19": {
+   "phase": "Desarrollo",
+   "name": "Desarrollo del módulo de reportes",
+   "preds_raw": "17",
+   "dur": 15,
+   "slack": 52,
+   "critical": false
+  },
+  "20": {
+   "phase": "Desarrollo",
+   "name": "Desarrollo de validación colaborativa",
+   "preds_raw": "19",
+   "dur": 5,
+   "slack": 52,
+   "critical": false
+  },
+  "21": {
+   "phase": "Desarrollo",
+   "name": "Desarrollo del seguimiento de incidencias",
+   "preds_raw": "19-20",
+   "dur": 5,
+   "slack": 52,
+   "critical": false
+  },
+  "22": {
+   "phase": "Desarrollo",
+   "name": "Desarrollo de vista de gestión",
+   "preds_raw": "17",
+   "dur": 15,
+   "slack": 62,
+   "critical": false
+  },
+  "23": {
+   "phase": "Desarrollo",
+   "name": "Desarrollo de APIs e integraciones",
+   "preds_raw": "15,18",
+   "dur": 12,
+   "slack": 0,
+   "critical": true
+  },
+  "24": {
+   "phase": "Integración",
+   "name": "Integración con fuentes oficiales",
+   "preds_raw": "18,23",
+   "dur": 6,
+   "slack": 34,
+   "critical": false
+  },
+  "25": {
+   "phase": "Integración",
+   "name": "Integración con canales digitales",
+   "preds_raw": "23",
+   "dur": 8,
+   "slack": 32,
+   "critical": false
+  },
+  "26": {
+   "phase": "Integración",
+   "name": "Pruebas de intercambio de datos",
+   "preds_raw": "24-25",
+   "dur": 5,
+   "slack": 32,
+   "critical": false
+  },
+  "27": {
+   "phase": "Pruebas",
+   "name": "Pruebas funcionales",
+   "preds_raw": "18-23",
+   "dur": 8,
+   "slack": 0,
+   "critical": true
+  },
+  "28": {
+   "phase": "Pruebas",
+   "name": "Pruebas de integración",
+   "preds_raw": "26-27",
+   "dur": 5,
+   "slack": 32,
+   "critical": false
+  },
+  "29": {
+   "phase": "Pruebas",
+   "name": "Pruebas de usabilidad",
+   "preds_raw": "16,27",
+   "dur": 7,
+   "slack": 35,
+   "critical": false
+  },
+  "30": {
+   "phase": "Pruebas",
+   "name": "Pruebas de rendimiento y seguridad",
+   "preds_raw": "27",
+   "dur": 7,
+   "slack": 0,
+   "critical": true
+  },
+  "31": {
+   "phase": "Pruebas",
+   "name": "Corrección de errores",
+   "preds_raw": "27-30",
+   "dur": 7,
+   "slack": 0,
+   "critical": true
+  },
+  "32": {
+   "phase": "Pruebas",
+   "name": "Aprobación final de pruebas",
+   "preds_raw": "31",
+   "dur": 4,
+   "slack": 0,
+   "critical": true
+  },
+  "33": {
+   "phase": "Implementación",
+   "name": "Preparación del entorno productivo",
+   "preds_raw": "32",
+   "dur": 4,
+   "slack": 2,
+   "critical": false
+  },
+  "34": {
+   "phase": "Implementación",
+   "name": "Capacitación y documentación",
+   "preds_raw": "32",
+   "dur": 6,
+   "slack": 0,
+   "critical": true
+  },
+  "35": {
+   "phase": "Implementación",
+   "name": "Puesta en funcionamiento",
+   "preds_raw": "33-34",
+   "dur": 3,
+   "slack": 0,
+   "critical": true
+  },
+  "36": {
+   "phase": "Implementación",
+   "name": "Monitoreo inicial",
+   "preds_raw": "35",
+   "dur": 5,
+   "slack": 0,
+   "critical": true
+  },
+  "37": {
+   "phase": "Cierre",
+   "name": "Evaluación de resultados",
+   "preds_raw": "36",
+   "dur": 4,
+   "slack": 4,
+   "critical": false
+  },
+  "38": {
+   "phase": "Cierre",
+   "name": "Documentación final",
+   "preds_raw": "36",
+   "dur": 6,
+   "slack": 0,
+   "critical": true
+  },
+  "39": {
+   "phase": "Cierre",
+   "name": "Transferencia a responsables operativos",
+   "preds_raw": "36-38",
+   "dur": 2,
+   "slack": 0,
+   "critical": true
+  },
+  "40": {
+   "phase": "Cierre",
+   "name": "Cierre formal del proyecto",
+   "preds_raw": "37-39",
+   "dur": 2,
+   "slack": 0,
+   "critical": true
+  }
+ },
+ "hitos": [
+  {
+   "name": "Charter aprobado",
+   "date": {
+    "__date__": "2026-04-10"
+   },
+   "result": "Project Charter formalizado y firmado",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Requerimientos aprobados",
+   "date": {
+    "__date__": "2026-05-01"
+   },
+   "result": "Especificación de Requerimientos Funcionales y No Funcionales",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Diseño aprobado",
+   "date": {
+    "__date__": "2026-05-26"
+   },
+   "result": "Documento de Arquitectura, Prototipos UI/UX y Modelo de Integración",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Desarrollo completado",
+   "date": {
+    "__date__": "2026-07-02"
+   },
+   "result": "Módulos de software, capa geográfica y APIs codificadas",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Integraciones validadas",
+   "date": {
+    "__date__": "2026-07-21"
+   },
+   "result": "Plataforma conectada con fuentes y canales digitales",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Pruebas aprobadas",
+   "date": {
+    "__date__": "2026-08-27"
+   },
+   "result": "Informe final de QA y aceptación de la solución",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Puesta en funcionamiento",
+   "date": {
+    "__date__": "2026-09-09"
+   },
+   "result": "Sistema desplegado en producción y capacitación efectuada",
+   "scope": "Proyecto Operativo"
+  },
+  {
+   "name": "Cierre del proyecto",
+   "date": {
+    "__date__": "2026-09-30"
+   },
+   "result": "Acta de Cierre, Lecciones Aprendidas y Transferencia",
+   "scope": "Proyecto Operativo"
+  }
+ ],
+ "anexo_rows": [
+  {
+   "id": 1,
+   "name": "Definición del proyecto y alcance",
+   "dur": 3,
+   "slack": 0,
+   "deps_raw": "-"
+  },
+  {
+   "id": 3,
+   "name": "Relevamiento preliminar de sistemas y fuentes",
+   "dur": 4,
+   "slack": 0,
+   "deps_raw": "1"
+  },
+  {
+   "id": 4,
+   "name": "Aprobación del Charter",
+   "dur": 3,
+   "slack": 0,
+   "deps_raw": "1, 3"
+  },
+  {
+   "id": 7,
+   "name": "Relevamiento de fuentes de datos y APIs",
+   "dur": 7,
+   "slack": 0,
+   "deps_raw": "4"
+  },
+  {
+   "id": 8,
+   "name": "Definición de requerimientos funcionales",
+   "dur": 5,
+   "slack": 0,
+   "deps_raw": "5, 7"
+  },
+  {
+   "id": 9,
+   "name": "Definición de requerimientos no funcionales",
+   "dur": 5,
+   "slack": 0,
+   "deps_raw": "5, 7"
+  },
+  {
+   "id": 10,
+   "name": "Validación de requerimientos",
+   "dur": 5,
+   "slack": 0,
+   "deps_raw": "8, 9"
+  },
+  {
+   "id": 13,
+   "name": "Diseño del sistema de reportes",
+   "dur": 7,
+   "slack": 0,
+   "deps_raw": "10"
+  },
+  {
+   "id": 14,
+   "name": "Diseño de validación y seguimiento",
+   "dur": 5,
+   "slack": 0,
+   "deps_raw": "13"
+  },
+  {
+   "id": 16,
+   "name": "Diseño UX/UI",
+   "dur": 8,
+   "slack": 0,
+   "deps_raw": "10, 14"
+  },
+  {
+   "id": 17,
+   "name": "Aprobación del diseño",
+   "dur": 2,
+   "slack": 0,
+   "deps_raw": "11, 16"
+  },
+  {
+   "id": 18,
+   "name": "Desarrollo de la capa geográfica",
+   "dur": 15,
+   "slack": 0,
+   "deps_raw": "17"
+  },
+  {
+   "id": 23,
+   "name": "Desarrollo de APIs e integraciones",
+   "dur": 12,
+   "slack": 0,
+   "deps_raw": "15, 18"
+  },
+  {
+   "id": 27,
+   "name": "Pruebas funcionales",
+   "dur": 8,
+   "slack": 0,
+   "deps_raw": "18, 23"
+  },
+  {
+   "id": 30,
+   "name": "Pruebas de rendimiento y seguridad",
+   "dur": 7,
+   "slack": 0,
+   "deps_raw": "27"
+  },
+  {
+   "id": 31,
+   "name": "Corrección de errores",
+   "dur": 7,
+   "slack": 0,
+   "deps_raw": "27, 30"
+  },
+  {
+   "id": 32,
+   "name": "Aprobación final de pruebas",
+   "dur": 4,
+   "slack": 0,
+   "deps_raw": "31"
+  },
+  {
+   "id": 34,
+   "name": "Capacitación y documentación",
+   "dur": 6,
+   "slack": 0,
+   "deps_raw": "32"
+  },
+  {
+   "id": 35,
+   "name": "Puesta en funcionamiento",
+   "dur": 3,
+   "slack": 0,
+   "deps_raw": "33, 34"
+  },
+  {
+   "id": 36,
+   "name": "Monitoreo inicial",
+   "dur": 5,
+   "slack": 0,
+   "deps_raw": "35"
+  },
+  {
+   "id": 38,
+   "name": "Documentación final",
+   "dur": 6,
+   "slack": 0,
+   "deps_raw": "36"
+  },
+  {
+   "id": 39,
+   "name": "Transferencia a responsables operativos",
+   "dur": 2,
+   "slack": 0,
+   "deps_raw": "36, 38"
+  },
+  {
+   "id": 40,
+   "name": "Cierre formal del proyecto",
+   "dur": 2,
+   "slack": 0,
+   "deps_raw": "37, 39"
+  }
+ ],
+ "anexo_critical": [
+  1,
+  3,
+  4,
+  7,
+  8,
+  9,
+  10,
+  13,
+  14,
+  16,
+  17,
+  18,
+  23,
+  27,
+  30,
+  31,
+  32,
+  34,
+  35,
+  36,
+  38,
+  39,
+  40
+ ]
+}

@@ -1,0 +1,168 @@
+7. Matriz de Stakeholders
+Para ejecutar las actividades del Gantt y asegurar la adopción de la plataforma, se identifican los actores
+que pueden afectar el proyecto, verse afectados por él o decidir sobre él, y se define cómo gestionar a
+cada uno según su interés e influencia.
+
+7.1 Identificación y análisis
+Stakeholder                                          Tipo      Interés     Influencia     Estrategia
+Sponsor institucional de Modernización de CABA       Interno   Alto        Alto           Gestionar de cerca
+Project Manager                                      Interno   Alto        Alto           Gestionar de cerca
+Equipo de Tecnología y Desarrollo                    Interno   Alto        Alto           Gestionar de cerca
+Equipo de Datos y GIS                                Interno   Alto        Alto           Gestionar de cerca
+USIG e Innovación/ASI (geocodificador, APIs y        Interno   Alto        Alto           Gestionar de cerca
+estándares)
+Áreas dueñas del dato: Secretaría de Transporte      Interno   Alto        Alto           Gestionar de cerca
+(Movilidad) y Ministerio de Cultura
+Responsables de canales (Boti, BAX, miBA)            Interno   Alto        Alto           Gestionar de cerca
+Hacienda / Presupuesto                               Interno   Medio       Alto           Mantener satisfechos
+Comunas y áreas operativas de CABA                   Interno   Alto        Medio          Mantener informados
+Equipo UX/UI                                         Interno   Alto        Medio          Mantener informados
+Comunicación institucional                           Interno   Alto        Medio          Mantener informados
+Vecinos y usuarios de la plataforma (reportan y      Externo   Alto        Medio          Mantener informados
+validan)
+Prestadores de transporte público                    Externo   Medio       Medio          Mantener informados
+Proveedores tecnológicos                             Externo   Medio       Medio          Mantener informados
+Socios con oferta geolocalizada (Banco Ciudad, Pase  Externo   Medio       Bajo           Monitorear
+Cultural, DisfrutemosBA)
+
+7.2 Clasificación por interés e influencia
+•   Alta influencia / alto interés (gestionar de cerca): Sponsor institucional, Project Manager, equipos
+    de Tecnología y Desarrollo y de Datos y GIS, USIG/ASI, áreas dueñas del dato (Transporte y Cultura)
+    y responsables de canales. Participan en decisiones, validaciones, seguimiento y resolución de
+    bloqueos.
+•   Alta influencia / interés medio (mantener satisfechos): Hacienda/Presupuesto. Define la partida
+    que financia la plataforma, pero no participa del día a día. Se le informa de costos y desvíos.
+•           Influencia media / alto interés (mantener informados): comunas y áreas operativas, UX/UI,
+         Comunicación institucional y vecinos/usuarios. Requieren información frecuente, participación y
+    retroalimentación.
+•   Influencia media / interés medio (mantener informados): prestadores de transporte público y
+    proveedores tecnológicos, cuya participación depende de integraciones y actividades específicas.
+•   Baja influencia / interés medio (monitorear): socios con oferta geolocalizada, que se incorporan
+    mediante convenios y no son necesarios para el alcance inicial.
+
+
+
+
+Modernización del Mapa Interactivo de la Ciudad                                           Página 1
+
+7.3 Stakeholders críticos
+Son aquellos sin los cuales el proyecto no puede avanzar:
+• Sponsor institucional y Hacienda: aprueban las decisiones relevantes y sostienen el financiamiento.
+• Project Manager: coordina cronograma, cambios, riesgos y articulación entre equipos.
+• Tecnología y USIG/ASI: construyen la plataforma, el geocodificador y las integraciones.
+• Datos y GIS: desarrollan la capa geográfica común y aseguran la calidad de los datos.
+• Transporte y Cultura: aportan y validan la información de sus áreas.
+• Responsables de canales: definen la factibilidad de integrar Boti, BAX y miBA.
+• Vecinos y usuarios: son los destinatarios principales y alimentan los reportes y validaciones.
+
+7.4 Relación con el Canvas y el alcance
+La matriz está alineada con el Canvas y el Project Charter: incluye a las áreas dueñas del dato, a USIG e
+Innovación/ASI, a los canales (Boti, BAX, miBA) y a Hacienda, de quien depende el ingreso principal del
+proyecto. Transporte y Cultura se destacan por ser las fuentes de datos priorizadas; otras áreas dueñas
+del dato, como Educación, Salud y Espacio Público, se incorporan con el mismo tratamiento. Los socios
+con oferta geolocalizada (Banco Ciudad, Pase Cultural, DisfrutemosBA) son un tercer lado opcional que
+se suma mediante convenios; si se concretan, pasan a "gestionar de cerca". Sus contenidos deberán
+diferenciarse de la información oficial, y el vecino nunca paga por el servicio.
+
+
+
+
+
+
+
+
+
+
+Modernización del Mapa Interactivo de la Ciudad    Página 2
+
+8. Plan de Comunicación
+A partir de las estrategias definidas en la Matriz de Stakeholders, se establece qué se comunica, a quién,
+quién es responsable, con qué frecuencia y por qué canal. Los canales formales se utilizan para
+decisiones, aprobaciones y documentación, y los operativos para el seguimiento de tareas y la
+coordinación diaria.
+
+8.1 Matriz de comunicación
+Qué se comunica       Destinatarios                   Responsable           Frecuencia            Canal
+Avance general del    Sponsor, Hacienda y áreas       Project Manager       Quincenal             Informe + reunión de
+proyecto              involucradas                                                                seguimiento
+Cronograma y          Equipo de proyecto y Sponsor    Project Manager       Semanal               Gantt + reunión de
+tareas                                                                                            seguimiento
+Requerimientos y      Tecnología, Datos/GIS,          Project Manager +     Por hito              Reunión de revisión y
+diseño                UX/UI, Transporte y Cultura     UX/UI                                       aprobación
+Integraciones y       Tecnología, Datos/GIS,          Líder técnico         Semanal               Reunión técnica +
+APIs                  USIG/ASI y responsables de                                                  documentación
+                      Boti, BAX y miBA
+Calidad y             Datos/GIS, USIG/ASI,            Líder de Datos/GIS    Quincenal             Informe técnico
+disponibilidad de     Transporte y Cultura
+datos
+Riesgos               Sponsor y áreas involucradas    Project Manager       Quincenal o ante      Matriz de riesgos +
+                                                                            evento crítico        reunión
+Costos y reserva de   Sponsor y Hacienda              Project Manager       Mensual               Informe de costos
+contingencia
+Pruebas y criterios   Tecnología, UX/UI, áreas        Líder de QA/Testing   Por etapa de          Informe de testing
+de aceptación         involucradas y Sponsor                                pruebas
+Cambios de            Sponsor y áreas afectadas       Project Manager       Ante cada solicitud   Solicitud formal +
+alcance                                                                                           reunión
+Capacitación y        Comunas y áreas operativas,     Equipo de proyecto    Antes de              Capacitación +
+puesta en marcha      responsables de canales y                             implementar           manuales
+                      soporte
+Lanzamiento y         Vecinos y socios                Comunicación          Antes y durante el    Mapa web, Boti, BAX,
+novedades                                             institucional         lanzamiento           miBA y canales
+                                                                                                  institucionales
+Feedback y estado     Vecinos y usuarios              Comunicación          Durante pruebas y     Encuestas +
+de los reportes                                       institucional +       después del           notificaciones de estado
+                                                      Project Manager       lanzamiento           en el mapa
+Los líderes técnico, de Datos/GIS y de QA/Testing son roles del equipo de proyecto.
+
+8.2 Comunicación por etapa
+•   Inicio: presentación del proyecto, propósito, objetivos, alcance, roles y aprobación del Project Charter.
+•   Análisis y requerimientos: validación de necesidades, fuentes de datos, restricciones, integraciones
+    y criterios de aceptación.
+•   Diseño funcional y técnico: arquitectura, experiencia de usuario, modelo de reportes, integraciones y
+    aprobación del diseño.
+•   Desarrollo de componentes: avance, tareas, bloqueos y actualización del cronograma.
+
+
+Modernización del Mapa Interactivo de la Ciudad                                                   Página 3
+
+• Integración de fuentes y canales: estado de APIs, integración de Transporte y Cultura y
+   coordinación con Boti, BAX y miBA.
+• Pruebas y QA: resultados, errores, correcciones y validación de criterios de aceptación.
+• Implementación y despliegue: puesta en funcionamiento, capacitación, soporte inicial y
+   comunicación a vecinos.
+• Cierre: evaluación de resultados, documentación final, transferencia a los responsables operativos y
+   cierre formal.
+
+8.3 Principios de comunicación
+• Claridad: información comprensible y adecuada al rol del destinatario.
+• Oportunidad: la información llega a tiempo para decidir o actuar.
+• Trazabilidad: decisiones, aprobaciones y cambios quedan documentados.
+• Transparencia: se comunican avances, desvíos, riesgos y problemas relevantes.
+• Segmentación: el nivel de detalle y el canal se adaptan a cada stakeholder.
+• Formalidad en cambios: todo cambio de alcance, cronograma o presupuesto se registra mediante el
+   proceso correspondiente.
+
+8.4 Comunicaciones críticas
+Ante un evento que pueda afectar significativamente el alcance, cronograma, presupuesto, calidad o
+implementación, el Project Manager informa al Sponsor dentro de las 48 horas y coordina la comunicación
+con las áreas afectadas. Se consideran eventos críticos:
+• Indisponibilidad de una API o fuente de datos clave (Transporte, Cultura u otra área dueña del dato).
+• Imposibilidad de concretar una integración prevista con Boti, BAX o miBA.
+• Retrasos significativos respecto del cronograma aprobado.
+• Desvíos relevantes del presupuesto o necesidad de utilizar la reserva de contingencia.
+• Incidentes de seguridad que puedan comprometer la plataforma o los datos.
+• Incumplimiento de criterios de aceptación durante las pruebas.
+• Problemas de calidad o desactualización de datos que afecten la información publicada.
+La comunicación de una situación crítica debe incluir como mínimo: descripción del problema, impacto
+sobre el proyecto, alternativas disponibles, acciones de contingencia y decisión adoptada.
+
+
+
+
+
+
+
+
+
+
+    Modernización del Mapa Interactivo de la Ciudad    Página 4

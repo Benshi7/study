@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Índice — Repaso Estadística</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: "Fira Code"; src: local("Fira Code"); }
+  :root {
+    --paper: #16161d; --paper-raised: #1f1f28; --ink: #dcd7ba; --ink-dim: #a6a08a;
+    --line: #363646; --accent: #e6c384; --accent-dim: #957f4e;
+    --good: #98bb6c; --bad: #e46876; --code-bg: #16161d;
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Fira Code", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    height: 100vh;
+    overflow: hidden;
+  }
+  aside {
+    background: var(--paper-raised);
+    border-right: 1px solid var(--line);
+    overflow-y: auto;
+    padding: 1.75rem 1.4rem;
+  }
+  aside h1 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin: 0 0 0.15rem;
+    line-height: 1.2;
+  }
+  aside .sub {
+    color: var(--ink-dim);
+    font-size: 0.78rem;
+    margin: 0 0 1.6rem;
+    font-style: italic;
+  }
+  .block-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 1.5rem 0 0.6rem;
+  }
+  .block-label:first-of-type { margin-top: 0; }
+  nav a {
+    display: block;
+    padding: 0.55rem 0.7rem;
+    margin: 0.15rem 0;
+    border-radius: 4px;
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    line-height: 1.35;
+  }
+  nav a:hover { background: rgba(230, 195, 132, 0.07); border-color: var(--line); color: var(--ink); }
+  nav a.active { background: rgba(230, 195, 132, 0.11); border-color: var(--accent-dim); color: var(--accent); font-weight: 600; }
+  nav a .n { color: var(--accent-dim); margin-right: 0.4rem; }
+  nav a.active .n { color: var(--accent); }
+  nav a.ref { border-style: dashed; }
+  main { overflow: hidden; position: relative; }
+  iframe { width: 100%; height: 100%; border: none; background: var(--paper); }
+  .empty {
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; color: var(--ink-dim); font-family: var(--font-display); font-size: 1.1rem;
+  }
+  footer.meta {
+    margin-top: 2rem; padding-top: 1rem; border-top: 1px dashed var(--line);
+    font-size: 0.72rem; color: var(--ink-dim); line-height: 1.5;
+  }
+  @media (max-width: 720px) {
+    body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    aside { max-height: 40vh; }
+  }
+</style>
+</head>
+<body>
+
+<aside>
+  <h1>Repaso Estadística</h1>
+  <p class="sub">Final multiple choice · 8 días</p>
+
+  <div class="block-label">Bloque 01 · Probabilidad Básica</div>
+  <nav>
+    <a href="#" data-src="0001-independencia-vs-exclusion-mutua.html"><span class="n">01</span>Independencia vs. exclusión mutua</a>
+    <a href="#" data-src="0002-condicional-vs-conjunta.html"><span class="n">02</span>Condicional vs. conjunta</a>
+    <a href="#" data-src="0003-bayes-vs-probabilidad-total.html"><span class="n">03</span>Bayes vs. probabilidad total</a>
+    <a href="#" data-src="0004-exhaustivos-y-traduccion-enunciados.html"><span class="n">04</span>Exhaustivos y traducción de enunciados</a>
+  </nav>
+
+  <div class="block-label">Bloque 04 · Distribuciones Discretas</div>
+  <nav>
+    <a href="#" data-src="0005-normal-binomial-al-menos-uno.html"><span class="n">05</span>Normal + Binomial ("al menos uno")</a>
+    <a href="#" data-src="0006-binomial-vs-poisson-cuando-usar.html"><span class="n">06</span>Binomial vs. Poisson: cuál usar</a>
+  </nav>
+
+  <div class="block-label">Puente Descriptiva → Probabilidad</div>
+  <nav>
+    <a href="#" data-src="0007-frecuencia-y-probabilidad.html"><span class="n">07</span>De la frecuencia a la probabilidad</a>
+  </nav>
+
+  <div class="block-label">Unidad 5 · Distribuciones Continuas</div>
+  <nav>
+    <a href="#" data-src="0008-normal-y-estandarizacion.html"><span class="n">08</span>Normal y estandarización</a>
+  </nav>
+
+  <div class="block-label">Unidad 6 · Inferencia</div>
+  <nav>
+    <a href="#" data-src="0009-intervalos-de-confianza.html"><span class="n">09</span>Intervalos de confianza</a>
+    <a href="#" data-src="0010-regresion-y-correlacion.html"><span class="n">10</span>Regresión y correlación</a>
+  </nav>
+
+  <div class="block-label">Unidad 2 · Estadística Descriptiva</div>
+  <nav>
+    <a href="#" data-src="0011-medidas-de-posicion-y-forma.html"><span class="n">11</span>Medidas de posición y forma</a>
+  </nav>
+
+  <div class="block-label">Clases Gráficas</div>
+  <nav>
+    <a href="#" data-src="0013-tablas-de-contingencia.html"><span class="n">13</span>Tablas de contingencia (paso a paso)</a>
+    <a href="#" data-src="0014-que-distribucion-uso.html"><span class="n">14</span>¿Qué distribución uso? (mapa visual)</a>
+  </nav>
+
+  <div class="block-label">Mecanizar · con números y fx-991EX</div>
+  <nav>
+    <a href="#" data-src="0015-descriptiva-datos-agrupados.html"><span class="n">15</span>Descriptiva con datos agrupados</a>
+    <a href="#" data-src="0016-va-discreta-esperanza-varianza.html"><span class="n">16</span>VA discreta: E(X), Var(X), CV</a>
+    <a href="#" data-src="0017-binomial-poisson-calculo.html"><span class="n">17</span>Binomial y Poisson: el cálculo</a>
+    <a href="#" data-src="0018-normal-con-numeros.html"><span class="n">18</span>Normal con números</a>
+    <a href="#" data-src="0019-distribucion-muestral-tcl.html"><span class="n">19</span>Distribución muestral y TCL</a>
+    <a href="#" data-src="0020-proporcion-muestral-e-ic-proporcion.html"><span class="n">20</span>Proporción muestral e IC de p</a>
+    <a href="#" data-src="0021-ic-media-resueltos.html"><span class="n">21</span>IC para la media: resueltos</a>
+    <a href="#" data-src="0022-regresion-estilo-tp6.html"><span class="n">22</span>Regresión al estilo TP6</a>
+  </nav>
+
+  <div class="block-label">Repaso Integral</div>
+  <nav>
+    <a href="#" data-src="0012-simulacro-final.html"><span class="n">12</span>★ Simulacro Final (multiple choice)</a>
+  </nav>
+
+  <div class="block-label">Práctica</div>
+  <nav>
+    <a href="#" class="ref" data-src="../practice/index.html">★ Práctica interactiva (quiz, guiado, calculadora)</a>
+  </nav>
+
+  <div class="block-label">Referencia</div>
+  <nav>
+    <a href="#" class="ref" data-src="../reference/machete-final.html">★ Machete Final — 1 hoja por unidad</a>
+    <a href="#" class="ref" data-src="../reference/super-glosario.html">★ Super Glosario — Todo</a>
+    <a href="#" class="ref" data-src="../reference/glosario-probabilidad-basica.html">Glosario — Probabilidad Básica</a>
+  </nav>
+
+  <footer class="meta">
+    Las lecciones se cargan en el panel de la derecha — no hace falta abrir cada archivo por separado.<br><br>
+    Generado con <code>/teach</code>.
+  </footer>
+</aside>
+
+<main>
+  <div class="empty" id="empty-state">← Elegí una lección para empezar</div>
+  <iframe id="viewer" style="display:none;"></iframe>
+</main>
+
+<script>
+  const viewer = document.getElementById('viewer');
+  const empty = document.getElementById('empty-state');
+  const links = document.querySelectorAll('nav a');
+
+  function loadLesson(src, link) {
+    viewer.src = src;
+    viewer.style.display = 'block';
+    empty.style.display = 'none';
+    links.forEach(l => l.classList.remove('active'));
+    if (link) link.classList.add('active');
+    history.replaceState(null, '', '#' + src);
+  }
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      loadLesson(link.dataset.src, link);
+    });
+  });
+
+  // Restore last-viewed lesson from the URL hash, if present
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (hash) {
+    const match = Array.from(links).find(l => l.dataset.src === hash);
+    if (match) loadLesson(hash, match);
+  }
+</script>
+
+</body>
+</html>

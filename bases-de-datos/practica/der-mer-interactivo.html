@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Práctica · DER y MER interactivo</title>
+<link rel="stylesheet" href="../assets/course.css">
+<link rel="stylesheet" href="../assets/der.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Práctica · Unidad 2 · Diseño Conceptual</p>
+    <h1 class="masthead__title">DER y MER: dibujarlo y leerlo</h1>
+    <p class="masthead__standfirst">
+      La notación de la cátedra, las cuatro combinaciones de especialización, y el
+      pasaje a tablas sobre el DER de Farmacia resuelto por el docente.
+      Todo interactivo: no se lee, se hace.
+    </p>
+    <p class="masthead__meta">
+      <span>~45 minutos</span>
+      <span>unidad 2.pdf · Rta-TP-Farmacia</span>
+      <span>Mitad práctica del parcial</span>
+    </p>
+  </header>
+
+  <div class="callout callout--key">
+    <p>
+      <b>Por qué esta página existe.</b> El docente avisó que la notación va
+      <b>de memoria</b>, porque en el parcial no vas a tener ERDPlus dibujando por vos.
+      Y dijo que la <b>especialización es clave</b>: exclusiva o solapada, y la parte de
+      exclusividad. Las dos cosas están acá, y las dos se practican clickeando, no leyendo.
+    </p>
+  </div>
+
+  <h2><span class="num">01</span>La notación de la cátedra</h2>
+
+  <p>
+    Primero mirá los símbolos. Son diez y no hay atajo: o los tenés en la mano el jueves,
+    o dibujás cualquier cosa. Esta es la simbología de
+    <code>unidad 2.pdf</code>, que es la que corrige el docente.
+  </p>
+
+  <div class="dx" data-glosario></div>
+
+  <div class="callout callout--trap">
+    <p>
+      <b>Los dos que se confunden siempre.</b> <b>Compuesto</b> es UN valor partido en
+      pedazos (una dirección = calle + número). <b>Multivaluado</b> son VARIOS valores del
+      mismo tipo (tres teléfonos). Se parecen en el dibujo y terminan en lugares
+      opuestos: el compuesto se aplana en columnas de la misma tabla, el multivaluado
+      se va a una tabla propia.
+    </p>
+  </div>
+
+  <p>
+    Ahora cerrá el glosario mentalmente y respondé. Las opciones se barajan solas en
+    cada pregunta.
+  </p>
+
+  <div class="dx" data-notacion>
+<script type="application/json" class="dx__datos">
+{
+  "etiqueta": "Drill · Simbología",
+  "consigna": "Elegí el símbolo correcto. Una sola oportunidad por pregunta.",
+  "items": [
+    {
+      "pregunta": "Un empleado puede tener varios teléfonos. ¿Cómo dibujás Teléfono?",
+      "opciones": ["atributo", "atributoMulti", "atributoDerivado"],
+      "etiquetas": { "atributo": "Teléfono", "atributoMulti": "Teléfono", "atributoDerivado": "Teléfono" },
+      "correcta": "atributoMulti",
+      "porque": "Elipse <b>doble</b>. Y fijate cómo lo llama la cátedra: <i>\"se lo suele denominar también <b>grupo repetitivo</b>, grupo multivalor o atributo no atómico\"</i>. Ese nombre es el puente con la 1FN — es exactamente lo que se repite para la misma clave primaria."
+    },
+    {
+      "pregunta": "La antigüedad del empleado sale de su fecha de ingreso. ¿Cómo la dibujás?",
+      "opciones": ["atributoDerivado", "atributo", "atributoMulti"],
+      "etiquetas": { "atributoDerivado": "Antigüedad", "atributo": "Antigüedad", "atributoMulti": "Antigüedad" },
+      "correcta": "atributoDerivado",
+      "porque": "Elipse <b>punteada</b>. Acá está la trampa nº1: el derivable <b>SÍ se dibuja</b> en el DER y <b>NO pasa</b> a las tablas. La resolución oficial de Farmacia la dibuja y la marca <code>Derived: true</code> sobre <code>Propio</code>, al lado de <code>Fecha Ingreso</code>. Dibujarla está bien; guardarla, no."
+    },
+    {
+      "pregunta": "Id_Empleado identifica a cada empleado. ¿Cómo se marca en el DER?",
+      "opciones": ["atributoClave", "atributo", "atributoCompuesto"],
+      "etiquetas": { "atributoClave": "Id_Empleado", "atributo": "Id_Empleado", "atributoCompuesto": "Id_Empleado" },
+      "correcta": "atributoClave",
+      "porque": "Elipse con el nombre <b>subrayado</b>. Y se sigue subrayando en el MER: no marcar las claves primarias es el <b>error nº2</b> que el docente ve en todos los exámenes."
+    },
+    {
+      "pregunta": "De cada empleado se guarda la dirección, y sólo interesan calle y número.",
+      "opciones": ["atributoCompuesto", "atributoMulti", "atributo"],
+      "etiquetas": { "atributoCompuesto": "Dirección", "atributoMulti": "Dirección", "atributo": "Dirección" },
+      "correcta": "atributoCompuesto",
+      "porque": "Compuesto: una elipse con sus componentes colgando. <b>Un</b> valor partido en pedazos, no varios valores. La resolución oficial lo marca <code>Composite: true</code> con <code>Calle</code> y <code>Nro</code> colgando. Al pasar a tablas se aplana en dos columnas de <code>Empleado</code>: no genera tabla propia."
+    },
+    {
+      "pregunta": "Un renglón de factura no existe sin su factura, y no puede identificarse solo.",
+      "opciones": ["entidadDebil", "entidad", "relacionDebil"],
+      "etiquetas": { "entidadDebil": "Renglón", "entidad": "Renglón" },
+      "correcta": "entidadDebil",
+      "porque": "Rectángulo <b>doble</b>. Textual de la cátedra: <i>\"no posee los suficientes atributos para formar su clave primaria, por lo que debe complementarla heredando la clave primaria de la entidad de la que depende\"</i>. Esa herencia es lo que la distingue de una entidad fuerte que simplemente tiene una foránea."
+    },
+    {
+      "pregunta": "Un curso puede ser requisito de otro curso. ¿Con qué símbolo va Requisito?",
+      "opciones": ["relacion", "relacionDebil", "isa"],
+      "etiquetas": { "relacion": "Requisito", "relacionDebil": "Requisito" },
+      "correcta": "relacion",
+      "porque": "Rombo común. Que la relación vuelva sobre la misma entidad la hace <b>unaria</b> (grado uno), y el grado es cuántas entidades vincula — no cambia el dibujo del rombo. El rombo doble es para relación <b>débil</b>, que es otra cosa."
+    }
+  ]
+}
+</script>
+  </div>
+
+  <h2><span class="num">02</span>Especialización: las cuatro combinaciones</h2>
+
+  <p>
+    Esto es lo que el docente marcó como clave, y acá su notación
+    <b>no es la de Elmasri</b>. Nada de una letra <code>d</code> o <code>o</code> dentro de
+    un círculo. La cátedra lo dice así, en <code>unidad 2.pdf</code>:
+  </p>
+
+  <blockquote class="callout callout--catedra">
+    <p>"<b>Parcial</b>: puede haber más empleados. <b>Se grafica sin círculo.</b>"</p>
+    <p>"<b>Total</b>: sólo hay 2 tipos de fichas. <b>Se grafica con un círculo.</b>"</p>
+    <p>"<b>Exclusiva</b>: un empleado sólo realiza una tarea. <b>Se grafica con elipse</b>" —
+       el arco que cruza las patas de los subtipos.</p>
+  </blockquote>
+
+  <p>
+    Movete por los dos ejes y mirá cómo cambia el dibujo, qué ejemplo usó la cátedra para
+    esa combinación, y —lo que más te va a servir— <b>cuántos estados distintos puede tener
+    un registro del supertipo</b>. Movés el slider y contás con más subtipos.
+  </p>
+
+  <div class="dx" data-especializacion>
+<script type="application/json" class="dx__datos">
+{
+  "etiqueta": "Explorador · Especialización",
+  "super": "Empleado",
+  "subs": ["Farmacéutico", "Propio", "Cadete", "Repositor"],
+  "casos": {
+    "te": {
+      "ejemplo": "<b>Ficha</b> → Ficha_autor / Ficha_tema. <i>\"Sólo hay 2 tipos de fichas\"</i> (círculo) y <i>\"una ficha es del tipo autor o del tipo tema\"</i> (arco).",
+      "regla": "Toda ocurrencia del supertipo está en EXACTAMENTE UN subtipo. Ni ninguno, ni dos. Es la más restrictiva, y es la que usa la resolución oficial del TP1 para Empleado → Farmacéutico / Propio.",
+      "formula": "k"
+    },
+    "pe": {
+      "ejemplo": "<b>Empleado_Restaurante</b> → Camarero / Cocinero / Lava_platos. <i>\"Puede haber más empleados\"</i> (sin círculo) y <i>\"un empleado sólo realiza una tarea\"</i> (arco).",
+      "regla": "Cada ocurrencia está en UNO o en NINGUNO. Puede haber empleados que no sean de ninguno de los tipos listados.",
+      "formula": "k + 1"
+    },
+    "ts": {
+      "ejemplo": "<b>Equipo_futbol</b> → Delantero / Defensa / Portero / Centrocampistas. <i>\"Sólo puede haber esos tipos de jugadores\"</i> (círculo) y <i>\"un jugador puede jugar de delantero y de defensor\"</i> (sin arco).",
+      "regla": "Cada ocurrencia está en AL MENOS UNO, y puede estar en varios a la vez. No sobra nadie, pero se pueden superponer.",
+      "formula": "2^k − 1"
+    },
+    "ps": {
+      "ejemplo": "<b>Participantes_Pelicula</b> → Productor / Director / Actores. <i>\"Puede haber más participantes\"</i> (sin círculo) y <i>\"un participante puede ser actor y director\"</i> (sin arco).",
+      "regla": "Cualquier combinación, incluida la vacía. Es la más laxa de las cuatro: el supertipo no impone nada.",
+      "formula": "2^k"
+    }
+  }
+}
+</script>
+  </div>
+
+  <div class="callout callout--key">
+    <p>
+      <b>El atajo para el parcial.</b> Fijate qué hace la propia cátedra en la slide
+      "Simbología ISA": dibuja el diagrama <b>y escribe al lado, en palabras,
+      "Total, Exclusiva"</b>. Copiale eso. El deck mezcla más de una notación, así que
+      el símbolo solo es discutible — el símbolo <b>más</b> el rótulo escrito no lo es.
+      Son cuatro palabras que te blindan la pregunta.
+    </p>
+  </div>
+
+  <h2><span class="num">03</span>Del DER a las tablas</h2>
+
+  <div class="callout callout--catedra">
+    <p>
+      <b>De dónde sale cada cosa, porque importa.</b> La única resolución de cátedra que
+      tenemos de Farmacia es <code>raw/Rta-TP-Farmacia.erdplus</code>, y es
+      <b>sólo el DER conceptual</b> — el archivo declara <code>diagramType: 1</code>.
+      <b>No existe un esquema relacional oficial de este TP.</b>
+    </p>
+    <p>
+      Las tablas de más abajo las derivamos nosotros aplicando las reglas de pasaje sobre
+      ese DER. Son defendibles, no son "la respuesta". Y el MER que circula en
+      <code>ejercicios.pdf</code> es apunte de un alumno: en dos puntos
+      <b>no coincide con la resolución oficial</b>.
+    </p>
+  </div>
+
+  <p>
+    Para cada elemento del DER oficial, decidí qué le pasa al convertirlo a tablas.
+    Todo lo que se afirma acá está marcado en el archivo <code>.erdplus</code>.
+  </p>
+
+  <div class="dx" data-mapeo>
+<script type="application/json" class="dx__datos">
+{
+  "etiqueta": "Drill · Pasaje DER → tablas",
+  "consigna": "Nueve elementos del DER oficial de Farmacia. ¿En qué se convierte cada uno?",
+  "reglas": [
+    { "id": "propia",     "texto": "Sale a una tabla propia" },
+    { "id": "columnas",   "texto": "Se aplana en columnas de su tabla" },
+    { "id": "desaparece", "texto": "No va a ninguna tabla" },
+    { "id": "subtipos",   "texto": "Una tabla por subtipo, con la PK del supertipo" },
+    { "id": "asociativa", "texto": "Tabla asociativa, las FK forman la PK" },
+    { "id": "fk_n",       "texto": "Clave foránea del lado N" },
+    { "id": "fk_11",      "texto": "Clave foránea en uno de los dos lados" }
+  ],
+  "items": [
+    {
+      "elemento": "<code>Telefono</code> del empleado",
+      "contexto": "el DER oficial lo marca Multivalued: true",
+      "regla": "propia",
+      "porque": "Un multivaluado nunca entra como columna: rompe la 1FN. Sale a <code>Telefono(<u>Id_Empleado</u>, <u>Telefono</u>)</code>, con las dos en la clave, porque un número suelto no identifica nada."
+    },
+    {
+      "elemento": "<code>Direccion</code> del empleado",
+      "contexto": "Composite: true, con Calle y Nro colgando",
+      "regla": "columnas",
+      "porque": "<code>Empleado</code> lleva <code>Calle</code> y <code>Nro</code> sueltas. Un valor partido en pedazos se aplana; no genera tabla. Ésta es la diferencia práctica con el multivaluado de arriba."
+    },
+    {
+      "elemento": "<code>Antoguedad</code> del personal propio",
+      "contexto": "Derived: true — el typo es del archivo original",
+      "regla": "desaparece",
+      "porque": "La cátedra la dibujó en el DER y la marcó como derivada, que es lo correcto. Al pasar a tablas se elimina: se calcula desde <code>Fecha Ingreso</code>. Es el <b>error nº1</b> del docente, y acá lo tenés con su propia marca en el archivo."
+    },
+    {
+      "elemento": "<code>Empleado</code> ES <code>Farmaceutico</code> / <code>Propio</code>",
+      "contexto": "totalSpecialization: true, supertypeDefinition: Disjointed",
+      "regla": "subtipos",
+      "porque": "Total y exclusiva, declarado así en el archivo. Cada subtipo es una tabla cuya PK es la del supertipo: <code>Farmaceutico(<u>Id_Empleado</u>, ...)</code> y <code>Propio(<u>Id_Empleado</u>, Fecha_Ingreso)</code>. Esa PK es primaria y foránea al mismo tiempo."
+    },
+    {
+      "elemento": "<code>Tiene</code>: Medicamento × Presentación, con <code>Cantidad</code>",
+      "contexto": "N:N con atributo propio colgando del rombo",
+      "regla": "asociativa",
+      "porque": "Las N:N no sobreviven al modelo normalizado. Las dos foráneas forman la clave y <code>Cantidad</code> cuelga de ahí. <b>Ojo con este</b>: ver la discusión abajo, porque el enunciado y el DER no parecen decir lo mismo."
+    },
+    {
+      "elemento": "<code>Stock</code>: Farmacia × Medicamento",
+      "contexto": "N:N, y en el DER oficial no tiene atributos",
+      "regla": "asociativa",
+      "porque": "Misma regla, aunque no tenga atributo propio: la tabla existe igual, sólo que con las dos foráneas y nada más. Una N:N siempre da tabla."
+    },
+    {
+      "elemento": "<code>Ubica</code>: Ciudad 1 — N Farmacia",
+      "contexto": "maxCardinality One / Many",
+      "regla": "fk_n",
+      "porque": "<code>Farmacia</code> lleva <code>Id_Ciudad</code>. Nunca al revés: <code>Ciudad</code> tendría que guardar muchas farmacias en una celda, que es un multivaluado y rompe la 1FN."
+    },
+    {
+      "elemento": "<code>Crea</code>: Laboratorio 1 — N Medicamento",
+      "contexto": "un medicamento lo produce un único laboratorio",
+      "regla": "fk_n",
+      "porque": "<code>Medicamento</code> lleva <code>Id_laboratorio</code>. La foránea siempre va del lado que tiene muchos."
+    },
+    {
+      "elemento": "<code>Tiene</code>: Ciudad 1 — 1 Farmacéutico",
+      "contexto": "maxCardinality One / One — por cada ciudad, un único farmacéutico",
+      "regla": "fk_11",
+      "porque": "En un 1:1 podés elegir el lado. Conviene ponerla donde la participación sea total, para no llenar de nulos la otra tabla: acá, <code>Farmaceutico(Id_Ciudad)</code>."
+    }
+  ],
+  "tituloEsquema": "Las once tablas que salen del DER oficial (derivadas, no oficiales)",
+  "esquema": [
+    "Ciudad (<u>Id_Ciudad</u>, Ciudad_Nombre)",
+    "Laboratorio (<u>Id_laboratorio</u>, Laboratorio_Nombre)",
+    "Presentacion (<u>Id_presentacion</u>, Presentacion_Desc)",
+    "Farmacia (<u>Id_Farmacia</u>, Farmacia_Nombre, <i>Id_Ciudad</i>)",
+    "Medicamento (<u>Id_Medicamento</u>, Medicamento_Nombre, <i>Id_laboratorio</i>)",
+    "Empleado (<u>Id_Empleado</u>, Emp_Nombre, Calle, Nro, <i>Id_Farmacia</i>)",
+    "Telefono (<u><i>Id_Empleado</i></u>, <u>Telefono</u>)",
+    "Farmaceutico (<u><i>Id_Empleado</i></u>, Fecha_Graduacion, <i>Id_Ciudad</i>)",
+    "Propio (<u><i>Id_Empleado</i></u>, Fecha_Ingreso)",
+    "Med_Presentacion (<u><i>Id_Medicamento</i></u>, <u><i>Id_presentacion</i></u>, Cantidad)",
+    "Stock (<u><i>Id_Farmacia</i></u>, <u><i>Id_Medicamento</i></u>)"
+  ]
+}
+</script>
+  </div>
+
+  <p>
+    Subrayado = clave primaria. En <i>azul</i>, las foráneas. Once tablas, y ninguna
+    sin clave: ése es el detector de errores del que hablamos.
+  </p>
+
+  <div class="callout callout--trap">
+    <p>
+      <b>El punto en disputa, y es el más instructivo de todo el TP.</b>
+      El enunciado dice: <i>"por cada presentación del medicamento se guarda el
+      laboratorio al que pertenece y la cantidad en existencia (stock) del mismo
+      <b>en cada farmacia</b>"</i>.
+    </p>
+    <p>
+      Si el stock es <b>por farmacia</b>, entonces <code>Cantidad</code> depende de tres
+      cosas: medicamento, presentación y farmacia. Pero en el DER oficial
+      <code>Cantidad</code> cuelga de <code>Tiene</code>, que sólo une medicamento con
+      presentación — la farmacia no participa. Con ese modelo <b>no podés responder
+      cuánto hay de cada cosa en cada sucursal</b>, que es justo lo que el TP pide.
+    </p>
+    <p>
+      El apunte de <code>ejercicios.pdf</code> lo resuelve con un <code>Stock</code>
+      ternario que junta las tres. Es más fiel al enunciado. <b>No sabemos cuál
+      quiere el docente</b>, y ése es exactamente el tipo de cosa que el TP4 te dice que
+      hagas: <i>"si surgen dudas respecto a otras condiciones, consultar con el docente y
+      registrar por escrito"</i>. Preguntale antes del jueves.
+    </p>
+  </div>
+
+  <h2><span class="num">04</span>Control</h2>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      Dibujaste la antigüedad con elipse punteada en el DER. Al pasar a tablas,
+      ¿qué hacés con ella?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+            data-feedback="No. La elipse punteada indica justamente que NO se guarda. Dibujarla y después guardarla es contradecirte a vos mismo en la misma hoja.">La paso como columna de Propio</button></li>
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Correcto. Se dibuja en el DER y desaparece al pasar a tablas. La resolución oficial de Farmacia la marca Derived: true justamente para eso.">No la paso: se calcula desde Fecha_Ingreso</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No existe esa regla. Los derivables no generan tablas: generan cálculos. El que va a tabla propia es el multivaluado.">La saco a una tabla propia</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      Una especialización <b>parcial y solapada</b> con 3 subtipos. ¿Cuántos estados
+      distintos puede tener un registro del supertipo?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+            data-feedback="Ésa es total y exclusiva: exactamente un subtipo por registro, k opciones. La parcial y solapada es mucho más laxa.">3, uno por subtipo</button></li>
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Correcto: 2³ = 8. Parcial permite el conjunto vacío y solapada permite cualquier combinación, así que son todos los subconjuntos de los 3 subtipos.">8, todas las combinaciones posibles</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="7 es total y solapada: 2³ − 1, porque total prohíbe el conjunto vacío. Acá es parcial, así que 'ninguno' también vale.">7, todas menos la vacía</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      ¿Cuál es la diferencia práctica entre un atributo <b>compuesto</b> y uno
+      <b>multivaluado</b> al pasar a tablas?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Exacto. Dirección se aplana en Calle y Numero dentro de Empleado; Teléfono sale a Telefono(telefono, Id_Empleado). Mismo DER, destinos opuestos.">El compuesto se aplana, el multivaluado sale</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="Al revés. El multivaluado es el que rompe la 1FN y necesita tabla propia; el compuesto se resuelve con más columnas en la misma tabla.">El compuesto sale, el multivaluado se aplana</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No: sólo uno de los dos genera tabla. El compuesto se resuelve con más columnas en la misma tabla, y por eso Empleado se queda con Calle y Nro adentro.">Los dos generan una tabla propia</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">Recordá</span>
+    <p class="quiz__q">
+      En una relación <code>Ciudad</code> 1 — N <code>Farmacia</code>, ¿dónde va la
+      clave foránea, y por qué no puede ir del otro lado?
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt"
+            data-feedback="No. Una relación 1:N no necesita tabla intermedia: eso es sólo para las N:N. Agregarla no está mal del todo, pero es una tabla de más y el docente lo marca.">En una tabla intermedia Ciudad_Farmacia</button></li>
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Correcto. Farmacia lleva Id_Ciudad. Del otro lado, Ciudad necesitaría guardar muchas farmacias en una columna: eso es un atributo multivaluado y rompe la 1FN.">En Farmacia, porque si no Ciudad sería multivaluada</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No es indistinto. Poner la foránea del lado 1 obliga a guardar varios valores en una celda, que es exactamente lo que la 1FN prohíbe.">En cualquiera de las dos, es indistinto</button></li>
+    </ul>
+  </div>
+
+  <h2><span class="num">05</span>Y lo que dijiste que ya sabías</h2>
+
+  <p>
+    Dijiste que manejás ACID y no me lo escribiste. Ya pasó dos veces esta semana que
+    algo "se entendía" y estaba en cero. Cuatro preguntas, treinta segundos, y lo
+    dejamos cerrado de verdad.
+  </p>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">ACID</span>
+    <p class="quiz__q">
+      "Una transacción es una unidad atómica de procesamiento; o se ejecuta en su
+      totalidad o no se ejecuta en absoluto."
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Atomicidad. La palabra que la delata es 'totalidad': todo o nada, no hay mitades.">Atomicidad</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. La consistencia habla de llevar la base de un estado válido a otro, no de ejecutarse entera.">Conservación de la consistencia</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. La durabilidad es sobre lo que pasa DESPUÉS de confirmar: que los cambios persistan.">Durabilidad</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">ACID</span>
+    <p class="quiz__q">
+      "Su ejecución completa lleva la base de datos de un estado consistente a otro."
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Conservación de la consistencia. Antes válida, después válida: la transacción no deja la base en un estado intermedio roto.">Conservación de la consistencia</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. El aislamiento es sobre no interferir con otras transacciones simultáneas.">Aislamiento</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. La atomicidad es todo o nada; ésta habla del estado en que queda la base.">Atomicidad</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">ACID</span>
+    <p class="quiz__q">
+      "Debe aparecer como si se ejecutara aislada, sin interferir con otras transacciones
+      simultáneas."
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Aislamiento. La palabra clave es 'simultáneas': es la única de las cuatro que habla de concurrencia.">Aislamiento</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. La consistencia habla de estados válidos, no de otras transacciones corriendo al mismo tiempo.">Conservación de la consistencia</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. La durabilidad es sobre sobrevivir a un fallo, no sobre convivir con otras transacciones.">Durabilidad</button></li>
+    </ul>
+  </div>
+
+  <div class="quiz" data-quiz>
+    <span class="quiz__label">ACID</span>
+    <p class="quiz__q">
+      "Los cambios de una transacción confirmada persisten, y no se pierden por un fallo."
+    </p>
+    <ul class="quiz__options">
+      <li><button class="quiz__opt" data-correct
+            data-feedback="Durabilidad. Las dos palabras que la delatan: 'confirmada' y 'fallo'. Una vez que dijiste commit, ni un corte de luz te lo saca.">Durabilidad</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. La atomicidad es sobre ejecutarse entera o nada; ésta es sobre lo que pasa una vez confirmada.">Atomicidad</button></li>
+      <li><button class="quiz__opt"
+            data-feedback="No. El aislamiento es sobre transacciones simultáneas, no sobre sobrevivir a un fallo.">Aislamiento</button></li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <p>
+      <b>Soy tu profe acá.</b> Todo esto se clickea, y el jueves no vas a clickear nada.
+      Cuando termines: agarrá una hoja en blanco, tapá la pantalla, y dibujá de memoria el
+      DER de Farmacia entero — con la especialización rotulada en palabras y las diez
+      tablas con sus claves subrayadas. Si te sale eso, la mitad práctica está.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="normalizacion-interactiva.html">Práctica · Normalización</a>
+    <a href="../CURRICULUM.md">Plan de clases</a>
+    <a href="../lessons/0010-razon-de-cardinalidad.html">Lección 0010 · Cardinalidad</a>
+  </nav>
+
+</main>
+
+<script src="../assets/der.js"></script>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

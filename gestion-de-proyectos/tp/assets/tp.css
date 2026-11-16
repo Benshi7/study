@@ -1,0 +1,105 @@
+@import url("tp-nav.css");
+
+/* Extra styles for the shareable tp/ folder only (forms, voting, tracker, guides).
+   Uses the tokens from course.css, so it follows the light/dark toggle. Lives only in tp/assets/. */
+
+/* ── Buttons and form controls ── */
+.btn {
+  font-family: var(--sans); font-size: .78rem; font-weight: 600; cursor: pointer;
+  background: var(--accent); color: var(--on-accent); border: 1px solid var(--accent);
+  border-radius: 8px; padding: .5rem .9rem; line-height: 1.2;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn.secondary { background: transparent; color: var(--accent-ink); }
+.btn.danger { background: transparent; color: var(--bad); border-color: var(--bad); }
+.btn-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0; }
+
+.field input[type="text"], .field input[type="number"], .field textarea, .field select {
+  font: inherit; font-size: .9rem; width: 100%; max-width: 100%;
+  background: var(--card); color: var(--fg);
+  border: 1px solid var(--rule); border-radius: 6px; padding: .45rem .6rem;
+}
+.field textarea { min-height: 5rem; resize: vertical; line-height: 1.4; }
+.field { display: block; margin: .6rem 0; font-family: var(--sans); font-size: .75rem; color: var(--muted); }
+.field > span { display: block; margin-bottom: .2rem; font-weight: 600; }
+.field-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .8rem; }
+.hint { font-size: .85rem; color: var(--muted); }
+
+/* ── Voting ── */
+.voter-bar {
+  position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 2px solid var(--accent);
+  padding: .6rem 0; margin: 0 0 1rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; align-items: end;
+}
+.voter-bar .meter { font-family: var(--sans); font-size: .72rem; color: var(--muted); white-space: nowrap; }
+
+.decision {
+  border: 1px solid var(--rule); border-left: 4px solid var(--violet); border-radius: 0 10px 10px 0;
+  background: var(--card); padding: 1rem 1rem .6rem; margin: 1.2rem 0; scroll-margin-top: 5rem;
+}
+.decision.is-target { outline: 3px solid var(--violet); outline-offset: 2px; }
+.decision h3 { margin: 0 0 .3rem; color: var(--fg); font-size: 1.02rem; }
+.decision .ctx { font-size: .92rem; margin: .3rem 0 .6rem; }
+.decision .meta-line { font-family: var(--sans); font-size: .68rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: .4rem; }
+.opt {
+  display: block; border: 1px solid var(--rule); border-radius: 8px; padding: .6rem .8rem; margin: .5rem 0; cursor: pointer;
+}
+.opt:hover { border-color: var(--accent); }
+.opt.is-checked { border-color: var(--accent); background: var(--accent-soft); }
+.opt input { margin-right: .5rem; accent-color: var(--accent); }
+.opt .label { font-weight: 600; }
+.opt .pc { display: block; font-size: .82rem; color: var(--muted); margin: .25rem 0 0 1.5rem; }
+.decision .reason { margin: .6rem 0; }
+
+.results { margin-top: 1rem; }
+.result-card { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); padding: .8rem 1rem; margin: 1rem 0; }
+.result-card h4 { margin: 0 0 .5rem; font-family: var(--sans); font-size: .95rem; }
+.bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem .6rem; margin: .5rem 0; font-size: .85rem; }
+.bar .track { grid-column: 1 / -1; height: .7rem; background: var(--accent-soft); border: 1px solid var(--rule); border-radius: 99px; overflow: hidden; }
+.bar .fill { display: block; height: 100%; background: var(--accent); }
+.bar.is-winner .fill { background: var(--violet); }
+.bar .who { grid-column: 1 / -1; font-size: .78rem; color: var(--muted); margin-top: -.1rem; }
+.status-line { font-family: var(--sans); font-size: .75rem; margin: .4rem 0 0; }
+.errors { border-left: 4px solid var(--bad); background: var(--bad-soft); padding: .6rem .9rem; border-radius: 0 8px 8px 0; font-size: .88rem; margin: .8rem 0; }
+.errors ul { margin: .3rem 0 0; padding-left: 1.2rem; }
+.reasons { font-size: .82rem; margin: .5rem 0 0; padding-left: 1.1rem; }
+
+/* ── Tracker ── */
+.overall { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .8rem; align-items: center; margin: 1rem 0; }
+.overall .pct { font-family: var(--sans); font-weight: 700; font-size: 1.8rem; color: var(--accent-ink); }
+.section-card {
+  border: 1px solid var(--rule); border-top: 4px solid var(--accent); border-radius: 10px; background: var(--card);
+  padding: .8rem 1rem; margin: 1rem 0;
+}
+.section-card[data-status="listo"] { border-top-color: var(--ok); }
+.section-card[data-status="sin-empezar"] { border-top-color: var(--rule); }
+.section-card h3 { margin: 0 0 .2rem; color: var(--fg); font-size: 1rem; }
+.section-card .deps { font-family: var(--sans); font-size: .72rem; color: var(--muted); margin: 0 0 .6rem; }
+.checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .3rem .8rem; margin: .6rem 0 0; font-size: .85rem; }
+.checks label { display: flex; gap: .4rem; align-items: flex-start; }
+.stamp { font-family: var(--sans); font-size: .68rem; color: var(--muted); margin: .4rem 0 0; }
+.checklist-box li { list-style: none; margin: .4rem 0; }
+.checklist-box ul { padding-left: 0; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
+
+/* ── Guides ── */
+pre.tpl {
+  white-space: pre; overflow-x: auto; font-size: .76rem; line-height: 1.45;
+  background: var(--card); color: var(--fg); border: 1px solid var(--rule); border-radius: 8px; padding: .8rem 1rem; margin: .6rem 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.pair .connect { margin: .5rem 0; }
+.tag-propuesta {
+  display: inline-block; font-family: var(--sans); font-size: .62rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--violet); background: var(--violet-soft); border: 1px solid var(--violet); border-radius: 99px; padding: .05rem .5rem; white-space: nowrap;
+}
+.todo-list li { margin: .3rem 0; }
+.decisions-here { border: 1px dashed var(--violet); border-radius: 8px; padding: .6rem 1rem; margin: 1.2rem 0; }
+.decisions-here ul { margin: .3rem 0 0; }
+
+@media (max-width: 30rem) {
+  .voter-bar { grid-template-columns: 1fr; }
+}
+@media print {
+  .btn-row, .voter-bar { display: none; }
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Cardinalidad en el DER</title>
+<link rel="stylesheet" href="../assets/course.css">
+<script src="../assets/theme.js"></script>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="masthead__kicker">Referencia 01 · Para imprimir</p>
+    <h1 class="masthead__title">Cardinalidad en el DER</h1>
+    <p class="masthead__standfirst">
+      Hoja de consulta rápida. Todo verificado contra Elmasri &amp; Navathe cap. 3
+      y contra la resolución oficial del TP1.
+    </p>
+  </header>
+
+  <h2><span class="num">A</span>Las dos notaciones, lado a lado</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Razón de cardinalidad</th>
+          <th>Par (mín, máx)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Qué se escribe</b></td>
+          <td><code>1</code>, <code>M</code> o <code>N</code> en cada tramo</td>
+          <td><code>(mín, máx)</code> en cada tramo</td>
+        </tr>
+        <tr>
+          <td><b>Cómo se lee</b></td>
+          <td><b>Cruzado.</b> Cuenta la entidad de al lado, por cada una de la del otro extremo.</td>
+          <td><b>En el lugar.</b> Cuenta en cuántas instancias de la relación participa la entidad de al lado.</td>
+        </tr>
+        <tr>
+          <td><b>Participación</b></td>
+          <td>Aparte: línea simple = parcial, línea doble = total</td>
+          <td>Incluida: <code>mín = 0</code> parcial, <code>mín &gt; 0</code> total</td>
+        </tr>
+        <tr>
+          <td><b>Precisión</b></td>
+          <td>Menor. No expresa mínimos distintos de 0 y 1.</td>
+          <td>Mayor, y sirve para relaciones de cualquier grado.</td>
+        </tr>
+        <tr>
+          <td><b>Qué usa la cátedra</b></td>
+          <td><b>Esta.</b> ERDPlus, sólo <code>maxCardinality</code>.</td>
+          <td>No la exige. Aparece en Elmasri.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout--key">
+    <span class="callout__label">El cruce, en un ejemplo</span>
+    <p>
+      Para <code>Laboratorio —Crea— Medicamento</code>, del lado <b>Laboratorio</b> la razón
+      escribe <code>1</code> y el par escribe <code>(1,N)</code>. No se contradicen: el
+      <code>1</code> cuenta laboratorios por medicamento, el <code>(1,N)</code> cuenta en
+      cuántos <i>Crea</i> participa un laboratorio.
+    </p>
+  </div>
+
+  <h2><span class="num">B</span>Las tres razones binarias</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Razón</th>
+          <th>Se lee</th>
+          <th>Ejemplo del TP1 Farmacia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>1 : 1</code></td>
+          <td>Una de cada lado, como máximo.</td>
+          <td><b>Ciudad : Farmacéutico</b> — cada ciudad tiene un único farmacéutico.</td>
+        </tr>
+        <tr>
+          <td><code>1 : N</code></td>
+          <td>Una del primero, muchas del segundo.</td>
+          <td><b>Laboratorio : Medicamento</b>, <b>Ciudad : Farmacia</b>,
+              <b>Farmacia : Empleado</b>.</td>
+        </tr>
+        <tr>
+          <td><code>M : N</code></td>
+          <td>Muchas de cada lado.</td>
+          <td><b>Medicamento : Presentación</b>, <b>Farmacia : Medicamento</b> (Stock).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Al nombrar una razón, <b>decí siempre el orden</b>.
+    <code>Laboratorio : Medicamento = 1 : N</code> y
+    <code>Medicamento : Laboratorio = N : 1</code> son la misma restricción escrita al revés.
+    Una razón sin orden explícito es ambigua.
+  </p>
+
+  <h2><span class="num">C</span>Procedimiento para sacarla de un enunciado</h2>
+
+  <ol>
+    <li>Aislá la oración que vincula las dos entidades.</li>
+    <li>Formulá las <b>dos</b> preguntas por separado, fijando una entidad por vez:
+        "por <b>un</b> A, ¿cuántos B?" y "por <b>un</b> B, ¿cuántos A?".</li>
+    <li>Si una respuesta no está en el texto, es un <b>supuesto de diseño</b>.
+        Tomalo y escribilo al lado del modelo. Elmasri dice consultar al usuario;
+        en un parcial, el supuesto declarado ocupa ese lugar.</li>
+    <li>Escribí cada número sobre el tramo de la entidad que <b>contás</b>,
+        no sobre la que usás como unidad.</li>
+    <li>Releé el diagrama en voz alta contra el enunciado. Si la frase que sale no es la
+        del texto, invertiste las marcas.</li>
+  </ol>
+
+  <h2><span class="num">D</span>Símbolos de Elmasri que vas a necesitar</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Símbolo</th><th>Significado</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Rectángulo</td><td>Tipo de entidad</td></tr>
+        <tr><td>Rectángulo doble</td><td>Tipo de entidad débil</td></tr>
+        <tr><td>Rombo</td><td>Tipo de relación</td></tr>
+        <tr><td>Rombo doble</td><td>Relación identificativa (la que sostiene a una entidad débil)</td></tr>
+        <tr><td>Línea simple</td><td>Participación parcial</td></tr>
+        <tr><td>Línea doble</td><td>Participación total (dependencia de existencia)</td></tr>
+        <tr><td>Óvalo</td><td>Atributo</td></tr>
+        <tr><td>Óvalo doble</td><td>Atributo multivaluado</td></tr>
+        <tr><td>Óvalo punteado</td><td>Atributo derivado</td></tr>
+        <tr><td>Subrayado</td><td>Atributo clave</td></tr>
+        <tr><td>Subrayado punteado</td><td>Clave parcial de una entidad débil</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="callout callout--catedra">
+    <span class="callout__label">Fuente</span>
+    Figura 3.14, "Resumen de la notación para los diagramas ER" — Elmasri &amp; Navathe,
+    5ª ed., pág. 71 (pág. 97 del PDF en <code>raw/</code>).
+    La participación total/parcial y los símbolos de entidad débil se cubren en las
+    lecciones siguientes; acá quedan listados desde ya para que tengas la tabla completa
+    a mano cuando modeles.
+  </p>
+
+  <div class="callout callout--key">
+    <span class="callout__label">Falta una fila en esa tabla</span>
+    <p>
+      Elmasri no lista los símbolos de <b>especialización</b> como los dibuja la cátedra.
+      Van aparte: triángulo <b>ISA</b>, <b>círculo = total</b>, <b>arco = exclusiva</b>.
+      Están en <a href="0004-notacion-der-a-mano.html">la hoja de notación a mano</a>,
+      que es la tabla completa y la que conviene imprimir.
+    </p>
+  </div>
+
+  <nav class="nav">
+    <a href="../lessons/0010-razon-de-cardinalidad.html">Lección 10: razón de cardinalidad</a>
+    <a href="0004-notacion-der-a-mano.html">Referencia: notación a mano</a>
+    <a href="../RESOURCES.md">Recursos</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cynefin y metodologías</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Diagram skin for diagram-design SVGs (profile "unicaba-cursada").
+   Shared by clases/*.html, slides/* and diagramas/*.html. Self-contained: it does not need course.css.
+   Light values = assets/course.css tokens; dark follows data-theme (theme.js) or the system. */
+:root {
+  --d-paper: #ffffff;
+  --d-paper-2: #f8f1f5;
+  --d-box: #ffffff;
+  --d-ink: #24171f;
+  --d-muted: #6a5764;
+  --d-soft: #8d7a87;
+  --d-rule: #e6d3df;
+  --d-accent: #b83a95;
+  --d-accent-ink: #9c2a7b;
+  --d-accent-tint: rgba(184, 58, 149, .08);
+  --d-link: #6b2fae;
+  --d-link-tint: rgba(107, 47, 174, .08);
+}
+:root[data-theme="dark"] {
+  --d-paper: #1a1218;
+  --d-paper-2: #241a22;
+  --d-box: #241a22;
+  --d-ink: #f2e9ef;
+  --d-muted: #b3a3ae;
+  --d-soft: #8f7d89;
+  --d-rule: #43303e;
+  --d-accent: #f08fcf;
+  --d-accent-ink: #f08fcf;
+  --d-accent-tint: rgba(240, 143, 207, .10);
+  --d-link: #b99af0;
+  --d-link-tint: rgba(185, 154, 240, .10);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --d-paper: #1a1218;
+    --d-paper-2: #241a22;
+    --d-box: #241a22;
+    --d-ink: #f2e9ef;
+    --d-muted: #b3a3ae;
+    --d-soft: #8f7d89;
+    --d-rule: #43303e;
+    --d-accent: #f08fcf;
+    --d-accent-ink: #f08fcf;
+    --d-accent-tint: rgba(240, 143, 207, .10);
+    --d-link: #b99af0;
+    --d-link-tint: rgba(185, 154, 240, .10);
+  }
+}
+
+/* Figure wrapper used by lessons */
+figure.diagram { margin: 1.6rem 0; }
+figure.diagram svg { display: block; width: 100%; height: auto; }
+figure.diagram figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .5rem; }
+
+/* SVG classes (all prefixed dg-) */
+.dg-bg { fill: var(--d-paper); }
+.dg-mask { fill: var(--d-paper); }
+.dg-zone { fill: var(--d-paper-2); stroke: var(--d-rule); stroke-width: 1; }
+.dg-rule { stroke: var(--d-rule); stroke-width: .8; fill: none; }
+
+.dg-box { fill: var(--d-box); stroke: var(--d-ink); stroke-width: 1; }
+.dg-store { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-focal { fill: var(--d-accent-tint); stroke: var(--d-accent); stroke-width: 1.2; }
+.dg-viol { fill: var(--d-link-tint); stroke: var(--d-link); stroke-width: 1; }
+.dg-ghost { fill: none; stroke: var(--d-muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.dg-dot { fill: var(--d-paper-2); stroke: var(--d-muted); stroke-width: 1; }
+.dg-dot-focal { fill: var(--d-accent); stroke: var(--d-accent); stroke-width: 1; }
+
+.dg-line { stroke: var(--d-muted); stroke-width: 1.2; fill: none; }
+.dg-line-accent { stroke: var(--d-accent); stroke-width: 1.2; fill: none; }
+.dg-line-link { stroke: var(--d-link); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+.dg-ah { fill: var(--d-muted); }
+.dg-ah-accent { fill: var(--d-accent); }
+.dg-ah-link { fill: var(--d-link); }
+
+.dg-name { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-sub { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-row { font: 600 16px "Montserrat", system-ui, sans-serif; fill: var(--d-ink); }
+.dg-tag { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-soft); letter-spacing: .08em; }
+.dg-lbl { font: 400 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-muted); letter-spacing: .04em; }
+.dg-lbl-accent { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-accent-ink); letter-spacing: .04em; }
+.dg-lbl-link { font: 500 12px "Geist Mono", ui-monospace, monospace; fill: var(--d-link); letter-spacing: .04em; }
+.dg-note { font: 500 12px "Montserrat", system-ui, sans-serif; fill: var(--d-muted); }
+.dg-note-accent { font: 600 12px "Montserrat", system-ui, sans-serif; fill: var(--d-accent-ink); }
+
+/* Catedra slide screenshots (clases/img/*.jpg) shown next to the own diagrams. */
+figure.slide { margin: 1.4rem 0; }
+figure.slide img { display: block; width: 100%; max-width: 720px; height: auto; border: 1px solid var(--rule, #e6d3df); border-radius: 6px; }
+figure.slide figcaption { font-family: "Montserrat", system-ui, sans-serif; font-size: .75rem; color: var(--muted, var(--d-muted)); margin-top: .4rem; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--d-paper); color: var(--d-ink); font-family: "Montserrat", system-ui, sans-serif; margin: 0; }
+  .frame { max-width: 1100px; margin: 0 auto; padding: 2rem 16px 3rem; }
+  .eyebrow { font: 500 .66rem "Geist Mono", ui-monospace, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--d-muted); margin-bottom: .5rem; }
+  h1 { font-size: clamp(1.4rem, 2vw + .8rem, 1.9rem); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; margin-bottom: .4rem; }
+  .sub { color: var(--d-muted); font-size: .9rem; margin-bottom: 1.5rem; }
+  svg { display: block; width: 100%; height: auto; min-width: 640px; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <p class="eyebrow">Diagrama · Taller de Gestión de Proyectos Digitales</p>
+  <h1>Cynefin y metodologías</h1>
+  <p class="sub">Del dominio del problema a la metodología.</p>
+  <div class="scroll">
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cynefin-title cynefin-desc"><title id="cynefin-title">Cynefin: qué metodología corresponde a cada dominio</title><desc id="cynefin-desc">Cuatro dominios ordenados por incertidumbre creciente: simple usa buenas prácticas, complicado usa cascada, complejo y caótico usan ágil; el dominio desordenado exige accionar para llegar a alguno de los cuatro.</desc><defs><marker id="cynefin-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah" points="0 0, 8 3, 0 6"/></marker><marker id="cynefin-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-accent" points="0 0, 8 3, 0 6"/></marker><marker id="cynefin-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="dg-ah-link" points="0 0, 8 3, 0 6"/></marker></defs><rect class="dg-bg" width="100%" height="100%"/><text class="dg-tag" x="40" y="40" text-anchor="start">INCERTIDUMBRE CRECIENTE</text>
+<path class="dg-line" d="M40 56 H920" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M138 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M366 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M594 184 V240" marker-end="url(#cynefin-arrow)"/>
+<path class="dg-line" d="M822 184 V240" marker-end="url(#cynefin-arrow)"/>
+<rect class="dg-mask" x="40" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="40" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="224" y="108" text-anchor="end">1</text>
+<text class="dg-name" x="138" y="123" text-anchor="middle">Simple</text>
+<text class="dg-sub" x="138" y="141" text-anchor="middle">Situaciones claras</text>
+<text class="dg-sub" x="138" y="159" text-anchor="middle">y conocidas</text>
+<rect class="dg-mask" x="268" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-focal" x="268" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="452" y="108" text-anchor="end">2</text>
+<text class="dg-name" x="366" y="123" text-anchor="middle">Complicado</text>
+<text class="dg-sub" x="366" y="141" text-anchor="middle">Requiere experiencia</text>
+<text class="dg-sub" x="366" y="159" text-anchor="middle">en la materia</text>
+<rect class="dg-mask" x="496" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="496" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="680" y="108" text-anchor="end">3</text>
+<text class="dg-name" x="594" y="123" text-anchor="middle">Complejo</text>
+<text class="dg-sub" x="594" y="141" text-anchor="middle">Sin experiencia en el</text>
+<text class="dg-sub" x="594" y="159" text-anchor="middle">tema o la tecnología</text>
+<rect class="dg-mask" x="724" y="88" width="196" height="96" rx="6"/>
+<rect class="dg-box" x="724" y="88" width="196" height="96" rx="6"/>
+<text class="dg-tag" x="908" y="108" text-anchor="end">4</text>
+<text class="dg-name" x="822" y="123" text-anchor="middle">Caótico</text>
+<text class="dg-sub" x="822" y="141" text-anchor="middle">Sin experiencia en el</text>
+<text class="dg-sub" x="822" y="159" text-anchor="middle">tema ni la tecnología</text>
+<rect class="dg-mask" x="40" y="240" width="196" height="64" rx="6"/>
+<rect class="dg-box" x="40" y="240" width="196" height="64" rx="6"/>
+<text class="dg-name" x="138" y="277" text-anchor="middle">Buenas prácticas</text>
+<rect class="dg-mask" x="268" y="240" width="196" height="64" rx="6"/>
+<rect class="dg-focal" x="268" y="240" width="196" height="64" rx="6"/>
+<text class="dg-name" x="366" y="277" text-anchor="middle">Cascada</text>
+<rect class="dg-mask" x="496" y="240" width="424" height="64" rx="6"/>
+<rect class="dg-viol" x="496" y="240" width="424" height="64" rx="6"/>
+<text class="dg-name" x="708" y="277" text-anchor="middle">Ágil</text>
+<rect class="dg-mask" x="40" y="368" width="880" height="80" rx="6"/>
+<rect class="dg-ghost" x="40" y="368" width="880" height="80" rx="6"/>
+<text class="dg-tag" x="908" y="388" text-anchor="end">5</text>
+<text class="dg-name" x="480" y="404" text-anchor="middle">Desordenado</text>
+<text class="dg-sub" x="480" y="428" text-anchor="middle">No aplica a ninguno de los anteriores: accionar para llegar a los 4 anteriores</text>
+<line class="dg-rule" x1="40" y1="484" x2="920" y2="484"/>
+<text class="dg-tag" x="40" y="512" text-anchor="start">LEYENDA</text>
+<rect class="dg-focal" x="128" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="156" y="512" text-anchor="start">único dominio en cascada</text>
+<path class="dg-line" d="M348 508 H372" marker-end="url(#cynefin-arrow)"/>
+<text class="dg-note" x="380" y="512" text-anchor="start">se gestiona con</text>
+<rect class="dg-ghost" x="512" y="500" width="20" height="16" rx="4"/>
+<text class="dg-note" x="540" y="512" text-anchor="start">dominio sin clasificar</text></svg>
+  </div>
+</div>
+</body>
+</html>

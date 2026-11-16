@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SQL Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="suite.css">
+<script>
+  try { const t = JSON.parse(localStorage.getItem("adi-suite:theme")); if (t) document.documentElement.setAttribute("data-theme", t); } catch (_) {}
+</script>
+<style>
+  body { background: var(--paper); color: var(--ink); font-family: var(--body); margin: 0; }
+  .cs { max-width: 1240px; margin: 0 auto; padding-block: 28px 80px; padding-inline: 16px; }
+  .cs-top a { color: var(--pink); }
+  .cs h1 { font-family: var(--display); font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 16px 0 6px; line-height: 1.1; }
+  .eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .lede { color: var(--ink-soft); max-width: 70ch; }
+  .head-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin: 20px 0 8px; }
+  .panel { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; }
+  .panel h2 { font-family: var(--display); font-size: 1.05rem; margin: 0 0 8px; }
+  .panel pre { margin: 0; font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; overflow-x: auto; }
+  .order { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--mono); font-size: 0.78rem; }
+  .order span { padding: 4px 8px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); }
+  .order span.hot { border-color: var(--pink); color: var(--pink-strong); background: var(--pink-soft); }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .jump a { font-family: var(--mono); font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--rule); color: var(--ink-soft); text-decoration: none; }
+  .jump a:hover { border-color: var(--pink); color: var(--pink); }
+  h2.sec { font-family: var(--display); font-size: 1.4rem; margin: 40px 0 12px; padding-top: 8px; border-top: 1px solid var(--rule); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; align-items: start; }
+  .card { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; border-top: 3px solid var(--kc, var(--pink)); min-width: 0; }
+  .k-filtrar { --kc: var(--c-datos); } .k-ordenar { --kc: var(--c-org); } .k-agregar { --kc: var(--c-analisis); }
+  .k-join { --kc: var(--c-sql); } .k-sub { --kc: var(--c-python); } .k-ventana { --kc: var(--pink-strong); }
+  .card-h { display: flex; gap: 8px; align-items: baseline; }
+  .card-h h3 { margin: 0; font-size: 1rem; font-family: var(--display); }
+  .num { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  pre.sql { margin: 0; font-family: var(--mono); font-size: 0.8rem; line-height: 1.45; background: var(--surface); border-radius: 6px; padding: 8px 10px; overflow-x: auto; white-space: pre; }
+  .res-h { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .tw { overflow-x: auto; }
+  .res table { border-collapse: collapse; font-family: var(--mono); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+  .res th { text-align: left; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--rule); padding: 3px 12px 3px 0; }
+  .res td { padding: 3px 12px 3px 0; border-bottom: 1px dashed var(--rule); }
+  .res td.null { color: var(--pink); font-weight: 600; }
+  .res td.empty { color: var(--pink); font-style: italic; }
+  .note { margin: 0; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.4; }
+  .note code { font-family: var(--mono); font-size: 0.82em; }
+</style>
+</head>
+<body>
+<div class="cs">
+  <div class="cs-top" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a href="index.html">← Suite</a> · <a href="escritura.html">Simulacro de escritura</a> <button type="button" id="theme-btn" style="font:inherit;font-size:0.85rem;padding:6px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);cursor:pointer;margin-left:auto">Tema</button></div>
+  <p class="eyebrow" style="margin-top:20px">Cheatsheet · 27 consultas típicas</p>
+  <h1>SQL Cheatsheet</h1>
+  <p class="lede">Las consultas típicas de los ejemplos, sobre las tablas de siempre. Cada tarjeta tiene la <strong>query</strong>, el <strong>resultado</strong> y la <strong>clave</strong>. Los resultados salen de ejecutar cada consulta en SQLite al generar la página.</p>
+  <div class="head-grid">
+    <div class="panel">
+      <h2>Las tablas</h2>
+<pre>clientes                         facturas
+id | nombre | pais | email       id | cliente_id | total
+1  | Ana    | AR   | ana@x.com   10 | 1          | 100
+2  | Beto   | BR   | NULL        11 | 1          | 50
+3  | Caro   | AR   | caro@x.com  12 | 2          | 80
+4  | Dani   | CL   | dani@x.com  13 | 3          | 20</pre>
+    </div>
+    <div class="panel">
+      <h2>Orden en que se evalúa</h2>
+      <div class="order"><span>FROM / JOIN</span>→<span class="hot">WHERE</span>→<span>GROUP BY</span>→<span class="hot">HAVING</span>→<span>SELECT</span>→<span>ORDER BY</span>→<span>LIMIT</span></div>
+      <p class="note" style="margin-top:10px">WHERE filtra <strong>filas</strong> (no ve agregados ni alias). HAVING filtra <strong>grupos</strong>. La izquierda de un JOIN es la tabla del <strong>FROM</strong>.</p>
+      <p class="note">DDL: CREATE · ALTER · DROP · <strong>TRUNCATE</strong> · DML: <strong>SELECT</strong> · INSERT · UPDATE · DELETE · DCL: GRANT · REVOKE · TCL: COMMIT · ROLLBACK · SAVEPOINT</p>
+    </div>
+  </div>
+  <nav class="jump" aria-label="Secciones">
+    <a href="#filtrar">Filtrar</a><a href="#ordenar">Ordenar</a><a href="#agregar">Agregar</a><a href="#join">JOINs</a><a href="#sub">Subconsultas</a><a href="#ventana">Ventanas</a>
+  </nav>
+<h2 class="sec" id="filtrar">Filtrar filas</h2><div class="grid">
+<article class="card k-filtrar"><div class="card-h"><span class="num">01</span><h3>WHERE simple</h3></div><pre class="sql">SELECT nombre
+FROM clientes
+WHERE pais = &#x27;AR&#x27;;</pre><div class="res"><div class="res-h">Resultado · 2 filas</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td>Ana</td></tr><tr><td>Caro</td></tr></table></div></div><p class="note">Filtra <strong>filas</strong>. Texto entre comillas simples.</p></article>
+<article class="card k-filtrar"><div class="card-h"><span class="num">02</span><h3>IN: varios valores</h3></div><pre class="sql">SELECT nombre, pais
+FROM clientes
+WHERE pais IN (&#x27;AR&#x27;, &#x27;CL&#x27;);</pre><div class="res"><div class="res-h">Resultado · 3 filas</div><div class="tw"><table><tr><th>nombre</th><th>pais</th></tr><tr><td>Ana</td><td>AR</td></tr><tr><td>Caro</td><td>AR</td></tr><tr><td>Dani</td><td>CL</td></tr></table></div></div><p class="note">Es lo mismo que <code>pais = 'AR' OR pais = 'CL'</code>.</p></article>
+<article class="card k-filtrar"><div class="card-h"><span class="num">03</span><h3>BETWEEN incluye los extremos</h3></div><pre class="sql">SELECT id, total
+FROM facturas
+WHERE total BETWEEN 50 AND 100;</pre><div class="res"><div class="res-h">Resultado · 3 filas</div><div class="tw"><table><tr><th>id</th><th>total</th></tr><tr><td>10</td><td>100</td></tr><tr><td>11</td><td>50</td></tr><tr><td>12</td><td>80</td></tr></table></div></div><p class="note">El 50 y el 100 <strong>entran</strong>: 3 filas.</p></article>
+<article class="card k-filtrar"><div class="card-h"><span class="num">04</span><h3>LIKE: patrón de texto</h3></div><pre class="sql">SELECT nombre
+FROM clientes
+WHERE nombre LIKE &#x27;A%&#x27;;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td>Ana</td></tr></table></div></div><p class="note"><code>%</code> = cualquier cantidad de caracteres. <code>'A%'</code> = empieza con A.</p></article>
+<article class="card k-filtrar"><div class="card-h"><span class="num">05</span><h3>IS NULL</h3></div><pre class="sql">SELECT nombre
+FROM clientes
+WHERE email IS NULL;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td>Beto</td></tr></table></div></div><p class="note">La forma correcta de buscar faltantes.</p></article>
+<article class="card k-filtrar"><div class="card-h"><span class="num">06</span><h3>= NULL: la trampa</h3></div><pre class="sql">SELECT nombre
+FROM clientes
+WHERE email = NULL;</pre><div class="res"><div class="res-h">Resultado · 0 filas</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td class="empty" colspan="1">0 filas</td></tr></table></div></div><p class="note"><strong>0 filas, sin error.</strong> <code>NULL = NULL</code> da UNKNOWN y WHERE solo deja pasar TRUE.</p></article>
+</div>
+<h2 class="sec" id="ordenar">Ordenar y recortar</h2><div class="grid">
+<article class="card k-ordenar"><div class="card-h"><span class="num">07</span><h3>ORDER BY + LIMIT</h3></div><pre class="sql">SELECT nombre
+FROM clientes
+ORDER BY nombre DESC
+LIMIT 2;</pre><div class="res"><div class="res-h">Resultado · 2 filas</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td>Dani</td></tr><tr><td>Caro</td></tr></table></div></div><p class="note">DESC = de mayor a menor (Z→A). LIMIT recorta <strong>después</strong> de ordenar.</p></article>
+<article class="card k-ordenar"><div class="card-h"><span class="num">08</span><h3>Alias con AS</h3></div><pre class="sql">SELECT id AS factura, total * 2 AS doble
+FROM facturas
+ORDER BY doble DESC;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>factura</th><th>doble</th></tr><tr><td>10</td><td>200</td></tr><tr><td>12</td><td>160</td></tr><tr><td>11</td><td>100</td></tr><tr><td>13</td><td>40</td></tr></table></div></div><p class="note">ORDER BY puede usar el alias porque corre <strong>después</strong> del SELECT. WHERE no.</p></article>
+</div>
+<h2 class="sec" id="agregar">Contar y agregar</h2><div class="grid">
+<article class="card k-agregar"><div class="card-h"><span class="num">09</span><h3>COUNT(*) vs COUNT(col)</h3></div><pre class="sql">SELECT COUNT(*), COUNT(email)
+FROM clientes;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>COUNT(*)</th><th>COUNT(email)</th></tr><tr><td>4</td><td>3</td></tr></table></div></div><p class="note"><code>COUNT(*)</code> cuenta filas; <code>COUNT(email)</code> ignora el NULL de Beto.</p></article>
+<article class="card k-agregar"><div class="card-h"><span class="num">10</span><h3>COUNT(DISTINCT)</h3></div><pre class="sql">SELECT COUNT(DISTINCT pais)
+FROM clientes;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>COUNT(DISTINCT pais)</th></tr><tr><td>3</td></tr></table></div></div><p class="note">AR, BR, CL: 3 valores <strong>distintos</strong>.</p></article>
+<article class="card k-agregar"><div class="card-h"><span class="num">11</span><h3>Agregados sobre toda la tabla</h3></div><pre class="sql">SELECT SUM(total), AVG(total),
+       MIN(total), MAX(total)
+FROM facturas;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>SUM(total)</th><th>AVG(total)</th><th>MIN(total)</th><th>MAX(total)</th></tr><tr><td>250</td><td>62,5</td><td>20</td><td>100</td></tr></table></div></div><p class="note">Sin GROUP BY: <strong>una sola fila</strong> para toda la tabla.</p></article>
+<article class="card k-agregar"><div class="card-h"><span class="num">12</span><h3>GROUP BY: uno por grupo</h3></div><pre class="sql">SELECT cliente_id, SUM(total) AS total
+FROM facturas
+GROUP BY cliente_id;</pre><div class="res"><div class="res-h">Resultado · 3 filas</div><div class="tw"><table><tr><th>cliente_id</th><th>total</th></tr><tr><td>1</td><td>150</td></tr><tr><td>2</td><td>80</td></tr><tr><td>3</td><td>20</td></tr></table></div></div><p class="note">En el SELECT: solo columnas del GROUP BY y agregados.</p></article>
+<article class="card k-agregar"><div class="card-h"><span class="num">13</span><h3>HAVING: filtrar grupos</h3></div><pre class="sql">SELECT cliente_id, SUM(total) AS total
+FROM facturas
+GROUP BY cliente_id
+HAVING SUM(total) &gt; 60;</pre><div class="res"><div class="res-h">Resultado · 2 filas</div><div class="tw"><table><tr><th>cliente_id</th><th>total</th></tr><tr><td>1</td><td>150</td></tr><tr><td>2</td><td>80</td></tr></table></div></div><p class="note">Filtro sobre un agregado → <strong>HAVING</strong>. En WHERE da error.</p></article>
+<article class="card k-agregar"><div class="card-h"><span class="num">14</span><h3>WHERE + GROUP BY + HAVING</h3></div><pre class="sql">SELECT pais, COUNT(*) AS cant
+FROM clientes
+WHERE email IS NOT NULL
+GROUP BY pais
+HAVING COUNT(*) &gt; 1;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>pais</th><th>cant</th></tr><tr><td>AR</td><td>2</td></tr></table></div></div><p class="note">WHERE saca a Beto (filas) → agrupa → HAVING deja los grupos con más de 1.</p></article>
+</div>
+<h2 class="sec" id="join">JOINs</h2><div class="grid">
+<article class="card k-join"><div class="card-h"><span class="num">15</span><h3>INNER JOIN</h3></div><pre class="sql">SELECT c.nombre, f.id, f.total
+FROM clientes c
+INNER JOIN facturas f ON f.cliente_id = c.id;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>nombre</th><th>id</th><th>total</th></tr><tr><td>Ana</td><td>10</td><td>100</td></tr><tr><td>Ana</td><td>11</td><td>50</td></tr><tr><td>Beto</td><td>12</td><td>80</td></tr><tr><td>Caro</td><td>13</td><td>20</td></tr></table></div></div><p class="note">Solo las filas con pareja. <strong>Dani no aparece.</strong></p></article>
+<article class="card k-join"><div class="card-h"><span class="num">16</span><h3>LEFT JOIN</h3></div><pre class="sql">SELECT c.nombre, f.id, f.total
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id;</pre><div class="res"><div class="res-h">Resultado · 5 filas</div><div class="tw"><table><tr><th>nombre</th><th>id</th><th>total</th></tr><tr><td>Ana</td><td>10</td><td>100</td></tr><tr><td>Ana</td><td>11</td><td>50</td></tr><tr><td>Beto</td><td>12</td><td>80</td></tr><tr><td>Caro</td><td>13</td><td>20</td></tr><tr><td>Dani</td><td class="null">NULL</td><td class="null">NULL</td></tr></table></div></div><p class="note"><strong>Todo el FROM</strong> (izquierda) + NULL donde no hay pareja.</p></article>
+<article class="card k-join"><div class="card-h"><span class="num">17</span><h3>LEFT JOIN + IS NULL = &quot;sin&quot;</h3></div><pre class="sql">SELECT c.nombre
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id
+WHERE f.id IS NULL;</pre><div class="res"><div class="res-h">Resultado · 1 fila</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td>Dani</td></tr></table></div></div><p class="note">Los clientes <strong>sin</strong> facturas.</p></article>
+<article class="card k-join"><div class="card-h"><span class="num">18</span><h3>Dar vuelta el FROM</h3></div><pre class="sql">SELECT f.id, c.nombre
+FROM facturas f
+LEFT JOIN clientes c ON c.id = f.cliente_id;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>id</th><th>nombre</th></tr><tr><td>10</td><td>Ana</td></tr><tr><td>11</td><td>Ana</td></tr><tr><td>12</td><td>Beto</td></tr><tr><td>13</td><td>Caro</td></tr></table></div></div><p class="note">Ahora la izquierda es <strong>facturas</strong>: 4 filas y Dani desaparece. El orden del ON no importa.</p></article>
+<article class="card k-join"><div class="card-h"><span class="num">19</span><h3>JOIN + GROUP BY</h3></div><pre class="sql">SELECT c.nombre, SUM(f.total) AS total
+FROM clientes c
+INNER JOIN facturas f ON f.cliente_id = c.id
+GROUP BY c.nombre;</pre><div class="res"><div class="res-h">Resultado · 3 filas</div><div class="tw"><table><tr><th>nombre</th><th>total</th></tr><tr><td>Ana</td><td>150</td></tr><tr><td>Beto</td><td>80</td></tr><tr><td>Caro</td><td>20</td></tr></table></div></div><p class="note">Total por cliente <strong>con nombre</strong>.</p></article>
+<article class="card k-join"><div class="card-h"><span class="num">20</span><h3>LEFT JOIN + COUNT(col) = incluye 0</h3></div><pre class="sql">SELECT c.nombre, COUNT(f.id) AS cant
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id
+GROUP BY c.nombre;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>nombre</th><th>cant</th></tr><tr><td>Ana</td><td>2</td></tr><tr><td>Beto</td><td>1</td></tr><tr><td>Caro</td><td>1</td></tr><tr><td>Dani</td><td>0</td></tr></table></div></div><p class="note">Con <code>COUNT(*)</code> Dani daría <strong>1</strong> (cuenta la fila con NULL). <code>COUNT(f.id)</code> da 0.</p></article>
+</div>
+<h2 class="sec" id="sub">Subconsultas y CTE</h2><div class="grid">
+<article class="card k-sub"><div class="card-h"><span class="num">21</span><h3>Subconsulta en WHERE</h3></div><pre class="sql">SELECT id, total
+FROM facturas
+WHERE total &gt; (SELECT AVG(total) FROM facturas);</pre><div class="res"><div class="res-h">Resultado · 2 filas</div><div class="tw"><table><tr><th>id</th><th>total</th></tr><tr><td>10</td><td>100</td></tr><tr><td>12</td><td>80</td></tr></table></div></div><p class="note">El promedio es 62,5: pasan 100 y 80.</p></article>
+<article class="card k-sub"><div class="card-h"><span class="num">22</span><h3>Subconsulta con IN</h3></div><pre class="sql">SELECT nombre
+FROM clientes
+WHERE id IN (SELECT cliente_id FROM facturas);</pre><div class="res"><div class="res-h">Resultado · 3 filas</div><div class="tw"><table><tr><th>nombre</th></tr><tr><td>Ana</td></tr><tr><td>Beto</td></tr><tr><td>Caro</td></tr></table></div></div><p class="note">Clientes que <strong>tienen</strong> al menos una factura.</p></article>
+<article class="card k-sub"><div class="card-h"><span class="num">23</span><h3>CTE: WITH</h3></div><pre class="sql">WITH totales AS (
+  SELECT cliente_id, SUM(total) AS t
+  FROM facturas
+  GROUP BY cliente_id
+)
+SELECT cliente_id, t
+FROM totales
+WHERE t &gt; 60;</pre><div class="res"><div class="res-h">Resultado · 2 filas</div><div class="tw"><table><tr><th>cliente_id</th><th>t</th></tr><tr><td>1</td><td>150</td></tr><tr><td>2</td><td>80</td></tr></table></div></div><p class="note">Parte la consulta en pasos con nombre. Acá WHERE sí sirve: <code>t</code> ya es una columna.</p></article>
+</div>
+<h2 class="sec" id="ventana">Funciones ventana</h2><div class="grid">
+<article class="card k-ventana"><div class="card-h"><span class="num">24</span><h3>SUM OVER (PARTITION BY)</h3></div><pre class="sql">SELECT id, cliente_id, total,
+  SUM(total) OVER (PARTITION BY cliente_id) AS del_cliente
+FROM facturas;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>id</th><th>cliente_id</th><th>total</th><th>del_cliente</th></tr><tr><td>10</td><td>1</td><td>100</td><td>150</td></tr><tr><td>11</td><td>1</td><td>50</td><td>150</td></tr><tr><td>12</td><td>2</td><td>80</td><td>80</td></tr><tr><td>13</td><td>3</td><td>20</td><td>20</td></tr></table></div></div><p class="note"><strong>No colapsa</strong>: las 4 filas siguen, con el total del cliente al lado.</p></article>
+<article class="card k-ventana"><div class="card-h"><span class="num">25</span><h3>Acumulado: OVER (ORDER BY)</h3></div><pre class="sql">SELECT id, total,
+  SUM(total) OVER (ORDER BY id) AS acumulado
+FROM facturas;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>id</th><th>total</th><th>acumulado</th></tr><tr><td>10</td><td>100</td><td>100</td></tr><tr><td>11</td><td>50</td><td>150</td></tr><tr><td>12</td><td>80</td><td>230</td></tr><tr><td>13</td><td>20</td><td>250</td></tr></table></div></div><p class="note">ORDER BY dentro del OVER = suma <strong>hasta la fila actual</strong>.</p></article>
+<article class="card k-ventana"><div class="card-h"><span class="num">26</span><h3>ROW_NUMBER vs RANK</h3></div><pre class="sql">WITH cant AS (
+  SELECT c.nombre, COUNT(f.id) AS n
+  FROM clientes c
+  LEFT JOIN facturas f ON f.cliente_id = c.id
+  GROUP BY c.nombre
+)
+SELECT nombre, n,
+  ROW_NUMBER() OVER (ORDER BY n DESC, nombre) AS rn,
+  RANK() OVER (ORDER BY n DESC) AS rk
+FROM cant;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>nombre</th><th>n</th><th>rn</th><th>rk</th></tr><tr><td>Ana</td><td>2</td><td>1</td><td>1</td></tr><tr><td>Beto</td><td>1</td><td>2</td><td>2</td></tr><tr><td>Caro</td><td>1</td><td>3</td><td>2</td></tr><tr><td>Dani</td><td>0</td><td>4</td><td>4</td></tr></table></div></div><p class="note">Beto y Caro empatan: RANK les da 2 a los dos y <strong>salta</strong> al 4.</p></article>
+<article class="card k-ventana"><div class="card-h"><span class="num">27</span><h3>LAG y LEAD</h3></div><pre class="sql">SELECT id, total,
+  LAG(total)  OVER (ORDER BY id) AS anterior,
+  LEAD(total) OVER (ORDER BY id) AS siguiente
+FROM facturas;</pre><div class="res"><div class="res-h">Resultado · 4 filas</div><div class="tw"><table><tr><th>id</th><th>total</th><th>anterior</th><th>siguiente</th></tr><tr><td>10</td><td>100</td><td class="null">NULL</td><td>50</td></tr><tr><td>11</td><td>50</td><td>100</td><td>80</td></tr><tr><td>12</td><td>80</td><td>50</td><td>20</td></tr><tr><td>13</td><td>20</td><td>80</td><td class="null">NULL</td></tr></table></div></div><p class="note">En los bordes: <strong>NULL</strong>, nunca 0.</p></article>
+</div>
+</div>
+<script>
+(() => {
+  const b = document.getElementById("theme-btn"); if (!b) return;
+  const cur = () => document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const paint = () => { b.textContent = cur() === "dark" ? "☀ Modo claro" : "☾ Modo oscuro"; };
+  b.addEventListener("click", () => { const n = cur() === "dark" ? "light" : "dark"; document.documentElement.setAttribute("data-theme", n); try { localStorage.setItem("adi-suite:theme", JSON.stringify(n)); } catch (_) {} paint(); });
+  paint();
+})();
+</script>
+</body>
+</html>

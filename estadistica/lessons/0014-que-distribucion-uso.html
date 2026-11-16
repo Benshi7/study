@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 14 — ¿Qué distribución uso? Mapa visual</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  .dist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin: 1.3rem 0; }
+  .dist { border: 1px solid var(--line); border-radius: 5px; padding: 0.9rem 1rem; background: var(--paper-sunk); }
+  .dist h3 { margin: 0.2rem 0 0.4rem; font-size: 1.05rem; }
+  .dist svg { display: block; margin: 0 auto 0.4rem; }
+  .dist .when { font-size: 0.85rem; color: var(--ink-dim); margin: 0.3rem 0; }
+  .dist .eg { font-size: 0.82rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--line); }
+  .flow { display: grid; gap: 0.6rem; margin: 1.2rem 0; }
+  .flow .qn { font-weight: 600; }
+  .flow .branch { padding: 0.6rem 0.9rem; border-left: 3px solid var(--accent); background: var(--paper-sunk); border-radius: 0 4px 4px 0; font-size: 0.9rem; }
+  .axis { stroke: var(--ink-soft); stroke-width: 1.5; }
+</style>
+</head>
+<body>
+
+<span class="kicker">Unidades 4–6 · Distribuciones · Lección gráfica</span>
+<h1>¿Qué Distribución Uso? Mapa Visual</h1>
+<p class="subtitle">El 80% del trabajo en un problema de distribuciones es identificar CUÁL es. La cuenta la hace la app. Acá tenés las tres siluetas y el árbol para decidir en 5 segundos.</p>
+
+<h2>Las tres siluetas</h2>
+<div class="dist-grid">
+
+  <div class="dist">
+    <svg width="180" height="110" viewBox="0 0 180 110">
+      <line class="axis" x1="15" y1="95" x2="170" y2="95"/>
+      <g class="svg-note">
+        <rect x="22" y="82" width="15" height="13"/>
+        <rect x="40" y="66" width="15" height="29"/>
+        <rect x="58" y="45" width="15" height="50"/>
+        <rect x="76" y="30" width="15" height="65"/>
+        <rect x="94" y="38" width="15" height="57"/>
+        <rect x="112" y="58" width="15" height="37"/>
+        <rect x="130" y="78" width="15" height="17"/>
+        <rect x="148" y="88" width="15" height="7"/>
+      </g>
+    </svg>
+    <h3>Binomial</h3>
+    <div class="when"><strong>n intentos FIJOS</strong>, cada uno éxito/fracaso con <span class="formula">p</span> constante.</div>
+    <div class="formula">E=n·p · V=n·p·q</div>
+    <div class="eg"><strong>Ej (TP3):</strong> "de 20 clientes, ¿cuántos aceptan el producto?" · "más de la mitad de 9 cheques…"</div>
+  </div>
+
+  <div class="dist">
+    <svg width="180" height="110" viewBox="0 0 180 110">
+      <line class="axis" x1="15" y1="95" x2="170" y2="95"/>
+      <g class="svg-good">
+        <rect x="22" y="60" width="15" height="35"/>
+        <rect x="40" y="35" width="15" height="60"/>
+        <rect x="58" y="42" width="15" height="53"/>
+        <rect x="76" y="58" width="15" height="37"/>
+        <rect x="94" y="72" width="15" height="23"/>
+        <rect x="112" y="82" width="15" height="13"/>
+        <rect x="130" y="88" width="15" height="7"/>
+        <rect x="148" y="91" width="15" height="4"/>
+      </g>
+    </svg>
+    <h3>Poisson</h3>
+    <div class="when"><strong>Tasa por intervalo</strong> (tiempo/espacio), sin n fijo. Cola a la derecha.</div>
+    <div class="formula">E = V = λ = tasa·t</div>
+    <div class="eg"><strong>Ej (TP3):</strong> "15 autos/min, ¿prob de 7 en 30 s?" → <span class="formula">λ=7,5</span>. Llamadas, ingresos a un hospital…</div>
+  </div>
+
+  <div class="dist">
+    <svg width="180" height="110" viewBox="0 0 180 110">
+      <line class="axis" x1="15" y1="95" x2="170" y2="95"/>
+      <path d="M18 94 C 55 92, 62 30, 92 30 C 122 30, 129 92, 166 94" fill="none" class="svg-s-accent" stroke-width="2.5"/>
+      <line x1="92" y1="30" x2="92" y2="94" class="svg-s-accent" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>
+    </svg>
+    <h3>Normal</h3>
+    <div class="when"><strong>Medición continua</strong> con <span class="formula">μ</span> y <span class="formula">σ</span>. Simétrica.</div>
+    <div class="formula">Z = (x−μ)/σ</div>
+    <div class="eg"><strong>Ej (TP4):</strong> tiempos, pesos, estaturas, puntajes de examen, consumo…</div>
+  </div>
+
+</div>
+
+<h2>El árbol de decisión</h2>
+<div class="flow">
+  <div class="qn">¿Qué estás contando o midiendo?</div>
+  <div class="branch"><strong>Cuento éxitos en n intentos fijos</strong> (con probabilidad p por intento) → <strong>Binomial</strong>.</div>
+  <div class="branch"><strong>Cuento eventos que llegan a cierta tasa</strong> por tiempo/espacio → <strong>Poisson</strong> (¡escalá λ al intervalo pedido!).</div>
+  <div class="branch"><strong>Mido una magnitud continua</strong> con media y desvío → <strong>Normal</strong>.</div>
+  <div class="branch"><strong>Sumo o promedio muchas mediciones</strong> → <strong>Normal</strong> también (ver abajo).</div>
+</div>
+
+<h2>Los combos que más caen</h2>
+<div class="box">
+<strong>Normal → p → Binomial</strong> (TP4 Ej6c, Ej20c). Primero sacás una probabilidad de la Normal (ej. <span class="formula">p=P(X&lt;900)</span>), y esa p entra como éxito en una Binomial ("de 5 paquetes, ¿al menos uno…?"). Dos pasos, dos distribuciones.
+</div>
+<div class="box">
+<strong>Suma / promedio de Normales.</strong> Cuatro casos, no los mezcles:
+<table>
+<tr><th>Caso</th><th>μ</th><th>σ</th></tr>
+<tr><td>Suma de n iguales (W=Σx)</td><td class="formula">n·μ</td><td class="formula">√n·σ</td></tr>
+<tr><td>Promedio de n (x̄)</td><td class="formula">μ</td><td class="formula">σ/√n</td></tr>
+<tr><td>Suma de variables DISTINTAS</td><td class="formula">Σμᵢ</td><td class="formula">√(Σσᵢ²)</td></tr>
+<tr><td>Transformación lineal (Y=k·X)</td><td class="formula">k·μ</td><td class="formula">k·σ</td></tr>
+</table>
+</div>
+<div class="box">
+<strong>Condiciones.</strong> Estas fórmulas suponen variables <strong>independientes</strong>. Si las x son Normales, la suma y el promedio son Normales para cualquier n. Si las x <strong>no</strong> son Normales, hace falta <span class="formula">n ≥ 30</span> para usar el Teorema Central del Límite y aproximar la suma o el promedio por una Normal.
+</div>
+<div class="example">
+<strong>Suma resuelta (TP4 Ej.14a).</strong> Cada paquete de harina es <span class="formula">N(950 ; 47)</span>. ¿Prob de que 20 paquetes pesen en total más de 19.640 g?<br>
+<span class="formula">μ_W = 20·950 = 19.000</span> · <span class="formula">σ_W = 47·√20 = 210,19</span><br>
+<span class="formula">z = (19.640 − 19.000) / 210,19 = 3,04</span> → <span class="formula">P(W &gt; 19.640) = 1 − P(Z &lt; 3,04) ≈ 0,0012</span>
+</div>
+<div class="box">
+<strong>Binomial → Normal: dos criterios.</strong> En la cátedra aparecen dos reglas para aproximar una Binomial por una Normal: <span class="formula">n ≥ 30</span> (la regla general) y <span class="formula">n·p ≥ 15</span> y <span class="formula">n·q ≥ 15</span> (la que se usa en la lámina de proporciones). Si el enunciado no aclara cuál, usá el criterio que el enunciado o el docente indiquen; ante la duda, cumplir <span class="formula">n·p ≥ 15</span> y <span class="formula">n·q ≥ 15</span> es la condición más exigente.
+</div>
+<div class="warn">
+La <strong>varianza</strong> es la que se suma, no el desvío. Por eso en la suma de distintas es <span class="formula">σ_T=√(σ₁²+σ₂²+…)</span> (ej. mesa examinadora: ordenar + repartir + examen). Sumar los desvíos directo es un error clásico.
+</div>
+
+<h2>Practicá</h2>
+
+<div class="quiz" data-quiz>
+<p class="q">1. "Una central recibe 5 llamadas por minuto en promedio. ¿Prob de más de 8 en 2 minutos?" ¿Qué usás?</p>
+<label><input type="radio" name="q1" value="a"><span class="opt">a. Binomial con n=5</span></label>
+<label><input type="radio" name="q1" value="b"><span class="opt">b. Poisson con λ=10</span></label>
+<label><input type="radio" name="q1" value="c"><span class="opt">c. Poisson con λ=5</span></label>
+<label><input type="radio" name="q1" value="d"><span class="opt">d. Normal con μ=5</span></label>
+<div class="feedback wrong" data-for="a">No hay intentos fijos con p; es un conteo por tasa temporal → Poisson.</div>
+<div class="feedback correct" data-for="b">Conteo por tasa ⇒ Poisson, y escalás al intervalo: 5/min × 2 min = λ=10.</div>
+<div class="feedback wrong" data-for="c">λ=5 sería para 1 minuto. El intervalo pedido es 2 minutos → λ=10.</div>
+<div class="feedback wrong" data-for="d">Para conteos discretos por tasa se usa Poisson, no Normal.</div>
+</div>
+
+<div class="quiz" data-quiz>
+<p class="q">2. Tres etapas de una sección de TV, cada una Normal con su propia media y desvío. Para el tiempo TOTAL, el desvío es:</p>
+<label><input type="radio" name="q2" value="a"><span class="opt">a. √(σ₁²+σ₂²+σ₃²)</span></label>
+<label><input type="radio" name="q2" value="b"><span class="opt">b. σ₁+σ₂+σ₃ (sumar los desvíos)</span></label>
+<label><input type="radio" name="q2" value="c"><span class="opt">c. √3·σ</span></label>
+<label><input type="radio" name="q2" value="d"><span class="opt">d. (σ₁+σ₂+σ₃)/3</span></label>
+<div class="feedback correct" data-for="a">Variables distintas independientes: se suman las varianzas, así que σ_T=√(σ₁²+σ₂²+σ₃²).</div>
+<div class="feedback wrong" data-for="b">Los desvíos NO se suman directo. Lo que se suma es la varianza.</div>
+<div class="feedback wrong" data-for="c">√n·σ es para n variables IGUALES; acá cada etapa tiene su propio desvío.</div>
+<div class="feedback wrong" data-for="d">Eso promediaría; el total de una suma no divide por n.</div>
+</div>
+
+<div class="ask">
+¿Querés que te tome 5 enunciados salteados para que solo digas "qué distribución es" (sin resolver)? Es el mejor drill para esto.
+</div>
+
+<footer>
+Ejemplos tomados de tus TP3 y TP4 — UNICABA, FEP.
+<div class="nav-row">
+  <span>← <a href="0013-tablas-de-contingencia.html">Lección 13 — Tablas de contingencia</a></span>
+  <span><a href="0015-descriptiva-datos-agrupados.html">Lección 15 — Descriptiva con datos agrupados</a> →</span>
+</div>
+</footer>
+
+<script src="../assets/quiz.js"></script>
+
+</body>
+</html>

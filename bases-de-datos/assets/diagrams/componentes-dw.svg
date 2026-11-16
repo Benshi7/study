@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 400" width="780" height="400"
+     role="img" aria-labelledby="comp-dw-title comp-dw-desc">
+  <title id="comp-dw-title">Componentes genéricos de un Data Warehouse</title>
+  <desc id="comp-dw-desc">Seis etapas de izquierda a derecha. Uno, recopilación: sistemas operacionales como CRM y ERP y datos externos. Dos, limpieza y homogeneización: tablas staging, ODS, MDM y DQ, todo dentro del proceso ETL. Tres, almacén de datos: el Data Warehouse con áreas como ventas, finanzas y operaciones. Cuatro, modelos analíticos: data marts, cubos OLAP. Cinco, presentación: gráficos, tablas y semáforos. Seis, explotación y análisis por el negocio. Debajo de todo, una banda de metadata que acompaña a las etapas dos a cuatro.</desc>
+
+  <style>
+    .dg-box  { fill: #fffef9; stroke: #1a1a17; stroke-width: 1; }
+    .dg-dw   { fill: rgba(122,46,14,0.08); stroke: #7a2e0e; stroke-width: 1.4; }
+    .dg-meta { fill: rgba(26,26,23,0.06); stroke: #56544c; stroke-width: 1; stroke-dasharray: 4 3; }
+    .dg-etl  { fill: none; stroke: #7a2e0e; stroke-width: 1; stroke-dasharray: 5 3; }
+    .dg-line { stroke: #56544c; stroke-width: 1.2; fill: none; }
+    .dg-head { fill: #7a2e0e; font: 600 9px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; letter-spacing: 0.1em; }
+    .dg-name { fill: #1a1a17; font: 600 12px "Gill Sans", "Gill Sans MT", Calibri, "Segoe UI", system-ui, sans-serif; }
+    .dg-sub  { fill: #56544c; font: 400 9px "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+    .dg-acc  { fill: #7a2e0e; font: italic 12px "Iowan Old Style", Palatino, Georgia, serif; }
+    .dg-arrow { fill: #56544c; }
+    @media (prefers-color-scheme: dark) {
+      .dg-box  { fill: #16161a; stroke: #e8e4d9; }
+      .dg-dw   { fill: rgba(224,138,92,0.12); stroke: #e08a5c; }
+      .dg-meta { fill: rgba(232,228,217,0.06); stroke: #a8a498; }
+      .dg-etl  { stroke: #e08a5c; }
+      .dg-line { stroke: #a8a498; }
+      .dg-head { fill: #e08a5c; }
+      .dg-name { fill: #e8e4d9; }
+      .dg-sub  { fill: #a8a498; }
+      .dg-acc  { fill: #e08a5c; }
+      .dg-arrow { fill: #a8a498; }
+    }
+  </style>
+  <defs>
+    <marker id="comp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L8 4 L0 8 z" class="dg-arrow"/>
+    </marker>
+  </defs>
+
+  <!-- encabezados -->
+  <text class="dg-head" x="12"  y="22">1 · RECOPILACIÓN</text>
+  <text class="dg-head" x="140" y="22">2 · LIMPIEZA</text>
+  <text class="dg-head" x="140" y="33">HOMOGENEIZACIÓN</text>
+  <text class="dg-head" x="300" y="22">3 · ALMACÉN</text>
+  <text class="dg-head" x="300" y="33">DE DATOS</text>
+  <text class="dg-head" x="448" y="22">4 · MODELOS</text>
+  <text class="dg-head" x="448" y="33">ANALÍTICOS</text>
+  <text class="dg-head" x="584" y="22">5 · PRESENTACIÓN</text>
+  <text class="dg-head" x="692" y="22">6 · EXPLOTACIÓN</text>
+  <text class="dg-head" x="692" y="33">/ ANÁLISIS</text>
+
+  <!-- 1 fuentes -->
+  <rect class="dg-box" x="10" y="60"  width="100" height="50" rx="3"/><text class="dg-name" x="60" y="82" text-anchor="middle">CRM</text><text class="dg-sub" x="60" y="98" text-anchor="middle">operacional</text>
+  <rect class="dg-box" x="10" y="130" width="100" height="50" rx="3"/><text class="dg-name" x="60" y="152" text-anchor="middle">ERP</text><text class="dg-sub" x="60" y="168" text-anchor="middle">operacional</text>
+  <rect class="dg-box" x="10" y="200" width="100" height="50" rx="3"/><text class="dg-name" x="60" y="222" text-anchor="middle">Datos</text><text class="dg-name" x="60" y="238" text-anchor="middle">externos</text>
+
+  <!-- 2 ETL -->
+  <rect class="dg-etl" x="132" y="46" width="150" height="232" rx="4"/>
+  <text class="dg-acc" x="207" y="268" text-anchor="middle">ETL</text>
+  <rect class="dg-box" x="144" y="58"  width="126" height="38" rx="3"/><text class="dg-name" x="207" y="82"  text-anchor="middle">Tablas staging</text>
+  <rect class="dg-box" x="144" y="106" width="126" height="38" rx="3"/><text class="dg-name" x="207" y="130" text-anchor="middle">ODS</text>
+  <rect class="dg-box" x="144" y="154" width="126" height="38" rx="3"/><text class="dg-name" x="207" y="178" text-anchor="middle">MDM</text>
+  <rect class="dg-box" x="144" y="202" width="126" height="38" rx="3"/><text class="dg-name" x="207" y="226" text-anchor="middle">DQ</text>
+
+  <!-- 3 DW -->
+  <rect class="dg-dw" x="298" y="46" width="124" height="232" rx="4"/>
+  <text class="dg-name" x="360" y="70" text-anchor="middle">Data</text><text class="dg-name" x="360" y="84" text-anchor="middle">Warehouse</text>
+  <rect class="dg-box" x="310" y="104" width="100" height="40" rx="3"/><text class="dg-name" x="360" y="129" text-anchor="middle">Ventas</text>
+  <rect class="dg-box" x="310" y="154" width="100" height="40" rx="3"/><text class="dg-name" x="360" y="179" text-anchor="middle">Finanzas</text>
+  <rect class="dg-box" x="310" y="204" width="100" height="40" rx="3"/><text class="dg-name" x="360" y="229" text-anchor="middle">Operaciones</text>
+
+  <!-- 4 analiticos -->
+  <rect class="dg-box" x="446" y="70"  width="108" height="50" rx="3"/><text class="dg-name" x="500" y="92" text-anchor="middle">Data Mart</text><text class="dg-sub" x="500" y="108" text-anchor="middle">departamental</text>
+  <rect class="dg-box" x="446" y="140" width="108" height="50" rx="3"/><text class="dg-name" x="500" y="162" text-anchor="middle">Cubo OLAP</text><text class="dg-sub" x="500" y="178" text-anchor="middle">pre-agregado</text>
+  <rect class="dg-box" x="446" y="210" width="108" height="40" rx="3"/><text class="dg-name" x="500" y="235" text-anchor="middle">Asociaciones</text>
+
+  <!-- 5 presentacion -->
+  <rect class="dg-box" x="582" y="70"  width="90" height="40" rx="3"/><text class="dg-name" x="627" y="95"  text-anchor="middle">Gráficos</text>
+  <rect class="dg-box" x="582" y="124" width="90" height="40" rx="3"/><text class="dg-name" x="627" y="149" text-anchor="middle">Tablas</text>
+  <rect class="dg-box" x="582" y="178" width="90" height="40" rx="3"/><text class="dg-name" x="627" y="203" text-anchor="middle">Semáforos</text>
+  <rect class="dg-box" x="582" y="232" width="90" height="40" rx="3"/><text class="dg-name" x="627" y="257" text-anchor="middle">Informes</text>
+
+  <!-- 6 negocio -->
+  <rect class="dg-box" x="690" y="70" width="80" height="202" rx="3"/>
+  <text class="dg-name" x="730" y="165" text-anchor="middle">Negocio</text>
+  <text class="dg-sub" x="730" y="181" text-anchor="middle">usuarios</text>
+
+  <!-- flechas entre etapas -->
+  <line class="dg-line" x1="110" y1="155" x2="130" y2="155" marker-end="url(#comp-arr)"/>
+  <line class="dg-line" x1="283" y1="162" x2="296" y2="162" marker-end="url(#comp-arr)"/>
+  <line class="dg-line" x1="423" y1="162" x2="444" y2="162" marker-end="url(#comp-arr)"/>
+  <line class="dg-line" x1="555" y1="162" x2="580" y2="162" marker-end="url(#comp-arr)"/>
+  <line class="dg-line" x1="673" y1="162" x2="688" y2="162" marker-end="url(#comp-arr)"/>
+
+  <!-- metadata -->
+  <rect class="dg-meta" x="10" y="306" width="760" height="34" rx="3"/>
+  <text class="dg-name" x="390" y="328" text-anchor="middle">METADATA — acompaña a todas las etapas</text>
+  <text class="dg-sub" x="390" y="368" text-anchor="middle">Staging, ODS, MDM y DQ forman la etapa 2 y viven dentro del ETL</text>
+</svg>

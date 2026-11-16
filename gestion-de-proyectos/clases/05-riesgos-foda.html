@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 5 · Riesgos y FODA</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: FODA grid and probability x impact matrix (colors via theme tokens, never color alone) */
+  .foda { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin: 1rem 0; font-family: var(--sans); font-size: .8rem; }
+  .foda > div { border: 1px solid var(--rule); border-radius: 8px; background: var(--card); padding: .6rem .8rem; }
+  .foda h4 { margin: 0 0 .3rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--accent-ink); }
+  .foda ul { margin: 0; padding-left: 1.1rem; }
+  .foda .int h4 { color: var(--violet); }
+  @media (max-width: 30rem) { .foda { grid-template-columns: 1fr; } }
+  .pi-wrap { overflow-x: auto; margin: 1rem 0; }
+  table.pi { width: auto; min-width: 26rem; border-collapse: separate; border-spacing: 3px; font-family: var(--sans); font-size: .82rem; }
+  table.pi th { background: transparent; color: var(--muted); text-transform: none; letter-spacing: 0; font-size: .72rem; border: 0; text-align: center; }
+  table.pi td { text-align: center; padding: .55rem .4rem; border: 1px solid transparent; border-radius: 6px; min-width: 3.6rem; font-variant-numeric: tabular-nums; font-weight: 600; }
+  table.pi td.g { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); }
+  table.pi td.y { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+  table.pi td.r { background: var(--bad-soft); color: var(--bad); border-color: var(--bad); }
+  table.pi td small { display: block; font-weight: 400; font-size: .6rem; }
+  .pi-legend { font-family: var(--sans); font-size: .75rem; color: var(--muted); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.neg { color: var(--ok); }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 5 · 9/9/2026 · Alimenta la sección 9 del TP</p>
+  <h1>Riesgos y FODA: qué puede pasar y cuánto cuesta prepararse</h1>
+  <p class="subtitle">De un análisis del contexto a una lista de riesgos con probabilidad, impacto y una respuesta para cada uno.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%205%20-%20Gesti%C3%B3n%20de%20riesgos.pdf" title="Solo disponible en la copia completa con raw/">Clase 5</a>, p7 a 41</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder escribir un riesgo con la plantilla de la cátedra, ubicarlo en la matriz probabilidad × impacto, calcular su EMV, elegir entre evitar, transferir, mitigar o aceptar, y sumar los EMV para obtener la reserva de contingencia del presupuesto.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="04-costos-pestel.html">Clase 4</a> (PESTEL entrega factores externos) y <a href="03a-charter-stakeholders-edt.html">Clase 3</a> (el Charter ya declara riesgos de alto nivel; acá se detallan).</p>
+  <p><span class="to">Alimenta</span> la sección 9 del TP (Matriz de riesgos) y, con el EMV, la reserva de contingencia de la <a href="04-costos-pestel.html#reservas">Clase 4</a>. La gestión de cambios, que cierra esta clase, se desarrolla en la <a href="06-cambios-comunicacion-negociacion.html">Clase 6</a>. Ver el <a href="mapa-de-conceptos.html">Mapa de conceptos</a>.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>Todo plan supone que las cosas salen como se estimaron. La gestión de riesgos consiste en identificar, priorizar, cuantificar y planificar la respuesta a lo que puede desviar ese plan, y hacerle seguimiento (Clase 5, p22). Sus beneficios según la cátedra: aumenta la probabilidad de éxito, da una visión general de riesgos y desafíos, reduce costos y tiempos, y da confianza al director del proyecto (p36).</p>
+
+<h2 id="idea-1">Idea 1 · FODA: mirar adentro y afuera</h2>
+<p>El FODA evalúa factores internos y externos de una organización o proyecto (Clase 5, p8):</p>
+<div class="foda">
+  <div class="int"><h4>Fortalezas · interno</h4><ul><li>Equipo capacitado en desarrollo ágil</li><li>Tecnología y herramientas avanzadas</li><li>Experiencia en proyectos similares</li></ul></div>
+  <div><h4>Oportunidades · externo</h4><ul><li>Demanda creciente de apps de finanzas</li><li>Alianzas con fintechs</li><li>IA y Big Data para mejorar la app</li></ul></div>
+  <div class="int"><h4>Debilidades · interno</h4><ul><li>Recursos financieros limitados</li><li>Poca experiencia en marketing móvil</li><li>Falta de personal en ciberseguridad</li></ul></div>
+  <div><h4>Amenazas · externo</h4><ul><li>Alta competencia en el sector</li><li>Cambios regulatorios sobre datos financieros</li><li>Posibles ciberataques</li></ul></div>
+</div>
+<p class="note">El ejemplo de la cátedra (p11–13) es una empresa de software que desarrolla una app móvil de finanzas personales. La diapositiva 26 lista al FODA entre las técnicas de identificación de riesgos, junto con la tormenta de ideas, la técnica Delphi y el análisis de documentos históricos.</p>
+<p><strong>Cómo pasa del FODA a la lista de riesgos</strong> (síntesis de esta lección, la diapositiva no detalla el paso): cada <em>amenaza</em> y cada <em>debilidad</em> es un candidato a riesgo negativo; cada <em>oportunidad</em>, un candidato a riesgo positivo (p20–21). «Cambios regulatorios sobre datos financieros» pasa a ser un riesgo cuando se escribe con la plantilla de más abajo.</p>
+
+<h2 id="idea-2">Idea 2 · Riesgo, problema y cómo escribirlo</h2>
+<p>Un <strong>riesgo</strong> es un evento o condición incierta que, si ocurre, afecta positiva o negativamente los objetivos del proyecto: alcance, tiempos, costo y calidad (Clase 5, p19). Un <strong>problema</strong> ya ocurrió o está ocurriendo y exige acción inmediata (p18). Dos consecuencias: los riesgos no se eliminan, se gestionan (mitigar, transferir, evitar o aceptar), y un riesgo puede ser positivo (oportunidad) o negativo (amenaza) (p20–21, 24).</p>
+<p>Plantilla de la cátedra para redactarlo (p17):</p>
+<p class="note"><em>Ante [evento que podría ocurrir], podría ocasionar [problema que desencadena], lo que impactaría en [restricción del proyecto afectada].</em></p>
+<p>Ejemplo de la cátedra: ante disturbios o manifestaciones los miércoles, podría ocasionar la suspensión de una clase, lo que disminuiría el tiempo para explicar y preguntar. Tiene evento, consecuencia y restricción; si falta una de las tres, es una queja, no un riesgo.</p>
+
+<h2 id="idea-3">Idea 3 · Identificar: quién, cuántas veces, dónde buscar</h2>
+<ul>
+  <li><strong>Quién participa (p23):</strong> director, equipo, expertos en riesgos, clientes, usuarios finales, otros directores e interesados.</li>
+  <li><strong>Cuántas veces (p24):</strong> es iterativo. Aparecen riesgos nuevos y otros evolucionan durante el ciclo de vida.</li>
+  <li><strong>Categorías (p25):</strong> de la <em>organización</em> (dependencias, recursos, financiación, priorización), <em>técnico</em> (requisitos, tecnología, complejidad, rendimiento, calidad), <em>externo</em> (proveedores, regulatorio, mercado, cliente, clima) y de <em>dirección de proyectos</em> (estimación, planificación, control, comunicación).</li>
+  <li><strong>Técnicas (p26):</strong> tormenta de ideas, Delphi (rondas de expertos hasta consenso), FODA y análisis de documentos.</li>
+</ul>
+
+<h2 id="idea-4">Idea 4 · Priorizar: probabilidad × impacto</h2>
+<p>Cada riesgo recibe una probabilidad (porcentaje, escala bajo-medio-alto o de 0 a 1) y un impacto (bajo-medio-alto o de 1 a 10); la <strong>importancia es impacto × probabilidad</strong> (Clase 5, p27). La diapositiva 28 lo aplica a cuatro riesgos y colorea el resultado:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>Riesgo</th><th class="num">Probabilidad</th><th class="num">Impacto</th><th class="num">Importancia</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Retraso en entrega</td><td class="num">0,4</td><td class="num">8</td><td class="num"><strong>3,2</strong> (rojo)</td></tr>
+<tr><td>2</td><td>Fallo técnico</td><td class="num">0,2</td><td class="num">7</td><td class="num"><strong>1,4</strong> (verde)</td></tr>
+<tr><td>3</td><td>Aumento de costos</td><td class="num">0,5</td><td class="num">6</td><td class="num"><strong>3,0</strong> (rojo)</td></tr>
+<tr><td>4</td><td>Pérdida de un miembro clave</td><td class="num">0,3</td><td class="num">9</td><td class="num"><strong>2,7</strong> (amarillo)</td></tr>
+</tbody>
+</table>
+</div>
+<p>La diapositiva 29 (fuente citada: Maigua López, <em>Buenas prácticas en la dirección y gestión de proyectos informáticos</em>, Edutecne 2012, fig. 66) presenta la matriz completa con escala de 1 a 5 en ambos ejes. Los riesgos <em>aceptables</em> quedan en verde, los <em>aceptables con atención</em> en amarillo y los <em>inaceptables</em> en rojo:</p>
+<div class="pi-wrap">
+<table class="pi" aria-label="Matriz de probabilidad por impacto, escala 1 a 5">
+<thead><tr><th></th><th>Impacto 1<br>muy bajo</th><th>2<br>bajo</th><th>3<br>medio</th><th>4<br>alto</th><th>5<br>muy alto</th></tr></thead>
+<tbody>
+<tr><th scope="row">Prob. 5 · muy alta</th><td class="g">2,6<small>aceptable</small></td><td class="y">3,2<small>atención</small></td><td class="r">3,8<small>inaceptable</small></td><td class="r">4,4<small>inaceptable</small></td><td class="r">5,0<small>inaceptable</small></td></tr>
+<tr><th scope="row">4 · alta</th><td class="g">2,2<small>aceptable</small></td><td class="y">2,8<small>atención</small></td><td class="y">3,4<small>atención</small></td><td class="r">4,0<small>inaceptable</small></td><td class="r">4,6<small>inaceptable</small></td></tr>
+<tr><th scope="row">3 · media</th><td class="g">1,8<small>aceptable</small></td><td class="g">2,4<small>aceptable</small></td><td class="y">3,0<small>atención</small></td><td class="y">3,6<small>atención</small></td><td class="r">4,2<small>inaceptable</small></td></tr>
+<tr><th scope="row">2 · baja</th><td class="g">1,4<small>aceptable</small></td><td class="g">2,0<small>aceptable</small></td><td class="g">2,6<small>aceptable</small></td><td class="y">3,2<small>atención</small></td><td class="r">3,8<small>inaceptable</small></td></tr>
+<tr><th scope="row">1 · muy baja</th><td class="g">1,0<small>aceptable</small></td><td class="g">1,6<small>aceptable</small></td><td class="g">2,2<small>aceptable</small></td><td class="y">2,8<small>atención</small></td><td class="y">3,4<small>atención</small></td></tr>
+</tbody>
+</table>
+</div>
+<p class="pi-legend">Verde: aceptable · amarillo: aceptable con atención · rojo: inaceptable. Observación al recalcular: cada celda coincide con 0,4 × probabilidad + 0,6 × impacto (por ejemplo, 3 y 3 dan 3,0); la diapositiva no enuncia esta fórmula. Las dos escalas de las diapositivas 28 y 29 son distintas: no se mezclan valores de una tabla con los umbrales de la otra.</p>
+<p>La diapositiva 30 dice qué hacer con cada color: los <em>inaceptables</em> pasan a un plan de respuestas que reduce probabilidad o impacto; los <em>aceptables con atención</em> y los <em>aceptables</em>, junto con lo que sobra de las respuestas (riesgos residuales), van a un <strong>plan de contingencia</strong>.</p>
+
+<h2 id="idea-5">Idea 5 · Cuantificar: EMV</h2>
+<p>El valor monetario esperado, <strong>EMV = probabilidad × impacto</strong>, da una medida general de cada riesgo en dinero, y <em>«con este valor generamos la reserva de contingencia»</em> (Clase 5, p31). La diapositiva 32 lo aplica a siete riesgos, tres de ellos positivos:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Riesgo</th><th class="num">Prob.</th><th class="num">Impacto</th><th class="num">EMV</th><th>Signo</th></tr></thead>
+<tbody>
+<tr><td>Retrasos en la entrega de materiales</td><td class="num">30%</td><td class="num">$50.000</td><td class="num">$15.000</td><td>amenaza (+)</td></tr>
+<tr><td>Aumento en la demanda del producto</td><td class="num">20%</td><td class="num">$30.000</td><td class="num">$6.000</td><td class="neg">oportunidad (−)</td></tr>
+<tr><td>Fallos en el equipo técnico</td><td class="num">15%</td><td class="num">$40.000</td><td class="num">$6.000</td><td>amenaza (+)</td></tr>
+<tr><td>Reducción de costos en proveedores</td><td class="num">25%</td><td class="num">$30.000</td><td class="num">$7.500</td><td class="neg">oportunidad (−)</td></tr>
+<tr><td>Incumplimiento de regulaciones</td><td class="num">10%</td><td class="num">$70.000</td><td class="num">$7.000</td><td>amenaza (+)</td></tr>
+<tr><td>Innovación en el producto</td><td class="num">35%</td><td class="num">$10.000</td><td class="num">$3.500</td><td class="neg">oportunidad (−)</td></tr>
+<tr><td>Problemas en la gestión del proyecto</td><td class="num">20%</td><td class="num">$45.000</td><td class="num">$9.000</td><td>amenaza (+)</td></tr>
+<tr><td colspan="3"><strong>Total (amenazas − oportunidades)</strong></td><td class="num"><strong>$20.000</strong></td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>El total de $20.000 sale de <strong>restar</strong> las oportunidades a las amenazas: (15.000 + 6.000 + 7.000 + 9.000) − (6.000 + 7.500 + 3.500) = 37.000 − 17.000. Sumar todo daría $54.000. Es una decisión de método que conviene declarar en el documento: la diapositiva netea; una postura más conservadora reservaría solo las amenazas.</p>
+
+<h2 id="idea-6">Idea 6 · Responder: evitar, transferir, mitigar, aceptar</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Respuesta</th><th>Qué hace (Clase 5, p33–34)</th><th>Ejemplo de la cátedra</th></tr></thead>
+<tbody>
+<tr><td><strong>Evitar</strong></td><td>Cambiar las condiciones del proyecto para eliminar el riesgo</td><td>Mover la fecha de inicio a una temporada con menos lluvias</td></tr>
+<tr><td><strong>Transferir</strong></td><td>Trasladar el impacto, total o parcial, a un tercero</td><td>Contratar un seguro o poner una penalidad por incumplimiento</td></tr>
+<tr><td><strong>Reducir / mitigar</strong></td><td>Acciones para minimizar la probabilidad de ocurrencia</td><td>Mantenimiento preventivo y repuestos disponibles</td></tr>
+<tr><td><strong>Aceptar</strong></td><td>No actuar de forma proactiva: el impacto o la probabilidad son tan bajos que no vale el esfuerzo, o no hay alternativas</td><td>Mal clima en un evento al aire libre: se maneja con alternativas rápidas si ocurre</td></tr>
+</tbody>
+</table>
+</div>
+<p>La diapositiva 35 los combina en una guía de cuatro celdas: <strong>impacto bajo + probabilidad baja</strong>, no considerar; <strong>impacto bajo + probabilidad alta</strong>, aceptar con plan de contingencia preparado; <strong>impacto alto + probabilidad baja</strong>, riesgos asegurables: transferir; <strong>impacto alto + probabilidad alta</strong>, evitar o mitigar.</p>
+<p>La cátedra cierra con un caso completo (p38–41): construcción de una oficina en 12 meses con presupuesto de $500.000. Cinco riesgos (clima, proveedores, permisos, finanzas, coordinación de contratistas) con probabilidades de 40% a 70% y pérdidas de $20.000 a $70.000 suman <strong>$109.000</strong> de contingencia (por ejemplo, 60% × $50.000 = $30.000), más de una quinta parte del presupuesto. Cada riesgo lleva su estrategia y su motivo. Las diapositivas no dan respuestas específicas para las <em>oportunidades</em>.</p>
+
+<h2 id="ejemplo">Ejemplo resuelto: cinco riesgos y una reserva</h2>
+<p>Valores ilustrativos, no son el plan del Mapa. Son los riesgos del proyecto del ejemplo de la <a href="04-costos-pestel.html#ejemplo">Clase 4</a> (costo del proyecto de $3.000.000). Redactados con la plantilla, calculados con EMV = P × I y ordenados por EMV:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>#</th><th>Riesgo (plantilla de la cátedra)</th><th class="num">P</th><th class="num">Impacto</th><th class="num">EMV</th><th>Respuesta</th></tr></thead>
+<tbody>
+<tr><td>R1</td><td>Ante un retraso del proveedor de datos, podría ocasionar que «Integrar datos» se extienda, lo que impactaría en cronograma y costo.</td><td class="num">30%</td><td class="num">$300.000</td><td class="num"><strong>$90.000</strong></td><td>Mitigar: acuerdo con un proveedor alternativo</td></tr>
+<tr><td>R2</td><td>Ante la salida de una persona clave, podría ocasionar reprocesos, lo que impactaría en tiempo y costo.</td><td class="num">20%</td><td class="num">$400.000</td><td class="num"><strong>$80.000</strong></td><td>Mitigar: documentar y tener un segundo responsable</td></tr>
+<tr><td>R3</td><td>Ante un cambio normativo sobre datos, podría ocasionar el rediseño de un módulo, lo que impactaría en alcance y costo.</td><td class="num">10%</td><td class="num">$500.000</td><td class="num"><strong>$50.000</strong></td><td>Mitigar: revisión legal temprana (no es asegurable)</td></tr>
+<tr><td>R4</td><td>Ante una suba del costo de la nube, podría ocasionar sobrecosto de licencias, lo que impactaría en el costo.</td><td class="num">40%</td><td class="num">$100.000</td><td class="num"><strong>$40.000</strong></td><td>Aceptar con plan de contingencia (impacto bajo)</td></tr>
+<tr><td>R5</td><td>Oportunidad: ante una capa de datos ya construida por otra área, podría ahorrar trabajo en «Integrar datos», lo que favorecería costo y tiempo.</td><td class="num">25%</td><td class="num">$200.000</td><td class="num neg"><strong>−$50.000</strong></td><td>Sin respuesta en las diapositivas (ver Complemento)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Amenazas: 90.000 + 80.000 + 50.000 + 40.000 = 260.000. Oportunidad: −50.000. <strong>Reserva de contingencia neta: $210.000</strong>, es decir 7% del costo del proyecto. Ese número es el que entra a la <a href="04-costos-pestel.html#ejemplo">escalera del presupuesto</a> para pasar del costo del proyecto ($3.000.000) a la línea base ($3.210.000). <em>La contingencia no se inventa: sale de esta tabla.</em></p>
+
+<h2 id="gestion-del-cambio-cierre-de-la-clase">Gestión del cambio: cierre de la clase</h2>
+<p>Las diapositivas 42 a 46 abren la gestión de cambios: el proceso sistemático para identificar, evaluar, aprobar y controlar modificaciones durante el ciclo de vida del proyecto. Se repite y se desarrolla al inicio de la Clase 6, por eso su explicación completa está en la <a href="06-cambios-comunicacion-negociacion.html">lección 6</a>.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: escribir la plantilla de un riesgo, nombrar las cuatro respuestas y decir qué pasa con una oportunidad al calcular la reserva.</summary>
+  <p><em>Ante [evento], podría ocasionar [problema], lo que impactaría en [restricción].</em> Respuestas: evitar, transferir, mitigar, aceptar. En la diapositiva 32 las oportunidades <strong>restan</strong> del total de la reserva. Ver <a href="#idea-5">EMV</a>.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">«El proveedor ya se retrasó y no recibimos los materiales.» ¿Qué es, según la cátedra?</p>
+  <div class="options">
+    <button data-ok data-why="Ya ocurrió y requiere acción inmediata: es un problema, no un riesgo (Clase 5, p18).">Un problema</button>
+    <button data-why="Un riesgo es un evento incierto que todavía puede ocurrir (p16).">Un riesgo negativo</button>
+    <button data-why="Las oportunidades son riesgos positivos y este evento perjudica al proyecto.">Un riesgo positivo</button>
+    <button data-why="Es un hecho real del presente; no es un supuesto.">Una fortaleza del FODA</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">¿Cuál de estas frases sigue la plantilla de la cátedra para redactar un riesgo?</p>
+  <div class="options">
+    <button data-ok data-why="Tiene evento, problema que desencadena y restricción afectada (Clase 5, p17).">Ante un corte de servicio del proveedor, podría ocasionar la detención de la integración, lo que impactaría en el cronograma.</button>
+    <button data-why="Es una queja sin evento, consecuencia ni restricción identificable.">El proveedor es poco confiable.</button>
+    <button data-why="Es una tarea, no un riesgo.">Hay que revisar los contratos.</button>
+    <button data-why="Nombra el evento pero no su consecuencia ni la restricción afectada.">Puede haber cortes de servicio.</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Un riesgo tiene 25% de probabilidad y un impacto de $60.000. ¿Cuál es su EMV?</p>
+  <div class="options">
+    <button data-ok data-why="EMV = P × I = 0,25 × 60.000 = $15.000 (Clase 5, p31).">$15.000</button>
+    <button data-why="Es el impacto sin ponderar por la probabilidad.">$60.000</button>
+    <button data-why="Es la suma 25 + 60, sin sentido monetario.">$85.000</button>
+    <button data-why="Es 25% de 60.000 con un cero de más.">$150.000</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">En el ejemplo de EMV de la cátedra, las amenazas suman $37.000 y las oportunidades $17.000. ¿Cómo se llega al total de $20.000?</p>
+  <div class="options">
+    <button data-ok data-why="Amenazas (+) menos oportunidades (−): 37.000 − 17.000 = 20.000 (Clase 5, p32).">Restando las oportunidades a las amenazas</button>
+    <button data-why="Sumar todo da $54.000, no $20.000.">Sumando todos los EMV</button>
+    <button data-why="El total incluye las oportunidades con signo negativo.">Contando solo las amenazas</button>
+    <button data-why="No se promedian: el total es una suma con signos.">Promediando los siete EMV</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Sección 9, Gestión de riesgos - Matriz de riesgos.</strong> Receta: (1) sacar candidatos de un FODA del proyecto y de los riesgos de alto nivel del Charter (sección 5); (2) redactar cada uno con la plantilla y clasificarlo por categoría; (3) estimar probabilidad e impacto en pesos; (4) calcular EMV y ordenar; (5) elegir una respuesta por riesgo y justificarla en una línea; (6) sumar los EMV para la reserva de contingencia y llevarla a la sección 10; (7) revisar que cada riesgo del Charter aparezca en la matriz. Para el Mapa, el equipo ya anotó una hipótesis a verificar: el perfil por hogar implica datos sensibles, con la Ley 25.326 como referencia legal. Es candidata a riesgo regulatorio. Ver el <a href="../tp/plan.html">Plan del TP</a>.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%205%20-%20Gesti%C3%B3n%20de%20riesgos.pdf" title="Solo disponible en la copia completa con raw/">Clase 5 — Gestión de riesgos</a>, diapositivas 7 a 41. Las diapositivas 12, 13, 28 a 30, 32, 35 y 39 a 41 son imágenes: se leyeron visualmente. La gestión de cambios (p42–46) se trata en la lección 6.
+  <br><strong>Complemento:</strong> (1) el paso de FODA a riesgos, la observación 0,4·P + 0,6·I de la matriz y el ejemplo resuelto son de esta lección. (2) Para las oportunidades, el PMBOK habla de explotar, mejorar, compartir y aceptar; las diapositivas no las mencionan. (3) Con el ejemplo de la Clase 4 comparte los mismos valores ilustrativos.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: cómo estimar una probabilidad sin datos, cómo pasar un ítem del FODA a un riesgo bien escrito, o cuándo conviene reservar solo las amenazas.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="04-costos-pestel.html">← Clase 4 · Costos y PESTEL</a>
+  <a href="06-cambios-comunicacion-negociacion.html">Clase 6 · Comunicación →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

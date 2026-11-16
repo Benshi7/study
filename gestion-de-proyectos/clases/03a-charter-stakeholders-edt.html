@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase 3 (1/2) · Charter, stakeholders y EDT</title>
+<script src="../assets/theme.js"></script>
+<script src="../assets/suite-nav.js" defer></script>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  /* Page-local: stakeholder power/interest grid and WBS tree */
+  .pi { display: grid; grid-template-columns: 1.6rem 1fr 1fr; grid-template-rows: 1fr 1fr auto; gap: 6px; margin: 1.2rem 0 .3rem; font-family: var(--sans); }
+  .pi .axis-y { grid-row: 1 / 3; grid-column: 1; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-size: .7rem; font-weight: 600; color: var(--muted); letter-spacing: .05em; }
+  .pi .cell { border-radius: 8px; padding: .6rem .7rem; min-height: 7rem; border: 1px solid var(--rule); background: var(--violet-soft); }
+  .pi .cell h4 { margin: 0 0 .2rem; font-size: .85rem; }
+  .pi .cell p { margin: 0; font-size: .75rem; color: var(--muted); line-height: 1.35; }
+  .pi .cell .eg { margin-top: .5rem; font-size: .72rem; color: var(--fg); }
+  .pi .hot { background: var(--accent-soft); border-color: var(--accent); }
+  .pi .axis-x { grid-column: 2 / 4; display: flex; justify-content: space-between; font-size: .7rem; font-weight: 600; color: var(--muted); letter-spacing: .05em; }
+  .wbs, .wbs ul { list-style: none; margin: 0; padding-left: 1.1rem; border-left: 2px solid var(--rule); }
+  .wbs { border-left: 0; padding-left: 0; font-size: .9rem; }
+  .wbs li { margin: .25rem 0; }
+  .wbs li > span.lvl { font-family: var(--sans); font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--violet); margin-right: .4rem; }
+  .wbs li.act { color: var(--muted); }
+  .wbs li.pkg > strong { color: var(--accent-ink); }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <p class="kicker">Clase 3 (1 de 2) · 26/8/2026 · Alimenta las secciones 5 y 7 del TP</p>
+  <h1>Charter, stakeholders y EDT</h1>
+  <p class="subtitle">Cómo se autoriza un proyecto, a quién afecta y cómo se desglosa lo que hay que entregar, antes de poner una sola fecha.</p>
+  <p class="meta"><span>⏱ 25 minutos</span><span>Fuente: <a class="local-only" href="../raw/Clase%203%20-%20Gesti%C3%B3n%20del%20cronograma.pdf" title="Solo disponible en la copia completa con raw/">Clase 3</a>, p6 a 29</span></p>
+</header>
+
+<div class="win">
+  <strong>Al terminar</strong>
+  Poder nombrar las cinco fases de un proyecto, decir qué campos tiene un Project Charter, ubicar a un stakeholder en la matriz poder/interés con su estrategia, y desglosar un entregable en paquetes de trabajo y actividades.
+</div>
+
+<div class="connect">
+  <strong>Conexiones</strong>
+  <p><span class="from">Viene de</span> <a href="02-proyectos.html">Clase 2</a> (alcance, restricciones y director de proyectos) y <a href="01-canvas.html">Clase 1</a> (objetivos SMART, segmentos y socios).</p>
+  <p><span class="to">Alimenta</span> <a href="03b-cronograma-camino-critico.html">Clase 3, parte 2</a> (las actividades de la EDT son la entrada del cronograma), <a href="05-riesgos-foda.html">Clase 5</a> (riesgos de alto nivel del Charter), <a href="06-cambios-comunicacion-negociacion.html">Clase 6</a> (la matriz de stakeholders es la base del plan de comunicación) y las secciones 5, 6 y 7 del TP. Ver el <a href="mapa-de-conceptos.html">Mapa de conceptos</a>.</p>
+</div>
+
+<h2 id="el-problema">El problema</h2>
+<p>Un cronograma sin autorización, sin saber quiénes lo van a afectar y sin una lista de entregables, es un dibujo de fechas. La clase se ordena así (agenda, Clase 3, p6): ciclo de vida, Project Charter, matriz de stakeholders, EDT y, en la <a href="03b-cronograma-camino-critico.html">segunda parte</a>, cronograma, Gantt, PERT y línea base.</p>
+
+<h2 id="idea-1-ciclo-de-vida-cinco-fases">Idea 1 · Ciclo de vida: cinco fases</h2>
+<p>El ciclo de vida son las etapas desde el inicio hasta el cierre, una estructura lógica y secuencial que guía la ejecución (Clase 3, p8). Se reconocen cinco fases (p9):</p>
+<ol class="chain">
+  <li><strong>Inicio</strong><span class="q">Definición y viabilidad</span></li>
+  <li data-in="proyecto autorizado"><strong>Planificación</strong><span class="q">Detalle y preparación</span></li>
+  <li data-in="plan aprobado"><strong>Ejecución</strong><span class="q">Realización del trabajo</span></li>
+  <li data-in="avance real"><strong>Monitoreo y control</strong><span class="q">Supervisión y ajustes</span></li>
+  <li data-in="entregables aceptados"><strong>Cierre</strong><span class="q">Finalización y evaluación</span></li>
+</ol>
+<p>Dos regularidades que explican por qué se planifica tanto al inicio: costo y dotación de personal son bajos al arrancar, llegan a su máximo durante el trabajo y caen rápido al acercarse el cierre (p10); y en las fases tempranas los stakeholders tienen mayor impacto y los ajustes son más fáciles y baratos, porque todavía no se invirtió mucho (p11).</p>
+
+<h2 id="charter">Idea 2 · Project Charter (Acta de constitución)</h2>
+<p>Es el documento que <strong>formaliza el inicio</strong> y le da al gerente del proyecto la autoridad para emplear los recursos de la organización. Actúa como un acuerdo preliminar entre el equipo y los patrocinadores o partes interesadas (Clase 3, p13). La cátedra lo divide en tres partes:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Parte</th><th>Campos</th><th>Pregunta que responde</th></tr></thead>
+<tbody>
+<tr><td><strong>I</strong> (p14)</td><td>Propósito o justificación · descripción de alto nivel · objetivos del proyecto · requisitos de alto nivel</td><td>¿Por qué y qué?</td></tr>
+<tr><td><strong>II</strong> (p15)</td><td>Descripción del producto o resultados · suposiciones y restricciones · cronograma de alto nivel · presupuesto de alto nivel · riesgos de alto nivel</td><td>¿Con qué límites?</td></tr>
+<tr><td><strong>III</strong> (p16)</td><td>Criterios de éxito · stakeholders principales · responsabilidades y autoridad del gerente · requisitos de aprobación</td><td>¿Quién decide y cómo se mide el éxito?</td></tr>
+</tbody>
+</table>
+</div>
+<p>Los objetivos deben ser <em>claros y medibles</em> (p14): son los objetivos SMART de la <a href="01-canvas.html">Clase 1</a>. Y varios campos del Charter son <strong>resúmenes</strong> de secciones posteriores del TP, así que los números deben coincidir:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Campo del Charter</th><th>Se detalla en</th></tr></thead>
+<tbody>
+<tr><td>Cronograma de alto nivel (hitos)</td><td>Sección 6, Gantt del proyecto completo</td></tr>
+<tr><td>Presupuesto de alto nivel</td><td>Sección 10, Presupuesto</td></tr>
+<tr><td>Riesgos de alto nivel</td><td>Sección 9, Matriz de riesgos</td></tr>
+<tr><td>Stakeholders principales</td><td>Sección 7, Matriz de stakeholders</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="matriz">Idea 3 · Stakeholders y matriz de análisis</h2>
+<p>Un stakeholder es cualquier persona, grupo u organización que <strong>puede afectar o verse afectado</strong> por el proyecto: clientes, patrocinadores, empleados, proveedores, reguladores y la comunidad (Clase 3, p18). La matriz permite identificarlos, analizarlos y categorizarlos, para saber a quiénes afecta el proyecto y cómo interactuar con cada grupo (p19).</p>
+<p>La cátedra muestra dos herramientas. La primera es una <strong>tabla</strong> con cinco columnas: stakeholder, intereses, influencia (alta, media, baja), nivel de participación y estrategia de gestión (p20). Tres filas del ejemplo:</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Stakeholder</th><th>Intereses</th><th>Influencia</th><th>Participación</th><th>Estrategia</th></tr></thead>
+<tbody>
+<tr><td>CEO</td><td>Mejorar la eficiencia y reducir costos</td><td>Alta</td><td>Alto</td><td>Gestión cercana: informes periódicos y reuniones</td></tr>
+<tr><td>Proveedores</td><td>Continuidad del negocio, cambios mínimos</td><td>Baja</td><td>Medio</td><td>Mantener informados, negociar contratos</td></tr>
+<tr><td>Clientes</td><td>Mejora en tiempos de entrega</td><td>Baja</td><td>Bajo</td><td>Monitorear la satisfacción, encuestas ocasionales</td></tr>
+</tbody>
+</table>
+</div>
+<p>La segunda es la <strong>matriz de poder e interés</strong> (p21), que traduce cada nivel en una estrategia:</p>
+<div class="pi" role="group" aria-label="Matriz de análisis de interesados: poder frente a interés">
+  <div class="axis-y">PODER →</div>
+  <div class="cell"><h4>Mantener satisfecho</h4><p>Poder alto, interés bajo.</p><p class="eg">Ejemplo de la cátedra: gerencia legal</p></div>
+  <div class="cell hot"><h4>Gestionar de cerca</h4><p>Poder alto, interés alto. Stakeholders clave.</p><p class="eg">Ejemplo: patrocinador</p></div>
+  <div class="cell"><h4>Monitorear</h4><p>Poder bajo, interés bajo. Esfuerzo mínimo.</p><p class="eg">Ejemplo: comunidad</p></div>
+  <div class="cell"><h4>Mantener informado</h4><p>Poder bajo, interés alto.</p><p class="eg">Ejemplo: usuarios finales</p></div>
+  <div class="axis-x"><span>Interés bajo</span><span>INTERÉS →</span><span>Interés alto</span></div>
+</div>
+<p class="note">Nota de lectura: el poder está en el eje vertical y el interés en el horizontal. Un stakeholder con mucho poder pero poco interés no necesita reuniones semanales, pero sí que no se lo sorprenda.</p>
+
+<h2 id="idea-4-definir-actividades-y-armar-la-ed">Idea 4 · Definir actividades y armar la EDT</h2>
+<p>La <strong>EDT</strong> (Estructura de Desglose del Trabajo, o WBS) identifica los <em>entregables</em> hasta su nivel más bajo, los <strong>paquetes de trabajo</strong>. Estos se descomponen a su vez en <strong>actividades</strong>, que son el trabajo necesario para completar cada paquete (Clase 3, p23). La estructura de la diapositiva 24 baja así: Proyecto → Fase → Entregable → Paquete de trabajo → Actividad.</p>
+<p>Ejemplo de la cátedra (p25), recortado a una rama por fase:</p>
+<ul class="wbs">
+  <li><span class="lvl">Proyecto</span><strong>Construcción de una casa</strong>
+    <ul>
+      <li><span class="lvl">Fase</span>1.1 Planificación
+        <ul>
+          <li><span class="lvl">Entregable</span>1.1.1 Planificación del proyecto
+            <ul>
+              <li class="pkg"><span class="lvl">Paquete</span><strong>1.1.1.1 Diseño arquitectónico</strong>
+                <ul>
+                  <li class="act"><span class="lvl">Actividad</span>Reunión inicial con el arquitecto</li>
+                  <li class="act"><span class="lvl">Actividad</span>Desarrollo de bocetos preliminares</li>
+                  <li class="act"><span class="lvl">Actividad</span>Revisión y aprobación del diseño final</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><span class="lvl">Fase</span>1.3 Construcción
+        <ul>
+          <li><span class="lvl">Entregable</span>1.3.1 Obra civil
+            <ul>
+              <li class="pkg"><span class="lvl">Paquete</span><strong>1.3.1.1 Cimentación</strong>
+                <ul>
+                  <li class="act"><span class="lvl">Actividad</span>Excavación del terreno</li>
+                  <li class="act"><span class="lvl">Actividad</span>Colocación de la cimentación</li>
+                  <li class="act"><span class="lvl">Actividad</span>Inspección de la cimentación</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>Cada paquete de trabajo se documenta en un <strong>diccionario de la EDT</strong> (p26) con código, nombre, descripción, actividades incluidas, <em>criterios de aceptación</em> y responsable. Ejemplo: paquete 1.2.1 <em>Diseño arquitectónico</em>, criterio de aceptación <em>planos aprobados y listos para su uso</em>, responsable el arquitecto. Los códigos de esa tabla no coinciden con los del árbol de la p25; lo importante es que cada paquete tenga un código único y un responsable.</p>
+<h3>Definir las actividades</h3>
+<p>Para pasar de la EDT al cronograma se enumeran las acciones necesarias para cada entregable, <strong>con verbos</strong>, y se marcan los <strong>hitos</strong>, formales (incluidos en un contrato) o de control del avance. Las actividades son la base para estimar, programar, ejecutar y controlar (Clase 3, p29). Lo que sigue (relaciones entre actividades y duraciones) está en la <a href="03b-cronograma-camino-critico.html">parte 2</a>.</p>
+
+<h2 id="practica-1-recuperar-sin-mirar">Práctica 1 · Recuperar sin mirar</h2>
+<details class="recall">
+  <summary>Sin volver arriba: nombrar las cinco fases, las tres partes del Charter y los cuatro cuadrantes de la matriz poder/interés.</summary>
+  <p>Inicio, planificación, ejecución, monitoreo y control, cierre. Parte I: por qué y qué; parte II: producto y límites (cronograma, presupuesto y riesgos de alto nivel); parte III: éxito, stakeholders, autoridad y aprobación. Cuadrantes: mantener satisfecho, gestionar de cerca, monitorear, mantener informado. Ver <a href="#charter">Charter</a> y <a href="#matriz">matriz</a>.</p>
+</details>
+
+<h2 id="practica-2-preguntas">Práctica 2 · Preguntas</h2>
+<div class="quiz">
+  <p class="prompt">¿En qué parte del Project Charter aparecen los <strong>stakeholders principales</strong>?</p>
+  <div class="options">
+    <button data-ok data-why="Parte III: criterios de éxito, stakeholders principales, responsabilidades del gerente y requisitos de aprobación (Clase 3, p16).">Parte III</button>
+    <button data-why="La Parte I trata de propósito, descripción, objetivos y requisitos (p14).">Parte I</button>
+    <button data-why="La Parte II trata de producto, suposiciones, cronograma, presupuesto y riesgos de alto nivel (p15).">Parte II</button>
+    <button data-why="Los stakeholders principales sí figuran en el Charter, dentro de la última parte.">En ninguna: van solo en la matriz de stakeholders</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">Un regulador con mucho poder sobre el proyecto pero poco interés en el día a día. ¿Qué estrategia corresponde?</p>
+  <div class="options">
+    <button data-ok data-why="Poder alto e interés bajo es el cuadrante «mantener satisfecho» (Clase 3, p21).">Mantener satisfecho</button>
+    <button data-why="«Gestionar de cerca» es para poder alto e interés alto.">Gestionar de cerca</button>
+    <button data-why="«Monitorear» es para poder e interés bajos.">Monitorear con esfuerzo mínimo</button>
+    <button data-why="«Mantener informado» es para poder bajo e interés alto.">Mantener informado</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">En una EDT, ¿cómo se relacionan paquete de trabajo y actividad?</p>
+  <div class="options">
+    <button data-ok data-why="Los paquetes son el nivel más bajo de entregables; se descomponen en actividades (Clase 3, p23).">El paquete de trabajo se descompone en actividades</button>
+    <button data-why="Es al revés: la actividad es el nivel más detallado.">Una actividad agrupa varios paquetes de trabajo</button>
+    <button data-why="No son sinónimos: uno es entregable, el otro es trabajo a realizar.">Son lo mismo con distinto nombre</button>
+    <button data-why="Las fases están por encima de los entregables y paquetes (p24).">Un paquete de trabajo es el nivel más alto, por encima de las fases</button>
+  </div>
+</div>
+
+<div class="quiz">
+  <p class="prompt">El Charter lista un riesgo de alto nivel que no aparece en la matriz de riesgos del TP. ¿Qué problema es?</p>
+  <div class="options">
+    <button data-ok data-why="Los riesgos de alto nivel del Charter (p15) se detallan en la sección 9; si no coinciden, el documento se contradice.">Una incoherencia entre secciones del documento</button>
+    <button data-why="Es común y esperable que el Charter resuma; lo que no puede pasar es que un riesgo desaparezca.">Ninguno: el Charter y la matriz son independientes</button>
+    <button data-why="Un stakeholder es una persona u organización, no un riesgo (p18).">Un error de la matriz de stakeholders</button>
+    <button data-why="La EDT desglosa entregables, no riesgos.">Un error de la EDT</button>
+  </div>
+</div>
+<p class="quiz-score"></p>
+
+<h2 id="aplicado-al-tp">Aplicado al TP</h2>
+<p class="note"><strong>Sección 5, Project Charter.</strong> Completar las tres partes con lo ya decidido en el Canvas: la propuesta de valor es la justificación, los objetivos SMART salen de la Clase 1, y las restricciones de la Clase 2 van en suposiciones y restricciones. Cronograma, presupuesto y riesgos de alto nivel son <em>resúmenes</em> que se ajustan después contra las secciones 6, 10 y 9.</p>
+<p class="note"><strong>Sección 7, Matriz de stakeholders.</strong> Usar las cinco columnas de la p20 y ubicar a cada uno en el cuadrante de la p21. Candidatos a discutir con el equipo (no es una lista cerrada): el área del GCBA que financia (patrocinador), los vecinos del segmento elegido, Boti como canal existente, socios posibles como Banco Ciudad o Pase Cultural, y el regulador de datos personales (Ley 25.326), por el perfil por hogar. <strong>La EDT</strong> es el insumo de la sección 6 (Gantt): sin paquetes de trabajo y actividades no hay cronograma completo. Ver <a href="../tp/plan.html">Plan del TP</a> y <a href="../tp/index.html">carpeta del TP</a>.</p>
+
+<div class="source">
+  <strong>Fuente principal</strong>
+  <a class="local-only" href="../raw/Clase%203%20-%20Gesti%C3%B3n%20del%20cronograma.pdf" title="Solo disponible en la copia completa con raw/">Clase 3 — Gestión del cronograma</a>, diapositivas 6 a 29. Las diapositivas 20, 21, 24, 25 y 26 son imágenes: se leyeron visualmente.
+</div>
+
+<div class="ask">
+  <strong>¿Dudas?</strong>
+  Preguntarle al agente: cómo redactar la justificación del Charter, en qué cuadrante poner a un stakeholder dudoso, o cuántos niveles de EDT conviene usar para el Mapa.
+</div>
+
+<nav class="nav">
+  <a href="index.html">↑ Todas las clases</a>
+  <a href="02-proyectos.html">← Clase 2 · Proyectos</a>
+  <a href="03b-cronograma-camino-critico.html">Clase 3b · Cronograma →</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
